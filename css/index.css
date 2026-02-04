@@ -177,6 +177,18 @@ img {
     color: var(--color-text-primary);
 }
 
+/* Mobile CTA Button - hidden on desktop */
+.mobile-cta {
+    display: none;
+    padding: 0.5rem 1rem;
+    background: var(--color-accent-gradient);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 /* ========================================
    Hero Section
 ======================================== */
@@ -840,6 +852,10 @@ img {
 
     .nav-links {
         display: none;
+    }
+
+    .mobile-cta {
+        display: block;
     }
 
     .logo-image {
