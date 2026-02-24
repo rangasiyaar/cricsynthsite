@@ -27,7 +27,7 @@ def get_primary_llm():
     os.environ["GOOGLE_API_KEY"] = GEMINI_API_KEY
 
     return ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash-preview-05-20",
+        model="gemini-2.0-flash",
         google_api_key=GEMINI_API_KEY,
         temperature=0.3,
         max_output_tokens=8192,

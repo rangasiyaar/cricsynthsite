@@ -1,118 +1,54 @@
-/* CricketMind AI — Enterprise Theme
-   EXACT replica of CricSynthesis design system
-   Source: cricsynthesis/css/index.css */
+/* CricketMind AI — CricSynthesis Theme
+   Dark premium cricket app design */
 
-/* ============================================================
-   FONTS
-============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-/* ============================================================
-   HIDE ALL STREAMLIT DEFAULT CHROME
-============================================================ */
-#MainMenu {
-    visibility: hidden;
-}
+/* ── HIDE ALL STREAMLIT CHROME ─── */
+#MainMenu { visibility: hidden; }
+header[data-testid="stHeader"] { display: none !important; }
+footer { display: none !important; }
+div[data-testid="stDecoration"] { display: none !important; }
+div[data-testid="stToolbar"] { display: none !important; }
+.stApp>header { display: none !important; }
+.stDeployButton { display: none !important; }
+div[data-testid="stStatusWidget"] { display: none !important; }
 
-header[data-testid="stHeader"] {
-    display: none !important;
-}
+/* ── HIDE SIDEBAR COMPLETELY ─── */
+section[data-testid="stSidebar"] { display: none !important; }
+button[kind="header"] { display: none !important; }
+.css-1544g2n { display: none !important; }
+div[data-testid="collapsedControl"] { display: none !important; }
 
-footer {
-    display: none !important;
-}
+.stApp { margin-top: -80px !important; }
 
-div[data-testid="stDecoration"] {
-    display: none !important;
-}
-
-div[data-testid="stToolbar"] {
-    display: none !important;
-}
-
-/* Remove Streamlit default padding */
-.stApp>header {
-    display: none !important;
-}
-
-.stApp {
-    margin-top: -80px !important;
-}
-
-/* ============================================================
-   GLOBAL
-============================================================ */
+/* ── GLOBAL ─── */
 .stApp {
     background-color: #0a0a0b !important;
     color: #fafafa !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-family: 'Inter', -apple-system, sans-serif !important;
     -webkit-font-smoothing: antialiased !important;
 }
 
-.stMainBlockContainer,
-.block-container {
+.stMainBlockContainer, .block-container {
     max-width: 1200px !important;
     padding-top: 0 !important;
     padding-bottom: 2rem !important;
 }
 
-/* ============================================================
-   SIDEBAR — Premium dark panel
-============================================================ */
-section[data-testid="stSidebar"] {
-    background-color: #111113 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
-}
-
-section[data-testid="stSidebar"]>div {
-    padding-top: 2rem !important;
-}
-
-section[data-testid="stSidebar"] .stMarkdown p,
-section[data-testid="stSidebar"] .stMarkdown li {
-    color: #a1a1aa !important;
-    font-size: 0.85rem !important;
-    font-family: 'Inter', sans-serif !important;
-}
-
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3 {
-    font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-    letter-spacing: -0.02em !important;
-}
-
-/* ============================================================
-   TYPOGRAPHY
-============================================================ */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.stMarkdown h1,
-.stMarkdown h2,
-.stMarkdown h3 {
+/* ── TYPOGRAPHY ─── */
+h1,h2,h3,h4,h5,h6,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 {
     font-family: 'Space Grotesk', 'Inter', sans-serif !important;
     letter-spacing: -0.02em !important;
     color: #fafafa !important;
     font-weight: 700 !important;
 }
-
-p,
-span,
-li,
-label,
-.stMarkdown p {
+p,span,li,label,.stMarkdown p {
     color: #a1a1aa !important;
     line-height: 1.7 !important;
     font-family: 'Inter', sans-serif !important;
 }
 
-/* ============================================================
-   BUTTONS — Gradient CTA
-============================================================ */
+/* ── BUTTONS ─── */
 .stButton>button {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%) !important;
     color: #fafafa !important;
@@ -122,387 +58,112 @@ label,
     font-weight: 600 !important;
     font-size: 0.875rem !important;
     padding: 0.75rem 1.5rem !important;
-    letter-spacing: -0.01em !important;
     transition: all 250ms ease !important;
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.2) !important;
 }
-
 .stButton>button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 40px rgba(99, 102, 241, 0.35) !important;
+    box-shadow: 0 8px 40px rgba(99,102,241,0.35) !important;
 }
 
-.stButton>button:active {
-    transform: translateY(0) !important;
-}
-
-/* ============================================================
-   SELECT / DROPDOWN
-============================================================ */
+/* ── SELECT / DROPDOWN ─── */
 div[data-baseweb="select"] {
     background-color: #18181b !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 8px !important;
-    transition: border-color 250ms ease !important;
-}
-
-div[data-baseweb="select"]>div {
-    background-color: #18181b !important;
-    color: #fafafa !important;
-}
-
-div[data-baseweb="select"]:hover {
-    border-color: rgba(99, 102, 241, 0.3) !important;
-}
-
-div[data-baseweb="select"]:focus-within {
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
-}
-
-div[data-baseweb="popover"] {
-    background-color: #18181b !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
     border-radius: 8px !important;
 }
+div[data-baseweb="select"]>div { background-color: #18181b !important; color: #fafafa !important; }
+div[data-baseweb="select"]:hover { border-color: rgba(99,102,241,0.3) !important; }
+div[data-baseweb="select"]:focus-within { border-color: #6366f1 !important; box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
+div[data-baseweb="popover"] { background-color: #18181b !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 8px !important; }
+ul[role="listbox"] li { color: #a1a1aa !important; }
+ul[role="listbox"] li:hover { background-color: rgba(99,102,241,0.1) !important; }
 
-ul[role="listbox"] li {
-    color: #a1a1aa !important;
-}
-
-ul[role="listbox"] li:hover {
-    background-color: rgba(99, 102, 241, 0.1) !important;
-}
-
-/* ============================================================
-   METRICS
-============================================================ */
+/* ── METRICS ─── */
 div[data-testid="stMetric"] {
-    background: rgba(255, 255, 255, 0.02) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255,255,255,0.02) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
     border-radius: 12px !important;
     padding: 1.25rem !important;
-    transition: all 250ms ease !important;
 }
+div[data-testid="stMetric"]:hover { border-color: rgba(99,102,241,0.3) !important; }
+div[data-testid="stMetric"] label { color: #71717a !important; text-transform: uppercase !important; letter-spacing: 0.06em !important; font-size: 0.7rem !important; }
+div[data-testid="stMetric"] div[data-testid="stMetricValue"] { color: #fafafa !important; font-family: 'Space Grotesk', sans-serif !important; font-weight: 600 !important; }
 
-div[data-testid="stMetric"]:hover {
-    border-color: rgba(99, 102, 241, 0.3) !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-}
-
-div[data-testid="stMetric"] label {
-    color: #71717a !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
-    font-size: 0.7rem !important;
-    font-weight: 500 !important;
-}
-
-div[data-testid="stMetric"] div[data-testid="stMetricValue"] {
-    color: #fafafa !important;
-    font-family: 'Space Grotesk', sans-serif !important;
-    font-weight: 600 !important;
-}
-
-/* ============================================================
-   TABS
-============================================================ */
+/* ── TABS ─── */
 .stTabs [data-baseweb="tab-list"] {
     background: transparent !important;
     gap: 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
 }
-
 .stTabs [data-baseweb="tab"] {
     color: #52525b !important;
     font-family: 'Inter', sans-serif !important;
     font-weight: 500 !important;
     font-size: 0.85rem !important;
     padding: 0.875rem 1.5rem !important;
-    transition: all 150ms ease !important;
     border-bottom: 2px solid transparent !important;
 }
+.stTabs [data-baseweb="tab"]:hover { color: #a1a1aa !important; }
+.stTabs [aria-selected="true"] { color: #fafafa !important; border-bottom: 2px solid #6366f1 !important; }
 
-.stTabs [data-baseweb="tab"]:hover {
-    color: #a1a1aa !important;
+/* ── MISC ─── */
+.stAlert { background-color: rgba(255,255,255,0.02) !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 12px !important; }
+.stJson { background-color: #111113 !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 8px !important; }
+.streamlit-expanderHeader { background-color: rgba(255,255,255,0.02) !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 8px !important; color: #a1a1aa !important; }
+.streamlit-expanderContent { background-color: #111113 !important; border: 1px solid rgba(255,255,255,0.04) !important; }
+hr { border-color: rgba(255,255,255,0.06) !important; margin: 2rem 0 !important; }
+a { color: #818cf8 !important; text-decoration: none !important; }
+a:hover { opacity: 0.8 !important; }
+
+/* ── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0b; }
+::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+/* ── ANIMATIONS ─── */
+@keyframes cm-float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(30px,30px); } }
+@keyframes cm-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes cm-fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.cm-hero-wrap { position: relative; padding: 5rem 2rem 3rem; overflow: hidden; margin: -1rem -1rem 2rem; }
+.cm-grid-overlay { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%); }
+.cm-orb { position: absolute; border-radius: 50%; filter: blur(100px); }
+.cm-orb-1 { width: 500px; height: 500px; background: #6366f1; opacity: 0.35; top: -180px; right: -80px; animation: cm-float 20s ease-in-out infinite; }
+.cm-orb-2 { width: 400px; height: 400px; background: #8b5cf6; opacity: 0.3; bottom: -120px; left: -60px; animation: cm-float 25s ease-in-out infinite reverse; }
+.cm-hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; margin: 0 auto; }
+.cm-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.25rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 9999px; margin-bottom: 2rem; }
+.cm-badge-dot { width: 8px; height: 8px; background: #6366f1; border-radius: 50%; display: inline-block; animation: cm-pulse 2s ease-in-out infinite; }
+.cm-badge-text { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; color: #a1a1aa; letter-spacing: 0.05em; text-transform: uppercase; }
+.cm-hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: #fafafa; margin: 0 0 1rem; }
+.cm-gradient-text { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.cm-hero-subtitle { font-family: 'Inter', sans-serif; font-size: 1.125rem; color: #a1a1aa; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7; }
+.cm-metrics-bar { display: inline-flex; align-items: center; gap: 3rem; padding: 1.25rem 2.5rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; backdrop-filter: blur(10px); }
+.cm-metric-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; font-weight: 700; color: #fafafa; }
+.cm-metric-label { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #71717a; text-transform: uppercase; letter-spacing: 0.05em; }
+.cm-metric-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.06); }
+.cm-card { animation: cm-fadeIn 0.5s ease; }
+
+/* ── FIXTURE CARDS ─── */
+.cm-fixture {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 250ms ease;
+    cursor: pointer;
 }
-
-.stTabs [aria-selected="true"] {
-    color: #fafafa !important;
-    border-bottom: 2px solid #6366f1 !important;
-    background: transparent !important;
+.cm-fixture:hover {
+    border-color: rgba(99,102,241,0.3);
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-1px);
 }
+.cm-fixture-live { border-left: 3px solid #ef4444; }
+.cm-fixture-upcoming { border-left: 3px solid #6366f1; }
+.cm-fixture-finished { border-left: 3px solid #10b981; }
 
-/* ============================================================
-   ALERTS
-============================================================ */
-.stAlert {
-    background-color: rgba(255, 255, 255, 0.02) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 12px !important;
-}
-
-/* ============================================================
-   EXPANDER
-============================================================ */
-.streamlit-expanderHeader {
-    background-color: rgba(255, 255, 255, 0.02) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 8px !important;
-    color: #a1a1aa !important;
-}
-
-.streamlit-expanderContent {
-    background-color: #111113 !important;
-    border: 1px solid rgba(255, 255, 255, 0.04) !important;
-}
-
-/* ============================================================
-   SPINNER
-============================================================ */
-.stSpinner>div {
-    border-top-color: #6366f1 !important;
-}
-
-/* ============================================================
-   SCROLLBAR
-============================================================ */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #0a0a0b;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #27272a;
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #3f3f46;
-}
-
-/* ============================================================
-   LINKS
-============================================================ */
-a {
-    color: #818cf8 !important;
-    text-decoration: none !important;
-}
-
-a:hover {
-    opacity: 0.8 !important;
-}
-
-/* ============================================================
-   HIDE STREAMLIT ELEMENTS WE DON'T NEED
-============================================================ */
-.stDeployButton {
-    display: none !important;
-}
-
-div[data-testid="stStatusWidget"] {
-    display: none !important;
-}
-
-/* ============================================================
-   JSON VIEWER
-============================================================ */
-.stJson {
-    background-color: #111113 !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 8px !important;
-}
-
-hr {
-    border-color: rgba(255, 255, 255, 0.06) !important;
-    margin: 2rem 0 !important;
-}
-
-/* ============================================================
-   ANIMATIONS — Used by hero and cards
-============================================================ */
-@keyframes cm-float {
-
-    0%,
-    100% {
-        transform: translate(0, 0);
-    }
-
-    50% {
-        transform: translate(30px, 30px);
-    }
-}
-
-@keyframes cm-pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.4;
-    }
-}
-
-@keyframes cm-fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Hero custom classes */
-.cm-hero-wrap {
-    position: relative;
-    padding: 5rem 2rem 3rem;
-    overflow: hidden;
-    margin: -1rem -1rem 2rem;
-}
-
-.cm-grid-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-}
-
-.cm-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-}
-
-.cm-orb-1 {
-    width: 500px;
-    height: 500px;
-    background: #6366f1;
-    opacity: 0.35;
-    top: -180px;
-    right: -80px;
-    animation: cm-float 20s ease-in-out infinite;
-}
-
-.cm-orb-2 {
-    width: 400px;
-    height: 400px;
-    background: #8b5cf6;
-    opacity: 0.3;
-    bottom: -120px;
-    left: -60px;
-    animation: cm-float 25s ease-in-out infinite reverse;
-}
-
-.cm-hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.cm-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.25rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 9999px;
-    margin-bottom: 2rem;
-}
-
-.cm-badge-dot {
-    width: 8px;
-    height: 8px;
-    background: #6366f1;
-    border-radius: 50%;
-    display: inline-block;
-    animation: cm-pulse 2s ease-in-out infinite;
-}
-
-.cm-badge-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #a1a1aa;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.cm-hero-title {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: #fafafa;
-    margin: 0 0 1rem;
-}
-
-.cm-gradient-text {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.cm-hero-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.125rem;
-    color: #a1a1aa;
-    max-width: 520px;
-    margin: 0 auto 2.5rem;
-    line-height: 1.7;
-}
-
-.cm-metrics-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 3rem;
-    padding: 1.25rem 2.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-}
-
-.cm-metric-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #fafafa;
-}
-
-.cm-metric-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    color: #71717a;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.cm-metric-divider {
-    width: 1px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.06);
-}
-
-/* Card animation */
-.cm-card {
-    animation: cm-fadeIn 0.5s ease;
-}
+.cm-status-live { color: #ef4444; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.cm-status-upcoming { color: #6366f1; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.cm-status-finished { color: #10b981; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; }
