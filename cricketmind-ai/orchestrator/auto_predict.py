@@ -7,7 +7,7 @@ Designed to be run as a daily cron job via GitHub Actions.
 import sys
 from datetime import datetime, timezone, timedelta
 
-from data.cricdata_client import CricDataClient
+from data.sportmonks_client import SportmonksClient
 from orchestrator.pipeline import run_prediction
 from utils.config import PREDICTIONS_DIR
 from utils.logger import get_logger
@@ -30,8 +30,8 @@ def detect_and_predict(hours_ahead: int = 24) -> int:
     logger.info("Looking for matches in the next %d hours...", hours_ahead)
     logger.info("=" * 60)
 
-    client = CricDataClient()
-    upcoming = client.get_upcoming_matches()
+    client = SportmonksClient()
+    upcoming = client.get_upcoming_fixtures()
 
     if not upcoming:
         logger.info("No upcoming matches found.")

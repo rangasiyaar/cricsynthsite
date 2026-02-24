@@ -2,7 +2,7 @@
 
 **Agentic AI-Powered Cricket Player Prediction System**
 
-> A [CricSynthesis](https://cricsynthesis.com) Product
+> A [CricSynthesis](https://cricsynthesis.in) Product
 
 ## 🏏 What is CricketMind AI?
 
@@ -11,16 +11,16 @@ CricketMind AI uses a crew of 4 specialized AI agents to predict and rank all 22
 ## 🧠 Architecture
 
 ```
-   Data Layer (3 Sources)        AI Agents (CrewAI)       Output
+   Sportmonks API             AI Agents (CrewAI)       Output
   ┌─────────────────────┐    ┌────────────────────────┐   ┌──────────┐
-  │ CricketData.org API │    │ 1. Data Collector      │   │ JSON     │
-  │ Cricsheet CSV Data  │───>│ 2. Context Analyzer    │──>│ Rankings │
-  │ ESPN Scraper        │    │ 3. Performance Predictor│   │ #1-#22  │
+  │ Fixtures & Squads   │    │ 1. Data Collector      │   │ JSON     │
+  │ Scorecards          │───>│ 2. Context Analyzer    │──>│ Rankings │
+  │ Player Careers      │    │ 3. Performance Predictor│   │ #1-#22  │
   └─────────────────────┘    │ 4. Final Ranker        │   └──────────┘
                              └────────────────────────┘
 ```
 
-**LLMs:** Gemini 2.5 Flash (primary) | Groq Llama 3.3 70B (fallback)
+**LLMs:** Gemini 2.0 Flash (primary) | Groq Llama 3.3 70B (fallback)
 
 ## 🚀 Quick Start
 
@@ -40,12 +40,12 @@ streamlit run frontend/app.py
 python -m orchestrator.auto_predict
 ```
 
-## 🔑 API Keys Needed (Free)
+## 🔑 API Keys Needed
 
 | Key | Get From | Required |
 |-----|----------|----------|
+| `SPORTMONKS_API_KEY` | [Sportmonks](https://www.sportmonks.com/) | ✅ |
 | `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/) | ✅ |
-| `CRICDATA_API_KEY` | [CricketData.org](https://cricketdata.org/) | ✅ |
 | `GROQ_API_KEY` | [Groq Cloud](https://console.groq.com/) | Optional |
 
 ## 📂 Project Structure
@@ -53,9 +53,9 @@ python -m orchestrator.auto_predict
 ```
 cricketmind-ai/
 ├── agents/          # 4 CrewAI agent definitions
-├── data/            # Data clients (CricAPI, Cricsheet, ESPN)
+├── data/            # Sportmonks API client & player profile builder
 ├── database/        # SQLite persistence
-├── frontend/        # Streamlit dashboard
+├── frontend/        # Streamlit dashboard (CricSynthesis theme)
 ├── models/          # Pydantic data models
 ├── orchestrator/    # Pipeline & auto-predict
 ├── scoring/         # Fantasy points calculator
