@@ -29,7 +29,7 @@ if css_path.exists():
     st.markdown(f"<style>{css_path.read_text()}</style>", unsafe_allow_html=True)
 
 from frontend.components import (
-    render_hero, render_section_header, render_fixture_card,
+    render_header, render_hero, render_section_header, render_fixture_card,
     render_no_fixtures, render_match_detail, render_squad_list,
     render_scorecard, render_player_card, render_context_card,
     render_ranking_table, render_value_picks_card, render_risky_picks,
@@ -172,7 +172,7 @@ def render_prediction(prediction: dict) -> None:
 # ═══════════════════════════════════════════════════════════
 
 def render_fixtures_tab(fixtures: list, tab_type: str, limit: int = 0, empty_msg: str = "No matches available.") -> None:
-    """Render a list of fixtures with click-to-expand."""
+    """Render fixtures with inline expandable details."""
     if not fixtures:
         render_no_fixtures(empty_msg)
         return
@@ -188,30 +188,12 @@ def render_fixtures_tab(fixtures: list, tab_type: str, limit: int = 0, empty_msg
     title, sub = section_titles.get(tab_type, ("Fixtures", ""))
     render_section_header(title, sub)
 
-    # Render each fixture as a clickable card
+    # Each fixture: card + expander directly below
     for i, m in enumerate(fixtures):
         render_fixture_card(m, tab_type if tab_type != "recent" else "finished")
 
-        # Click to expand — use a button styled subtly
-        key = f"detail_{tab_type}_{m['id']}_{i}"
-        if st.button(
-            f"📋 View Details — {m['name']}",
-            key=key,
-            use_container_width=True,
-        ):
-            st.session_state[f"selected_{tab_type}"] = m["id"]
-
-    # Show expanded detail for selected fixture
-    selected_id = st.session_state.get(f"selected_{tab_type}")
-    if selected_id:
-        selected = next((m for m in fixtures if m["id"] == str(selected_id)), None)
-        if selected:
-            st.divider()
-            render_section_header(
-                selected["name"],
-                f'{selected.get("matchType", "")} · {selected.get("venue", "")}'
-            )
-            show_fixture_expanded(selected, tab_type)
+        with st.expander(f"📋 {m['name']} — Details", expanded=False):
+            show_fixture_expanded(m, tab_type)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -219,6 +201,7 @@ def render_fixtures_tab(fixtures: list, tab_type: str, limit: int = 0, empty_msg
 # ═══════════════════════════════════════════════════════════
 
 def main():
+    render_header()
     render_hero()
 
     sportmonks_ok = bool(SPORTMONKS_API_KEY)

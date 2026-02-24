@@ -26,30 +26,96 @@ FONT_B = F_B
 
 
 # ═══════════════════════════════════════════════════════════
-#  HERO
+#  HEADER (CricSynthesis website nav)
+# ═══════════════════════════════════════════════════════════
+
+def render_header() -> None:
+    """CricSynthesis website-consistent header nav."""
+    html = (
+        '<div style="backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);'
+        f'background:rgba(10,10,11,0.85);border-bottom:1px solid {C["bdr"]};padding:0 2rem">'
+        '<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px">'
+        f'<div style="display:flex;align-items:center;gap:0.6rem">'
+        f'<div style="width:28px;height:28px;background:{C["grad"]};border-radius:6px;display:flex;align-items:center;justify-content:center">'
+        f'<span style="color:white;font-size:14px;font-weight:700">CS</span></div>'
+        f'<span style="font-family:{F_H};font-weight:700;font-size:1.05rem;color:{C["t1"]};letter-spacing:-0.02em">CricSynthesis</span>'
+        '</div>'
+        '<div style="display:flex;align-items:center;gap:1.75rem">'
+        f'<a href="https://cricsynthesis.in" target="_blank" style="font-family:{F_B};font-size:0.8rem;color:{C["t3"]};text-decoration:none">Home</a>'
+        f'<a href="https://cricsynthesis.in#features" target="_blank" style="font-family:{F_B};font-size:0.8rem;color:{C["t3"]};text-decoration:none">Capabilities</a>'
+        f'<a href="https://cricsynthesis.in#solutions" target="_blank" style="font-family:{F_B};font-size:0.8rem;color:{C["t3"]};text-decoration:none">Solutions</a>'
+        f'<span style="font-family:{F_B};font-size:0.8rem;color:{C["acc2"]};font-weight:600">🏏 CricketMind AI</span>'
+        '</div></div></div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+# ═══════════════════════════════════════════════════════════
+#  HERO (fancy CricSynthesis-themed)
 # ═══════════════════════════════════════════════════════════
 
 def render_hero() -> None:
-    st.markdown("""
-    <div class="cm-hero-wrap">
-        <div class="cm-grid-overlay"></div>
-        <div class="cm-orb cm-orb-1"></div>
-        <div class="cm-orb cm-orb-2"></div>
-        <div class="cm-hero-content">
-            <div class="cm-badge">
-                <span class="cm-badge-dot"></span>
-                <span class="cm-badge-text">AI-Powered Cricket Predictions</span>
-            </div>
-            <h1 class="cm-hero-title">
-                CricketMind <span class="cm-gradient-text">AI</span>
-            </h1>
-            <p class="cm-hero-subtitle">
-                Live fixtures, squads, scorecards — and AI-ranked player predictions
-                for every match. Powered by CricSynthesis.
-            </p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    """Premium hero section with animated gradient orbs and metrics."""
+    st.html(
+        # Container
+        '<div style="position:relative;overflow:hidden;padding:4rem 2rem 3rem;text-align:center;'
+        f'background:{C["bg1"]};border-bottom:1px solid {C["bdr"]}">'
+        # Animated gradient orbs
+        '<div style="position:absolute;top:-80px;left:-80px;width:350px;height:350px;'
+        'background:radial-gradient(circle,rgba(99,102,241,0.15) 0%,transparent 70%);'
+        'border-radius:50%;filter:blur(60px);animation:cs-float 8s ease-in-out infinite"></div>'
+        '<div style="position:absolute;bottom:-60px;right:-60px;width:300px;height:300px;'
+        'background:radial-gradient(circle,rgba(168,85,247,0.12) 0%,transparent 70%);'
+        'border-radius:50%;filter:blur(60px);animation:cs-float 8s ease-in-out infinite 4s"></div>'
+        # Grid overlay
+        '<div style="position:absolute;inset:0;'
+        'background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),'
+        'linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);'
+        'background-size:40px 40px;opacity:0.5"></div>'
+        # Badge
+        '<div style="position:relative;z-index:1">'
+        '<div style="display:inline-flex;align-items:center;gap:0.5rem;'
+        f'padding:0.35rem 1rem;border-radius:50px;background:rgba(99,102,241,0.08);'
+        f'border:1px solid rgba(99,102,241,0.2);margin-bottom:1.5rem">'
+        f'<span style="width:6px;height:6px;border-radius:50%;background:{C["ok"]};'
+        'box-shadow:0 0 8px rgba(16,185,129,0.5);animation:cs-pulse 2s ease-in-out infinite"></span>'
+        f'<span style="font-family:{F_B};font-size:0.72rem;font-weight:500;color:{C["acc2"]}">AI-Powered Cricket Intelligence</span>'
+        '</div>'
+        # Title
+        f'<h1 style="font-family:{F_H};font-size:clamp(2rem,5vw,3.2rem);font-weight:700;'
+        f'color:{C["t1"]};margin:0 0 0.75rem;line-height:1.15;letter-spacing:-0.03em">'
+        'CricketMind <span style="background:linear-gradient(135deg,#6366f1 0%,#a855f7 50%,#ec4899 100%);'
+        '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">AI</span></h1>'
+        # Subtitle
+        f'<p style="font-family:{F_B};font-size:1rem;color:{C["t2"]};max-width:550px;margin:0 auto 2rem;line-height:1.7">'
+        'Live fixtures, scorecards, squad analysis — and AI-ranked player predictions. '
+        'Powered by <span style="color:#818cf8;font-weight:600">CricSynthesis</span>.</p>'
+        # Metrics strip
+        f'<div style="display:inline-flex;align-items:center;gap:0;background:rgba(255,255,255,0.02);'
+        f'border:1px solid {C["bdr"]};border-radius:12px;overflow:hidden">'
+        # Metric 1
+        f'<div style="padding:0.75rem 1.5rem;text-align:center">'
+        f'<div style="font-family:{F_H};font-weight:700;font-size:1.35rem;color:{C["t1"]}">15,000</div>'
+        f'<div style="font-family:{F_B};font-size:0.65rem;color:{C["t4"]};text-transform:uppercase;letter-spacing:0.08em">Matches Analyzed</div></div>'
+        f'<div style="width:1px;height:40px;background:{C["bdr"]}"></div>'
+        # Metric 2
+        f'<div style="padding:0.75rem 1.5rem;text-align:center">'
+        f'<div style="font-family:{F_H};font-weight:700;font-size:1.35rem;color:{C["t1"]}">4 AI</div>'
+        f'<div style="font-family:{F_B};font-size:0.65rem;color:{C["t4"]};text-transform:uppercase;letter-spacing:0.08em">Agent Pipeline</div></div>'
+        f'<div style="width:1px;height:40px;background:{C["bdr"]}"></div>'
+        # Metric 3
+        f'<div style="padding:0.75rem 1.5rem;text-align:center">'
+        f'<div style="font-family:{F_H};font-weight:700;font-size:1.35rem;color:{C["t1"]}">Live</div>'
+        f'<div style="font-family:{F_B};font-size:0.65rem;color:{C["t4"]};text-transform:uppercase;letter-spacing:0.08em">Sportmonks Data</div></div>'
+        '</div>'
+        '</div>'
+        # CSS animations
+        '<style>'
+        '@keyframes cs-float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}'
+        '@keyframes cs-pulse{0%,100%{opacity:1}50%{opacity:0.4}}'
+        '</style>'
+        '</div>'
+    )
 
 
 def render_section_header(title: str, subtitle: str = "") -> None:
@@ -390,10 +456,32 @@ def render_scorecard(scorecard: dict) -> None:
                 f'</tr></thead><tbody>{bowl_rows}</tbody></table></div>'
             )
 
+        # Extras summary
+        extras_html = ""
+        if bowl_list:
+            total_wides = sum(bw.get("wide", 0) or 0 for bw in bowl_list)
+            total_noballs = sum(bw.get("noball", 0) or 0 for bw in bowl_list)
+            total_extras = total_wides + total_noballs
+            if total_extras > 0:
+                parts = []
+                if total_wides:
+                    parts.append(f"w {total_wides}")
+                if total_noballs:
+                    parts.append(f"nb {total_noballs}")
+                extras_detail = ", ".join(parts)
+                es = f"padding:0.5rem 0.75rem;font-family:{F_B};font-size:0.78rem"
+                extras_html = (
+                    f'<div style="border-top:1px solid {C["bdr"]};display:flex;gap:1.5rem;{es};background:rgba(255,255,255,0.015)">'
+                    f'<span style="color:{C["t3"]}">Extras</span>'
+                    f'<span style="color:{C["t1"]};font-weight:600">{total_extras}</span>'
+                    f'<span style="color:{C["t4"]}">({extras_detail})</span>'
+                    f'</div>'
+                )
+
         # Render this innings card
         card = (
             f'<div class="cm-card" style="background:{C["card"]};border:1px solid {C["bdr"]};border-radius:12px;overflow:hidden;margin-bottom:1rem">'
-            f'{header}{bat_table}{bowl_table}'
+            f'{header}{bat_table}{bowl_table}{extras_html}'
             f'</div>'
         )
         st.html(card)
@@ -540,11 +628,44 @@ def render_disclaimer() -> None:
 
 
 def render_footer() -> None:
-    st.markdown(f"""
-    <div style="margin-top:2rem;padding:1.5rem 0;border-top:1px solid {C['bdr']};text-align:center">
-        <p style="color:{C['t4']} !important;font-family:{F_B};font-size:0.78rem;margin:0;line-height:1.8">
-            Powered by Sportmonks Cricket API + Gemini AI<br>
-            <a href="https://cricsynthesis.in" target="_blank" style="color:{C['acc2']} !important">CricSynthesis</a> · © 2026
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    """CricSynthesis website-consistent footer."""
+    lk = f"font-family:{F_B};font-size:0.78rem;color:{C['t4']};text-decoration:none;display:block;margin-bottom:0.5rem"
+    hd = f"font-family:{F_H};font-size:0.72rem;font-weight:600;color:{C['t2']};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem"
+
+    html = (
+        f'<div style="margin-top:3rem;border-top:1px solid {C["bdr"]};background:{C["bg2"]};padding:2.5rem 2rem 1.5rem">'
+        f'<div style="max-width:1200px;margin:0 auto">'
+        # Top section: brand + link columns
+        f'<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:2rem;margin-bottom:2rem">'
+        # Brand
+        f'<div style="min-width:200px">'
+        f'<div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem">'
+        f'<div style="width:24px;height:24px;background:{C["grad"]};border-radius:5px;display:flex;align-items:center;justify-content:center">'
+        f'<span style="color:white;font-size:11px;font-weight:700">CS</span></div>'
+        f'<span style="font-family:{F_H};font-weight:700;font-size:0.95rem;color:{C["t1"]}">CricSynthesis</span></div>'
+        f'<p style="font-family:{F_B};font-size:0.78rem;color:{C["t4"]};margin:0;line-height:1.6">Advanced Cricket Intelligence</p>'
+        f'</div>'
+        # Platform links
+        f'<div><div style="{hd}">Platform</div>'
+        f'<a href="https://cricsynthesis.in#features" target="_blank" style="{lk}">Capabilities</a>'
+        f'<a href="https://cricsynthesis.in#solutions" target="_blank" style="{lk}">Solutions</a>'
+        f'<a href="https://cricsynthesis.in#register" target="_blank" style="{lk}">Early Access</a></div>'
+        # Company links
+        f'<div><div style="{hd}">Company</div>'
+        f'<a href="#" style="{lk}">About</a>'
+        f'<a href="#" style="{lk}">Careers</a>'
+        f'<a href="#" style="{lk}">Contact</a></div>'
+        # Legal links
+        f'<div><div style="{hd}">Legal</div>'
+        f'<a href="#" style="{lk}">Privacy Policy</a>'
+        f'<a href="#" style="{lk}">Terms of Service</a></div>'
+        f'</div>'
+        # Bottom bar
+        f'<div style="border-top:1px solid {C["bdr"]};padding-top:1.25rem;display:flex;justify-content:space-between;align-items:center">'
+        f'<p style="font-family:{F_B};font-size:0.72rem;color:{C["t4"]};margin:0">© 2026 CricSynthesis. All rights reserved.</p>'
+        f'<div style="display:flex;gap:0.75rem">'
+        f'<span style="font-family:{F_B};font-size:0.72rem;color:{C["t4"]}">Powered by Sportmonks + Gemini AI</span>'
+        f'</div></div>'
+        f'</div></div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
