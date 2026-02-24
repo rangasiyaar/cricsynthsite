@@ -240,128 +240,163 @@ def render_squad_list(squads: list) -> None:
 # ═══════════════════════════════════════════════════════════
 
 def render_scorecard(scorecard: dict) -> None:
-    """Render batting and bowling scorecard tables."""
+    """Render innings-wise scorecard (like ESPNCricinfo)."""
     batting = scorecard.get("batting", [])
     bowling = scorecard.get("bowling", [])
     runs = scorecard.get("runs", [])
-    teams = scorecard.get("teams", ["Team A", "Team B"])
 
     if not batting and not bowling and not runs:
         st.info("No scorecard data available.")
         return
 
-    # Innings totals
-    if runs:
-        totals = ""
-        for r in runs:
-            team = r.get("team", {})
-            team_name = team.get("name", f'Team {r.get("team_id", "?")}') if isinstance(team, dict) else f'Team {r.get("team_id", "?")}'
-            score = f'{r.get("score", 0)}/{r.get("wickets", 0)}'
-            overs = r.get("overs", "")
-            inning = r.get("inning", "")
-            ov_text = f" ({overs} ov)" if overs else ""
-            inn_text = f"Inning {inning}" if inning else ""
+    # Build innings lookup from runs
+    innings_info = {}  # {(team_id, inning): {team_name, score, wickets, overs}}
+    for r in runs:
+        team = r.get("team", {})
+        team_name = team.get("name", f'Team {r.get("team_id", "?")}') if isinstance(team, dict) else f'Team {r.get("team_id", "?")}'
+        key = (r.get("team_id"), r.get("inning", 1))
+        innings_info[key] = {
+            "team_name": team_name,
+            "score": r.get("score", 0),
+            "wickets": r.get("wickets", 0),
+            "overs": r.get("overs", ""),
+            "inning": r.get("inning", 1),
+            "team_id": r.get("team_id"),
+        }
 
-            totals += f"""
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;
-                background:rgba(99,102,241,0.05);border-radius:8px;margin-bottom:0.5rem">
-                <div>
-                    <span style="font-family:{F_H};font-weight:700;color:{C['t1']};font-size:1rem">{team_name}</span>
-                    <span style="font-family:{F_B};font-size:0.7rem;color:{C['t4']};margin-left:0.5rem">{inn_text}</span>
-                </div>
-                <span style="font-family:{F_H};font-weight:700;color:{C['acc2']};font-size:1.25rem">{score}{ov_text}</span>
-            </div>
-            """
+    # Build team_id → inning mapping from runs
+    team_to_inning = {}  # {team_id: inning_number}
+    for r in runs:
+        team_to_inning[r.get("team_id")] = r.get("inning", 1)
 
-        st.markdown(f"""
-        <div class="cm-card" style="background:{C['card']};border:1px solid {C['bdr']};border-radius:16px;padding:1.25rem;margin-bottom:1rem">
-            <div style="font-family:{F_B};font-size:0.6rem;font-weight:600;color:{C['acc2']};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">📊 Innings Summary</div>
-            {totals}
-        </div>
-        """, unsafe_allow_html=True)
+    # Group batting by team_id (each team's batting = one innings)
+    bat_by_inn = {}
+    for b in batting:
+        team_id = b.get("team_id")
+        # Determine innings from scoreboard field (S1/S2) or team→inning mapping
+        sb = b.get("scoreboard", "S1")
+        inning = int(sb[1]) if isinstance(sb, str) and len(sb) >= 2 and sb[1:].isdigit() else team_to_inning.get(team_id, 1)
+        key = (team_id, inning)
+        bat_by_inn.setdefault(key, []).append(b)
 
-    # Batting
-    if batting:
-        th = f"padding:0.6rem 0.5rem;text-align:left;color:{C['t4']};font-family:{F_B};font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em"
-        rows = ""
-        for b in batting:
+    # Group bowling by team_id (bowlers bowl in opponent's innings)
+    bowl_by_inn = {}
+    for bw in bowling:
+        team_id = bw.get("team_id")
+        sb = bw.get("scoreboard", "S1")
+        inning = int(sb[1]) if isinstance(sb, str) and len(sb) >= 2 and sb[1:].isdigit() else team_to_inning.get(team_id, 1)
+        key = (team_id, inning)
+        bowl_by_inn.setdefault(key, []).append(bw)
+
+    # Determine innings order from runs data
+    inn_order = sorted(innings_info.keys(), key=lambda k: (k[1], k[0]))
+    if not inn_order:
+        inn_order = sorted(set(list(bat_by_inn.keys()) + list(bowl_by_inn.keys())), key=lambda k: (k[1], k[0]))
+
+    th = f"padding:0.5rem;text-align:left;color:{C['t4']};font-family:{F_B};font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em"
+
+    for key in inn_order:
+        info = innings_info.get(key, {})
+        team_name = info.get("team_name", f"Team {key[0]}")
+        score = info.get("score", "")
+        wickets = info.get("wickets", "")
+        overs = info.get("overs", "")
+        inning_num = key[1]
+
+        score_text = f"{score}/{wickets}" if score != "" else ""
+        ov_text = f" ({overs} ov)" if overs else ""
+        inn_label = f"{'1st' if inning_num == 1 else '2nd'} Innings"
+
+        # Innings header
+        header = (
+            f'<div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;'
+            f'background:rgba(99,102,241,0.08);border-radius:8px 8px 0 0;border-bottom:2px solid {C["acc"]}">'
+            f'<div><span style="font-family:{F_H};font-weight:700;color:{C["t1"]};font-size:1.05rem">{team_name}</span>'
+            f'<span style="font-family:{F_B};font-size:0.7rem;color:{C["t4"]};margin-left:0.5rem">{inn_label}</span></div>'
+            f'<span style="font-family:{F_H};font-weight:700;color:{C["acc2"]};font-size:1.25rem">{score_text}{ov_text}</span>'
+            f'</div>'
+        )
+
+        # Batting rows
+        bat_rows = ""
+        bat_list = bat_by_inn.get(key, [])
+        for b in bat_list:
             batsman = b.get("batsman", {})
             name = batsman.get("fullname", f'Player {b.get("player_id", "?")}') if isinstance(batsman, dict) else f'Player {b.get("player_id", "?")}'
-            bowler = b.get("bowler", {})
-            bowler_name = bowler.get("fullname", "") if isinstance(bowler, dict) else ""
             r_val = b.get("score", 0)
             balls = b.get("ball", 0)
             fours = b.get("four_x", 0)
             sixes = b.get("six_x", 0)
             sr = b.get("rate", 0)
-            how_out = b.get("scoring_rate", b.get("catch_stump_player_id", ""))
+            bat_rows += (
+                f'<tr style="border-bottom:1px solid {C["bdr_s"]}">'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_H};font-weight:600;color:{C["t1"]};font-size:0.82rem">{name}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_H};font-weight:700;color:{C["acc"]};font-size:0.9rem">{r_val}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{balls}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{fours}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{sixes}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t3"]};font-size:0.78rem">{sr}</td>'
+                f'</tr>'
+            )
 
-            rows += f"""<tr style="border-bottom:1px solid {C['bdr_s']}">
-                <td style="padding:0.5rem;font-family:{F_H};font-weight:600;color:{C['t1']};font-size:0.85rem">{name}</td>
-                <td style="padding:0.5rem;font-family:{F_H};font-weight:700;color:{C['acc']};font-size:0.95rem">{r_val}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{balls}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{fours}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{sixes}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t3']};font-size:0.8rem">{sr}</td>
-            </tr>"""
+        bat_table = ""
+        if bat_rows:
+            bat_table = (
+                f'<div style="padding:0.5rem 0.75rem 0"><span style="font-family:{F_B};font-size:0.6rem;font-weight:600;color:{C["acc2"]};text-transform:uppercase;letter-spacing:0.1em">🏏 Batting</span></div>'
+                f'<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">'
+                f'<thead><tr style="background:{C["bg2"]}">'
+                f'<th style="{th}">Batsman</th><th style="{th}">R</th><th style="{th}">B</th>'
+                f'<th style="{th}">4s</th><th style="{th}">6s</th><th style="{th}">SR</th>'
+                f'</tr></thead><tbody>{bat_rows}</tbody></table></div>'
+            )
 
-        st.markdown(f"""
-        <div class="cm-card" style="background:{C['card']};border:1px solid {C['bdr']};border-radius:16px;overflow:hidden;margin-bottom:1rem">
-            <div style="padding:1rem 1.25rem;border-bottom:1px solid {C['bdr']}">
-                <span style="font-family:{F_B};font-size:0.6rem;font-weight:600;color:{C['acc2']};text-transform:uppercase;letter-spacing:0.1em">🏏 Batting</span>
-            </div>
-            <div style="overflow-x:auto">
-                <table style="width:100%;border-collapse:collapse">
-                    <thead><tr style="background:{C['bg2']}">
-                        <th style="{th}">Batsman</th><th style="{th}">R</th><th style="{th}">B</th>
-                        <th style="{th}">4s</th><th style="{th}">6s</th><th style="{th}">SR</th>
-                    </tr></thead>
-                    <tbody>{rows}</tbody>
-                </table>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # Bowling rows
+        bowl_rows = ""
+        bowl_list = bowl_by_inn.get(key, [])
+        # For bowling, we want the *other* team's bowlers. Try looking up by other team
+        if not bowl_list:
+            for bk, bv in bowl_by_inn.items():
+                if bk[1] == key[1] and bk[0] != key[0]:
+                    bowl_list = bv
+                    break
 
-    # Bowling
-    if bowling:
-        th = f"padding:0.6rem 0.5rem;text-align:left;color:{C['t4']};font-family:{F_B};font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em"
-        rows = ""
-        for bw in bowling:
+        for bw in bowl_list:
             bowler = bw.get("bowler", {})
             name = bowler.get("fullname", f'Player {bw.get("player_id", "?")}') if isinstance(bowler, dict) else f'Player {bw.get("player_id", "?")}'
-            overs = bw.get("overs", 0)
-            maidens = bw.get("medians", 0)
-            runs_given = bw.get("runs", 0)
-            wickets = bw.get("wickets", 0)
-            econ = bw.get("rate", 0)
-            wide = bw.get("wide", 0)
-            noball = bw.get("noball", 0)
+            overs_b = bw.get("overs", 0)
+            maidens_b = bw.get("medians", 0)
+            runs_b = bw.get("runs", 0)
+            wickets_b = bw.get("wickets", 0)
+            econ_b = bw.get("rate", 0)
+            bowl_rows += (
+                f'<tr style="border-bottom:1px solid {C["bdr_s"]}">'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_H};font-weight:600;color:{C["t1"]};font-size:0.82rem">{name}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{overs_b}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{maidens_b}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t2"]};font-size:0.78rem">{runs_b}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_H};font-weight:700;color:{C["err"]};font-size:0.9rem">{wickets_b}</td>'
+                f'<td style="padding:0.4rem 0.5rem;font-family:{F_B};color:{C["t3"]};font-size:0.78rem">{econ_b}</td>'
+                f'</tr>'
+            )
 
-            rows += f"""<tr style="border-bottom:1px solid {C['bdr_s']}">
-                <td style="padding:0.5rem;font-family:{F_H};font-weight:600;color:{C['t1']};font-size:0.85rem">{name}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{overs}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{maidens}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t2']};font-size:0.8rem">{runs_given}</td>
-                <td style="padding:0.5rem;font-family:{F_H};font-weight:700;color:{C['err']};font-size:0.95rem">{wickets}</td>
-                <td style="padding:0.5rem;font-family:{F_B};color:{C['t3']};font-size:0.8rem">{econ}</td>
-            </tr>"""
+        bowl_table = ""
+        if bowl_rows:
+            bowl_table = (
+                f'<div style="padding:0.75rem 0.75rem 0;border-top:1px solid {C["bdr"]}"><span style="font-family:{F_B};font-size:0.6rem;font-weight:600;color:{C["acc2"]};text-transform:uppercase;letter-spacing:0.1em">🎯 Bowling</span></div>'
+                f'<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">'
+                f'<thead><tr style="background:{C["bg2"]}">'
+                f'<th style="{th}">Bowler</th><th style="{th}">O</th><th style="{th}">M</th>'
+                f'<th style="{th}">R</th><th style="{th}">W</th><th style="{th}">Econ</th>'
+                f'</tr></thead><tbody>{bowl_rows}</tbody></table></div>'
+            )
 
-        st.markdown(f"""
-        <div class="cm-card" style="background:{C['card']};border:1px solid {C['bdr']};border-radius:16px;overflow:hidden;margin-bottom:1rem">
-            <div style="padding:1rem 1.25rem;border-bottom:1px solid {C['bdr']}">
-                <span style="font-family:{F_B};font-size:0.6rem;font-weight:600;color:{C['acc2']};text-transform:uppercase;letter-spacing:0.1em">🎯 Bowling</span>
-            </div>
-            <div style="overflow-x:auto">
-                <table style="width:100%;border-collapse:collapse">
-                    <thead><tr style="background:{C['bg2']}">
-                        <th style="{th}">Bowler</th><th style="{th}">O</th><th style="{th}">M</th>
-                        <th style="{th}">R</th><th style="{th}">W</th><th style="{th}">Econ</th>
-                    </tr></thead>
-                    <tbody>{rows}</tbody>
-                </table>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # Render this innings card
+        card = (
+            f'<div class="cm-card" style="background:{C["card"]};border:1px solid {C["bdr"]};border-radius:12px;overflow:hidden;margin-bottom:1rem">'
+            f'{header}{bat_table}{bowl_table}'
+            f'</div>'
+        )
+        st.html(card)
 
 
 # ═══════════════════════════════════════════════════════════

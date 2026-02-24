@@ -1,7 +1,8 @@
-"""CricketMind AI — Cricket App
+"""CricketMind AI — Cricket App (ESPNCricinfo-style)
 
-Main app: Upcoming/Live/Recent fixture tabs with full detail,
-plus AI player ranking predictions. No sidebar.
+Auto-fetches data on load. Click any fixture to expand details.
+Tabs: Upcoming (5) | Live | Recent (10) | AI Predict | History
+No sidebar. CricSynthesis theme.
 
 Launch: streamlit run frontend/app.py
 """
@@ -38,33 +39,47 @@ from utils.config import PREDICTIONS_DIR, GEMINI_API_KEY, SPORTMONKS_API_KEY
 
 
 # ═══════════════════════════════════════════════════════════
-#  DEMO DATA
+#  AUTO-FETCH: load data on app startup
 # ═══════════════════════════════════════════════════════════
 
-DEMO_PREDICTION = {
-    "match": "New Zealand vs South Africa — 1st T20I",
-    "venue": "Bay Oval",
-    "date": "Mar 15, 2026",
-    "format": "T20I",
-    "weather": "Partly Cloudy, 22°C",
-    "pitch_assessment": "Good batting surface with even bounce. Pace-friendly early on.",
-    "captain_pick": {"player": "Kane Williamson", "reason": "Home advantage at Bay Oval. Consistent T20I average of 42."},
-    "vice_captain_pick": {"player": "Quinton de Kock", "reason": "Explosive opener. 4 fifties in last 8 T20I innings."},
-    "rankings": [
-        {"rank": 1, "player_name": "Kane Williamson", "team": "NZ", "role": "Batsman", "predicted_fantasy_points": 88, "predicted_runs": "48-65", "predicted_wickets": "-", "confidence": "High", "key_reason": "Home ground. Anchors the innings."},
-        {"rank": 2, "player_name": "Quinton de Kock", "team": "SA", "role": "WK-Bat", "predicted_fantasy_points": 82, "predicted_runs": "40-58", "predicted_wickets": "-", "confidence": "High", "key_reason": "Aggressive opener. WK bonus points."},
-        {"rank": 3, "player_name": "Lockie Ferguson", "team": "NZ", "role": "Bowler", "predicted_fantasy_points": 78, "predicted_runs": "5-10", "predicted_wickets": "2-3", "confidence": "High", "key_reason": "Express pace. Death overs specialist."},
-        {"rank": 4, "player_name": "Lungi Ngidi", "team": "SA", "role": "Bowler", "predicted_fantasy_points": 72, "predicted_runs": "3-8", "predicted_wickets": "2-3", "confidence": "Medium", "key_reason": "Tall pacer. NZ conditions suit seam."},
-        {"rank": 5, "player_name": "David Miller", "team": "SA", "role": "Batsman", "predicted_fantasy_points": 68, "predicted_runs": "30-48", "predicted_wickets": "-", "confidence": "Medium", "key_reason": "Finisher. SR 150+ in death overs."},
-    ],
-    "top_value_picks": [
-        {"player": "Lockie Ferguson", "reason": "Express pace suits NZ conditions. Under-owned."},
-        {"player": "David Miller", "reason": "Finisher role. High ceiling in 15-20 overs."},
-    ],
-    "risky_picks": [
-        {"player": "Tim Southee", "reason": "Experienced but losing pace. Could go for runs."},
-    ],
-}
+@st.cache_data(ttl=300)  # Cache 5 minutes
+def fetch_upcoming():
+    from data.sportmonks_client import SportmonksClient
+    return SportmonksClient().get_upcoming_fixtures()
+
+
+@st.cache_data(ttl=300)
+def fetch_live():
+    from data.sportmonks_client import SportmonksClient
+    return SportmonksClient().get_live_fixtures()
+
+
+@st.cache_data(ttl=300)
+def fetch_recent():
+    from data.sportmonks_client import SportmonksClient
+    return SportmonksClient().get_recent_fixtures(limit=10)
+
+
+@st.cache_data(ttl=120)
+def fetch_fixture_detail(fixture_id: int):
+    from data.sportmonks_client import SportmonksClient
+    return SportmonksClient().get_fixture_detail(fixture_id)
+
+
+@st.cache_data(ttl=120)
+def fetch_scorecard(fixture_id: int):
+    from data.sportmonks_client import SportmonksClient
+    return SportmonksClient().get_fixture_scorecard(fixture_id)
+
+
+@st.cache_data(ttl=300)
+def fetch_squads(fixture_id: int):
+    from data.sportmonks_client import SportmonksClient
+    sm = SportmonksClient()
+    lineups = sm.get_fixture_lineups(fixture_id)
+    if not lineups:
+        lineups = sm.get_fixture_squads(fixture_id)
+    return lineups
 
 
 def load_cached_predictions() -> dict:
@@ -81,65 +96,35 @@ def load_cached_predictions() -> dict:
 
 
 # ═══════════════════════════════════════════════════════════
-#  FIXTURE DETAIL PANEL
+#  FIXTURE DETAIL (click-to-expand)
 # ═══════════════════════════════════════════════════════════
 
-def show_fixture_detail(match: dict, tab_type: str) -> None:
-    """Show full detail for a selected fixture."""
-    from data.sportmonks_client import SportmonksClient
-    sm = SportmonksClient()
+def show_fixture_expanded(match: dict, tab_type: str) -> None:
+    """Show full details when a fixture is clicked."""
     fix_id = int(match["id"])
 
-    # Always get full detail
-    with st.spinner("Loading match details..."):
-        detail = sm.get_fixture_detail(fix_id)
-
+    # Match info
+    detail = fetch_fixture_detail(fix_id)
     if detail:
         render_match_detail(detail)
 
-    # TAB-SPECIFIC DATA
     if tab_type == "upcoming":
-        # Show squad
-        render_section_header("Squads", "Season squad for both teams")
-        with st.spinner("Loading squads..."):
-            lineups = sm.get_fixture_lineups(fix_id)
-            if not lineups:
-                squads = sm.get_fixture_squads(fix_id)
-                if squads:
-                    render_squad_list(squads)
-                else:
-                    st.info("Squad data not available yet.")
-            else:
-                render_squad_list(lineups)
+        render_section_header("Squad", "Season squad for both teams")
+        squads = fetch_squads(fix_id)
+        if squads:
+            render_squad_list(squads)
+        else:
+            st.info("Squad data not available yet.")
 
-    elif tab_type == "live":
-        # Show scorecard
-        render_section_header("Live Scorecard", "Ball-by-ball data")
-        with st.spinner("Loading scorecard..."):
-            sc = sm.get_fixture_scorecard(fix_id)
-            if sc:
-                render_scorecard(sc)
-            else:
-                st.info("Scorecard data not available yet.")
+    elif tab_type in ("live", "recent"):
+        render_section_header("Scorecard")
+        sc = fetch_scorecard(fix_id)
+        if sc:
+            render_scorecard(sc)
+        else:
+            st.info("Scorecard not available.")
 
-        # Also show lineup if available
-        lineups = sm.get_fixture_lineups(fix_id)
-        if lineups:
-            render_section_header("Playing XI")
-            render_squad_list(lineups)
-
-    elif tab_type == "recent":
-        # Show full scorecard
-        render_section_header("Full Scorecard")
-        with st.spinner("Loading scorecard..."):
-            sc = sm.get_fixture_scorecard(fix_id)
-            if sc:
-                render_scorecard(sc)
-            else:
-                st.info("Scorecard data not available.")
-
-        # Lineup
-        lineups = sm.get_fixture_lineups(fix_id)
+        lineups = fetch_squads(fix_id)
         if lineups:
             render_section_header("Playing XI")
             render_squad_list(lineups)
@@ -149,16 +134,7 @@ def show_fixture_detail(match: dict, tab_type: str) -> None:
 #  RENDER PREDICTION
 # ═══════════════════════════════════════════════════════════
 
-def render_prediction(prediction: dict, is_demo: bool = False) -> None:
-    if is_demo:
-        st.markdown(f"""
-        <div style="padding:0.5rem 1rem;border-radius:8px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);margin-bottom:1.5rem;text-align:center">
-            <span style="font-family:{FONT_B};font-size:0.8rem;color:{C['acc2']}">
-                ✨ Demo Preview — Run a live prediction for real data
-            </span>
-        </div>
-        """, unsafe_allow_html=True)
-
+def render_prediction(prediction: dict) -> None:
     render_context_card(prediction)
     render_section_header("Top Picks", "AI-recommended selections")
 
@@ -179,16 +155,63 @@ def render_prediction(prediction: dict, is_demo: bool = False) -> None:
     with col3:
         render_value_picks_card(prediction.get("top_value_picks", []))
 
-    render_section_header("Complete Rankings", f"{len(rankings)} players ranked by predicted fantasy points")
+    render_section_header("Complete Rankings", f"{len(rankings)} players ranked")
     render_ranking_table(rankings)
 
     risky = prediction.get("risky_picks", [])
     if risky:
-        render_section_header("Risky Picks", "High variance — proceed with caution")
+        render_section_header("Risky Picks", "High variance")
         render_risky_picks(risky)
 
-    with st.expander("📄 Raw Prediction JSON"):
+    with st.expander("📄 Raw JSON"):
         st.json(prediction)
+
+
+# ═══════════════════════════════════════════════════════════
+#  FIXTURE TAB RENDERER
+# ═══════════════════════════════════════════════════════════
+
+def render_fixtures_tab(fixtures: list, tab_type: str, limit: int = 0, empty_msg: str = "No matches available.") -> None:
+    """Render a list of fixtures with click-to-expand."""
+    if not fixtures:
+        render_no_fixtures(empty_msg)
+        return
+
+    if limit > 0:
+        fixtures = fixtures[:limit]
+
+    section_titles = {
+        "upcoming": ("Upcoming Fixtures", f"{len(fixtures)} matches scheduled"),
+        "live": ("Live Matches", f"{len(fixtures)} in progress"),
+        "recent": ("Recent Results", f"{len(fixtures)} completed"),
+    }
+    title, sub = section_titles.get(tab_type, ("Fixtures", ""))
+    render_section_header(title, sub)
+
+    # Render each fixture as a clickable card
+    for i, m in enumerate(fixtures):
+        render_fixture_card(m, tab_type if tab_type != "recent" else "finished")
+
+        # Click to expand — use a button styled subtly
+        key = f"detail_{tab_type}_{m['id']}_{i}"
+        if st.button(
+            f"📋 View Details — {m['name']}",
+            key=key,
+            use_container_width=True,
+        ):
+            st.session_state[f"selected_{tab_type}"] = m["id"]
+
+    # Show expanded detail for selected fixture
+    selected_id = st.session_state.get(f"selected_{tab_type}")
+    if selected_id:
+        selected = next((m for m in fixtures if m["id"] == str(selected_id)), None)
+        if selected:
+            st.divider()
+            render_section_header(
+                selected["name"],
+                f'{selected.get("matchType", "")} · {selected.get("venue", "")}'
+            )
+            show_fixture_expanded(selected, tab_type)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -198,93 +221,42 @@ def render_prediction(prediction: dict, is_demo: bool = False) -> None:
 def main():
     render_hero()
 
-    gemini_ok = bool(GEMINI_API_KEY and GEMINI_API_KEY != "your_gemini_api_key_here")
     sportmonks_ok = bool(SPORTMONKS_API_KEY)
-
+    gemini_ok = bool(GEMINI_API_KEY and GEMINI_API_KEY != "your_gemini_api_key_here")
     cached = load_cached_predictions()
 
-    # Main tabs
-    tab_upcoming, tab_live, tab_recent, tab_predict, tab_history, tab_demo = st.tabs([
+    # Main tabs (no Demo)
+    tab_upcoming, tab_live, tab_recent, tab_predict, tab_history = st.tabs([
         "📅 Upcoming",
         "🔴 Live",
         "✅ Recent",
         "🔮 AI Predict",
         f"📁 History ({len(cached)})",
-        "✨ Demo",
     ])
 
-    # ─── UPCOMING ───
+    # ─── UPCOMING ─── auto-fetch, limited to 5
     with tab_upcoming:
         if not sportmonks_ok:
             st.warning("Add `SPORTMONKS_API_KEY` to `.env` to see fixtures.")
         else:
-            if st.button("🔄 Refresh Upcoming", key="ref_upcoming", use_container_width=True):
-                with st.spinner("Fetching upcoming fixtures..."):
-                    from data.sportmonks_client import SportmonksClient
-                    sm = SportmonksClient()
-                    st.session_state["upcoming"] = sm.get_upcoming_fixtures()
+            upcoming = fetch_upcoming()
+            render_fixtures_tab(upcoming, "upcoming", limit=5, empty_msg="No upcoming matches found.")
 
-            fixtures = st.session_state.get("upcoming", [])
-            if fixtures:
-                render_section_header("Upcoming Fixtures", f"{len(fixtures)} matches scheduled")
-                for m in fixtures:
-                    render_fixture_card(m, "upcoming")
-
-                # Select a fixture for detail
-                options = {f'{m["name"]} — {m["date"]}': m for m in fixtures}
-                selected = st.selectbox("Select a match for details:", list(options.keys()), key="sel_upcoming")
-                if selected:
-                    show_fixture_detail(options[selected], "upcoming")
-            else:
-                render_no_fixtures("Click Refresh to load upcoming matches")
-
-    # ─── LIVE ───
+    # ─── LIVE ─── auto-fetch
     with tab_live:
         if not sportmonks_ok:
-            st.warning("Add `SPORTMONKS_API_KEY` to `.env` to see live matches.")
+            st.warning("Add `SPORTMONKS_API_KEY` to `.env`.")
         else:
-            if st.button("🔄 Refresh Live", key="ref_live", use_container_width=True):
-                with st.spinner("Checking for live matches..."):
-                    from data.sportmonks_client import SportmonksClient
-                    sm = SportmonksClient()
-                    st.session_state["live"] = sm.get_live_fixtures()
+            live = fetch_live()
+            render_fixtures_tab(live, "live", empty_msg="No live matches right now.")
 
-            fixtures = st.session_state.get("live", [])
-            if fixtures:
-                render_section_header("Live Matches", f"{len(fixtures)} matches in progress")
-                for m in fixtures:
-                    render_fixture_card(m, "live")
-
-                options = {f'{m["name"]} — {m["status"]}': m for m in fixtures}
-                selected = st.selectbox("Select a live match:", list(options.keys()), key="sel_live")
-                if selected:
-                    show_fixture_detail(options[selected], "live")
-            else:
-                render_no_fixtures("No live matches right now. Click Refresh to check.")
-
-    # ─── RECENT ───
+    # ─── RECENT ─── auto-fetch, limited to 10
     with tab_recent:
         if not sportmonks_ok:
-            st.warning("Add `SPORTMONKS_API_KEY` to `.env` to see recent results.")
+            st.warning("Add `SPORTMONKS_API_KEY` to `.env`.")
         else:
-            if st.button("🔄 Refresh Recent", key="ref_recent", use_container_width=True):
-                with st.spinner("Fetching recent results..."):
-                    from data.sportmonks_client import SportmonksClient
-                    sm = SportmonksClient()
-                    st.session_state["recent"] = sm.get_recent_fixtures()
-
-            fixtures = st.session_state.get("recent", [])
-            if fixtures:
-                render_section_header("Recent Results", f"{len(fixtures)} completed matches")
-                for m in fixtures:
-                    render_fixture_card(m, "finished")
-
-                options = {f'{m["name"]} — {m["date"]}': m for m in fixtures}
-                selected = st.selectbox("Select a match for scorecard:", list(options.keys()), key="sel_recent")
-                if selected:
-                    show_fixture_detail(options[selected], "recent")
-            else:
-                render_no_fixtures("Click Refresh to load recent results")
+            recent = fetch_recent()
+            render_fixtures_tab(recent, "recent", limit=10, empty_msg="No recent results.")
 
     # ─── AI PREDICT ───
     with tab_predict:
@@ -294,33 +266,22 @@ def main():
                 missing.append("Gemini API Key")
             if not sportmonks_ok:
                 missing.append("Sportmonks API Key")
-
-            st.markdown(f"""
-            <div style="text-align:center;padding:3rem 2rem;background:{C['card']};border:1px solid {C['bdr']};border-radius:16px;margin:1rem 0">
-                <div style="font-size:2.5rem;margin-bottom:1rem">🔑</div>
-                <div style="font-family:{FONT_H};font-size:1.25rem;font-weight:700;color:{C['t1']};margin-bottom:0.5rem">API Keys Required</div>
-                <div style="font-family:{FONT_B};font-size:0.9rem;color:{C['t3']};max-width:450px;margin:0 auto;line-height:1.7">
-                    Missing: <strong style="color:{C['t1']}">{', '.join(missing)}</strong><br>
-                    Add to <code>.env</code> file. Check <strong>✨ Demo</strong> tab for preview.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.html(
+                f'<div style="text-align:center;padding:3rem 2rem;background:{C["card"]};border:1px solid {C["bdr"]};border-radius:16px;margin:1rem 0">'
+                f'<div style="font-size:2.5rem;margin-bottom:1rem">🔑</div>'
+                f'<div style="font-family:{FONT_H};font-size:1.25rem;font-weight:700;color:{C["t1"]};margin-bottom:0.5rem">API Keys Required</div>'
+                f'<div style="font-family:{FONT_B};font-size:0.9rem;color:{C["t3"]};max-width:450px;margin:0 auto;line-height:1.7">'
+                f'Missing: <strong style="color:{C["t1"]}">{", ".join(missing)}</strong><br>'
+                f'Add to <code>.env</code> file.</div></div>'
+            )
         else:
-            render_section_header("AI Player Rankings", "Select a match for AI-powered prediction")
+            render_section_header("AI Player Rankings", "Select a match for prediction")
 
-            # Load upcoming matches if not already loaded
-            if "upcoming" not in st.session_state:
-                if st.button("📥 Load Matches", key="load_predict", use_container_width=True):
-                    with st.spinner("Fetching matches..."):
-                        from data.sportmonks_client import SportmonksClient
-                        sm = SportmonksClient()
-                        st.session_state["upcoming"] = sm.get_upcoming_fixtures()
-
-            matches = st.session_state.get("upcoming", [])
-            if matches:
+            upcoming = fetch_upcoming()
+            if upcoming:
                 options = {
                     f'{m["name"]} — {m["matchType"]} — {m["date"]}': m
-                    for m in matches
+                    for m in upcoming[:10]
                 }
                 selected = st.selectbox("🏏 Select Match", list(options.keys()), key="sel_predict")
                 selected_match = options[selected]
@@ -335,7 +296,7 @@ def main():
 
                 if st.button("🔮 Predict & Rank Players", type="primary", use_container_width=True):
                     match_id = selected_match["id"]
-                    with st.spinner("🧠 Running 4-agent AI pipeline... This may take 1-2 minutes."):
+                    with st.spinner("🧠 Running AI pipeline... (1-2 minutes)"):
                         try:
                             from orchestrator.pipeline import run_prediction
                             fmt = {"t20": "t20", "t20i": "t20", "odi": "odi", "test": "test"}.get(
@@ -350,7 +311,7 @@ def main():
                         except Exception as e:
                             st.error(f"Pipeline error: {e}")
             else:
-                st.info("Click **Load Matches** to fetch upcoming fixtures.")
+                st.info("No upcoming matches available.")
 
         prediction = st.session_state.get("current_prediction")
         if prediction:
@@ -364,11 +325,7 @@ def main():
             if selected:
                 render_prediction(cached[selected])
         else:
-            render_no_fixtures("No cached predictions yet. Run a live prediction first.")
-
-    # ─── DEMO ───
-    with tab_demo:
-        render_prediction(DEMO_PREDICTION, is_demo=True)
+            render_no_fixtures("No predictions yet. Run a live prediction first.")
 
     render_disclaimer()
     render_footer()
