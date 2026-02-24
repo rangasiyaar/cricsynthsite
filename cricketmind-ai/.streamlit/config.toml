@@ -1,0 +1,18 @@
+# CricketMind AI — Streamlit Cloud Config
+# Theme matches CricSynthesis website design system
+
+[server]
+headless = true
+port = 8501
+enableCORS = false
+enableXsrfProtection = true
+
+[theme]
+primaryColor = "#6366f1"
+backgroundColor = "#0a0a0b"
+secondaryBackgroundColor = "#111113"
+textColor = "#fafafa"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
