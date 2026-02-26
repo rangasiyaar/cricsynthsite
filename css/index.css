@@ -139,11 +139,13 @@ img {
 .nav-logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .logo-image {
     height: 72px;
     width: auto;
+    object-fit: contain;
 }
 
 .nav-links {
@@ -1092,6 +1094,16 @@ img {
 
     .logo-image {
         height: 40px;
+    }
+
+    .mobile-nav {
+        gap: 0.4rem;
+    }
+
+    .mobile-cricveda,
+    .mobile-cta {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.65rem;
     }
 
     /* Hero */
