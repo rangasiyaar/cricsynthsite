@@ -1,0 +1,250 @@
+/* Main Content */
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Tab Bar */
+.tabBar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-faint);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--text-muted);
+}
+
+.tabActive {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  background: var(--error);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+}
+
+/* Tab Content */
+.tabContent {
+  min-height: 300px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Fixture List */
+.fixtureList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* States */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorState {
+  padding: 2rem;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: var(--radius-lg);
+  color: var(--error);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+}
+
+.emptyState {
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-dim);
+}
+
+/* History */
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historyCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.historyCard:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: var(--card-hover);
+}
+
+.historyTitle {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.historyMeta {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.historySummary {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Disclaimer */
+.disclaimer {
+  margin-top: 2.5rem;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.disclaimer p {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin: 0;
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .tabBar {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tabBar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  .emptyState,
+  .loadingState {
+    padding: 2.5rem 1rem;
+  }
+
+  .historyCard {
+    padding: 1rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 0.75rem;
+  }
+
+  .tabBar {
+    margin-bottom: 1rem;
+  }
+
+  .tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .emptyState,
+  .errorState {
+    padding: 2rem 0.75rem;
+    font-size: 0.82rem;
+    border-radius: var(--radius-md);
+  }
+
+  .loadingState {
+    padding: 2rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .historyTitle {
+    font-size: 0.88rem;
+  }
+
+  .disclaimer {
+    margin-top: 1.5rem;
+  }
+
+  .disclaimer p {
+    font-size: 0.65rem;
+  }
+}

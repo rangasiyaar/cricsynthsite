@@ -1,0 +1,217 @@
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 250ms ease;
+    cursor: pointer;
+    animation: fadeIn 0.4s ease;
+}
+
+.card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    background: var(--card-hover);
+    transform: translateY(-1px);
+}
+
+.upcoming {
+    border-left: 3px solid var(--accent);
+}
+
+.live {
+    border-left: 3px solid var(--error);
+}
+
+.finished {
+    border-left: 3px solid var(--accent-secondary);
+}
+
+.cardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.matchType {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(99, 102, 241, 0.08);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+}
+
+.status {
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.statusUpcoming {
+    color: var(--accent);
+}
+
+.statusLive {
+    color: var(--error);
+}
+
+.statusFinished {
+    color: var(--accent-secondary);
+}
+
+.matchName {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.matchMeta {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.scores {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+
+.scoreTeam {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.scoreValue {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-left: 0.5rem;
+}
+
+/* Expanded detail panel */
+.detailPanel {
+    margin-top: 0.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    animation: slideUp 0.3s ease;
+}
+
+.detailTabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.detailTab {
+    padding: 0.6rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-faint);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.detailTab:hover {
+    color: var(--text-muted);
+}
+
+.detailTabActive {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
+}
+
+.sectionTitle {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.noData {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+        border-radius: var(--radius-md);
+    }
+
+    .matchName {
+        font-size: 0.92rem;
+    }
+
+    .matchMeta {
+        font-size: 0.72rem;
+    }
+
+    .detailPanel {
+        padding: 0.75rem;
+    }
+
+    .detailTab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.72rem;
+    }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+    .card {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+
+    .matchName {
+        font-size: 0.85rem;
+    }
+
+    .scores {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detailTabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .detailTabs::-webkit-scrollbar {
+        display: none;
+    }
+}
