@@ -21,7 +21,7 @@ export default function Hero() {
                 </h1>
 
                 <p className={styles.subtitle}>
-                    Multi-agent AI system that predicts and ranks all 22 players before any cricket match. Data-driven. Real-time. Accurate.
+                    Empower your cricket strategy with enterprise-grade AI analytics. Access highly accurate, real-time match predictions and performance rankings.
                 </p>
 
                 <div className={styles.metricsBar}>
