@@ -1127,6 +1127,7 @@ img {
 }
 
 .form-input {
+    width: 100%;
     padding: 0.875rem 1rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--color-border);
@@ -2134,7 +2135,8 @@ img {
     }
 
     .api-window {
-        margin: 0 var(--spacing-sm);
+        margin: 0 auto;
+        width: calc(100% - calc(var(--spacing-sm) * 2));
     }
 
     .api-panels {
