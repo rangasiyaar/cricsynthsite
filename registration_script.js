@@ -177,12 +177,15 @@ function getEmailTemplate(name, product) {
                             </p>
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
                                 <tr>
-                                    <td style="padding: 0 8px;">
-                                        <a href="https://linkedin.com/company/cricsynthesis" style="color: #6366f1; font-size: 13px; text-decoration: none; font-weight: 500;">LinkedIn</a>
+                                    <td style="padding: 0 12px;">
+                                        <a href="https://linkedin.com/company/cricsynthesis" style="display: inline-block; text-decoration: none;">
+                                            <img src="https://img.icons8.com/ios-filled/24/6b7280/linkedin.png" alt="LinkedIn" width="20" height="20" style="display: block; border: none; outline: none;" />
+                                        </a>
                                     </td>
-                                    <td style="color: #4b5263;">•</td>
-                                    <td style="padding: 0 8px;">
-                                        <a href="https://twitter.com/cricsynthesis" style="color: #6366f1; font-size: 13px; text-decoration: none; font-weight: 500;">X (Twitter)</a>
+                                    <td style="padding: 0 12px;">
+                                        <a href="https://twitter.com/cricsynthesis" style="display: inline-block; text-decoration: none;">
+                                            <img src="https://img.icons8.com/ios-filled/24/6b7280/twitterx--v1.png" alt="X (Twitter)" width="20" height="20" style="display: block; border: none; outline: none;" />
+                                        </a>
                                     </td>
                                 </tr>
                             </table>

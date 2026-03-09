@@ -306,7 +306,7 @@
     // ========================================
     //  Google Sheets Web App URL
     // ========================================
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz9eFSovEi_EXsJdjsBNiGoO56DIlXbqBLDMubIUQrPLY5fuqdY3WDfbzxLmBkyufMs/exec';
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxLxYswUwhcZThYQLRCnjBcRLw9EIXmjyXJL5Yz6cN6yFesjvvUu2fScPfXgofVLoDi/exec';
 
     /**
      * Handle form submission
