@@ -41,6 +41,7 @@
         setupSmoothScroll();
         setupNavHighlight();
         setupNavScroll();
+        setupMobileMenu();
         setupScrollReveal();
         setupCounterAnimation();
         setupParticleCanvas();
@@ -65,6 +66,40 @@
                     ticking = false;
                 });
                 ticking = true;
+            }
+        });
+    }
+
+    // ========================================
+    //  Mobile Menu Toggle
+    // ========================================
+    function setupMobileMenu() {
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        if (!menuBtn || !menu) return;
+
+        menuBtn.addEventListener('click', function () {
+            const isOpen = menu.classList.contains('open');
+            menuBtn.classList.toggle('active');
+            menu.classList.toggle('open');
+            menuBtn.setAttribute('aria-expanded', !isOpen);
+        });
+
+        // Close when a link is clicked
+        menu.querySelectorAll('.mobile-menu-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                menu.classList.remove('open');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close on scroll
+        window.addEventListener('scroll', function () {
+            if (menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
             }
         });
     }

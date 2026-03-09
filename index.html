@@ -33,14 +33,22 @@
             <div class="nav-links">
                 <a href="#products" class="nav-link">Products</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="https://cricketmind.streamlit.app" target="_blank" class="nav-link"
-                    title="CricVeda AI Demo">CricVeda Demo</a>
                 <a href="#request-access" class="nav-link nav-cta">Request Invite</a>
             </div>
             <!-- Mobile nav -->
             <div class="mobile-nav">
-                <a href="https://cricketmind.streamlit.app" target="_blank" class="mobile-cricveda">CricVeda Demo</a>
                 <a href="#request-access" class="mobile-cta">Request Invite</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <!-- Mobile menu dropdown -->
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#products" class="mobile-menu-link">Products</a>
+                <a href="#how-it-works" class="mobile-menu-link">How It Works</a>
+                <a href="#request-access" class="mobile-menu-link mobile-menu-cta">Request Invite</a>
             </div>
         </div>
     </nav>
@@ -221,10 +229,10 @@
                             <span class="audience-tag">Fantasy Platforms</span>
                         </span>
                     </div>
-                    <a href="https://cricketmind.streamlit.app" target="_blank" class="product-cta">
-                        <span>Try CricVeda Demo</span>
+                    <a href="#request-access" class="product-cta product-cta--outline">
+                        <span>Request Invite</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
@@ -415,7 +423,7 @@
         </div>
     </section>
 
-    <!-- Social Proof / Testimonials Section -->
+    <!-- Social Proof / Testimonials Section (disabled for now)
     <section class="testimonials" aria-label="Testimonials">
         <div class="section-container">
             <div class="section-header" data-reveal>
@@ -478,7 +486,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Request Access / Registration Section -->
     <section id="request-access" class="register">
