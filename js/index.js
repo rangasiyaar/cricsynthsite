@@ -1,6 +1,6 @@
 /**
- * CricSynthesis Landing Page - Form Handling & Interactions
- * Enterprise-grade JavaScript with form validation and state management
+ * CricSynthesis Landing Page — Production-Grade Interactions
+ * Scroll reveals, animated counters, particle canvas, and form handling
  */
 
 (function () {
@@ -40,17 +40,241 @@
 
         setupSmoothScroll();
         setupNavHighlight();
+        setupNavScroll();
+        setupScrollReveal();
+        setupCounterAnimation();
+        setupParticleCanvas();
     }
 
-    /**
-     * Google Sheets Web App URL
-     * IMPORTANT: Replace this with your actual Google Apps Script deployment URL
-     */
+    // ========================================
+    //  Nav Scroll Shrink
+    // ========================================
+    function setupNavScroll() {
+        const nav = document.getElementById('mainNav');
+        if (!nav) return;
+
+        let ticking = false;
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(function () {
+                    if (window.scrollY > 60) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    }
+
+    // ========================================
+    //  Scroll Reveal (IntersectionObserver)
+    // ========================================
+    function setupScrollReveal() {
+        const revealElements = document.querySelectorAll('[data-reveal]');
+        if (!revealElements.length) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target); // Reveal only once
+                    }
+                });
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -40px 0px'
+            }
+        );
+
+        revealElements.forEach((el) => observer.observe(el));
+    }
+
+    // ========================================
+    //  Animated Number Counters
+    // ========================================
+    function setupCounterAnimation() {
+        const metrics = document.getElementById('heroMetrics');
+        if (!metrics) return;
+
+        const counters = metrics.querySelectorAll('.metric-value[data-count]');
+        let animated = false;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !animated) {
+                        animated = true;
+                        counters.forEach(animateCounter);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        observer.observe(metrics);
+    }
+
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count'), 10);
+        const suffix = element.getAttribute('data-suffix') || '';
+        const prefix = element.getAttribute('data-prefix') || '';
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(eased * target);
+
+            // Format number with commas
+            const formatted = current.toLocaleString();
+            element.textContent = prefix + formatted + suffix;
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = prefix + target.toLocaleString() + suffix;
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    // ========================================
+    //  Particle Canvas Animation
+    // ========================================
+    function setupParticleCanvas() {
+        const canvas = document.getElementById('particleCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId;
+        let width, height;
+
+        // Reduce particles on mobile
+        const isMobile = window.innerWidth < 768;
+        const PARTICLE_COUNT = isMobile ? 30 : 60;
+        const CONNECTION_DISTANCE = isMobile ? 100 : 150;
+
+        function resize() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        }
+
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    size: Math.random() * 2 + 0.5,
+                    opacity: Math.random() * 0.5 + 0.15
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < CONNECTION_DISTANCE) {
+                        const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.12;
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${alpha})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw particles
+            particles.forEach((p) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(129, 140, 248, ${p.opacity})`;
+                ctx.fill();
+            });
+        }
+
+        function update() {
+            particles.forEach((p) => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Wrap around edges
+                if (p.x < -10) p.x = width + 10;
+                if (p.x > width + 10) p.x = -10;
+                if (p.y < -10) p.y = height + 10;
+                if (p.y > height + 10) p.y = -10;
+            });
+        }
+
+        function animate() {
+            update();
+            draw();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Only animate when hero is visible
+        const heroSection = document.querySelector('.hero');
+        const heroObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        if (!animationId) animate();
+                    } else {
+                        if (animationId) {
+                            cancelAnimationFrame(animationId);
+                            animationId = null;
+                        }
+                    }
+                });
+            },
+            { threshold: 0 }
+        );
+
+        resize();
+        createParticles();
+        heroObserver.observe(heroSection);
+
+        // Debounced resize handler
+        let resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                resize();
+                createParticles();
+            }, 250);
+        });
+    }
+
+    // ========================================
+    //  Google Sheets Web App URL
+    // ========================================
     const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzNnnjXv9PULjH5_tL3dfbB2DsLJkVaVzO9EFPg-TFxAR8pumlUxlAE1i8zUTGKlQ/exec';
 
     /**
      * Handle form submission
-     * @param {Event} event - Submit event
      */
     async function handleFormSubmit(event) {
         event.preventDefault();
@@ -58,35 +282,29 @@
         const formData = new FormData(registrationForm);
         const data = Object.fromEntries(formData.entries());
 
-        // Validate form
         if (!validateForm(data)) {
             return;
         }
 
-        // Show loading state
         const submitButton = registrationForm.querySelector('.form-submit');
         const originalText = submitButton.innerHTML;
         submitButton.innerHTML = '<span>Processing...</span>';
         submitButton.disabled = true;
 
         try {
-            // Add source URL to data
             data.source = window.location.href;
 
-            // Send data to Google Sheets
             const response = await fetch(GOOGLE_SHEETS_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Required for Google Apps Script
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
             });
 
-            // Store locally as backup
             storeRegistration(data);
 
-            // Show success message
             registrationForm.classList.add('hidden');
             successMessage.classList.add('active');
 
@@ -94,15 +312,10 @@
 
         } catch (error) {
             console.error('Error submitting registration:', error);
-
-            // Still store locally if API fails
             storeRegistration(data);
-
-            // Show success anyway (data is saved locally)
             registrationForm.classList.add('hidden');
             successMessage.classList.add('active');
         } finally {
-            // Reset button state
             submitButton.innerHTML = originalText;
             submitButton.disabled = false;
         }
@@ -110,13 +323,10 @@
 
     /**
      * Validate form data
-     * @param {Object} data - Form data object
-     * @returns {boolean} - Validation result
      */
     function validateForm(data) {
         let isValid = true;
 
-        // Check name
         if (!data.name || data.name.length < 2) {
             showFieldError('name', 'Please enter a valid name');
             isValid = false;
@@ -124,7 +334,6 @@
             clearFieldError('name');
         }
 
-        // Check email
         if (!data.email || !validationRules.email.pattern.test(data.email)) {
             showFieldError('email', 'Please enter a valid email address');
             isValid = false;
@@ -156,7 +365,6 @@
 
     /**
      * Validate a single field
-     * @param {HTMLElement} input - Input element
      */
     function validateField(input) {
         const name = input.name;
@@ -185,8 +393,6 @@
 
     /**
      * Show field error
-     * @param {string} fieldName - Field name
-     * @param {string} message - Error message
      */
     function showFieldError(fieldName, message) {
         const input = document.getElementById(fieldName);
@@ -195,23 +401,20 @@
         input.classList.add('error');
         input.style.borderColor = '#ef4444';
 
-        // Remove existing error message
         const existingError = input.parentElement.querySelector('.error-message');
         if (existingError) {
             existingError.remove();
         }
 
-        // Add error message
         const errorElement = document.createElement('span');
         errorElement.className = 'error-message';
-        errorElement.style.cssText = 'color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem;';
+        errorElement.style.cssText = 'color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; display: block;';
         errorElement.textContent = message;
         input.parentElement.appendChild(errorElement);
     }
 
     /**
      * Clear field error
-     * @param {string} fieldName - Field name
      */
     function clearFieldError(fieldName) {
         const input = document.getElementById(fieldName);
@@ -227,9 +430,7 @@
     }
 
     /**
-     * Store registration in localStorage (temporary solution)
-     * Replace with actual API endpoint in production
-     * @param {Object} data - Registration data
+     * Store registration in localStorage (backup)
      */
     function storeRegistration(data) {
         const registrations = JSON.parse(localStorage.getItem('cricsynthesis_registrations') || '[]');
@@ -300,9 +501,6 @@
 
     /**
      * Throttle function for performance
-     * @param {Function} func - Function to throttle
-     * @param {number} limit - Time limit in ms
-     * @returns {Function} - Throttled function
      */
     function throttle(func, limit) {
         let inThrottle;
