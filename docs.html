@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Document Center | CricSynthesis — Internal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ─── RESET & BASE ─── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --bg: #050505;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #0f0f0f;
+            --bg-card-hover: #141414;
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --text-primary: #f5f5f5;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --accent: #6ee7b7;
+            --accent-dim: rgba(110, 231, 183, 0.08);
+            --accent-border: rgba(110, 231, 183, 0.2);
+            --cricveda-accent: #6ee7b7;
+            --matchsynth-accent: #93c5fd;
+            --graphsynth-accent: #c4b5fd;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ─── NOISE OVERLAY ─── */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ─── NAVIGATION ─── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo { display: flex; align-items: center; text-decoration: none; }
+        .logo-image { height: 32px; width: auto; }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--text-primary); }
+        .nav-link.active { color: var(--accent); }
+        .nav-cta {
+            background: var(--text-primary);
+            color: var(--bg) !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .nav-cta:hover { opacity: 0.9; }
+
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            padding: 120px 0 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(110, 231, 183, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            margin-bottom: 24px;
+        }
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f59e0b;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .badge-text {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        .page-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 80px;
+        }
+
+        /* ─── PRODUCT TABS ─── */
+        .product-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+        .product-tab {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .product-tab:hover { color: var(--text-secondary); }
+        .product-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+        .product-tab .tab-count {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+        }
+        .product-tab.active .tab-count {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        /* ─── PRODUCT PANELS ─── */
+        .product-panel { display: none; }
+        .product-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── PRODUCT HEADER ─── */
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .panel-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .panel-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        .panel-icon--cricveda { background: rgba(110, 231, 183, 0.1); }
+        .panel-icon--cricveda svg { stroke: var(--cricveda-accent); }
+        .panel-icon--matchsynth { background: rgba(147, 197, 253, 0.1); }
+        .panel-icon--matchsynth svg { stroke: var(--matchsynth-accent); }
+        .panel-icon--graphsynth { background: rgba(196, 181, 253, 0.1); }
+        .panel-icon--graphsynth svg { stroke: var(--graphsynth-accent); }
+        .panel-info { flex: 1; }
+        .panel-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .panel-tagline {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .panel-doc-count {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        /* ─── DOCUMENT TABLE ─── */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .doc-table thead th {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 12px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .doc-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+        .doc-table tbody tr:last-child { border-bottom: none; }
+        .doc-table tbody tr:hover { background: var(--bg-card); }
+        .doc-table td {
+            padding: 18px 20px;
+            vertical-align: middle;
+        }
+        .doc-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .doc-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+        }
+        .doc-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+        .doc-title-group { display: flex; flex-direction: column; gap: 2px; }
+        .doc-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .doc-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .doc-author {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .doc-date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .doc-open-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--accent-border);
+            background: var(--accent-dim);
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .doc-open-link:hover {
+            background: rgba(110, 231, 183, 0.15);
+            border-color: rgba(110, 231, 183, 0.4);
+        }
+        .doc-open-link svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ─── DOC NUMBER BADGE ─── */
+        .doc-num-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+        }
+        .empty-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+        .empty-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 1.5;
+        }
+        .empty-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .empty-description {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+            padding: 48px 0 32px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-brand { max-width: 280px; }
+        .footer-logo { height: 28px; margin-bottom: 12px; }
+        .footer-tagline { font-size: 13px; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 64px; flex-wrap: wrap; }
+        .footer-column { display: flex; flex-direction: column; gap: 10px; }
+        .footer-heading {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+        .footer-link {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-link:hover { color: var(--text-primary); }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-copyright {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .footer-social { display: flex; gap: 16px; }
+        .social-link {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-hover);
+        }
+        .social-link svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--text-secondary);
+        }
+
+        /* ─── MOBILE RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header { padding: 100px 0 32px; }
+            .page-title { font-size: 1.8rem; }
+            .product-tabs { overflow-x: auto; scrollbar-width: none; gap: 4px; }
+            .product-tabs::-webkit-scrollbar { display: none; }
+            .product-tab { font-size: 13px; padding: 10px 14px; white-space: nowrap; }
+            .panel-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .doc-table thead { display: none; }
+            .doc-table tbody tr {
+                display: flex;
+                flex-direction: column;
+                padding: 16px 0;
+                gap: 10px;
+            }
+            .doc-table td { padding: 4px 16px; }
+            .doc-table td:nth-child(4) { padding-top: 8px; }
+            .footer-main { flex-direction: column; }
+            .footer-links { gap: 32px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Noise Grain Overlay -->
+    <div class="noise-overlay" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/logo New.png" alt="CricSynthesis" class="logo-image">
+            </a>
+            <div class="nav-links">
+                <a href="index.html#products" class="nav-link">Products</a>
+                <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+                <a href="docs.html" class="nav-link active">Docs</a>
+                <a href="index.html#request-access" class="nav-link nav-cta">Request Invite</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="header-container">
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                <span class="badge-text">Internal — Founders & Developers</span>
+            </div>
+            <h1 class="page-title">Document Center</h1>
+            <p class="page-description">
+                Central repository for product strategy documents, research, and technical documentation across all CricSynthesis products.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Product Tabs -->
+        <div class="product-tabs" id="productTabs">
+            <button class="product-tab active" data-product="cricveda" onclick="switchProduct('cricveda')">
+                CricVeda
+                <span class="tab-count">4</span>
+            </button>
+            <button class="product-tab" data-product="matchsynth" onclick="switchProduct('matchsynth')">
+                MatchSynth
+                <span class="tab-count">0</span>
+            </button>
+            <button class="product-tab" data-product="graphsynth" onclick="switchProduct('graphsynth')">
+                GraphSynth
+                <span class="tab-count">0</span>
+            </button>
+        </div>
+
+        <!-- CricVeda Panel -->
+        <div class="product-panel active" id="panel-cricveda">
+            <div class="panel-header">
+                <div class="panel-icon panel-icon--cricveda">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                        <path d="M3 3v18h18" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M7 16l4-4 4 4 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="panel-info">
+                    <div class="panel-name">CricVeda</div>
+                    <div class="panel-tagline">Fantasy Cricket Intelligence API — Strategy & Research Documents</div>
+                </div>
+                <div class="panel-doc-count">4 documents</div>
+            </div>
+
+            <table class="doc-table" id="cricvedaDocs">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Document</th>
+                        <th style="width: 20%;">Author</th>
+                        <th style="width: 18%;">Date Uploaded</th>
+                        <th style="width: 17%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="window.open('docs/cricveda/cricveda-product-vision-doc 1.html', '_blank')">
+                        <td>
+                            <div class="doc-name-cell">
+                                <div class="doc-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-title-group">
+                                    <span class="doc-title">Product Vision Report</span>
+                                    <span class="doc-subtitle"><span class="doc-num-badge">DOC #01</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="doc-author">Saurav Kumar</span></td>
+                        <td><span class="doc-date">Feb 2026</span></td>
+                        <td>
+                            <a href="docs/cricveda/cricveda-product-vision-doc 1.html" target="_blank" class="doc-open-link" onclick="event.stopPropagation()">
+                                Open
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr onclick="window.open('docs/cricveda/cricveda-problem-statement-doc 4.html', '_blank')">
+                        <td>
+                            <div class="doc-name-cell">
+                                <div class="doc-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-title-group">
+                                    <span class="doc-title">Problem Statement</span>
+                                    <span class="doc-subtitle"><span class="doc-num-badge">DOC #02</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="doc-author">Saurav Kumar</span></td>
+                        <td><span class="doc-date">Feb 2026</span></td>
+                        <td>
+                            <a href="docs/cricveda/cricveda-problem-statement-doc 4.html" target="_blank" class="doc-open-link" onclick="event.stopPropagation()">
+                                Open
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr onclick="window.open('docs/cricveda/cricveda-competitive-analysis-doc 3.html', '_blank')">
+                        <td>
+                            <div class="doc-name-cell">
+                                <div class="doc-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-title-group">
+                                    <span class="doc-title">Competitive Analysis</span>
+                                    <span class="doc-subtitle"><span class="doc-num-badge">DOC #03</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="doc-author">Saurav Kumar</span></td>
+                        <td><span class="doc-date">Feb 2026</span></td>
+                        <td>
+                            <a href="docs/cricveda/cricveda-competitive-analysis-doc 3.html" target="_blank" class="doc-open-link" onclick="event.stopPropagation()">
+                                Open
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr onclick="window.open('docs/cricveda/cricveda-problem-statement-doc 2.html', '_blank')">
+                        <td>
+                            <div class="doc-name-cell">
+                                <div class="doc-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-title-group">
+                                    <span class="doc-title">Target User Personas</span>
+                                    <span class="doc-subtitle"><span class="doc-num-badge">DOC #04</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="doc-author">Saurav Kumar</span></td>
+                        <td><span class="doc-date">Feb 2026</span></td>
+                        <td>
+                            <a href="docs/cricveda/cricveda-problem-statement-doc 2.html" target="_blank" class="doc-open-link" onclick="event.stopPropagation()">
+                                Open
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- MatchSynth Panel -->
+        <div class="product-panel" id="panel-matchsynth">
+            <div class="panel-header">
+                <div class="panel-icon panel-icon--matchsynth">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="panel-info">
+                    <div class="panel-name">MatchSynth</div>
+                    <div class="panel-tagline">Match Simulation Engine — Strategy & Research Documents</div>
+                </div>
+                <div class="panel-doc-count">0 documents</div>
+            </div>
+
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                </div>
+                <div class="empty-title">No documents uploaded yet</div>
+                <p class="empty-description">MatchSynth documents will appear here once they are uploaded by the team.</p>
+            </div>
+        </div>
+
+        <!-- GraphSynth Panel -->
+        <div class="product-panel" id="panel-graphsynth">
+            <div class="panel-header">
+                <div class="panel-icon panel-icon--graphsynth">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 21V9" />
+                    </svg>
+                </div>
+                <div class="panel-info">
+                    <div class="panel-name">GraphSynth</div>
+                    <div class="panel-tagline">Broadcast-Grade Visualizations — Strategy & Research Documents</div>
+                </div>
+                <div class="panel-doc-count">0 documents</div>
+            </div>
+
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                </div>
+                <div class="empty-title">No documents uploaded yet</div>
+                <p class="empty-description">GraphSynth documents will appear here once they are uploaded by the team.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="assets/logo New.png" alt="CricSynthesis" class="footer-logo">
+                    <p class="footer-tagline">Cricket Intelligence APIs</p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Products</h4>
+                        <a href="index.html#products" class="footer-link">CricVeda</a>
+                        <a href="index.html#products" class="footer-link">MatchSynth</a>
+                        <a href="index.html#products" class="footer-link">GraphSynth</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Company</h4>
+                        <a href="#" class="footer-link">About</a>
+                        <a href="#" class="footer-link">Careers</a>
+                        <a href="#" class="footer-link">Contact</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="footer-heading">Resources</h4>
+                        <a href="docs.html" class="footer-link">Document Center</a>
+                        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                        <a href="terms.html" class="footer-link">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2026 CricSynthesis. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function switchProduct(productId) {
+            // Update tabs
+            document.querySelectorAll('.product-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.product === productId);
+            });
+
+            // Update panels
+            document.querySelectorAll('.product-panel').forEach(panel => {
+                panel.classList.toggle('active', panel.id === 'panel-' + productId);
+            });
+        }
+    </script>
+</body>
+
+</html>
