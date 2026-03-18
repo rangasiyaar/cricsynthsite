@@ -500,6 +500,51 @@
             fill: var(--text-secondary);
         }
 
+        /* ─── COLLAPSIBLE CATEGORY ─── */
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            user-select: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .category-header:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .category-chevron {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+        }
+        .category-chevron svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+        }
+        .category-header.collapsed .category-chevron {
+            transform: rotate(-90deg);
+        }
+        .category-content {
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            max-height: 2000px;
+            opacity: 1;
+        }
+        .category-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
         /* ─── MOBILE RESPONSIVE ─── */
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -564,7 +609,7 @@
         <div class="product-tabs" id="productTabs">
             <button class="product-tab active" data-product="cricveda" onclick="switchProduct('cricveda')">
                 CricVeda
-                <span class="tab-count">4</span>
+                <span class="tab-count">5</span>
             </button>
             <button class="product-tab" data-product="matchsynth" onclick="switchProduct('matchsynth')">
                 MatchSynth
@@ -589,15 +634,19 @@
                     <div class="panel-name">CricVeda</div>
                     <div class="panel-tagline">Fantasy Cricket Intelligence API — Strategy & Research Documents</div>
                 </div>
-                <div class="panel-doc-count">4 documents</div>
+                <div class="panel-doc-count">5 documents</div>
             </div>
 
             <!-- Category: Vision & Ideation -->
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+            <div class="category-header" onclick="toggleCategory(this)">
+                <span class="category-chevron">
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
                 <div style="width:4px; height:20px; border-radius:2px; background:var(--cricveda-accent);"></div>
                 <span style="font-family:var(--font-mono); font-size:11px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.08em;">Vision & Ideation</span>
-                <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">— 4 documents</span>
+                <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">— 5 documents</span>
             </div>
+            <div class="category-content">
 
             <table class="doc-table" id="cricvedaDocs">
                 <thead>
@@ -693,8 +742,30 @@
                             </a>
                         </td>
                     </tr>
+                    <tr onclick="window.open('docs/cricveda/cricveda-market-sizing-doc 5.html', '_blank')">
+                        <td>
+                            <div class="doc-name-cell">
+                                <div class="doc-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                </div>
+                                <div class="doc-title-group">
+                                    <span class="doc-title">Market Sizing</span>
+                                    <span class="doc-subtitle"><span class="doc-num-badge">DOC #05</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="doc-author">Saurav Kumar</span></td>
+                        <td><span class="doc-date">Mar 2026</span></td>
+                        <td>
+                            <a href="docs/cricveda/cricveda-market-sizing-doc 5.html" target="_blank" class="doc-open-link" onclick="event.stopPropagation()">
+                                Open
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+            </div><!-- /.category-content -->
         </div>
 
         <!-- MatchSynth Panel -->
@@ -809,6 +880,14 @@
             document.querySelectorAll('.product-panel').forEach(panel => {
                 panel.classList.toggle('active', panel.id === 'panel-' + productId);
             });
+        }
+
+        function toggleCategory(headerEl) {
+            headerEl.classList.toggle('collapsed');
+            const content = headerEl.nextElementSibling;
+            if (content && content.classList.contains('category-content')) {
+                content.classList.toggle('collapsed');
+            }
         }
     </script>
 </body>
