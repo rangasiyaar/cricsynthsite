@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CricVeda — Document #03: Competitive Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #0b0f0e;
+  --bg2:        #111917;
+  --bg3:        #162018;
+  --card:       #141c17;
+  --border:     #1f2f24;
+  --accent:     #2deb7a;
+  --accent2:    #1aaa57;
+  --accent-dim: #1a3d27;
+  --accent-glow:rgba(45,235,122,0.12);
+  --gold:       #f0c040;
+  --gold-dim:   #3a2e0a;
+  --red:        #ff5252;
+  --red-dim:    #2e1010;
+  --orange:     #ff8c42;
+  --blue:       #5b9cf6;
+  --blue-dim:   #0e1e3a;
+  --purple:     #b06cf5;
+  --purple-dim: #1e0e3a;
+  --text:       #e8f0ea;
+  --text2:      #a0b8a6;
+  --text3:      #637869;
+  --display:   'DM Serif Display', serif;
+  --mono:      'IBM Plex Mono', monospace;
+  --body:      'Figtree', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.7;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.report-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:60px 0 48px;position:relative;overflow:hidden;}
+.report-header::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(91,156,246,0.06) 0%,transparent 70%);pointer-events:none;}
+.report-header .inner{max-width:960px;margin:0 auto;padding:0 40px;}
+.doc-meta{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.doc-meta span{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+.doc-meta .tag{background:var(--accent-dim);color:var(--accent);padding:2px 8px;border-radius:3px;font-size:10px;font-weight:600;}
+.doc-meta .doc-num{font-family:var(--mono);font-size:10px;background:var(--blue-dim);color:var(--blue);padding:2px 8px;border-radius:3px;font-weight:600;}
+.report-header h1{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.1;color:var(--text);letter-spacing:-.02em;}
+.report-header h1 em{color:var(--accent);font-style:italic;}
+.report-header .subtitle{margin-top:14px;font-size:15px;color:var(--text2);max-width:620px;font-weight:300;}
+
+/* ── NAV ── */
+.toc-bar{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.toc-bar .inner{max-width:960px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none;}
+.toc-bar .inner::-webkit-scrollbar{display:none;}
+.toc-bar a{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);text-decoration:none;padding:14px 13px;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;flex-shrink:0;}
+.toc-bar a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* ── LAYOUT ── */
+.content{max-width:960px;margin:0 auto;padding:0 40px 80px;}
+section{padding:64px 0 0;animation:fadeUp .5s ease both;}
+.section-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:10px;}
+h2{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:-.02em;color:var(--text);line-height:1.2;margin-bottom:28px;}
+p{color:var(--text2);margin-bottom:16px;max-width:700px;}
+
+/* ── EXEC BOX ── */
+.exec-box{background:var(--bg3);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:8px;padding:28px 32px;margin:24px 0 32px;}
+.exec-box p{color:var(--text2);font-size:14.5px;line-height:1.7;max-width:100%;margin:0;}
+.exec-box p+p{margin-top:10px;}
+.exec-box strong{color:var(--text);}
+.exec-box ul{list-style:none;padding:0;margin-top:12px;}
+.exec-box ul li{font-size:13.5px;color:var(--text2);padding:3px 0;display:flex;gap:8px;line-height:1.5;}
+.exec-box ul li::before{content:'›';color:var(--accent2);font-weight:700;flex-shrink:0;}
+
+/* ── LANDSCAPE QUADRANT ── */
+.quadrant-wrap{margin:24px 0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;overflow:hidden;}
+.quadrant-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);margin-bottom:20px;}
+.quadrant{position:relative;width:100%;padding-bottom:72%;background:var(--bg2);border-radius:8px;overflow:hidden;}
+.q-axis-h{position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border);}
+.q-axis-v{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border);}
+.q-label{position:absolute;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);}
+.q-label.top-left{top:8px;left:12px;}
+.q-label.top-right{top:8px;right:12px;}
+.q-label.bot-left{bottom:8px;left:12px;}
+.q-label.bot-right{bottom:8px;right:12px;}
+.q-axis-label{position:absolute;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);}
+.q-axis-label.x-left{top:52%;left:8px;}
+.q-axis-label.x-right{top:52%;right:8px;}
+.q-axis-label.y-top{left:52%;top:6px;}
+.q-axis-label.y-bot{left:52%;bottom:6px;}
+.q-dot{position:absolute;transform:translate(-50%,-50%);}
+.q-dot-inner{width:10px;height:10px;border-radius:50%;border:2px solid var(--bg);}
+.q-dot-label{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text2);white-space:nowrap;margin-top:3px;text-align:center;}
+.q-dot.highlight .q-dot-inner{background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.q-dot.highlight .q-dot-label{color:var(--accent);}
+.q-dot.dim .q-dot-inner{background:var(--text3);}
+.q-gap-box{position:absolute;border:1.5px dashed var(--accent);border-radius:6px;background:rgba(45,235,122,0.04);}
+.q-gap-label{position:absolute;font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;}
+
+/* ── CATEGORY OVERVIEW TABLE ── */
+.cat-table-wrap{overflow-x:auto;margin:20px 0;border-radius:10px;border:1px solid var(--border);}
+.cat-table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px;}
+.cat-table thead tr{background:var(--bg3);}
+.cat-table thead th{padding:13px 16px;text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);border-bottom:1px solid var(--border);}
+.cat-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+.cat-table tbody tr:last-child{border-bottom:none;}
+.cat-table tbody tr:hover{background:var(--bg3);}
+.cat-table td{padding:12px 16px;color:var(--text2);vertical-align:middle;}
+.cat-table td:first-child{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:12px;width:36px;}
+.cat-table td:nth-child(2){color:var(--text);font-weight:600;}
+.cat-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:12px;}
+.badge-enterprise{background:rgba(255,82,82,.14);color:var(--red);}
+.badge-stats{background:rgba(91,156,246,.14);color:var(--blue);}
+.badge-api{background:rgba(240,192,64,.13);color:var(--gold);}
+.badge-open{background:rgba(45,235,122,.12);color:var(--accent);}
+.badge-tips{background:rgba(255,140,66,.13);color:var(--orange);}
+.badge-fantasy{background:rgba(176,108,245,.13);color:var(--purple);}
+
+/* ── COMPETITOR CARDS ── */
+.competitor-block{margin:32px 0 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.comp-header{padding:18px 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.comp-name{font-family:var(--display);font-size:1.2rem;color:var(--text);font-style:italic;}
+.comp-cat-tag{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 9px;border-radius:12px;}
+.threat-badge{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 9px;border-radius:12px;margin-left:auto;}
+.threat-none   {background:rgba(45,235,122,.12);color:var(--accent);}
+.threat-low    {background:rgba(45,235,122,.12);color:var(--accent);}
+.threat-lowmed {background:rgba(240,192,64,.12);color:var(--gold);}
+.threat-medium {background:rgba(255,140,66,.12);color:var(--orange);}
+.threat-high   {background:rgba(255,82,82,.12);color:var(--red);}
+
+.comp-body{background:var(--card);padding:20px 24px;}
+.comp-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.comp-col .cc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.comp-col.good .cc-title{color:var(--accent);}
+.comp-col.bad  .cc-title{color:var(--red);}
+.comp-col ul{list-style:none;padding:0;}
+.comp-col ul li{font-size:12.5px;color:var(--text2);padding:3px 0;display:flex;gap:7px;line-height:1.4;}
+.comp-col.good ul li::before{content:'✅';font-size:10px;flex-shrink:0;margin-top:2px;}
+.comp-col.bad  ul li::before{content:'❌';font-size:10px;flex-shrink:0;margin-top:2px;}
+
+.vs-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.vs-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+.vs-card .vc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.vs-card.adv .vc-title{color:var(--accent);}
+.vs-card.dis .vc-title{color:var(--text3);}
+.vs-card ul{list-style:none;padding:0;}
+.vs-card ul li{font-size:12px;color:var(--text2);padding:2.5px 0;display:flex;gap:6px;line-height:1.4;}
+.vs-card.adv ul li::before{content:'→';color:var(--accent2);font-size:10px;flex-shrink:0;margin-top:2px;}
+.vs-card.dis ul li::before{content:'→';color:var(--text3);font-size:10px;flex-shrink:0;margin-top:2px;}
+
+.threat-note{margin-top:14px;padding:12px 16px;border-radius:7px;font-size:12.5px;line-height:1.55;}
+.threat-note.low   {background:rgba(45,235,122,.08);color:var(--text2);}
+.threat-note.med   {background:rgba(255,140,66,.07);color:var(--text2);}
+.threat-note.high  {background:rgba(255,82,82,.08);color:var(--text2);}
+.threat-note strong{color:var(--accent);}
+.threat-note.med strong{color:var(--orange);}
+.threat-note.high strong{color:var(--red);}
+
+.insight-box{margin-top:14px;background:var(--accent-dim);border-radius:7px;padding:12px 16px;font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.55;}
+
+/* ── FEATURE MATRIX TABLE ── */
+.matrix-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);}
+.matrix-table{border-collapse:collapse;font-size:12px;min-width:700px;width:100%;}
+.matrix-table thead tr{background:var(--bg3);}
+.matrix-table thead th{padding:11px 12px;text-align:center;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border);border-right:1px solid var(--border);white-space:nowrap;}
+.matrix-table thead th:first-child{text-align:left;min-width:170px;}
+.matrix-table thead th.cv-col{color:var(--accent);}
+.matrix-table tbody tr{border-bottom:1px solid var(--border);}
+.matrix-table tbody tr:last-child{border-bottom:none;}
+.matrix-table tbody tr:hover{background:var(--bg3);}
+.matrix-table tbody td{padding:9px 12px;border-right:1px solid var(--border);text-align:center;color:var(--text3);font-size:13px;}
+.matrix-table tbody td:first-child{text-align:left;font-size:12px;color:var(--text2);font-weight:500;}
+.matrix-table tbody td.cv-col{background:rgba(45,235,122,.04);}
+.matrix-table tbody tr.group-header td{background:var(--bg3);font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:7px 12px;}
+
+/* ── COMPETITIVE ADVANTAGE TABLE ── */
+.adv-table-wrap{overflow-x:auto;margin:24px 0;border-radius:10px;border:1px solid var(--border);}
+.adv-table{width:100%;border-collapse:collapse;font-size:13px;}
+.adv-table thead tr{background:var(--bg3);}
+.adv-table thead th{padding:13px 16px;text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);border-bottom:1px solid var(--border);}
+.adv-table thead th:last-child{color:var(--accent);}
+.adv-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+.adv-table tbody tr:last-child{border-bottom:none;}
+.adv-table tbody tr:hover{background:var(--bg3);}
+.adv-table td{padding:13px 16px;vertical-align:top;}
+.adv-table td:first-child{color:var(--text);font-weight:600;font-size:13px;min-width:180px;}
+.adv-table td:last-child{color:var(--text2);font-size:13px;}
+.pos-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:12px;margin-bottom:4px;}
+.pos-unique{background:rgba(45,235,122,.15);color:var(--accent);}
+.pos-strong{background:rgba(91,156,246,.14);color:var(--blue);}
+.pos-moderate{background:rgba(240,192,64,.13);color:var(--gold);}
+.pos-weak{background:rgba(255,82,82,.12);color:var(--red);}
+
+/* ── THREATS & OPPORTUNITIES ── */
+.to-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:24px 0;}
+.threat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;}
+.threat-card .tc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.threat-card .tc-num{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;}
+.threat-card .tc-title{font-weight:700;font-size:13px;color:var(--text);line-height:1.3;}
+.threat-card .tc-prob{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:10px;margin-left:auto;flex-shrink:0;}
+.prob-vlow  {background:rgba(45,235,122,.12);color:var(--accent);}
+.prob-low   {background:rgba(45,235,122,.12);color:var(--accent);}
+.prob-med   {background:rgba(240,192,64,.12);color:var(--gold);}
+.prob-medhigh{background:rgba(255,140,66,.12);color:var(--orange);}
+.prob-high  {background:rgba(255,82,82,.12);color:var(--red);}
+.threat-card p{font-size:12.5px;color:var(--text2);max-width:100%;margin:0 0 8px;line-height:1.55;}
+.threat-card .tc-mitigation{font-family:var(--mono);font-size:10.5px;color:var(--accent2);background:var(--accent-dim);padding:8px 10px;border-radius:5px;line-height:1.5;}
+
+.opp-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:18px 22px;}
+.opp-card .oc-title{font-weight:700;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.opp-card p{font-size:12.5px;color:var(--text2);max-width:100%;margin:0;line-height:1.55;}
+.opp-card ul{list-style:none;padding:0;margin-top:8px;}
+.opp-card ul li{font-size:12.5px;color:var(--text2);padding:2.5px 0;display:flex;gap:7px;line-height:1.4;}
+.opp-card ul li::before{content:'→';color:var(--accent2);font-size:11px;flex-shrink:0;margin-top:2px;}
+
+/* ── STRATEGY FLOWCHART ── */
+.strategy-flow{margin:24px 0;display:flex;flex-direction:column;gap:0;align-items:stretch;}
+.strategy-row{display:grid;grid-template-columns:180px 1fr;gap:0;align-items:stretch;}
+.strategy-row+.strategy-row{border-top:1px solid var(--border);}
+.s-num{background:var(--bg3);padding:20px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border);}
+.s-num span{font-family:var(--display);font-size:2rem;color:var(--accent-dim);font-style:italic;}
+.s-content{padding:20px 24px;background:var(--card);}
+.s-title{font-weight:700;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.s-content p{font-size:13px;color:var(--text2);max-width:100%;margin:0;line-height:1.6;}
+
+/* ── SUMMARY BOX ── */
+.summary-box{margin:48px 0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:40px;position:relative;overflow:hidden;}
+.summary-box::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(91,156,246,.05) 0%,transparent 70%);pointer-events:none;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;position:relative;}
+.sumcol .sc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sumcol ul{list-style:none;padding:0;}
+.sumcol ul li{font-size:13px;color:var(--text2);padding:4px 0;display:flex;gap:7px;line-height:1.4;}
+.sumcol ul li::before{content:'·';color:var(--accent);}
+.sumcol p{font-size:13px;color:var(--text2);max-width:100%;}
+.sumcol p strong{color:var(--accent);}
+.highlight-pill{display:inline-block;margin-top:16px;background:var(--accent-dim);padding:10px 14px;border-radius:7px;font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.5;width:100%;}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:24px 40px;max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+footer span{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+  body{font-size:14px;}
+  .report-header{padding:32px 0 28px;}
+  .report-header .inner{padding:0 16px;}
+  .doc-meta{gap:8px;}
+  .report-header h1{font-size:1.85rem;}
+  .report-header .subtitle{font-size:13px;}
+  .toc-bar .inner{padding:0 12px;}
+  .toc-bar a{padding:11px 9px;font-size:10px;}
+  .content{padding:0 16px 56px;}
+  section{padding:44px 0 0;}
+  h2{font-size:1.45rem;margin-bottom:18px;}
+  .exec-box{padding:18px;}
+  .quadrant-wrap{padding:16px;}
+  .quadrant{padding-bottom:90%;}
+  .q-dot-label{font-size:8px;}
+  .q-dot-inner{width:8px;height:8px;}
+  .cat-table-wrap{margin:14px -4px;}
+  .competitor-block{margin:20px 0 0;}
+  .comp-header{padding:14px 16px;gap:8px;}
+  .comp-name{font-size:1.05rem;}
+  .threat-badge{margin-left:0;}
+  .comp-body{padding:14px 16px;}
+  .comp-cols{grid-template-columns:1fr;gap:10px;}
+  .vs-row{grid-template-columns:1fr;gap:10px;}
+  .matrix-wrap{margin:14px -4px;}
+  .adv-table-wrap{margin:14px -4px;}
+  .adv-table td{padding:10px 12px;}
+  .adv-table td:first-child{min-width:120px;}
+  .to-grid{grid-template-columns:1fr;gap:10px;}
+  .strategy-flow{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .strategy-row{grid-template-columns:1fr;}
+  .s-num{padding:14px 16px;border-right:none;border-bottom:1px solid var(--border);justify-content:flex-start;}
+  .s-num span{font-size:1.4rem;}
+  .s-content{padding:14px 16px;}
+  .summary-box{padding:24px 16px;}
+  .summary-grid{grid-template-columns:1fr;gap:16px;}
+  footer{padding:20px 16px;flex-direction:column;gap:6px;text-align:center;}
+}
+@media(min-width:481px) and (max-width:768px){
+  .report-header{padding:40px 0 32px;}
+  .report-header .inner{padding:0 24px;}
+  .content{padding:0 24px 64px;}
+  .toc-bar .inner{padding:0 20px;}
+  .comp-cols{grid-template-columns:1fr;}
+  .vs-row{grid-template-columns:1fr;}
+  .strategy-row{grid-template-columns:120px 1fr;}
+  .summary-grid{grid-template-columns:1fr 1fr;}
+  footer{padding:20px 24px;}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .content{padding:0 32px 72px;}
+  .report-header .inner{padding:0 32px;}
+  .toc-bar .inner{padding:0 32px;}
+  footer{padding:22px 32px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="inner">
+    <div class="doc-meta">
+      <span class="doc-num">Document #03</span>
+      <span>Version 1.0</span>
+      <span>Feb 2026</span>
+      <span>Author: Saurav Kumar</span>
+      <span class="tag">Final</span>
+    </div>
+    <h1><em>CricVeda</em> — Competitive Analysis</h1>
+    <p class="subtitle">A systematic analysis of the competitive landscape across six categories — where CricVeda wins, where it's weak, and the strategic opportunity it occupies.</p>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="inner">
+    <a href="#summary">Summary</a>
+    <a href="#landscape">Landscape</a>
+    <a href="#categories">Categories</a>
+    <a href="#enterprise">Enterprise</a>
+    <a href="#statsites">Stat Sites</a>
+    <a href="#apis">Data APIs</a>
+    <a href="#opendata">Open Data</a>
+    <a href="#tipsvc">Tip Services</a>
+    <a href="#fantasytools">Fantasy Tools</a>
+    <a href="#platforms">Platforms</a>
+    <a href="#matrix">Feature Matrix</a>
+    <a href="#advantage">Advantage</a>
+    <a href="#threats">Threats</a>
+    <a href="#opportunities">Opportunities</a>
+    <a href="#strategy">Strategy</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- SECTION 1: EXEC SUMMARY -->
+<section id="summary">
+  <div class="section-label">Section 01</div>
+  <h2>Executive Summary</h2>
+  <div class="exec-box">
+    <p>CricVeda operates at the intersection of three existing markets: <strong>cricket data & statistics providers</strong>, <strong>fantasy cricket tools & tip services</strong>, and <strong>sports analytics API products</strong>.</p>
+    <p><strong>No single competitor does what CricVeda proposes:</strong> a free, cross-league T20 analytics API with fantasy-specific intelligence built on open data. Competitors are either:</p>
+    <ul>
+      <li>Too expensive (enterprise analytics)</li>
+      <li>Too shallow (basic stat aggregators)</li>
+      <li>Too subjective (opinion-based tip services)</li>
+      <li>Too narrow (single league focus)</li>
+      <li>Not API-accessible (no developer integration)</li>
+    </ul>
+    <p style="margin-top:12px;"><strong>CricVeda's gap:</strong> affordable depth + cross-league breadth + API delivery + fantasy-specific focus.</p>
+  </div>
+</section>
+
+<!-- SECTION 2: LANDSCAPE MAP -->
+<section id="landscape">
+  <div class="section-label">Section 02</div>
+  <h2>Competitive Landscape Map</h2>
+  <p>Positioning competitors on two axes: cost (free vs expensive) and depth of analysis (shallow vs deep).</p>
+
+  <div class="quadrant-wrap">
+    <div class="quadrant-title">Cost vs Analysis Depth — Where CricVeda Sits</div>
+    <div class="quadrant">
+      <!-- Axes -->
+      <div class="q-axis-h"></div>
+      <div class="q-axis-v"></div>
+      <!-- Quadrant labels -->
+      <div class="q-label top-left" style="color:var(--text3);font-size:8px;">HIGH COST / SHALLOW</div>
+      <div class="q-label top-right" style="color:var(--red);font-size:8px;">HIGH COST / DEEP ●</div>
+      <div class="q-label bot-left" style="color:var(--text3);font-size:8px;">FREE / SHALLOW</div>
+      <div class="q-label bot-right" style="color:var(--accent);font-size:8px;">FREE / DEEP ← TARGET</div>
+      <!-- axis labels -->
+      <div class="q-axis-label x-left">Free / Low</div>
+      <div class="q-axis-label x-right">Expensive</div>
+      <div class="q-axis-label y-top">Deep</div>
+      <div class="q-axis-label y-bot">Shallow</div>
+
+      <!-- GAP ZONE -->
+      <div class="q-gap-box" style="left:4%;bottom:4%;width:43%;height:43%;"></div>
+      <div class="q-gap-label" style="left:9%;bottom:26%;">THE GAP</div>
+
+      <!-- Competitor dots -->
+      <!-- HIGH COST + DEEP (top-right) -->
+      <div class="q-dot dim" style="left:82%;top:14%;">
+        <div class="q-dot-inner" style="background:var(--red);"></div>
+        <div class="q-dot-label">CricViz</div>
+      </div>
+      <div class="q-dot dim" style="left:90%;top:22%;">
+        <div class="q-dot-inner" style="background:var(--red);"></div>
+        <div class="q-dot-label">Opta/SportRadar</div>
+      </div>
+
+      <!-- HIGH COST + SHALLOW (top-left) -->
+      <div class="q-dot dim" style="left:30%;top:18%;">
+        <div class="q-dot-inner" style="background:var(--orange);"></div>
+        <div class="q-dot-label">Paid Telegram</div>
+      </div>
+      <div class="q-dot dim" style="left:18%;top:30%;">
+        <div class="q-dot-inner" style="background:var(--orange);"></div>
+        <div class="q-dot-label">YT Memberships</div>
+      </div>
+
+      <!-- FREE + SHALLOW (bottom-left) -->
+      <div class="q-dot dim" style="left:60%;top:70%;">
+        <div class="q-dot-inner" style="background:var(--blue);"></div>
+        <div class="q-dot-label">ESPNcricinfo</div>
+      </div>
+      <div class="q-dot dim" style="left:50%;top:80%;">
+        <div class="q-dot-inner" style="background:var(--blue);"></div>
+        <div class="q-dot-label">Cricbuzz</div>
+      </div>
+      <div class="q-dot dim" style="left:34%;top:75%;">
+        <div class="q-dot-inner" style="background:var(--text3);"></div>
+        <div class="q-dot-label">YouTube (free)</div>
+      </div>
+      <div class="q-dot dim" style="left:18%;top:68%;">
+        <div class="q-dot-inner" style="background:var(--text3);"></div>
+        <div class="q-dot-label">CricSheet (raw)</div>
+      </div>
+      <div class="q-dot dim" style="left:24%;top:80%;">
+        <div class="q-dot-inner" style="background:var(--text3);"></div>
+        <div class="q-dot-label">HowSTAT</div>
+      </div>
+      <div class="q-dot dim" style="left:44%;top:68%;">
+        <div class="q-dot-inner" style="background:var(--gold);"></div>
+        <div class="q-dot-label">CricAPI (paid)</div>
+      </div>
+
+      <!-- CRICVEDA — bottom right (THE GAP) -->
+      <div class="q-dot highlight" style="left:22%;top:30%;">
+        <div class="q-dot-inner"></div>
+        <div class="q-dot-label" style="font-size:10px;font-weight:700;">CricVeda ✦</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: CATEGORIES -->
+<section id="categories">
+  <div class="section-label">Section 03</div>
+  <h2>Competitor Categories</h2>
+  <p>Six categories of partial competition — each with distinct strengths, weaknesses, and relationship to CricVeda.</p>
+  <div class="cat-table-wrap">
+    <table class="cat-table">
+      <thead><tr><th>#</th><th>Category</th><th>Type</th><th>Key Players</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Enterprise Cricket Analytics</td><td><span class="cat-badge badge-enterprise">Enterprise</span></td><td>CricViz, Opta, SportRadar</td></tr>
+        <tr><td>B</td><td>Cricket Statistics Websites</td><td><span class="cat-badge badge-stats">Stats</span></td><td>ESPNcricinfo, Cricbuzz, HowSTAT</td></tr>
+        <tr><td>C</td><td>Cricket Data APIs (paid)</td><td><span class="cat-badge badge-api">API</span></td><td>CricAPI, Roanuz, SportRadar API</td></tr>
+        <tr><td>D</td><td>Open Cricket Data</td><td><span class="cat-badge badge-open">Open Data</span></td><td>CricSheet, Retrosheet-style repos</td></tr>
+        <tr><td>E</td><td>Fantasy Tip Services (human-driven)</td><td><span class="cat-badge badge-tips">Tips</span></td><td>YouTube channels, Telegram groups, Twitter experts</td></tr>
+        <tr><td>F</td><td>Fantasy Analytics Tools</td><td><span class="cat-badge badge-fantasy">Fantasy</span></td><td>CricTracker, ShowBaazi, various apps</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 4: ENTERPRISE ANALYTICS -->
+<section id="enterprise">
+  <div class="section-label">Section 04 — Category A</div>
+  <h2>Enterprise Cricket Analytics</h2>
+
+  <!-- CricViz -->
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">CricViz</span>
+      <span class="comp-cat-tag badge-enterprise">Enterprise</span>
+      <span class="threat-badge threat-low">Threat: Low</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Founded 2014 (UK). Clients: ICC, ECB, Cricket Australia, IPL teams, Sky/Star Sports. Pricing: $10K–100K+/year enterprise contracts. Venture-backed.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Do Well</div>
+          <ul>
+            <li>Deepest cricket analytics in the world</li>
+            <li>Ball-tracking technology (speed, length, line)</li>
+            <li>Predictive models (win probability, expected runs)</li>
+            <li>Trusted by cricket boards and broadcasters</li>
+            <li>Cover all formats (Test, ODI, T20)</li>
+            <li>Proprietary data no one else has</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Do</div>
+          <ul>
+            <li>No consumer/fantasy product</li>
+            <li>No public API for developers</li>
+            <li>No free tier</li>
+            <li>Pricing inaccessible to individuals ($$$$$)</li>
+            <li>No cross-league form scoring for fantasy</li>
+            <li>No dream team / captain pick recommendations</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-card adv">
+          <div class="vc-title">CricVeda Advantage</div>
+          <ul>
+            <li>Free access vs enterprise pricing</li>
+            <li>Fantasy-specific output (dream teams, captain picks)</li>
+            <li>API-first — developers can integrate</li>
+            <li>Fantasy context, not just cricket analysis</li>
+          </ul>
+        </div>
+        <div class="vs-card dis">
+          <div class="vc-title">CricViz Advantage</div>
+          <ul>
+            <li>Proprietary ball-tracking data (we can't match)</li>
+            <li>Established brand and trust</li>
+            <li>Funded team with dedicated analysts</li>
+            <li>Live match analysis + years of model refinement</li>
+          </ul>
+        </div>
+      </div>
+      <div class="threat-note low">They operate in a completely different market. Unless they launch a consumer fantasy product (unlikely — not their business model), they are not a direct competitor. They are a potential <strong>PARTNER</strong> if CricVeda scales.</div>
+    </div>
+  </div>
+
+  <!-- SportRadar -->
+  <div class="competitor-block" style="margin-top:16px;">
+    <div class="comp-header">
+      <span class="comp-name">SportRadar</span>
+      <span class="comp-cat-tag badge-enterprise">Enterprise</span>
+      <span class="threat-badge threat-lowmed">Threat: Low–Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Global sports data company. Cricket API available but expensive ($500–5,000+/month). Focus on data delivery — they give you raw ball-by-ball feeds; you build your own analytics. No fantasy-specific recommendations.</p>
+      <div class="insight-box">SportRadar sells ingredients. CricVeda sells the cooked meal.<br>A fantasy platform could buy SportRadar data AND use CricVeda algorithms to turn it into insights. We are complementary, not competing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: STAT SITES -->
+<section id="statsites">
+  <div class="section-label">Section 05 — Category B</div>
+  <h2>Cricket Statistics Websites</h2>
+
+  <!-- ESPNcricinfo -->
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">ESPNcricinfo</span>
+      <span class="comp-cat-tag badge-stats">Stats</span>
+      <span class="threat-badge threat-medium">Threat: Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">World's largest cricket statistics website (Disney/ESPN). 50M+ monthly visitors. Free, ad-supported. No public API — scraping prohibited by ToS. The "Wikipedia of cricket stats."</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Do Well</div>
+          <ul>
+            <li>Most comprehensive cricket stats database ever built</li>
+            <li>StatsGuru query tool (powerful but complex)</li>
+            <li>Every international match ever played</li>
+            <li>Trusted global brand (30+ years)</li>
+            <li>Full format coverage (Test, ODI, T20, domestic)</li>
+            <li>Free access to all data</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Do</div>
+          <ul>
+            <li>No fantasy-specific insights (no dream team, captain picks)</li>
+            <li>No cross-league form scoring — stats shown per league, not synthesized</li>
+            <li>Matchup data buried 6+ clicks deep, no fantasy context overlay</li>
+            <li>No public API — cannot integrate into apps</li>
+            <li>No actionable recommendations ("pick this player because...")</li>
+            <li>No confidence scoring on any insight</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box">ESPNcricinfo is like a LIBRARY. CricVeda is like a TUTOR who reads the library for you and tells you what to DO. They are partially a data source (CricSheet uses ESPNcricinfo IDs).</div>
+      <div class="threat-note med" style="margin-top:12px;">If ESPNcricinfo launches a dedicated fantasy analytics API, they would be formidable — they have the data and brand. However, ESPN has had 25+ years to do this and hasn't. <strong>More likely to partner than build.</strong></div>
+    </div>
+  </div>
+
+  <!-- Cricbuzz -->
+  <div class="competitor-block" style="margin-top:16px;">
+    <div class="comp-header">
+      <span class="comp-name">Cricbuzz</span>
+      <span class="comp-cat-tag badge-stats">Stats</span>
+      <span class="threat-badge threat-medium">Threat: Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Times Internet. 40M+ monthly visitors. India's #1 cricket app by downloads. Best-in-class live scoring. No public API. "Fantasy tips" section = journalist opinion pieces, not systematic analysis.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Do Well</div>
+          <ul>
+            <li>Best-in-class live scoring experience</li>
+            <li>Clean mobile app (India's #1 cricket app)</li>
+            <li>Match H2H and basic player comparisons</li>
+            <li>Team squads and playing XI (fast updates)</li>
+            <li>Strong Indian market penetration</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Do</div>
+          <ul>
+            <li>Fantasy analytics depth is VERY shallow</li>
+            <li>No cross-league form scoring</li>
+            <li>Basic H2H only — no phase/type breakdown</li>
+            <li>No public API (community endpoints break randomly)</li>
+            <li>No fantasy-specific API endpoints</li>
+            <li>No confidence scoring or reasoning</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box">Cricbuzz = live match EXPERIENCE. CricVeda = pre-match INTELLIGENCE. Different jobs. Different timing. Users check Cricbuzz DURING the match. Users check CricVeda BEFORE building their team. Complementary — for now.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: DATA APIS -->
+<section id="apis">
+  <div class="section-label">Section 06 — Category C</div>
+  <h2>Cricket Data APIs (Paid)</h2>
+
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">CricAPI &amp; Roanuz</span>
+      <span class="comp-cat-tag badge-api">Paid API</span>
+      <span class="threat-badge threat-lowmed">Threat: Low–Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Commercial REST APIs. CricAPI pricing: Free (100 req/day), Pro ($30/mo), Business ($100/mo). Live scores, player profiles, match schedules, historical summaries. Well-documented, reliable uptime.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Provide</div>
+          <ul>
+            <li>Live scores and match updates</li>
+            <li>Player profiles with metadata</li>
+            <li>Match schedules and fixtures</li>
+            <li>Simple, affordable, well-documented API</li>
+            <li>Playing XI data</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Provide</div>
+          <ul>
+            <li>No ball-by-ball historical data</li>
+            <li>No analytics or insights — pure data delivery</li>
+            <li>No form scoring or matchup analysis</li>
+            <li>No fantasy-specific endpoints</li>
+            <li>No cross-league form synthesis</li>
+            <li>No confidence scoring</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box">CricAPI tells you: "Kohli scored 45 off 32 balls"<br>CricVeda tells you: "Pick Kohli as captain — form 8.7 + venue avg 52 + strong vs spin + opponent spin-heavy, confidence 0.85"<br><br>CricAPI is a potential DATA SOURCE for CricVeda (fixtures, playing XI, live updates) — not a competing product. CricVeda may eventually USE CricAPI as one of its data inputs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: OPEN DATA -->
+<section id="opendata">
+  <div class="section-label">Section 07 — Category D</div>
+  <h2>Open Cricket Data</h2>
+
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">CricSheet</span>
+      <span class="comp-cat-tag badge-open">Open Data</span>
+      <span class="threat-badge threat-none">Threat: None — Our Foundation</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">cricsheet.org — open-source ball-by-ball cricket data. CC BY 4.0 license (free for commercial use with attribution). Maintained by Stephen Rushe. CricVeda's primary data foundation.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What CricSheet Is</div>
+          <ul>
+            <li>Richest free cricket dataset in the world</li>
+            <li>Ball-by-ball granularity across 4,500+ T20 matches</li>
+            <li>Cross-league coverage (consistent player IDs)</li>
+            <li>CC BY 4.0 — legally clean, commercially usable</li>
+            <li>People register with ESPNcricinfo IDs (cross-source enrichment)</li>
+            <li>Growing coverage, community-driven, transparent</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What CricSheet Is Not</div>
+          <ul>
+            <li>Not a product — a data repository only</li>
+            <li>No API — download files only</li>
+            <li>No player metadata (role, country, style)</li>
+            <li>No upcoming fixtures or playing XI data</li>
+            <li>No consumer-facing interface or analytics</li>
+            <li>Community-maintained — occasional gaps</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box">CricSheet = raw flour. CricVeda = the bakery.<br>CricVeda takes CricSheet's raw ball-by-ball data and transforms it into cross-league form scores, matchup analysis, venue intelligence, phase-wise breakdowns, fantasy recommendations, and confidence-scored insights.</div>
+      <div class="threat-note low" style="margin-top:12px;">Dependency risks: (1) CricSheet stops updating → new match data stops. (2) Format changes → parser breaks. <strong>Mitigations:</strong> Archive all data locally. CC BY 4.0 is irrevocable for already-released data. Parser designed for format variations. Long-term: diversify data inputs. Risk level: LOW (CricSheet stable for years).</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: FANTASY TIP SERVICES -->
+<section id="tipsvc">
+  <div class="section-label">Section 08 — Category E</div>
+  <h2>Fantasy Tip Services (Human-Driven)</h2>
+
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">YouTube Fantasy Channels</span>
+      <span class="comp-cat-tag badge-tips">Tips</span>
+      <span class="threat-badge threat-medium">Threat: Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">50+ active channels during IPL. 100K–2M+ subscribers. Free (ad revenue) + some paid memberships. 1–3 videos per match day. Cover Dream11, MyTeam11, and other platforms.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Do Well</div>
+          <ul>
+            <li>Accessible (free, video format)</li>
+            <li>Personality-driven (entertainment + analysis)</li>
+            <li>Cover playing XI updates quickly</li>
+            <li>Human insight (pitch reports, injury whispers)</li>
+            <li>Community engagement (comments, polls)</li>
+            <li>Multiple team options (safe, risky, GL)</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Do</div>
+          <ul>
+            <li>Subjective — no way to evaluate who's actually accurate</li>
+            <li>No systematic methodology or verifiable track record</li>
+            <li>No cross-league data (ignore BBL/T20I form)</li>
+            <li>Not API-accessible — cannot integrate into apps</li>
+            <li>Not personalized — same team for millions of viewers</li>
+            <li>10–15 min video for what should be 30 seconds of data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box">YouTube channels and CricVeda are COMPLEMENTARY. A smart user: (1) checks CricVeda for data-driven analysis, (2) watches their favourite channel for qualitative context, (3) combines both. YouTube creators are potential USERS and PROMOTERS — "According to CricVeda, form score 8.7, strong matchup tonight" = more credible content. CricVeda's strategy: PARTNER with top channels, not compete.</div>
+    </div>
+  </div>
+
+  <div class="competitor-block" style="margin-top:16px;">
+    <div class="comp-header">
+      <span class="comp-name">Telegram / WhatsApp Fantasy Groups</span>
+      <span class="comp-cat-tag badge-tips">Tips</span>
+      <span class="threat-badge threat-low">Threat: Low</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Thousands of groups, millions of members. Free and paid (₹500–5,000/month) tiers. Screenshot-based team sharing. Quality ranges from genuine to outright scam. Massive in India.</p>
+      <div class="comp-cols">
+        <div class="comp-col bad">
+          <div class="cc-title">What They Lack</div>
+          <ul>
+            <li>No data backing — pure opinion, no track record</li>
+            <li>Same team shared to 10,000+ people (no differentiation in GLs)</li>
+            <li>Paid groups often scam or underperform</li>
+            <li>No matchup, venue, or cross-league analysis</li>
+            <li>Trust issues (fake screenshots, selective reporting)</li>
+          </ul>
+        </div>
+        <div class="comp-col good">
+          <div class="cc-title">CricVeda Advantage</div>
+          <ul>
+            <li>Transparent, data-backed reasoning for every pick</li>
+            <li>Verifiable predictions (public, timestamped)</li>
+            <li>API enables different teams per user context (not one team for everyone)</li>
+            <li>No scam potential — algorithm is consistent</li>
+            <li>Free vs ₹500–5,000/month for paid groups</li>
+          </ul>
+        </div>
+      </div>
+      <div class="threat-note low">These groups thrive on social dynamics, not data quality. Different value proposition. CricVeda users will likely still be in groups but use CricVeda data to make better independent decisions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: FANTASY TOOLS -->
+<section id="fantasytools">
+  <div class="section-label">Section 09 — Category F</div>
+  <h2>Fantasy Analytics Tools</h2>
+
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">Fantasy Apps &amp; Websites</span>
+      <span class="comp-cat-tag badge-fantasy">Fantasy</span>
+      <span class="threat-badge threat-lowmed">Threat: Low–Medium</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Several apps target fantasy cricket analytics: CricTracker, ShowBaazi, and many smaller apps/sites. Typically built by one person during IPL, abandoned between seasons, rebuilt next year.</p>
+      <div class="comp-cols">
+        <div class="comp-col bad">
+          <div class="cc-title">Common Weaknesses Across All</div>
+          <ul>
+            <li>Single league focus (usually IPL only)</li>
+            <li>No cross-league form scoring</li>
+            <li>"AI-powered" with no explanation of methodology</li>
+            <li>No public API for developer integration</li>
+            <li>No batter-vs-bowler matchup depth</li>
+            <li>No confidence scoring or reasoning for picks</li>
+            <li>Poorly maintained between seasons</li>
+            <li>No B2B offering — consumer apps only</li>
+            <li>Cannot handle debutants (no global T20 data)</li>
+          </ul>
+        </div>
+        <div class="comp-col good">
+          <div class="cc-title">CricVeda Differentiators</div>
+          <ul>
+            <li>Year-round (all T20 leagues, not just IPL)</li>
+            <li>Persistent infrastructure — not seasonal</li>
+            <li>API-first with B2B revenue potential</li>
+            <li>Transparent, auditable methodology</li>
+            <li>Open data foundations</li>
+            <li>Cross-league intelligence and debutant handling</li>
+          </ul>
+        </div>
+      </div>
+      <div class="threat-note low">The pattern: built during IPL → abandoned → rebuilt. No persistent data infrastructure, no API product strategy, no sustainable business model. Low barrier to entry but also low quality. Some may become USERS of CricVeda API.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: FANTASY PLATFORMS -->
+<section id="platforms">
+  <div class="section-label">Section 10 — Category G</div>
+  <h2>Fantasy Platforms Themselves</h2>
+
+  <div class="competitor-block">
+    <div class="comp-header">
+      <span class="comp-name">Dream11, MyTeam11, MPL &amp; others</span>
+      <span class="comp-cat-tag badge-fantasy">Platforms</span>
+      <span class="threat-badge threat-low">Threat: Low → Opportunity: High</span>
+    </div>
+    <div class="comp-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;max-width:100%;">Dream11: 200M+ users, market leader. MyTeam11: 20M+. MPL: multi-game platform. All make money from contest entry fees (rake/commission) — not from user win rates.</p>
+      <div class="comp-cols">
+        <div class="comp-col good">
+          <div class="cc-title">What They Provide</div>
+          <ul>
+            <li>Match listings and contest creation</li>
+            <li>Player list with credits/pricing</li>
+            <li>Recent fantasy point history (last 3–5 matches)</li>
+            <li>Playing XI updates (close to toss)</li>
+            <li>Payment processing, payouts, leaderboards</li>
+          </ul>
+        </div>
+        <div class="comp-col bad">
+          <div class="cc-title">What They Don't Provide</div>
+          <ul>
+            <li>No cross-league form assessment</li>
+            <li>No batter-vs-bowler matchup data</li>
+            <li>No venue intelligence connected to player selection</li>
+            <li>No dream team recommendations (conflict of interest + regulatory)</li>
+            <li>No data API for third parties</li>
+            <li>Stats limited to THEIR platform's matches only</li>
+          </ul>
+        </div>
+      </div>
+      <div class="insight-box" style="background:rgba(240,192,64,.1);color:var(--gold);">
+        Fantasy platforms are potential B2B CUSTOMERS.<br>Dream11 could embed CricVeda insights as a "Smart Picks" or "Data Intelligence" feature within their app, powered by CricVeda API. This is the highest-value B2B opportunity.
+      </div>
+      <div class="comp-cols" style="margin-top:14px;">
+        <div class="vs-card adv">
+          <div class="vc-title">Why They Won't Build This Internally</div>
+          <ul>
+            <li>Business model conflict — contest fees unaffected by who wins</li>
+            <li>Regulatory risk — recommending teams could be seen as rigging</li>
+            <li>Not their core competency (gaming platform, not analytics company)</li>
+            <li>Cost not tied to their revenue</li>
+            <li>Brand damage if recommendations fail</li>
+          </ul>
+        </div>
+        <div class="vs-card adv">
+          <div class="vc-title" style="color:var(--gold);">Partnership Opportunity</div>
+          <ul>
+            <li>50+ fantasy cricket platforms exist</li>
+            <li>None have deep analytics internally</li>
+            <li>CricVeda API = instant "Smart Picks" feature</li>
+            <li>Low integration effort (REST API)</li>
+            <li>Even 10 platforms × $49/month = sustainable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: FEATURE MATRIX -->
+<section id="matrix">
+  <div class="section-label">Section 11</div>
+  <h2>Competitive Positioning Matrix</h2>
+  <p>Detailed feature comparison across all major players. ✅ Strong &nbsp; ⚠️ Partial &nbsp; ❌ Not available.</p>
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="cv-col">CricVeda</th>
+          <th>ESPNcricinfo</th>
+          <th>Cricbuzz</th>
+          <th>CricAPI</th>
+          <th>CricViz</th>
+          <th>YouTube</th>
+          <th>Fantasy Apps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="8">Core Data</td></tr>
+        <tr><td>Ball-by-ball data</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>All T20 leagues</td><td class="cv-col">✅</td><td>✅</td><td>⚠️</td><td>⚠️</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Cross-league form scoring</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Live scores</td><td class="cv-col">❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr class="group-header"><td colspan="8">Analytics Depth</td></tr>
+        <tr><td>Batter vs bowler H2H</td><td class="cv-col">✅</td><td>⚠️</td><td>⚠️</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Phase-wise stats (PP / middle / death)</td><td class="cv-col">✅</td><td>⚠️</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Bowling type splits (pace / spin / left-arm)</td><td class="cv-col">✅</td><td>⚠️</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Venue intelligence</td><td class="cv-col">✅</td><td>⚠️</td><td>⚠️</td><td>❌</td><td>✅</td><td>⚠️</td><td>❌</td></tr>
+        <tr><td>Debutant handling</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td><td>❌</td></tr>
+        <tr class="group-header"><td colspan="8">Fantasy-Specific</td></tr>
+        <tr><td>Fantasy dream team</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>⚠️</td></tr>
+        <tr><td>Captain picks</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>⚠️</td></tr>
+        <tr><td>Differential picks</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td></tr>
+        <tr><td>Ownership estimates</td><td class="cv-col">⚠️</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td></tr>
+        <tr class="group-header"><td colspan="8">Trust & Access</td></tr>
+        <tr><td>Confidence scoring</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Reasoning included with picks</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>⚠️</td><td>❌</td></tr>
+        <tr><td>Public API</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td></tr>
+        <tr><td>B2B API product</td><td class="cv-col">✅</td><td>❌</td><td>❌</td><td>✅</td><td>⚠️</td><td>❌</td><td>❌</td></tr>
+        <tr><td>Free tier</td><td class="cv-col">✅</td><td>✅</td><td>✅</td><td>⚠️</td><td>❌</td><td>✅</td><td>⚠️</td></tr>
+        <tr><td>Editorial content</td><td class="cv-col">❌</td><td>✅</td><td>✅</td><td>❌</td><td>⚠️</td><td>✅</td><td>⚠️</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 12: ADVANTAGE SUMMARY -->
+<section id="advantage">
+  <div class="section-label">Section 12</div>
+  <h2>Competitive Advantage Summary</h2>
+  <div class="adv-table-wrap">
+    <table class="adv-table">
+      <thead><tr><th>Dimension</th><th>Position</th><th>CricVeda's Standing</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>T20 League Coverage</td>
+          <td><span class="pos-badge pos-unique">Unique</span></td>
+          <td>ALL leagues — the only player at consumer/API level doing this</td>
+        </tr>
+        <tr>
+          <td>Cross-League Form Scoring</td>
+          <td><span class="pos-badge pos-unique">Unique</span></td>
+          <td>No competitor synthesizes form across IPL + T20I + BBL + SA20 + PSL + all franchise T20s</td>
+        </tr>
+        <tr>
+          <td>Ball-by-Ball Depth</td>
+          <td><span class="pos-badge pos-strong">Strong</span></td>
+          <td>Full CricSheet data (~4,500 T20 matches) vs summary stats on most platforms</td>
+        </tr>
+        <tr>
+          <td>Fantasy-Specific Output</td>
+          <td><span class="pos-badge pos-unique">Unique at this depth</span></td>
+          <td>Dream team, captain picks, differentials with reasoning — no one else at this depth</td>
+        </tr>
+        <tr>
+          <td>API-First Delivery</td>
+          <td><span class="pos-badge pos-unique">Unique</span></td>
+          <td>Data APIs exist (CricAPI). Intelligence APIs don't. CricVeda creates this category.</td>
+        </tr>
+        <tr>
+          <td>Transparency</td>
+          <td><span class="pos-badge pos-unique">Unique</span></td>
+          <td>Confidence scoring, data source tagging, reasoning for every recommendation</td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td><span class="pos-badge pos-strong">Strongest</span></td>
+          <td>Free tier with meaningful access vs $30–100/mo for data APIs vs $10K+ enterprise</td>
+        </tr>
+        <tr>
+          <td>Matchup Intelligence</td>
+          <td><span class="pos-badge pos-strong">Strong</span></td>
+          <td>Batter vs bowler across all T20 leagues with phase and type breakdowns</td>
+        </tr>
+        <tr>
+          <td>Debutant Handling</td>
+          <td><span class="pos-badge pos-unique">Unique</span></td>
+          <td>Global T20 profile + archetype comparison instead of "no data available"</td>
+        </tr>
+        <tr>
+          <td>Brand Trust</td>
+          <td><span class="pos-badge pos-weak">Weak (new)</span></td>
+          <td>Unproven — must earn through accuracy and transparency over time</td>
+        </tr>
+        <tr>
+          <td>Data Freshness</td>
+          <td><span class="pos-badge pos-moderate">Moderate</span></td>
+          <td>Dependent on CricSheet update cycle + manual processes</td>
+        </tr>
+        <tr>
+          <td>Live / Real-Time Data</td>
+          <td><span class="pos-badge pos-weak">Weak</span></td>
+          <td>No live scoring — pre-match intelligence only</td>
+        </tr>
+        <tr>
+          <td>Qualitative Context</td>
+          <td><span class="pos-badge pos-weak">Weak</span></td>
+          <td>No injury reports, pitch reports from ground, or team dynamics</td>
+        </tr>
+        <tr>
+          <td>Content &amp; Entertainment</td>
+          <td><span class="pos-badge pos-weak">Weak</span></td>
+          <td>No editorial, no video, no personality-driven engagement</td>
+        </tr>
+        <tr>
+          <td>User Base</td>
+          <td><span class="pos-badge pos-weak">None (pre-launch)</span></td>
+          <td>Zero vs millions on established platforms — must be built from scratch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 13: THREATS -->
+<section id="threats">
+  <div class="section-label">Section 13</div>
+  <h2>Threats &amp; Risks</h2>
+  <div class="to-grid">
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 1</div>
+        <span class="tc-prob prob-low">10–15%</span>
+      </div>
+      <div class="tc-title">ESPNcricinfo launches fantasy analytics API</div>
+      <p>They have the data, brand, and 50M+ monthly traffic. But 25+ years without doing this signals organizational inertia. Ad model ≠ API model. Impact: HIGH.</p>
+      <div class="tc-mitigation">Mitigation: Build fast, establish user base and API ecosystem before they could launch. Algorithm/insights layer remains differentiated even if they launch basic stats API.</div>
+    </div>
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 2</div>
+        <span class="tc-prob prob-med">15–20%</span>
+      </div>
+      <div class="tc-title">Dream11 builds internal analytics</div>
+      <p>Regulatory concerns + not their core competency. More likely to partner than build. Impact: MEDIUM–HIGH.</p>
+      <div class="tc-mitigation">Mitigation: Position for partnership. Demonstrate API value to fantasy platforms early. Be the intelligence layer they outsource to.</div>
+    </div>
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 3</div>
+        <span class="tc-prob prob-vlow">5%</span>
+      </div>
+      <div class="tc-title">CricSheet stops updating or changes license</div>
+      <p>Community project with single maintainer risk. CC BY 4.0 is irrevocable for existing data. But new match data would stop flowing. Impact: CRITICAL.</p>
+      <div class="tc-mitigation">Mitigation: Archive all data locally. Long-term: build own ball-by-ball ingestion from live scorecard sources. Diversify data inputs.</div>
+    </div>
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 4</div>
+        <span class="tc-prob prob-med">20–30%</span>
+      </div>
+      <div class="tc-title">Well-funded startup enters same space</div>
+      <p>Fantasy cricket is growing. Cricket analytics is underserved. Attractive for startups with capital. Impact: HIGH.</p>
+      <div class="tc-mitigation">Mitigation: Move fast. Build API ecosystem and user base. Open-source parts of the platform. Cross-league coverage is hard to replicate quickly.</div>
+    </div>
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 5</div>
+        <span class="tc-prob prob-medhigh">30–40%</span>
+      </div>
+      <div class="tc-title">AI/LLM-powered fantasy tools</div>
+      <p>ChatGPT/Gemini/Claude can already give fantasy cricket advice. Quality is inconsistent but improving. Users may prefer natural language over API/dashboard. Impact: MEDIUM.</p>
+      <div class="tc-mitigation">Mitigation: CricVeda's structured data is MORE RELIABLE than LLM opinions. CricVeda can POWER LLM tools — position as data layer FOR AI tools, not against them.</div>
+    </div>
+    <div class="threat-card">
+      <div class="tc-header">
+        <div class="tc-num">Threat 6</div>
+        <span class="tc-prob prob-low">5–10%</span>
+      </div>
+      <div class="tc-title">YouTube / Telegram creators build tools</div>
+      <p>Most creators lack technical skills. Those with skills rarely build platforms. Impact: LOW–MEDIUM.</p>
+      <div class="tc-mitigation">Mitigation: Partner with creators. Provide them data. Make CricVeda the infrastructure BEHIND their content.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 14: OPPORTUNITIES -->
+<section id="opportunities">
+  <div class="section-label">Section 14</div>
+  <h2>Opportunities</h2>
+  <div style="display:flex;flex-direction:column;gap:12px;margin:24px 0;">
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 1 — First-Mover in Cross-League T20 Intelligence API</div>
+      <p>The combination of: all T20 leagues + cross-league form scoring + ball-by-ball depth + fantasy-specific output + API delivery + free tier + open data foundation — does not exist today. First to market wins mindshare.</p>
+    </div>
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 2 — B2B API for Fantasy Platforms</div>
+      <ul>
+        <li>50+ fantasy cricket platforms exist globally</li>
+        <li>None have deep analytics internally</li>
+        <li>All want to differentiate from Dream11</li>
+        <li>CricVeda API = instant "Smart Picks" feature, low integration effort</li>
+        <li>Even 10 platforms × $49/month = sustainable recurring revenue</li>
+      </ul>
+    </div>
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 3 — Global T20 Expansion</div>
+      <ul>
+        <li>New T20 leagues launching worldwide (MLC, SA20, ILT20)</li>
+        <li>Fantasy cricket growing beyond India — UK, AU, SA, Caribbean</li>
+        <li>CricVeda's architecture is already league-agnostic</li>
+        <li>Adding a new league = adding a CricSheet download, no code changes</li>
+      </ul>
+    </div>
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 4 — Content Creator Partnerships</div>
+      <ul>
+        <li>50+ YouTube channels need differentiated, data-backed content</li>
+        <li>"Powered by CricVeda" attribution = free marketing at scale</li>
+        <li>Creators become unpaid evangelists — CricVeda data, their distribution</li>
+      </ul>
+    </div>
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 5 — AI / LLM Integration</div>
+      <ul>
+        <li>CricVeda API as backend for cricket AI assistants</li>
+        <li>"Ask CricVeda" chatbot powered by structured ball-by-ball data</li>
+        <li>Fantasy platforms can build AI features on our API</li>
+        <li>Riding the AI wave rather than fighting it</li>
+      </ul>
+    </div>
+    <div class="opp-card">
+      <div class="oc-title">Opportunity 6 — Algorithm Accuracy as Marketing</div>
+      <ul>
+        <li>Track every prediction vs actual outcome</li>
+        <li>Publish monthly "accuracy report" — no competitor does this transparently</li>
+        <li>"CricVeda captain picks were correct 72% of the time"</li>
+        <li>Trust signal that compounds over time — content marketing that writes itself</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 15: STRATEGIC POSITIONING -->
+<section id="strategy">
+  <div class="section-label">Section 15</div>
+  <h2>Strategic Positioning</h2>
+  <div class="strategy-flow" style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <div class="strategy-row">
+      <div class="s-num"><span>1</span></div>
+      <div class="s-content">
+        <div class="s-title">Own the "Intelligence API" Category</div>
+        <p>Data APIs exist (CricAPI, SportRadar). Stats websites exist (ESPNcricinfo, Cricbuzz). Intelligence API does NOT exist. CricVeda creates and owns this category.</p>
+      </div>
+    </div>
+    <div class="strategy-row">
+      <div class="s-num"><span>2</span></div>
+      <div class="s-content">
+        <div class="s-title">Cross-League Is the Moat</div>
+        <p>Anyone can build IPL-only analytics. Building cross-league form scoring across ALL T20 leagues with consistent player IDs, weighted algorithms, and debutant handling is genuinely hard. This is the moat.</p>
+      </div>
+    </div>
+    <div class="strategy-row">
+      <div class="s-num"><span>3</span></div>
+      <div class="s-content">
+        <div class="s-title">API-First, Dashboard Second</div>
+        <p>Dashboard attracts B2C users. API attracts B2B revenue. B2B revenue sustains the business. API ecosystem creates lock-in.</p>
+      </div>
+    </div>
+    <div class="strategy-row">
+      <div class="s-num"><span>4</span></div>
+      <div class="s-content">
+        <div class="s-title">Transparency as Brand</div>
+        <p>Open methodology. Published accuracy. Confidence scoring. Data source tagging. In a market full of "trust me bro" tips, CricVeda says "here's the math, judge for yourself."</p>
+      </div>
+    </div>
+    <div class="strategy-row">
+      <div class="s-num"><span>5</span></div>
+      <div class="s-content">
+        <div class="s-title">Partner, Don't Compete</div>
+        <p>Don't compete with ESPNcricinfo for stats. Don't compete with YouTube for entertainment. Don't compete with Dream11 for contests. Partner with all of them: ESPNcricinfo IDs power our data. YouTube creators use our data in content. Dream11 integrates our API for smart features. CricSheet provides our foundation.</p>
+      </div>
+    </div>
+    <div class="strategy-row">
+      <div class="s-num"><span>6</span></div>
+      <div class="s-content">
+        <div class="s-title">Free Tier Drives Adoption, Paid Tier Drives Revenue</div>
+        <p>Free: Enough to be useful — form scores, basic matchups. Paid: Dream team, captain picks, differentials, H2H depth. B2B: Full API access with higher limits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<div class="summary-box">
+  <div class="summary-grid">
+    <div class="sumcol">
+      <div class="sc-title">Competitive Summary by Category</div>
+      <ul>
+        <li>Enterprise (CricViz, Opta) → Not direct competitor, potential partner</li>
+        <li>Stat sites (ESPN, Cricbuzz) → Shallow for fantasy, no API, medium-term threat</li>
+        <li>Data APIs (CricAPI, Roanuz) → Complementary, not competitive</li>
+        <li>Open data (CricSheet) → Our foundation, not a competitor</li>
+        <li>Tip services (YouTube, Telegram) → Partner opportunity</li>
+        <li>Fantasy tools → Shallow, IPL-only, easily differentiated</li>
+        <li>Fantasy platforms (Dream11) → Potential B2B customers</li>
+      </ul>
+    </div>
+    <div class="sumcol">
+      <div class="sc-title">CricVeda's Unique Position</div>
+      <p><strong>The ONLY free, cross-league T20 intelligence API</strong> with fantasy-specific output, confidence scoring, and transparent methodology.</p>
+      <div class="highlight-pill">Nobody else occupies this exact space today. The gap is real, documented, and buildable.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <span>CricVeda — Document #03</span>
+  <span>Author: Saurav Kumar</span>
+  <span>Version 1.0 · Feb 2026 · Final</span>
+</footer>
+
+<script>
+// Animate bar fills after load (for any future bars)
+document.addEventListener('DOMContentLoaded', () => {
+  // Stagger section animations
+  document.querySelectorAll('section').forEach((s, i) => {
+    s.style.animationDelay = `${i * 0.04}s`;
+  });
+});
+</script>
+</body>
+</html>
