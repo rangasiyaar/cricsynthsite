@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CricVeda — Document #07: MVP Scope</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f0e;--bg2:#111917;--bg3:#162018;--card:#141c17;--border:#1f2f24;
+  --accent:#2deb7a;--accent2:#1aaa57;--accent-dim:#1a3d27;--accent-glow:rgba(45,235,122,.12);
+  --gold:#f0c040;--gold-dim:#3a2e0a;
+  --red:#ff5252;--red-dim:#2e1010;
+  --orange:#ff8c42;--orange-dim:#2e1e0a;
+  --blue:#5b9cf6;--blue-dim:#0e1e3a;
+  --purple:#b06cf5;--purple-dim:#1e0e3a;
+  --teal:#2dd4c8;--teal-dim:#0a2422;
+  --text:#e8f0ea;--text2:#a0b8a6;--text3:#637869;
+  --display:'DM Serif Display',serif;--mono:'IBM Plex Mono',monospace;--body:'Figtree',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.7;overflow-x:hidden;}
+
+/* HEADER */
+.report-header{background:var(--bg2);border-bottom:1px solid var(--border);padding:60px 0 48px;position:relative;overflow:hidden;}
+.report-header::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(255,82,82,.05) 0%,transparent 70%);pointer-events:none;}
+.hinner{max-width:960px;margin:0 auto;padding:0 40px;}
+.doc-meta{display:flex;gap:18px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.doc-meta span{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+.tag{background:var(--accent-dim);color:var(--accent);padding:2px 8px;border-radius:3px;font-size:10px;font-weight:600;}
+.doc-num{background:var(--red-dim);color:var(--red);padding:2px 8px;border-radius:3px;font-size:10px;font-weight:600;font-family:var(--mono);}
+
+.report-header h1{font-family:var(--display);font-size:clamp(2.1rem,5vw,3.6rem);line-height:1.1;letter-spacing:-.02em;}
+.report-header h1 em{color:var(--accent);font-style:italic;}
+.report-header .subtitle{margin-top:14px;font-size:15px;color:var(--text2);max-width:640px;font-weight:300;}
+
+/* HERO STATS */
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding-top:48px;}
+.hs-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 16px;text-align:center;}
+.hs-value{font-family:var(--display);font-size:2rem;color:var(--accent);line-height:1;margin-bottom:5px;}
+.hs-label{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;line-height:1.4;}
+
+/* NAV */
+.toc-bar{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.toc-bar .inner{max-width:960px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none;}
+.toc-bar .inner::-webkit-scrollbar{display:none;}
+.toc-bar a{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);text-decoration:none;padding:14px 12px;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;flex-shrink:0;}
+.toc-bar a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* LAYOUT */
+.content{max-width:960px;margin:0 auto;padding:0 40px 80px;}
+section{padding:64px 0 0;animation:fadeUp .5s ease both;}
+.section-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:10px;}
+h2{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:-.02em;color:var(--text);line-height:1.2;margin-bottom:28px;}
+p{color:var(--text2);margin-bottom:16px;max-width:700px;}
+
+/* PURPOSE BOX */
+.purpose-box{background:var(--bg3);border:1px solid var(--border);border-left:4px solid var(--red);border-radius:8px;padding:28px 32px;margin:24px 0 32px;}
+.purpose-box p{color:var(--text2);font-size:14px;max-width:100%;margin:0 0 8px;}
+.purpose-box p:last-child{margin:0;}
+.purpose-box strong{color:var(--text);}
+.mvp-rule{margin-top:16px;background:var(--red-dim);border:1px solid rgba(255,82,82,.2);border-radius:7px;padding:12px 16px;font-family:var(--mono);font-size:11px;color:var(--red);line-height:1.6;}
+
+/* ASSUMPTIONS */
+.assumptions-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+.assumption-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.ac-header{padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg3);}
+.ac-num{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:4px;}
+.ac-title{font-weight:700;font-size:13.5px;color:var(--text);}
+.ac-body{padding:14px 18px;}
+.ac-hypothesis{font-size:13px;color:var(--text2);margin-bottom:10px;font-style:italic;line-height:1.5;}
+.ac-test{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:6px;}
+.ac-items{list-style:none;padding:0;}
+.ac-items li{font-size:12px;color:var(--text2);padding:2px 0;display:flex;gap:7px;line-height:1.4;}
+.ac-items li::before{content:'→';color:var(--accent2);font-size:10px;flex-shrink:0;margin-top:2px;}
+.ac-kill{margin-top:10px;padding:8px 10px;background:var(--red-dim);border-radius:5px;font-family:var(--mono);font-size:10px;color:#e08080;line-height:1.5;}
+
+/* MVP FEATURE CHECKLIST */
+.feature-checklist{margin:24px 0;}
+.fcl-group{margin-bottom:20px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.fcl-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.fcl-group-id{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:4px;}
+.fcl-group-name{font-weight:700;font-size:14px;color:var(--text);}
+.fcl-count{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;}
+.fcl-items{padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.fcl-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text2);padding:3px 0;line-height:1.4;}
+.checkbox{width:14px;height:14px;border:1px solid var(--border);border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.checkbox.todo{background:var(--accent-dim);border-color:var(--accent);}
+.checkbox.todo::after{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px;}
+
+/* ENDPOINT TABLES */
+.ep-section{margin:24px 0;}
+.ep-group{margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.ep-group-header{padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);}
+.ep-row{display:grid;grid-template-columns:28px 1fr 90px 80px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);transition:background .15s;}
+.ep-row:last-child{border-bottom:none;}
+.ep-row:hover{background:var(--bg3);}
+.ep-num{font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:700;}
+.ep-path{font-family:var(--mono);font-size:11.5px;color:var(--accent);}
+.tier-pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 7px;border-radius:10px;white-space:nowrap;}
+.tp-free  {background:rgba(45,235,122,.12);color:var(--accent);}
+.tp-pro   {background:rgba(240,192,64,.13);color:var(--gold);}
+.tp-split {background:rgba(91,156,246,.12);color:var(--blue);}
+.tp-defer {background:rgba(255,82,82,.12);color:var(--red);}
+
+/* DEFERRED TABLE */
+.defer-table-wrap{overflow-x:auto;margin:16px 0;border-radius:10px;border:1px solid var(--border);}
+.defer-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.defer-table thead tr{background:var(--bg3);}
+.defer-table thead th{padding:11px 14px;text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);border-bottom:1px solid var(--border);}
+.defer-table tbody tr{border-bottom:1px solid var(--border);}
+.defer-table tbody tr:last-child{border-bottom:none;}
+.defer-table tbody tr:hover{background:var(--bg3);}
+.defer-table td{padding:11px 14px;color:var(--text2);vertical-align:top;}
+.defer-table td:first-child{font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;font-weight:600;}
+.defer-table td:nth-child(2){font-family:var(--mono);font-size:11px;color:var(--accent);}
+.defer-table td:last-child{font-size:12px;color:var(--text3);}
+
+/* MATCH DETAIL MOCKUP */
+.mockup-phone{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:480px;margin:20px 0;}
+.mkp-bar{background:var(--bg3);padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.mkp-title{font-weight:700;font-size:13px;color:var(--text);}
+.mkp-section{border-bottom:1px solid var(--border);}
+.mkp-section:last-child{border-bottom:none;}
+.mkp-section-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.mkp-section-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);}
+.mkp-section-badge{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:3px;}
+.mkp-content{padding:10px 14px;font-size:12px;color:var(--text2);}
+.mkp-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;}
+.mkp-row span:last-child{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:600;}
+.mkp-player-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(31,47,36,.5);}
+.mkp-player-row:last-child{border-bottom:none;}
+.mkp-pname{font-size:12.5px;color:var(--text);flex:1;}
+.mkp-pteam{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:28px;}
+.mkp-score{font-family:var(--mono);font-size:12px;font-weight:700;}
+.mkp-trend{font-size:12px;}
+.mkp-captain-box{background:var(--accent-dim);border-radius:6px;padding:10px 12px;margin-bottom:8px;}
+.mkp-c-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:4px;}
+.mkp-c-name{font-weight:700;font-size:14px;color:var(--accent);margin-bottom:4px;}
+.mkp-c-reason{font-size:11px;color:var(--text2);}
+.mkp-lock{background:var(--bg3);border:1px dashed var(--border);border-radius:6px;padding:8px 12px;text-align:center;font-size:11px;color:var(--text3);}
+
+/* PAGES TABLE */
+.pages-grid{display:flex;flex-direction:column;gap:10px;margin:20px 0;}
+.page-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:grid;grid-template-columns:140px 1fr;gap:14px;}
+.page-row.deferred{opacity:.65;border-style:dashed;}
+.pr-left{font-family:var(--mono);font-size:11px;}
+.pr-name{font-weight:700;margin-bottom:2px;}
+.pr-name.ships{color:var(--accent);}
+.pr-name.deferred{color:var(--text3);}
+.pr-url{color:var(--text3);font-size:10px;}
+.pr-badge{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 6px;border-radius:3px;margin-top:6px;}
+.pb-ships {background:var(--accent-dim);color:var(--accent);}
+.pb-deferred{background:var(--red-dim);color:var(--red);}
+.pr-right{font-size:12.5px;color:var(--text2);line-height:1.6;}
+
+/* CUT TABLE */
+.cut-table-wrap{overflow-x:auto;margin:20px 0;border-radius:10px;border:1px solid var(--border);}
+.cut-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.cut-table thead tr{background:var(--bg3);}
+.cut-table thead th{padding:11px 14px;text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);border-bottom:1px solid var(--border);}
+.cut-table tbody tr{border-bottom:1px solid var(--border);}
+.cut-table tbody tr:last-child{border-bottom:none;}
+.cut-table tbody tr:hover{background:var(--bg3);}
+.cut-table td{padding:10px 14px;color:var(--text2);vertical-align:top;}
+.cut-table td:first-child{color:var(--text);font-weight:600;font-size:12.5px;white-space:nowrap;}
+
+/* USER FLOWS */
+.flow-card{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;}
+.flow-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.flow-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text3);}
+.flow-title{font-family:var(--display);font-size:1.15rem;color:var(--text);font-style:italic;}
+.flow-badge{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;padding:3px 7px;border-radius:10px;margin-left:auto;white-space:nowrap;}
+.flow-body{padding:16px 18px;}
+.flow-steps{display:flex;flex-direction:column;gap:8px;}
+.flow-step{display:flex;gap:12px;align-items:flex-start;}
+.fs-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);min-width:28px;flex-shrink:0;padding-top:1px;}
+.fs-content .fsc-title{font-weight:600;font-size:13px;color:var(--text);margin-bottom:2px;}
+.fs-content .fsc-detail{font-size:12px;color:var(--text3);line-height:1.45;}
+.flow-metric{margin-top:12px;padding:10px 14px;background:var(--accent-dim);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.5;}
+.flow-critical{margin-top:8px;padding:8px 12px;background:var(--red-dim);border-radius:6px;font-family:var(--mono);font-size:10.5px;color:var(--red);}
+
+/* BUILD TIMELINE */
+.timeline{margin:24px 0;position:relative;}
+.phase-block{margin-bottom:24px;}
+.phase-header{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.phase-badge{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:4px 10px;border-radius:4px;}
+.phase-title{font-weight:700;font-size:14px;color:var(--text);}
+.phase-days{font-family:var(--mono);font-size:11px;color:var(--text3);}
+.day-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.dc-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.dc-day{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);}
+.dc-title{font-size:12.5px;font-weight:600;color:var(--text);}
+.dc-body{padding:10px 14px;}
+.dc-body ul{list-style:none;padding:0;}
+.dc-body ul li{font-size:12px;color:var(--text2);padding:2px 0;display:flex;gap:6px;line-height:1.4;}
+.dc-body ul li::before{content:'›';color:var(--accent2);font-weight:700;flex-shrink:0;}
+.dc-deliverable{margin-top:8px;padding:7px 10px;background:var(--accent-dim);border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--accent);line-height:1.5;}
+
+/* RISK CARDS */
+.risk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:24px 0;}
+.risk-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.rc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.rc-num{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;}
+.rc-prob{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:10px;}
+.prob-low    {background:rgba(45,235,122,.12);color:var(--accent);}
+.prob-med    {background:rgba(240,192,64,.12);color:var(--gold);}
+.prob-high   {background:rgba(255,82,82,.12);color:var(--red);}
+.rc-title{font-weight:700;font-size:13px;color:var(--text);margin-bottom:8px;}
+.rc-desc{font-size:12.5px;color:var(--text2);margin-bottom:8px;line-height:1.55;max-width:100%;}
+.rc-mitigation{font-family:var(--mono);font-size:10.5px;color:var(--accent2);background:var(--accent-dim);padding:8px 10px;border-radius:5px;line-height:1.5;}
+
+/* QUALITY BAR */
+.quality-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:24px 0;}
+.quality-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.qc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.qc-title.works{color:var(--accent);}
+.qc-title.crashes{color:var(--red);}
+.qc-title.looks{color:var(--blue);}
+.qc-title.fast{color:var(--gold);}
+.qc-title.notneed{color:var(--text3);}
+.quality-card ul{list-style:none;padding:0;}
+.quality-card ul li{font-size:12.5px;color:var(--text2);padding:3px 0;display:flex;gap:8px;line-height:1.4;}
+.quality-card ul li::before{content:'☐';color:var(--accent);font-size:12px;flex-shrink:0;}
+.quality-card.no ul li::before{content:'✗';color:var(--text3);font-size:11px;flex-shrink:0;}
+
+/* TECHNICAL BOUNDARIES */
+.bounds-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;}
+.bound-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.bc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.bc-title.can{color:var(--accent);}
+.bc-title.cannot{color:var(--red);}
+.bound-card ul{list-style:none;padding:0;}
+.bound-card.can ul li{font-size:12.5px;color:var(--text2);padding:3px 0;display:flex;gap:7px;line-height:1.4;}
+.bound-card.can ul li::before{content:'✓';color:var(--accent);flex-shrink:0;}
+.bound-card.cannot ul li{font-size:12.5px;color:var(--text3);padding:3px 0;display:flex;gap:7px;line-height:1.4;}
+.bound-card.cannot ul li::before{content:'✗';color:var(--red);flex-shrink:0;}
+
+/* LAUNCH CHECKLIST */
+.launch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:24px 0;}
+.launch-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.lc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.lc-item{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:12.5px;color:var(--text2);line-height:1.4;}
+.lc-box{width:14px;height:14px;border:1px solid var(--border);border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.lc-box.tick{background:var(--accent-dim);border-color:var(--accent);}
+.lc-box.tick::after{content:'✓';font-size:9px;color:var(--accent);}
+
+/* POST-MVP ROADMAP */
+.roadmap-weeks{display:flex;flex-direction:column;gap:10px;margin:24px 0;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.rw-row{display:grid;grid-template-columns:100px 1fr;border-bottom:1px solid var(--border);}
+.rw-row:last-child{border-bottom:none;}
+.rw-label{background:var(--bg3);padding:16px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border);text-align:center;}
+.rw-label span{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;line-height:1.4;}
+.rw-content{padding:14px 18px;background:var(--card);}
+.rw-content .rwc-title{font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px;}
+.rw-content ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;}
+.rw-content ul li{font-size:11.5px;color:var(--text2);background:var(--bg3);border:1px solid var(--border);padding:3px 8px;border-radius:4px;}
+
+/* DOD (Definition of Done) */
+.dod-box{margin:48px 0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:40px;position:relative;overflow:hidden;}
+.dod-box::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(45,235,122,.06) 0%,transparent 70%);pointer-events:none;}
+.dod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;}
+.dod-col .dc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.dod-col ul{list-style:none;padding:0;}
+.dod-col ul li{font-size:13px;color:var(--text2);padding:4px 0;display:flex;gap:7px;line-height:1.4;}
+.dod-col ul li::before{content:'·';color:var(--accent);}
+.dod-footer{grid-column:1/-1;margin-top:8px;background:var(--accent-dim);padding:12px 16px;border-radius:7px;font-family:var(--mono);font-size:11.5px;color:var(--accent);text-align:center;line-height:1.6;}
+
+/* SUMMARY BOX */
+.summary-box{margin:48px 0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:40px;position:relative;overflow:hidden;}
+.summary-box::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(255,82,82,.04) 0%,transparent 70%);pointer-events:none;}
+.sumgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;position:relative;}
+.sumcol .sc-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.sumcol ul{list-style:none;padding:0;}
+.sumcol ul li{font-size:13px;color:var(--text2);padding:4px 0;display:flex;gap:7px;line-height:1.4;}
+.sumcol ul li::before{content:'·';color:var(--accent);}
+.sumcol p{font-size:13px;color:var(--text2);}
+.sumcol p strong{color:var(--accent);}
+.highlight-pill{display:block;margin-top:14px;background:var(--accent-dim);padding:10px 14px;border-radius:7px;font-family:var(--mono);font-size:11px;color:var(--accent);line-height:1.6;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px 40px;max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+footer span{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;}
+
+/* MOBILE */
+@media(max-width:480px){
+  body{font-size:14px;}
+  .report-header{padding:32px 0 28px;}
+  .hinner{padding:0 16px;}
+  .doc-meta{gap:8px;}
+  .report-header h1{font-size:1.8rem;}
+  .toc-bar .inner{padding:0 12px;}
+  .toc-bar a{padding:11px 9px;font-size:10px;}
+  .content{padding:0 16px 56px;}
+  section{padding:44px 0 0;}
+  h2{font-size:1.45rem;margin-bottom:18px;}
+  .hero-stats{grid-template-columns:1fr 1fr;padding-top:32px;}
+  .hs-value{font-size:1.5rem;}
+  .purpose-box{padding:18px;}
+  .assumptions-grid{grid-template-columns:1fr;}
+  .fcl-items{grid-template-columns:1fr;}
+  .ep-row{grid-template-columns:24px 1fr 80px;gap:6px;}
+  .ep-row>:last-child{display:none;}
+  .defer-table-wrap{margin:14px -4px;}
+  .cut-table-wrap{margin:14px -4px;}
+  .mockup-phone{max-width:100%;}
+  .pages-grid .page-row{grid-template-columns:1fr;}
+  .flow-header{flex-wrap:wrap;gap:8px;}
+  .flow-badge{margin-left:0;}
+  .day-cards{grid-template-columns:1fr;}
+  .risk-grid{grid-template-columns:1fr;}
+  .quality-grid{grid-template-columns:1fr;}
+  .bounds-grid{grid-template-columns:1fr;}
+  .launch-grid{grid-template-columns:1fr;}
+  .rw-row{grid-template-columns:1fr;}
+  .rw-label{border-right:none;border-bottom:1px solid var(--border);padding:10px 16px;justify-content:flex-start;}
+  .dod-grid{grid-template-columns:1fr;}
+  .sumgrid{grid-template-columns:1fr;}
+  .summary-box{padding:24px 16px;}
+  .dod-box{padding:24px 16px;}
+  footer{padding:20px 16px;flex-direction:column;gap:6px;text-align:center;}
+}
+@media(min-width:481px) and (max-width:768px){
+  .hinner{padding:0 24px;}
+  .content{padding:0 24px 64px;}
+  .toc-bar .inner{padding:0 20px;}
+  .assumptions-grid{grid-template-columns:1fr;}
+  .pages-grid .page-row{grid-template-columns:1fr;}
+  .dod-grid{grid-template-columns:1fr 1fr;}
+  .sumgrid{grid-template-columns:1fr;}
+  .bounds-grid{grid-template-columns:1fr;}
+  footer{padding:20px 24px;}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .hinner{padding:0 32px;}
+  .content{padding:0 32px 72px;}
+  .toc-bar .inner{padding:0 32px;}
+  footer{padding:22px 32px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="hinner">
+    <div class="doc-meta">
+      <span class="doc-num">Document #07</span>
+      <span>Version 1.0</span>
+      <span>March 2026</span>
+      <span>Author: Saurav Kumar</span>
+      <span class="tag">Final</span>
+    </div>
+    <h1><em>CricVeda</em> — MVP Scope</h1>
+    <p class="subtitle">The smallest version of CricVeda that solves a real problem, proves core assumptions, and can be built by one person in 14–18 days at $0 cost.</p>
+  </div>
+</header>
+
+<nav class="toc-bar">
+  <div class="inner">
+    <a href="#purpose">Purpose</a>
+    <a href="#assumptions">Assumptions</a>
+    <a href="#features">Features</a>
+    <a href="#endpoints">Endpoints</a>
+    <a href="#pages">Pages</a>
+    <a href="#matchdetail">Match Detail</a>
+    <a href="#cuts">Cuts</a>
+    <a href="#flows">User Flows</a>
+    <a href="#buildplan">Build Plan</a>
+    <a href="#boundaries">Boundaries</a>
+    <a href="#quality">Quality Bar</a>
+    <a href="#risks">Risks</a>
+    <a href="#postmvp">Post-MVP</a>
+    <a href="#launch">Launch Criteria</a>
+    <a href="#dod">Definition of Done</a>
+  </div>
+</nav>
+
+<div class="content">
+
+<!-- HERO STATS -->
+<div class="hero-stats">
+  <div class="hs-card"><div class="hs-value">14–18</div><div class="hs-label">Working Days to Build</div></div>
+  <div class="hs-card"><div class="hs-value">31</div><div class="hs-label">MVP Features (of 50+ in PRD)</div></div>
+  <div class="hs-card"><div class="hs-value">14</div><div class="hs-label">API Endpoints (of 18)</div></div>
+  <div class="hs-card"><div class="hs-value">6</div><div class="hs-label">Dashboard Pages (of 8)</div></div>
+  <div class="hs-card"><div class="hs-value">$0</div><div class="hs-label">Infrastructure Cost</div></div>
+  <div class="hs-card"><div class="hs-value">5</div><div class="hs-label">Core Assumptions to Validate</div></div>
+</div>
+
+<!-- SECTION 1: PURPOSE -->
+<section id="purpose">
+  <div class="section-label">Section 01</div>
+  <h2>Purpose of This Document</h2>
+  <div class="purpose-box">
+    <p>The PRD (Document #06) defines EVERYTHING the product could do. <strong>This document defines what ships FIRST.</strong></p>
+    <p>MVP = the smallest version of CricVeda that: solves a real problem for real users · is good enough to get honest feedback · proves (or disproves) our core assumptions · can be built by one person in ~2–3 weeks · costs $0 to run · is NOT embarrassing to show publicly.</p>
+    <p>This document makes HARD CUTS. If it's not listed here, it does NOT ship in MVP. No scope creep. No "just one more feature."</p>
+    <div class="mvp-rule">THE ENEMY OF SHIPPING IS "ALMOST DONE." MVP SHIPS INCOMPLETE BUT USEFUL.</div>
+  </div>
+</section>
+
+<!-- SECTION 2: ASSUMPTIONS -->
+<section id="assumptions">
+  <div class="section-label">Section 02</div>
+  <h2>Core Assumptions We're Testing</h2>
+  <p>The MVP exists to validate these 5 assumptions. If any of them are wrong, we learn faster by shipping than by continuing to build.</p>
+  <div class="assumptions-grid">
+    <div class="assumption-card">
+      <div class="ac-header"><div class="ac-num">Assumption 1</div><div class="ac-title">Cross-league form scoring is valuable</div></div>
+      <div class="ac-body">
+        <div class="ac-hypothesis">"Fantasy users will find cross-league T20 form scores more useful than single-league stats."</div>
+        <div class="ac-test">How we test</div>
+        <ul class="ac-items"><li>Do users return for second match?</li><li>Do they share form scores?</li><li>Do creators cite form scores in content?</li></ul>
+        <div class="ac-kill">Killed if: Users say "I don't care about BBL form for IPL picks" or ignore form scores entirely.</div>
+      </div>
+    </div>
+    <div class="assumption-card">
+      <div class="ac-header"><div class="ac-num">Assumption 2</div><div class="ac-title">Matchup data drives fantasy decisions</div></div>
+      <div class="ac-body">
+        <div class="ac-hypothesis">"Users will change their fantasy picks based on specific matchup data they couldn't access before."</div>
+        <div class="ac-test">How we test</div>
+        <ul class="ac-items"><li>Is matchup endpoint among top 3 used?</li><li>Do users mention matchups in feedback?</li></ul>
+        <div class="ac-kill">Killed if: Nobody uses matchup endpoint, or data is too sparse to be useful.</div>
+      </div>
+    </div>
+    <div class="assumption-card">
+      <div class="ac-header"><div class="ac-num">Assumption 3</div><div class="ac-title">API delivery model works for cricket</div></div>
+      <div class="ac-body">
+        <div class="ac-hypothesis">"Developers and platforms will integrate a cricket intelligence API into their products."</div>
+        <div class="ac-test">How we test</div>
+        <ul class="ac-items"><li>Do developers sign up and make API calls?</li><li>Do any B2B inquiries come in within 3 months?</li></ul>
+        <div class="ac-kill">Killed if: Nobody uses the API — everyone prefers the dashboard. API-first model is wrong.</div>
+      </div>
+    </div>
+    <div class="assumption-card">
+      <div class="ac-header"><div class="ac-num">Assumption 4</div><div class="ac-title">Free CricSheet data is sufficient</div></div>
+      <div class="ac-body">
+        <div class="ac-hypothesis">"Ball-by-ball data from CricSheet, enriched with free metadata sources, produces insights accurate enough that users trust and act on them."</div>
+        <div class="ac-test">How we test</div>
+        <ul class="ac-items"><li>Algorithm accuracy tracking (predictions vs actuals)</li><li>User trust scores in feedback surveys</li></ul>
+        <div class="ac-kill">Killed if: Data gaps too large. Form scores wildly inaccurate. Users say "this data is wrong."</div>
+      </div>
+    </div>
+    <div class="assumption-card">
+      <div class="ac-header"><div class="ac-num">Assumption 5</div><div class="ac-title">Manual operations are sustainable</div></div>
+      <div class="ac-body">
+        <div class="ac-hypothesis">"One person can maintain playing XI updates, fixture management, and data quality for an active T20 league."</div>
+        <div class="ac-test">How we test</div>
+        <ul class="ac-items"><li>Operator burnout tracking · time per match</li><li>Missed updates during live league</li></ul>
+        <div class="ac-kill">Killed if: Operator can't keep up with match-day pace, data goes stale, users lose trust.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: MVP FEATURES -->
+<section id="features">
+  <div class="section-label">Section 03</div>
+  <h2>What's IN the MVP — Complete Feature List</h2>
+  <p>Every feature below MUST ship. Nothing else ships.</p>
+
+  <div class="feature-checklist">
+    <!-- Data Pipeline -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--accent-dim);color:var(--accent);">D</span>
+        <span class="fcl-group-name">Data Pipeline</span>
+        <span class="fcl-count">6 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>D1. CricSheet ingestion (all T20 leagues)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>D2. Player metadata enrichment (4-layer automated)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>D3. Fixture CSV upload</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>D4. Playing XI management (admin)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>D5. Pre-computation engine</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>D6. Daily cron for data refresh</div>
+      </div>
+    </div>
+    <!-- Analytics Engine -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--gold-dim);color:var(--gold);">A</span>
+        <span class="fcl-group-name">Analytics Engine</span>
+        <span class="fcl-count">7 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>A1. Form score calculator (cross-league weighted)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A2. Batter-vs-bowler matchup calculator</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A3. Venue statistics aggregator</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A4. Fantasy points estimator (Dream11 rules)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A5. Dream team generator</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A6. Captain picker (top 3 with reasoning)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>A7. Confidence scorer</div>
+      </div>
+    </div>
+    <!-- API -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--blue-dim);color:var(--blue);">P</span>
+        <span class="fcl-group-name">API</span>
+        <span class="fcl-count">5 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>P1. 14 core endpoints</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>P2. API key generation and validation</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>P3. Rate limiting (free: 100/day, pro: 5,000/day)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>P4. Consistent JSON response format</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>P5. Error handling with standard codes</div>
+      </div>
+    </div>
+    <!-- Dashboard -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--purple-dim);color:var(--purple);">U</span>
+        <span class="fcl-group-name">Dashboard</span>
+        <span class="fcl-count">6 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>U1. Landing page</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>U2. Signup / Login (Supabase Auth)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>U3. User dashboard (API key + usage)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>U4. Match listing page</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>U5. Match detail page (insights + dream team)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>U6. API documentation (auto-generated)</div>
+      </div>
+    </div>
+    <!-- Admin -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--orange-dim);color:var(--orange);">O</span>
+        <span class="fcl-group-name">Admin</span>
+        <span class="fcl-count">3 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>O1. Playing XI update interface</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>O2. Fixture management (add/edit)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>O3. Recomputation trigger</div>
+      </div>
+    </div>
+    <!-- Infrastructure -->
+    <div class="fcl-group">
+      <div class="fcl-header">
+        <span class="fcl-group-id" style="background:var(--teal-dim);color:var(--teal);">I</span>
+        <span class="fcl-group-name">Infrastructure</span>
+        <span class="fcl-count">5 features</span>
+      </div>
+      <div class="fcl-items">
+        <div class="fcl-item"><div class="checkbox todo"></div>I1. Vercel deployment (dashboard + API)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>I2. Supabase database + auth</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>I3. Upstash Redis (cache + rate limiting)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>I4. GitHub Actions (daily cron)</div>
+        <div class="fcl-item"><div class="checkbox todo"></div>I5. GitHub Pages (static docs if needed)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: ENDPOINTS -->
+<section id="endpoints">
+  <div class="section-label">Section 04</div>
+  <h2>MVP Endpoints — 14 of 18</h2>
+
+  <div class="ep-section">
+    <div class="ep-group">
+      <div class="ep-group-header">Player Endpoints — 5 of 6 ship in MVP</div>
+      <div class="ep-row"><span class="ep-num">1</span><span class="ep-path">GET /api/v1/players</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">2</span><span class="ep-path">GET /api/v1/players/{id}</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">3</span><span class="ep-path">GET /api/v1/players/{id}/form</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">4</span><span class="ep-path">GET /api/v1/players/{id}/venue-stats</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">5</span><span class="ep-path">GET /api/v1/players/{id}/vs-team</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+    </div>
+    <div class="ep-group">
+      <div class="ep-group-header">Matchup Endpoints — 2 of 3 ship in MVP</div>
+      <div class="ep-row"><span class="ep-num">6</span><span class="ep-path">GET /api/v1/matchups/batter-vs-bowler</span><span class="tier-pill tp-split">Free (top 3) / Pro</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">7</span><span class="ep-path">GET /api/v1/matchups/team-vs-team</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+    </div>
+    <div class="ep-group">
+      <div class="ep-group-header">Match Endpoints — All 4 ship in MVP</div>
+      <div class="ep-row"><span class="ep-num">8</span><span class="ep-path">GET /api/v1/matches</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">9</span><span class="ep-path">GET /api/v1/matches/{id}</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">10</span><span class="ep-path">GET /api/v1/matches/{id}/insights</span><span class="tier-pill tp-split">Free (basic) / Pro</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">11</span><span class="ep-path">GET /api/v1/matches/{id}/playing-xi</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+    </div>
+    <div class="ep-group">
+      <div class="ep-group-header">Fantasy Endpoints — 2 of 3 ship in MVP</div>
+      <div class="ep-row"><span class="ep-num">12</span><span class="ep-path">GET /api/v1/fantasy/{match_id}/dream-team</span><span class="tier-pill tp-pro">Pro</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+      <div class="ep-row"><span class="ep-num">13</span><span class="ep-path">GET /api/v1/fantasy/{match_id}/captain-picks</span><span class="tier-pill tp-pro">Pro</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+    </div>
+    <div class="ep-group">
+      <div class="ep-group-header">Utility — Ships in MVP</div>
+      <div class="ep-row"><span class="ep-num">14</span><span class="ep-path">GET /api/v1/health</span><span class="tier-pill tp-free">Free</span><span style="font-size:11px;color:var(--text3);">Ships</span></div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--body);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:24px 0 12px;">Deferred to Post-MVP — 4 Endpoints</h3>
+  <div class="defer-table-wrap">
+    <table class="defer-table">
+      <thead><tr><th>ID</th><th>Endpoint</th><th>Why Deferred</th></tr></thead>
+      <tbody>
+        <tr><td>D1</td><td>/players/{id}/vs-bowler-type</td><td>Requires 80%+ bowling_type metadata coverage. Ship when coverage reaches threshold.</td></tr>
+        <tr><td>D2</td><td>/matchups/{match_id}/key-battles</td><td>Depends on confirmed XI + rich H2H data. Individual batter-vs-bowler endpoint covers core need. Ship Week 3.</td></tr>
+        <tr><td>D3</td><td>/fantasy/{match_id}/differentials</td><td>Requires ownership estimation model. Captain picks + dream team cover the core need. Ship Week 3–4.</td></tr>
+        <tr><td>D4</td><td>/venues/{id}</td><td>Venue data already embedded in match insights. Standalone endpoint is lower initial value. Ship Week 3.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 5: PAGES -->
+<section id="pages">
+  <div class="section-label">Section 05</div>
+  <h2>Dashboard Pages — 6 of 8</h2>
+  <div class="pages-grid">
+    <div class="page-row"><div class="pr-left"><div class="pr-name ships">Landing Page</div><div class="pr-url">/</div><span class="pr-badge pb-ships">Ships</span></div><div class="pr-right">Hero + tagline + 3 value props · sample insight (static or live) · pricing table · "Get API Key" CTA · CricSheet attribution footer · Mobile responsive</div></div>
+    <div class="page-row"><div class="pr-left"><div class="pr-name ships">Auth</div><div class="pr-url">/signup &nbsp;/login</div><span class="pr-badge pb-ships">Ships</span></div><div class="pr-right">Email + password signup/login · GitHub OAuth = nice-to-have (defer if adds &gt;2 hours) · Redirect to dashboard on success</div></div>
+    <div class="page-row"><div class="pr-left"><div class="pr-name ships">User Dashboard</div><div class="pr-url">/dashboard</div><span class="pr-badge pb-ships">Ships</span></div><div class="pr-right">API key (masked + copy button) · Usage counter "X/100 today" · Plan badge · Regenerate key · Links to Docs and Matches · NO upgrade flow in MVP — Pro = manual (contact us)</div></div>
+    <div class="page-row"><div class="pr-left"><div class="pr-name ships">Match Listing</div><div class="pr-url">/matches</div><span class="pr-badge pb-ships">Ships</span></div><div class="pr-right">All upcoming matches first · teams, date, venue, league badge, status · Filter by league · Click → match detail · Mobile: stacked cards</div></div>
+    <div class="page-row" style="border:2px solid var(--accent);"><div class="pr-left"><div class="pr-name ships">Match Detail ⭐</div><div class="pr-url">/matches/[id]</div><span class="pr-badge pb-ships">Ships — THE core page</span></div><div class="pr-right">THE most important page. Venue analysis · Playing XI · Player ratings table (all 22 sorted by form score with trend) · Dream team (Pro-gated) · Captain picks (Pro-gated) · Team H2H · Attribution footer · All collapsible on mobile</div></div>
+    <div class="page-row"><div class="pr-left"><div class="pr-name ships">API Docs</div><div class="pr-url">/docs</div><span class="pr-badge pb-ships">Ships</span></div><div class="pr-right">Auto-generated Swagger UI · All 14 MVP endpoints · Try-it-live · Auth instructions · Code samples: cURL + Python + JS</div></div>
+    <div class="page-row deferred"><div class="pr-left"><div class="pr-name deferred">Player Profile</div><div class="pr-url">/players/[id]</div><span class="pr-badge pb-deferred">Deferred Week 3</span></div><div class="pr-right">Form data accessible via match detail and API. Dedicated page adds 1–2 days of work.</div></div>
+    <div class="page-row deferred"><div class="pr-left"><div class="pr-name deferred">API Playground</div><div class="pr-url">/playground</div><span class="pr-badge pb-deferred">Deferred Week 3–4</span></div><div class="pr-right">Swagger try-it covers 80% of playground needs. Custom playground is polish, not core.</div></div>
+  </div>
+</section>
+
+<!-- SECTION 6: MATCH DETAIL MOCKUP -->
+<section id="matchdetail">
+  <div class="section-label">Section 06</div>
+  <h2>Match Detail Page — MVP Specification</h2>
+  <p>If only one page works perfectly, it's this one. This is the core user-facing experience.</p>
+  <div class="mockup-phone">
+    <div class="mkp-bar"><span style="font-size:16px;">🏏</span><div class="mkp-title">MI vs CSK — IPL 2025 Match 34</div></div>
+
+    <div class="mkp-section">
+      <div class="mkp-section-header"><span class="mkp-section-title">📍 Venue Analysis</span><span class="mkp-section-badge" style="background:var(--accent-dim);color:var(--accent);">Wankhede</span></div>
+      <div class="mkp-content">
+        <div class="mkp-row"><span>Avg 1st innings</span><span>172</span></div>
+        <div class="mkp-row"><span>Chase win %</span><span>54%</span></div>
+        <div class="mkp-row"><span>Pace wickets</span><span>62%</span></div>
+        <div class="mkp-row"><span>Profile</span><span>🏏 Batting Friendly</span></div>
+        <div class="mkp-row"><span>Toss advice</span><span>Field first (dew)</span></div>
+      </div>
+    </div>
+
+    <div class="mkp-section">
+      <div class="mkp-section-header"><span class="mkp-section-title">📋 Player Ratings (sorted by form)</span><span class="mkp-section-badge" style="background:var(--blue-dim);color:var(--blue);">22 players</span></div>
+      <div class="mkp-content">
+        <div class="mkp-player-row"><span class="mkp-pname">J Bumrah</span><span class="mkp-pteam">MI</span><span class="mkp-score" style="color:var(--accent);">9.2</span><span class="mkp-trend">↑</span></div>
+        <div class="mkp-player-row"><span class="mkp-pname">SK Yadav</span><span class="mkp-pteam">MI</span><span class="mkp-score" style="color:var(--accent);">8.7</span><span class="mkp-trend">↑</span></div>
+        <div class="mkp-player-row"><span class="mkp-pname">R Gaikwad</span><span class="mkp-pteam">CSK</span><span class="mkp-score" style="color:var(--accent);">8.1</span><span class="mkp-trend">→</span></div>
+        <div class="mkp-player-row"><span class="mkp-pname">R Jadeja</span><span class="mkp-pteam">CSK</span><span class="mkp-score" style="color:var(--gold);">7.8</span><span class="mkp-trend">→</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);padding-top:6px;">+ 18 more players · Click row to expand</div>
+      </div>
+    </div>
+
+    <div class="mkp-section">
+      <div class="mkp-section-header"><span class="mkp-section-title">👑 Captain Picks</span><span class="mkp-section-badge" style="background:var(--gold-dim);color:var(--gold);">Pro</span></div>
+      <div class="mkp-content">
+        <div class="mkp-captain-box">
+          <div class="mkp-c-label">#1 — Confidence 0.88</div>
+          <div class="mkp-c-name">Suryakumar Yadav</div>
+          <div class="mkp-c-reason">Form 8.7 · Venue avg 52, SR 158 · CSK spin-heavy → SKY SR 168 vs spin · Risk: LOW</div>
+        </div>
+        <div class="mkp-lock">FREE users see #1 pick name only · Upgrade to Pro for full reasoning + #2 and #3 →</div>
+      </div>
+    </div>
+
+    <div class="mkp-section">
+      <div class="mkp-section-header"><span class="mkp-section-title">🏆 Dream Team</span><span class="mkp-section-badge" style="background:var(--gold-dim);color:var(--gold);">Pro</span></div>
+      <div class="mkp-content">
+        <div class="mkp-lock">FREE users see top 3 picks only · Pro unlocks full XI with reasoning · Expected 485 pts · Confidence 0.78</div>
+      </div>
+    </div>
+
+    <div class="mkp-section">
+      <div class="mkp-section-header"><span class="mkp-section-title">⚔️ MI vs CSK — Head to Head</span></div>
+      <div class="mkp-content">
+        <div class="mkp-row"><span>Total matches</span><span>36</span></div>
+        <div class="mkp-row"><span>MI wins</span><span>20</span></div>
+        <div class="mkp-row"><span>CSK wins</span><span>16</span></div>
+        <div class="mkp-row"><span>Last 5</span><span>MI CSK MI MI CSK</span></div>
+      </div>
+    </div>
+
+    <div class="mkp-section" style="background:var(--bg3);">
+      <div class="mkp-content" style="font-family:var(--mono);font-size:10px;color:var(--text3);">
+        Data: CricSheet (CC BY 4.0) · Wikidata (CC0) · Analysis: CricVeda · Last updated: 15 Apr 2025, 5:30 PM IST
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: WHAT'S CUT -->
+<section id="cuts">
+  <div class="section-label">Section 07</div>
+  <h2>What's NOT in the MVP</h2>
+  <p>These features are valuable but ship LATER. Cutting them is a <strong>deliberate choice</strong>, not an oversight. Estimated time saved: 3–4 weeks.</p>
+  <div class="cut-table-wrap">
+    <table class="cut-table">
+      <thead><tr><th>Feature Cut</th><th>Why It's Cut</th></tr></thead>
+      <tbody>
+        <tr><td>Player Profile Page</td><td>Form data accessible via match detail and API. Dedicated page adds 1–2 days. Ship Week 3.</td></tr>
+        <tr><td>API Playground</td><td>Swagger try-it covers 80% of playground needs. Custom playground is polish, not core.</td></tr>
+        <tr><td>Differential Finder endpoint</td><td>Requires ownership estimation model. Captain picks + dream team cover the core need.</td></tr>
+        <tr><td>Key Battles endpoint</td><td>Batter-vs-bowler endpoint covers individual lookups. Auto-aggregation is Week 3 work.</td></tr>
+        <tr><td>vs-bowler-type endpoint</td><td>Requires 80%+ bowling_type metadata coverage. Ship when coverage is sufficient.</td></tr>
+        <tr><td>Phase performance analyzer</td><td>Form score already captures overall performance. Extra surface area for MVP.</td></tr>
+        <tr><td>GitHub OAuth login</td><td>Email + password is enough. OAuth adds complexity without adding core value.</td></tr>
+        <tr><td>Payment / Stripe integration</td><td>Pro upgrades are MANUAL in MVP. User contacts you, you upgrade in admin panel.</td></tr>
+        <tr><td>Weather integration</td><td>Nice-to-have in match insights. Not critical for fantasy picks. Ship Week 3.</td></tr>
+        <tr><td>System health monitor (admin)</td><td>Check Supabase and Vercel dashboards directly. Custom monitor is polish.</td></tr>
+        <tr><td>User management (admin)</td><td>With &lt;100 users at launch, manage via Supabase dashboard directly.</td></tr>
+        <tr><td>Email notifications</td><td>No welcome email, no alerts in MVP. Manual communication. Ship later.</td></tr>
+        <tr><td>Share buttons</td><td>Users can copy URL. WhatsApp/Twitter share is polish. Ship Week 3.</td></tr>
+        <tr><td>Dark mode</td><td>Cosmetic. Ship never (or when users demand it).</td></tr>
+        <tr><td>Mobile native app</td><td>Responsive web dashboard serves mobile users. Native app is Phase 2+.</td></tr>
+        <tr><td>Status page</td><td>Use BetterStack free tier external page. No custom build needed.</td></tr>
+        <tr><td>India micro-tier (₹99/month)</td><td>Validate Pro tier demand first. Add micro when conversion data exists.</td></tr>
+        <tr><td>Accuracy tracking dashboard</td><td>Track manually in spreadsheet for first season. Automated tracking is Month 2–3.</td></tr>
+        <tr><td>Multiple dream team variants</td><td>One dream team is enough for MVP. Variants add complexity. Ship Month 2.</td></tr>
+        <tr><td>Webhook support</td><td>B2B feature. No B2B customers yet. Ship when first platform asks.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 8: USER FLOWS -->
+<section id="flows">
+  <div class="section-label">Section 08</div>
+  <h2>MVP User Flows</h2>
+
+  <div class="flow-card">
+    <div class="flow-header"><span class="flow-num">Flow 1</span><span class="flow-title">New User (Rahul discovers CricVeda)</span><span class="flow-badge" style="background:rgba(45,235,122,.12);color:var(--accent);">Critical Path</span></div>
+    <div class="flow-body">
+      <div class="flow-steps">
+        <div class="flow-step"><div class="fs-num">1</div><div class="fs-content"><div class="fsc-title">Discovery</div><div class="fsc-detail">Sees CricVeda on Twitter/Reddit/YouTube → clicks link → lands on cricveda.com</div></div></div>
+        <div class="flow-step"><div class="fs-num">2</div><div class="fs-content"><div class="fsc-title">Landing Page</div><div class="fsc-detail">Reads tagline · sees 3 value props · sample data · pricing · clicks "Get Free API Key" or "View Today's Matches"</div></div></div>
+        <div class="flow-step"><div class="fs-num">3A</div><div class="fs-content"><div class="fsc-title">API Path — Signup → Dashboard → Docs → First call</div><div class="fsc-detail">Gets API key → copies it → reads docs → makes first cURL call → "This is useful!" moment</div></div></div>
+        <div class="flow-step"><div class="fs-num">3B</div><div class="fs-content"><div class="fsc-title">Dashboard Path — Signup → Matches → Match Detail</div><div class="fsc-detail">Clicks "Today's Matches" → selects tonight's match → sees venue analysis, player ratings, dream team → "This is useful!" moment</div></div></div>
+        <div class="flow-step"><div class="fs-num">4</div><div class="fs-content"><div class="fsc-title">Return</div><div class="fsc-detail">Next match day → comes back → uses CricVeda picks → team performs well → trust builds → returns again → considers Pro upgrade</div></div></div>
+      </div>
+      <div class="flow-metric">Time to value: &lt;5 minutes from landing page · Critical path: Landing → Signup → Match Detail</div>
+      <div class="flow-critical">IF THIS PATH BREAKS, NOTHING ELSE MATTERS.</div>
+    </div>
+  </div>
+
+  <div class="flow-card">
+    <div class="flow-header"><span class="flow-num">Flow 2</span><span class="flow-title">Match Day (Priya, regular user)</span><span class="flow-badge" style="background:rgba(91,156,246,.12);color:var(--blue);">Core Use Case</span></div>
+    <div class="flow-body">
+      <div class="flow-steps">
+        <div class="flow-step"><div class="fs-num">1</div><div class="fs-content"><div class="fsc-title">6:00 PM — Opens /matches</div><div class="fsc-detail">Sees tonight's match at top · status shows ⚠️ Predicted XI or ✅ Confirmed XI · clicks match card</div></div></div>
+        <div class="flow-step"><div class="fs-num">2</div><div class="fs-content"><div class="fsc-title">Match Detail (3–5 minutes)</div><div class="fsc-detail">Scans venue analysis → player ratings (form scores + trend arrows) → Dream Team → Captain picks with reasoning → Team H2H</div></div></div>
+        <div class="flow-step"><div class="fs-num">3</div><div class="fs-content"><div class="fsc-title">Builds fantasy team</div><div class="fsc-detail">Opens Dream11 → uses CricVeda dream team as starting point → 1–2 personal adjustments → uses CricVeda captain recommendation → submits</div></div></div>
+        <div class="flow-step"><div class="fs-num">4</div><div class="fs-content"><div class="fsc-title">Post-match</div><div class="fsc-detail">Checks if CricVeda picks performed. If yes: trust increases, shares with friend. If no: understands why (matchup was sound, cricket variance).</div></div></div>
+      </div>
+      <div class="flow-metric">Total user time: 3–5 minutes (vs 30–45 min without CricVeda)</div>
+    </div>
+  </div>
+
+  <div class="flow-card">
+    <div class="flow-header"><span class="flow-num">Flow 3</span><span class="flow-title">Admin Match Day Workflow</span><span class="flow-badge" style="background:rgba(255,140,66,.12);color:var(--orange);">Operator</span></div>
+    <div class="flow-body">
+      <div class="flow-steps">
+        <div class="flow-step"><div class="fs-num">1</div><div class="fs-content"><div class="fsc-title">6:00–6:30 PM — Check XI (2 min)</div><div class="fsc-detail">Check Twitter / Cricbuzz for XI announcement. If not announced → predicted XI already in system.</div></div></div>
+        <div class="flow-step"><div class="fs-num">2</div><div class="fs-content"><div class="fsc-title">Update Playing XI (2–3 min)</div><div class="fsc-detail">Open /admin → select match → Team 1: check 11 players → set Confirmed → Team 2: same → Save & Recompute → wait 30–60 seconds → verify match detail updated</div></div></div>
+        <div class="flow-step"><div class="fs-num">3</div><div class="fs-content"><div class="fsc-title">Monitor (1 min)</div><div class="fsc-detail">Check health endpoint · glance at match detail page (looks correct?) · done.</div></div></div>
+      </div>
+      <div class="flow-metric">Total per match: 3–5 minutes · Typical matches/day: 1–2 · Daily time: 5–10 minutes · 74 IPL matches × 5 min = 6 hours across entire IPL season — SUSTAINABLE.</div>
+    </div>
+  </div>
+
+  <div class="flow-card">
+    <div class="flow-header"><span class="flow-num">Flow 4</span><span class="flow-title">Developer Integration</span><span class="flow-badge" style="background:rgba(176,108,245,.12);color:var(--purple);">API User</span></div>
+    <div class="flow-body">
+      <div class="flow-steps">
+        <div class="flow-step"><div class="fs-num">1</div><div class="fs-content"><div class="fsc-title">Discovery → Explore Docs</div><div class="fsc-detail">Finds CricVeda via Google / Twitter / HN → visits /docs → reads endpoints → tries "Try It" on Swagger (GET /health) → clicks "Get API Key"</div></div></div>
+        <div class="flow-step"><div class="fs-num">2</div><div class="fs-content"><div class="fsc-title">First Real Call</div><div class="fsc-detail">curl -H "X-API-Key: cv_live_xxxx" cricveda.com/api/v1/players/virat-kohli/form → gets JSON with form score → "This is exactly what I need" moment</div></div></div>
+        <div class="flow-step"><div class="fs-num">3</div><div class="fs-content"><div class="fsc-title">Integration</div><div class="fsc-detail">Builds into their app/bot. Free tier (100/day) sufficient for testing. If project grows → hits limit → considers Pro.</div></div></div>
+      </div>
+      <div class="flow-metric">KEY METRIC: Time from signup to first successful API call · TARGET: &lt;2 minutes</div>
+      <div class="flow-critical">IF THIS IS SLOW OR CONFUSING, WE LOSE DEVELOPERS.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: BUILD PLAN -->
+<section id="buildplan">
+  <div class="section-label">Section 09</div>
+  <h2>MVP Build Plan — 14–18 Working Days</h2>
+
+  <div class="timeline">
+    <!-- PHASE 1 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--accent-dim);color:var(--accent);">Phase 1</span>
+        <span class="phase-title">Data Foundation</span>
+        <span class="phase-days">Days 1–4</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 1</span><span class="dc-title">Project Setup + CricSheet Download</span></div><div class="dc-body"><ul><li>Next.js + TypeScript + Supabase + Upstash setup</li><li>Database schema SQL executed</li><li>CricSheet T20 datasets downloaded + inspected</li></ul><div class="dc-deliverable">Empty DB with schema, CricSheet files on disk, project scaffolded</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 2</span><span class="dc-title">CricSheet Parser + Initial Load</span></div><div class="dc-body"><ul><li>JSON parser: match info + innings + deliveries + player IDs</li><li>Run parser on all ~4,500 T20 matches</li><li>Verify: match count, player count, delivery spot-check</li></ul><div class="dc-deliverable">4,500+ matches, 3,500+ players, 500K+ deliveries in Supabase</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 3</span><span class="dc-title">Player Metadata Enrichment</span></div><div class="dc-body"><ul><li>Layer 1: country + role from match data</li><li>Layer 2: Wikidata SPARQL (batting/bowling style)</li><li>Layer 3: CricAPI batch fill starts (100/day)</li><li>Layer 4: smart defaults for remaining gaps</li></ul><div class="dc-deliverable">70%+ players with full metadata, 100% with role</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 4</span><span class="dc-title">Fixtures + Squads + Manual Data</span></div><div class="dc-body"><ul><li>CSV templates: schedule + squads + venues</li><li>CSV upload script (idempotent, error reporting)</li><li>Upload target league fixtures + squads</li></ul><div class="dc-deliverable">Upcoming matches in DB, squads populated, ready for analytics</div></div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--gold-dim);color:var(--gold);">Phase 2</span>
+        <span class="phase-title">Analytics Engine</span>
+        <span class="phase-days">Days 5–7</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 5</span><span class="dc-title">Form Score Algorithm</span></div><div class="dc-body"><ul><li>Weighted multi-league form calculator (5 layers, batting + bowling)</li><li>Trend detection (rising/stable/declining)</li><li>Consistency index + confidence scoring</li><li>Test with 10 known players — verify cross-league diff</li></ul><div class="dc-deliverable">Form scores computed for all squad players, manually verified</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 6</span><span class="dc-title">Matchup + Venue Calculators</span></div><div class="dc-body"><ul><li>Batter-vs-bowler H2H (all T20 leagues combined)</li><li>Venue stats aggregator (pace/spin split, phase breakdown)</li><li>Team-vs-team H2H</li><li>Test 5 known matchup pairs + 3 venues</li></ul><div class="dc-deliverable">Matchup and venue functions working, verified against known data</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 7</span><span class="dc-title">Fantasy Engine (Dream Team + Captain)</span></div><div class="dc-body"><ul><li>Dream11 scoring rules (configurable)</li><li>Fantasy points estimator (expected + ceiling + floor)</li><li>Dream team generator (constraint solver, role counts)</li><li>Captain picker (top 3, reasoning, anti-pick warning)</li></ul><div class="dc-deliverable">Fantasy engine end-to-end: dream team + captain picks working</div></div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--blue-dim);color:var(--blue);">Phase 3</span>
+        <span class="phase-title">API Layer</span>
+        <span class="phase-days">Days 8–10</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 8</span><span class="dc-title">Pre-Computation + Caching</span></div><div class="dc-body"><ul><li>Pre-compute pipeline: form scores + match insights + fantasy recs</li><li>Redis cache layer (Upstash) with TTL management</li><li>Cache invalidation on XI change</li><li>GitHub Actions cron: daily ingest + recompute</li></ul><div class="dc-deliverable">Pre-computation working, cron configured and tested</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 9</span><span class="dc-title">API Batch 1 — 8 Endpoints</span></div><div class="dc-body"><ul><li>Middleware: key validation + rate limiting + error handling + CORS</li><li>/health, /players, /players/{id}, /players/{id}/form</li><li>/matches, /matches/{id}, /matches/{id}/insights, /playing-xi</li><li>Test via cURL: valid/invalid key/missing player/rate exceed</li></ul><div class="dc-deliverable">8 endpoints working, tested end-to-end</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 10</span><span class="dc-title">API Batch 2 — 6 Endpoints + Plan Gating</span></div><div class="dc-body"><ul><li>/players/{id}/venue-stats, /vs-team</li><li>/matchups/batter-vs-bowler, /team-vs-team</li><li>/fantasy/{match_id}/dream-team, /captain-picks</li><li>Plan-based access control (Free/Pro/403)</li><li>OpenAPI/Swagger spec generated</li></ul><div class="dc-deliverable">All 14 endpoints working with auth + rate limiting + plan gating</div></div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--purple-dim);color:var(--purple);">Phase 4</span>
+        <span class="phase-title">Dashboard</span>
+        <span class="phase-days">Days 11–13</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 11</span><span class="dc-title">Landing + Auth + User Dashboard</span></div><div class="dc-body"><ul><li>Landing: hero + value props + sample insight + pricing + CTA</li><li>Auth: signup/login (Supabase Auth) + redirects</li><li>Dashboard: API key display + copy + usage counter + plan badge</li></ul><div class="dc-deliverable">Landing, auth, dashboard pages working and mobile responsive</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 12</span><span class="dc-title">Match Listing + Match Detail</span></div><div class="dc-body"><ul><li>Match listing: cards with league filter, status badges</li><li>Match detail: THE most important page (see spec)</li><li>Player ratings table + venue card + dream team + captain + H2H</li><li>Test on real phone (not browser resize)</li></ul><div class="dc-deliverable">Match pages working, mobile-tested on real device</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 13</span><span class="dc-title">API Docs + Swagger UI</span></div><div class="dc-body"><ul><li>Swagger UI at /docs from OpenAPI spec</li><li>Try-it-live functionality</li><li>Code samples: cURL + Python + JS</li><li>Getting Started guide (signup → key → first call in 2 min)</li></ul><div class="dc-deliverable">Interactive API docs live at /docs</div></div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--orange-dim);color:var(--orange);">Phase 5</span>
+        <span class="phase-title">Admin + Deploy</span>
+        <span class="phase-days">Days 14–16</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 14</span><span class="dc-title">Admin Panel (3 screens)</span></div><div class="dc-body"><ul><li>Playing XI manager: match selector + squad checkboxes + save trigger</li><li>Fixture manager: list + add + CSV upload</li><li>Recomputation trigger + status display</li><li>Test full admin workflow (&lt;5 min)</li></ul><div class="dc-deliverable">Admin panel working, operator can manage matches and XI independently</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 15</span><span class="dc-title">Integration Testing + Edge Cases</span></div><div class="dc-body"><ul><li>Full E2E: signup → key → call → response</li><li>Rate limit (101st call = 429) · invalid key = 401 · Pro endpoint free = 403</li><li>Edge cases: no matches, debutant, no XI, &lt;6 balls H2H</li><li>Mobile test on real phone</li></ul><div class="dc-deliverable">All critical flows tested, edge cases handled, no crashes</div></div></div>
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Day 16</span><span class="dc-title">Deploy + Real Match Test</span></div><div class="dc-body"><ul><li>Vercel production deploy → Supabase + Redis + Actions verified</li><li>Test with REAL upcoming match: upload fixture + squads + set XI + check insights + confirm XI + recompute + post-match pipeline</li></ul><div class="dc-deliverable">Production live, tested with real cricket match data</div></div></div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-badge" style="background:var(--teal-dim);color:var(--teal);">Phase 6</span>
+        <span class="phase-title">Polish + Launch</span>
+        <span class="phase-days">Days 17–18</span>
+      </div>
+      <div class="day-cards">
+        <div class="day-card"><div class="dc-header"><span class="dc-day">Days 17–18</span><span class="dc-title">Polish + Launch 🚀</span></div><div class="dc-body"><ul><li>Bug fixes from Day 16 testing</li><li>Copy review: landing page + error messages + docs accuracy</li><li>Performance check: API &lt;500ms, pages &lt;2s</li><li>README + Twitter thread + Reddit post + Product Hunt</li><li>Invite 10–20 beta users (fantasy players, 2–3 creators)</li><li>Remove all "coming soon" gates → go live</li></ul><div class="dc-deliverable">CricVeda is LIVE 🚀</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: TECHNICAL BOUNDARIES -->
+<section id="boundaries">
+  <div class="section-label">Section 10</div>
+  <h2>MVP Technical Boundaries</h2>
+  <div class="bounds-grid">
+    <div class="bound-card can">
+      <div class="bc-title can">The MVP CAN Handle</div>
+      <ul>
+        <li>5,000–10,000 MAU (within free tier limits)</li>
+        <li>30–50 concurrent users (Vercel handles)</li>
+        <li>100–200 API calls/day per free user</li>
+        <li>14 endpoints serving cached data</li>
+        <li>&lt;500ms response time for 95% of requests</li>
+        <li>~4,500 T20 matches in database (~100–200 MB)</li>
+        <li>~3,500–4,000 unique players</li>
+        <li>10–20 active league schedules</li>
+        <li>Pre-computed insights for upcoming 7 days</li>
+        <li>1 operator · 5–10 min per match day</li>
+      </ul>
+    </div>
+    <div class="bound-card cannot">
+      <div class="bc-title cannot">The MVP CANNOT Handle</div>
+      <ul>
+        <li>&gt;50,000 MAU (need paid tier upgrades)</li>
+        <li>&gt;500 concurrent users (Vercel limit)</li>
+        <li>Live ball-by-ball scoring</li>
+        <li>Real-time playing XI auto-detection</li>
+        <li>Automated payment/billing</li>
+        <li>&gt;500 MB database (need Supabase upgrade)</li>
+        <li>&gt;10,000 Redis commands/day (need Upstash upgrade)</li>
+        <li>Custom analytics per user</li>
+        <li>Player photo hosting</li>
+        <li>Multi-language content</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--accent);">These limitations are ACCEPTABLE for MVP. They become upgrade triggers when reached.</div>
+</section>
+
+<!-- SECTION 11: QUALITY BAR -->
+<section id="quality">
+  <div class="section-label">Section 11</div>
+  <h2>MVP Quality Bar</h2>
+  <div class="quality-grid">
+    <div class="quality-card">
+      <div class="qc-title works">Works Correctly</div>
+      <ul>
+        <li>Form scores mathematically correct (10 player manual check)</li>
+        <li>Matchup data matches CricSheet source (5 pairs)</li>
+        <li>Venue stats match known records (3 major venues)</li>
+        <li>Dream team respects all constraints (role counts, balance)</li>
+        <li>API auth works (valid → success, invalid → 401)</li>
+        <li>Rate limiting works (101st call → 429)</li>
+        <li>No data shown for wrong match or player</li>
+      </ul>
+    </div>
+    <div class="quality-card">
+      <div class="qc-title crashes">Doesn't Crash</div>
+      <ul>
+        <li>No 500 errors on any valid API call</li>
+        <li>No blank pages on any dashboard route</li>
+        <li>No JavaScript errors in browser console</li>
+        <li>Edge cases return graceful responses, not crashes</li>
+        <li>Admin panel doesn't corrupt data</li>
+        <li>Cron job failure doesn't break the product</li>
+      </ul>
+    </div>
+    <div class="quality-card">
+      <div class="qc-title looks">Looks Acceptable</div>
+      <ul>
+        <li>Landing page looks professional (can't look amateur)</li>
+        <li>Match detail page is readable and organized</li>
+        <li>Mobile screens are USABLE (not just "responsive")</li>
+        <li>Text is readable (font size, contrast)</li>
+        <li>Cards and tables are aligned</li>
+        <li>Loading states shown (not blank screens)</li>
+      </ul>
+    </div>
+    <div class="quality-card">
+      <div class="qc-title fast">Fast Enough</div>
+      <ul>
+        <li>API: &lt;500ms response (p95)</li>
+        <li>Dashboard pages: &lt;3s load (acceptable for MVP)</li>
+        <li>Admin recomputation: &lt;90 seconds</li>
+        <li>No operation takes &gt;5 minutes</li>
+      </ul>
+    </div>
+    <div class="quality-card no">
+      <div class="qc-title notneed">Does NOT Need</div>
+      <ul>
+        <li>Pixel-perfect design or animations</li>
+        <li>Empty state illustrations</li>
+        <li>Onboarding tutorial</li>
+        <li>Loading skeletons (spinners are fine)</li>
+        <li>Toast notifications</li>
+        <li>Perfect SEO or polished error pages</li>
+        <li>Analytics/tracking</li>
+      </ul>
+    </div>
+  </div>
+  <div style="background:var(--accent-dim);border-radius:8px;padding:14px 18px;margin-top:8px;font-family:var(--mono);font-size:12px;color:var(--accent);">RULE: If it works correctly, doesn't crash, looks acceptable, and is fast enough → IT SHIPS.</div>
+</section>
+
+<!-- SECTION 12: RISKS -->
+<section id="risks">
+  <div class="section-label">Section 12</div>
+  <h2>Risks Specific to MVP</h2>
+  <div class="risk-grid">
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 1</span><span class="rc-prob prob-med">Medium</span></div><div class="rc-title">Data Load Takes Too Long</div><div class="rc-desc">CricSheet download slow or parser fails at scale. Impact: delays launch by 1–3 days.</div><div class="rc-mitigation">Start data processing Day 1. If slow, use IPL + T20I subset first and add other leagues post-launch.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 2</span><span class="rc-prob prob-med">Medium</span></div><div class="rc-title">Form Algorithm Produces Nonsensical Scores</div><div class="rc-desc">Users lose trust immediately if Kohli shows form 2.1 or a tail-ender shows 9.5.</div><div class="rc-mitigation">Manual verify 10 known players before launch. If scores wrong for Kohli/Bumrah level: DO NOT LAUNCH until fixed.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 3</span><span class="rc-prob prob-low">Low–Med</span></div><div class="rc-title">No Active T20 League During Build</div><div class="rc-desc">Can't test with real match data. Reduced launch demand.</div><div class="rc-mitigation">Launch during ANY active T20 league. If none active, use recent completed matches as demo data. Wait for next league.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 4</span><span class="rc-prob prob-low">Low</span></div><div class="rc-title">Free Tier Limits Hit During Testing</div><div class="rc-desc">Supabase 500MB or Vercel 100K/month hit during development.</div><div class="rc-mitigation">Monitor during development. Use local development (SQLite) more heavily to preserve production quota.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 5</span><span class="rc-prob prob-low">Low</span></div><div class="rc-title">Operator Burns Out on Match Days</div><div class="rc-desc">Match-day updates slip, data goes stale, users lose trust.</div><div class="rc-mitigation">5 min/match is very manageable. Set phone alarm 1 hour before each match. Predicted XI fallback if truly unavailable.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 6</span><span class="rc-prob prob-med">Medium — Biggest Risk</span></div><div class="rc-title">Nobody Signs Up</div><div class="rc-desc">No validation, product built in a vacuum. The single biggest real risk.</div><div class="rc-mitigation">Invite 10–20 known fantasy players personally. Post on r/Cricket, r/fantasycricket. DM 2–3 creators. If zero signups after 2 weeks → reassess distribution, not product. DON'T wait for organic traffic — actively distribute.</div></div>
+    <div class="risk-card"><div class="rc-header"><span class="rc-num">Risk 7</span><span class="rc-prob prob-med">Medium</span></div><div class="rc-title">Algorithm Accuracy Is Poor</div><div class="rc-desc">First version always has issues. Users may lose trust before we can iterate.</div><div class="rc-mitigation">Track accuracy from Day 1. Log every captain pick vs actual points. Iterate weekly. Be transparent: "v1 algorithm, improving with data." Users forgive early mistakes if you visibly improve.</div></div>
+  </div>
+</section>
+
+<!-- SECTION 13: POST-MVP ROADMAP -->
+<section id="postmvp">
+  <div class="section-label">Section 13</div>
+  <h2>Post-MVP Roadmap</h2>
+  <div class="roadmap-weeks">
+    <div class="rw-row"><div class="rw-label"><span>Week 3<br>Depth</span></div><div class="rw-content"><div class="rwc-title">Depth Features</div><ul><li>Player Profile Page</li><li>Differential Finder endpoint</li><li>Key Battles endpoint</li><li>Venue dedicated endpoint</li><li>Phase performance analyzer</li><li>Weather integration</li><li>Share buttons (WhatsApp/Twitter)</li><li>BetterStack status page</li></ul></div></div>
+    <div class="rw-row"><div class="rw-label"><span>Week 4<br>Polish</span></div><div class="rw-content"><div class="rwc-title">Polish + Growth Features</div><ul><li>Custom API Playground</li><li>vs-bowler-type endpoint (if metadata &gt;80%)</li><li>GitHub OAuth option</li><li>SEO meta tags</li><li>API usage analytics</li><li>System health monitor (admin)</li><li>User manager (admin)</li><li>Accuracy tracking setup</li></ul></div></div>
+    <div class="rw-row"><div class="rw-label"><span>Weeks 5–6<br>Money</span></div><div class="rw-content"><div class="rwc-title">Monetization</div><ul><li>Stripe integration (Pro auto-billing)</li><li>India micro-tier (₹99/month)</li><li>Upgrade/downgrade flow in dashboard</li><li>Usage-based billing alerts</li><li>Creator partnership program (formal)</li><li>B2B outreach materials</li></ul></div></div>
+    <div class="rw-row"><div class="rw-label"><span>Weeks 7–8<br>Scale</span></div><div class="rw-content"><div class="rwc-title">Scale + B2B</div><ul><li>Multiple dream team variants (safe/risky)</li><li>Email notifications</li><li>B2B documentation + SLA</li><li>Webhook support</li><li>First accuracy report</li><li>Performance optimization</li><li>Next league expansion plan</li></ul></div></div>
+    <div class="rw-row"><div class="rw-label"><span>Month 3+<br>Growth</span></div><div class="rw-content"><div class="rwc-title">Growth Phase</div><ul><li>ML-based prediction improvements</li><li>Community features</li><li>Content marketing (accuracy reports)</li><li>B2B sales (20+ platforms outreach)</li><li>International expansion (BBL, PSL focus)</li><li>Mobile PWA consideration</li><li>AI chatbot powered by CricVeda API</li></ul></div></div>
+  </div>
+</section>
+
+<!-- SECTION 14: LAUNCH CHECKLIST -->
+<section id="launch">
+  <div class="section-label">Section 14</div>
+  <h2>Launch Criteria Checklist</h2>
+  <p>The MVP launches when ALL of these are true. No exceptions.</p>
+  <div class="launch-grid">
+    <div class="launch-card">
+      <div class="lc-title">Data Foundation</div>
+      <div class="lc-item"><div class="lc-box tick"></div>4,000+ T20 matches ingested</div>
+      <div class="lc-item"><div class="lc-box tick"></div>3,000+ players with unique IDs</div>
+      <div class="lc-item"><div class="lc-box tick"></div>70%+ metadata coverage (batting/bowling style)</div>
+      <div class="lc-item"><div class="lc-box tick"></div>At least 1 active league with fixtures loaded</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Squads populated for active league</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Form scores computed for all squad players</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Pre-computed insights for next 3+ upcoming matches</div>
+    </div>
+    <div class="launch-card">
+      <div class="lc-title">API</div>
+      <div class="lc-item"><div class="lc-box tick"></div>All 14 MVP endpoints return valid responses</div>
+      <div class="lc-item"><div class="lc-box tick"></div>API key generation works</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Rate limiting works</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Swagger docs accessible at /docs</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Response time &lt;500ms for 95% of cached requests</div>
+      <div class="lc-item"><div class="lc-box tick"></div>No 500 errors on valid requests</div>
+    </div>
+    <div class="launch-card">
+      <div class="lc-title">Dashboard</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Landing page renders correctly (desktop + mobile)</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Signup → login → dashboard flow works</div>
+      <div class="lc-item"><div class="lc-box tick"></div>API key visible and copyable</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Match listing shows upcoming matches</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Match detail page renders all sections</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Pro-gated sections show teaser for free users</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Mobile usable (tested on real phone)</div>
+    </div>
+    <div class="launch-card">
+      <div class="lc-title">Admin & Infrastructure</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Playing XI updatable in &lt;3 minutes</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Recomputation triggers successfully</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Fixture CSV upload works</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Admin panel password-protected</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Deployed to Vercel (production)</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Monthly cost: $0</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Cron job runs successfully at least once</div>
+    </div>
+    <div class="launch-card">
+      <div class="lc-title">Testing</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Tested with 1 real match (full flow)</div>
+      <div class="lc-item"><div class="lc-box tick"></div>5 edge cases handled without crash</div>
+      <div class="lc-item"><div class="lc-box tick"></div>10 manual form score verifications correct</div>
+      <div class="lc-item"><div class="lc-box tick"></div>5 matchup data verifications correct</div>
+      <div class="lc-item"><div class="lc-box tick"></div>3 venue stat verifications correct</div>
+    </div>
+    <div class="launch-card">
+      <div class="lc-title">Launch Readiness</div>
+      <div class="lc-item"><div class="lc-box tick"></div>README written</div>
+      <div class="lc-item"><div class="lc-box tick"></div>CricSheet attribution visible on site</div>
+      <div class="lc-item"><div class="lc-box tick"></div>No "lorem ipsum" or placeholder content</div>
+      <div class="lc-item"><div class="lc-box tick"></div>Contact method available (email at minimum)</div>
+      <div class="lc-item"><div class="lc-box tick"></div>5+ beta users invited and able to use product</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 15: DEFINITION OF DONE -->
+<section id="dod">
+  <div class="section-label">Section 15</div>
+  <h2>MVP Definition of Done</h2>
+</section>
+
+<div class="dod-box">
+  <div class="dod-grid">
+    <div class="dod-col">
+      <div class="dc-title">A Fantasy Player Can</div>
+      <ul>
+        <li>Visit cricveda.com</li>
+        <li>Sign up in 60 seconds</li>
+        <li>See tonight's T20 match</li>
+        <li>See all 22 players rated with cross-league form scores</li>
+        <li>See a recommended dream team with reasoning</li>
+        <li>See captain picks with specific data-backed reasoning</li>
+        <li>Make a better-informed fantasy team selection than they could without CricVeda</li>
+      </ul>
+    </div>
+    <div class="dod-col">
+      <div class="dc-title">A Developer Can</div>
+      <ul>
+        <li>Read API docs at /docs</li>
+        <li>Sign up and get API key</li>
+        <li>Make first API call within 2 minutes</li>
+        <li>Get useful, structured JSON responses</li>
+        <li>Understand rate limits and plan tiers</li>
+      </ul>
+    </div>
+    <div class="dod-col">
+      <div class="dc-title">The Operator Can</div>
+      <ul>
+        <li>Update playing XI in &lt;3 minutes per match</li>
+        <li>Upload new league fixtures via CSV</li>
+        <li>Trigger recomputation on demand</li>
+        <li>Monitor basic system health</li>
+      </ul>
+    </div>
+    <div class="dod-footer">All of this at $0 infrastructure cost. That's the MVP. Nothing more. Nothing less.</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-box">
+  <div class="sumgrid">
+    <div class="sumcol">
+      <div class="sc-title">MVP Scope Summary</div>
+      <ul>
+        <li>Build time: 14–18 working days · Cost: $0</li>
+        <li>Ships: 31 features · 14 endpoints · 6 pages · 3 admin screens · 7 algorithms · full data pipeline</li>
+        <li>Cuts: 20+ features · 4 endpoints · 2 pages · payments (manual) · email · weather · dark mode</li>
+        <li>Launch target: During any active T20 league with 10+ beta users</li>
+        <li>First milestone: 100 signups within 2 weeks of launch</li>
+      </ul>
+    </div>
+    <div class="sumcol">
+      <div class="sc-title">5 Assumptions to Validate</div>
+      <ul>
+        <li>Cross-league form scoring is valuable to users</li>
+        <li>Matchup data drives actual fantasy decisions</li>
+        <li>API delivery model works for cricket</li>
+        <li>Free CricSheet data is sufficient for useful insights</li>
+        <li>Manual operations are sustainable for one person</li>
+      </ul>
+      <div class="highlight-pill">If 100 signups in 2 weeks → continue building. If not → reassess distribution, not product. The idea is sound. The question is reach.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <span>CricVeda — Document #07</span>
+  <span>Author: Saurav Kumar</span>
+  <span>Version 1.0 · March 2026 · Final</span>
+</footer>
+
+<script>
+document.querySelectorAll('section').forEach((s, i) => { s.style.animationDelay = `${i * 0.035}s`; });
+
+// Responsive: stack dod-grid on small tablets
+const mq = window.matchMedia('(max-width:600px)');
+function handleMQ(e) {
+  const g = document.querySelector('.dod-grid');
+  if (g) g.style.gridTemplateColumns = e.matches ? '1fr' : '';
+}
+if (mq) { handleMQ(mq); mq.addEventListener('change', handleMQ); }
+</script>
+</body>
+</html>
