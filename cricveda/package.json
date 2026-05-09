@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "ingest": "tsx src/scripts/ingest-cricsheet.ts",
+    "scrape:fixtures": "tsx src/scripts/scrape-fixtures.ts",
+    "scrape:squads": "tsx src/scripts/scrape-squads.ts",
+    "precompute": "tsx src/scripts/precompute-insights.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.1",
@@ -21,6 +28,8 @@
     "@types/react-dom": "^18.2.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
-    "typescript": "^5.4.0"
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.2.0"
   }
 }
