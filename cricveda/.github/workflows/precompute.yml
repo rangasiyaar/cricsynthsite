@@ -2,15 +2,30 @@ name: CricVeda Precompute Insights
 
 on:
   workflow_dispatch:
+    inputs:
+      fixture_id:
+        description: "Specific fixture ID to precompute (leave empty for all upcoming)"
+        required: false
+        type: string
 
 jobs:
   precompute:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: cd cricveda && npm install
-      - run: cd cricveda && npx ts-node src/scripts/precompute-insights.ts
+          cache: "npm"
+          cache-dependency-path: cricveda/package-lock.json
+      - run: npm ci
+        working-directory: cricveda
+      - name: Precompute insights
+        run: npx tsx src/scripts/precompute-insights.ts ${{ inputs.fixture_id }}
+        working-directory: cricveda
 
