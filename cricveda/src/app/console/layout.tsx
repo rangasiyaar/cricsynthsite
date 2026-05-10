@@ -27,7 +27,7 @@ export default function ConsoleLayout({ children }: { children: React.ReactNode 
     if (stored) {
       setUser(JSON.parse(stored));
     } else {
-      window.location.href = '/login';
+      window.location.href = '/cricveda/login';
     }
   }, []);
 
@@ -44,7 +44,7 @@ export default function ConsoleLayout({ children }: { children: React.ReactNode 
       {/* Sidebar */}
       <aside className="sidebar">
         <div style={{ padding: '0 var(--spacing-lg)', marginBottom: 'var(--spacing-xl)' }}>
-          <Link href="/cricveda" className="nav__logo" style={{ fontSize: '1.125rem' }}>
+          <Link href="/" className="nav__logo" style={{ fontSize: '1.125rem' }}>
             Cric<span>Synthesis</span>
           </Link>
         </div>

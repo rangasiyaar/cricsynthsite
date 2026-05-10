@@ -17,7 +17,7 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch('/cricveda/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
@@ -35,7 +35,7 @@ export default function SignupPage() {
       if (data.data.api_key) {
         setApiKey(data.data.api_key);
       } else {
-        window.location.href = '/console';
+        window.location.href = '/cricveda/console';
       }
     } catch {
       setError('Network error. Please try again.');
@@ -79,7 +79,7 @@ export default function SignupPage() {
       <div className="gradient-orb gradient-orb--purple" style={{ width: 500, height: 500, top: -150, left: -150, position: 'fixed' }} />
       <div style={{ width: '100%', maxWidth: 420, padding: 'var(--spacing-xl)' }}>
         <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}>
-          <Link href="/cricveda" className="nav__logo" style={{ fontSize: '1.5rem', display: 'block', marginBottom: 'var(--spacing-md)' }}>
+          <Link href="/" className="nav__logo" style={{ fontSize: '1.5rem', display: 'block', marginBottom: 'var(--spacing-md)' }}>
             Cric<span>Synthesis</span>
           </Link>
           <h1 className="heading-md">Create your account</h1>

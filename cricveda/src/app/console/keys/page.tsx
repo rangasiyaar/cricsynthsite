@@ -20,7 +20,7 @@ export default function ConsoleKeysPage() {
 
   async function fetchKeys() {
     try {
-      const res = await fetch('/api/console/keys', {
+      const res = await fetch('/cricveda/api/console/keys', {
         headers: { 'x-user-id': getUserId() },
       });
       const data = await res.json();
@@ -43,7 +43,7 @@ export default function ConsoleKeysPage() {
     setCreating(true);
     setNewKey('');
     try {
-      const res = await fetch('/api/console/keys', {
+      const res = await fetch('/cricveda/api/console/keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-user-id': getUserId() },
         body: JSON.stringify({ name: newKeyName || 'Default' }),
@@ -63,7 +63,7 @@ export default function ConsoleKeysPage() {
 
   async function handleAction(keyId: string, action: 'revoke' | 'regenerate') {
     try {
-      const res = await fetch('/api/console/keys', {
+      const res = await fetch('/cricveda/api/console/keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-user-id': getUserId() },
         body: JSON.stringify({ action, key_id: keyId }),

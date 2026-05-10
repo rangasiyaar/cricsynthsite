@@ -15,7 +15,7 @@ export default function ConsoleUsagePage() {
       const stored = localStorage.getItem('cs_user');
       const userId = stored ? JSON.parse(stored).id : '';
       try {
-        const res = await fetch('/api/console/usage?days=30', {
+        const res = await fetch('/cricveda/api/console/usage?days=30', {
           headers: { 'x-user-id': userId },
         });
         const data = await res.json();

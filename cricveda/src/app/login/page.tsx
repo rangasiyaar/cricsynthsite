@@ -15,7 +15,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/cricveda/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -30,7 +30,7 @@ export default function LoginPage() {
 
       // Store user in localStorage (simplified — production would use JWT/session)
       localStorage.setItem('cs_user', JSON.stringify(data.data.user));
-      window.location.href = '/console';
+      window.location.href = '/cricveda/console';
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -43,7 +43,7 @@ export default function LoginPage() {
       <div className="gradient-orb gradient-orb--purple" style={{ width: 500, height: 500, top: -150, right: -150, position: 'fixed' }} />
       <div style={{ width: '100%', maxWidth: 420, padding: 'var(--spacing-xl)' }}>
         <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}>
-          <Link href="/cricveda" className="nav__logo" style={{ fontSize: '1.5rem', display: 'block', marginBottom: 'var(--spacing-md)' }}>
+          <Link href="/" className="nav__logo" style={{ fontSize: '1.5rem', display: 'block', marginBottom: 'var(--spacing-md)' }}>
             Cric<span>Synthesis</span>
           </Link>
           <h1 className="heading-md">Welcome back</h1>
