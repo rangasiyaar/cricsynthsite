@@ -12,7 +12,7 @@ export default function ConsoleSettingsPage() {
 
   function handleLogout() {
     localStorage.removeItem('cs_user');
-    window.location.href = '/login';
+    window.location.href = '/cricveda/login';
   }
 
   return (

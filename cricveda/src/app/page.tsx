@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import CricVedaProductPage from './cricveda/page';
 
 export default function RootPage() {
-  redirect('/cricveda');
+  return <CricVedaProductPage />;
 }
