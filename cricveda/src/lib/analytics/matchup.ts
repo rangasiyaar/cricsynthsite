@@ -2,273 +2,205 @@
 // CricVeda — Batter vs Bowler Matchup Analyzer (F2.2)
 // ============================================================
 
-import { getSupabaseClient } from '@/lib/db/supabase';
-import { MatchupResult, PhaseStats } from '@/lib/types';
+import { getServiceClient } from '@/lib/db/supabase';
 import { computeMatchupConfidence } from '@/lib/analytics/confidence';
+import type { MatchupResult, PhaseStats, KeyBattle } from '@/lib/types';
 
-// Minimum balls for statistical relevance
-const MIN_BALLS_THRESHOLD = 6;
+// ─── Compute H2H Matchup ───
 
-// ─── MAIN MATCHUP FUNCTION ───
-
-export async function getMatchup(
+export async function computeMatchup(
   batterId: number,
   bowlerId: number
 ): Promise<MatchupResult | null> {
-  const db = getSupabaseClient();
+  const db = getServiceClient();
 
-  // Get player names
-  const [{ data: batter }, { data: bowler }] = await Promise.all([
-    db.from('players').select('name').eq('id', batterId).single(),
-    db.from('players').select('name').eq('id', bowlerId).single(),
-  ]);
-
-  if (!batter || !bowler) return null;
-
-  // Get all deliveries between this batter and bowler
-  const { data: deliveries } = await db
+  const { data: deliveries, error } = await db
     .from('deliveries')
-    .select(`
-      runs_batter, runs_total, is_wicket, wicket_kind,
-      is_boundary, is_six, is_dot, phase,
-      match_id, over_number
-    `)
+    .select('*, matches!deliveries_match_id_fkey(league_id, date)')
     .eq('batter_id', batterId)
     .eq('bowler_id', bowlerId);
 
-  if (!deliveries || deliveries.length === 0) return null;
+  if (error || !deliveries || deliveries.length === 0) return null;
 
-  // Get league info for these matches
-  const matchIds = [...new Set(deliveries.map((d: Record<string, unknown>) => d.match_id as number))];
-  const { data: matches } = await db
-    .from('matches')
-    .select('id, league_id, date')
-    .in('id', matchIds);
+  const balls = deliveries.length;
+  const runs = deliveries.reduce((s: number, d: Record<string, unknown>) => s + (d.runs_batter as number), 0);
+  const dismissals = deliveries.filter((d: Record<string, unknown>) => d.is_wicket === true).length;
+  const dots = deliveries.filter((d: Record<string, unknown>) => (d.runs_total as number) === 0).length;
+  const boundaries = deliveries.filter((d: Record<string, unknown>) => {
+    const r = d.runs_batter as number;
+    return r === 4 || r === 6;
+  }).length;
 
-  const matchLeagueMap = new Map<number, string>();
-  const matchDateMap = new Map<number, string>();
-  matches?.forEach((m: Record<string, unknown>) => {
-    matchLeagueMap.set(m.id as number, m.league_id as string);
-    matchDateMap.set(m.id as number, m.date as string);
-  });
-
-  // Aggregate stats
-  const totalBalls = deliveries.length;
-  const totalRuns = deliveries.reduce((s: number, d: Record<string, unknown>) => s + (d.runs_batter as number), 0);
-  const totalDismissals = deliveries.filter((d: Record<string, unknown>) => d.is_wicket).length;
-  const totalDots = deliveries.filter((d: Record<string, unknown>) => d.is_dot).length;
-  const totalBoundaries = deliveries.filter((d: Record<string, unknown>) => d.is_boundary || d.is_six).length;
-
-  const strikeRate = totalBalls > 0 ? (totalRuns / totalBalls) * 100 : 0;
-  const dotPct = totalBalls > 0 ? (totalDots / totalBalls) * 100 : 0;
-  const boundaryPct = totalBalls > 0 ? (totalBoundaries / totalBalls) * 100 : 0;
+  const strikeRate = balls > 0 ? Math.round((runs / balls) * 10000) / 100 : 0;
+  const dotPct = balls > 0 ? Math.round((dots / balls) * 10000) / 100 : 0;
+  const boundaryPct = balls > 0 ? Math.round((boundaries / balls) * 10000) / 100 : 0;
+  const dismissalRate = balls > 0 ? (dismissals / balls) * 100 : 0;
 
   // Phase breakdown
-  const phases = {
-    powerplay: computePhaseStats(deliveries, 'powerplay'),
-    middle: computePhaseStats(deliveries, 'middle'),
-    death: computePhaseStats(deliveries, 'death'),
+  const phases: Record<string, { balls: number; runs: number; dismissals: number }> = {
+    powerplay: { balls: 0, runs: 0, dismissals: 0 },
+    middle: { balls: 0, runs: 0, dismissals: 0 },
+    death: { balls: 0, runs: 0, dismissals: 0 },
   };
 
-  // Determine advantage
-  const advantage = determineAdvantage(strikeRate, totalDismissals, totalBalls);
+  for (const d of deliveries) {
+    const del = d as Record<string, unknown>;
+    const phase = del.phase as string;
+    if (phases[phase]) {
+      phases[phase].balls++;
+      phases[phase].runs += del.runs_batter as number;
+      if (del.is_wicket) phases[phase].dismissals++;
+    }
+  }
+
+  const phaseBreakdown = {
+    powerplay: toPhaseStats(phases.powerplay),
+    middle: toPhaseStats(phases.middle),
+    death: toPhaseStats(phases.death),
+  };
+
+  // Advantage determination
+  let advantage: 'batter' | 'bowler' | 'even' = 'even';
+  if (balls >= 6) {
+    if ((strikeRate >= 140 && dismissalRate < 5) || (strikeRate >= 120 && dismissalRate < 3)) {
+      advantage = 'batter';
+    } else if ((strikeRate < 100 && dismissalRate > 4) || dismissalRate > 8) {
+      advantage = 'bowler';
+    }
+  }
 
   // Fantasy note
-  const fantasyNote = generateFantasyNote(
-    batter.name,
-    bowler.name,
-    strikeRate,
-    totalDismissals,
-    totalBalls,
-    advantage
-  );
+  const fantasyNote = generateFantasyNote(advantage, strikeRate, dismissalRate, balls, dismissals);
 
-  // Leagues used
-  const leagues = [...new Set(matchIds.map(id => matchLeagueMap.get(id)).filter(Boolean))] as string[];
+  // Leagues
+  const leagues = [...new Set(
+    deliveries
+      .map((d: Record<string, unknown>) => {
+        const match = d.matches as Record<string, unknown> | undefined;
+        return match?.league_id as string | undefined;
+      })
+      .filter(Boolean)
+  )] as string[];
 
-  // Most recent date
-  const dates = matchIds.map(id => matchDateMap.get(id)).filter(Boolean) as string[];
-  const mostRecent = dates.sort().pop();
+  // Days since last encounter
+  const dates = deliveries
+    .map((d: Record<string, unknown>) => {
+      const match = d.matches as Record<string, unknown> | undefined;
+      return match?.date as string | undefined;
+    })
+    .filter(Boolean)
+    .sort()
+    .reverse();
 
-  // Confidence
-  const confidence = computeMatchupConfidence(totalBalls, leagues.length, mostRecent);
+  const daysSince = dates.length > 0
+    ? Math.floor((Date.now() - new Date(dates[0] as string).getTime()) / (1000 * 60 * 60 * 24))
+    : 999;
+
+  const confidence = computeMatchupConfidence(balls, leagues.length, daysSince);
 
   return {
     batter_id: batterId,
-    batter_name: batter.name,
     bowler_id: bowlerId,
-    bowler_name: bowler.name,
-    balls: totalBalls,
-    runs: totalRuns,
-    dismissals: totalDismissals,
-    strike_rate: Math.round(strikeRate * 100) / 100,
-    dot_pct: Math.round(dotPct * 100) / 100,
-    boundary_pct: Math.round(boundaryPct * 100) / 100,
+    balls,
+    runs,
+    dismissals,
+    strike_rate: strikeRate,
+    dot_percentage: dotPct,
+    boundary_percentage: boundaryPct,
+    phase_breakdown: phaseBreakdown,
     advantage,
-    confidence: confidence.value,
     fantasy_note: fantasyNote,
-    phases,
+    confidence,
     leagues,
   };
 }
 
-// ─── PHASE STATS ───
-
-function computePhaseStats(
-  deliveries: Record<string, unknown>[],
-  phase: string
-): PhaseStats {
-  const phaseDeliveries = deliveries.filter(d => d.phase === phase);
-  const balls = phaseDeliveries.length;
-  const runs = phaseDeliveries.reduce((s, d) => s + (d.runs_batter as number), 0);
-  const dismissals = phaseDeliveries.filter(d => d.is_wicket).length;
-  const dots = phaseDeliveries.filter(d => d.is_dot).length;
-
+function toPhaseStats(raw: { balls: number; runs: number; dismissals: number }): PhaseStats {
   return {
-    balls,
-    runs,
-    dismissals,
-    strike_rate: balls > 0 ? Math.round(((runs / balls) * 100) * 100) / 100 : 0,
-    dot_pct: balls > 0 ? Math.round(((dots / balls) * 100) * 100) / 100 : 0,
+    balls: raw.balls,
+    runs: raw.runs,
+    strike_rate: raw.balls > 0 ? Math.round((raw.runs / raw.balls) * 10000) / 100 : 0,
+    dismissals: raw.dismissals,
   };
 }
 
-// ─── ADVANTAGE DETERMINATION ───
-
-function determineAdvantage(
-  strikeRate: number,
-  dismissals: number,
-  balls: number
-): 'batter' | 'bowler' | 'even' {
-  if (balls < MIN_BALLS_THRESHOLD) return 'even'; // Insufficient data
-
-  const dismissalRate = balls > 0 ? dismissals / balls : 0;
-
-  // Batter advantage: high SR + low dismissal rate
-  if (strikeRate >= 140 && dismissalRate < 0.05) return 'batter';
-  // Strong batter: decent SR + very low dismissal rate
-  if (strikeRate >= 120 && dismissalRate < 0.03) return 'batter';
-
-  // Bowler advantage: low SR or high dismissal rate
-  if (strikeRate < 100 && dismissalRate > 0.04) return 'bowler';
-  if (dismissalRate > 0.08) return 'bowler';
-
-  return 'even';
-}
-
-// ─── FANTASY NOTE GENERATOR ───
-
 function generateFantasyNote(
-  batterName: string,
-  bowlerName: string,
-  strikeRate: number,
-  dismissals: number,
+  advantage: string,
+  sr: number,
+  dismissalRate: number,
   balls: number,
-  advantage: string
+  dismissals: number
 ): string {
-  const sr = Math.round(strikeRate);
-
-  if (balls < MIN_BALLS_THRESHOLD) {
-    return `Limited data (${balls} balls) — insufficient for reliable analysis`;
-  }
-
-  if (advantage === 'bowler') {
-    const parts = [`${bowlerName} dominates ${batterName}`];
-    if (dismissals > 0) parts.push(`${dismissals} dismissal${dismissals > 1 ? 's' : ''} in ${balls} balls`);
-    parts.push(`SR ${sr}`);
-    return parts.join(' — ');
-  }
+  if (balls < 6) return `Only ${balls} balls bowled — too small a sample for reliable insight.`;
 
   if (advantage === 'batter') {
-    return `${batterName} has the edge vs ${bowlerName} — SR ${sr} across ${balls} balls, ${dismissals} dismissal${dismissals !== 1 ? 's' : ''}`;
+    return `The batter dominates this matchup with a ${sr.toFixed(1)} SR across ${balls} balls. Consider picking the batter as a fantasy captain if this matchup features heavily.`;
   }
-
-  return `Even contest: ${batterName} vs ${bowlerName} — SR ${sr}, ${dismissals} dismissal${dismissals !== 1 ? 's' : ''} in ${balls} balls`;
+  if (advantage === 'bowler') {
+    return `The bowler has the edge with ${dismissals} dismissal${dismissals > 1 ? 's' : ''} in ${balls} balls (${dismissalRate.toFixed(1)}% dismissal rate). This matchup could limit the batter's fantasy ceiling.`;
+  }
+  return `An evenly contested matchup across ${balls} balls. Neither player has a clear statistical edge — look at venue and form for tie-breaking.`;
 }
 
-// ─── KEY BATTLES FOR A MATCH ───
+// ─── Key Battles for a Fixture ───
 
-export async function getKeyBattles(
-  fixtureId: number,
-  limit: number = 5
-): Promise<MatchupResult[]> {
-  const db = getSupabaseClient();
+export async function getKeyBattles(fixtureId: number): Promise<KeyBattle[]> {
+  const db = getServiceClient();
 
-  // Get playing XI for both teams
-  const { data: playingXI } = await db
+  // Get playing XI
+  const { data: xi } = await db
     .from('playing_xi')
-    .select('player_id, team_id')
+    .select('player_id, team_id, players!playing_xi_player_id_fkey(name, role)')
     .eq('fixture_id', fixtureId);
 
-  if (!playingXI || playingXI.length === 0) return [];
+  if (!xi || xi.length < 2) return [];
 
-  // Get fixture teams
-  const { data: fixture } = await db
-    .from('fixtures')
-    .select('team1_id, team2_id')
-    .eq('id', fixtureId)
-    .single();
+  const teams = [...new Set(xi.map((p: Record<string, unknown>) => p.team_id as number))];
+  if (teams.length < 2) return [];
 
-  if (!fixture) return [];
+  const team1Players = xi.filter((p: Record<string, unknown>) => p.team_id === teams[0]);
+  const team2Players = xi.filter((p: Record<string, unknown>) => p.team_id === teams[1]);
 
-  const team1Players = playingXI
-    .filter((p: Record<string, unknown>) => p.team_id === fixture.team1_id)
-    .map((p: Record<string, unknown>) => p.player_id as number);
-  const team2Players = playingXI
-    .filter((p: Record<string, unknown>) => p.team_id === fixture.team2_id)
-    .map((p: Record<string, unknown>) => p.player_id as number);
-
-  // Get player roles
-  const allPlayerIds = [...team1Players, ...team2Players];
-  const { data: players } = await db
-    .from('players')
-    .select('id, role')
-    .in('id', allPlayerIds);
-
-  const roleMap = new Map<number, string>();
-  players?.forEach((p: Record<string, unknown>) => roleMap.set(p.id as number, p.role as string));
-
-  // Find batter vs bowler matchups across teams
-  const matchups: MatchupResult[] = [];
-
-  // Team 1 batters vs Team 2 bowlers
-  for (const batterId of team1Players) {
-    const role = roleMap.get(batterId);
-    if (role === 'bowler') continue; // Skip pure bowlers as batters
-
-    for (const bowlerId of team2Players) {
-      const bowlerRole = roleMap.get(bowlerId);
-      if (bowlerRole === 'batter' || bowlerRole === 'wicketkeeper') continue;
-
-      const matchup = await getMatchup(batterId, bowlerId);
-      if (matchup && matchup.balls >= MIN_BALLS_THRESHOLD) {
-        matchups.push(matchup);
-      }
-    }
-  }
-
-  // Team 2 batters vs Team 1 bowlers
-  for (const batterId of team2Players) {
-    const role = roleMap.get(batterId);
-    if (role === 'bowler') continue;
-
-    for (const bowlerId of team1Players) {
-      const bowlerRole = roleMap.get(bowlerId);
-      if (bowlerRole === 'batter' || bowlerRole === 'wicketkeeper') continue;
-
-      const matchup = await getMatchup(batterId, bowlerId);
-      if (matchup && matchup.balls >= MIN_BALLS_THRESHOLD) {
-        matchups.push(matchup);
-      }
-    }
-  }
-
-  // Sort by significance (most balls + strongest advantage)
-  matchups.sort((a, b) => {
-    const scoreA = a.balls * (a.advantage !== 'even' ? 1.5 : 1);
-    const scoreB = b.balls * (b.advantage !== 'even' ? 1.5 : 1);
-    return scoreB - scoreA;
+  const batters = [...team1Players, ...team2Players].filter((p: Record<string, unknown>) => {
+    const player = p.players as Record<string, unknown> | undefined;
+    const role = player?.role as string;
+    return role === 'batter' || role === 'wicketkeeper' || role === 'allrounder';
   });
 
-  return matchups.slice(0, limit);
+  const bowlers = [...team1Players, ...team2Players].filter((p: Record<string, unknown>) => {
+    const player = p.players as Record<string, unknown> | undefined;
+    const role = player?.role as string;
+    return role === 'bowler' || role === 'allrounder';
+  });
+
+  const battles: KeyBattle[] = [];
+
+  for (const batter of batters) {
+    for (const bowler of bowlers) {
+      const b = batter as Record<string, unknown>;
+      const bo = bowler as Record<string, unknown>;
+      if (b.team_id === bo.team_id) continue;
+
+      const matchup = await computeMatchup(b.player_id as number, bo.player_id as number);
+      if (matchup && matchup.balls >= 6) {
+        const batterPlayer = b.players as Record<string, unknown>;
+        const bowlerPlayer = bo.players as Record<string, unknown>;
+        battles.push({
+          batter_id: b.player_id as number,
+          batter_name: (batterPlayer?.name as string) || 'Unknown',
+          bowler_id: bo.player_id as number,
+          bowler_name: (bowlerPlayer?.name as string) || 'Unknown',
+          balls: matchup.balls,
+          strike_rate: matchup.strike_rate,
+          dismissals: matchup.dismissals,
+          advantage: matchup.advantage,
+          fantasy_impact: matchup.fantasy_note,
+        });
+      }
+    }
+  }
+
+  // Sort by most balls (most data = most interesting)
+  battles.sort((a, b) => b.balls - a.balls);
+  return battles.slice(0, 5);
 }

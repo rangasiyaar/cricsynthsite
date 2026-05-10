@@ -1,496 +1,279 @@
 // ============================================================
-// CricVeda — Fantasy Intelligence (F2.5, F2.6, F2.7, F2.8)
-// Dream Team Generator, Captain Picker, Differentials
+// CricVeda — Fantasy Engine (F2.5, F2.6, F2.7)
+// Dream Team Generator, Captain Picker, Differential Finder
 // ============================================================
 
-import { getSupabaseClient } from '@/lib/db/supabase';
-import {
-  DreamTeam,
-  DreamTeamPick,
-  CaptainPick,
-  FantasyPointsConfig,
-  DREAM11_T20_SCORING,
-} from '@/lib/types';
+import { getServiceClient } from '@/lib/db/supabase';
+import { computeFormScore } from '@/lib/analytics/form-score';
+import { computeMatchup } from '@/lib/analytics/matchup';
+import { getVenueIntelligence } from '@/lib/analytics/venue';
 import { computeDreamTeamConfidence } from '@/lib/analytics/confidence';
+import type {
+  DreamTeamResult,
+  DreamTeamPlayer,
+  CaptainPick,
+  Differential,
+  KeyBattle,
+  DEFAULT_FANTASY_CONFIG,
+} from '@/lib/types';
+import { DEFAULT_FANTASY_CONFIG as FANTASY_CONFIG } from '@/lib/types';
 
-// ─── DREAM TEAM CONSTRAINTS ───
+// ─── Dream11 Constraints ───
 
-const DREAM_TEAM_CONSTRAINTS = {
+const CONSTRAINTS = {
   total: 11,
-  wicketkeeper: { min: 1, max: 4 },
-  batter: { min: 3, max: 6 },
-  allrounder: { min: 1, max: 4 },
-  bowler: { min: 3, max: 6 },
-  maxFromOneTeam: 7,
-  minFromEachTeam: 1,
+  wk: { min: 1, max: 4 },
+  bat: { min: 3, max: 6 },
+  ar: { min: 1, max: 4 },
+  bowl: { min: 3, max: 6 },
+  maxPerTeam: 7,
+  minPerTeam: 1,
 };
 
-// ─── TYPES ───
+type RoleKey = 'wk' | 'bat' | 'ar' | 'bowl';
 
-interface PlayerCandidate {
-  player_id: number;
-  player_name: string;
-  team_id: number;
-  team_name: string;
-  role: string;
-  expected_points: number;
-  form_score: number;
-  reasoning: string[];
-  confidence: number;
+function roleToKey(role: string): RoleKey {
+  switch (role) {
+    case 'wicketkeeper': return 'wk';
+    case 'batter': return 'bat';
+    case 'allrounder': return 'ar';
+    case 'bowler': return 'bowl';
+    default: return 'bat';
+  }
 }
 
-// ─── DREAM TEAM GENERATOR ───
+// ─── Dream Team Generator ───
 
-export async function generateDreamTeam(
-  fixtureId: number,
-  config: FantasyPointsConfig = DREAM11_T20_SCORING
-): Promise<DreamTeam | null> {
-  const db = getSupabaseClient();
+export async function generateDreamTeam(fixtureId: number): Promise<DreamTeamResult | null> {
+  const db = getServiceClient();
 
-  // Get fixture details
+  // Get fixture info
   const { data: fixture } = await db
     .from('fixtures')
-    .select('id, team1_id, team2_id, venue_id')
+    .select('*, teams_team1:teams!fixtures_team1_id_fkey(short_name), teams_team2:teams!fixtures_team2_id_fkey(short_name)')
     .eq('id', fixtureId)
     .single();
 
   if (!fixture) return null;
 
-  // Get playing XI for both teams
-  const { data: playingXI } = await db
+  // Get playing XI
+  const { data: xi } = await db
     .from('playing_xi')
-    .select('player_id, team_id')
+    .select('player_id, team_id, players!playing_xi_player_id_fkey(name, role)')
     .eq('fixture_id', fixtureId);
 
-  if (!playingXI || playingXI.length < 11) return null;
+  if (!xi || xi.length < 11) return null;
 
-  // Get team names
-  const { data: teams } = await db
-    .from('teams')
-    .select('id, name, short_name')
-    .in('id', [fixture.team1_id, fixture.team2_id]);
+  // Compute expected points for each player
+  const candidates: (DreamTeamPlayer & { team_id: number })[] = [];
 
-  const teamMap = new Map<number, string>();
-  teams?.forEach((t: Record<string, unknown>) =>
-    teamMap.set(t.id as number, (t.short_name || t.name) as string)
-  );
+  for (const entry of xi) {
+    const e = entry as Record<string, unknown>;
+    const player = e.players as Record<string, unknown>;
+    const playerId = e.player_id as number;
+    const teamId = e.team_id as number;
+    const role = (player?.role as string) || 'batter';
+    const name = (player?.name as string) || 'Unknown';
 
-  // Get player details + form scores
-  const playerIds = playingXI.map((p: Record<string, unknown>) => p.player_id as number);
-  const { data: players } = await db
-    .from('players')
-    .select('id, name, role')
-    .in('id', playerIds);
+    const formResult = await computeFormScore(playerId, role);
+    const basePoints = FANTASY_CONFIG.base_points[role as keyof typeof FANTASY_CONFIG.base_points] || 28;
+    const expectedPoints = Math.round((basePoints * (0.5 + formResult.score / 10) + FANTASY_CONFIG.playing_xi_bonus) * 10) / 10;
 
-  const { data: formScores } = await db
-    .from('form_scores')
-    .select('player_id, score, confidence')
-    .in('player_id', playerIds)
-    .eq('score_type', 'overall');
-
-  const formMap = new Map<number, { score: number; confidence: number }>();
-  formScores?.forEach((f: Record<string, unknown>) =>
-    formMap.set(f.player_id as number, {
-      score: f.score as number,
-      confidence: f.confidence as number,
-    })
-  );
-
-  // Build candidate list
-  const candidates: PlayerCandidate[] = [];
-  for (const pxi of playingXI) {
-    const player = players?.find((p: Record<string, unknown>) => p.id === pxi.player_id);
-    if (!player) continue;
-
-    const form = formMap.get(player.id as number) || { score: 5, confidence: 0.3 };
-    const teamName = teamMap.get(pxi.team_id as number) || 'Unknown';
-
-    // Estimate expected fantasy points
-    const expectedPoints = estimateFantasyPoints(
-      player.role as string,
-      form.score,
-      config
-    );
-
-    const reasoning = generatePickReasoning(
-      player.name as string,
-      player.role as string,
-      form.score,
-      expectedPoints
-    );
+    const fixtureData = fixture as Record<string, unknown>;
+    const team1 = fixtureData.teams_team1 as Record<string, unknown> | undefined;
+    const team2 = fixtureData.teams_team2 as Record<string, unknown> | undefined;
+    const teamName = teamId === (fixtureData.team1_id as number)
+      ? (team1?.short_name as string) || 'T1'
+      : (team2?.short_name as string) || 'T2';
 
     candidates.push({
-      player_id: player.id as number,
-      player_name: player.name as string,
-      team_id: pxi.team_id as number,
-      team_name: teamName,
-      role: player.role as string,
+      player_id: playerId,
+      player_name: name,
+      team: teamName,
+      role,
       expected_points: expectedPoints,
-      form_score: form.score,
-      reasoning,
-      confidence: form.confidence,
+      form_score: formResult.score,
+      is_captain: false,
+      is_vice_captain: false,
+      team_id: teamId,
     });
   }
 
-  // Select optimal XI respecting constraints
-  const selectedXI = selectOptimalXI(
-    candidates,
-    fixture.team1_id,
-    fixture.team2_id
-  );
+  // Sort by expected points descending
+  candidates.sort((a, b) => b.expected_points - a.expected_points);
 
-  if (!selectedXI || selectedXI.length !== 11) return null;
+  // Two-pass selection respecting constraints
+  const selected: (DreamTeamPlayer & { team_id: number })[] = [];
+  const roleCounts: Record<RoleKey, number> = { wk: 0, bat: 0, ar: 0, bowl: 0 };
+  const teamCounts: Record<number, number> = {};
+  const used = new Set<number>();
 
-  const picks: DreamTeamPick[] = selectedXI.map(c => ({
-    player_id: c.player_id,
-    player_name: c.player_name,
-    team: c.team_name,
-    role: c.role,
-    expected_points: Math.round(c.expected_points * 10) / 10,
-    reasoning: c.reasoning,
-    form_score: c.form_score,
-  }));
+  // Pass 1: Fill minimums
+  for (const roleKey of ['wk', 'bat', 'ar', 'bowl'] as RoleKey[]) {
+    const min = CONSTRAINTS[roleKey].min;
+    const roleCandidates = candidates.filter(c => roleToKey(c.role) === roleKey && !used.has(c.player_id));
 
-  const totalPoints = picks.reduce((s, p) => s + p.expected_points, 0);
-  const confidence = computeDreamTeamConfidence(
-    selectedXI.map(c => c.confidence)
-  );
+    for (const c of roleCandidates) {
+      if (roleCounts[roleKey] >= min) break;
+      if ((teamCounts[c.team_id] || 0) >= CONSTRAINTS.maxPerTeam) continue;
+
+      selected.push(c);
+      used.add(c.player_id);
+      roleCounts[roleKey]++;
+      teamCounts[c.team_id] = (teamCounts[c.team_id] || 0) + 1;
+    }
+  }
+
+  // Pass 2: Fill remaining slots by highest expected points
+  const remaining = candidates.filter(c => !used.has(c.player_id));
+  for (const c of remaining) {
+    if (selected.length >= CONSTRAINTS.total) break;
+
+    const rk = roleToKey(c.role);
+    if (roleCounts[rk] >= CONSTRAINTS[rk].max) continue;
+    if ((teamCounts[c.team_id] || 0) >= CONSTRAINTS.maxPerTeam) continue;
+
+    selected.push(c);
+    used.add(c.player_id);
+    roleCounts[rk]++;
+    teamCounts[c.team_id] = (teamCounts[c.team_id] || 0) + 1;
+  }
+
+  // Assign captain and vice-captain (top 2 by expected points)
+  selected.sort((a, b) => b.expected_points - a.expected_points);
+  if (selected.length > 0) selected[0].is_captain = true;
+  if (selected.length > 1) selected[1].is_vice_captain = true;
+
+  // Confidence
+  const avgConfidence = candidates.length > 0
+    ? candidates.reduce((s, c) => s + (c.form_score / 10), 0) / candidates.length
+    : 0;
+  const confidence = computeDreamTeamConfidence(avgConfidence, selected.length, CONSTRAINTS.total);
 
   return {
-    fixture_id: fixtureId,
-    players: picks.sort((a, b) => {
-      const roleOrder: Record<string, number> = { wicketkeeper: 1, batter: 2, allrounder: 3, bowler: 4 };
-      return (roleOrder[a.role] || 5) - (roleOrder[b.role] || 5);
-    }),
-    total_expected_points: Math.round(totalPoints * 10) / 10,
-    confidence: confidence.value,
-    computed_at: new Date().toISOString(),
+    players: selected.map(({ team_id, ...rest }) => rest),
+    team_composition: { ...roleCounts },
+    total_expected_points: Math.round(selected.reduce((s, p) => s + p.expected_points, 0) * 10) / 10,
+    confidence,
   };
 }
 
-// ─── OPTIMAL XI SELECTOR ───
+// ─── Captain Picker ───
 
-function selectOptimalXI(
-  candidates: PlayerCandidate[],
-  team1Id: number,
-  team2Id: number
-): PlayerCandidate[] | null {
-  // Sort by expected points descending
-  const sorted = [...candidates].sort(
-    (a, b) => b.expected_points - a.expected_points
-  );
+export async function getCaptainPicks(fixtureId: number): Promise<CaptainPick[]> {
+  const db = getServiceClient();
 
-  const selected: PlayerCandidate[] = [];
-  const counts = { wicketkeeper: 0, batter: 0, allrounder: 0, bowler: 0 };
-  const teamCounts = new Map<number, number>();
-  teamCounts.set(team1Id, 0);
-  teamCounts.set(team2Id, 0);
+  const { data: fixture } = await db
+    .from('fixtures')
+    .select('venue_id, team1_id, team2_id')
+    .eq('id', fixtureId)
+    .single();
 
-  const c = DREAM_TEAM_CONSTRAINTS;
+  if (!fixture) return [];
 
-  // First pass: ensure minimums from each role
-  const roleMinimums: Record<string, number> = {
-    wicketkeeper: c.wicketkeeper.min,
-    batter: c.batter.min,
-    allrounder: c.allrounder.min,
-    bowler: c.bowler.min,
-  };
+  const fixtureData = fixture as Record<string, unknown>;
 
-  for (const role of Object.keys(roleMinimums)) {
-    const needed = roleMinimums[role];
-    const rolePlayers = sorted.filter(
-      p =>
-        p.role === role &&
-        !selected.includes(p) &&
-        (teamCounts.get(p.team_id) || 0) < c.maxFromOneTeam
-    );
-
-    for (let i = 0; i < needed && i < rolePlayers.length; i++) {
-      selected.push(rolePlayers[i]);
-      counts[role as keyof typeof counts]++;
-      teamCounts.set(
-        rolePlayers[i].team_id,
-        (teamCounts.get(rolePlayers[i].team_id) || 0) + 1
-      );
-    }
-  }
-
-  // Second pass: fill remaining slots with best available
-  const remaining = c.total - selected.length;
-  for (let i = 0; i < remaining; i++) {
-    const best = sorted.find(p => {
-      if (selected.includes(p)) return false;
-
-      const role = p.role as keyof typeof counts;
-      const max = c[role as keyof typeof c];
-      if (typeof max === 'object' && 'max' in max) {
-        if (counts[role] >= max.max) return false;
-      }
-
-      if ((teamCounts.get(p.team_id) || 0) >= c.maxFromOneTeam) return false;
-
-      return true;
-    });
-
-    if (best) {
-      selected.push(best);
-      counts[best.role as keyof typeof counts]++;
-      teamCounts.set(
-        best.team_id,
-        (teamCounts.get(best.team_id) || 0) + 1
-      );
-    }
-  }
-
-  // Validate: at least 1 from each team
-  const team1Count = teamCounts.get(team1Id) || 0;
-  const team2Count = teamCounts.get(team2Id) || 0;
-
-  if (team1Count < 1 || team2Count < 1) {
-    return null; // Invalid selection
-  }
-
-  return selected;
-}
-
-// ─── FANTASY POINTS ESTIMATOR ───
-
-function estimateFantasyPoints(
-  role: string,
-  formScore: number,
-  config: FantasyPointsConfig
-): number {
-  // Base expected points by role (calibrated to Dream11)
-  const basePoints: Record<string, number> = {
-    batter: 28,
-    wicketkeeper: 32,
-    allrounder: 38,
-    bowler: 30,
-    unknown: 25,
-  };
-
-  const base = basePoints[role] || 25;
-  // Scale by form score (0-10 maps to 0.5x-1.5x)
-  const formMultiplier = 0.5 + (formScore / 10);
-
-  return base * formMultiplier + config.bonus.playing_xi;
-}
-
-// ─── PICK REASONING ───
-
-function generatePickReasoning(
-  name: string,
-  role: string,
-  formScore: number,
-  expectedPoints: number
-): string[] {
-  const reasons: string[] = [];
-
-  if (formScore >= 8) reasons.push(`Elite form — score ${formScore.toFixed(1)}/10`);
-  else if (formScore >= 6) reasons.push(`Strong form — score ${formScore.toFixed(1)}/10`);
-  else if (formScore >= 4) reasons.push(`Moderate form — score ${formScore.toFixed(1)}/10`);
-
-  if (role === 'allrounder') reasons.push('All-round contribution potential (bat + bowl points)');
-  if (role === 'wicketkeeper') reasons.push('WK bonus points for catches/stumpings');
-
-  reasons.push(`Expected ~${Math.round(expectedPoints)} fantasy points`);
-
-  return reasons;
-}
-
-// ─── CAPTAIN PICKER ───
-
-export async function getCaptainPicks(
-  fixtureId: number,
-  limit: number = 3
-): Promise<CaptainPick[]> {
-  const db = getSupabaseClient();
-
-  // Get playing XI with details
-  const { data: playingXI } = await db
+  const { data: xi } = await db
     .from('playing_xi')
-    .select('player_id, team_id')
+    .select('player_id, team_id, players!playing_xi_player_id_fkey(name, role)')
     .eq('fixture_id', fixtureId);
 
-  if (!playingXI || playingXI.length === 0) return [];
+  if (!xi) return [];
 
-  const playerIds = playingXI.map((p: Record<string, unknown>) => p.player_id as number);
+  const venueIntel = await getVenueIntelligence(fixtureData.venue_id as number);
 
-  // Get player info
-  const { data: players } = await db
-    .from('players')
-    .select('id, name, role')
-    .in('id', playerIds);
+  const picks: CaptainPick[] = [];
 
-  // Get form scores
-  const { data: formScores } = await db
-    .from('form_scores')
-    .select('player_id, score, trend, confidence')
-    .in('player_id', playerIds)
-    .eq('score_type', 'overall');
+  for (const entry of xi) {
+    const e = entry as Record<string, unknown>;
+    const player = e.players as Record<string, unknown>;
+    const playerId = e.player_id as number;
+    const role = (player?.role as string) || 'batter';
+    const name = (player?.name as string) || 'Unknown';
 
-  // Get team names
-  const teamIds = [...new Set(playingXI.map((p: Record<string, unknown>) => p.team_id as number))];
-  const { data: teams } = await db
-    .from('teams')
-    .select('id, short_name, name')
-    .in('id', teamIds);
+    const formResult = await computeFormScore(playerId, role);
 
-  const teamMap = new Map<number, string>();
-  teams?.forEach((t: Record<string, unknown>) =>
-    teamMap.set(t.id as number, (t.short_name || t.name) as string)
-  );
+    // Weighted captain score
+    const formWeight = formResult.score * 0.35;
+    const venueWeight = (venueIntel ? 5 : 3) * 0.25; // Simplified venue scoring
+    const matchupWeight = 5 * 0.20; // Placeholder for matchup scoring
+    const consistencyWeight = (formResult.trend === 'improving' ? 7 : formResult.trend === 'stable' ? 5 : 3) * 0.10;
+    const roleCeiling = (role === 'allrounder' ? 8 : role === 'wicketkeeper' ? 7 : 6) * 0.10;
 
-  const playerTeamMap = new Map<number, number>();
-  playingXI.forEach((p: Record<string, unknown>) =>
-    playerTeamMap.set(p.player_id as number, p.team_id as number)
-  );
+    const captainScore = Math.round((formWeight + venueWeight + matchupWeight + consistencyWeight + roleCeiling) * 100) / 100;
 
-  // Score each player for captain
-  const captainScores: {
-    player: Record<string, unknown>;
-    score: number;
-    formScore: number;
-    trend: string;
-    confidence: number;
-  }[] = [];
+    // Risk level
+    let riskLevel: 'safe' | 'moderate' | 'risky' = 'moderate';
+    if (formResult.score >= 7 && formResult.trend !== 'declining') riskLevel = 'safe';
+    else if (formResult.score < 5 || formResult.trend === 'declining') riskLevel = 'risky';
 
-  for (const player of players || []) {
-    const form = formScores?.find(
-      (f: Record<string, unknown>) => f.player_id === player.id
-    );
-    const formValue = (form?.score as number) || 5;
-    const trend = (form?.trend as string) || 'stable';
-    const confidence = (form?.confidence as number) || 0.3;
-
-    // Captain score weights (from PRD):
-    // Form 35%, Venue 25%, Matchups 20%, Consistency 10%, Role ceiling 10%
-    let captainScore = 0;
-    captainScore += formValue * 0.35;    // Form component
-    captainScore += 5 * 0.25;            // Venue placeholder (would need match-specific data)
-    captainScore += 5 * 0.20;            // Matchup placeholder
-    captainScore += (trend === 'improving' ? 7 : trend === 'stable' ? 5 : 3) * 0.10;
-    captainScore += (player.role === 'allrounder' ? 8 : player.role === 'wicketkeeper' ? 6 : 5) * 0.10;
-
-    captainScores.push({
-      player,
-      score: captainScore,
-      formScore: formValue,
-      trend,
-      confidence,
-    });
-  }
-
-  // Sort by captain score
-  captainScores.sort((a, b) => b.score - a.score);
-
-  // Build picks
-  const picks: CaptainPick[] = captainScores.slice(0, limit).map((c, i) => {
-    const teamId = playerTeamMap.get(c.player.id as number) || 0;
-    const teamName = teamMap.get(teamId) || 'Unknown';
-
-    const riskLevel: CaptainPick['risk_level'] =
-      i === 0 ? 'safe' : i === 1 ? 'moderate' : 'risky';
-
+    // Reasoning
     const reasoning: string[] = [];
-    reasoning.push(`Form: ${c.formScore.toFixed(1)}/10 (${c.trend})`);
-    if (c.player.role === 'allrounder') reasoning.push('All-rounder — dual point-scoring potential');
-    if (c.confidence >= 0.7) reasoning.push('High data confidence');
-    reasoning.push(`Captain score: ${c.score.toFixed(2)}`);
+    reasoning.push(`${formResult.score.toFixed(1)} form score (${formResult.trend})`);
+    if (formResult.matches_used >= 10) reasoning.push(`Based on ${formResult.matches_used} recent matches`);
+    if (formResult.leagues.length > 1) reasoning.push(`Cross-league form across ${formResult.leagues.length} leagues`);
 
-    return {
-      rank: i + 1,
-      player_id: c.player.id as number,
-      player_name: c.player.name as string,
-      team: teamName,
-      captain_score: Math.round(c.score * 100) / 100,
+    picks.push({
+      player_id: playerId,
+      player_name: name,
+      team: '',
+      role,
+      captain_score: captainScore,
       risk_level: riskLevel,
       reasoning,
-      anti_pick_warning: null, // Would be populated from matchup analysis
-    };
-  });
+      confidence: formResult.confidence,
+    });
+  }
 
-  return picks;
+  // Sort by captain score descending, return top 3
+  picks.sort((a, b) => b.captain_score - a.captain_score);
+  return picks.slice(0, 3);
 }
 
-// ─── DIFFERENTIAL FINDER ───
+// ─── Differential Finder ───
 
-export async function getDifferentials(
-  fixtureId: number,
-  limit: number = 5
-): Promise<DreamTeamPick[]> {
-  const db = getSupabaseClient();
+export async function getDifferentials(fixtureId: number): Promise<Differential[]> {
+  const db = getServiceClient();
 
-  // Get playing XI
-  const { data: playingXI } = await db
+  const { data: xi } = await db
     .from('playing_xi')
-    .select('player_id, team_id')
+    .select('player_id, team_id, players!playing_xi_player_id_fkey(name, role)')
     .eq('fixture_id', fixtureId);
 
-  if (!playingXI) return [];
+  if (!xi) return [];
 
-  const playerIds = playingXI.map((p: Record<string, unknown>) => p.player_id as number);
+  const differentials: Differential[] = [];
 
-  // Get players with form
-  const { data: players } = await db
-    .from('players')
-    .select('id, name, role')
-    .in('id', playerIds);
+  for (const entry of xi) {
+    const e = entry as Record<string, unknown>;
+    const player = e.players as Record<string, unknown>;
+    const playerId = e.player_id as number;
+    const role = (player?.role as string) || 'batter';
+    const name = (player?.name as string) || 'Unknown';
 
-  const { data: formScores } = await db
-    .from('form_scores')
-    .select('player_id, score, confidence')
-    .in('player_id', playerIds)
-    .eq('score_type', 'overall');
+    const formResult = await computeFormScore(playerId, role);
 
-  const teamIds = [...new Set(playingXI.map((p: Record<string, unknown>) => p.team_id as number))];
-  const { data: teams } = await db
-    .from('teams')
-    .select('id, short_name, name')
-    .in('id', teamIds);
+    // Differentials: form between 4.0 and 7.5
+    if (formResult.score >= 4.0 && formResult.score <= 7.5) {
+      const basePoints = FANTASY_CONFIG.base_points[role as keyof typeof FANTASY_CONFIG.base_points] || 28;
+      const expectedPoints = Math.round((basePoints * (0.5 + formResult.score / 10) + FANTASY_CONFIG.playing_xi_bonus) * 10) / 10;
 
-  const teamMap = new Map<number, string>();
-  teams?.forEach((t: Record<string, unknown>) =>
-    teamMap.set(t.id as number, (t.short_name || t.name) as string)
-  );
-
-  const playerTeamMap = new Map<number, number>();
-  playingXI.forEach((p: Record<string, unknown>) =>
-    playerTeamMap.set(p.player_id as number, p.team_id as number)
-  );
-
-  // Differentials: players with decent form but likely low ownership
-  // (not the obvious picks — mid-order batters, secondary bowlers, etc.)
-  const differentials: DreamTeamPick[] = [];
-
-  for (const player of players || []) {
-    const form = formScores?.find(
-      (f: Record<string, unknown>) => f.player_id === player.id
-    );
-    const formValue = (form?.score as number) || 0;
-
-    // Good differentials: decent form (4-7) but not obvious picks
-    if (formValue >= 4 && formValue <= 7.5) {
-      const teamId = playerTeamMap.get(player.id as number) || 0;
-      const teamName = teamMap.get(teamId) || 'Unknown';
+      let reason = 'Decent form but likely low ownership';
+      if (formResult.trend === 'improving') reason = 'Form trending up — under-the-radar pick';
+      else if (formResult.leagues.length > 2) reason = 'Strong cross-league record, often overlooked';
 
       differentials.push({
-        player_id: player.id as number,
-        player_name: player.name as string,
-        team: teamName,
-        role: player.role as string,
-        expected_points: estimateFantasyPoints(player.role as string, formValue, DREAM11_T20_SCORING),
-        reasoning: [
-          `Under-the-radar pick — form ${formValue.toFixed(1)}/10`,
-          'Low expected ownership = high differential value',
-          player.role === 'allrounder' ? 'All-round upside' : `Solid ${player.role} pick`,
-        ],
-        form_score: formValue,
+        player_id: playerId,
+        player_name: name,
+        team: '',
+        role,
+        form_score: formResult.score,
+        expected_points: expectedPoints,
+        reason,
       });
     }
   }
 
-  // Sort by expected points
   differentials.sort((a, b) => b.expected_points - a.expected_points);
-  return differentials.slice(0, limit);
+  return differentials;
 }

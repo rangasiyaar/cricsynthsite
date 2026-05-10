@@ -1,4 +1,3 @@
-// GET /api/v1/health — Health check
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -6,11 +5,10 @@ export async function GET() {
     success: true,
     data: {
       status: 'healthy',
-      version: '1.0.0',
-      api_version: 'v1',
+      version: 'v1',
       product: 'CricVeda',
-      description: 'Fantasy Cricket Intelligence API',
-      documentation: 'https://cricveda.com/docs',
+      platform: 'CricSynthesis',
+      timestamp: new Date().toISOString(),
     },
     meta: {
       timestamp: new Date().toISOString(),
