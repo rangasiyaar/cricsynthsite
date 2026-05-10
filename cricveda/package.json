@@ -1,7 +1,8 @@
 {
   "name": "cricveda",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "CricVeda — Fantasy Cricket Intelligence API by CricSynthesis",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,27 +10,31 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
     "ingest": "tsx src/scripts/ingest-cricsheet.ts",
     "scrape:fixtures": "tsx src/scripts/scrape-fixtures.ts",
     "scrape:squads": "tsx src/scripts/scrape-squads.ts",
     "precompute": "tsx src/scripts/precompute-insights.ts"
   },
   "dependencies": {
+    "next": "14.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "@supabase/supabase-js": "^2.100.1",
     "@upstash/redis": "^1.37.0",
-    "next": "14.1.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "recharts": "^2.12.0",
+    "lucide-react": "^0.344.0",
+    "framer-motion": "^11.0.0",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
+    "typescript": "^5.4.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0",
+    "@types/node": "^20.11.0",
+    "@types/bcryptjs": "^2.4.6",
+    "vitest": "^1.2.0",
     "tsx": "^4.7.0",
-    "typescript": "^5.4.0",
-    "vitest": "^1.2.0"
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.1.0"
   }
 }

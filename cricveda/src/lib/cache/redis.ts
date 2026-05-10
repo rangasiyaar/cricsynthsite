@@ -1,113 +1,92 @@
 // ============================================================
-// CricVeda — Redis Cache (Upstash)
+// CricVeda — Cache Layer (Upstash Redis + In-Memory Fallback)
 // ============================================================
 
-interface CacheEntry {
-  data: unknown;
-  expires_at: number;
-}
+import { Redis } from '@upstash/redis';
 
-// In-memory fallback cache when Redis is unavailable
-const memoryCache = new Map<string, CacheEntry>();
+let redisInstance: Redis | null = null;
+const memoryCache = new Map<string, { value: string; expiry: number }>();
 
-let redisClient: { get: (key: string) => Promise<string | null>; set: (key: string, value: string, options?: { ex?: number }) => Promise<void>; incr: (key: string) => Promise<number>; expire: (key: string, seconds: number) => Promise<void>; del: (key: string) => Promise<void> } | null = null;
-
-async function getRedis() {
-  if (redisClient) return redisClient;
+function getRedis(): Redis | null {
+  if (redisInstance) return redisInstance;
 
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-  if (!url || !token) {
-    console.warn('[Cache] Redis not configured — using in-memory fallback');
-    return null;
-  }
+  if (!url || !token) return null;
 
   try {
-    const { Redis } = await import('@upstash/redis');
-    redisClient = new Redis({ url, token }) as unknown as typeof redisClient;
-    return redisClient;
+    redisInstance = new Redis({ url, token });
+    return redisInstance;
   } catch {
-    console.warn('[Cache] Failed to initialize Redis — using in-memory fallback');
+    console.warn('Redis init failed, using in-memory fallback');
     return null;
   }
 }
 
-// ─── CACHE OPERATIONS ───
-
 export async function cacheGet<T>(key: string): Promise<T | null> {
-  const prefixedKey = `cricveda:${key}`;
+  const redis = getRedis();
 
-  try {
-    const redis = await getRedis();
-    if (redis) {
-      const result = await redis.get(prefixedKey);
-      if (result) {
-        return JSON.parse(result as string) as T;
-      }
-      return null;
+  if (redis) {
+    try {
+      const val = await redis.get<T>(key);
+      return val;
+    } catch (err) {
+      console.warn('Redis GET error:', err);
     }
-  } catch {
-    // Fall through to memory cache
   }
 
-  // Memory cache fallback
-  const entry = memoryCache.get(prefixedKey);
-  if (entry && entry.expires_at > Date.now()) {
-    return entry.data as T;
+  // In-memory fallback
+  const entry = memoryCache.get(key);
+  if (entry && entry.expiry > Date.now()) {
+    return JSON.parse(entry.value) as T;
   }
-  memoryCache.delete(prefixedKey);
+  memoryCache.delete(key);
   return null;
 }
 
 export async function cacheSet(
   key: string,
-  data: unknown,
-  ttlSeconds: number = 300
+  value: unknown,
+  ttlSeconds: number
 ): Promise<void> {
-  const prefixedKey = `cricveda:${key}`;
-  const serialized = JSON.stringify(data);
+  const redis = getRedis();
 
-  try {
-    const redis = await getRedis();
-    if (redis) {
-      await redis.set(prefixedKey, serialized, { ex: ttlSeconds });
+  if (redis) {
+    try {
+      await redis.set(key, JSON.stringify(value), { ex: ttlSeconds });
       return;
+    } catch (err) {
+      console.warn('Redis SET error:', err);
     }
-  } catch {
-    // Fall through to memory cache
   }
 
-  // Memory cache fallback
-  memoryCache.set(prefixedKey, {
-    data,
-    expires_at: Date.now() + ttlSeconds * 1000,
+  // In-memory fallback
+  memoryCache.set(key, {
+    value: JSON.stringify(value),
+    expiry: Date.now() + ttlSeconds * 1000,
   });
 }
 
 export async function cacheDel(key: string): Promise<void> {
-  const prefixedKey = `cricveda:${key}`;
+  const redis = getRedis();
 
-  try {
-    const redis = await getRedis();
-    if (redis) {
-      await redis.del(prefixedKey);
+  if (redis) {
+    try {
+      await redis.del(key);
+    } catch (err) {
+      console.warn('Redis DEL error:', err);
     }
-  } catch {
-    // Ignore
   }
 
-  memoryCache.delete(prefixedKey);
+  memoryCache.delete(key);
 }
 
-// ─── RATE LIMITING ───
+export async function getRateCount(key: string): Promise<number> {
+  const redis = getRedis();
 
-export async function getRateCount(apiKeyId: string): Promise<number> {
-  const key = `cricveda:rate:${apiKeyId}`;
-
-  try {
-    const redis = await getRedis();
-    if (redis) {
+  if (redis) {
+    try {
       const count = await redis.incr(key);
       if (count === 1) {
         // Set expiry to end of day UTC
@@ -118,31 +97,39 @@ export async function getRateCount(apiKeyId: string): Promise<number> {
         await redis.expire(key, ttl);
       }
       return count;
+    } catch (err) {
+      console.warn('Redis INCR error:', err);
     }
-  } catch {
-    // Fall through
   }
 
-  // Memory fallback
-  const dayKey = `${key}:${new Date().toISOString().split('T')[0]}`;
-  const entry = memoryCache.get(dayKey);
-  const count = entry ? (entry.data as number) + 1 : 1;
-  memoryCache.set(dayKey, {
-    data: count,
-    expires_at: Date.now() + 86400000,
-  });
-  return count;
+  // In-memory fallback
+  const entry = memoryCache.get(key);
+  const now = Date.now();
+  const endOfDay = new Date();
+  endOfDay.setUTCHours(23, 59, 59, 999);
+
+  if (entry && entry.expiry > now) {
+    const count = parseInt(entry.value, 10) + 1;
+    memoryCache.set(key, { value: String(count), expiry: entry.expiry });
+    return count;
+  }
+
+  memoryCache.set(key, { value: '1', expiry: endOfDay.getTime() });
+  return 1;
 }
 
-// ─── CACHE KEYS FACTORY ───
+// ─── Cache Key Builders ───
 
 export const CacheKeys = {
-  playerForm: (playerId: number) => `player:${playerId}:form`,
-  matchup: (batterId: number, bowlerId: number) => `matchup:${batterId}:${bowlerId}`,
-  venueStats: (venueId: number) => `venue:${venueId}:stats`,
-  fixtureInsight: (fixtureId: number, type: string) => `fixture:${fixtureId}:${type}`,
-  dreamTeam: (fixtureId: number) => `fixture:${fixtureId}:dream_team`,
-  captainPicks: (fixtureId: number) => `fixture:${fixtureId}:captain_picks`,
-  playerProfile: (playerId: number) => `player:${playerId}:profile`,
-  matchList: (league?: string, page?: number) => `matches:${league || 'all'}:p${page || 1}`,
+  playerList: (page: number) => `cv:players:list:${page}`,
+  player: (id: number) => `cv:player:${id}`,
+  playerForm: (id: number, type: string) => `cv:player:${id}:form:${type}`,
+  matchList: (league: string, page: number) => `cv:matches:${league}:${page}`,
+  matchInsights: (id: number) => `cv:match:${id}:insights`,
+  matchup: (batterId: number, bowlerId: number) => `cv:matchup:${batterId}:${bowlerId}`,
+  venue: (id: number) => `cv:venue:${id}`,
+  dreamTeam: (fixtureId: number) => `cv:fantasy:${fixtureId}:dream_team`,
+  captainPicks: (fixtureId: number) => `cv:fantasy:${fixtureId}:captain_picks`,
+  leaderboard: (type: string, league: string, role: string) => `cv:leaderboard:${type}:${league}:${role}`,
+  rateLimit: (keyId: string) => `cv:rate:${keyId}:${new Date().toISOString().slice(0, 10)}`,
 };

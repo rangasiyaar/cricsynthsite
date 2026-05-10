@@ -1,32 +1,31 @@
-// GET /api/v1/players/[id]/form — Cross-league form score
 import { NextRequest } from 'next/server';
 import { withOptionalAuth, apiSuccess, apiError } from '@/lib/middleware';
-import { calculateFormScore } from '@/lib/analytics/form-score';
+import { computeFormScore } from '@/lib/analytics/form-score';
 import { cacheGet, cacheSet, CacheKeys } from '@/lib/cache/redis';
+import { queryOne } from '@/lib/db/supabase';
+import type { Player, FormScoreResult } from '@/lib/types';
 
 export async function GET(
-  request: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return withOptionalAuth(request, async (req) => {
-    const playerId = parseInt(params.id);
-    if (isNaN(playerId)) {
-      return apiError('Invalid player ID', 'INVALID_PARAM', 400);
-    }
+  return withOptionalAuth(req, async () => {
+    const playerId = parseInt(params.id, 10);
+    if (isNaN(playerId)) return apiError('Invalid player ID', 400, 'INVALID_ID');
 
-    const scoreType = (req.nextUrl.searchParams.get('type') || 'overall') as 'batting' | 'bowling' | 'overall';
+    const url = new URL(req.url);
+    const type = url.searchParams.get('type') || 'overall';
 
-    const cacheKey = CacheKeys.playerForm(playerId);
-    const cached = await cacheGet<unknown>(cacheKey);
-    if (cached) return apiSuccess(cached, true, 300);
+    const cacheKey = CacheKeys.playerForm(playerId, type);
+    const cached = await cacheGet<FormScoreResult>(cacheKey);
+    if (cached) return apiSuccess(cached, true);
 
-    const formScore = await calculateFormScore(playerId, scoreType);
+    const player = await queryOne<Player>('players', 'id', playerId);
+    if (!player) return apiError('Player not found', 404, 'NOT_FOUND');
 
-    if (!formScore) {
-      return apiError('Player not found or no data', 'NOT_FOUND', 404);
-    }
+    const result = await computeFormScore(playerId, player.role || 'batter');
+    await cacheSet(cacheKey, result, 1800);
 
-    await cacheSet(cacheKey, formScore, 1800);
-    return apiSuccess(formScore);
+    return apiSuccess(result);
   });
 }

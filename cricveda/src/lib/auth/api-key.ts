@@ -1,87 +1,94 @@
 // ============================================================
-// CricVeda — API Key Auth (F3.7)
+// CricVeda — API Key Management
 // ============================================================
 
 import { createHash, randomBytes } from 'crypto';
-import { getSupabaseClient } from '@/lib/db/supabase';
-import { ApiKey } from '@/lib/types';
+import { getServiceClient } from '@/lib/db/supabase';
+import type { ApiKey } from '@/lib/types';
 
-// ─── GENERATE API KEY ───
+const KEY_PREFIX = 'cs_';
 
-export function generateApiKey(): { key: string; hash: string; prefix: string } {
-  const key = `cv_${randomBytes(24).toString('hex')}`;
-  const hash = hashApiKey(key);
-  const prefix = key.substring(0, 11); // "cv_" + first 8 hex chars
-
-  return { key, hash, prefix };
+export function generateApiKey(): string {
+  const bytes = randomBytes(24);
+  return KEY_PREFIX + bytes.toString('hex');
 }
 
-export function hashApiKey(key: string): string {
+export function hashKey(key: string): string {
   return createHash('sha256').update(key).digest('hex');
 }
 
-// ─── CREATE API KEY FOR USER ───
+export function getKeyPrefix(key: string): string {
+  return key.substring(0, 11);
+}
 
 export async function createApiKey(
   userId: string,
   name: string = 'Default'
-): Promise<{ key: string; apiKey: ApiKey } | null> {
-  const db = getSupabaseClient();
+): Promise<{ key: string; record: ApiKey } | null> {
+  const plainKey = generateApiKey();
+  const hash = hashKey(plainKey);
+  const prefix = getKeyPrefix(plainKey);
 
-  const { key, hash, prefix } = generateApiKey();
-
+  const db = getServiceClient();
   const { data, error } = await db
     .from('api_keys')
     .insert({
       user_id: userId,
-      key_hash: hash,
       key_prefix: prefix,
+      key_hash: hash,
       name,
-      tier: 'free',
-      daily_limit: 100,
+      is_active: true,
     })
     .select()
     .single();
 
   if (error) {
-    console.error('[Auth] Error creating API key:', error.message);
+    console.error('createApiKey error:', error.message);
     return null;
   }
 
-  return { key, apiKey: data as ApiKey };
+  return { key: plainKey, record: data as ApiKey };
 }
-
-// ─── VALIDATE API KEY ───
 
 export async function validateApiKey(
   key: string
-): Promise<ApiKey | null> {
-  const db = getSupabaseClient();
-  const hash = hashApiKey(key);
+): Promise<{ valid: boolean; keyRecord?: ApiKey; userId?: string; plan?: string }> {
+  if (!key || !key.startsWith(KEY_PREFIX)) {
+    return { valid: false };
+  }
+
+  const hash = hashKey(key);
+  const db = getServiceClient();
 
   const { data, error } = await db
     .from('api_keys')
-    .select('*')
+    .select('*, users!api_keys_user_id_fkey(id, plan)')
     .eq('key_hash', hash)
     .eq('is_active', true)
     .single();
 
-  if (error || !data) return null;
+  if (error || !data) {
+    return { valid: false };
+  }
 
-  // Update last used
+  // Update last_used_at
   await db
     .from('api_keys')
     .update({ last_used_at: new Date().toISOString() })
     .eq('id', data.id);
 
-  return data as ApiKey;
+  const user = (data as Record<string, unknown>).users as Record<string, unknown> | undefined;
+
+  return {
+    valid: true,
+    keyRecord: data as ApiKey,
+    userId: user?.id as string,
+    plan: (user?.plan as string) || 'free',
+  };
 }
 
-// ─── REVOKE API KEY ───
-
 export async function revokeApiKey(keyId: string, userId: string): Promise<boolean> {
-  const db = getSupabaseClient();
-
+  const db = getServiceClient();
   const { error } = await db
     .from('api_keys')
     .update({ is_active: false })
@@ -91,19 +98,24 @@ export async function revokeApiKey(keyId: string, userId: string): Promise<boole
   return !error;
 }
 
-// ─── REGENERATE API KEY ───
-
 export async function regenerateApiKey(
+  keyId: string,
   userId: string
-): Promise<{ key: string; apiKey: ApiKey } | null> {
-  const db = getSupabaseClient();
+): Promise<{ key: string; record: ApiKey } | null> {
+  const revoked = await revokeApiKey(keyId, userId);
+  if (!revoked) return null;
 
-  // Revoke all existing keys
-  await db
-    .from('api_keys')
-    .update({ is_active: false })
-    .eq('user_id', userId);
-
-  // Create new one
   return createApiKey(userId);
+}
+
+export async function listUserKeys(userId: string): Promise<ApiKey[]> {
+  const db = getServiceClient();
+  const { data, error } = await db
+    .from('api_keys')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) return [];
+  return (data as ApiKey[]) || [];
 }

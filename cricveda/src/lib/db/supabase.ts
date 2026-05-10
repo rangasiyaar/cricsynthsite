@@ -1,140 +1,129 @@
 // ============================================================
-// CricVeda — Supabase Client
+// CricVeda — Supabase Database Client
 // ============================================================
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let supabase: SupabaseClient | null = null;
+let supabaseInstance: SupabaseClient | null = null;
+let serviceInstance: SupabaseClient | null = null;
 
 export function getSupabaseClient(): SupabaseClient {
-  if (supabase) return supabase;
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) {
-    throw new Error(
-      'Missing Supabase credentials. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local'
-    );
-  }
-
-  supabase = createClient(url, key, {
-    auth: { persistSession: false },
-  });
-
-  return supabase;
-}
-
-// Browser client for client-side operations
-let browserClient: SupabaseClient | null = null;
-
-export function getSupabaseBrowserClient(): SupabaseClient {
-  if (browserClient) return browserClient;
+  if (supabaseInstance) return supabaseInstance;
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    throw new Error('Missing Supabase public credentials.');
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
   }
 
-  browserClient = createClient(url, key);
-  return browserClient;
+  supabaseInstance = createClient(url, key);
+  return supabaseInstance;
 }
 
-// ─── QUERY HELPERS ───
+export function getServiceClient(): SupabaseClient {
+  if (serviceInstance) return serviceInstance;
 
-export async function fetchOne<T>(
-  table: string,
-  match: Record<string, unknown>
-): Promise<T | null> {
-  const db = getSupabaseClient();
-  let query = db.from(table).select('*');
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  for (const [key, value] of Object.entries(match)) {
-    query = query.eq(key, value);
+  if (!url || !key) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
   }
 
-  const { data, error } = await query.single();
+  serviceInstance = createClient(url, key);
+  return serviceInstance;
+}
+
+// ─── Query Helpers ───
+
+export async function queryOne<T>(
+  table: string,
+  column: string,
+  value: string | number
+): Promise<T | null> {
+  const db = getServiceClient();
+  const { data, error } = await db
+    .from(table)
+    .select('*')
+    .eq(column, value)
+    .single();
+
   if (error) return null;
   return data as T;
 }
 
-export async function fetchMany<T>(
+export async function queryMany<T>(
   table: string,
-  options: {
-    match?: Record<string, unknown>;
-    orderBy?: string;
-    ascending?: boolean;
-    limit?: number;
-    offset?: number;
-  } = {}
+  filters?: Record<string, string | number | boolean>,
+  options?: { page?: number; perPage?: number; orderBy?: string; ascending?: boolean }
 ): Promise<{ data: T[]; count: number }> {
-  const db = getSupabaseClient();
+  const db = getServiceClient();
   let query = db.from(table).select('*', { count: 'exact' });
 
-  if (options.match) {
-    for (const [key, value] of Object.entries(options.match)) {
-      query = query.eq(key, value);
+  if (filters) {
+    for (const [key, val] of Object.entries(filters)) {
+      query = query.eq(key, val);
     }
   }
 
-  if (options.orderBy) {
-    query = query.order(options.orderBy, {
-      ascending: options.ascending ?? false,
-    });
+  if (options?.orderBy) {
+    query = query.order(options.orderBy, { ascending: options.ascending ?? false });
   }
 
-  if (options.limit) {
-    query = query.limit(options.limit);
+  if (options?.page && options?.perPage) {
+    const from = (options.page - 1) * options.perPage;
+    const to = from + options.perPage - 1;
+    query = query.range(from, to);
   }
 
-  if (options.offset) {
-    query = query.range(options.offset, options.offset + (options.limit || 20) - 1);
-  }
-
-  const { data, error, count } = await query;
+  const { data, count, error } = await query;
 
   if (error) {
-    console.error(`[DB] Error fetching from ${table}:`, error.message);
+    console.error(`queryMany(${table}) error:`, error.message);
     return { data: [], count: 0 };
   }
 
-  return { data: (data || []) as T[], count: count || 0 };
+  return { data: (data as T[]) || [], count: count || 0 };
 }
 
-export async function upsert<T>(
+export async function insertOne<T>(
   table: string,
-  data: Record<string, unknown> | Record<string, unknown>[],
-  conflictColumns?: string
-): Promise<T[] | null> {
-  const db = getSupabaseClient();
-  const query = db.from(table).upsert(data, {
-    onConflict: conflictColumns,
-    ignoreDuplicates: false,
-  });
-
-  const { data: result, error } = await query.select();
+  row: Record<string, unknown>
+): Promise<T | null> {
+  const db = getServiceClient();
+  const { data, error } = await db.from(table).insert(row).select().single();
 
   if (error) {
-    console.error(`[DB] Error upserting to ${table}:`, error.message);
+    console.error(`insertOne(${table}) error:`, error.message);
     return null;
   }
-
-  return result as T[];
+  return data as T;
 }
 
-export async function rawQuery(sql: string, params?: unknown[]): Promise<unknown> {
-  const db = getSupabaseClient();
-  const { data, error } = await db.rpc('exec_sql', {
-    query: sql,
-    params: params || [],
-  });
+export async function updateOne(
+  table: string,
+  id: string | number,
+  updates: Record<string, unknown>,
+  idColumn: string = 'id'
+): Promise<boolean> {
+  const db = getServiceClient();
+  const { error } = await db.from(table).update(updates).eq(idColumn, id);
 
   if (error) {
-    console.error('[DB] Raw query error:', error.message);
-    throw error;
+    console.error(`updateOne(${table}) error:`, error.message);
+    return false;
   }
+  return true;
+}
 
-  return data;
+export async function rawQuery<T>(sql: string): Promise<T[]> {
+  const db = getServiceClient();
+  const { data, error } = await db.rpc('raw_sql', { query: sql });
+
+  if (error) {
+    console.error('rawQuery error:', error.message);
+    return [];
+  }
+  return (data as T[]) || [];
 }

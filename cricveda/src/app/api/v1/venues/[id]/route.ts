@@ -1,30 +1,25 @@
-// GET /api/v1/venues/[id] — Venue intelligence
 import { NextRequest } from 'next/server';
-import { withOptionalAuth, apiSuccess, apiError } from '@/lib/middleware';
+import { withAuth, apiSuccess, apiError } from '@/lib/middleware';
 import { getVenueIntelligence } from '@/lib/analytics/venue';
 import { cacheGet, cacheSet, CacheKeys } from '@/lib/cache/redis';
+import type { VenueIntelligence } from '@/lib/types';
 
 export async function GET(
-  request: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  return withOptionalAuth(request, async () => {
-    const venueId = parseInt(params.id);
-    if (isNaN(venueId)) {
-      return apiError('Invalid venue ID', 'INVALID_PARAM', 400);
-    }
+  return withAuth(req, async () => {
+    const venueId = parseInt(params.id, 10);
+    if (isNaN(venueId)) return apiError('Invalid venue ID', 400, 'INVALID_ID');
 
-    const cacheKey = CacheKeys.venueStats(venueId);
-    const cached = await cacheGet<unknown>(cacheKey);
-    if (cached) return apiSuccess(cached, true, 600);
+    const cacheKey = CacheKeys.venue(venueId);
+    const cached = await cacheGet<VenueIntelligence>(cacheKey);
+    if (cached) return apiSuccess(cached, true);
 
-    const venue = await getVenueIntelligence(venueId);
+    const result = await getVenueIntelligence(venueId);
+    if (!result) return apiError('Venue not found or no data available', 404, 'NOT_FOUND');
 
-    if (!venue) {
-      return apiError('Venue not found', 'NOT_FOUND', 404);
-    }
-
-    await cacheSet(cacheKey, venue, 3600);
-    return apiSuccess(venue);
+    await cacheSet(cacheKey, result, 300);
+    return apiSuccess(result);
   });
 }

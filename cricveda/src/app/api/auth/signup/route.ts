@@ -1,17 +1,17 @@
-// POST /api/auth/signup — User registration
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/lib/db/supabase';
+import bcrypt from 'bcryptjs';
+import { insertOne } from '@/lib/db/supabase';
 import { createApiKey } from '@/lib/auth/api-key';
-import { createHash } from 'crypto';
+import type { User } from '@/lib/types';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
-    const { email, password, name } = body;
+    const body = await req.json();
+    const { email, password, name } = body as { email?: string; password?: string; name?: string };
 
-    if (!email || !password) {
+    if (!email || !password || !name) {
       return NextResponse.json(
-        { success: false, error: 'Email and password are required' },
+        { success: false, error: 'Email, password, and name are required' },
         { status: 400 }
       );
     }
@@ -23,61 +23,37 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const db = getSupabaseClient();
+    const passwordHash = await bcrypt.hash(password, 12);
 
-    // Check if user exists
-    const { data: existing } = await db
-      .from('users')
-      .select('id')
-      .eq('email', email.toLowerCase())
-      .single();
+    const user = await insertOne<User>('users', {
+      email: email.toLowerCase().trim(),
+      password_hash: passwordHash,
+      name: name.trim(),
+      plan: 'free',
+    });
 
-    if (existing) {
+    if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Email already registered' },
+        { success: false, error: 'Email already registered or signup failed' },
         { status: 409 }
       );
     }
 
-    // Hash password
-    const passwordHash = createHash('sha256').update(password).digest('hex');
-
-    // Create user
-    const { data: user, error } = await db
-      .from('users')
-      .insert({
-        email: email.toLowerCase(),
-        password_hash: passwordHash,
-        name: name || null,
-        plan: 'free',
-      })
-      .select()
-      .single();
-
-    if (error || !user) {
-      return NextResponse.json(
-        { success: false, error: 'Failed to create account' },
-        { status: 500 }
-      );
-    }
-
-    // Generate API key
+    // Auto-generate first API key
     const keyResult = await createApiKey(user.id, 'Default');
 
     return NextResponse.json({
       success: true,
       data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          plan: user.plan,
-        },
+        user: { id: user.id, email: user.email, name: user.name, plan: user.plan },
         api_key: keyResult ? keyResult.key : null,
-        message: 'Account created successfully. Save your API key — it will not be shown again.',
+        message: keyResult
+          ? 'Account created! Save your API key — it won\'t be shown again.'
+          : 'Account created! Generate an API key from the console.',
       },
-    });
-  } catch {
+    }, { status: 201 });
+  } catch (err) {
+    console.error('Signup error:', err);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

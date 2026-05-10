@@ -1,21 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from 'next/server';
+import { withAuth, apiSuccess, apiError } from '@/lib/middleware';
+import { generateDreamTeam, getCaptainPicks, getDifferentials } from '@/lib/analytics/fantasy';
 
-interface RouteParams {
-  params: { id: string };
-}
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  return withAuth(req, async () => {
+    const fixtureId = parseInt(params.id, 10);
+    if (isNaN(fixtureId)) return apiError('Invalid match ID', 400, 'INVALID_ID');
 
-export async function GET(_request: Request, { params }: RouteParams) {
-  const { id } = params;
+    const [dreamTeam, captainPicks, differentials] = await Promise.all([
+      generateDreamTeam(fixtureId),
+      getCaptainPicks(fixtureId),
+      getDifferentials(fixtureId),
+    ]);
 
-  // Placeholder response for fantasy recommendations endpoint
-  return NextResponse.json({
-    matchId: id,
-    recommendations: {
-      captain: null,
-      viceCaptain: null,
-      tiers: [],
-    },
-    message: "CricVeda fantasy recommendations endpoint stub.",
+    return apiSuccess({
+      fixture_id: fixtureId,
+      dream_team: dreamTeam,
+      captain_picks: captainPicks,
+      differentials,
+    });
   });
 }
-

@@ -1,276 +1,238 @@
 -- ============================================================
--- CricVeda Database Schema
--- Supabase PostgreSQL
--- Version 1.0 — March 2026
+-- CricVeda — Database Schema
+-- Run this in Supabase SQL Editor to initialize the database.
 -- ============================================================
 
--- Enable UUID generation
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- ─── LEAGUES ───
+-- Leagues (13 seeded)
 CREATE TABLE IF NOT EXISTS leagues (
-  id            TEXT PRIMARY KEY,                -- e.g. 'ipl', 'bbl', 't20i'
-  name          TEXT NOT NULL,                   -- e.g. 'Indian Premier League'
-  country       TEXT,
-  tier          SMALLINT DEFAULT 1 CHECK (tier BETWEEN 1 AND 3),
-  season_months TEXT,                            -- e.g. 'Mar-May'
-  is_active     BOOLEAN DEFAULT true,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  country TEXT NOT NULL,
+  tier INTEGER DEFAULT 1,
+  season TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── VENUES ───
+-- Venues
 CREATE TABLE IF NOT EXISTS venues (
-  id            SERIAL PRIMARY KEY,
-  name          TEXT NOT NULL,
-  city          TEXT,
-  country       TEXT,
-  capacity      INT,
-  cricsheet_id  TEXT UNIQUE,
-  avg_1st_score NUMERIC(6,2),
-  avg_2nd_score NUMERIC(6,2),
-  pace_pct      NUMERIC(5,2),                   -- % wickets to pace
-  spin_pct      NUMERIC(5,2),                   -- % wickets to spin
-  toss_win_bat_pct NUMERIC(5,2),
-  matches_count INT DEFAULT 0,
-  created_at    TIMESTAMPTZ DEFAULT NOW(),
-  updated_at    TIMESTAMPTZ DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  city TEXT NOT NULL,
+  country TEXT NOT NULL,
+  capacity INTEGER,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── TEAMS ───
+-- Teams
 CREATE TABLE IF NOT EXISTS teams (
-  id            SERIAL PRIMARY KEY,
-  name          TEXT NOT NULL,
-  short_name    TEXT,                            -- e.g. 'CSK', 'MI'
-  league_id     TEXT REFERENCES leagues(id),
-  country       TEXT,
-  logo_url      TEXT,
-  is_active     BOOLEAN DEFAULT true,
-  created_at    TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(name, league_id)
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  short_name TEXT NOT NULL,
+  league_id TEXT REFERENCES leagues(id),
+  country TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── PLAYERS ───
+-- Players
 CREATE TABLE IF NOT EXISTS players (
-  id            SERIAL PRIMARY KEY,
-  cricsheet_id  TEXT UNIQUE NOT NULL,            -- CricSheet people register ID
-  espncricinfo_id TEXT,
-  name          TEXT NOT NULL,
-  full_name     TEXT,
-  country       TEXT,
-  dob           DATE,
-  batting_style TEXT,                            -- 'right-hand bat', 'left-hand bat'
-  bowling_style TEXT,                            -- 'right-arm fast', 'left-arm orthodox', etc.
-  role          TEXT DEFAULT 'unknown',          -- 'batter', 'bowler', 'allrounder', 'wicketkeeper'
-  is_overseas   BOOLEAN DEFAULT false,
-  metadata_source TEXT DEFAULT 'cricsheet',      -- 'cricsheet', 'wikidata', 'cricapi', 'manual'
-  metadata_complete BOOLEAN DEFAULT false,
-  t20_matches   INT DEFAULT 0,
-  created_at    TIMESTAMPTZ DEFAULT NOW(),
-  updated_at    TIMESTAMPTZ DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  cricsheet_id TEXT UNIQUE,
+  name TEXT NOT NULL,
+  country TEXT,
+  batting_style TEXT,
+  bowling_style TEXT,
+  role TEXT CHECK (role IN ('batter', 'bowler', 'allrounder', 'wicketkeeper')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_players_name ON players(name);
-CREATE INDEX IF NOT EXISTS idx_players_country ON players(country);
-CREATE INDEX IF NOT EXISTS idx_players_role ON players(role);
-
--- ─── MATCHES ───
+-- Completed Matches
 CREATE TABLE IF NOT EXISTS matches (
-  id            SERIAL PRIMARY KEY,
-  cricsheet_id  TEXT UNIQUE,
-  league_id     TEXT REFERENCES leagues(id),
-  season        TEXT,                            -- e.g. '2024/25', '2025'
-  match_number  INT,
-  date          DATE NOT NULL,
-  venue_id      INT REFERENCES venues(id),
-  team1_id      INT REFERENCES teams(id),
-  team2_id      INT REFERENCES teams(id),
-  toss_winner_id INT REFERENCES teams(id),
-  toss_decision TEXT,                            -- 'bat', 'field'
-  winner_id     INT REFERENCES teams(id),
-  result        TEXT,                            -- 'runs', 'wickets', 'tie', 'no result'
-  result_margin INT,
-  team1_score   INT,
-  team1_wickets INT,
-  team1_overs   NUMERIC(4,1),
-  team2_score   INT,
-  team2_wickets INT,
-  team2_overs   NUMERIC(4,1),
-  is_completed  BOOLEAN DEFAULT false,
-  is_ingested   BOOLEAN DEFAULT false,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  cricsheet_id TEXT UNIQUE,
+  league_id TEXT REFERENCES leagues(id),
+  venue_id INTEGER REFERENCES venues(id),
+  team1_id INTEGER REFERENCES teams(id),
+  team2_id INTEGER REFERENCES teams(id),
+  date DATE NOT NULL,
+  toss_winner_id INTEGER REFERENCES teams(id),
+  toss_decision TEXT CHECK (toss_decision IN ('bat', 'field')),
+  winner_id INTEGER REFERENCES teams(id),
+  result TEXT,
+  season TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_matches_league ON matches(league_id);
-CREATE INDEX IF NOT EXISTS idx_matches_date ON matches(date);
-CREATE INDEX IF NOT EXISTS idx_matches_venue ON matches(venue_id);
-
--- ─── DELIVERIES (ball-by-ball) ───
+-- Ball-by-ball Deliveries
 CREATE TABLE IF NOT EXISTS deliveries (
-  id              BIGSERIAL PRIMARY KEY,
-  match_id        INT NOT NULL REFERENCES matches(id) ON DELETE CASCADE,
-  innings         SMALLINT NOT NULL,             -- 1 or 2
-  over_number     SMALLINT NOT NULL,             -- 0-19
-  ball_number     SMALLINT NOT NULL,             -- 1-6+
-  batter_id       INT NOT NULL REFERENCES players(id),
-  bowler_id       INT NOT NULL REFERENCES players(id),
-  non_striker_id  INT REFERENCES players(id),
-  runs_batter     SMALLINT DEFAULT 0,
-  runs_extras     SMALLINT DEFAULT 0,
-  runs_total      SMALLINT DEFAULT 0,
-  extra_type      TEXT,                          -- 'wide', 'noball', 'bye', 'legbye', 'penalty'
-  is_wicket       BOOLEAN DEFAULT false,
-  wicket_kind     TEXT,                          -- 'bowled', 'caught', 'lbw', 'run out', etc.
-  wicket_player_id INT REFERENCES players(id),
-  is_boundary     BOOLEAN DEFAULT false,
-  is_six          BOOLEAN DEFAULT false,
-  is_dot          BOOLEAN DEFAULT false,
-  phase           TEXT GENERATED ALWAYS AS (
+  id BIGSERIAL PRIMARY KEY,
+  match_id INTEGER REFERENCES matches(id) ON DELETE CASCADE,
+  innings INTEGER NOT NULL CHECK (innings IN (1, 2)),
+  over_number INTEGER NOT NULL,
+  ball_number INTEGER NOT NULL,
+  batter_id INTEGER REFERENCES players(id),
+  bowler_id INTEGER REFERENCES players(id),
+  non_striker_id INTEGER REFERENCES players(id),
+  runs_batter INTEGER DEFAULT 0,
+  runs_extras INTEGER DEFAULT 0,
+  runs_total INTEGER DEFAULT 0,
+  is_wicket BOOLEAN DEFAULT FALSE,
+  wicket_kind TEXT,
+  wicket_player_id INTEGER REFERENCES players(id),
+  extras_type TEXT,
+  phase TEXT GENERATED ALWAYS AS (
     CASE
-      WHEN over_number BETWEEN 0 AND 5 THEN 'powerplay'
-      WHEN over_number BETWEEN 6 AND 15 THEN 'middle'
+      WHEN over_number < 6 THEN 'powerplay'
+      WHEN over_number < 16 THEN 'middle'
       ELSE 'death'
     END
-  ) STORED
+  ) STORED,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_del_match ON deliveries(match_id);
-CREATE INDEX IF NOT EXISTS idx_del_batter ON deliveries(batter_id);
-CREATE INDEX IF NOT EXISTS idx_del_bowler ON deliveries(bowler_id);
-CREATE INDEX IF NOT EXISTS idx_del_phase ON deliveries(phase);
-CREATE INDEX IF NOT EXISTS idx_del_batter_bowler ON deliveries(batter_id, bowler_id);
-
--- ─── FIXTURES (upcoming matches) ───
+-- Upcoming Fixtures
 CREATE TABLE IF NOT EXISTS fixtures (
-  id              SERIAL PRIMARY KEY,
-  league_id       TEXT REFERENCES leagues(id),
-  season          TEXT,
-  match_number    INT,
-  date            DATE NOT NULL,
-  time            TIME,
-  venue_id        INT REFERENCES venues(id),
-  team1_id        INT REFERENCES teams(id),
-  team2_id        INT REFERENCES teams(id),
-  status          TEXT DEFAULT 'upcoming',       -- 'upcoming', 'live', 'completed'
-  insights_ready  BOOLEAN DEFAULT false,
-  created_at      TIMESTAMPTZ DEFAULT NOW()
+  id SERIAL PRIMARY KEY,
+  league_id TEXT REFERENCES leagues(id),
+  team1_id INTEGER REFERENCES teams(id),
+  team2_id INTEGER REFERENCES teams(id),
+  venue_id INTEGER REFERENCES venues(id),
+  date TIMESTAMPTZ NOT NULL,
+  status TEXT DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'live', 'completed', 'cancelled')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_fixtures_date ON fixtures(date);
-CREATE INDEX IF NOT EXISTS idx_fixtures_status ON fixtures(status);
-
--- ─── PLAYING XI ───
+-- Playing XI
 CREATE TABLE IF NOT EXISTS playing_xi (
-  id              SERIAL PRIMARY KEY,
-  fixture_id      INT NOT NULL REFERENCES fixtures(id) ON DELETE CASCADE,
-  team_id         INT NOT NULL REFERENCES teams(id),
-  player_id       INT NOT NULL REFERENCES players(id),
-  batting_order   SMALLINT,
-  is_captain      BOOLEAN DEFAULT false,
-  is_wk           BOOLEAN DEFAULT false,
-  status          TEXT DEFAULT 'predicted',      -- 'predicted', 'confirmed'
-  created_at      TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(fixture_id, team_id, player_id)
+  id SERIAL PRIMARY KEY,
+  fixture_id INTEGER REFERENCES fixtures(id) ON DELETE CASCADE,
+  team_id INTEGER REFERENCES teams(id),
+  player_id INTEGER REFERENCES players(id),
+  is_confirmed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(fixture_id, player_id)
 );
 
--- ─── SQUADS ───
+-- Squad Compositions
 CREATE TABLE IF NOT EXISTS squads (
-  id              SERIAL PRIMARY KEY,
-  team_id         INT NOT NULL REFERENCES teams(id),
-  player_id       INT NOT NULL REFERENCES players(id),
-  season          TEXT NOT NULL,
-  league_id       TEXT REFERENCES leagues(id),
-  price           NUMERIC(6,1),                  -- auction price in crores
-  is_overseas     BOOLEAN DEFAULT false,
-  created_at      TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(team_id, player_id, season, league_id)
+  id SERIAL PRIMARY KEY,
+  team_id INTEGER REFERENCES teams(id),
+  player_id INTEGER REFERENCES players(id),
+  league_id TEXT REFERENCES leagues(id),
+  season TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(team_id, player_id, league_id, season)
 );
 
--- ─── USERS ───
+-- Users
 CREATE TABLE IF NOT EXISTS users (
-  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  email           TEXT UNIQUE NOT NULL,
-  password_hash   TEXT NOT NULL,
-  name            TEXT,
-  plan            TEXT DEFAULT 'free',           -- 'free', 'pro', 'enterprise'
-  is_admin        BOOLEAN DEFAULT false,
-  created_at      TIMESTAMPTZ DEFAULT NOW(),
-  updated_at      TIMESTAMPTZ DEFAULT NOW()
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  avatar_url TEXT,
+  plan TEXT DEFAULT 'free' CHECK (plan IN ('free', 'pro', 'enterprise')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── API KEYS ───
+-- API Keys
 CREATE TABLE IF NOT EXISTS api_keys (
-  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id         UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  key_hash        TEXT NOT NULL,                 -- SHA-256 hash, never plaintext
-  key_prefix      TEXT NOT NULL,                 -- first 8 chars for display
-  name            TEXT DEFAULT 'Default',
-  tier            TEXT DEFAULT 'free',           -- 'free', 'pro'
-  daily_limit     INT DEFAULT 100,               -- 100 free, 5000 pro
-  calls_today     INT DEFAULT 0,
-  is_active       BOOLEAN DEFAULT true,
-  last_used_at    TIMESTAMPTZ,
-  created_at      TIMESTAMPTZ DEFAULT NOW()
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  key_prefix TEXT NOT NULL,
+  key_hash TEXT NOT NULL,
+  name TEXT DEFAULT 'Default',
+  is_active BOOLEAN DEFAULT TRUE,
+  last_used_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_apikeys_hash ON api_keys(key_hash);
-CREATE INDEX IF NOT EXISTS idx_apikeys_user ON api_keys(user_id);
+-- API Usage Log
+CREATE TABLE IF NOT EXISTS api_usage_log (
+  id BIGSERIAL PRIMARY KEY,
+  api_key_id UUID REFERENCES api_keys(id),
+  endpoint TEXT NOT NULL,
+  method TEXT NOT NULL,
+  status_code INTEGER NOT NULL,
+  latency_ms INTEGER,
+  error_code TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
--- ─── FORM SCORES (pre-computed) ───
+-- Pre-computed Form Scores
 CREATE TABLE IF NOT EXISTS form_scores (
-  id              SERIAL PRIMARY KEY,
-  player_id       INT NOT NULL REFERENCES players(id),
-  score_type      TEXT NOT NULL,                 -- 'batting', 'bowling', 'overall'
-  score           NUMERIC(4,2) NOT NULL,         -- 0.00 - 10.00
-  trend           TEXT DEFAULT 'stable',         -- 'improving', 'declining', 'stable'
-  confidence      NUMERIC(3,2) NOT NULL,         -- 0.00 - 1.00
-  matches_used    INT DEFAULT 0,
-  leagues_used    TEXT[],                         -- array of league IDs used
-  data_sources    TEXT[],
-  computed_at     TIMESTAMPTZ DEFAULT NOW(),
+  id SERIAL PRIMARY KEY,
+  player_id INTEGER REFERENCES players(id),
+  score_type TEXT CHECK (score_type IN ('batting', 'bowling', 'overall')),
+  score DECIMAL(4,2) NOT NULL,
+  trend TEXT CHECK (trend IN ('improving', 'stable', 'declining')),
+  confidence DECIMAL(3,2),
+  matches_used INTEGER,
+  leagues_used INTEGER,
+  computed_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(player_id, score_type)
 );
 
-CREATE INDEX IF NOT EXISTS idx_form_player ON form_scores(player_id);
-
--- ─── PRECOMPUTED INSIGHTS ───
+-- Pre-computed Insights (per fixture)
 CREATE TABLE IF NOT EXISTS precomputed_insights (
-  id              SERIAL PRIMARY KEY,
-  fixture_id      INT NOT NULL REFERENCES fixtures(id) ON DELETE CASCADE,
-  insight_type    TEXT NOT NULL,                  -- 'dream_team', 'captain_picks', 'venue_analysis', 'key_battles', 'differentials', 'match_insights'
-  data            JSONB NOT NULL,
-  confidence      NUMERIC(3,2),
-  computed_at     TIMESTAMPTZ DEFAULT NOW(),
+  id SERIAL PRIMARY KEY,
+  fixture_id INTEGER REFERENCES fixtures(id) ON DELETE CASCADE,
+  insight_type TEXT NOT NULL,
+  data JSONB NOT NULL,
+  confidence DECIMAL(3,2),
+  computed_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(fixture_id, insight_type)
 );
 
-CREATE INDEX IF NOT EXISTS idx_insights_fixture ON precomputed_insights(fixture_id);
-
--- ─── API USAGE LOG ───
-CREATE TABLE IF NOT EXISTS api_usage_log (
-  id              BIGSERIAL PRIMARY KEY,
-  api_key_id      UUID REFERENCES api_keys(id),
-  endpoint        TEXT NOT NULL,
-  status_code     SMALLINT,
-  response_ms     INT,
-  called_at       TIMESTAMPTZ DEFAULT NOW()
+-- Predictions
+CREATE TABLE IF NOT EXISTS predictions (
+  id SERIAL PRIMARY KEY,
+  fixture_id INTEGER REFERENCES fixtures(id),
+  team_a_win_prob DECIMAL(5,4),
+  team_b_win_prob DECIMAL(5,4),
+  top_performer_id INTEGER REFERENCES players(id),
+  key_factors JSONB,
+  confidence DECIMAL(3,2),
+  computed_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_usage_key ON api_usage_log(api_key_id);
-CREATE INDEX IF NOT EXISTS idx_usage_date ON api_usage_log(called_at);
+-- Leaderboard Cache
+CREATE TABLE IF NOT EXISTS leaderboard_cache (
+  id SERIAL PRIMARY KEY,
+  type TEXT NOT NULL,
+  league TEXT,
+  role TEXT,
+  data JSONB NOT NULL,
+  computed_at TIMESTAMPTZ DEFAULT NOW()
+);
 
--- ─── SEED LEAGUES ───
+-- ─── Indexes ───
+CREATE INDEX IF NOT EXISTS idx_deliveries_match ON deliveries(match_id);
+CREATE INDEX IF NOT EXISTS idx_deliveries_batter ON deliveries(batter_id);
+CREATE INDEX IF NOT EXISTS idx_deliveries_bowler ON deliveries(bowler_id);
+CREATE INDEX IF NOT EXISTS idx_deliveries_phase ON deliveries(phase);
+CREATE INDEX IF NOT EXISTS idx_matches_league ON matches(league_id);
+CREATE INDEX IF NOT EXISTS idx_matches_date ON matches(date);
+CREATE INDEX IF NOT EXISTS idx_fixtures_league ON fixtures(league_id);
+CREATE INDEX IF NOT EXISTS idx_fixtures_status ON fixtures(status);
+CREATE INDEX IF NOT EXISTS idx_form_scores_player ON form_scores(player_id);
+CREATE INDEX IF NOT EXISTS idx_api_usage_key ON api_usage_log(api_key_id);
+CREATE INDEX IF NOT EXISTS idx_api_usage_created ON api_usage_log(created_at);
+CREATE INDEX IF NOT EXISTS idx_players_cricsheet ON players(cricsheet_id);
+CREATE INDEX IF NOT EXISTS idx_matches_cricsheet ON matches(cricsheet_id);
+
+-- ─── Seed Leagues ───
 INSERT INTO leagues (id, name, country, tier) VALUES
-  ('ipl',     'Indian Premier League',       'India',        1),
-  ('t20i',    'T20 International',           NULL,           1),
-  ('bbl',     'Big Bash League',             'Australia',    1),
-  ('psl',     'Pakistan Super League',       'Pakistan',     1),
-  ('cpl',     'Caribbean Premier League',    'West Indies',  1),
-  ('hundred', 'The Hundred',                 'England',      1),
-  ('sa20',    'SA20',                        'South Africa', 1),
-  ('lpl',     'Lanka Premier League',        'Sri Lanka',    2),
-  ('bpl',     'Bangladesh Premier League',   'Bangladesh',   2),
-  ('ilt20',   'International League T20',    'UAE',          2),
-  ('mlc',     'Major League Cricket',        'USA',          2),
-  ('smat',    'Syed Mushtaq Ali Trophy',     'India',        3),
-  ('blast',   'Vitality Blast',              'England',      3)
+  ('ipl', 'Indian Premier League', 'India', 1),
+  ('t20i', 'T20 International', 'Global', 1),
+  ('bbl', 'Big Bash League', 'Australia', 1),
+  ('psl', 'Pakistan Super League', 'Pakistan', 1),
+  ('cpl', 'Caribbean Premier League', 'West Indies', 1),
+  ('hundred', 'The Hundred', 'England', 1),
+  ('sa20', 'SA20', 'South Africa', 1),
+  ('lpl', 'Lanka Premier League', 'Sri Lanka', 2),
+  ('bpl', 'Bangladesh Premier League', 'Bangladesh', 2),
+  ('ilt20', 'International League T20', 'UAE', 2),
+  ('mlc', 'Major League Cricket', 'USA', 2),
+  ('smat', 'Syed Mushtaq Ali Trophy', 'India', 3),
+  ('blast', 'Vitality Blast', 'England', 3)
 ON CONFLICT (id) DO NOTHING;
