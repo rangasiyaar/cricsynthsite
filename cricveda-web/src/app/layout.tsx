@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <path d="M7 16l4-4 4 4 6-6" strokeLinecap="round" />
                 </svg>
               </div>
-              <span className="font-display font-700 text-base text-white tracking-tight">CricVeda</span>
+              <span className="font-display font-700 text-base text-white tracking-tight">CricSynthesis</span>
             </a>
             <nav className="flex items-center gap-1">
               <a href="/" className="px-3 py-1.5 rounded-lg text-sm text-[#9ca3b0] hover:text-white hover:bg-white/[0.04] transition-colors">
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="/docs" className="px-3 py-1.5 rounded-lg text-sm text-[#9ca3b0] hover:text-white hover:bg-white/[0.04] transition-colors">
                 Docs
               </a>
-              <a href="https://cricsynthesis.in" target="_blank" rel="noopener" className="ml-2 btn-primary !py-1.5 !text-xs">
+              <a href="https://cricsynthesis.in/login.html" className="ml-2 btn-primary !py-1.5 !text-xs">
                 Get API Key
               </a>
             </nav>
