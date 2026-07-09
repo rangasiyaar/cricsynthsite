@@ -106,6 +106,33 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.insertAdjacentHTML('beforeend', FOOTER_HTML);
     }
 
+    // ── Push page content below the fixed nav ───────────────────────────────
+    // Nav is position:fixed so pages need a top offset equal to nav height.
+    // The homepage hero handles this itself (calc(80px + 4rem)).
+    // All other pages get it applied here automatically.
+    var isHomePage = (window.location.pathname.split('/').pop() || 'index.html') === 'index.html';
+    if (!isHomePage) {
+        // Target the first real content block on each page type
+        var contentSelectors = [
+            '#pg-page-header',    // playground.html — the bar above the pg-layout
+            '.docs-layout',       // docs.html
+            // .legal-page already has calc(100px + 4rem) padding-top built in
+        ];
+        var pushed = false;
+        for (var i = 0; i < contentSelectors.length; i++) {
+            var el = document.querySelector(contentSelectors[i]);
+            if (el) {
+                el.style.marginTop = '96px';
+                pushed = true;
+                break;
+            }
+        }
+        // Fallback: push body top padding for any page not matched above
+        if (!pushed) {
+            document.body.style.paddingTop = '96px';
+        }
+    }
+
     // ── Sticky nav scroll effect (same as index.js) ─────────────────────────
     var nav = document.getElementById('mainNav');
     if (nav) {
