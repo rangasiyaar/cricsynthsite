@@ -20,13 +20,6 @@
     scrollbar-color: var(--color-border) transparent;
 }
 
-.sidebar-logo {
-    padding: 0 1.5rem 1.5rem;
-    border-bottom: 1px solid var(--color-border);
-    margin-bottom: 1.5rem;
-}
-
-.sidebar-logo img { height: 28px; }
 
 .sidebar-section {
     padding: 0 1.5rem;

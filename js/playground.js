@@ -283,7 +283,7 @@ async function runRequest() {
   if (isRunning) return;
   isRunning = true;
 
-  const btn = document.getElementById('pg-run-btn');
+  const btn = document.getElementById('pg-run-btn-inline');
   btn.disabled = true;
   btn.innerHTML = '<span class="pg-spinner"></span> Running…';
 
@@ -313,7 +313,7 @@ async function runRequest() {
       `<span class="pg-status-badge err">Network Error</span><span class="pg-status-latency">${latency}ms</span>`;
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run Request';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run';
     isRunning = false;
   }
 }
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Run button
-  document.getElementById('pg-run-btn').addEventListener('click', runRequest);
+  document.getElementById('pg-run-btn-inline').addEventListener('click', runRequest);
 
   // Copy curl
   document.getElementById('pg-curl-copy').addEventListener('click', function() {
