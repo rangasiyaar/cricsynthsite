@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="/docs" className="px-3 py-1.5 rounded-lg text-sm text-[#9ca3b0] hover:text-white hover:bg-white/[0.04] transition-colors">
                 Docs
               </a>
-              <a href="https://cricsynthesis.com" target="_blank" rel="noopener" className="ml-2 btn-primary !py-1.5 !text-xs">
+              <a href="https://cricsynthesis.in" target="_blank" rel="noopener" className="ml-2 btn-primary !py-1.5 !text-xs">
                 Get API Key
               </a>
             </nav>
@@ -44,8 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-[#4b5263]">© 2026 CricSynthesis. Predictions are for informational purposes only.</p>
             <div className="flex items-center gap-4">
-              <a href="https://cricsynthesis.com/docs.html" className="text-xs text-[#6b7280] hover:text-[#9ca3b0] transition-colors">API Docs</a>
-              <a href="https://cricsynthesis.com/privacy.html" className="text-xs text-[#6b7280] hover:text-[#9ca3b0] transition-colors">Privacy</a>
+              <a href="https://cricsynthesis.in/docs.html" className="text-xs text-[#6b7280] hover:text-[#9ca3b0] transition-colors">API Docs</a>
+              <a href="https://cricsynthesis.in/privacy.html" className="text-xs text-[#6b7280] hover:text-[#9ca3b0] transition-colors">Privacy</a>
             </div>
           </div>
         </footer>

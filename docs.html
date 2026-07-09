@@ -86,7 +86,7 @@
 
             <div class="key-display">
                 <span>Base URL</span>
-                https://api.cricsynthesis.com/v1
+                https://api.cricsynthesis.in/v1
             </div>
 
             <a href="/docs" class="playground-cta" target="_blank">
@@ -115,17 +115,17 @@
                     <button class="code-tab-btn" onclick="switchTab(this,'auth','python')">Python</button>
                     <button class="code-tab-btn" onclick="switchTab(this,'auth','js')">JavaScript</button>
                 </div>
-                <div id="auth-curl" class="code-panel active"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/matches/upcoming \
+                <div id="auth-curl" class="code-panel active"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/matches/upcoming \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
                 <div id="auth-python" class="code-panel"><pre><span class="kw">import</span> requests
 
 res = requests.<span class="fn">get</span>(
-    <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+    <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
     headers={<span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span>},
 )
 <span class="fn">print</span>(res.<span class="fn">json</span>())</pre></div>
                 <div id="auth-js" class="code-panel"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
-  <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+  <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
   { headers: { <span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span> } }
 );
 <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();</pre></div>
@@ -210,10 +210,10 @@ X-RateLimit-Reset: 1735689600</pre></div>
                             <button class="code-tab-btn active" onclick="switchTab(this,'um','curl')">cURL</button>
                             <button class="code-tab-btn" onclick="switchTab(this,'um','python')">Python</button>
                         </div>
-                        <div id="um-curl" class="code-panel active"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming?league_id=ipl&limit=5"</span> \
+                        <div id="um-curl" class="code-panel active"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming?league_id=ipl&limit=5"</span> \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
                         <div id="um-python" class="code-panel"><pre>res = requests.<span class="fn">get</span>(
-    <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+    <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
     params={<span class="str">"league_id"</span>: <span class="str">"ipl"</span>, <span class="str">"limit"</span>: <span class="num">5</span>},
     headers={<span class="str">"X-API-Key"</span>: API_KEY},
 )</pre></div>
@@ -260,7 +260,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     </table>
 
                     <p class="response-label">Example request</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/matches/<span class="num">42</span>/prediction \
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/matches/<span class="num">42</span>/prediction \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
 
                     <p class="response-label">Example response</p>
@@ -391,7 +391,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     </table>
 
                     <p class="response-label">Example request</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/players/<span class="num">253802</span>/vs/spin \
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/players/<span class="num">253802</span>/vs/spin \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
 
                     <p class="response-label">Example response</p>

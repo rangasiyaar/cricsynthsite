@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | CricSynthesis</title>
+  <title>Sign In — CricSynthesis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -70,11 +70,11 @@
         <path d="M7 16l4-4 4 4 6-6" stroke-linecap="round"/>
       </svg>
     </div>
-    <span class="login-logo-text">CricVeda</span>
+    <span class="login-logo-text">CricSynthesis</span>
   </a>
 
   <h1>Sign in</h1>
-  <p class="login-sub">Access your developer dashboard to manage API keys and view usage analytics.</p>
+  <p class="login-sub">Access your dashboard to manage API keys, view usage, and explore cricket intelligence tools.</p>
 
   <div class="error-box" id="errorBox"></div>
 
@@ -106,7 +106,7 @@
   const SUPABASE_ANON_KEY = 'your-anon-key';
 
   // Where to redirect after login (your deployed Next.js app)
-  const DASHBOARD_URL = 'https://app.cricsynthesis.com/auth/callback';
+  const DASHBOARD_URL = 'https://app.cricsynthesis.in/auth/callback';
 
   const { createClient } = supabase;
   const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

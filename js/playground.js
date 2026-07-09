@@ -1,7 +1,7 @@
 'use strict';
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const CRICVEDA_API_URL = 'https://api.cricsynthesis.com';
+const CRICVEDA_API_URL = 'https://api.cricsynthesis.in';
 const DEMO_KEY = 'cv_demo_readonly';
 
 // ── Mock responses ────────────────────────────────────────────────────────────

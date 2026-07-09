@@ -35,7 +35,7 @@ All responses include `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers.
 
 ### Base URL
 ```
-https://api.cricsynthesis.com/v1
+https://api.cricsynthesis.in/v1
 ```
 
 ### Endpoints at a glance
@@ -86,7 +86,7 @@ app = FastAPI(
     description=_DESCRIPTION,
     version="0.1.0",
     lifespan=lifespan,
-    contact={"name": "CricSynthesis", "url": "https://cricsynthesis.com"},
+    contact={"name": "CricSynthesis", "url": "https://cricsynthesis.in"},
     license_info={"name": "Proprietary"},
     # Disable default Swagger; we use Scalar instead
     docs_url=None,
@@ -164,7 +164,7 @@ async def scalar_playground() -> HTMLResponse:
         dark_mode=True,
         persist_auth=True,
         default_open_all_tags=True,
-        servers=[{"url": "https://api.cricsynthesis.com", "description": "Production"}],
+        servers=[{"url": "https://api.cricsynthesis.in", "description": "Production"}],
         authentication={
             "preferredSecurityScheme": "ApiKeyAuth",
             "apiKey": {"token": ""},

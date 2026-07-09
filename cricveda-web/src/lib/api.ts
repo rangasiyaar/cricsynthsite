@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.com";
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.in";
 const KEY = process.env.CRICVEDA_API_KEY ?? "";
 
 async function apiFetch<T>(path: string, params?: Record<string, string>): Promise<T> {
