@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase";
 import { useEffect, useRef, useState } from "react";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.com";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.in";
 
 interface Key {
   key_id: string;

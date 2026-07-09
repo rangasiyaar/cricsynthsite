@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.com";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.in";
 
 interface UsageDay { date: string; request_count: number; key_id: string; key_label: string | null; }
 interface UsageResponse { total_today: number; total_this_month: number; daily: UsageDay[]; }

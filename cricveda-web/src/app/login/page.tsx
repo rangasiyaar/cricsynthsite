@@ -32,10 +32,10 @@ function LoginCard() {
                 <path d="M7 16l4-4 4 4 6-6" strokeLinecap="round" />
               </svg>
             </div>
-            <span className="text-xl font-bold text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>CricVeda</span>
+            <span className="text-xl font-bold text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>CricSynthesis</span>
           </a>
           <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-sm" style={{ color: "#9ca3b0" }}>Sign in to manage your API keys and view usage</p>
+          <p className="text-sm" style={{ color: "#9ca3b0" }}>Sign in to access your dashboard, API keys, and cricket intelligence tools</p>
         </div>
 
         {/* Card */}
