@@ -1,0 +1,5 @@
+cricsheet_name,player_id,notes
+# Add manual name mappings here when fuzzy matching fails
+# Format: exact Cricsheet name string, ESPNcricinfo player_id, reason
+# Example:
+# MS Dhoni,28081,Common abbreviation not matched by fuzzy

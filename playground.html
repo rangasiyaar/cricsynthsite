@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Try the CricVeda API live — pick an endpoint, set parameters, and see real responses instantly.">
+  <title>API Playground | CricVeda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/playground.css">
+</head>
+<body>
+
+<!-- Noise overlay -->
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- Nav -->
+<nav class="nav" id="mainNav">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <a href="index.html"><img src="assets/logo New.png" alt="CricSynthesis" class="logo-image"></a>
+    </div>
+    <div class="nav-links">
+      <a href="index.html#products" class="nav-link">Products</a>
+      <a href="docs.html" class="nav-link">Docs</a>
+      <a href="playground.html" class="nav-link" style="color:var(--color-accent-secondary)">Playground</a>
+      <a href="index.html#request-access" class="nav-link nav-cta">Request Invite</a>
+    </div>
+    <div class="mobile-nav">
+      <a href="docs.html" class="nav-link" style="font-size:0.85rem">Docs</a>
+      <a href="index.html#request-access" class="mobile-cta">Request Invite</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page header -->
+<div style="padding:2rem 2rem 1.25rem; border-bottom:1px solid var(--color-border); background:var(--color-bg-secondary);">
+  <div style="max-width:1200px; margin:0 auto; display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+    <div>
+      <p class="section-label" style="margin-bottom:0.25rem">Interactive</p>
+      <h1 style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--color-text-primary);margin:0">
+        API Playground
+      </h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span style="font-size:0.75rem;color:var(--color-text-muted)">Press</span>
+      <kbd style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;padding:2px 7px;border-radius:4px;border:1px solid var(--color-border);background:var(--color-bg-tertiary);color:var(--color-text-secondary)">⌘ Enter</kbd>
+      <span style="font-size:0.75rem;color:var(--color-text-muted)">to run</span>
+      <a href="docs.html" class="btn-ghost" style="font-size:0.8rem;padding:0.35rem 0.85rem">View Docs →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Playground layout -->
+<div class="pg-layout">
+
+  <!-- ── Left sidebar ── -->
+  <aside class="pg-sidebar">
+
+    <!-- Mode banner -->
+    <div id="pg-mode-banner" class="pg-mode-banner demo">
+      <span class="pg-mode-dot"></span>
+      Demo mode — responses are illustrative
+    </div>
+
+    <!-- API Key -->
+    <div class="pg-key-wrap">
+      <label class="pg-key-label" for="pg-key-input">API Key</label>
+      <div class="pg-key-row">
+        <input
+          id="pg-key-input"
+          class="pg-key-input"
+          type="text"
+          value="cv_demo_readonly"
+          placeholder="cv_live_your_key_here"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button id="pg-key-clear" class="pg-key-clear" title="Reset to demo key">reset</button>
+      </div>
+      <p style="font-size:0.68rem;color:var(--color-text-muted);margin-top:0.2rem">
+        Replace with your key for live data.
+        <a href="index.html#request-access" style="color:var(--color-accent-secondary)">Get a key →</a>
+      </p>
+    </div>
+
+    <!-- Endpoints -->
+    <div>
+      <p class="pg-ep-label">Endpoint</p>
+      <ul class="pg-ep-list">
+        <li>
+          <button class="pg-ep-btn active" data-id="upcoming">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/matches/upcoming</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="prediction">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/matches/{id}/prediction</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="dream-team">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/matches/{id}/dream-team</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="player-form">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/players/{id}/form</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="player-matchup">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/players/{id}/vs/{type}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Parameters (rendered by JS) -->
+    <div>
+      <p class="pg-ep-label">Parameters</p>
+      <div id="pg-params" class="pg-params"></div>
+    </div>
+
+    <!-- Run button -->
+    <button id="pg-run-btn" class="pg-run-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Run Request
+    </button>
+
+  </aside>
+
+  <!-- ── Right main ── -->
+  <div class="pg-main">
+
+    <!-- curl block -->
+    <div class="pg-block">
+      <div class="pg-block-header">
+        <span class="pg-block-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          curl
+        </span>
+        <button id="pg-curl-copy" class="pg-copy-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div class="pg-block-body">
+        <pre id="pg-curl-code" class="pg-curl-pre"></pre>
+      </div>
+    </div>
+
+    <!-- Response block -->
+    <div class="pg-block" style="flex:1;display:flex;flex-direction:column;border-bottom:none;">
+      <div class="pg-block-header">
+        <span class="pg-block-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Response
+        </span>
+        <button id="pg-response-copy" class="pg-copy-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div id="pg-status-bar" class="pg-status-bar"></div>
+      <div id="pg-response-body" class="pg-response-body"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/playground.js"></script>
+</body>
+</html>

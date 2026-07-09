@@ -1,0 +1,75 @@
+name: Retrain ML Models
+
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: "Train/val split date (YYYY-MM-DD)"
+        required: false
+        default: "2024-01-01"
+      version:
+        description: "Model version tag (defaults to YYYYMMDD)"
+        required: false
+        default: ""
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  MODEL_BUCKET: cricveda-models
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  train:
+    name: Train + upload model
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install uv
+        run: pip install uv --quiet
+
+      - name: Install full workspace (with ML stack)
+        run: |
+          uv sync --no-dev
+          uv pip install -e cricveda-core -e cricveda-ingest
+
+      - name: Train models
+        run: |
+          VERSION="${{ inputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION=$(date -u +%Y%m%d)
+          fi
+          echo "Training with cutoff=${{ inputs.cutoff }}, version=$VERSION"
+          uv run python -m cricveda_core.models.train \
+            --cutoff "${{ inputs.cutoff }}" \
+            --version "$VERSION"
+
+      - name: Verify model uploaded to storage
+        run: |
+          uv run python - <<'EOF'
+          import os
+          from cricveda_ingest.db import get_client
+
+          bucket = os.getenv("MODEL_BUCKET", "cricveda-models")
+          client = get_client()
+          files = client.storage.from_(bucket).list()
+          names = [f["name"] for f in files]
+          print(f"Storage bucket contents: {names}")
+          assert "player_fp_latest.json" in names, "Upload failed!"
+          print("✓ Model verified in storage")
+          EOF
+
+      - name: Summary
+        run: |
+          echo "Model retrained and uploaded at $(date -u)"
+          echo "The API will download the new model on its next cold start."
+          echo "To force a fresh download, redeploy the API on Render."

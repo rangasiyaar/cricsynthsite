@@ -1,0 +1,25 @@
+raw_label,enum_value
+Right-arm fast,right-arm-fast
+Right-arm fast-medium,right-arm-fast
+Right-arm fastmedium,right-arm-fast
+Right-arm medium-fast,right-arm-medium
+Right-arm medium,right-arm-medium
+Right-arm offbreak,right-arm-off-break
+Right-arm off break,right-arm-off-break
+Off break,right-arm-off-break
+Right-arm legbreak,right-arm-leg-break
+Right-arm leg break,right-arm-leg-break
+Legbreak,right-arm-leg-break
+Leg break,right-arm-leg-break
+Legbreak googly,right-arm-leg-break
+Right-arm leg-break googly,right-arm-leg-break
+Left-arm fast,left-arm-fast
+Left-arm fast-medium,left-arm-fast
+Left-arm fastmedium,left-arm-fast
+Left-arm medium-fast,left-arm-fast
+Left-arm medium,left-arm-fast
+Slow left-arm orthodox,slow-left-arm
+Left-arm orthodox,slow-left-arm
+Slow left-arm,slow-left-arm
+Left-arm chinaman,slow-left-arm
+Left-arm spin,slow-left-arm

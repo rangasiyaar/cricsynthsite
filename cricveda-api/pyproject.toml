@@ -1,0 +1,24 @@
+[project]
+name = "cricveda-api"
+version = "0.1.0"
+description = "CricVeda FastAPI service — predictions, player form, dream team endpoints"
+requires-python = ">=3.12"
+dependencies = [
+    "cricveda-core",
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "supabase>=2.4",
+    "python-dotenv>=1.0",
+    "slowapi>=0.1.9",
+    "redis>=5.0",
+    "bcrypt>=4.0",
+    "scalar-fastapi>=1.8.2",
+    "pyjwt>=2.13.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cricveda_api"]

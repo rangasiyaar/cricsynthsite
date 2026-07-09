@@ -1,0 +1,90 @@
+name: Daily Data Pipeline
+
+on:
+  schedule:
+    - cron: "0 2 * * *"   # 2 AM UTC daily
+  workflow_dispatch:
+    inputs:
+      leagues:
+        description: "Comma-separated league keys to ingest (e.g. t20i,ipl)"
+        required: false
+        default: "t20i,odi,ipl,bbl,psl,sa20,cpl"
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  pipeline:
+    name: Ingest → Name-map → Fantasy points → Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install uv
+        run: pip install uv --quiet
+
+      - name: Install workspace (full deps including ML stack)
+        run: |
+          uv sync --no-dev
+          uv pip install -e cricveda-core -e cricveda-ingest
+
+      - name: Download Cricsheet data
+        run: |
+          mkdir -p data/cricsheet
+          LEAGUES="${{ github.event.inputs.leagues || 't20i,odi,ipl,bbl,psl,sa20,cpl' }}"
+          echo "Downloading leagues: $LEAGUES"
+          IFS=',' read -ra LEAGUE_ARR <<< "$LEAGUES"
+          for league in "${LEAGUE_ARR[@]}"; do
+            echo "→ $league"
+            curl -sSL "https://cricsheet.org/downloads/${league}_json.zip" -o "/tmp/${league}.zip" || \
+            curl -sSL "https://cricsheet.org/downloads/${league}.zip" -o "/tmp/${league}.zip" || \
+            echo "Skipping $league — not available"
+            if [ -f "/tmp/${league}.zip" ]; then
+              unzip -q -o "/tmp/${league}.zip" -d "data/cricsheet/${league}/" 2>/dev/null || true
+            fi
+          done
+
+      - name: Download dwillis name mapping CSV
+        run: |
+          mkdir -p data/mappings
+          curl -sSL \
+            "https://raw.githubusercontent.com/dwillis/cricket-player-ids/main/cricsheet_to_espn.csv" \
+            -o data/mappings/cricsheet_to_espn.csv
+          echo "Name mapping rows: $(wc -l < data/mappings/cricsheet_to_espn.csv)"
+
+      - name: Load Cricsheet YAML files
+        run: |
+          LEAGUES="${{ github.event.inputs.leagues || 't20i,odi,ipl,bbl,psl,sa20,cpl' }}"
+          IFS=',' read -ra LEAGUE_ARR <<< "$LEAGUES"
+          for league in "${LEAGUE_ARR[@]}"; do
+            if [ -d "data/cricsheet/${league}" ]; then
+              echo "Loading league: $league"
+              uv run python -m cricveda_ingest.loader \
+                --league "$league" \
+                --data-dir "data/cricsheet/${league}" || true
+            fi
+          done
+
+      - name: Resolve player names
+        run: uv run python -m cricveda_ingest.name_mapper --all-unresolved
+
+      - name: Compute fantasy points
+        run: uv run python -m cricveda_ingest.compute_fantasy --all-missing
+
+      - name: Validate data quality
+        run: uv run python -m cricveda_ingest.validate
+
+      - name: Summary
+        if: always()
+        run: echo "Pipeline completed at $(date -u)"

@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #06080d;
+    color: #f0f0f5;
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+}
+
+@layer components {
+  .card {
+    @apply bg-white/[0.025] border border-white/[0.06] rounded-xl;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white bg-accent-gradient transition-opacity hover:opacity-90;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-[#9ca3b0] border border-white/[0.08] hover:bg-white/[0.04] transition-colors;
+  }
+  .tag {
+    @apply px-2 py-0.5 rounded text-xs font-mono bg-[#111621] text-[#818cf8] border border-white/[0.06];
+  }
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest text-[#6b7280] mb-2;
+  }
+}

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CricVeda API Documentation — endpoints, authentication, code examples, and interactive playground.">
+    <title>CricVeda API Docs | CricSynthesis</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+
+<!-- Mobile top bar -->
+<div class="docs-topbar">
+    <a href="index.html"><img src="assets/logo New.png" alt="CricSynthesis" style="height:24px"></a>
+    <a href="/docs" class="playground-cta" style="padding:0.5rem 1rem;font-size:0.8rem;margin:0">Open Playground</a>
+</div>
+
+<div class="docs-layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="docs-sidebar">
+        <div class="sidebar-logo">
+            <a href="index.html"><img src="assets/logo New.png" alt="CricSynthesis"></a>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">Getting Started</p>
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#rate-limits">Rate Limits</a></li>
+                <li><a href="#errors">Errors</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">Matches</p>
+            <ul class="sidebar-nav">
+                <li><a href="#get-upcoming"><span class="method-badge">GET</span> /matches/upcoming</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">Predictions</p>
+            <ul class="sidebar-nav">
+                <li><a href="#get-prediction"><span class="method-badge">GET</span> /matches/{id}/prediction</a></li>
+                <li><a href="#get-dream-team"><span class="method-badge">GET</span> /matches/{id}/dream-team</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">Players</p>
+            <ul class="sidebar-nav">
+                <li><a href="#get-player-form"><span class="method-badge">GET</span> /players/{id}/form</a></li>
+                <li><a href="#get-player-matchup"><span class="method-badge">GET</span> /players/{id}/vs/{type}</a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">Resources</p>
+            <ul class="sidebar-nav">
+                <li><a href="playground.html">Try in Playground</a></li>
+                <li><a href="/docs" target="_blank">Scalar Playground ↗</a></li>
+                <li><a href="/redoc" target="_blank">ReDoc Reference ↗</a></li>
+                <li><a href="index.html">← Back to Home</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main class="docs-main">
+
+        <!-- Overview -->
+        <section id="overview" class="docs-section">
+            <h1 class="docs-section-title">CricVeda API</h1>
+            <p class="docs-section-desc">
+                REST API for cricket intelligence — ML-powered player predictions,
+                Dream11 lineup optimization, and historical matchup analytics backed by
+                15,000+ matches of ball-by-ball data.
+            </p>
+
+            <div class="key-display">
+                <span>Base URL</span>
+                https://api.cricsynthesis.com/v1
+            </div>
+
+            <a href="/docs" class="playground-cta" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Open Interactive Playground
+            </a>
+
+            <div class="info-box info">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                CricVeda is currently in <strong>private beta</strong>. Request an API key from the
+                <a href="index.html#request-access" style="color:var(--color-accent-secondary)">invite form</a>.
+            </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="docs-section">
+            <h2 class="docs-section-title">Authentication</h2>
+            <p class="docs-section-desc">
+                Pass your API key in the <code style="font-family:JetBrains Mono,monospace;color:var(--color-accent-secondary)">X-API-Key</code> header with every request.
+                Never include it in query strings or URLs.
+            </p>
+
+            <div class="code-tabs">
+                <div class="code-tab-list">
+                    <button class="code-tab-btn active" onclick="switchTab(this,'auth','curl')">cURL</button>
+                    <button class="code-tab-btn" onclick="switchTab(this,'auth','python')">Python</button>
+                    <button class="code-tab-btn" onclick="switchTab(this,'auth','js')">JavaScript</button>
+                </div>
+                <div id="auth-curl" class="code-panel active"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/matches/upcoming \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+                <div id="auth-python" class="code-panel"><pre><span class="kw">import</span> requests
+
+res = requests.<span class="fn">get</span>(
+    <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+    headers={<span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span>},
+)
+<span class="fn">print</span>(res.<span class="fn">json</span>())</pre></div>
+                <div id="auth-js" class="code-panel"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+  <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+  { headers: { <span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span> } }
+);
+<span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();</pre></div>
+            </div>
+
+            <div class="info-box warn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Keep your API key secret. If it's compromised, contact support to rotate it.
+            </div>
+        </section>
+
+        <!-- Rate Limits -->
+        <section id="rate-limits" class="docs-section">
+            <h2 class="docs-section-title">Rate Limits</h2>
+            <p class="docs-section-desc">Free tier allows <strong>100 requests per day</strong> per API key. Response headers tell you your current usage:</p>
+            <div class="code-panel active" style="border-radius:var(--radius-md);margin:0"><pre>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 87
+X-RateLimit-Reset: 1735689600</pre></div>
+            <p class="docs-section-desc" style="margin-top:1rem">
+                Responses are cached (matches 5 min · predictions 1 hour · player form 30 min),
+                so repeated calls within the cache window don't consume quota.
+            </p>
+        </section>
+
+        <!-- Errors -->
+        <section id="errors" class="docs-section">
+            <h2 class="docs-section-title">Error Responses</h2>
+            <table class="params-table">
+                <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+                <tbody>
+                    <tr><td class="param-name">401</td><td class="param-desc">Missing <code>X-API-Key</code> header</td></tr>
+                    <tr><td class="param-name">403</td><td class="param-desc">Invalid API key</td></tr>
+                    <tr><td class="param-name">404</td><td class="param-desc">Resource not found (match / player)</td></tr>
+                    <tr><td class="param-name">422</td><td class="param-desc">Validation error — check request params</td></tr>
+                    <tr><td class="param-name">429</td><td class="param-desc">Rate limit exceeded</td></tr>
+                    <tr><td class="param-name">500</td><td class="param-desc">Internal server error</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Upcoming Matches -->
+        <section id="get-upcoming" class="docs-section">
+            <h2 class="docs-section-title">Upcoming Matches</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/upcoming</span>
+                    <span class="endpoint-summary">List scheduled fixtures</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Returns upcoming T20 and ODI fixtures ordered by match date. Cached for 5 minutes.</p>
+
+                    <p class="response-label">Query parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="param-name">league_id</td>
+                                <td class="param-type">string</td>
+                                <td class="param-optional">optional</td>
+                                <td class="param-desc">Filter by league (e.g. <code>ipl</code>, <code>t20i</code>, <code>odi</code>)</td>
+                            </tr>
+                            <tr>
+                                <td class="param-name">format</td>
+                                <td class="param-type">string</td>
+                                <td class="param-optional">optional</td>
+                                <td class="param-desc"><code>T20</code> or <code>ODI</code></td>
+                            </tr>
+                            <tr>
+                                <td class="param-name">limit</td>
+                                <td class="param-type">integer</td>
+                                <td class="param-optional">optional</td>
+                                <td class="param-desc">Max results (1–100, default 20)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-tabs">
+                        <div class="code-tab-list">
+                            <button class="code-tab-btn active" onclick="switchTab(this,'um','curl')">cURL</button>
+                            <button class="code-tab-btn" onclick="switchTab(this,'um','python')">Python</button>
+                        </div>
+                        <div id="um-curl" class="code-panel active"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming?league_id=ipl&limit=5"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+                        <div id="um-python" class="code-panel"><pre>res = requests.<span class="fn">get</span>(
+    <span class="str">"https://api.cricsynthesis.com/v1/matches/upcoming"</span>,
+    params={<span class="str">"league_id"</span>: <span class="str">"ipl"</span>, <span class="str">"limit"</span>: <span class="num">5</span>},
+    headers={<span class="str">"X-API-Key"</span>: API_KEY},
+)</pre></div>
+                    </div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>[
+  {
+    <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
+    <span class="str">"league_id"</span>: <span class="str">"ipl"</span>,
+    <span class="str">"match_date"</span>: <span class="str">"2026-03-22"</span>,
+    <span class="str">"team1"</span>: <span class="str">"Mumbai Indians"</span>,
+    <span class="str">"team2"</span>: <span class="str">"Chennai Super Kings"</span>,
+    <span class="str">"format"</span>: <span class="str">"T20"</span>,
+    <span class="str">"status"</span>: <span class="str">"scheduled"</span>
+  }
+]</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Predictions -->
+        <section id="get-prediction" class="docs-section">
+            <h2 class="docs-section-title">Player Predictions</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/{upcoming_id}/prediction</span>
+                    <span class="endpoint-summary">Fantasy point predictions for all squad players</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>
+                        Returns XGBoost-predicted Dream11 fantasy points for every player in both squads,
+                        sorted by predicted score. Cached for 1 hour after lineup confirmation.
+                    </p>
+
+                    <p class="response-label">Path parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">upcoming_id</td><td class="param-type">integer</td><td class="param-desc">ID from <code>/matches/upcoming</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/matches/<span class="num">42</span>/prediction \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
+  <span class="str">"team1"</span>: <span class="str">"Mumbai Indians"</span>,
+  <span class="str">"team2"</span>: <span class="str">"Chennai Super Kings"</span>,
+  <span class="str">"match_date"</span>: <span class="str">"2026-03-22"</span>,
+  <span class="str">"players"</span>: [
+    {
+      <span class="str">"player_id"</span>: <span class="num">28081</span>,
+      <span class="str">"player_name"</span>: <span class="str">"MS Dhoni"</span>,
+      <span class="str">"team"</span>: <span class="str">"Chennai Super Kings"</span>,
+      <span class="str">"role"</span>: <span class="str">"WK"</span>,
+      <span class="str">"predicted_points"</span>: <span class="num">52.4</span>,
+      <span class="str">"credits"</span>: <span class="num">9.5</span>,
+      <span class="str">"model_version"</span>: <span class="str">"20260101"</span>
+    }
+    <span class="cm">// ... 21 more players</span>
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Dream Team -->
+        <section id="get-dream-team" class="docs-section">
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/{upcoming_id}/dream-team</span>
+                    <span class="endpoint-summary">Optimal Dream11 lineup</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>
+                        Runs a linear program (PuLP) over predicted scores and returns the optimal
+                        11-player Dream11 lineup with captain and vice-captain picks.
+                    </p>
+
+                    <p class="response-label">Constraints applied</p>
+                    <table class="params-table">
+                        <thead><tr><th>Rule</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-desc">Total credits</td><td class="param-desc">≤ 100</td></tr>
+                            <tr><td class="param-desc">WK slots</td><td class="param-desc">1 – 4</td></tr>
+                            <tr><td class="param-desc">BAT slots</td><td class="param-desc">3 – 6</td></tr>
+                            <tr><td class="param-desc">AR slots</td><td class="param-desc">1 – 4</td></tr>
+                            <tr><td class="param-desc">BOWL slots</td><td class="param-desc">3 – 6</td></tr>
+                            <tr><td class="param-desc">Max from one team</td><td class="param-desc">7</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
+  <span class="str">"total_credits"</span>: <span class="num">98.5</span>,
+  <span class="str">"projected_score"</span>: <span class="num">712.3</span>,
+  <span class="str">"lineup"</span>: [
+    {
+      <span class="str">"player_id"</span>: <span class="num">28081</span>,
+      <span class="str">"player_name"</span>: <span class="str">"MS Dhoni"</span>,
+      <span class="str">"role"</span>: <span class="str">"WK"</span>,
+      <span class="str">"predicted_points"</span>: <span class="num">52.4</span>,
+      <span class="str">"credits"</span>: <span class="num">9.5</span>,
+      <span class="str">"is_captain"</span>: <span class="kw">false</span>,
+      <span class="str">"is_vice_captain"</span>: <span class="kw">true</span>
+    }
+    <span class="cm">// ... 10 more players</span>
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Player Form -->
+        <section id="get-player-form" class="docs-section">
+            <h2 class="docs-section-title">Player Analytics</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/form</span>
+                    <span class="endpoint-summary">Rolling form, trend, and recent scores</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Returns a player's current form profile — rolling fantasy point averages, batting and bowling stats, and their last 5 match scores. Cached for 30 minutes.</p>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"name"</span>: <span class="str">"Virat Kohli"</span>,
+  <span class="str">"role"</span>: <span class="str">"BAT"</span>,
+  <span class="str">"fp_last3_avg"</span>: <span class="num">61.2</span>,
+  <span class="str">"fp_last5_avg"</span>: <span class="num">54.8</span>,
+  <span class="str">"fp_trend"</span>: <span class="str">"rising"</span>,
+  <span class="str">"bat_runs_avg5"</span>: <span class="num">44.6</span>,
+  <span class="str">"bat_sr_avg5"</span>: <span class="num">142.3</span>,
+  <span class="str">"recent_scores"</span>: [
+    { <span class="str">"match_date"</span>: <span class="str">"2026-03-18"</span>, <span class="str">"total_points"</span>: <span class="num">76.5</span> },
+    { <span class="str">"match_date"</span>: <span class="str">"2026-03-14"</span>, <span class="str">"total_points"</span>: <span class="num">48.0</span> }
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Player Matchup -->
+        <section id="get-player-matchup" class="docs-section">
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/vs/{matchup_type}</span>
+                    <span class="endpoint-summary">Matchup breakdown vs pace / spin / left-arm</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>
+                        Returns a batter's strike rate or a bowler's economy against a specific
+                        bowling category, computed from historical ball-by-ball data.
+                    </p>
+
+                    <p class="response-label">Path parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Values</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">integer</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">matchup_type</td><td class="param-type">pace · spin · left-arm</td><td class="param-desc">Bowling category to analyse</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.com/v1/players/<span class="num">253802</span>/vs/spin \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"matchup_type"</span>: <span class="str">"spin"</span>,
+  <span class="str">"strike_rate"</span>: <span class="num">118.4</span>,
+  <span class="str">"economy_rate"</span>: <span class="kw">null</span>,
+  <span class="str">"sample_deliveries"</span>: <span class="num">842</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+    </main>
+</div>
+
+<script>
+function switchTab(btn, group, tab) {
+    const tabList = btn.closest('.code-tab-list');
+    tabList.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const parent = tabList.closest('.code-tabs');
+    parent.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(`${group}-${tab}`);
+    if (target) target.classList.add('active');
+}
+
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('.docs-section');
+const links = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id;
+            links.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
+            });
+        }
+    });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
