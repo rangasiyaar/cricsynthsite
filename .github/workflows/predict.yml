@@ -1,0 +1,71 @@
+name: Pre-Match Predictions
+
+on:
+  workflow_dispatch:
+    inputs:
+      upcoming_id:
+        description: "upcoming_matches.upcoming_id to predict for"
+        required: true
+        type: string
+      write_db:
+        description: "Write predictions to Supabase"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  MODEL_BUCKET: cricveda-models
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  predict:
+    name: Generate predictions for match ${{ inputs.upcoming_id }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install uv
+        run: pip install uv --quiet
+
+      - name: Install full workspace
+        run: |
+          uv sync --no-dev
+          uv pip install -e cricveda-core -e cricveda-ingest
+
+      - name: Download latest model from Supabase Storage
+        run: |
+          uv run python - <<'EOF'
+          import os, pathlib
+          from cricveda_ingest.db import get_client
+
+          bucket = os.getenv("MODEL_BUCKET", "cricveda-models")
+          dest = pathlib.Path("data/models/player_fp_latest.json")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+
+          client = get_client()
+          data = client.storage.from_(bucket).download("player_fp_latest.json")
+          dest.write_bytes(data)
+          print(f"Model downloaded: {dest} ({len(data):,} bytes)")
+          EOF
+
+      - name: Run predictions
+        run: |
+          WRITE_FLAG=""
+          if [ "${{ inputs.write_db }}" = "true" ]; then
+            WRITE_FLAG="--write-db"
+          fi
+          uv run python -m cricveda_core.models.predict \
+            --upcoming-id ${{ inputs.upcoming_id }} \
+            $WRITE_FLAG

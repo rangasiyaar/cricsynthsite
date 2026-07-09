@@ -1,0 +1,292 @@
+/* CricVeda API Docs — matches cricsynthsite design system */
+
+/* ── Layout ── */
+.docs-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.docs-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--color-bg-secondary);
+    border-right: 1px solid var(--color-border);
+    padding: 2rem 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.sidebar-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-logo img { height: 28px; }
+
+.sidebar-section {
+    padding: 0 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar-heading {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-nav { list-style: none; margin: 0; padding: 0; }
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    background: var(--color-accent-glow);
+    color: var(--color-text-primary);
+}
+.sidebar-nav a.active { color: var(--color-accent-secondary); }
+
+.method-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--color-accent-secondary);
+    flex-shrink: 0;
+}
+
+/* ── Main content ── */
+.docs-main {
+    padding: 3rem 4rem;
+    max-width: 860px;
+}
+
+/* ── Section headers ── */
+.docs-section { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+.docs-section-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+.docs-section-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+/* ── Endpoint cards ── */
+.endpoint-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color var(--transition-fast);
+}
+.endpoint-card:hover { border-color: var(--color-border-accent); }
+
+.endpoint-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+}
+.endpoint-header::-webkit-details-marker { display: none; }
+
+.method-get {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    flex-shrink: 0;
+}
+
+.endpoint-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.endpoint-summary {
+    font-size: 0.8rem;
+    color: var(--color-text-tertiary);
+    margin-left: auto;
+}
+
+.endpoint-body { padding: 0 1.25rem 1.25rem; border-top: 1px solid var(--color-border); }
+.endpoint-body p { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.6; margin: 1rem 0; }
+
+/* ── Params table ── */
+.params-table { width: 100%; border-collapse: collapse; font-size: 0.825rem; margin: 1rem 0; }
+.params-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border);
+}
+.params-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+.params-table tr:last-child td { border-bottom: none; }
+.param-name { font-family: 'JetBrains Mono', monospace; color: var(--color-accent-secondary); font-size: 0.8rem; }
+.param-type { color: var(--color-text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+.param-required { color: #f87171; font-size: 0.7rem; font-weight: 600; }
+.param-optional { color: var(--color-text-muted); font-size: 0.7rem; }
+.param-desc { color: var(--color-text-secondary); }
+
+/* ── Code blocks ── */
+.code-tabs { margin: 1rem 0; }
+.code-tab-list {
+    display: flex;
+    gap: 2px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    padding: 4px 4px 0;
+    border: 1px solid var(--color-border);
+    border-bottom: none;
+}
+.code-tab-btn {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    background: transparent;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+.code-tab-btn.active,
+.code-tab-btn:hover { color: var(--color-text-primary); background: var(--color-bg-secondary); }
+
+.code-panel {
+    display: none;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+}
+.code-panel.active { display: block; }
+
+.code-panel pre {
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+}
+.code-panel .kw { color: var(--color-accent-secondary); }
+.code-panel .str { color: #a3e635; }
+.code-panel .cm { color: var(--color-text-muted); font-style: italic; }
+.code-panel .num { color: #fb923c; }
+.code-panel .fn { color: #38bdf8; }
+
+/* ── Response example ── */
+.response-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 1rem 0 0.4rem;
+}
+
+/* ── Info boxes ── */
+.info-box {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 1.25rem 0;
+}
+.info-box.info { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); color: var(--color-text-secondary); }
+.info-box.warn { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.2); color: #fbbf24; }
+.info-box svg { flex-shrink: 0; margin-top: 2px; }
+
+/* ── Auth key display ── */
+.key-display {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.825rem;
+    color: var(--color-text-primary);
+    margin: 1rem 0;
+}
+.key-display span { color: var(--color-text-muted); }
+
+/* ── Playground CTA ── */
+.playground-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent-gradient);
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    margin: 1.5rem 0;
+}
+.playground-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── Top bar ── */
+.docs-topbar {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem 1.5rem;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .docs-layout { grid-template-columns: 1fr; }
+    .docs-sidebar { display: none; }
+    .docs-topbar { display: flex; }
+    .docs-main { padding: 1.5rem; }
+}

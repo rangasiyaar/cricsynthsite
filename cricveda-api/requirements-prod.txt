@@ -1,0 +1,14 @@
+# Production API dependencies — no ML training stack
+# XGBoost / pandas / numpy / scikit-learn are intentionally excluded.
+# Predictions are pre-computed by GitHub Actions and stored in Supabase.
+
+fastapi>=0.111
+uvicorn[standard]>=0.30
+supabase>=2.4
+python-dotenv>=1.0
+slowapi>=0.1.9
+redis>=5.0
+bcrypt>=4.0
+scalar-fastapi>=1.8.2
+pulp>=2.8
+PyJWT>=2.8

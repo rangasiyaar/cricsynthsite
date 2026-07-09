@@ -1,0 +1,28 @@
+# Render Blueprint — one-click deploy for CricVeda API
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: cricveda-api
+    runtime: docker
+    dockerfilePath: cricveda-api/Dockerfile
+    dockerContext: .
+    region: oregon
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SUPABASE_URL
+        sync: false          # set in Render dashboard
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: UPSTASH_REDIS_URL
+        sync: false
+      - key: MODEL_BUCKET
+        value: cricveda-models
+      - key: PORT
+        value: "8000"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: SUPABASE_JWT_SECRET
+        sync: false          # Supabase dashboard → Settings → API → JWT Secret

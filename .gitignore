@@ -31,3 +31,16 @@ Thumbs.db
 
 # Data files
 data/cricsheet/
+data/models/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.uv/
+*.egg-info/
+
+# uv workspace
+.venv/
+uv.lock

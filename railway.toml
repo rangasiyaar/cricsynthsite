@@ -1,0 +1,10 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "cricveda-api/Dockerfile"
+dockerContext = "."
+
+[deploy]
+startCommand = "uvicorn cricveda_api.main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
