@@ -1,8 +1,6 @@
 'use strict';
 
 // ── Shared site-wide nav and footer ──────────────────────────────────────────
-// Pixel-for-pixel copy of index.html nav/footer.
-// Edit here once — all pages update automatically.
 
 const NAV_HTML = `
 <nav class="nav" id="mainNav">
@@ -19,11 +17,18 @@ const NAV_HTML = `
             <a href="playground.html" class="nav-link">Playground</a>
             <a href="login.html" class="nav-link nav-cta">Get API Key</a>
         </div>
-        <!-- Mobile nav -->
+        <!-- Mobile: hamburger only -->
         <div class="mobile-nav">
-            <a href="docs.html" class="nav-link" style="font-size:0.85rem">Docs</a>
-            <a href="login.html" class="mobile-cta">Get API Key</a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </div>
+    </div>
+    <!-- Mobile dropdown -->
+    <div class="mobile-menu" id="mobileMenu" role="navigation">
+        <a href="docs.html" class="mobile-menu-link">Docs</a>
+        <a href="playground.html" class="mobile-menu-link">Playground</a>
+        <a href="login.html" class="mobile-menu-link mobile-menu-cta">Get API Key</a>
     </div>
 </nav>`;
 
@@ -80,12 +85,9 @@ const FOOTER_HTML = `
 </footer>`;
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Pages with data-no-layout opt out entirely (e.g. login.html)
     if (document.body.hasAttribute('data-no-layout')) return;
 
     // ── Inject nav ──────────────────────────────────────────────────────────
-    // Replace existing nav if present (so index.html gets the logo-link fix),
-    // otherwise insert after .noise-overlay or at top of body.
     var existingNav = document.querySelector('nav.nav, nav#mainNav');
     if (existingNav) {
         existingNav.outerHTML = NAV_HTML;
@@ -106,42 +108,53 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.insertAdjacentHTML('beforeend', FOOTER_HTML);
     }
 
-    // ── Push page content below the fixed nav ───────────────────────────────
-    // Nav is position:fixed so pages need a top offset equal to nav height.
-    // The homepage hero handles this itself (calc(80px + 4rem)).
-    // All other pages get it applied here automatically.
+    // ── Push page content below fixed nav ───────────────────────────────────
     var isHomePage = (window.location.pathname.split('/').pop() || 'index.html') === 'index.html';
     if (!isHomePage) {
-        // Target the first real content block on each page type
-        var contentSelectors = [
-            '#pg-page-header',    // playground.html — the bar above the pg-layout
-            '.docs-layout',       // docs.html
-            // .legal-page already has calc(100px + 4rem) padding-top built in
-        ];
+        var contentSelectors = ['#pg-page-header', '.docs-layout'];
         var pushed = false;
         for (var i = 0; i < contentSelectors.length; i++) {
             var el = document.querySelector(contentSelectors[i]);
-            if (el) {
-                el.style.marginTop = '96px';
-                pushed = true;
-                break;
-            }
+            if (el) { el.style.marginTop = '96px'; pushed = true; break; }
         }
-        // Fallback: push body top padding for any page not matched above
-        if (!pushed) {
-            document.body.style.paddingTop = '96px';
-        }
+        if (!pushed) document.body.style.paddingTop = '96px';
     }
 
-    // ── Sticky nav scroll effect (same as index.js) ─────────────────────────
+    // ── Hamburger menu toggle ────────────────────────────────────────────────
+    var menuBtn = document.getElementById('mobileMenuBtn');
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function () {
+            var isOpen = mobileMenu.classList.contains('open');
+            mobileMenu.classList.toggle('open', !isOpen);
+            menuBtn.classList.toggle('active', !isOpen);
+            menuBtn.setAttribute('aria-expanded', !isOpen);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close on link click
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileMenu.classList.remove('open');
+                menuBtn.classList.remove('active');
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
+    // ── Sticky scroll effect ─────────────────────────────────────────────────
     var nav = document.getElementById('mainNav');
     if (nav) {
         window.addEventListener('scroll', function () {
-            if (window.scrollY > 50) {
-                nav.classList.add('nav--scrolled');
-            } else {
-                nav.classList.remove('nav--scrolled');
-            }
+            nav.classList.toggle('scrolled', window.scrollY > 50);
         }, { passive: true });
     }
 

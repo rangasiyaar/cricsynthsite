@@ -21,8 +21,16 @@
 
 <div class="docs-layout">
 
+    <!-- Mobile sidebar toggle (hidden on desktop) -->
+    <button class="docs-sidebar-toggle" id="docsSidebarToggle" aria-expanded="false">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        API Reference
+    </button>
+
     <!-- ── Sidebar ── -->
-    <aside class="docs-sidebar">
+    <aside class="docs-sidebar" id="docsSidebar">
 
         <!-- CricVeda — Live -->
         <div class="sidebar-section">
@@ -413,6 +421,18 @@ function switchTab(btn, group, tab) {
     parent.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(`${group}-${tab}`);
     if (target) target.classList.add('active');
+}
+
+// Mobile sidebar toggle
+const toggleBtn = document.getElementById('docsSidebarToggle');
+const sidebar = document.getElementById('docsSidebar');
+if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', function () {
+        const isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        toggleBtn.classList.toggle('open', !isOpen);
+        toggleBtn.setAttribute('aria-expanded', !isOpen);
+    });
 }
 
 // Sidebar active state on scroll

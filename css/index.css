@@ -2769,3 +2769,94 @@ img {
         font-size: 1rem;
     }
 }
+/* ========================================
+   Mobile Footer — Compact
+======================================== */
+@media (max-width: 768px) {
+    /* Compact footer for all pages */
+    .footer {
+        padding: 1.5rem 0 1rem;
+    }
+
+    .footer-main {
+        flex-direction: column;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-align: left;
+        max-width: 100%;
+    }
+
+    .footer-logo {
+        height: 36px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .footer-tagline {
+        font-size: 0.8rem;
+        margin: 0;
+    }
+
+    /* Collapse all 3 columns into a single row of links */
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        border-top: 1px solid var(--color-border);
+        padding-top: 0.875rem;
+    }
+
+    .footer-column {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .footer-heading {
+        width: 100%;
+        font-size: 0.65rem;
+        margin-bottom: 0.1rem;
+        letter-spacing: 0.08em;
+    }
+
+    .footer-link {
+        font-size: 0.8rem;
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .footer-copyright {
+        font-size: 0.7rem;
+    }
+
+    .footer-social {
+        gap: 0.5rem;
+    }
+
+    .social-link {
+        width: 28px;
+        height: 28px;
+    }
+
+    .social-link svg {
+        width: 13px;
+        height: 13px;
+    }
+}
