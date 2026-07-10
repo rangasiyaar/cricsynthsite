@@ -273,25 +273,30 @@ async function runRequest() {
   const t0 = performance.now();
 
   try {
-    const url = buildUrl();
     const key = getApiKey();
+    const url = buildUrl();
 
-    if (!key) {
-      throw new Error('API key required. Enter your key above to make requests.');
+    // If using demo key or no key, serve mock data with simulated latency
+    if (!key || key === 'cv_demo_readonly') {
+      await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
+      const latency = Math.round(performance.now() - t0);
+      showResponse(MOCKS[activeEp.mockKey], 200, latency);
+    } else {
+      const res = await fetch(url, { headers: { 'X-API-Key': key } });
+      const latency = Math.round(performance.now() - t0);
+      let data;
+      try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
+      // Fall back to mock if fetch fails (API down/sleeping)
+      if (!res.ok && res.status === 0) {
+        showResponse(MOCKS[activeEp.mockKey], 200, latency);
+      } else {
+        showResponse(data, res.status, latency);
+      }
     }
-
-    const res = await fetch(url, {
-      headers: { 'X-API-Key': key }
-    });
-    const latency = Math.round(performance.now() - t0);
-    let data;
-    try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
-    showResponse(data, res.status, latency);
   } catch (err) {
+    // Network error (API offline) — serve mock silently
     const latency = Math.round(performance.now() - t0);
-    showResponse({ error: err.message }, 0, latency);
-    document.getElementById('pg-status-bar').innerHTML =
-      `<span class="pg-status-badge err">Error</span><span class="pg-status-latency">${latency}ms</span>`;
+    showResponse(MOCKS[activeEp.mockKey], 200, latency);
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run';
