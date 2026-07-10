@@ -95,7 +95,7 @@ const ENDPOINTS = [
   },
   {
     id: 'dream-team',
-    label: 'Dream XI',
+    label: 'Predicted XI',
     path: '/v1/matches/{id}/dream-team',
     mockKey: 'dream-team',
     params: [

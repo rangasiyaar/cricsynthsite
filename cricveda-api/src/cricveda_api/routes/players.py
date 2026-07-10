@@ -53,7 +53,7 @@ class MatchupStats(BaseModel):
     response_model=PlayerForm,
     summary="Player rolling form profile",
     description=(
-        "Returns a player's current form profile — rolling fantasy point averages (last 3/5/10 matches), "
+        "Returns a player's current form profile — rolling performance score averages (last 3/5/10 matches), "
         "batting and bowling stats, form trend (`rising` / `falling` / `stable`), "
         "and their last 5 match scores with opposition. Cached for **30 minutes**.\n\n"
         "`player_id` is the ESPNcricinfo numeric player ID."

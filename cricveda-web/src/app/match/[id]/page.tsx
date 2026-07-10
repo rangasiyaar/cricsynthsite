@@ -198,7 +198,7 @@ export default async function MatchPage({ params }: { params: { id: string } }) 
         <aside>
           {dream ? (
             <div className="sticky top-20">
-              <p className="section-label mb-3">Dream XI</p>
+              <p className="section-label mb-3">Predicted XI</p>
               <div className="card p-4 mb-4">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-[#9ca3b0]">Credits used</span>
@@ -223,7 +223,7 @@ export default async function MatchPage({ params }: { params: { id: string } }) 
             </div>
           ) : (
             <div className="card p-6 text-center">
-              <p className="text-sm text-[#9ca3b0] mb-1">Dream team unavailable</p>
+              <p className="text-sm text-[#9ca3b0] mb-1">Predicted XI unavailable</p>
               <p className="text-xs text-[#6b7280]">Squad credits must be entered in Supabase first.</p>
             </div>
           )}
