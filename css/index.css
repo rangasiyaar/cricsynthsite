@@ -2247,7 +2247,7 @@ img {
 
     .logo-image,
     .nav.scrolled .logo-image {
-        height: 34px;
+        height: 48px;
         max-width: 100px;
         object-fit: contain;
     }
