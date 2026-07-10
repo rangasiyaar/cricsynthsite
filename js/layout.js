@@ -81,7 +81,7 @@ const FOOTER_HTML = `
 
 document.addEventListener('DOMContentLoaded', function () {
     // Pages with data-no-layout opt out entirely (e.g. login.html)
-    if (document.body.dataset.noLayout) return;
+    if (document.body.hasAttribute('data-no-layout')) return;
 
     // ── Inject nav ──────────────────────────────────────────────────────────
     // Replace existing nav if present (so index.html gets the logo-link fix),

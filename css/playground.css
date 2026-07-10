@@ -147,6 +147,37 @@
     text-overflow: ellipsis;
 }
 
+/* ── Product section labels ── */
+.pg-product-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+.pg-product-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.pg-product-dot--live { background: var(--color-success); }
+.pg-product-dot--soon { background: var(--color-text-muted); }
+
+.pg-coming-soon-link {
+    display: block;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--color-border);
+    margin-top: 0.25rem;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.pg-coming-soon-link:hover {
+    color: var(--color-accent-secondary);
+    border-color: rgba(99,102,241,0.3);
+}
+
 /* ── Right panel ── */
 .pg-main {
     display: flex;

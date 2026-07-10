@@ -19,16 +19,10 @@
       padding: 2.5rem;
     }
     .login-logo {
-      display: flex; align-items: center; gap: 0.75rem;
-      margin-bottom: 2rem; text-decoration: none;
+      display: flex; justify-content: center;
+      margin-bottom: 1.75rem; text-decoration: none;
     }
-    .login-logo-icon {
-      width: 2.5rem; height: 2.5rem;
-      border-radius: 0.625rem;
-      background: var(--color-accent-gradient);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .login-logo-text { font-family: var(--font-display); font-size: 1.125rem; font-weight: 700; color: var(--color-text-primary); }
+    .login-logo img { height: 56px; width: auto; object-fit: contain; }
     h1 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--color-text-primary); margin-bottom: 0.375rem; }
     .login-sub { font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 1.75rem; line-height: 1.5; }
     .google-btn {
@@ -64,13 +58,7 @@
 
 <div class="login-card">
   <a href="index.html" class="login-logo">
-    <div class="login-logo-icon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-        <path d="M3 3v18h18" stroke-linecap="round"/>
-        <path d="M7 16l4-4 4 4 6-6" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <span class="login-logo-text">CricSynthesis</span>
+    <img src="assets/logo New.png" alt="CricSynthesis">
   </a>
 
   <h1>Sign in</h1>
