@@ -289,124 +289,36 @@ img {
 }
 
 /* Mobile nav - hidden on desktop */
+/* Mobile nav — inline links alongside logo (no hamburger) */
 .mobile-nav {
     display: none;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.35rem;
 }
 
-.mobile-cta {
-    padding: 0.5rem 1rem;
-    background: var(--color-accent-gradient);
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-    border-radius: var(--radius-full);
-    color: white;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    white-space: nowrap;
-    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
-}
-
-/* Hamburger button */
-.mobile-menu-btn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    width: 40px;
-    height: 40px;
-    padding: 8px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    position: relative;
-    z-index: 1001;
-}
-
-.mobile-menu-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--color-border-accent);
-}
-
-.mobile-menu-btn span {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background: var(--color-text-secondary);
-    border-radius: 2px;
-    transition: all var(--transition-base);
-    transform-origin: center;
-}
-
-/* Hamburger → X animation */
-.mobile-menu-btn.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.mobile-menu-btn.active span:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-}
-
-.mobile-menu-btn.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* Mobile menu dropdown */
-.mobile-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(6, 8, 13, 0.96);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--spacing-md) var(--spacing-lg);
-    flex-direction: column;
-    gap: 0;
-    transform: translateY(-10px);
-    opacity: 0;
-    transition: transform var(--transition-base), opacity var(--transition-base);
-    z-index: 999;
-}
-
-.mobile-menu.open {
-    display: flex;
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.mobile-menu-link {
-    display: block;
-    padding: 0.875rem 0;
-    font-size: 0.9375rem;
+.mobile-nav-link {
+    font-size: 0.72rem;
     font-weight: 500;
     color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border-subtle);
+    padding: 0.3rem 0.45rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
     transition: color var(--transition-fast);
 }
 
-.mobile-menu-link:last-child {
-    border-bottom: none;
-}
-
-.mobile-menu-link:hover {
+.mobile-nav-link:hover {
     color: var(--color-text-primary);
 }
 
-.mobile-menu-cta {
-    color: var(--color-accent-secondary);
+.mobile-nav-cta {
+    font-size: 0.7rem;
     font-weight: 600;
-}
-
-.mobile-menu-cta:hover {
-    color: var(--color-accent-tertiary);
+    color: #fff;
+    padding: 0.3rem 0.65rem;
+    background: var(--color-accent-gradient);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    box-shadow: 0 1px 8px rgba(99, 102, 241, 0.35);
 }
 
 
@@ -1976,7 +1888,8 @@ img {
     }
 
     .nav-container {
-        padding: 0 var(--spacing-md);
+        padding: 0 0.75rem;
+        gap: 0.5rem;
     }
 
     .nav-links {
@@ -1985,12 +1898,13 @@ img {
 
     .mobile-nav {
         display: flex;
+        flex-shrink: 0;
     }
 
     .logo-image,
     .nav.scrolled .logo-image {
-        height: 48px;
-        max-width: 65vw;
+        height: 40px;
+        max-width: 120px;
         object-fit: contain;
     }
 
@@ -2333,19 +2247,23 @@ img {
 
     .logo-image,
     .nav.scrolled .logo-image {
-        height: 40px;
-        max-width: 60vw;
+        height: 34px;
+        max-width: 100px;
         object-fit: contain;
     }
 
     .mobile-nav {
-        gap: 0.4rem;
+        gap: 0.2rem;
     }
 
-    .mobile-cricveda,
-    .mobile-cta {
-        padding: 0.35rem 0.6rem;
+    .mobile-nav-link {
         font-size: 0.65rem;
+        padding: 0.25rem 0.35rem;
+    }
+
+    .mobile-nav-cta {
+        font-size: 0.62rem;
+        padding: 0.25rem 0.5rem;
     }
 
     /* Hero */

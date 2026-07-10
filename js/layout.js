@@ -17,18 +17,12 @@ const NAV_HTML = `
             <a href="playground.html" class="nav-link">Playground</a>
             <a href="login.html" class="nav-link nav-cta">Get API Key</a>
         </div>
-        <!-- Mobile: hamburger only -->
+        <!-- Mobile: inline links alongside logo -->
         <div class="mobile-nav">
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
+            <a href="docs.html" class="mobile-nav-link">Docs</a>
+            <a href="playground.html" class="mobile-nav-link">Playground</a>
+            <a href="login.html" class="mobile-nav-cta">Get API Key</a>
         </div>
-    </div>
-    <!-- Mobile dropdown -->
-    <div class="mobile-menu" id="mobileMenu" role="navigation">
-        <a href="docs.html" class="mobile-menu-link">Docs</a>
-        <a href="playground.html" class="mobile-menu-link">Playground</a>
-        <a href="login.html" class="mobile-menu-link mobile-menu-cta">Get API Key</a>
     </div>
 </nav>`;
 
@@ -118,36 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (el) { el.style.marginTop = '96px'; pushed = true; break; }
         }
         if (!pushed) document.body.style.paddingTop = '96px';
-    }
-
-    // ── Hamburger menu toggle ────────────────────────────────────────────────
-    var menuBtn = document.getElementById('mobileMenuBtn');
-    var mobileMenu = document.getElementById('mobileMenu');
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', function () {
-            var isOpen = mobileMenu.classList.contains('open');
-            mobileMenu.classList.toggle('open', !isOpen);
-            menuBtn.classList.toggle('active', !isOpen);
-            menuBtn.setAttribute('aria-expanded', !isOpen);
-        });
-
-        // Close on outside click
-        document.addEventListener('click', function (e) {
-            if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.remove('open');
-                menuBtn.classList.remove('active');
-                menuBtn.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        // Close on link click
-        mobileMenu.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function () {
-                mobileMenu.classList.remove('open');
-                menuBtn.classList.remove('active');
-                menuBtn.setAttribute('aria-expanded', 'false');
-            });
-        });
     }
 
     // ── Sticky scroll effect ─────────────────────────────────────────────────
