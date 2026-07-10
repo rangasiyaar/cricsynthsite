@@ -110,9 +110,9 @@ export default async function PlayerPage({ params }: { params: { id: string } })
         </div>
       </div>
 
-      {/* Fantasy point averages */}
+      {/* Performance rating averages */}
       <div className="mb-8">
-        <p className="section-label mb-3">Fantasy Point Form</p>
+        <p className="section-label mb-3">Performance Ratings</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatCard label="Last 3 matches" value={form.fp_last3_avg.toFixed(1)} sub="avg pts" />
           <StatCard label="Last 5 matches" value={form.fp_last5_avg.toFixed(1)} sub="avg pts" />

@@ -1,7 +1,7 @@
 """Prediction endpoints.
 
 GET /v1/matches/{upcoming_id}/prediction  — player score predictions
-GET /v1/matches/{upcoming_id}/dream-team  — optimal Dream11 lineup
+GET /v1/matches/{upcoming_id}/dream-team  — optimal XI lineup
 """
 from __future__ import annotations
 
@@ -57,9 +57,9 @@ class DreamTeamResponse(BaseModel):
 @router.get(
     "/matches/{upcoming_id}/prediction",
     response_model=MatchPrediction,
-    summary="Player fantasy point predictions",
+    summary="Player performance predictions",
     description=(
-        "Returns XGBoost-predicted Dream11 fantasy points for every player in both squads, "
+        "Returns XGBoost-predicted performance scores for every player in both squads, "
         "sorted highest-first. Cached for **1 hour**.\n\n"
         "The model uses ~47 features including rolling form (last 3/5/10 matches), "
         "venue pitch character, opposition strength, batter-vs-style matchups, and toss impact."
@@ -71,7 +71,7 @@ async def get_match_prediction(
     upcoming_id: int,
     _key_id: str = Depends(require_api_key),
 ):
-    """Get fantasy point predictions for all squad players."""
+    """Get performance predictions for all squad players."""
     ck = cache_key("prediction", upcoming_id)
     cached = cache_get(ck)
     if cached:
@@ -147,10 +147,10 @@ async def get_match_prediction(
 @router.get(
     "/matches/{upcoming_id}/dream-team",
     response_model=DreamTeamResponse,
-    summary="Optimal Dream11 lineup",
+    summary="Optimal XI lineup",
     description=(
-        "Runs a linear program (PuLP) over predicted fantasy scores and returns the optimal "
-        "11-player Dream11 lineup, respecting credit limits, role constraints, and the 7-per-team cap. "
+        "Runs a linear program (PuLP) over predicted performance scores and returns the optimal "
+        "11-player optimal lineup, respecting credit limits, role constraints, and the 7-per-team cap. "
         "Captain and vice-captain are the two highest-predicted players. Cached for **1 hour**."
     ),
 )
@@ -160,7 +160,7 @@ async def get_dream_team(
     upcoming_id: int,
     _key_id: str = Depends(require_api_key),
 ):
-    """Get the optimal Dream11 XI with captain and vice-captain picks."""
+    """Get the optimal XI with captain and vice-captain picks."""
     ck = cache_key("dream_team", upcoming_id)
     cached = cache_get(ck)
     if cached:

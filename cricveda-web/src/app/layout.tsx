@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "CricVeda", template: "%s | CricVeda" },
-  description: "Cricket intelligence — predictions, player form, and dream team selection.",
+  description: "Cricket intelligence — predictions, player form, and optimal XI selection.",
 };
 
 export const viewport: Viewport = { themeColor: "#06080d" };

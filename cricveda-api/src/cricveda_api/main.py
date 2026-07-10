@@ -42,8 +42,8 @@ https://api.cricsynthesis.in/v1
 | Endpoint | What it returns |
 |---|---|
 | `GET /matches/upcoming` | Scheduled T20 / ODI fixtures |
-| `GET /matches/{id}/prediction` | Per-player fantasy point predictions |
-| `GET /matches/{id}/dream-team` | Optimal Dream11 XI (LP optimizer) |
+| `GET /matches/{id}/prediction` | Per-player performance predictions |
+| `GET /matches/{id}/dream-team` | Optimal XI (LP optimizer) |
 | `GET /players/{id}/form` | Rolling form, trend, recent scores |
 | `GET /players/{id}/vs/{type}` | Batter SR or bowler eco vs pace / spin / left-arm |
 """

@@ -151,7 +151,7 @@ export default function HomePage({
           Upcoming Matches
         </h1>
         <p className="text-[#9ca3b0] max-w-xl">
-          ML-powered fantasy points predictions for every player in upcoming T20 and ODI fixtures.
+          ML-powered performance score predictions for every player in upcoming T20 and ODI fixtures.
         </p>
       </div>
 

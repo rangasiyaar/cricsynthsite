@@ -75,7 +75,7 @@
             <h1 class="docs-section-title">CricVeda API</h1>
             <p class="docs-section-desc">
                 REST API for cricket intelligence — ML-powered player predictions,
-                Dream11 lineup optimization, and historical matchup analytics backed by
+                optimal XI selection, and historical matchup analytics backed by
                 15,000+ matches of ball-by-ball data.
             </p>
 
@@ -238,11 +238,11 @@ X-RateLimit-Reset: 1735689600</pre></div>
                 <summary class="endpoint-header">
                     <span class="method-get">GET</span>
                     <span class="endpoint-path">/v1/matches/{upcoming_id}/prediction</span>
-                    <span class="endpoint-summary">Fantasy point predictions for all squad players</span>
+                    <span class="endpoint-summary">Player performance predictions for all squad players</span>
                 </summary>
                 <div class="endpoint-body">
                     <p>
-                        Returns XGBoost-predicted Dream11 fantasy points for every player in both squads,
+                        Returns XGBoost-predicted performance scores for every player in both squads,
                         sorted by predicted score. Cached for 1 hour after lineup confirmation.
                     </p>
 
@@ -287,12 +287,12 @@ X-RateLimit-Reset: 1735689600</pre></div>
                 <summary class="endpoint-header">
                     <span class="method-get">GET</span>
                     <span class="endpoint-path">/v1/matches/{upcoming_id}/dream-team</span>
-                    <span class="endpoint-summary">Optimal Dream11 lineup</span>
+                    <span class="endpoint-summary">Optimal XI lineup</span>
                 </summary>
                 <div class="endpoint-body">
                     <p>
                         Runs a linear program (PuLP) over predicted scores and returns the optimal
-                        11-player Dream11 lineup with captain and vice-captain picks.
+                        11-player optimal lineup with captain and vice-captain picks.
                     </p>
 
                     <p class="response-label">Constraints applied</p>
@@ -341,7 +341,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Rolling form, trend, and recent scores</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Returns a player's current form profile — rolling fantasy point averages, batting and bowling stats, and their last 5 match scores. Cached for 30 minutes.</p>
+                    <p>Returns a player's current form profile — rolling performance score averages, batting and bowling stats, and their last 5 match scores. Cached for 30 minutes.</p>
 
                     <p class="response-label">Example response</p>
                     <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
