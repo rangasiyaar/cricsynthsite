@@ -141,7 +141,7 @@ function getParamValues() {
 }
 
 function getApiKey() {
-  return document.getElementById('pg-key-input').value.trim();
+  return document.getElementById('pg-key-input').value.trim() || 'cv_demo_readonly';
 }
 
 function buildUrl() {
