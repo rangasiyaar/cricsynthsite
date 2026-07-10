@@ -1903,8 +1903,8 @@ img {
 
     .logo-image,
     .nav.scrolled .logo-image {
-        height: 40px;
-        max-width: 120px;
+        height: 52px;
+        max-width: 140px;
         object-fit: contain;
     }
 
