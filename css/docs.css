@@ -156,6 +156,9 @@
     font-size: 0.875rem;
     color: var(--color-text-primary);
     font-weight: 500;
+    min-width: 0;
+    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 
 .endpoint-summary {
@@ -363,10 +366,71 @@
     }
 
     .params-table {
+        font-size: 0.72rem;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .params-table th,
+    .params-table td {
+        padding: 0.45rem 0.5rem;
+        white-space: normal;
+    }
+
+    /* Endpoint header: stack path below GET badge on narrow screens */
+    .endpoint-header {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .endpoint-path {
         font-size: 0.75rem;
+        word-break: break-all;
+        overflow-wrap: anywhere;
+        flex: 1 1 100%;   /* push path to its own row */
+        min-width: 0;
+    }
+
+    .endpoint-summary {
+        display: none;    /* hide summary text on mobile — path is enough */
+    }
+
+    .endpoint-body {
+        padding: 0 1rem 1rem;
+        overflow-x: hidden;
+    }
+
+    /* Scrollable code panels */
+    .code-panel {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .code-panel pre {
+        font-size: 0.7rem;
+        white-space: pre;   /* keep pre formatting but let the panel scroll */
+        word-break: normal;
+    }
+
+    /* Response example panels */
+    .code-panel.active[style*="border-radius"] {
+        overflow-x: auto;
+    }
+
+    /* Key display */
+    .key-display {
         font-size: 0.72rem;
+        word-break: break-all;
+    }
+
+    /* Docs main content horizontal containment */
+    .docs-main {
+        overflow-x: hidden;
+    }
+
+    .docs-section {
+        overflow-x: hidden;
     }
 }
