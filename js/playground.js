@@ -2,7 +2,7 @@
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CRICVEDA_API_URL = 'https://api.cricsynthesis.in';
-const DEMO_KEY = 'cv_demo_readonly';
+const DEMO_KEY = '';  // unused — kept for reference only
 
 // ── Mock responses ────────────────────────────────────────────────────────────
 const MOCKS = {
@@ -141,12 +141,7 @@ function getParamValues() {
 }
 
 function getApiKey() {
-  return document.getElementById('pg-key-input').value.trim() || DEMO_KEY;
-}
-
-function isDemo() {
-  const k = getApiKey();
-  return k === DEMO_KEY || k === '';
+  return document.getElementById('pg-key-input').value.trim();
 }
 
 function buildUrl() {
@@ -155,7 +150,7 @@ function buildUrl() {
 
 function buildCurl() {
   const url = buildUrl();
-  const key = isDemo() ? 'cv_demo_readonly' : getApiKey();
+  const key = getApiKey() || 'YOUR_API_KEY';
   return `curl "${url}" \\\n  -H "X-API-Key: ${key}"`;
 }
 
@@ -190,17 +185,6 @@ async function copyText(text, btn) {
 }
 
 // ── DOM rendering ─────────────────────────────────────────────────────────────
-function updateModeBanner() {
-  const banner = document.getElementById('pg-mode-banner');
-  if (isDemo()) {
-    banner.className = 'pg-mode-banner demo';
-    banner.innerHTML = '<span class="pg-mode-dot"></span> Demo mode — responses are illustrative';
-  } else {
-    banner.className = 'pg-mode-banner live';
-    banner.innerHTML = '<span class="pg-mode-dot"></span> Live API — real data';
-  }
-}
-
 function renderParams() {
   const container = document.getElementById('pg-params');
   container.innerHTML = '';
@@ -260,13 +244,12 @@ function clearResponse() {
     </div>`;
 }
 
-function showResponse(data, status, latency, demo) {
+function showResponse(data, status, latency) {
   const bar = document.getElementById('pg-status-bar');
   const ok = status >= 200 && status < 300;
   bar.innerHTML = `
     <span class="pg-status-badge ${ok ? 'ok' : 'err'}">${status}</span>
-    <span class="pg-status-latency">${latency}ms</span>
-    <span class="pg-status-mode">${demo ? 'demo data' : 'live'}</span>`;
+    <span class="pg-status-latency">${latency}ms</span>`;
 
   const body = document.getElementById('pg-response-body');
   if (ok) {
@@ -287,30 +270,28 @@ async function runRequest() {
   btn.disabled = true;
   btn.innerHTML = '<span class="pg-spinner"></span> Running…';
 
-  const demo = isDemo();
   const t0 = performance.now();
 
   try {
-    if (demo) {
-      // Simulate realistic latency
-      await new Promise(r => setTimeout(r, 300 + Math.random() * 500));
-      const latency = Math.round(performance.now() - t0);
-      showResponse(MOCKS[activeEp.mockKey], 200, latency, true);
-    } else {
-      const url = buildUrl();
-      const res = await fetch(url, {
-        headers: { 'X-API-Key': getApiKey() }
-      });
-      const latency = Math.round(performance.now() - t0);
-      let data;
-      try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
-      showResponse(data, res.status, latency, false);
+    const url = buildUrl();
+    const key = getApiKey();
+
+    if (!key) {
+      throw new Error('API key required. Enter your key above to make requests.');
     }
+
+    const res = await fetch(url, {
+      headers: { 'X-API-Key': key }
+    });
+    const latency = Math.round(performance.now() - t0);
+    let data;
+    try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
+    showResponse(data, res.status, latency);
   } catch (err) {
     const latency = Math.round(performance.now() - t0);
-    showResponse({ error: err.message, hint: 'Is the API deployed? Check CRICVEDA_API_URL in playground.js.' }, 0, latency, false);
+    showResponse({ error: err.message }, 0, latency);
     document.getElementById('pg-status-bar').innerHTML =
-      `<span class="pg-status-badge err">Network Error</span><span class="pg-status-latency">${latency}ms</span>`;
+      `<span class="pg-status-badge err">Error</span><span class="pg-status-latency">${latency}ms</span>`;
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run';

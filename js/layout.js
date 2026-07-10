@@ -52,7 +52,6 @@ const FOOTER_HTML = `
                 </div>
                 <div class="footer-column">
                     <h4 class="footer-heading">Company</h4>
-                    <a href="index.html#request-access" class="footer-link">Request Invite</a>
                     <a href="careers.html" class="footer-link">Careers</a>
                     <a href="contact.html" class="footer-link">Contact</a>
                     <a href="privacy.html" class="footer-link">Privacy Policy</a>
