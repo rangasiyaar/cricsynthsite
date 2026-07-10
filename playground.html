@@ -43,9 +43,9 @@
   <aside class="pg-sidebar">
 
     <!-- Mode banner -->
-    <div id="pg-mode-banner" class="pg-mode-banner demo">
-      <span class="pg-mode-dot"></span>
-      Demo mode — responses are illustrative
+    <div id="pg-mode-banner" style="display:none">
+      
+      
     </div>
 
     <!-- API Key -->
@@ -56,15 +56,15 @@
           id="pg-key-input"
           class="pg-key-input"
           type="text"
-          value="cv_demo_readonly"
-          placeholder="cv_live_your_key_here"
+          value=""
+          placeholder="Enter your API key"
           autocomplete="off"
           spellcheck="false"
         >
-        <button id="pg-key-clear" class="pg-key-clear" title="Reset to demo key">reset</button>
+        <button id="pg-key-clear" class="pg-key-clear" title="Clear">clear</button>
       </div>
       <p style="font-size:0.68rem;color:var(--color-text-muted);margin-top:0.2rem">
-        Replace with your key for live data.
+        Enter your API key to try live requests.
         <a href="index.html#request-access" style="color:var(--color-accent-secondary)">Get a key →</a>
       </p>
     </div>
