@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="css/index.css">
 
   <style>
-    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    .login-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1rem; }
     .login-card {
       width: 100%; max-width: 400px;
       background: var(--color-bg-secondary);
@@ -56,6 +57,7 @@
 <body>
 <div class="noise-overlay" aria-hidden="true"></div>
 
+<div class="login-wrapper">
 <div class="login-card">
   <a href="index.html" class="login-logo">
     <img src="assets/logo New.png" alt="CricSynthesis">
@@ -84,6 +86,7 @@
     <a href="privacy.html">Privacy Policy</a>.<br><br>
     Don't have access? <a href="contact.html">Contact Sales →</a>
   </p>
+</div>
 </div>
 
 <!-- Supabase JS SDK (CDN) -->
