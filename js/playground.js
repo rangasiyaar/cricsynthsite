@@ -2,127 +2,201 @@
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const CRICVEDA_API_URL = 'https://api.cricsynthesis.in';
-const DEMO_KEY = '';  // unused — kept for reference only
 
-// ── Mock responses ────────────────────────────────────────────────────────────
+// ── Mock responses ─────────────────────────────────────────────────────────────
 const MOCKS = {
-  'upcoming': [
-    { upcoming_id: 42, league_id: 'ipl', match_date: '2026-03-22', team1: 'Mumbai Indians', team2: 'Chennai Super Kings', format: 'T20', status: 'scheduled', toss_winner: null, toss_decision: null },
-    { upcoming_id: 43, league_id: 'ipl', match_date: '2026-03-24', team1: 'Royal Challengers Bengaluru', team2: 'Kolkata Knight Riders', format: 'T20', status: 'scheduled', toss_winner: null, toss_decision: null },
-    { upcoming_id: 44, league_id: 'ipl', match_date: '2026-03-25', team1: 'Delhi Capitals', team2: 'Sunrisers Hyderabad', format: 'T20', status: 'scheduled', toss_winner: null, toss_decision: null }
-  ],
-  'prediction': {
-    upcoming_id: 42, team1: 'Mumbai Indians', team2: 'Chennai Super Kings',
-    match_date: '2026-03-22',
-    players: [
-      { player_id: 28081,  player_name: 'MS Dhoni',         team: 'Chennai Super Kings', role: 'WK',   predicted_points: 64.2, credits: 9.5, model_version: '20260101' },
-      { player_id: 253802, player_name: 'Virat Kohli',       team: 'Royal Challengers Bengaluru', role: 'BAT',  predicted_points: 61.8, credits: 11.0, model_version: '20260101' },
-      { player_id: 34102,  player_name: 'Rohit Sharma',      team: 'Mumbai Indians', role: 'BAT',  predicted_points: 58.5, credits: 10.5, model_version: '20260101' },
-      { player_id: 277916, player_name: 'Jasprit Bumrah',    team: 'Mumbai Indians', role: 'BOWL', predicted_points: 56.1, credits: 10.0, model_version: '20260101' },
-      { player_id: 625383, player_name: 'Ruturaj Gaikwad',   team: 'Chennai Super Kings', role: 'BAT',  predicted_points: 51.3, credits: 9.0, model_version: '20260101' },
-      { player_id: 481896, player_name: 'Hardik Pandya',     team: 'Mumbai Indians', role: 'AR',   predicted_points: 49.7, credits: 10.0, model_version: '20260101' },
-      { player_id: 290716, player_name: 'Ravindra Jadeja',   team: 'Chennai Super Kings', role: 'AR',   predicted_points: 47.2, credits: 9.5, model_version: '20260101' },
-      { player_id: 308967, player_name: 'Suryakumar Yadav',  team: 'Mumbai Indians', role: 'BAT',  predicted_points: 44.8, credits: 9.5, model_version: '20260101' },
-      { player_id: 423838, player_name: 'Deepak Chahar',     team: 'Chennai Super Kings', role: 'BOWL', predicted_points: 38.6, credits: 8.0, model_version: '20260101' },
-      { player_id: 543209, player_name: 'Ishan Kishan',      team: 'Mumbai Indians', role: 'WK',   predicted_points: 36.4, credits: 8.5, model_version: '20260101' }
+  'win-probability': {
+    win_probability: 0.42,
+    runs_needed: 80,
+    balls_remaining: 60,
+    required_rr: 8.0,
+    blueprint: [
+      { over: 12, target_runs_by_end: 96 },
+      { over: 15, target_runs_by_end: 120 },
+      { over: 18, target_runs_by_end: 144 }
+    ],
+    sample_size: 312,
+    confidence: 'high'
+  },
+  'collapse-probability': {
+    collapse_probability: 0.28,
+    definition: '3+ wickets in next 30 balls',
+    most_common_trigger: 'caught',
+    expected_runs_if_collapse: 32.4,
+    expected_runs_if_no_collapse: 67.1,
+    sample_size: 186,
+    confidence: 'medium'
+  },
+  'momentum': {
+    player_id: 253802,
+    momentum_score: 7.8,
+    signal: 'hot',
+    matches_in_window: 8,
+    days_since_last_match: 3,
+    recent_activity: [
+      { match_date: '2026-07-10', league_id: 't20i', total_points: 74.5, z_score: 1.82, weight: 0.91 },
+      { match_date: '2026-07-06', league_id: 'ipl',  total_points: 61.0, z_score: 1.24, weight: 0.87 },
+      { match_date: '2026-07-01', league_id: 'ipl',  total_points: 48.5, z_score: 0.74, weight: 0.81 },
+      { match_date: '2026-06-26', league_id: 't20i', total_points: 82.0, z_score: 2.10, weight: 0.74 },
+      { match_date: '2026-06-22', league_id: 'bbl',  total_points: 55.0, z_score: 1.12, weight: 0.68 }
     ]
   },
-  'dream-team': {
-    upcoming_id: 42, team1: 'Mumbai Indians', team2: 'Chennai Super Kings',
-    total_credits: 97.5, projected_score: 724.8,
-    lineup: [
-      { player_id: 28081,  player_name: 'MS Dhoni',        team: 'Chennai Super Kings', role: 'WK',   predicted_points: 64.2, credits: 9.5,  is_captain: false, is_vice_captain: true  },
-      { player_id: 253802, player_name: 'Virat Kohli',      team: 'RCB',                role: 'BAT',  predicted_points: 61.8, credits: 11.0, is_captain: true,  is_vice_captain: false },
-      { player_id: 34102,  player_name: 'Rohit Sharma',     team: 'Mumbai Indians',     role: 'BAT',  predicted_points: 58.5, credits: 10.5, is_captain: false, is_vice_captain: false },
-      { player_id: 277916, player_name: 'Jasprit Bumrah',   team: 'Mumbai Indians',     role: 'BOWL', predicted_points: 56.1, credits: 10.0, is_captain: false, is_vice_captain: false },
-      { player_id: 625383, player_name: 'Ruturaj Gaikwad',  team: 'Chennai Super Kings',role: 'BAT',  predicted_points: 51.3, credits: 9.0,  is_captain: false, is_vice_captain: false },
-      { player_id: 481896, player_name: 'Hardik Pandya',    team: 'Mumbai Indians',     role: 'AR',   predicted_points: 49.7, credits: 10.0, is_captain: false, is_vice_captain: false },
-      { player_id: 290716, player_name: 'Ravindra Jadeja',  team: 'Chennai Super Kings',role: 'AR',   predicted_points: 47.2, credits: 9.5,  is_captain: false, is_vice_captain: false },
-      { player_id: 308967, player_name: 'Suryakumar Yadav', team: 'Mumbai Indians',     role: 'BAT',  predicted_points: 44.8, credits: 9.5,  is_captain: false, is_vice_captain: false },
-      { player_id: 423838, player_name: 'Deepak Chahar',    team: 'Chennai Super Kings',role: 'BOWL', predicted_points: 38.6, credits: 8.0,  is_captain: false, is_vice_captain: false },
-      { player_id: 543209, player_name: 'Ishan Kishan',     team: 'Mumbai Indians',     role: 'WK',   predicted_points: 36.4, credits: 8.5,  is_captain: false, is_vice_captain: false },
-      { player_id: 412004, player_name: 'Tushar Deshpande', team: 'Chennai Super Kings',role: 'BOWL', predicted_points: 31.8, credits: 7.5,  is_captain: false, is_vice_captain: false }
-    ]
+  'clutch': {
+    player_id: 253802,
+    clutch_batting_sr: 148.6,
+    clutch_batting_avg: 34.2,
+    clutch_bowling_economy: null,
+    clutch_deliveries: 184,
+    clutch_index: 8.2,
+    signal: 'elite_clutch'
   },
-  'player-form': {
-    player_id: 253802, name: 'Virat Kohli', role: 'BAT',
-    batting_hand: 'Right hand', bowling_style: null, nationality: 'India',
-    matches_last_10: 10, fp_last3_avg: 61.2, fp_last5_avg: 54.8, fp_last10_avg: 49.3,
-    fp_std5: 12.4, fp_trend: 'rising', bat_runs_avg5: 44.6, bat_sr_avg5: 142.3,
-    bat_boundary_pct5: 0.18, bowl_wkts_avg5: 0.0, bowl_eco_avg5: 0.0,
-    recent_scores: [
-      { match_id: 41, match_date: '2026-03-18', vs: 'Mumbai Indians vs Delhi Capitals',      total_points: 76.5, batting_points: 68.0, bowling_points: 0.0, fielding_points: 8.5 },
-      { match_id: 38, match_date: '2026-03-14', vs: 'RCB vs Rajasthan Royals',               total_points: 48.0, batting_points: 48.0, bowling_points: 0.0, fielding_points: 0.0 },
-      { match_id: 35, match_date: '2026-03-10', vs: 'RCB vs Punjab Kings',                   total_points: 62.5, batting_points: 54.0, bowling_points: 0.0, fielding_points: 8.5 },
-      { match_id: 31, match_date: '2026-03-06', vs: 'Kolkata Knight Riders vs RCB',          total_points: 41.0, batting_points: 41.0, bowling_points: 0.0, fielding_points: 0.0 },
-      { match_id: 28, match_date: '2026-03-02', vs: 'RCB vs Chennai Super Kings',            total_points: 55.0, batting_points: 47.0, bowling_points: 0.0, fielding_points: 8.0 }
-    ]
+  'phase-profile': {
+    player_id: 253802,
+    format: 'T20',
+    powerplay: { sr: 128.4, avg: 31.2, boundary_pct: 0.22, dot_pct: 0.38, dismissal_rate_per_100: 8.1 },
+    middle:    { sr: 118.0, avg: 34.5, boundary_pct: 0.18, dot_pct: 0.42, dismissal_rate_per_100: 6.3 },
+    death:     { sr: 162.4, avg: 22.0, boundary_pct: 0.31, dot_pct: 0.28, dismissal_rate_per_100: 12.4 },
+    acceleration_score: 34.0,
+    player_type: 'finisher'
   },
-  'player-matchup': {
-    player_id: 253802, matchup_type: 'spin', strike_rate: 118.4, economy_rate: null, sample_deliveries: 842
+  'pitch-reading': {
+    match_id: 12345,
+    overs_analyzed: 3,
+    classification: 'pace-friendly',
+    confidence: 'high',
+    actual_run_rate: 6.8,
+    wickets_in_sample: 4,
+    wicket_types: { bowled: 2, lbw: 1, caught: 1 },
+    pace_indicator: 0.75,
+    vs_venue_baseline: 'below',
+    interpretation: '4 wickets in 3 overs with 3 bowled/LBW suggests significant seam and swing movement.'
+  },
+  'final-over-specialists': {
+    league_id: 'ipl',
+    season: '2024',
+    role: 'bowler',
+    over_analyzed: '20th over (T20)',
+    specialists: [
+      { player_id: 277916, name: 'Jasprit Bumrah',   balls: 42, economy: 5.14, wickets: 8 },
+      { player_id: 419898, name: 'Arshdeep Singh',   balls: 36, economy: 7.33, wickets: 5 },
+      { player_id: 290716, name: 'Ravindra Jadeja',  balls: 28, economy: 7.71, wickets: 3 },
+      { player_id: 322890, name: 'Rashid Khan',       balls: 24, economy: 6.50, wickets: 4 },
+      { player_id: 481896, name: 'Hardik Pandya',    balls: 18, economy: 8.33, wickets: 2 }
+    ]
   }
 };
 
 // ── Endpoint config ───────────────────────────────────────────────────────────
 const ENDPOINTS = [
   {
-    id: 'upcoming',
-    label: 'Upcoming Matches',
-    path: '/v1/matches/upcoming',
-    mockKey: 'upcoming',
+    id: 'win-probability',
+    label: 'Win Probability',
+    path: '/v1/oracle/win-probability',
+    mockKey: 'win-probability',
     params: [
-      { name: 'league_id', label: 'League', type: 'text',   placeholder: 'ipl', default: 'ipl', desc: 'Filter by league (ipl, t20i, bbl…)' },
-      { name: 'format',    label: 'Format', type: 'select', options: ['', 'T20', 'ODI'], default: 'T20', desc: 'Match format' },
-      { name: 'limit',     label: 'Limit',  type: 'number', placeholder: '5',   default: '5',   min: 1, max: 20, desc: 'Max results (1–20)' }
+      { name: 'format',  label: 'format',  type: 'select', options: ['T20', 'ODI'], default: 'T20', desc: 'Match format' },
+      { name: 'innings', label: 'innings', type: 'number', placeholder: '2', default: '2', min: 1, max: 2, desc: '1 or 2' },
+      { name: 'over',    label: 'over',    type: 'number', placeholder: '10', default: '10', min: 1, max: 50, desc: 'Current over' },
+      { name: 'wickets', label: 'wickets', type: 'number', placeholder: '3', default: '3', min: 0, max: 10, desc: 'Wickets fallen' },
+      { name: 'runs',    label: 'runs',    type: 'number', placeholder: '80', default: '80', min: 0, desc: 'Runs scored so far' },
+      { name: 'target',  label: 'target',  type: 'number', placeholder: '160', default: '160', min: 1, desc: 'Target (innings 2 only)' }
     ],
     buildPath(p) {
       const q = new URLSearchParams();
-      if (p.league_id) q.set('league_id', p.league_id);
-      if (p.format)    q.set('format', p.format);
-      if (p.limit)     q.set('limit', p.limit);
-      return `/v1/matches/upcoming?${q}`;
+      q.set('format', p.format || 'T20');
+      q.set('innings', p.innings || '2');
+      q.set('over', p.over || '10');
+      q.set('wickets', p.wickets || '3');
+      q.set('runs', p.runs || '80');
+      if (p.target) q.set('target', p.target);
+      return `/v1/oracle/win-probability?${q}`;
     }
   },
   {
-    id: 'prediction',
-    label: 'Player Predictions',
-    path: '/v1/matches/{id}/prediction',
-    mockKey: 'prediction',
+    id: 'collapse-probability',
+    label: 'Collapse Probability',
+    path: '/v1/oracle/collapse-probability',
+    mockKey: 'collapse-probability',
     params: [
-      { name: 'upcoming_id', label: 'upcoming_id', type: 'number', placeholder: '42', default: '42', desc: 'Match ID from /matches/upcoming' }
+      { name: 'format',  label: 'format',  type: 'select', options: ['T20', 'ODI'], default: 'T20', desc: 'Match format' },
+      { name: 'innings', label: 'innings', type: 'number', placeholder: '1', default: '1', min: 1, max: 2, desc: '1 or 2' },
+      { name: 'over',    label: 'over',    type: 'number', placeholder: '8', default: '8', min: 1, max: 50, desc: 'Current over' },
+      { name: 'wickets', label: 'wickets', type: 'number', placeholder: '2', default: '2', min: 0, max: 10, desc: 'Wickets fallen' },
+      { name: 'score',   label: 'score',   type: 'number', placeholder: '65', default: '65', min: 0, desc: 'Current score' }
     ],
-    buildPath(p) { return `/v1/matches/${p.upcoming_id || 42}/prediction`; }
+    buildPath(p) {
+      const q = new URLSearchParams({ format: p.format || 'T20', innings: p.innings || '1', over: p.over || '8', wickets: p.wickets || '2', score: p.score || '65' });
+      return `/v1/oracle/collapse-probability?${q}`;
+    }
   },
   {
-    id: 'dream-team',
-    label: 'Predicted XI',
-    path: '/v1/matches/{id}/dream-team',
-    mockKey: 'dream-team',
+    id: 'momentum',
+    label: 'Player Momentum',
+    path: '/v1/players/{id}/momentum',
+    mockKey: 'momentum',
     params: [
-      { name: 'upcoming_id', label: 'upcoming_id', type: 'number', placeholder: '42', default: '42', desc: 'Match ID from /matches/upcoming' }
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'days',      label: 'days',      type: 'number', placeholder: '60',     default: '60',     min: 7, max: 180, desc: 'Look-back window in days' }
     ],
-    buildPath(p) { return `/v1/matches/${p.upcoming_id || 42}/dream-team`; }
+    buildPath(p) {
+      const q = new URLSearchParams({ days: p.days || '60' });
+      return `/v1/players/${p.player_id || 253802}/momentum?${q}`;
+    }
   },
   {
-    id: 'player-form',
-    label: 'Player Form',
-    path: '/v1/players/{id}/form',
-    mockKey: 'player-form',
+    id: 'clutch',
+    label: 'Clutch Score',
+    path: '/v1/players/{id}/clutch',
+    mockKey: 'clutch',
     params: [
-      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'ESPNcricinfo player ID (e.g. 253802 = Kohli)' }
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'season',    label: 'season',    type: 'text',   placeholder: '2024',   default: '',       desc: 'Filter by season (optional)' }
     ],
-    buildPath(p) { return `/v1/players/${p.player_id || 253802}/form`; }
+    buildPath(p) {
+      const q = new URLSearchParams();
+      if (p.season) q.set('season', p.season);
+      const qs = q.toString() ? `?${q}` : '';
+      return `/v1/players/${p.player_id || 253802}/clutch${qs}`;
+    }
   },
   {
-    id: 'player-matchup',
-    label: 'Player Matchup',
-    path: '/v1/players/{id}/vs/{type}',
-    mockKey: 'player-matchup',
+    id: 'phase-profile',
+    label: 'Phase Profile',
+    path: '/v1/players/{id}/phase-profile',
+    mockKey: 'phase-profile',
     params: [
-      { name: 'player_id',     label: 'player_id',     type: 'number', placeholder: '253802', default: '253802', desc: 'ESPNcricinfo player ID' },
-      { name: 'matchup_type',  label: 'matchup_type',  type: 'select', options: ['pace','spin','left-arm'], default: 'spin', desc: 'Bowling category' }
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20', 'ODI'], default: 'T20', desc: 'Match format' }
     ],
-    buildPath(p) { return `/v1/players/${p.player_id || 253802}/vs/${p.matchup_type || 'spin'}`; }
+    buildPath(p) { return `/v1/players/${p.player_id || 253802}/phase-profile?format=${p.format || 'T20'}`; }
+  },
+  {
+    id: 'pitch-reading',
+    label: 'Pitch Reading',
+    path: '/v1/matches/{id}/pitch-reading',
+    mockKey: 'pitch-reading',
+    params: [
+      { name: 'match_id',   label: 'match_id',   type: 'number', placeholder: '12345', default: '12345', desc: 'Historical match ID' },
+      { name: 'after_over', label: 'after_over',  type: 'number', placeholder: '3',     default: '3',     min: 1, max: 10, desc: 'Read pitch after N overs' }
+    ],
+    buildPath(p) { return `/v1/matches/${p.match_id || 12345}/pitch-reading?after_over=${p.after_over || 3}`; }
+  },
+  {
+    id: 'final-over-specialists',
+    label: 'Final Over Specialists',
+    path: '/v1/leagues/{id}/final-over-specialists',
+    mockKey: 'final-over-specialists',
+    params: [
+      { name: 'league_id', label: 'league_id', type: 'text',   placeholder: 'ipl',    default: 'ipl',    desc: 'League (ipl, t20i, bbl, psl…)' },
+      { name: 'season',    label: 'season',    type: 'text',   placeholder: '2024',   default: '2024',   desc: 'Season year' },
+      { name: 'role',      label: 'role',      type: 'select', options: ['bowler', 'batter'], default: 'bowler', desc: 'bowler or batter' },
+      { name: 'limit',     label: 'limit',     type: 'number', placeholder: '10',     default: '10',     min: 1, max: 25, desc: 'Max results' }
+    ],
+    buildPath(p) {
+      const q = new URLSearchParams({ role: p.role || 'bowler', limit: p.limit || '10' });
+      if (p.season) q.set('season', p.season);
+      return `/v1/leagues/${p.league_id || 'ipl'}/final-over-specialists?${q}`;
+    }
   }
 ];
 
@@ -206,8 +280,8 @@ function renderParams() {
       input.type = p.type; input.className = 'pg-param-input';
       if (p.placeholder) input.placeholder = p.placeholder;
       if (p.default) input.value = p.default;
-      if (p.min) input.min = p.min;
-      if (p.max) input.max = p.max;
+      if (p.min !== undefined) input.min = p.min;
+      if (p.max !== undefined) input.max = p.max;
     }
     input.id = `pg-param-${p.name}`;
     input.addEventListener('input', () => {
@@ -254,14 +328,12 @@ function showResponse(data, status, latency) {
   const body = document.getElementById('pg-response-body');
   if (ok) {
     body.innerHTML = `<pre class="pg-json">${syntaxHighlight(data)}</pre>`;
-    const copyBtn = document.getElementById('pg-response-copy');
-    if (copyBtn) copyBtn._data = JSON.stringify(data, null, 2);
   } else {
     body.innerHTML = `<div class="pg-error-card"><p>${JSON.stringify(data, null, 2)}</p></div>`;
   }
 }
 
-// ── Request runner ────────────────────────────────────────────────────────────
+// ── Request runner ─────────────────────────────────────────────────────────────
 async function runRequest() {
   if (isRunning) return;
   isRunning = true;
@@ -276,7 +348,6 @@ async function runRequest() {
     const key = getApiKey();
     const url = buildUrl();
 
-    // If using demo key or no key, serve mock data with simulated latency
     if (!key || key === 'cv_demo_readonly') {
       await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
       const latency = Math.round(performance.now() - t0);
@@ -286,15 +357,13 @@ async function runRequest() {
       const latency = Math.round(performance.now() - t0);
       let data;
       try { data = await res.json(); } catch { data = { error: 'Non-JSON response' }; }
-      // Fall back to mock if fetch fails (API down/sleeping)
       if (!res.ok && res.status === 0) {
         showResponse(MOCKS[activeEp.mockKey], 200, latency);
       } else {
         showResponse(data, res.status, latency);
       }
     }
-  } catch (err) {
-    // Network error (API offline) — serve mock silently
+  } catch {
     const latency = Math.round(performance.now() - t0);
     showResponse(MOCKS[activeEp.mockKey], 200, latency);
   } finally {
@@ -304,9 +373,8 @@ async function runRequest() {
   }
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ── Init ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Endpoint tab clicks
   document.querySelectorAll('.pg-ep-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const ep = ENDPOINTS.find(e => e.id === btn.dataset.id);
@@ -314,41 +382,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // API key changes
   const keyInput = document.getElementById('pg-key-input');
   keyInput.addEventListener('input', () => {
-    updateModeBanner();
     document.getElementById('pg-curl-code').textContent = buildCurl();
   });
 
-  // Clear key button
   document.getElementById('pg-key-clear').addEventListener('click', () => {
-    keyInput.value = DEMO_KEY;
-    updateModeBanner();
+    keyInput.value = '';
     document.getElementById('pg-curl-code').textContent = buildCurl();
   });
 
-  // Run button
   document.getElementById('pg-run-btn-inline').addEventListener('click', runRequest);
 
-  // Copy curl
   document.getElementById('pg-curl-copy').addEventListener('click', function() {
     copyText(document.getElementById('pg-curl-code').textContent, this);
   });
 
-  // Copy response
   document.getElementById('pg-response-copy').addEventListener('click', function() {
     const pre = document.querySelector('#pg-response-body .pg-json');
     if (pre) copyText(pre.textContent, this);
   });
 
-  // Keyboard shortcut: Ctrl/Cmd + Enter to run
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runRequest();
   });
 
-  // Init
   renderParams();
-  updateModeBanner();
   clearResponse();
 });

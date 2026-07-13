@@ -43,11 +43,46 @@
                 <li><a href="#authentication">Authentication</a></li>
                 <li><a href="#rate-limits">Rate Limits</a></li>
                 <li><a href="#errors">Errors</a></li>
-                <li><a href="#get-upcoming"><span class="method-badge">GET</span> /matches/upcoming</a></li>
-                <li><a href="#get-prediction"><span class="method-badge">GET</span> /matches/{id}/prediction</a></li>
-                <li><a href="#get-dream-team"><span class="method-badge">GET</span> /matches/{id}/dream-team</a></li>
-                <li><a href="#get-player-form"><span class="method-badge">GET</span> /players/{id}/form</a></li>
-                <li><a href="#get-player-matchup"><span class="method-badge">GET</span> /players/{id}/vs/{type}</a></li>
+
+                <li class="sidebar-category-label">Oracle</li>
+                <li><a href="#get-win-prob"><span class="method-badge">GET</span> /oracle/win-probability</a></li>
+                <li><a href="#get-collapse-prob"><span class="method-badge">GET</span> /oracle/collapse-probability</a></li>
+
+                <li class="sidebar-category-label">Players</li>
+                <li><a href="#get-momentum"><span class="method-badge">GET</span> /players/{id}/momentum</a></li>
+                <li><a href="#get-clutch"><span class="method-badge">GET</span> /players/{id}/clutch</a></li>
+                <li><a href="#get-phase-profile"><span class="method-badge">GET</span> /players/{id}/phase-profile</a></li>
+                <li><a href="#get-pressure-fp"><span class="method-badge">GET</span> /players/{id}/pressure-fingerprint</a></li>
+                <li><a href="#get-dismissal-map"><span class="method-badge">GET</span> /players/{id}/dismissal-map</a></li>
+                <li><a href="#get-nemesis"><span class="method-badge">GET</span> /players/{id}/nemesis</a></li>
+                <li><a href="#get-consistency"><span class="method-badge">GET</span> /players/{id}/consistency</a></li>
+                <li><a href="#get-win-contribution"><span class="method-badge">GET</span> /players/{id}/win-contribution</a></li>
+                <li><a href="#get-scoring-rhythm"><span class="method-badge">GET</span> /players/{id}/scoring-rhythm</a></li>
+                <li><a href="#get-milestone"><span class="method-badge">GET</span> /players/{id}/milestone-behaviour</a></li>
+                <li><a href="#get-league-adj"><span class="method-badge">GET</span> /players/{id}/league-adjusted-performance</a></li>
+                <li><a href="#get-position"><span class="method-badge">GET</span> /players/{id}/position-analysis</a></li>
+                <li><a href="#get-inherited-pressure"><span class="method-badge">GET</span> /players/{id}/inherited-pressure</a></li>
+                <li><a href="#get-format-switch"><span class="method-badge">GET</span> /players/{id}/format-switch-impact</a></li>
+                <li><a href="#get-spell"><span class="method-badge">GET</span> /players/{id}/spell-analysis</a></li>
+                <li><a href="#get-scoring-zones"><span class="method-badge">GET</span> /players/{id}/scoring-zones</a></li>
+
+                <li class="sidebar-category-label">Venues</li>
+                <li><a href="#get-toss-intel"><span class="method-badge">GET</span> /venues/{id}/toss-intelligence</a></li>
+                <li><a href="#get-day-night"><span class="method-badge">GET</span> /venues/{id}/day-night-analysis</a></li>
+
+                <li class="sidebar-category-label">Teams</li>
+                <li><a href="#get-batting-depth"><span class="method-badge">GET</span> /teams/{name}/batting-depth</a></li>
+
+                <li class="sidebar-category-label">Matches</li>
+                <li><a href="#get-pitch-reading"><span class="method-badge">GET</span> /matches/{id}/pitch-reading</a></li>
+                <li><a href="#get-momentum-curve"><span class="method-badge">GET</span> /matches/{id}/momentum-curve</a></li>
+
+                <li class="sidebar-category-label">Leaderboards</li>
+                <li><a href="#get-final-over"><span class="method-badge">GET</span> /leagues/{id}/final-over-specialists</a></li>
+
+                <li class="sidebar-category-label">Matchups</li>
+                <li><a href="#get-optimal-bowler"><span class="method-badge">GET</span> /matchups/optimal-bowler</a></li>
+
                 <li><a href="playground.html">Try in Playground</a></li>
             </ul>
         </div>
@@ -82,17 +117,15 @@
         <section id="overview" class="docs-section">
             <h1 class="docs-section-title">CricVeda API</h1>
             <p class="docs-section-desc">
-                REST API for cricket intelligence — ML-powered player predictions,
-                optimal XI selection, and historical matchup analytics backed by
-                15,000+ matches of ball-by-ball data.
+                25 unique ball-by-ball analytics endpoints — win probability from any match state,
+                player clutch scores, cross-format momentum, batting phase profiles, venue toss intelligence,
+                and more. Powered by Cricsheet data across 22 leagues (T20 + ODI, professional and domestic).
             </p>
 
             <div class="key-display">
                 <span>Base URL</span>
                 https://api.cricsynthesis.in/v1
             </div>
-
-
         </section>
 
         <!-- Authentication -->
@@ -109,17 +142,17 @@
                     <button class="code-tab-btn" onclick="switchTab(this,'auth','python')">Python</button>
                     <button class="code-tab-btn" onclick="switchTab(this,'auth','js')">JavaScript</button>
                 </div>
-                <div id="auth-curl" class="code-panel active"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/matches/upcoming \
+                <div id="auth-curl" class="code-panel active"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/oracle/win-probability \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
                 <div id="auth-python" class="code-panel"><pre><span class="kw">import</span> requests
 
 res = requests.<span class="fn">get</span>(
-    <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
+    <span class="str">"https://api.cricsynthesis.in/v1/oracle/win-probability"</span>,
     headers={<span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span>},
 )
 <span class="fn">print</span>(res.<span class="fn">json</span>())</pre></div>
                 <div id="auth-js" class="code-panel"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
-  <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
+  <span class="str">"https://api.cricsynthesis.in/v1/oracle/win-probability"</span>,
   { headers: { <span class="str">"X-API-Key"</span>: <span class="str">"cv_live_your_key_here"</span> } }
 );
 <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();</pre></div>
@@ -139,7 +172,7 @@ res = requests.<span class="fn">get</span>(
 X-RateLimit-Remaining: 87
 X-RateLimit-Reset: 1735689600</pre></div>
             <p class="docs-section-desc" style="margin-top:1rem">
-                Responses are cached (matches 5 min · predictions 1 hour · player form 30 min),
+                Responses are cached (oracle 6h · player analytics 1h · momentum 30min · match data 6h),
                 so repeated calls within the cache window don't consume quota.
             </p>
         </section>
@@ -160,241 +193,1069 @@ X-RateLimit-Reset: 1735689600</pre></div>
             </table>
         </section>
 
-        <!-- Upcoming Matches -->
-        <section id="get-upcoming" class="docs-section">
-            <h2 class="docs-section-title">Upcoming Matches</h2>
+        <!-- ─────────────────── ORACLE ─────────────────── -->
+
+        <!-- Win Probability -->
+        <section id="get-win-prob" class="docs-section">
+            <h2 class="docs-section-title">/oracle/win-probability</h2>
 
             <details class="endpoint-card" open>
                 <summary class="endpoint-header">
                     <span class="method-get">GET</span>
-                    <span class="endpoint-path">/v1/matches/upcoming</span>
-                    <span class="endpoint-summary">List scheduled fixtures</span>
+                    <span class="endpoint-path">/v1/oracle/win-probability</span>
+                    <span class="endpoint-summary">Historical win probability from any match state</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Returns upcoming T20 and ODI fixtures ordered by match date. Cached for 5 minutes.</p>
+                    <p>Returns historical win probability from any match state across all T20/ODI matches in the database.</p>
 
                     <p class="response-label">Query parameters</p>
                     <table class="params-table">
                         <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <td class="param-name">league_id</td>
-                                <td class="param-type">string</td>
-                                <td class="param-optional">optional</td>
-                                <td class="param-desc">Filter by league (e.g. <code>ipl</code>, <code>t20i</code>, <code>odi</code>)</td>
-                            </tr>
-                            <tr>
-                                <td class="param-name">format</td>
-                                <td class="param-type">string</td>
-                                <td class="param-optional">optional</td>
-                                <td class="param-desc"><code>T20</code> or <code>ODI</code></td>
-                            </tr>
-                            <tr>
-                                <td class="param-name">limit</td>
-                                <td class="param-type">integer</td>
-                                <td class="param-optional">optional</td>
-                                <td class="param-desc">Max results (1–100, default 20)</td>
-                            </tr>
+                            <tr><td class="param-name">format</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                            <tr><td class="param-name">innings</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">1 or 2</td></tr>
+                            <tr><td class="param-name">over</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Current over number</td></tr>
+                            <tr><td class="param-name">wickets</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Wickets fallen so far</td></tr>
+                            <tr><td class="param-name">runs</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Runs scored so far</td></tr>
+                            <tr><td class="param-name">target</td><td class="param-type">integer</td><td class="param-required">required if innings=2</td><td class="param-desc">Target runs (2nd innings only)</td></tr>
                         </tbody>
                     </table>
 
                     <p class="response-label">Example request</p>
-                    <div class="code-tabs">
-                        <div class="code-tab-list">
-                            <button class="code-tab-btn active" onclick="switchTab(this,'um','curl')">cURL</button>
-                            <button class="code-tab-btn" onclick="switchTab(this,'um','python')">Python</button>
-                        </div>
-                        <div id="um-curl" class="code-panel active"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming?league_id=ipl&limit=5"</span> \
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/oracle/win-probability?format=T20&amp;innings=2&amp;over=10&amp;wickets=3&amp;runs=80&amp;target=160"</span> \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
-                        <div id="um-python" class="code-panel"><pre>res = requests.<span class="fn">get</span>(
-    <span class="str">"https://api.cricsynthesis.in/v1/matches/upcoming"</span>,
-    params={<span class="str">"league_id"</span>: <span class="str">"ipl"</span>, <span class="str">"limit"</span>: <span class="num">5</span>},
-    headers={<span class="str">"X-API-Key"</span>: API_KEY},
-)</pre></div>
-                    </div>
 
                     <p class="response-label">Example response</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>[
-  {
-    <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
-    <span class="str">"league_id"</span>: <span class="str">"ipl"</span>,
-    <span class="str">"match_date"</span>: <span class="str">"2026-03-22"</span>,
-    <span class="str">"team1"</span>: <span class="str">"Mumbai Indians"</span>,
-    <span class="str">"team2"</span>: <span class="str">"Chennai Super Kings"</span>,
-    <span class="str">"format"</span>: <span class="str">"T20"</span>,
-    <span class="str">"status"</span>: <span class="str">"scheduled"</span>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"win_probability"</span>: <span class="num">0.42</span>,
+  <span class="str">"runs_needed"</span>: <span class="num">80</span>,
+  <span class="str">"balls_remaining"</span>: <span class="num">60</span>,
+  <span class="str">"required_rr"</span>: <span class="num">8.0</span>,
+  <span class="str">"blueprint"</span>: [
+    {<span class="str">"over"</span>: <span class="num">12</span>, <span class="str">"target_runs_by_end"</span>: <span class="num">96</span>},
+    {<span class="str">"over"</span>: <span class="num">15</span>, <span class="str">"target_runs_by_end"</span>: <span class="num">120</span>},
+    {<span class="str">"over"</span>: <span class="num">18</span>, <span class="str">"target_runs_by_end"</span>: <span class="num">144</span>}
+  ],
+  <span class="str">"sample_size"</span>: <span class="num">312</span>,
+  <span class="str">"confidence"</span>: <span class="str">"high"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Collapse Probability -->
+        <section id="get-collapse-prob" class="docs-section">
+            <h2 class="docs-section-title">/oracle/collapse-probability</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/oracle/collapse-probability</span>
+                    <span class="endpoint-summary">Probability of a batting collapse in the next 30 balls</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Returns the probability of a batting collapse (3+ wickets in next 30 balls) given the current match state.</p>
+
+                    <p class="response-label">Query parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">format</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                            <tr><td class="param-name">innings</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">1 or 2</td></tr>
+                            <tr><td class="param-name">over</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Current over number</td></tr>
+                            <tr><td class="param-name">wickets</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Wickets fallen so far</td></tr>
+                            <tr><td class="param-name">score</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Current score</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/oracle/collapse-probability?format=T20&amp;innings=1&amp;over=8&amp;wickets=2&amp;score=65"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"collapse_probability"</span>: <span class="num">0.28</span>,
+  <span class="str">"definition"</span>: <span class="str">"3+ wickets in next 30 balls"</span>,
+  <span class="str">"most_common_trigger"</span>: <span class="str">"caught"</span>,
+  <span class="str">"expected_runs_if_collapse"</span>: <span class="num">32.4</span>,
+  <span class="str">"expected_runs_if_no_collapse"</span>: <span class="num">67.1</span>,
+  <span class="str">"sample_size"</span>: <span class="num">186</span>,
+  <span class="str">"confidence"</span>: <span class="str">"medium"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── PLAYERS ─────────────────── -->
+
+        <!-- Momentum -->
+        <section id="get-momentum" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/momentum</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/momentum</span>
+                    <span class="endpoint-summary">Cross-format, time-decayed form score</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Cross-format, time-decayed form score computed across ALL leagues and formats in the past N days. Weights recent matches more heavily and normalises performance within each league's population.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">days</td><td class="param-type">query</td><td class="param-type">integer</td><td class="param-optional">optional</td><td class="param-desc">Lookback window in days (default 60)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/momentum?days=60"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"momentum_score"</span>: <span class="num">7.8</span>,
+  <span class="str">"signal"</span>: <span class="str">"hot"</span>,
+  <span class="str">"matches_in_window"</span>: <span class="num">8</span>,
+  <span class="str">"days_since_last_match"</span>: <span class="num">3</span>,
+  <span class="str">"recent_activity"</span>: [
+    {<span class="str">"match_date"</span>: <span class="str">"2026-07-10"</span>, <span class="str">"league_id"</span>: <span class="str">"t20i"</span>, <span class="str">"total_points"</span>: <span class="num">74.5</span>, <span class="str">"z_score"</span>: <span class="num">1.82</span>, <span class="str">"weight"</span>: <span class="num">0.91</span>},
+    {<span class="str">"match_date"</span>: <span class="str">"2026-07-06"</span>, <span class="str">"league_id"</span>: <span class="str">"ipl"</span>,  <span class="str">"total_points"</span>: <span class="num">61.0</span>, <span class="str">"z_score"</span>: <span class="num">1.24</span>, <span class="str">"weight"</span>: <span class="num">0.87</span>}
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Clutch -->
+        <section id="get-clutch" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/clutch</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/clutch</span>
+                    <span class="endpoint-summary">Performance index in high-leverage moments only</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Performance in high-leverage moments only — innings 2 overs 15+, or required RR &gt; 12. Clutch index normalised 0–10 across all players with min 30 clutch deliveries.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/clutch"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"clutch_batting_sr"</span>: <span class="num">148.6</span>,
+  <span class="str">"clutch_batting_avg"</span>: <span class="num">34.2</span>,
+  <span class="str">"clutch_bowling_economy"</span>: <span class="kw">null</span>,
+  <span class="str">"clutch_deliveries"</span>: <span class="num">184</span>,
+  <span class="str">"clutch_index"</span>: <span class="num">8.2</span>,
+  <span class="str">"signal"</span>: <span class="str">"elite_clutch"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Phase Profile -->
+        <section id="get-phase-profile" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/phase-profile</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/phase-profile</span>
+                    <span class="endpoint-summary">SR, avg, and boundary % by powerplay / middle / death</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>SR, avg, boundary %, and dot ball % broken down by powerplay / middle overs / death, with acceleration score and player type classification.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/phase-profile?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"powerplay"</span>: {<span class="str">"sr"</span>: <span class="num">128.4</span>, <span class="str">"avg"</span>: <span class="num">31.2</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.22</span>, <span class="str">"dot_pct"</span>: <span class="num">0.38</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">8.1</span>},
+  <span class="str">"middle"</span>:    {<span class="str">"sr"</span>: <span class="num">118.0</span>, <span class="str">"avg"</span>: <span class="num">34.5</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.18</span>, <span class="str">"dot_pct"</span>: <span class="num">0.42</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">6.3</span>},
+  <span class="str">"death"</span>:     {<span class="str">"sr"</span>: <span class="num">162.4</span>, <span class="str">"avg"</span>: <span class="num">22.0</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.31</span>, <span class="str">"dot_pct"</span>: <span class="num">0.28</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">12.4</span>},
+  <span class="str">"acceleration_score"</span>: <span class="num">34.0</span>,
+  <span class="str">"player_type"</span>: <span class="str">"finisher"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Pressure Fingerprint -->
+        <section id="get-pressure-fp" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/pressure-fingerprint</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/pressure-fingerprint</span>
+                    <span class="endpoint-summary">Bowling pressure profile and archetype</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Bowling pressure profile — dot streak patterns, maiden rate, collapse trigger frequency, and an overall pressure score and archetype (strangler / comeback-king / containment).</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/277916/pressure-fingerprint?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">277916</span>,
+  <span class="str">"economy"</span>: <span class="num">6.8</span>,
+  <span class="str">"dot_pct"</span>: <span class="num">0.51</span>,
+  <span class="str">"maiden_rate"</span>: <span class="num">0.09</span>,
+  <span class="str">"avg_consecutive_dots"</span>: <span class="num">3.8</span>,
+  <span class="str">"max_dot_streak_ever"</span>: <span class="num">18</span>,
+  <span class="str">"wicket_after_boundary_rate"</span>: <span class="num">0.22</span>,
+  <span class="str">"pressure_score"</span>: <span class="num">8.6</span>,
+  <span class="str">"archetype"</span>: <span class="str">"strangler"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Dismissal Map -->
+        <section id="get-dismissal-map" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/dismissal-map</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/dismissal-map</span>
+                    <span class="endpoint-summary">Dismissal type breakdown per phase with danger zone</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Where and how a batter gets out — dismissal type breakdown per phase with danger zone identification.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/dismissal-map?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"total_dismissals"</span>: <span class="num">142</span>,
+  <span class="str">"most_common_dismissal"</span>: <span class="str">"caught"</span>,
+  <span class="str">"danger_zone_phase"</span>: <span class="str">"powerplay"</span>,
+  <span class="str">"by_phase"</span>: {
+    <span class="str">"powerplay"</span>: {<span class="str">"caught"</span>: <span class="num">12</span>, <span class="str">"bowled"</span>: <span class="num">8</span>,  <span class="str">"lbw"</span>: <span class="num">6</span>, <span class="str">"run out"</span>: <span class="num">2</span>, <span class="str">"stumped"</span>: <span class="num">0</span>, <span class="str">"other"</span>: <span class="num">1</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">11.2</span>},
+    <span class="str">"middle"</span>:    {<span class="str">"caught"</span>: <span class="num">38</span>, <span class="str">"bowled"</span>: <span class="num">14</span>, <span class="str">"lbw"</span>: <span class="num">9</span>, <span class="str">"run out"</span>: <span class="num">4</span>, <span class="str">"stumped"</span>: <span class="num">2</span>, <span class="str">"other"</span>: <span class="num">2</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">6.8</span>},
+    <span class="str">"death"</span>:     {<span class="str">"caught"</span>: <span class="num">22</span>, <span class="str">"bowled"</span>: <span class="num">5</span>,  <span class="str">"lbw"</span>: <span class="num">4</span>, <span class="str">"run out"</span>: <span class="num">8</span>, <span class="str">"stumped"</span>: <span class="num">1</span>, <span class="str">"other"</span>: <span class="num">2</span>, <span class="str">"dismissal_rate_per_100"</span>: <span class="num">13.1</span>}
   }
-]</pre></div>
+}</pre></div>
                 </div>
             </details>
         </section>
 
-        <!-- Predictions -->
-        <section id="get-prediction" class="docs-section">
-            <h2 class="docs-section-title">Player Predictions</h2>
+        <!-- Nemesis -->
+        <section id="get-nemesis" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/nemesis</h2>
 
             <details class="endpoint-card" open>
                 <summary class="endpoint-header">
                     <span class="method-get">GET</span>
-                    <span class="endpoint-path">/v1/matches/{upcoming_id}/prediction</span>
-                    <span class="endpoint-summary">Player performance predictions for all squad players</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/nemesis</span>
+                    <span class="endpoint-summary">Top opponents who own this player head-to-head</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>
-                        Returns XGBoost-predicted performance scores for every player in both squads,
-                        sorted by predicted score. Cached for 1 hour after lineup confirmation.
-                    </p>
+                    <p>For a batter: top bowlers who dismiss them most efficiently. For a bowler: batters who own them. Role determines direction of analysis.</p>
 
-                    <p class="response-label">Path parameters</p>
+                    <p class="response-label">Parameters</p>
                     <table class="params-table">
-                        <thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
                         <tbody>
-                            <tr><td class="param-name">upcoming_id</td><td class="param-type">integer</td><td class="param-desc">ID from <code>/matches/upcoming</code></td></tr>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">role</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc"><code>batter</code> or <code>bowler</code></td></tr>
                         </tbody>
                     </table>
 
                     <p class="response-label">Example request</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/matches/<span class="num">42</span>/prediction \
-  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
-
-                    <p class="response-label">Example response</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
-  <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
-  <span class="str">"team1"</span>: <span class="str">"Mumbai Indians"</span>,
-  <span class="str">"team2"</span>: <span class="str">"Chennai Super Kings"</span>,
-  <span class="str">"match_date"</span>: <span class="str">"2026-03-22"</span>,
-  <span class="str">"players"</span>: [
-    {
-      <span class="str">"player_id"</span>: <span class="num">28081</span>,
-      <span class="str">"player_name"</span>: <span class="str">"MS Dhoni"</span>,
-      <span class="str">"team"</span>: <span class="str">"Chennai Super Kings"</span>,
-      <span class="str">"role"</span>: <span class="str">"WK"</span>,
-      <span class="str">"predicted_points"</span>: <span class="num">52.4</span>,
-      <span class="str">"credits"</span>: <span class="num">9.5</span>,
-      <span class="str">"model_version"</span>: <span class="str">"20260101"</span>
-    }
-    <span class="cm">// ... 21 more players</span>
-  ]
-}</pre></div>
-                </div>
-            </details>
-        </section>
-
-        <!-- Dream Team -->
-        <section id="get-dream-team" class="docs-section">
-            <details class="endpoint-card" open>
-                <summary class="endpoint-header">
-                    <span class="method-get">GET</span>
-                    <span class="endpoint-path">/v1/matches/{upcoming_id}/dream-team</span>
-                    <span class="endpoint-summary">Optimal XI lineup</span>
-                </summary>
-                <div class="endpoint-body">
-                    <p>
-                        Runs a linear program (PuLP) over predicted scores and returns the optimal
-                        11-player optimal lineup with captain and vice-captain picks.
-                    </p>
-
-                    <p class="response-label">Constraints applied</p>
-                    <table class="params-table">
-                        <thead><tr><th>Rule</th><th>Value</th></tr></thead>
-                        <tbody>
-                            <tr><td class="param-desc">Total credits</td><td class="param-desc">≤ 100</td></tr>
-                            <tr><td class="param-desc">WK slots</td><td class="param-desc">1 – 4</td></tr>
-                            <tr><td class="param-desc">BAT slots</td><td class="param-desc">3 – 6</td></tr>
-                            <tr><td class="param-desc">AR slots</td><td class="param-desc">1 – 4</td></tr>
-                            <tr><td class="param-desc">BOWL slots</td><td class="param-desc">3 – 6</td></tr>
-                            <tr><td class="param-desc">Max from one team</td><td class="param-desc">7</td></tr>
-                        </tbody>
-                    </table>
-
-                    <p class="response-label">Example response</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
-  <span class="str">"upcoming_id"</span>: <span class="num">42</span>,
-  <span class="str">"total_credits"</span>: <span class="num">98.5</span>,
-  <span class="str">"projected_score"</span>: <span class="num">712.3</span>,
-  <span class="str">"lineup"</span>: [
-    {
-      <span class="str">"player_id"</span>: <span class="num">28081</span>,
-      <span class="str">"player_name"</span>: <span class="str">"MS Dhoni"</span>,
-      <span class="str">"role"</span>: <span class="str">"WK"</span>,
-      <span class="str">"predicted_points"</span>: <span class="num">52.4</span>,
-      <span class="str">"credits"</span>: <span class="num">9.5</span>,
-      <span class="str">"is_captain"</span>: <span class="kw">false</span>,
-      <span class="str">"is_vice_captain"</span>: <span class="kw">true</span>
-    }
-    <span class="cm">// ... 10 more players</span>
-  ]
-}</pre></div>
-                </div>
-            </details>
-        </section>
-
-        <!-- Player Form -->
-        <section id="get-player-form" class="docs-section">
-            <h2 class="docs-section-title">Player Analytics</h2>
-
-            <details class="endpoint-card" open>
-                <summary class="endpoint-header">
-                    <span class="method-get">GET</span>
-                    <span class="endpoint-path">/v1/players/{player_id}/form</span>
-                    <span class="endpoint-summary">Rolling form, trend, and recent scores</span>
-                </summary>
-                <div class="endpoint-body">
-                    <p>Returns a player's current form profile — rolling performance score averages, batting and bowling stats, and their last 5 match scores. Cached for 30 minutes.</p>
-
-                    <p class="response-label">Example response</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
-  <span class="str">"player_id"</span>: <span class="num">253802</span>,
-  <span class="str">"name"</span>: <span class="str">"Virat Kohli"</span>,
-  <span class="str">"role"</span>: <span class="str">"BAT"</span>,
-  <span class="str">"fp_last3_avg"</span>: <span class="num">61.2</span>,
-  <span class="str">"fp_last5_avg"</span>: <span class="num">54.8</span>,
-  <span class="str">"fp_trend"</span>: <span class="str">"rising"</span>,
-  <span class="str">"bat_runs_avg5"</span>: <span class="num">44.6</span>,
-  <span class="str">"bat_sr_avg5"</span>: <span class="num">142.3</span>,
-  <span class="str">"recent_scores"</span>: [
-    { <span class="str">"match_date"</span>: <span class="str">"2026-03-18"</span>, <span class="str">"total_points"</span>: <span class="num">76.5</span> },
-    { <span class="str">"match_date"</span>: <span class="str">"2026-03-14"</span>, <span class="str">"total_points"</span>: <span class="num">48.0</span> }
-  ]
-}</pre></div>
-                </div>
-            </details>
-        </section>
-
-        <!-- Player Matchup -->
-        <section id="get-player-matchup" class="docs-section">
-            <details class="endpoint-card" open>
-                <summary class="endpoint-header">
-                    <span class="method-get">GET</span>
-                    <span class="endpoint-path">/v1/players/{player_id}/vs/{matchup_type}</span>
-                    <span class="endpoint-summary">Matchup breakdown vs pace / spin / left-arm</span>
-                </summary>
-                <div class="endpoint-body">
-                    <p>
-                        Returns a batter's strike rate or a bowler's economy against a specific
-                        bowling category, computed from historical ball-by-ball data.
-                    </p>
-
-                    <p class="response-label">Path parameters</p>
-                    <table class="params-table">
-                        <thead><tr><th>Name</th><th>Values</th><th>Description</th></tr></thead>
-                        <tbody>
-                            <tr><td class="param-name">player_id</td><td class="param-type">integer</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
-                            <tr><td class="param-name">matchup_type</td><td class="param-type">pace · spin · left-arm</td><td class="param-desc">Bowling category to analyse</td></tr>
-                        </tbody>
-                    </table>
-
-                    <p class="response-label">Example request</p>
-                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> https://api.cricsynthesis.in/v1/players/<span class="num">253802</span>/vs/spin \
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/nemesis?role=batter"</span> \
   -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
 
                     <p class="response-label">Example response</p>
                     <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
   <span class="str">"player_id"</span>: <span class="num">253802</span>,
-  <span class="str">"matchup_type"</span>: <span class="str">"spin"</span>,
-  <span class="str">"strike_rate"</span>: <span class="num">118.4</span>,
-  <span class="str">"economy_rate"</span>: <span class="kw">null</span>,
-  <span class="str">"sample_deliveries"</span>: <span class="num">842</span>
+  <span class="str">"role"</span>: <span class="str">"batter"</span>,
+  <span class="str">"nemesis_list"</span>: [
+    {<span class="str">"opponent_id"</span>: <span class="num">277916</span>, <span class="str">"opponent_name"</span>: <span class="str">"Jasprit Bumrah"</span>, <span class="str">"balls"</span>: <span class="num">48</span>, <span class="str">"dismissals_or_runs"</span>: <span class="num">5</span>, <span class="str">"rate"</span>: <span class="num">1.04</span>, <span class="str">"label"</span>: <span class="str">"dismissed every 9.6 balls"</span>},
+    {<span class="str">"opponent_id"</span>: <span class="num">322890</span>, <span class="str">"opponent_name"</span>: <span class="str">"Rashid Khan"</span>,    <span class="str">"balls"</span>: <span class="num">36</span>, <span class="str">"dismissals_or_runs"</span>: <span class="num">3</span>, <span class="str">"rate"</span>: <span class="num">0.83</span>, <span class="str">"label"</span>: <span class="str">"dismissed every 12 balls"</span>}
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Consistency -->
+        <section id="get-consistency" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/consistency</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/consistency</span>
+                    <span class="endpoint-summary">Risk-adjusted reliability score with floor and ceiling</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Risk-adjusted reliability score — mean FP, standard deviation, coefficient of variation, floor (10th percentile), ceiling (90th percentile), and risk profile classification.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/consistency?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"matches_analyzed"</span>: <span class="num">34</span>,
+  <span class="str">"mean_fp"</span>: <span class="num">52.4</span>,
+  <span class="str">"std_fp"</span>: <span class="num">14.8</span>,
+  <span class="str">"cv"</span>: <span class="num">0.28</span>,
+  <span class="str">"floor_fp"</span>: <span class="num">28.0</span>,
+  <span class="str">"ceiling_fp"</span>: <span class="num">78.5</span>,
+  <span class="str">"risk_profile"</span>: <span class="str">"safe"</span>,
+  <span class="str">"upside_ratio"</span>: <span class="num">1.50</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Win Contribution -->
+        <section id="get-win-contribution" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/win-contribution</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/win-contribution</span>
+                    <span class="endpoint-summary">Leverage-weighted match impact score</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Leverage-weighted match impact score — how much a player contributed to actual wins, not just volume of runs/wickets.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/win-contribution"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"matches"</span>: <span class="num">28</span>,
+  <span class="str">"wins"</span>: <span class="num">18</span>,
+  <span class="str">"win_rate"</span>: <span class="num">0.64</span>,
+  <span class="str">"mean_fp_in_wins"</span>: <span class="num">61.4</span>,
+  <span class="str">"mean_fp_in_losses"</span>: <span class="num">38.2</span>,
+  <span class="str">"wci_score"</span>: <span class="num">74.8</span>,
+  <span class="str">"high_leverage_matches"</span>: <span class="num">11</span>,
+  <span class="str">"winning_in_high_leverage_pct"</span>: <span class="num">0.73</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Scoring Rhythm -->
+        <section id="get-scoring-rhythm" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/scoring-rhythm</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/scoring-rhythm</span>
+                    <span class="endpoint-summary">Innings build-up pattern and acceleration archetype</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How a batter builds an innings — average dot streak length, boundary clustering, acceleration curve by balls faced, and archetype (instant-accelerator / slow-starter / steady-state).</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/scoring-rhythm?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"avg_dot_streak_length"</span>: <span class="num">2.4</span>,
+  <span class="str">"boundary_clustering_score"</span>: <span class="num">1.8</span>,
+  <span class="str">"acceleration_curve"</span>: {
+    <span class="str">"balls_1_10"</span>: <span class="num">118.4</span>, <span class="str">"balls_11_20"</span>: <span class="num">134.2</span>, <span class="str">"balls_21_30"</span>: <span class="num">156.8</span>, <span class="str">"balls_31_40"</span>: <span class="num">162.1</span>, <span class="str">"balls_40_plus"</span>: <span class="num">148.5</span>
+  },
+  <span class="str">"player_archetype"</span>: <span class="str">"slow-starter"</span>,
+  <span class="str">"ignition_point"</span>: <span class="str">"balls_21_30"</span>,
+  <span class="str">"innings_analyzed"</span>: <span class="num">84</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Milestone Behaviour -->
+        <section id="get-milestone" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/milestone-behaviour</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/milestone-behaviour</span>
+                    <span class="endpoint-summary">SR delta when approaching 25, 50, or 100</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Does a batter freeze or accelerate when approaching 25, 50, or 100? SR delta in the 5-ball window before each milestone vs overall SR.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/milestone-behaviour?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"overall_sr"</span>: <span class="num">138.6</span>,
+  <span class="str">"milestone_behaviour"</span>: {
+    <span class="str">"approaching_25"</span>:  {<span class="str">"sr"</span>: <span class="num">122.4</span>, <span class="str">"sr_delta"</span>: <span class="num">-16.2</span>, <span class="str">"sample"</span>: <span class="num">68</span>},
+    <span class="str">"approaching_50"</span>:  {<span class="str">"sr"</span>: <span class="num">141.8</span>, <span class="str">"sr_delta"</span>: <span class="num">3.2</span>,   <span class="str">"sample"</span>: <span class="num">34</span>},
+    <span class="str">"approaching_100"</span>: {<span class="str">"sr"</span>: <span class="num">156.2</span>, <span class="str">"sr_delta"</span>: <span class="num">17.6</span>,  <span class="str">"sample"</span>: <span class="num">12</span>}
+  },
+  <span class="str">"conversion_rates"</span>: {<span class="str">"25_to_50"</span>: <span class="num">0.50</span>, <span class="str">"50_to_100"</span>: <span class="num">0.35</span>},
+  <span class="str">"label"</span>: <span class="str">"unaffected"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- League Adjusted Performance -->
+        <section id="get-league-adj" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/league-adjusted-performance</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/league-adjusted-performance</span>
+                    <span class="endpoint-summary">Cross-league z-score normalisation with inflation index</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Normalises a player's stats across leagues by z-score. Surfaces the inflation index — how much their raw numbers inflate in weaker leagues vs elite ones.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/league-adjusted-performance"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"overall_adjusted_score"</span>: <span class="num">1.42</span>,
+  <span class="str">"league_breakdown"</span>: [
+    {<span class="str">"league_id"</span>: <span class="str">"ipl"</span>,   <span class="str">"league_name"</span>: <span class="str">"Indian Premier League"</span>, <span class="str">"matches"</span>: <span class="num">18</span>, <span class="str">"raw_avg_fp"</span>: <span class="num">52.4</span>, <span class="str">"z_score"</span>: <span class="num">1.48</span>, <span class="str">"difficulty_multiplier"</span>: <span class="num">1.5</span>},
+    {<span class="str">"league_id"</span>: <span class="str">"blast"</span>, <span class="str">"league_name"</span>: <span class="str">"Vitality T20 Blast"</span>,    <span class="str">"matches"</span>: <span class="num">12</span>, <span class="str">"raw_avg_fp"</span>: <span class="num">71.2</span>, <span class="str">"z_score"</span>: <span class="num">1.12</span>, <span class="str">"difficulty_multiplier"</span>: <span class="num">0.8</span>}
+  ],
+  <span class="str">"inflation_index"</span>: <span class="num">-0.36</span>,
+  <span class="str">"label"</span>: <span class="str">"consistent"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Position Analysis -->
+        <section id="get-position" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/position-analysis</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/position-analysis</span>
+                    <span class="endpoint-summary">Performance by batting position with optimal position</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Performance broken down by batting position (1–11), inferred from delivery sequence. Includes optimal position and recent deviation from it.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/position-analysis?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"by_position"</span>: {
+    <span class="str">"3"</span>: {<span class="str">"matches"</span>: <span class="num">22</span>, <span class="str">"avg_sr"</span>: <span class="num">142.8</span>, <span class="str">"avg_runs"</span>: <span class="num">44.2</span>},
+    <span class="str">"4"</span>: {<span class="str">"matches"</span>: <span class="num">8</span>,  <span class="str">"avg_sr"</span>: <span class="num">118.4</span>, <span class="str">"avg_runs"</span>: <span class="num">32.1</span>}
+  },
+  <span class="str">"optimal_position"</span>: <span class="num">3</span>,
+  <span class="str">"current_season_position"</span>: <span class="num">3</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Inherited Pressure -->
+        <section id="get-inherited-pressure" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/inherited-pressure</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/inherited-pressure</span>
+                    <span class="endpoint-summary">Performance by match state when the player walked in</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Performance segmented by the match state when this player walked in — clean start, slight pressure, crisis, or rescue mission.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/inherited-pressure?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"by_state"</span>: {
+    <span class="str">"clean_start"</span>:     {<span class="str">"innings"</span>: <span class="num">28</span>, <span class="str">"avg_sr"</span>: <span class="num">142.6</span>, <span class="str">"avg_runs"</span>: <span class="num">46.2</span>},
+    <span class="str">"slight_pressure"</span>: {<span class="str">"innings"</span>: <span class="num">18</span>, <span class="str">"avg_sr"</span>: <span class="num">138.4</span>, <span class="str">"avg_runs"</span>: <span class="num">38.8</span>},
+    <span class="str">"crisis"</span>:          {<span class="str">"innings"</span>: <span class="num">12</span>, <span class="str">"avg_sr"</span>: <span class="num">124.2</span>, <span class="str">"avg_runs"</span>: <span class="num">28.4</span>},
+    <span class="str">"rescue_mission"</span>:  {<span class="str">"innings"</span>: <span class="num">4</span>,  <span class="str">"avg_sr"</span>: <span class="num">118.0</span>, <span class="str">"avg_runs"</span>: <span class="num">22.1</span>}
+  },
+  <span class="str">"best_state"</span>: <span class="str">"clean_start"</span>,
+  <span class="str">"crisis_delta"</span>: <span class="num">-18.4</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Format Switch Impact -->
+        <section id="get-format-switch" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/format-switch-impact</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/format-switch-impact</span>
+                    <span class="endpoint-summary">Performance drop when switching format within 7 days</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How much does performance drop when a player switches format (T20 ↔ ODI) within 7 days? Compares z-scores in switch matches vs settled matches.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/format-switch-impact"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"switch_matches"</span>: <span class="num">14</span>,
+  <span class="str">"settled_matches"</span>: <span class="num">28</span>,
+  <span class="str">"switch_avg_z"</span>: <span class="num">0.68</span>,
+  <span class="str">"settled_avg_z"</span>: <span class="num">1.24</span>,
+  <span class="str">"performance_delta"</span>: <span class="num">-0.56</span>,
+  <span class="str">"worst_switch_direction"</span>: <span class="str">"ODI_to_T20"</span>,
+  <span class="str">"format_adaptability_score"</span>: <span class="num">0.55</span>,
+  <span class="str">"verdict"</span>: <span class="str">"slight-impact"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Spell Analysis -->
+        <section id="get-spell" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/spell-analysis</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/spell-analysis</span>
+                    <span class="endpoint-summary">Economy and wickets by spell number with decay measurement</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>For bowlers — economy and wicket rate broken down by spell number (1st, 2nd, 3rd) with spell decay measurement and best spell recommendation.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/277916/spell-analysis?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">277916</span>,
+  <span class="str">"by_spell"</span>: {
+    <span class="str">"spell_1"</span>: {<span class="str">"matches"</span>: <span class="num">38</span>, <span class="str">"avg_economy"</span>: <span class="num">6.2</span>, <span class="str">"avg_wickets"</span>: <span class="num">1.4</span>, <span class="str">"avg_balls"</span>: <span class="num">14.2</span>},
+    <span class="str">"spell_2"</span>: {<span class="str">"matches"</span>: <span class="num">28</span>, <span class="str">"avg_economy"</span>: <span class="num">7.1</span>, <span class="str">"avg_wickets"</span>: <span class="num">0.9</span>, <span class="str">"avg_balls"</span>: <span class="num">8.8</span>},
+    <span class="str">"spell_3"</span>: {<span class="str">"matches"</span>: <span class="num">12</span>, <span class="str">"avg_economy"</span>: <span class="num">6.8</span>, <span class="str">"avg_wickets"</span>: <span class="num">1.2</span>, <span class="str">"avg_balls"</span>: <span class="num">5.4</span>}
+  },
+  <span class="str">"spell_decay"</span>: <span class="num">0.6</span>,
+  <span class="str">"best_spell"</span>: <span class="num">1</span>,
+  <span class="str">"verdict"</span>: <span class="str">"frontloader"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Scoring Zones -->
+        <section id="get-scoring-zones" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/scoring-zones</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/scoring-zones</span>
+                    <span class="endpoint-summary">SR and boundary rate by balls-faced bucket</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>SR and boundary rate by balls-faced bucket — shows exactly when in an innings a batter peaks.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/scoring-zones?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"scoring_zones"</span>: {
+    <span class="str">"balls_1_10"</span>:    {<span class="str">"sr"</span>: <span class="num">118.4</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.18</span>, <span class="str">"runs"</span>: <span class="num">682</span>,  <span class="str">"balls"</span>: <span class="num">576</span>},
+    <span class="str">"balls_11_20"</span>:   {<span class="str">"sr"</span>: <span class="num">134.2</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.22</span>, <span class="str">"runs"</span>: <span class="num">528</span>,  <span class="str">"balls"</span>: <span class="num">394</span>},
+    <span class="str">"balls_21_30"</span>:   {<span class="str">"sr"</span>: <span class="num">156.8</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.28</span>, <span class="str">"runs"</span>: <span class="num">412</span>,  <span class="str">"balls"</span>: <span class="num">263</span>},
+    <span class="str">"balls_31_40"</span>:   {<span class="str">"sr"</span>: <span class="num">162.1</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.30</span>, <span class="str">"runs"</span>: <span class="num">244</span>,  <span class="str">"balls"</span>: <span class="num">151</span>},
+    <span class="str">"balls_40_plus"</span>: {<span class="str">"sr"</span>: <span class="num">148.5</span>, <span class="str">"boundary_pct"</span>: <span class="num">0.26</span>, <span class="str">"runs"</span>: <span class="num">112</span>,  <span class="str">"balls"</span>: <span class="num">75</span>}
+  },
+  <span class="str">"ignition_point"</span>: <span class="str">"balls_21_30"</span>,
+  <span class="str">"peak_zone"</span>: <span class="str">"balls_31_40"</span>,
+  <span class="str">"innings_analyzed"</span>: <span class="num">84</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── VENUES ─────────────────── -->
+
+        <!-- Toss Intelligence -->
+        <section id="get-toss-intel" class="docs-section">
+            <h2 class="docs-section-title">/venues/{venue_id}/toss-intelligence</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/venues/{venue_id}/toss-intelligence</span>
+                    <span class="endpoint-summary">Toss alpha and best decision at this venue</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Toss alpha at this venue — how much the toss actually matters, controlled for team quality. Includes best toss decision and win rates by decision type.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">venue_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Venue ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/venues/2/toss-intelligence?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"venue_id"</span>: <span class="num">2</span>,
+  <span class="str">"venue_name"</span>: <span class="str">"Wankhede Stadium"</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"total_matches"</span>: <span class="num">64</span>,
+  <span class="str">"batting_first_win_pct"</span>: <span class="num">0.42</span>,
+  <span class="str">"fielding_first_win_pct"</span>: <span class="num">0.58</span>,
+  <span class="str">"toss_alpha"</span>: <span class="num">0.14</span>,
+  <span class="str">"best_toss_decision"</span>: <span class="str">"field"</span>,
+  <span class="str">"win_rate_when_winning_toss"</span>: <span class="num">0.62</span>,
+  <span class="str">"confidence"</span>: <span class="str">"high"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Day Night Analysis -->
+        <section id="get-day-night" class="docs-section">
+            <h2 class="docs-section-title">/venues/{venue_id}/day-night-analysis</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/venues/{venue_id}/day-night-analysis</span>
+                    <span class="endpoint-summary">Dew factor score and 2nd innings advantage</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Quantifies the dew factor — difference in death-over run rates between 1st and 2nd innings, and whether batting second is statistically advantaged.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">venue_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Venue ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/venues/2/day-night-analysis?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"venue_id"</span>: <span class="num">2</span>,
+  <span class="str">"venue_name"</span>: <span class="str">"Wankhede Stadium"</span>,
+  <span class="str">"total_matches"</span>: <span class="num">64</span>,
+  <span class="str">"batting_second_win_pct"</span>: <span class="num">0.58</span>,
+  <span class="str">"death_overs_1st_innings_rr"</span>: <span class="num">9.8</span>,
+  <span class="str">"death_overs_2nd_innings_rr"</span>: <span class="num">11.4</span>,
+  <span class="str">"dew_factor_score"</span>: <span class="num">6.2</span>,
+  <span class="str">"dew_effect_interpretation"</span>: <span class="str">"Significant dew advantage for teams batting second — death-over run rate is 16% higher in the 2nd innings."</span>,
+  <span class="str">"strongest_effect_phase"</span>: <span class="str">"overs_17-20"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── TEAMS ─────────────────── -->
+
+        <!-- Batting Depth -->
+        <section id="get-batting-depth" class="docs-section">
+            <h2 class="docs-section-title">/teams/{team_name}/batting-depth</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/teams/{team_name}/batting-depth</span>
+                    <span class="endpoint-summary">Run distribution by position group and depth score</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How dependent is this team on their top 3? Returns % of runs scored by position groups and a depth score (higher = less top-order reliant).</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">team_name</td><td class="param-type">path</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">URL-encoded team name (e.g. <code>India</code>)</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/teams/India/batting-depth?format=T20&amp;season=2024"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"team_name"</span>: <span class="str">"India"</span>,
+  <span class="str">"matches_analyzed"</span>: <span class="num">28</span>,
+  <span class="str">"avg_team_total"</span>: <span class="num">168.4</span>,
+  <span class="str">"top_order_pct"</span>: <span class="num">0.58</span>,
+  <span class="str">"middle_order_pct"</span>: <span class="num">0.32</span>,
+  <span class="str">"lower_order_pct"</span>: <span class="num">0.10</span>,
+  <span class="str">"depth_score"</span>: <span class="num">4.2</span>,
+  <span class="str">"top_order_reliance"</span>: <span class="str">"medium"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── MATCHES ─────────────────── -->
+
+        <!-- Pitch Reading -->
+        <section id="get-pitch-reading" class="docs-section">
+            <h2 class="docs-section-title">/matches/{match_id}/pitch-reading</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/{match_id}/pitch-reading</span>
+                    <span class="endpoint-summary">Inferred pitch classification from early delivery data</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Infers pitch behaviour from first N overs' delivery data — no manual pitch report needed. Classifies as batting-friendly, pace-friendly, spin-friendly, or balanced.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">match_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Match ID</td></tr>
+                            <tr><td class="param-name">after_over</td><td class="param-type">query</td><td class="param-type">integer</td><td class="param-optional">optional</td><td class="param-desc">Sample overs to analyse (default 3)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matches/12345/pitch-reading?after_over=3"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"match_id"</span>: <span class="num">12345</span>,
+  <span class="str">"overs_analyzed"</span>: <span class="num">3</span>,
+  <span class="str">"classification"</span>: <span class="str">"pace-friendly"</span>,
+  <span class="str">"confidence"</span>: <span class="str">"high"</span>,
+  <span class="str">"actual_run_rate"</span>: <span class="num">6.8</span>,
+  <span class="str">"wickets_in_sample"</span>: <span class="num">4</span>,
+  <span class="str">"wicket_types"</span>: {<span class="str">"bowled"</span>: <span class="num">2</span>, <span class="str">"lbw"</span>: <span class="num">1</span>, <span class="str">"caught"</span>: <span class="num">1</span>},
+  <span class="str">"pace_indicator"</span>: <span class="num">0.75</span>,
+  <span class="str">"vs_venue_baseline"</span>: <span class="str">"below"</span>,
+  <span class="str">"interpretation"</span>: <span class="str">"4 wickets in 3 overs with 3 bowled/LBW suggests significant seam and swing movement."</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Momentum Curve -->
+        <section id="get-momentum-curve" class="docs-section">
+            <h2 class="docs-section-title">/matches/{match_id}/momentum-curve</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/{match_id}/momentum-curve</span>
+                    <span class="endpoint-summary">Ball-by-ball win probability with turning point identification</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Ball-by-ball win probability for any historical match, with automatic turning point identification and top 3 momentum swings.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">match_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Match ID</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matches/12345/momentum-curve"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"match_id"</span>: <span class="num">12345</span>,
+  <span class="str">"team1"</span>: <span class="str">"India"</span>,
+  <span class="str">"team2"</span>: <span class="str">"Australia"</span>,
+  <span class="str">"winner"</span>: <span class="str">"India"</span>,
+  <span class="str">"total_deliveries"</span>: <span class="num">238</span>,
+  <span class="str">"curve"</span>: [
+    {<span class="str">"delivery_num"</span>: <span class="num">1</span>,   <span class="str">"innings"</span>: <span class="num">1</span>, <span class="str">"over_ball"</span>: <span class="num">0.1</span>,  <span class="str">"event"</span>: <span class="str">"dot"</span>,     <span class="str">"runs_this_ball"</span>: <span class="num">0</span>, <span class="str">"wicket_type"</span>: <span class="kw">null</span>, <span class="str">"wp_batting_team"</span>: <span class="num">0.50</span>, <span class="str">"wp_delta"</span>: <span class="num">0.0</span>},
+    {<span class="str">"delivery_num"</span>: <span class="num">24</span>,  <span class="str">"innings"</span>: <span class="num">1</span>, <span class="str">"over_ball"</span>: <span class="num">3.6</span>,  <span class="str">"event"</span>: <span class="str">"wicket"</span>,  <span class="str">"runs_this_ball"</span>: <span class="num">0</span>, <span class="str">"wicket_type"</span>: <span class="str">"bowled"</span>, <span class="str">"wp_batting_team"</span>: <span class="num">0.42</span>, <span class="str">"wp_delta"</span>: <span class="num">-0.08</span>},
+    {<span class="str">"delivery_num"</span>: <span class="num">108</span>, <span class="str">"innings"</span>: <span class="num">2</span>, <span class="str">"over_ball"</span>: <span class="num">17.4</span>, <span class="str">"event"</span>: <span class="str">"boundary"</span>,<span class="str">"runs_this_ball"</span>: <span class="num">6</span>, <span class="str">"wicket_type"</span>: <span class="kw">null</span>, <span class="str">"wp_batting_team"</span>: <span class="num">0.78</span>, <span class="str">"wp_delta"</span>: <span class="num">0.18</span>}
+  ],
+  <span class="str">"turning_point"</span>: {<span class="str">"delivery_num"</span>: <span class="num">108</span>, <span class="str">"innings"</span>: <span class="num">2</span>, <span class="str">"over_ball"</span>: <span class="num">17.4</span>, <span class="str">"event"</span>: <span class="str">"boundary"</span>, <span class="str">"runs_this_ball"</span>: <span class="num">6</span>, <span class="str">"wicket_type"</span>: <span class="kw">null</span>, <span class="str">"wp_batting_team"</span>: <span class="num">0.78</span>, <span class="str">"wp_delta"</span>: <span class="num">0.18</span>},
+  <span class="str">"top_momentum_swings"</span>: []
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── LEADERBOARDS ─────────────────── -->
+
+        <!-- Final Over Specialists -->
+        <section id="get-final-over" class="docs-section">
+            <h2 class="docs-section-title">/leagues/{league_id}/final-over-specialists</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/leagues/{league_id}/final-over-specialists</span>
+                    <span class="endpoint-summary">Rankings for the last over only — true nerve specialists</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Rankings for the final over (over 20 in T20, over 50 in ODI) only — completely separate from general death-over stats. Reveals true nerve specialists.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">league_id</td><td class="param-type">path</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">League identifier (e.g. <code>ipl</code>)</td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                            <tr><td class="param-name">role</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>bowler</code> or <code>batter</code> (default <code>bowler</code>)</td></tr>
+                            <tr><td class="param-name">limit</td><td class="param-type">query</td><td class="param-type">integer</td><td class="param-optional">optional</td><td class="param-desc">Max results (default 10)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/leagues/ipl/final-over-specialists?season=2024&amp;role=bowler"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"league_id"</span>: <span class="str">"ipl"</span>,
+  <span class="str">"season"</span>: <span class="str">"2024"</span>,
+  <span class="str">"role"</span>: <span class="str">"bowler"</span>,
+  <span class="str">"over_analyzed"</span>: <span class="str">"20th over (T20)"</span>,
+  <span class="str">"specialists"</span>: [
+    {<span class="str">"player_id"</span>: <span class="num">277916</span>, <span class="str">"name"</span>: <span class="str">"Jasprit Bumrah"</span>,  <span class="str">"balls"</span>: <span class="num">42</span>, <span class="str">"economy"</span>: <span class="num">5.14</span>, <span class="str">"wickets"</span>: <span class="num">8</span>},
+    {<span class="str">"player_id"</span>: <span class="num">419898</span>, <span class="str">"name"</span>: <span class="str">"Arshdeep Singh"</span>, <span class="str">"balls"</span>: <span class="num">36</span>, <span class="str">"economy"</span>: <span class="num">7.33</span>, <span class="str">"wickets"</span>: <span class="num">5</span>}
+  ]
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── MATCHUPS ─────────────────── -->
+
+        <!-- Optimal Bowler -->
+        <section id="get-optimal-bowler" class="docs-section">
+            <h2 class="docs-section-title">/matchups/optimal-bowler</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matchups/optimal-bowler</span>
+                    <span class="endpoint-summary">Rank available bowlers by effectiveness against a specific batter</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Given a batter and a list of available bowlers, ranks them by historical effectiveness — dismissal rate and SR conceded — against that specific batter.</p>
+
+                    <p class="response-label">Query parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">batter_id</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID of the batter</td></tr>
+                            <tr><td class="param-name">bowler_ids</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">Comma-separated player IDs (max 10)</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matchups/optimal-bowler?batter_id=253802&amp;bowler_ids=277916,290716,322890"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"batter_id"</span>: <span class="num">253802</span>,
+  <span class="str">"batter_name"</span>: <span class="str">"Virat Kohli"</span>,
+  <span class="str">"ranked_bowlers"</span>: [
+    {<span class="str">"player_id"</span>: <span class="num">277916</span>, <span class="str">"name"</span>: <span class="str">"Jasprit Bumrah"</span>,  <span class="str">"balls_faced"</span>: <span class="num">48</span>, <span class="str">"runs"</span>: <span class="num">38</span>,  <span class="str">"dismissals"</span>: <span class="num">5</span>, <span class="str">"sr_conceded"</span>: <span class="num">79.2</span>,  <span class="str">"dismissal_rate"</span>: <span class="num">1.04</span>, <span class="str">"confidence"</span>: <span class="str">"high"</span>,   <span class="str">"rank"</span>: <span class="num">1</span>},
+    {<span class="str">"player_id"</span>: <span class="num">322890</span>, <span class="str">"name"</span>: <span class="str">"Rashid Khan"</span>,     <span class="str">"balls_faced"</span>: <span class="num">36</span>, <span class="str">"runs"</span>: <span class="num">42</span>,  <span class="str">"dismissals"</span>: <span class="num">3</span>, <span class="str">"sr_conceded"</span>: <span class="num">116.7</span>, <span class="str">"dismissal_rate"</span>: <span class="num">0.83</span>, <span class="str">"confidence"</span>: <span class="str">"high"</span>,   <span class="str">"rank"</span>: <span class="num">2</span>},
+    {<span class="str">"player_id"</span>: <span class="num">290716</span>, <span class="str">"name"</span>: <span class="str">"Ravindra Jadeja"</span>,  <span class="str">"balls_faced"</span>: <span class="num">22</span>, <span class="str">"runs"</span>: <span class="num">28</span>,  <span class="str">"dismissals"</span>: <span class="num">1</span>, <span class="str">"sr_conceded"</span>: <span class="num">127.3</span>, <span class="str">"dismissal_rate"</span>: <span class="num">0.45</span>, <span class="str">"confidence"</span>: <span class="str">"medium"</span>, <span class="str">"rank"</span>: <span class="num">3</span>}
+  ],
+  <span class="str">"recommendation"</span>: <span class="str">"Jasprit Bumrah is the best choice — 5 dismissals in 48 balls (1 every 9.6 balls) with SR conceded of just 79.2."</span>,
+  <span class="str">"caveat"</span>: <span class="kw">null</span>
 }</pre></div>
                 </div>
             </details>
