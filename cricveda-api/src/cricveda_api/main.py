@@ -20,8 +20,8 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 _DESCRIPTION = """
 ## CricVeda Cricket Intelligence API
 
-Power your cricket products with machine-learning predictions backed by
-15,000+ international and domestic matches.
+25 unique ball-by-ball analytics endpoints powered by Cricsheet data across
+22 leagues, all T20 and ODI formats, professional and domestic.
 
 ### Authentication
 Pass your API key in every request header:
@@ -39,44 +39,40 @@ https://api.cricsynthesis.in/v1
 ```
 
 ### Endpoints at a glance
-| Endpoint | What it returns |
-|---|---|
-| `GET /matches/upcoming` | Scheduled T20 / ODI fixtures |
-| `GET /matches/{id}/prediction` | Per-player performance predictions |
-| `GET /matches/{id}/dream-team` | Optimal XI (LP optimizer) |
-| `GET /players/{id}/form` | Rolling form, trend, recent scores |
-| `GET /players/{id}/vs/{type}` | Batter SR or bowler eco vs pace / spin / left-arm |
+| Group | Endpoint | What it returns |
+|---|---|---|
+| Oracle | `GET /oracle/win-probability` | Historical win % from any match state |
+| Oracle | `GET /oracle/collapse-probability` | Probability of 3+ wickets in next 30 balls |
+| Players | `GET /players/{id}/clutch` | Performance in high-leverage moments only |
+| Players | `GET /players/{id}/phase-profile` | Powerplay / middle / death breakdown |
+| Players | `GET /players/{id}/pressure-fingerprint` | Bowler dot-streak and pressure patterns |
+| Players | `GET /players/{id}/dismissal-map` | When and how a batter gets out |
+| Players | `GET /players/{id}/momentum` | Cross-format time-decayed form score |
+| Players | `GET /players/{id}/nemesis` | Who dismisses/owns this player most |
+| Players | `GET /players/{id}/consistency` | Risk profile: safe / boom-or-bust / volatile |
+| Players | `GET /players/{id}/win-contribution` | Leverage-weighted match impact score |
+| Players | `GET /players/{id}/scoring-rhythm` | Quiet patches, acceleration curve |
+| Players | `GET /players/{id}/milestone-behaviour` | SR change near 25 / 50 / 100 |
+| Players | `GET /players/{id}/league-adjusted-performance` | Z-score across leagues |
+| Players | `GET /players/{id}/position-analysis` | Performance by batting position |
+| Players | `GET /players/{id}/inherited-pressure` | Performance by match state at arrival |
+| Players | `GET /players/{id}/format-switch-impact` | Performance delta on T20↔ODI switch |
+| Players | `GET /players/{id}/spell-analysis` | Economy and decay per bowler spell |
+| Players | `GET /players/{id}/scoring-zones` | SR by balls-faced bucket |
+| Venues | `GET /venues/{id}/toss-intelligence` | Toss alpha and best decision at this venue |
+| Venues | `GET /venues/{id}/day-night-analysis` | Dew factor and 2nd innings death-over premium |
+| Teams | `GET /teams/{name}/batting-depth` | Top-order dependency score |
+| Matches | `GET /matches/{id}/pitch-reading` | Surface classification from first 3 overs |
+| Matches | `GET /matches/{id}/momentum-curve` | Ball-by-ball WP with turning point |
+| Leaderboards | `GET /leagues/{id}/final-over-specialists` | Over-20-only rankings (bowler or batter) |
+| Matchups | `GET /matchups/optimal-bowler` | Best bowler to bring on vs a specific batter |
 """
-
-
-def _download_model_if_available() -> None:
-    """Download the latest trained model from Supabase Storage into /tmp on startup."""
-    import os
-    from pathlib import Path
-
-    bucket = os.getenv("MODEL_BUCKET", "cricveda-models")
-    model_path = Path("/tmp/player_fp_latest.json")
-
-    if model_path.exists():
-        logging.getLogger(__name__).info("Model already cached at %s", model_path)
-        return
-
-    try:
-        from cricveda_ingest.db import get_client
-        client = get_client()
-        data = client.storage.from_(bucket).download("player_fp_latest.json")
-        model_path.write_bytes(data)
-        logging.getLogger(__name__).info("Model downloaded from Supabase Storage → %s", model_path)
-    except Exception as e:
-        # Non-fatal — prediction endpoints will return 404 until a model is uploaded
-        logging.getLogger(__name__).warning("Model not available in storage: %s", e)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from cricveda_ingest.db import get_client
     get_client()
-    _download_model_if_available()
     logging.getLogger(__name__).info("CricVeda API started")
     yield
 
@@ -84,17 +80,21 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="CricVeda API",
     description=_DESCRIPTION,
-    version="0.1.0",
+    version="1.0.0",
     lifespan=lifespan,
     contact={"name": "CricSynthesis", "url": "https://cricsynthesis.in"},
     license_info={"name": "Proprietary"},
-    # Disable default Swagger; we use Scalar instead
     docs_url=None,
     redoc_url="/redoc",
     openapi_tags=[
-        {"name": "Matches", "description": "Upcoming fixtures and metadata."},
-        {"name": "Predictions", "description": "ML-powered player and match predictions."},
-        {"name": "Players", "description": "Player form, stats, and matchup analysis."},
+        {"name": "Oracle", "description": "Probabilistic match-state analysis — win probability and collapse risk."},
+        {"name": "Players", "description": "16 unique player analytics endpoints powered by ball-by-ball data."},
+        {"name": "Venues", "description": "Venue toss intelligence and day/night dew factor analysis."},
+        {"name": "Teams", "description": "Team batting depth and structural analytics."},
+        {"name": "Matches", "description": "Per-match pitch reading and ball-by-ball momentum curves."},
+        {"name": "Leaderboards", "description": "Phase-specific and situational player rankings."},
+        {"name": "Matchups", "description": "Head-to-head optimal bowler recommendations."},
+        {"name": "Keys", "description": "API key management for authenticated users."},
         {"name": "System", "description": "Health and operational endpoints."},
     ],
 )
@@ -110,21 +110,33 @@ app.add_middleware(
 )
 
 # ── Routes ────────────────────────────────────────────────────────────────────
-from cricveda_api.routes import keys, matches, players, predictions  # noqa: E402
+from cricveda_api.routes import (  # noqa: E402
+    keys,
+    leaderboards,
+    matchups,
+    matches,
+    oracle,
+    players,
+    teams,
+    venues,
+)
 
-app.include_router(matches.router, prefix="/v1", tags=["Matches"])
-app.include_router(predictions.router, prefix="/v1", tags=["Predictions"])
-app.include_router(players.router, prefix="/v1", tags=["Players"])
-app.include_router(keys.router, prefix="/v1", tags=["Keys"])
+app.include_router(oracle.router,       prefix="/v1", tags=["Oracle"])
+app.include_router(players.router,      prefix="/v1", tags=["Players"])
+app.include_router(venues.router,       prefix="/v1", tags=["Venues"])
+app.include_router(teams.router,        prefix="/v1", tags=["Teams"])
+app.include_router(matches.router,      prefix="/v1", tags=["Matches"])
+app.include_router(leaderboards.router, prefix="/v1", tags=["Leaderboards"])
+app.include_router(matchups.router,     prefix="/v1", tags=["Matchups"])
+app.include_router(keys.router,         prefix="/v1", tags=["Keys"])
 
 
 @app.get("/health", tags=["System"])
 def health():
     """Service liveness check."""
-    return {"status": "ok", "service": "cricveda-api", "version": "0.1.0"}
+    return {"status": "ok", "service": "cricveda-api", "version": "1.0.0"}
 
 
-# Inject API key security scheme into OpenAPI so Scalar shows the auth widget
 def _custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
@@ -145,7 +157,6 @@ def _custom_openapi():
         "name": "X-API-Key",
         "description": "Pass your CricVeda API key in this header.",
     }
-    # Apply security globally
     schema["security"] = [{"ApiKeyAuth": []}]
     app.openapi_schema = schema
     return schema
@@ -154,7 +165,6 @@ def _custom_openapi():
 app.openapi = _custom_openapi
 
 
-# ── Interactive API playground (Scalar) ───────────────────────────────────────
 @app.get("/docs", include_in_schema=False)
 async def scalar_playground() -> HTMLResponse:
     """Interactive API playground powered by Scalar."""

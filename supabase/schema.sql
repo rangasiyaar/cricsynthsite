@@ -161,6 +161,13 @@ VALUES
 
     -- Tier 4 — domestic feeder leagues
     ('hundred','The Hundred',                       'T20', 4, 0.8, 1.0, 8,  FALSE, 'hundred'),
-    ('csa',    'CSA T20 Challenge',                 'T20', 4, 0.6, 1.0, 1,  FALSE, 'csa')
+    ('csa',    'CSA T20 Challenge',                 'T20', 4, 0.6, 1.0, 1,  FALSE, 'csa'),
+
+    -- Women's leagues (all formats, Cricsheet-available)
+    ('wt20i',  'Women''s T20 Internationals',       'T20', 1, 1.3, 1.0, 1,  FALSE, 'wt20s'),
+    ('wodi',   'Women''s One Day Internationals',   'ODI', 1, 1.3, 0.9, 1,  FALSE, 'wodis'),
+    ('wbbl',   'Women''s Big Bash League',          'T20', 2, 1.1, 1.0, 10, FALSE, 'wbbl'),
+    ('wcpl',   'Women''s Caribbean Premier League', 'T20', 2, 0.9, 1.0, 9,  FALSE, 'wcpl'),
+    ('hundredw','The Hundred Women''s',             'T20', 4, 0.8, 1.0, 8,  FALSE, 'hundredw')
 
 ON CONFLICT (league_id) DO NOTHING;
