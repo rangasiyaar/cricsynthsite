@@ -68,7 +68,7 @@
         <a href="login.html" style="color:var(--color-accent-secondary)">Get your key →</a>
       </p>
       <p style="font-size:0.68rem;color:var(--color-text-secondary);margin-top:0.5rem">
-        Don't have a key? Use demo key: <code style="font-family:'JetBrains Mono',monospace;background:rgba(99,102,241,0.1);padding:2px 6px;border-radius:4px;color:var(--color-accent-secondary)">cv_demo_readonly</code>
+        No key? Leave blank — all endpoints return demo data instantly.
       </p>
     </div>
 
@@ -76,58 +76,80 @@
     <div>
       <p class="pg-ep-label pg-product-label">
         <span class="pg-product-dot pg-product-dot--live"></span>
-        CricVeda
+        Oracle
       </p>
       <ul class="pg-ep-list">
         <li>
-          <button class="pg-ep-btn active" data-id="upcoming">
+          <button class="pg-ep-btn active" data-id="win-probability">
             <span class="pg-ep-method">GET</span>
-            <span class="pg-ep-path">/matches/upcoming</span>
+            <span class="pg-ep-path">/oracle/win-probability</span>
           </button>
         </li>
         <li>
-          <button class="pg-ep-btn" data-id="prediction">
+          <button class="pg-ep-btn" data-id="collapse-probability">
             <span class="pg-ep-method">GET</span>
-            <span class="pg-ep-path">/matches/{id}/prediction</span>
-          </button>
-        </li>
-        <li>
-          <button class="pg-ep-btn" data-id="dream-team">
-            <span class="pg-ep-method">GET</span>
-            <span class="pg-ep-path">/matches/{id}/dream-team</span>
-          </button>
-        </li>
-        <li>
-          <button class="pg-ep-btn" data-id="player-form">
-            <span class="pg-ep-method">GET</span>
-            <span class="pg-ep-path">/players/{id}/form</span>
-          </button>
-        </li>
-        <li>
-          <button class="pg-ep-btn" data-id="player-matchup">
-            <span class="pg-ep-method">GET</span>
-            <span class="pg-ep-path">/players/{id}/vs/{type}</span>
+            <span class="pg-ep-path">/oracle/collapse-probability</span>
           </button>
         </li>
       </ul>
     </div>
 
-    <!-- MatchSynth — Coming soon -->
+    <!-- Players -->
     <div>
       <p class="pg-ep-label pg-product-label">
-        <span class="pg-product-dot pg-product-dot--soon"></span>
-        MatchSynth
+        <span class="pg-product-dot pg-product-dot--live"></span>
+        Players
       </p>
-      <a href="contact.html" class="pg-coming-soon-link">Contact Sales</a>
+      <ul class="pg-ep-list">
+        <li>
+          <button class="pg-ep-btn" data-id="momentum">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/players/{id}/momentum</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="clutch">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/players/{id}/clutch</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="phase-profile">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/players/{id}/phase-profile</span>
+          </button>
+        </li>
+      </ul>
     </div>
 
-    <!-- GraphSynth — Coming soon -->
+    <!-- Matches & Leagues -->
     <div>
       <p class="pg-ep-label pg-product-label">
-        <span class="pg-product-dot pg-product-dot--soon"></span>
-        GraphSynth
+        <span class="pg-product-dot pg-product-dot--live"></span>
+        Matches &amp; Leagues
       </p>
-      <a href="contact.html" class="pg-coming-soon-link">Contact Sales</a>
+      <ul class="pg-ep-list">
+        <li>
+          <button class="pg-ep-btn" data-id="pitch-reading">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/matches/{id}/pitch-reading</span>
+          </button>
+        </li>
+        <li>
+          <button class="pg-ep-btn" data-id="final-over-specialists">
+            <span class="pg-ep-method">GET</span>
+            <span class="pg-ep-path">/leagues/{id}/final-over-specialists</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- More endpoints in docs -->
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--color-border)">
+      <a href="docs.html" style="font-size:0.72rem;color:var(--color-text-muted);text-decoration:none;display:flex;align-items:center;gap:0.35rem">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        View all 25 endpoints in docs →
+      </a>
     </div>
 
   </aside>
