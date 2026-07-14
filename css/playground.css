@@ -400,3 +400,59 @@
     .pg-run-btn-inline { width: 100%; justify-content: center; height: auto; padding: 0.6rem 1rem; }
     .pg-response-body { max-height: 40vh; }
 }
+
+/* ── Collapsible product groups ── */
+.pg-product-group {
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 0.25rem;
+}
+.pg-product-group:last-of-type { border-bottom: none; }
+
+.pg-product-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 0.25rem;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+.pg-product-summary::-webkit-details-marker { display: none; }
+
+.pg-product-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    flex: 1;
+}
+
+.pg-product-badge {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 99px;
+    flex-shrink: 0;
+}
+.pg-product-badge--live {
+    background: rgba(16,185,129,0.12);
+    color: #10b981;
+}
+.pg-product-badge--soon {
+    background: rgba(148,163,184,0.1);
+    color: var(--color-text-muted);
+}
+
+.pg-chevron {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease;
+}
+details[open] > .pg-product-summary .pg-chevron {
+    transform: rotate(180deg);
+}
+
+.pg-product-body {
+    padding-bottom: 0.5rem;
+}
