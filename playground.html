@@ -81,63 +81,60 @@
         <svg class="pg-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </summary>
       <div class="pg-product-body">
+
         <p class="pg-ep-label" style="margin-top:0.5rem">Oracle</p>
         <ul class="pg-ep-list">
-          <li>
-            <button class="pg-ep-btn active" data-id="win-probability">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/oracle/win-probability</span>
-            </button>
-          </li>
-          <li>
-            <button class="pg-ep-btn" data-id="collapse-probability">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/oracle/collapse-probability</span>
-            </button>
-          </li>
+          <li><button class="pg-ep-btn active" data-id="win-probability"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/oracle/win-probability</span></button></li>
+          <li><button class="pg-ep-btn" data-id="collapse-probability"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/oracle/collapse-probability</span></button></li>
         </ul>
+
         <p class="pg-ep-label" style="margin-top:0.75rem">Players</p>
         <ul class="pg-ep-list">
-          <li>
-            <button class="pg-ep-btn" data-id="momentum">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/players/{id}/momentum</span>
-            </button>
-          </li>
-          <li>
-            <button class="pg-ep-btn" data-id="clutch">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/players/{id}/clutch</span>
-            </button>
-          </li>
-          <li>
-            <button class="pg-ep-btn" data-id="phase-profile">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/players/{id}/phase-profile</span>
-            </button>
-          </li>
+          <li><button class="pg-ep-btn" data-id="momentum"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/momentum</span></button></li>
+          <li><button class="pg-ep-btn" data-id="clutch"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/clutch</span></button></li>
+          <li><button class="pg-ep-btn" data-id="phase-profile"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/phase-profile</span></button></li>
+          <li><button class="pg-ep-btn" data-id="pressure-fingerprint"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/pressure-fingerprint</span></button></li>
+          <li><button class="pg-ep-btn" data-id="dismissal-map"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/dismissal-map</span></button></li>
+          <li><button class="pg-ep-btn" data-id="nemesis"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/nemesis</span></button></li>
+          <li><button class="pg-ep-btn" data-id="consistency"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/consistency</span></button></li>
+          <li><button class="pg-ep-btn" data-id="win-contribution"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/win-contribution</span></button></li>
+          <li><button class="pg-ep-btn" data-id="scoring-rhythm"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/scoring-rhythm</span></button></li>
+          <li><button class="pg-ep-btn" data-id="milestone-behaviour"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/milestone-behaviour</span></button></li>
+          <li><button class="pg-ep-btn" data-id="league-adjusted-performance"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/league-adjusted-performance</span></button></li>
+          <li><button class="pg-ep-btn" data-id="position-analysis"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/position-analysis</span></button></li>
+          <li><button class="pg-ep-btn" data-id="inherited-pressure"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/inherited-pressure</span></button></li>
+          <li><button class="pg-ep-btn" data-id="format-switch-impact"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/format-switch-impact</span></button></li>
+          <li><button class="pg-ep-btn" data-id="spell-analysis"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/spell-analysis</span></button></li>
+          <li><button class="pg-ep-btn" data-id="scoring-zones"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/players/{id}/scoring-zones</span></button></li>
         </ul>
-        <p class="pg-ep-label" style="margin-top:0.75rem">Matches &amp; Leagues</p>
+
+        <p class="pg-ep-label" style="margin-top:0.75rem">Venues</p>
         <ul class="pg-ep-list">
-          <li>
-            <button class="pg-ep-btn" data-id="pitch-reading">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/matches/{id}/pitch-reading</span>
-            </button>
-          </li>
-          <li>
-            <button class="pg-ep-btn" data-id="final-over-specialists">
-              <span class="pg-ep-method">GET</span>
-              <span class="pg-ep-path">/leagues/{id}/final-over-specialists</span>
-            </button>
-          </li>
+          <li><button class="pg-ep-btn" data-id="toss-intelligence"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/venues/{id}/toss-intelligence</span></button></li>
+          <li><button class="pg-ep-btn" data-id="day-night-analysis"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/venues/{id}/day-night-analysis</span></button></li>
         </ul>
-        <div style="margin-top:0.75rem;padding-top:0.5rem;border-top:1px solid var(--color-border)">
-          <a href="docs.html" style="font-size:0.68rem;color:var(--color-text-muted);text-decoration:none;display:flex;align-items:center;gap:0.3rem">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            View all 25 endpoints →
-          </a>
-        </div>
+
+        <p class="pg-ep-label" style="margin-top:0.75rem">Teams</p>
+        <ul class="pg-ep-list">
+          <li><button class="pg-ep-btn" data-id="batting-depth"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/teams/{name}/batting-depth</span></button></li>
+        </ul>
+
+        <p class="pg-ep-label" style="margin-top:0.75rem">Matches</p>
+        <ul class="pg-ep-list">
+          <li><button class="pg-ep-btn" data-id="pitch-reading"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/matches/{id}/pitch-reading</span></button></li>
+          <li><button class="pg-ep-btn" data-id="momentum-curve"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/matches/{id}/momentum-curve</span></button></li>
+        </ul>
+
+        <p class="pg-ep-label" style="margin-top:0.75rem">Leaderboards</p>
+        <ul class="pg-ep-list">
+          <li><button class="pg-ep-btn" data-id="final-over-specialists"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/leagues/{id}/final-over-specialists</span></button></li>
+        </ul>
+
+        <p class="pg-ep-label" style="margin-top:0.75rem">Matchups</p>
+        <ul class="pg-ep-list">
+          <li><button class="pg-ep-btn" data-id="optimal-bowler"><span class="pg-ep-method">GET</span><span class="pg-ep-path">/matchups/optimal-bowler</span></button></li>
+        </ul>
+
       </div>
     </details>
 
