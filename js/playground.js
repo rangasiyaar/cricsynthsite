@@ -135,7 +135,7 @@ const ENDPOINTS = [
     path: '/v1/players/{id}/momentum',
     mockKey: 'momentum',
     params: [
-      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
       { name: 'days',      label: 'days',      type: 'number', placeholder: '60',     default: '60',     min: 7, max: 180, desc: 'Look-back window in days' }
     ],
     buildPath(p) {
@@ -149,7 +149,7 @@ const ENDPOINTS = [
     path: '/v1/players/{id}/clutch',
     mockKey: 'clutch',
     params: [
-      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
       { name: 'season',    label: 'season',    type: 'text',   placeholder: '2024',   default: '',       desc: 'Filter by season (optional)' }
     ],
     buildPath(p) {
@@ -165,7 +165,7 @@ const ENDPOINTS = [
     path: '/v1/players/{id}/phase-profile',
     mockKey: 'phase-profile',
     params: [
-      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Cricsheet player registry ID' },
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
       { name: 'format',    label: 'format',    type: 'select', options: ['T20', 'ODI'], default: 'T20', desc: 'Match format' }
     ],
     buildPath(p) { return `/v1/players/${p.player_id || 253802}/phase-profile?format=${p.format || 'T20'}`; }
