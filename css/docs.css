@@ -103,6 +103,7 @@
 
 /* ── Main content ── */
 .docs-main {
+    grid-column: 2;
     padding: 3rem 4rem;
     max-width: 860px;
     min-height: 100vh;
