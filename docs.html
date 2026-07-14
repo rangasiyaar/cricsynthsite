@@ -1294,41 +1294,67 @@ if (toggleBtn && sidebar) {
     });
 }
 
-// Sticky sidebar — CSS sticky broken by overflow-x:hidden on html
+// Sidebar: sticky with footer awareness + auto-scroll to active link
 (function() {
     var sidebar = document.getElementById('docsSidebar');
     if (!sidebar) return;
     var NAV_H = 96;
-    function update() {
+
+    // 1. Sticky positioning that stops before footer
+    function updatePosition() {
         if (window.innerWidth <= 768) {
             sidebar.classList.remove('docs-sidebar--fixed');
+            sidebar.style.height = '';
             return;
         }
+        var footer = document.querySelector('footer.footer');
+        var footerTop = footer ? footer.getBoundingClientRect().top : window.innerHeight;
+        var availH = Math.max(60, Math.min(window.innerHeight - NAV_H, footerTop - NAV_H));
+
         if (window.scrollY >= NAV_H) {
             sidebar.classList.add('docs-sidebar--fixed');
+            sidebar.style.height = availH + 'px';
         } else {
             sidebar.classList.remove('docs-sidebar--fixed');
+            sidebar.style.height = 'calc(100vh - 96px)';
         }
     }
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    update();
-})();
+    window.addEventListener('scroll', updatePosition, { passive: true });
+    window.addEventListener('resize', updatePosition, { passive: true });
+    updatePosition();
 
-// Sidebar active state on scroll
-const sections = document.querySelectorAll('.docs-section');
-const links = document.querySelectorAll('.sidebar-nav a[href^="#"]');
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const id = entry.target.id;
-            links.forEach(a => {
-                a.classList.toggle('active', a.getAttribute('href') === `#${id}`);
-            });
-        }
-    });
-}, { rootMargin: '-20% 0px -70% 0px' });
-sections.forEach(s => observer.observe(s));
+    // 2. Active section highlight + auto-scroll sidebar to keep active link visible
+    var sections = document.querySelectorAll('.docs-section');
+    var links = document.querySelectorAll('.sidebar-nav a[href^="#"]');
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var id = entry.target.id;
+                var activeLink = null;
+                links.forEach(function(a) {
+                    var isActive = a.getAttribute('href') === '#' + id;
+                    a.classList.toggle('active', isActive);
+                    if (isActive) activeLink = a;
+                });
+                // Scroll the sidebar so the active link stays visible
+                if (activeLink) {
+                    var linkTop = activeLink.offsetTop;
+                    var linkBottom = linkTop + activeLink.offsetHeight;
+                    var sidebarScroll = sidebar.scrollTop;
+                    var sidebarH = sidebar.clientHeight;
+                    if (linkTop < sidebarScroll + 40) {
+                        sidebar.scrollTo({ top: linkTop - 40, behavior: 'smooth' });
+                    } else if (linkBottom > sidebarScroll + sidebarH - 40) {
+                        sidebar.scrollTo({ top: linkBottom - sidebarH + 40, behavior: 'smooth' });
+                    }
+                }
+            }
+        });
+    }, { rootMargin: '-10% 0px -60% 0px' });
+
+    sections.forEach(function(s) { observer.observe(s); });
+})();
 </script>
 <script src="js/layout.js"></script>
 </body>
