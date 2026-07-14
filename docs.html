@@ -1294,6 +1294,27 @@ if (toggleBtn && sidebar) {
     });
 }
 
+// Sticky sidebar — CSS sticky broken by overflow-x:hidden on html
+(function() {
+    var sidebar = document.getElementById('docsSidebar');
+    if (!sidebar) return;
+    var NAV_H = 96;
+    function update() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('docs-sidebar--fixed');
+            return;
+        }
+        if (window.scrollY >= NAV_H) {
+            sidebar.classList.add('docs-sidebar--fixed');
+        } else {
+            sidebar.classList.remove('docs-sidebar--fixed');
+        }
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+})();
+
 // Sidebar active state on scroll
 const sections = document.querySelectorAll('.docs-section');
 const links = document.querySelectorAll('.sidebar-nav a[href^="#"]');

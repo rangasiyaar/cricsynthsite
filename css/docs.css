@@ -9,8 +9,7 @@
 
 /* ── Sidebar ── */
 .docs-sidebar {
-    position: sticky;
-    top: 96px;
+    width: 260px;
     height: calc(100vh - 96px);
     overflow-y: auto;
     background: var(--color-bg-secondary);
@@ -18,6 +17,12 @@
     padding: 2rem 0;
     scrollbar-width: thin;
     scrollbar-color: var(--color-border) transparent;
+}
+.docs-sidebar--fixed {
+    position: fixed;
+    top: 96px;
+    left: 0;
+    z-index: 100;
 }
 
 
