@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CricVeda API Documentation — endpoints, authentication, code examples, and interactive playground.">
+    <meta name="description" content="CricVeda API Documentation covering endpoints, authentication, code examples, and an interactive playground.">
     <title>CricVeda API Docs | CricSynthesis</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,7 +124,7 @@
         <section id="overview" class="docs-section">
             <h1 class="docs-section-title">CricVeda API</h1>
             <p class="docs-section-desc">
-                25 unique ball-by-ball analytics endpoints — win probability from any match state,
+                25 unique ball-by-ball analytics endpoints: win probability from any match state,
                 player clutch scores, cross-format momentum, batting phase profiles, venue toss intelligence,
                 and more. Powered by ball-by-ball data across 22 leagues (T20 + ODI, professional and domestic).
             </p>
@@ -193,7 +193,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <tr><td class="param-name">401</td><td class="param-desc">Missing <code>X-API-Key</code> header</td></tr>
                     <tr><td class="param-name">403</td><td class="param-desc">Invalid API key</td></tr>
                     <tr><td class="param-name">404</td><td class="param-desc">Resource not found (match / player)</td></tr>
-                    <tr><td class="param-name">422</td><td class="param-desc">Validation error — check request params</td></tr>
+                    <tr><td class="param-name">422</td><td class="param-desc">Validation error, check your request params</td></tr>
                     <tr><td class="param-name">429</td><td class="param-desc">Rate limit exceeded</td></tr>
                     <tr><td class="param-name">500</td><td class="param-desc">Internal server error</td></tr>
                 </tbody>
@@ -348,7 +348,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Performance index in high-leverage moments only</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Performance in high-leverage moments only — innings 2 overs 15+, or required RR &gt; 12. Clutch index normalised 0–10 across all players with min 30 clutch deliveries.</p>
+                    <p>Performance in high-leverage moments only, meaning innings 2 overs 15+, or a required RR above 12. Clutch index normalised 0-10 across all players with min 30 clutch deliveries.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -428,7 +428,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Bowling pressure profile and archetype</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Bowling pressure profile — dot streak patterns, maiden rate, collapse trigger frequency, and an overall pressure score and archetype (strangler / comeback-king / containment).</p>
+                    <p>Bowling pressure profile covering dot streak patterns, maiden rate, collapse trigger frequency, and an overall pressure score and archetype (strangler / comeback-king / containment).</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -470,7 +470,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Dismissal type breakdown per phase with danger zone</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Where and how a batter gets out — dismissal type breakdown per phase with danger zone identification.</p>
+                    <p>Where and how a batter gets out, with a dismissal type breakdown per phase and danger zone identification.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -551,7 +551,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Risk-adjusted reliability score with floor and ceiling</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Risk-adjusted reliability score — mean FP, standard deviation, coefficient of variation, floor (10th percentile), ceiling (90th percentile), and risk profile classification.</p>
+                    <p>Risk-adjusted reliability score covering mean FP, standard deviation, coefficient of variation, floor (10th percentile), ceiling (90th percentile), and a risk profile classification.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -594,7 +594,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Leverage-weighted match impact score</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Leverage-weighted match impact score — how much a player contributed to actual wins, not just volume of runs/wickets.</p>
+                    <p>Leverage-weighted match impact score that captures how much a player contributed to actual wins, not just their volume of runs and wickets.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -636,7 +636,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Innings build-up pattern and acceleration archetype</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>How a batter builds an innings — average dot streak length, boundary clustering, acceleration curve by balls faced, and archetype (instant-accelerator / slow-starter / steady-state).</p>
+                    <p>How a batter builds an innings, covering average dot streak length, boundary clustering, acceleration curve by balls faced, and archetype (instant-accelerator / slow-starter / steady-state).</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -720,7 +720,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Cross-league z-score normalisation with inflation index</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Normalises a player's stats across leagues by z-score. Surfaces the inflation index — how much their raw numbers inflate in weaker leagues vs elite ones.</p>
+                    <p>Normalises a player's stats across leagues by z-score. Surfaces the inflation index, showing how much their raw numbers inflate in weaker leagues versus elite ones.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -760,7 +760,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Performance by batting position with optimal position</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Performance broken down by batting position (1–11), inferred from delivery sequence. Includes optimal position and recent deviation from it.</p>
+                    <p>Performance broken down by batting position (1-11), inferred from delivery sequence. Includes optimal position and recent deviation from it.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -800,7 +800,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Performance by match state when the player walked in</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Performance segmented by the match state when this player walked in — clean start, slight pressure, crisis, or rescue mission.</p>
+                    <p>Performance segmented by the match state when this player walked in: clean start, slight pressure, crisis, or rescue mission.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -883,7 +883,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Economy and wickets by spell number with decay measurement</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>For bowlers — economy and wicket rate broken down by spell number (1st, 2nd, 3rd) with spell decay measurement and best spell recommendation.</p>
+                    <p>For bowlers, economy and wicket rate broken down by spell number (1st, 2nd, 3rd) with a spell decay measurement and a best spell recommendation.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -925,7 +925,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">SR and boundary rate by balls-faced bucket</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>SR and boundary rate by balls-faced bucket — shows exactly when in an innings a batter peaks.</p>
+                    <p>SR and boundary rate by balls-faced bucket, showing exactly when in an innings a batter peaks.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -971,7 +971,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Toss alpha and best decision at this venue</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Toss alpha at this venue — how much the toss actually matters, controlled for team quality. Includes best toss decision and win rates by decision type.</p>
+                    <p>Toss alpha at this venue, showing how much the toss actually matters once you control for team quality. Includes best toss decision and win rates by decision type.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -1014,7 +1014,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Dew factor score and 2nd innings advantage</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Quantifies the dew factor — difference in death-over run rates between 1st and 2nd innings, and whether batting second is statistically advantaged.</p>
+                    <p>Quantifies the dew factor by comparing death-over run rates between the 1st and 2nd innings, and whether batting second is statistically advantaged.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -1038,7 +1038,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
   <span class="str">"death_overs_1st_innings_rr"</span>: <span class="num">9.8</span>,
   <span class="str">"death_overs_2nd_innings_rr"</span>: <span class="num">11.4</span>,
   <span class="str">"dew_factor_score"</span>: <span class="num">6.2</span>,
-  <span class="str">"dew_effect_interpretation"</span>: <span class="str">"Significant dew advantage for teams batting second — death-over run rate is 16% higher in the 2nd innings."</span>,
+  <span class="str">"dew_effect_interpretation"</span>: <span class="str">"Significant dew advantage for teams batting second, with the death-over run rate 16% higher in the 2nd innings."</span>,
   <span class="str">"strongest_effect_phase"</span>: <span class="str">"overs_17-20"</span>
 }</pre></div>
                 </div>
@@ -1102,7 +1102,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Inferred pitch classification from early delivery data</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Infers pitch behaviour from first N overs' delivery data — no manual pitch report needed. Classifies as batting-friendly, pace-friendly, spin-friendly, or balanced.</p>
+                    <p>Infers pitch behaviour from the first N overs of delivery data, with no manual pitch report needed. Classifies as batting-friendly, pace-friendly, spin-friendly, or balanced.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -1188,10 +1188,10 @@ X-RateLimit-Reset: 1735689600</pre></div>
                 <summary class="endpoint-header">
                     <span class="method-get">GET</span>
                     <span class="endpoint-path">/v1/leagues/{league_id}/final-over-specialists</span>
-                    <span class="endpoint-summary">Rankings for the last over only — true nerve specialists</span>
+                    <span class="endpoint-summary">Rankings for the last over only, the true nerve specialists</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Rankings for the final over (over 20 in T20, over 50 in ODI) only — completely separate from general death-over stats. Reveals true nerve specialists.</p>
+                    <p>Rankings for the final over only (over 20 in T20, over 50 in ODI), completely separate from general death-over stats. Reveals the true nerve specialists.</p>
 
                     <p class="response-label">Parameters</p>
                     <table class="params-table">
@@ -1236,7 +1236,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
                     <span class="endpoint-summary">Rank available bowlers by effectiveness against a specific batter</span>
                 </summary>
                 <div class="endpoint-body">
-                    <p>Given a batter and a list of available bowlers, ranks them by historical effectiveness — dismissal rate and SR conceded — against that specific batter.</p>
+                    <p>Given a batter and a list of available bowlers, ranks them by historical effectiveness (dismissal rate and SR conceded) against that specific batter.</p>
 
                     <p class="response-label">Query parameters</p>
                     <table class="params-table">
@@ -1261,7 +1261,7 @@ X-RateLimit-Reset: 1735689600</pre></div>
     {<span class="str">"player_id"</span>: <span class="num">322890</span>, <span class="str">"name"</span>: <span class="str">"Rashid Khan"</span>,     <span class="str">"balls_faced"</span>: <span class="num">36</span>, <span class="str">"runs"</span>: <span class="num">42</span>,  <span class="str">"dismissals"</span>: <span class="num">3</span>, <span class="str">"sr_conceded"</span>: <span class="num">116.7</span>, <span class="str">"dismissal_rate"</span>: <span class="num">0.83</span>, <span class="str">"confidence"</span>: <span class="str">"high"</span>,   <span class="str">"rank"</span>: <span class="num">2</span>},
     {<span class="str">"player_id"</span>: <span class="num">290716</span>, <span class="str">"name"</span>: <span class="str">"Ravindra Jadeja"</span>,  <span class="str">"balls_faced"</span>: <span class="num">22</span>, <span class="str">"runs"</span>: <span class="num">28</span>,  <span class="str">"dismissals"</span>: <span class="num">1</span>, <span class="str">"sr_conceded"</span>: <span class="num">127.3</span>, <span class="str">"dismissal_rate"</span>: <span class="num">0.45</span>, <span class="str">"confidence"</span>: <span class="str">"medium"</span>, <span class="str">"rank"</span>: <span class="num">3</span>}
   ],
-  <span class="str">"recommendation"</span>: <span class="str">"Jasprit Bumrah is the best choice — 5 dismissals in 48 balls (1 every 9.6 balls) with SR conceded of just 79.2."</span>,
+  <span class="str">"recommendation"</span>: <span class="str">"Jasprit Bumrah is the best choice with 5 dismissals in 48 balls (one every 9.6 balls) and an SR conceded of just 79.2."</span>,
   <span class="str">"caveat"</span>: <span class="kw">null</span>
 }</pre></div>
                 </div>
