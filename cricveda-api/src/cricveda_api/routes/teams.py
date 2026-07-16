@@ -287,3 +287,279 @@ async def get_batting_depth(
 
     cache_set(ck, result.model_dump(), ttl_seconds=3600)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Response models — Comeback Index & Rivalry
+# ---------------------------------------------------------------------------
+
+
+class ComebackIndexResponse(BaseModel):
+    team_name: str
+    format: str
+    season: str | None
+    matches_analyzed: int
+    losing_position_matches: int
+    comebacks_won: int
+    comeback_index: float
+    resilience: str
+
+
+class RivalryResponse(BaseModel):
+    team1_name: str
+    team2_name: str
+    format: str
+    total_meetings: int
+    team1_wins: int
+    team2_wins: int
+    no_results: int
+    team1_win_pct: float
+    last_5_results: list[dict]
+    current_streak: str
+    dominant_team: str
+
+
+# ---------------------------------------------------------------------------
+# Endpoint: Comeback Index
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/teams/{team_name}/comeback-index",
+    response_model=ComebackIndexResponse,
+    summary="Win rate from losing positions",
+)
+@limiter.limit("60/minute")
+async def get_comeback_index(
+    request: Request,
+    team_name: str,
+    format: str = Query(default="T20"),
+    season: str | None = Query(default=None),
+    _key_id: str = Depends(require_api_key),
+):
+    """How often a team wins after being in a losing position."""
+    fmt = format.upper()
+    ck = cache_key("team_comeback", team_name, fmt, season or "")
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    from collections import defaultdict
+    client = get_client()
+
+    lg = client.table("leagues").select("league_id").eq("format", fmt).execute().data or []
+    league_ids = [r["league_id"] for r in lg]
+
+    _empty = ComebackIndexResponse(
+        team_name=team_name, format=fmt, season=season, matches_analyzed=0,
+        losing_position_matches=0, comebacks_won=0, comeback_index=0.0, resilience="unknown",
+    )
+    if not league_ids:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    q1 = (client.table("matches")
+          .select("match_id,team1,team2,toss_winner,toss_decision,winner,season")
+          .in_("league_id", league_ids).eq("team1", team_name).limit(200).execute().data or [])
+    q2 = (client.table("matches")
+          .select("match_id,team1,team2,toss_winner,toss_decision,winner,season")
+          .in_("league_id", league_ids).eq("team2", team_name).limit(200).execute().data or [])
+    if season:
+        q1 = [m for m in q1 if str(m.get("season")) == season]
+        q2 = [m for m in q2 if str(m.get("season")) == season]
+
+    seen: set = set()
+    matches = []
+    for m in q1 + q2:
+        if m["match_id"] not in seen:
+            seen.add(m["match_id"])
+            matches.append(m)
+    matches = matches[:200]
+    if not matches:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    pp_over = 6 if fmt == "T20" else 10
+    total_overs = 20 if fmt == "T20" else 50
+
+    def _batting_innings(m: dict) -> int | None:
+        decision = (m.get("toss_decision") or "").lower()
+        tw = m.get("toss_winner") or ""
+        t1, t2 = m.get("team1") or "", m.get("team2") or ""
+        if decision == "bat":
+            if tw == team_name:
+                return 1
+            if team_name in (t1, t2):
+                return 2
+        elif decision == "field":
+            if tw == team_name:
+                return 2
+            if team_name in (t1, t2):
+                return 1
+        return None
+
+    innings_map = {m["match_id"]: _batting_innings(m) for m in matches}
+    match_ids = [m["match_id"] for m in matches]
+
+    def _chunk(lst, n):
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
+    all_dels: dict = defaultdict(list)
+    for chunk in _chunk(match_ids, 50):
+        rows = (client.table("deliveries")
+                .select("match_id,innings,over_ball,wicket_type,runs_total")
+                .in_("match_id", chunk).limit(5000).execute().data or [])
+        for d in rows:
+            all_dels[d["match_id"]].append(d)
+
+    losing_positions = 0
+    comebacks_won = 0
+    for m in matches:
+        mid = m["match_id"]
+        inn = innings_map.get(mid)
+        if inn is None:
+            continue
+        dels = all_dels.get(mid, [])
+        team_dels = [d for d in dels if d.get("innings") == inn]
+        if not team_dels:
+            continue
+        # wickets fallen inside powerplay
+        pp_wkts = sum(1 for d in team_dels
+                      if int(float(d.get("over_ball") or 0)) < pp_over and d.get("wicket_type"))
+        losing = pp_wkts >= 3
+        # chase: required rate blew out
+        if not losing and inn == 2:
+            first_inn = [d for d in dels if d.get("innings") == 1]
+            target = sum(d.get("runs_total") or 0 for d in first_inn) + 1
+            # state at halfway of the chase
+            half_over = total_overs // 2
+            runs_at_half = sum(d.get("runs_total") or 0 for d in team_dels
+                               if int(float(d.get("over_ball") or 0)) < half_over)
+            overs_left = total_overs - half_over
+            if overs_left > 0:
+                rrr = (target - runs_at_half) / overs_left
+                if rrr > 10.5:
+                    losing = True
+        if losing:
+            losing_positions += 1
+            if m.get("winner") == team_name:
+                comebacks_won += 1
+
+    comeback_index = round(comebacks_won / losing_positions, 2) if losing_positions else 0.0
+    if comeback_index > 0.35:
+        resilience = "elite"
+    elif comeback_index > 0.2:
+        resilience = "strong"
+    elif comeback_index > 0.1:
+        resilience = "average"
+    else:
+        resilience = "fragile"
+
+    result = ComebackIndexResponse(
+        team_name=team_name, format=fmt, season=season, matches_analyzed=len(matches),
+        losing_position_matches=losing_positions, comebacks_won=comebacks_won,
+        comeback_index=comeback_index, resilience=resilience,
+    )
+    cache_set(ck, result.model_dump(), ttl_seconds=3600)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Endpoint: Rivalry (head-to-head)
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/teams/{team1_name}/rivalry/{team2_name}",
+    response_model=RivalryResponse,
+    summary="Head-to-head rivalry record",
+)
+@limiter.limit("60/minute")
+async def get_rivalry(
+    request: Request,
+    team1_name: str,
+    team2_name: str,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Head-to-head record between two teams."""
+    fmt = format.upper()
+    ck = cache_key("team_rivalry", team1_name, team2_name, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    lg = client.table("leagues").select("league_id").eq("format", fmt).execute().data or []
+    league_ids = [r["league_id"] for r in lg]
+
+    _empty = RivalryResponse(
+        team1_name=team1_name, team2_name=team2_name, format=fmt, total_meetings=0,
+        team1_wins=0, team2_wins=0, no_results=0, team1_win_pct=0.0,
+        last_5_results=[], current_streak="no matches", dominant_team="even",
+    )
+    if not league_ids:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    a = (client.table("matches").select("match_id,team1,team2,winner,match_date")
+         .in_("league_id", league_ids).eq("team1", team1_name).eq("team2", team2_name)
+         .limit(200).execute().data or [])
+    b = (client.table("matches").select("match_id,team1,team2,winner,match_date")
+         .in_("league_id", league_ids).eq("team1", team2_name).eq("team2", team1_name)
+         .limit(200).execute().data or [])
+    seen: set = set()
+    matches = []
+    for m in a + b:
+        if m["match_id"] not in seen:
+            seen.add(m["match_id"])
+            matches.append(m)
+    if not matches:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    matches.sort(key=lambda m: str(m.get("match_date") or ""), reverse=True)
+
+    t1w = sum(1 for m in matches if m.get("winner") == team1_name)
+    t2w = sum(1 for m in matches if m.get("winner") == team2_name)
+    nr = sum(1 for m in matches if not m.get("winner"))
+    total = len(matches)
+    t1_pct = round(t1w / total, 2) if total else 0.0
+
+    last_5 = [{"match_date": str(m.get("match_date") or ""), "winner": m.get("winner") or "no result"}
+              for m in matches[:5]]
+
+    # current streak from most recent decided matches
+    streak_team = None
+    streak_n = 0
+    for m in matches:
+        w = m.get("winner")
+        if not w:
+            continue
+        if streak_team is None:
+            streak_team = w
+            streak_n = 1
+        elif w == streak_team:
+            streak_n += 1
+        else:
+            break
+    current_streak = f"{streak_team} won last {streak_n}" if streak_team else "no decisive matches"
+
+    if t1w > t2w:
+        dominant = team1_name
+    elif t2w > t1w:
+        dominant = team2_name
+    else:
+        dominant = "even"
+
+    result = RivalryResponse(
+        team1_name=team1_name, team2_name=team2_name, format=fmt, total_meetings=total,
+        team1_wins=t1w, team2_wins=t2w, no_results=nr, team1_win_pct=t1_pct,
+        last_5_results=last_5, current_streak=current_streak, dominant_team=dominant,
+    )
+    cache_set(ck, result.model_dump(), ttl_seconds=3600)
+    return result
