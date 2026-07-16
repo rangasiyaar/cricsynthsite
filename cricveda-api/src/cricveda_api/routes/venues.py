@@ -445,3 +445,139 @@ async def get_day_night_analysis(
 
     cache_set(ck, result.model_dump(), ttl_seconds=3600)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Response model — Par Score
+# ---------------------------------------------------------------------------
+
+
+class ParScoreResponse(BaseModel):
+    venue_id: int
+    venue_name: str | None
+    format: str
+    matches_analyzed: int
+    par_progression: list[dict]     # [{over, par_runs}]
+    avg_first_innings_total: float
+    winning_threshold: float
+    confidence: str
+
+
+# ---------------------------------------------------------------------------
+# Endpoint: Par Score
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/venues/{venue_id}/par-score",
+    response_model=ParScoreResponse,
+    summary="Over-by-over median par progression at a venue",
+)
+@limiter.limit("60/minute")
+async def get_par_score(
+    request: Request,
+    venue_id: int,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Median 1st-innings score at the end of each over, plus the winning threshold."""
+    fmt = format.upper()
+    if fmt not in ("T20", "ODI"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="format must be T20 or ODI")
+
+    ck = cache_key("venue_par_score", venue_id, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    v = client.table("venues").select("name").eq("venue_id", venue_id).execute().data or []
+    venue_name = v[0]["name"] if v else None
+
+    lg = client.table("leagues").select("league_id").eq("format", fmt).execute().data or []
+    league_ids = [r["league_id"] for r in lg]
+
+    _empty = ParScoreResponse(
+        venue_id=venue_id, venue_name=venue_name, format=fmt, matches_analyzed=0,
+        par_progression=[], avg_first_innings_total=0.0, winning_threshold=0.0,
+        confidence="low",
+    )
+    if not league_ids:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    matches = (client.table("matches")
+               .select("match_id,team1,team2,toss_winner,toss_decision,winner")
+               .eq("venue_id", venue_id).in_("league_id", league_ids)
+               .limit(300).execute().data or [])
+    if not matches:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    match_ids = [m["match_id"] for m in matches]
+    max_over = 20 if fmt == "T20" else 50
+
+    def _chunk(lst, n):
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
+    from collections import defaultdict
+    inn1: dict = defaultdict(list)
+    for chunk in _chunk(match_ids, 50):
+        rows = (client.table("deliveries")
+                .select("match_id,over_ball,runs_total")
+                .in_("match_id", chunk).eq("innings", 1)
+                .limit(6000).execute().data or [])
+        for d in rows:
+            inn1[d["match_id"]].append(d)
+
+    # cumulative score at end of each over, per match
+    per_over_scores: dict = defaultdict(list)   # over -> list of cumulative totals
+    match_totals: dict = {}
+    for mid, dels in inn1.items():
+        by_over: dict = defaultdict(int)
+        for d in dels:
+            ov = int(float(d.get("over_ball") or 0)) + 1   # over number 1..N
+            by_over[ov] += d.get("runs_total") or 0
+        cumulative = 0
+        for ov in range(1, max_over + 1):
+            cumulative += by_over.get(ov, 0)
+            per_over_scores[ov].append(cumulative)
+        match_totals[mid] = cumulative
+
+    par_progression = []
+    for ov in range(1, max_over + 1):
+        scores = per_over_scores.get(ov, [])
+        if scores:
+            par_progression.append({"over": ov, "par_runs": round(statistics.median(scores), 1)})
+
+    totals = list(match_totals.values())
+    avg_total = round(statistics.mean(totals), 1) if totals else 0.0
+
+    # winning threshold: median 1st-innings total in matches the batting-first team won
+    def _batted_first(m):
+        decision = (m.get("toss_decision") or "").lower()
+        tw = m.get("toss_winner") or ""
+        t1, t2 = m.get("team1") or "", m.get("team2") or ""
+        if decision == "bat":
+            return tw if tw in (t1, t2) else None
+        if decision == "field":
+            return (t2 if tw == t1 else t1) if tw in (t1, t2) else None
+        return None
+
+    won_first_totals = []
+    for m in matches:
+        bf = _batted_first(m)
+        if bf and m.get("winner") == bf and m["match_id"] in match_totals:
+            won_first_totals.append(match_totals[m["match_id"]])
+    winning_threshold = round(statistics.median(won_first_totals), 1) if won_first_totals else avg_total
+
+    result = ParScoreResponse(
+        venue_id=venue_id, venue_name=venue_name, format=fmt, matches_analyzed=len(inn1),
+        par_progression=par_progression, avg_first_innings_total=avg_total,
+        winning_threshold=winning_threshold, confidence=_confidence(len(inn1)),
+    )
+    cache_set(ck, result.model_dump(), ttl_seconds=3600)
+    return result

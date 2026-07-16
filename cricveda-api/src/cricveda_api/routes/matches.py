@@ -488,3 +488,184 @@ async def get_momentum_curve(
         ttl_seconds=21600,
     )
     return result
+
+
+# ---------------------------------------------------------------------------
+# Response models — Turning Points
+# ---------------------------------------------------------------------------
+
+
+class TurningPoint(BaseModel):
+    innings: int
+    over: int
+    wp_before: float
+    wp_after: float
+    wp_swing: float
+    key_event: dict
+    description: str
+
+
+class TurningPointsResponse(BaseModel):
+    match_id: int
+    team1: str
+    team2: str
+    winner: str | None
+    turning_points: list[TurningPoint]
+
+
+# ---------------------------------------------------------------------------
+# ENDPOINT 3: turning-points
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/matches/{match_id}/turning-points",
+    response_model=TurningPointsResponse,
+    summary="Biggest momentum-swing overs in a match",
+)
+@limiter.limit("30/minute")
+async def get_turning_points(
+    request: Request,
+    match_id: int,
+    _key_id: str = Depends(require_api_key),
+):
+    """Identify the 3-5 overs with the biggest win-probability swings."""
+    ck = cache_key("turning_points", match_id)
+    cached = cache_get(ck)
+    if cached:
+        pts = [TurningPoint(**p) for p in cached.get("turning_points", [])]
+        return TurningPointsResponse(
+            match_id=cached["match_id"], team1=cached["team1"], team2=cached["team2"],
+            winner=cached.get("winner"), turning_points=pts,
+        )
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    mrow = (client.table("matches")
+            .select("match_id, team1, team2, winner")
+            .eq("match_id", match_id).execute().data or [])
+    if not mrow:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Match {match_id} not found")
+    match = mrow[0]
+
+    deliveries = (client.table("deliveries")
+                  .select("innings,over_ball,runs_total,wicket_type,striker_id,bowler_id")
+                  .eq("match_id", match_id)
+                  .order("innings").order("over_ball")
+                  .limit(500).execute().data or [])
+    if not deliveries:
+        result = TurningPointsResponse(
+            match_id=match_id, team1=match["team1"], team2=match["team2"],
+            winner=match.get("winner"), turning_points=[],
+        )
+        cache_set(ck, result.model_dump(), ttl_seconds=21600)
+        return result
+
+    innings1 = [d for d in deliveries if d["innings"] == 1]
+    innings2 = [d for d in deliveries if d["innings"] == 2]
+    target = sum(d.get("runs_total") or 0 for d in innings1) + 1
+    ACHIEVABLE_RR = 8.0
+
+    def _wp_inn1_at(wkts):
+        return _r2(max(0.05, min(0.95, 0.5 - (wkts / 10) * 0.2)))
+
+    def _wp_inn2_at(runs_so_far, wkts, balls_bowled):
+        total_balls = 120
+        runs_needed = target - runs_so_far
+        balls_remaining = max(0, total_balls - balls_bowled)
+        if runs_needed <= 0:
+            return 0.95
+        if balls_remaining == 0:
+            return 0.05
+        required_rr = runs_needed / (balls_remaining / 6)
+        wp = (ACHIEVABLE_RR / required_rr) * 0.5
+        wp -= wkts * 0.025
+        return _r2(max(0.05, min(0.95, wp)))
+
+    # Aggregate per over
+    over_points = []   # {innings, over, wp_after, key_event}
+    from collections import defaultdict
+
+    # innings 1
+    inn1_by_over: dict = defaultdict(list)
+    for d in innings1:
+        inn1_by_over[int(float(d.get("over_ball") or 0)) + 1].append(d)
+    cum_wkts = 0
+    for ov in sorted(inn1_by_over):
+        dels = inn1_by_over[ov]
+        for d in dels:
+            if d.get("wicket_type"):
+                cum_wkts += 1
+        wp_after = _wp_inn1_at(cum_wkts)
+        key = _pick_key_event(dels)
+        over_points.append({"innings": 1, "over": ov, "wp_after": wp_after, "key_event": key})
+
+    # innings 2
+    if innings2:
+        inn2_by_over: dict = defaultdict(list)
+        for d in innings2:
+            inn2_by_over[int(float(d.get("over_ball") or 0)) + 1].append(d)
+        cum_runs = 0
+        cum_wkts2 = 0
+        balls = 0
+        for ov in sorted(inn2_by_over):
+            dels = inn2_by_over[ov]
+            for d in dels:
+                cum_runs += d.get("runs_total") or 0
+                if d.get("wicket_type"):
+                    cum_wkts2 += 1
+                if not _is_wide(d):
+                    balls += 1
+            wp_after = _wp_inn2_at(cum_runs, cum_wkts2, balls)
+            key = _pick_key_event(dels)
+            over_points.append({"innings": 2, "over": ov, "wp_after": wp_after, "key_event": key})
+
+    # compute swings vs previous over (reset baseline at innings boundary)
+    turning = []
+    prev_wp = 0.5
+    prev_inn = None
+    for op in over_points:
+        if op["innings"] != prev_inn:
+            prev_wp = 0.5
+            prev_inn = op["innings"]
+        wp_before = prev_wp
+        wp_after = op["wp_after"]
+        swing = _r2(wp_after - wp_before)
+        prev_wp = wp_after
+        side = "chasing side" if op["innings"] == 2 else "batting side"
+        ke = op["key_event"]
+        desc = (
+            f"Over {op['over']} (innings {op['innings']}): "
+            f"{ke.get('runs', 0)} runs" + (f", wicket ({ke['wicket_type']})" if ke.get("wicket_type") else "")
+            + f" swung win probability {'+' if swing >= 0 else ''}{swing} toward the {side}."
+        )
+        turning.append({
+            "innings": op["innings"], "over": op["over"],
+            "wp_before": _r2(wp_before), "wp_after": _r2(wp_after),
+            "wp_swing": swing, "key_event": ke, "description": desc,
+        })
+
+    turning.sort(key=lambda t: abs(t["wp_swing"]), reverse=True)
+    top = turning[:5]
+
+    result = TurningPointsResponse(
+        match_id=match_id, team1=match["team1"], team2=match["team2"],
+        winner=match.get("winner"),
+        turning_points=[TurningPoint(**t) for t in top],
+    )
+    cache_set(ck, result.model_dump(), ttl_seconds=21600)
+    return result
+
+
+def _pick_key_event(dels: list) -> dict:
+    """Most impactful delivery in an over: a wicket, else the biggest-runs ball."""
+    wicket = next((d for d in dels if d.get("wicket_type")), None)
+    chosen = wicket or max(dels, key=lambda d: d.get("runs_total") or 0)
+    over_runs = sum(d.get("runs_total") or 0 for d in dels)
+    return {
+        "striker_id": chosen.get("striker_id"),
+        "bowler_id": chosen.get("bowler_id"),
+        "runs": over_runs,
+        "wicket_type": chosen.get("wicket_type"),
+    }

@@ -2222,3 +2222,518 @@ async def get_scoring_zones(
     }
     cache_set(ck, result, ttl_seconds=3600)
     return result
+
+
+# ---------------------------------------------------------------------------
+# 17. GET /v1/players/{player_id}/chase-master
+# ---------------------------------------------------------------------------
+
+def _fmt_allowed(client, match_ids, fmt):
+    """Return set of match_ids matching the given format."""
+    allowed = set()
+    if not match_ids:
+        return allowed
+    league_rows = (
+        client.table("matches")
+        .select("match_id,leagues(format)")
+        .in_("match_id", list(match_ids)[:500])
+        .execute()
+        .data or []
+    )
+    for m in league_rows:
+        li = m.get("leagues") or {}
+        if isinstance(li, list):
+            li = li[0] if li else {}
+        if str(li.get("format", "")).upper() == fmt:
+            allowed.add(m["match_id"])
+    return allowed
+
+
+@router.get("/players/{player_id}/chase-master", summary="Record in run chases (2nd innings)")
+@limiter.limit("60/minute")
+async def get_chase_master(
+    request: Request,
+    player_id: int,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Batting record specifically in run chases: SR, average, finishing rate."""
+    fmt = format.upper()
+    ck = cache_key("player_chase_master", player_id, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    from collections import defaultdict
+    client = get_client()
+
+    rows = (
+        client.table("deliveries")
+        .select("runs_batter,wicket_type,extras_type,match_id,innings")
+        .eq("striker_id", player_id)
+        .limit(6000)
+        .execute()
+        .data or []
+    )
+    if not rows:
+        result = {"player_id": player_id, "format": fmt, "insufficient_data": True,
+                  "chase_innings": 0}
+        cache_set(ck, result, ttl_seconds=3600)
+        return result
+
+    match_ids = {d["match_id"] for d in rows if d.get("match_id")}
+    allowed = _fmt_allowed(client, match_ids, fmt)
+    rows = [d for d in rows if d.get("match_id") in allowed]
+
+    # overall SR
+    all_balls = [d for d in rows if d.get("extras_type") not in ("wides",)]
+    overall_runs = sum(d.get("runs_batter") or 0 for d in all_balls)
+    overall_sr = round(overall_runs / len(all_balls) * 100, 2) if all_balls else 0.0
+
+    # chase = innings 2
+    chase_rows = [d for d in rows if d.get("innings") == 2]
+    by_match: dict = defaultdict(list)
+    for d in chase_rows:
+        by_match[d["match_id"]].append(d)
+
+    if not by_match:
+        result = {"player_id": player_id, "format": fmt, "insufficient_data": True,
+                  "chase_innings": 0, "overall_sr": overall_sr}
+        cache_set(ck, result, ttl_seconds=3600)
+        return result
+
+    # winners for these matches
+    winner_rows = (
+        client.table("matches")
+        .select("match_id,team1,team2,winner")
+        .in_("match_id", list(by_match.keys())[:500])
+        .execute()
+        .data or []
+    )
+    winners = {m["match_id"]: m.get("winner") for m in winner_rows}
+
+    chase_balls = 0
+    chase_runs = 0
+    chase_dismissals = 0
+    innings_count = 0
+    finished_not_out_wins = 0
+
+    for mid, dels in by_match.items():
+        innings_count += 1
+        got_out = False
+        for d in dels:
+            if d.get("extras_type") not in ("wides",):
+                chase_balls += 1
+                chase_runs += d.get("runs_batter") or 0
+            if d.get("wicket_type"):
+                chase_dismissals += 1
+                got_out = True
+        # finishing: remained not out (proxy: never dismissed in that innings)
+        if not got_out and winners.get(mid):
+            finished_not_out_wins += 1
+
+    chase_sr = round(chase_runs / chase_balls * 100, 2) if chase_balls else 0.0
+    chase_avg = round(chase_runs / chase_dismissals, 2) if chase_dismissals else float(chase_runs)
+    finishing_rate = round(finished_not_out_wins / innings_count, 2) if innings_count else 0.0
+
+    if chase_sr > 140 and finishing_rate > 0.4:
+        verdict = "elite_chaser"
+    elif chase_sr >= overall_sr and finishing_rate > 0.2:
+        verdict = "reliable"
+    elif chase_sr < overall_sr - 8:
+        verdict = "front_runner"
+    else:
+        verdict = "average"
+
+    result = {
+        "player_id": player_id,
+        "format": fmt,
+        "chase_innings": innings_count,
+        "overall_sr": overall_sr,
+        "chase_sr": chase_sr,
+        "chase_avg": chase_avg,
+        "chases_finished_won": finished_not_out_wins,
+        "finishing_rate": finishing_rate,
+        "verdict": verdict,
+    }
+    cache_set(ck, result, ttl_seconds=3600)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 18. GET /v1/players/{player_id}/strike-rotation
+# ---------------------------------------------------------------------------
+
+@router.get("/players/{player_id}/strike-rotation", summary="Strike rotation profile")
+@limiter.limit("60/minute")
+async def get_strike_rotation(
+    request: Request,
+    player_id: int,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Singles %, dot %, non-boundary SR, and rotation score."""
+    fmt = format.upper()
+    ck = cache_key("player_strike_rotation", player_id, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    rows = (
+        client.table("deliveries")
+        .select("runs_batter,extras_type,match_id")
+        .eq("striker_id", player_id)
+        .limit(6000)
+        .execute()
+        .data or []
+    )
+    if rows:
+        match_ids = {d["match_id"] for d in rows if d.get("match_id")}
+        allowed = _fmt_allowed(client, match_ids, fmt)
+        rows = [d for d in rows if d.get("match_id") in allowed]
+
+    balls = [d for d in rows if d.get("extras_type") not in ("wides",)]
+    n = len(balls)
+    if n < 10:
+        result = {"player_id": player_id, "format": fmt, "insufficient_data": True, "balls": n}
+        cache_set(ck, result, ttl_seconds=3600)
+        return result
+
+    singles = sum(1 for d in balls if (d.get("runs_batter") or 0) == 1)
+    dots = sum(1 for d in balls if (d.get("runs_batter") or 0) == 0)
+    boundaries = sum(1 for d in balls if (d.get("runs_batter") or 0) in (4, 6))
+    nb_balls = [d for d in balls if (d.get("runs_batter") or 0) not in (4, 6)]
+    nb_runs = sum(d.get("runs_batter") or 0 for d in nb_balls)
+
+    singles_pct = round(singles / n, 2)
+    dot_pct = round(dots / n, 2)
+    boundary_pct = round(boundaries / n, 2)
+    non_boundary_sr = round(nb_runs / len(nb_balls) * 100, 2) if nb_balls else 0.0
+    rotation_score = round(max(0.0, min(10.0, (singles / n) * 7 + (1 - dots / n) * 3)), 2)
+
+    if singles / n > 0.4:
+        archetype = "rotator"
+    elif boundaries / n > 0.18 and singles / n < 0.3:
+        archetype = "boundary_reliant"
+    elif dots / n > 0.5:
+        archetype = "blocker"
+    else:
+        archetype = "balanced"
+
+    result = {
+        "player_id": player_id,
+        "format": fmt,
+        "balls": n,
+        "singles_pct": singles_pct,
+        "dot_pct": dot_pct,
+        "boundary_pct": boundary_pct,
+        "non_boundary_sr": non_boundary_sr,
+        "rotation_score": rotation_score,
+        "archetype": archetype,
+    }
+    cache_set(ck, result, ttl_seconds=3600)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 19. GET /v1/players/{player_id}/six-map
+# ---------------------------------------------------------------------------
+
+@router.get("/players/{player_id}/six-map", summary="Six-hitting power profile")
+@limiter.limit("60/minute")
+async def get_six_map(
+    request: Request,
+    player_id: int,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Six rate, sixes per innings, and six distribution by phase."""
+    fmt = format.upper()
+    ck = cache_key("player_six_map", player_id, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    rows = (
+        client.table("deliveries")
+        .select("runs_batter,over_ball,extras_type,match_id")
+        .eq("striker_id", player_id)
+        .limit(6000)
+        .execute()
+        .data or []
+    )
+    if rows:
+        match_ids = {d["match_id"] for d in rows if d.get("match_id")}
+        allowed = _fmt_allowed(client, match_ids, fmt)
+        rows = [d for d in rows if d.get("match_id") in allowed]
+
+    balls = [d for d in rows if d.get("extras_type") not in ("wides",)]
+    n = len(balls)
+    if n < 10:
+        result = {"player_id": player_id, "format": fmt, "insufficient_data": True, "balls": n}
+        cache_set(ck, result, ttl_seconds=3600)
+        return result
+
+    pp_cut, mid_cut = (6.7, 15.7) if fmt == "T20" else (10.7, 40.7)
+    phases = {"powerplay": 0, "middle": 0, "death": 0}
+    total_sixes = 0
+    for d in balls:
+        if (d.get("runs_batter") or 0) == 6:
+            total_sixes += 1
+            ob = float(d.get("over_ball") or 0)
+            if ob < pp_cut:
+                phases["powerplay"] += 1
+            elif ob < mid_cut:
+                phases["middle"] += 1
+            else:
+                phases["death"] += 1
+
+    innings = len({d["match_id"] for d in balls if d.get("match_id")})
+    six_rate = round(total_sixes / n * 100, 2)
+    sixes_per_innings = round(total_sixes / innings, 2) if innings else 0.0
+    dist = {
+        k: {"count": v, "pct": round(v / total_sixes, 2) if total_sixes else 0.0}
+        for k, v in phases.items()
+    }
+    dominant = max(phases, key=phases.get) if total_sixes else None
+    power_rating = round(min(10.0, six_rate / 5.0 * 10), 2)
+
+    result = {
+        "player_id": player_id,
+        "format": fmt,
+        "total_sixes": total_sixes,
+        "six_rate": six_rate,
+        "sixes_per_innings": sixes_per_innings,
+        "six_phase_distribution": dist,
+        "dominant_six_phase": dominant,
+        "power_rating": power_rating,
+    }
+    cache_set(ck, result, ttl_seconds=3600)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 20. GET /v1/players/{player_id}/workload
+# ---------------------------------------------------------------------------
+
+@router.get("/players/{player_id}/workload", summary="Bowler workload and fatigue signal")
+@limiter.limit("60/minute")
+async def get_workload(
+    request: Request,
+    player_id: int,
+    format: str = Query(default=""),
+    days: int = Query(default=30, ge=1, le=365),
+    _key_id: str = Depends(require_api_key),
+):
+    """Recent bowling workload over N days with an economy-trend fatigue signal."""
+    from datetime import date, timedelta
+    fmt = format.upper()
+    ck = cache_key("player_workload", player_id, fmt, days)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    from collections import defaultdict
+    client = get_client()
+
+    rows = (
+        client.table("deliveries")
+        .select("runs_total,extras_type,match_id")
+        .eq("bowler_id", player_id)
+        .limit(8000)
+        .execute()
+        .data or []
+    )
+    if not rows:
+        result = {"player_id": player_id, "insufficient_data": True, "total_balls_bowled": 0}
+        cache_set(ck, result, ttl_seconds=1800)
+        return result
+
+    match_ids = list({d["match_id"] for d in rows if d.get("match_id")})[:500]
+    m_rows = (
+        client.table("matches")
+        .select("match_id,match_date,leagues(format)")
+        .in_("match_id", match_ids)
+        .execute()
+        .data or []
+    )
+    cutoff = date.today() - timedelta(days=days)
+    match_date: dict = {}
+    for m in m_rows:
+        if fmt:
+            li = m.get("leagues") or {}
+            if isinstance(li, list):
+                li = li[0] if li else {}
+            if str(li.get("format", "")).upper() != fmt:
+                continue
+        d = m.get("match_date")
+        if d:
+            try:
+                dt = date.fromisoformat(str(d)[:10])
+            except ValueError:
+                continue
+            if dt >= cutoff:
+                match_date[m["match_id"]] = dt
+
+    recent = [d for d in rows if d.get("match_id") in match_date]
+    if not recent:
+        result = {"player_id": player_id, "days": days, "insufficient_data": True,
+                  "total_balls_bowled": 0, "matches_bowled": 0}
+        cache_set(ck, result, ttl_seconds=1800)
+        return result
+
+    by_match: dict = defaultdict(list)
+    for d in recent:
+        by_match[d["match_id"]].append(d)
+
+    def _legal(dels):
+        return [x for x in dels if x.get("extras_type") not in ("wides", "no-balls", "noballs")]
+
+    total_balls = sum(len(_legal(v)) for v in by_match.values())
+    matches_bowled = len(by_match)
+    dates_sorted = sorted(set(match_date.values()))
+    days_active = (dates_sorted[-1] - dates_sorted[0]).days + 1 if dates_sorted else 0
+    balls_per_match = round(total_balls / matches_bowled, 2) if matches_bowled else 0.0
+
+    back_to_back = 0
+    for i in range(1, len(dates_sorted)):
+        if (dates_sorted[i] - dates_sorted[i - 1]).days <= 2:
+            back_to_back += 1
+
+    # first-half vs second-half economy
+    mid_date = dates_sorted[len(dates_sorted) // 2] if dates_sorted else None
+    fh_runs = fh_balls = sh_runs = sh_balls = 0
+    for mid, dels in by_match.items():
+        legal = _legal(dels)
+        runs = sum(x.get("runs_total") or 0 for x in dels)
+        if mid_date and match_date[mid] < mid_date:
+            fh_runs += runs
+            fh_balls += len(legal)
+        else:
+            sh_runs += runs
+            sh_balls += len(legal)
+    fh_eco = round(fh_runs / fh_balls * 6, 2) if fh_balls else 0.0
+    sh_eco = round(sh_runs / sh_balls * 6, 2) if sh_balls else 0.0
+    economy_delta = round(sh_eco - fh_eco, 2)
+
+    if total_balls > 180:
+        workload_level = "high"
+    elif total_balls > 90:
+        workload_level = "moderate"
+    else:
+        workload_level = "light"
+    fatigue_signal = "elevated" if (economy_delta > 1.0 and workload_level == "high") else "normal"
+
+    result = {
+        "player_id": player_id,
+        "days": days,
+        "total_balls_bowled": total_balls,
+        "matches_bowled": matches_bowled,
+        "days_active": days_active,
+        "balls_per_match": balls_per_match,
+        "back_to_back_matches": back_to_back,
+        "first_half_economy": fh_eco,
+        "second_half_economy": sh_eco,
+        "economy_delta": economy_delta,
+        "workload_level": workload_level,
+        "fatigue_signal": fatigue_signal,
+    }
+    cache_set(ck, result, ttl_seconds=1800)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 21. GET /v1/players/{player_id}/ball-age-split
+# ---------------------------------------------------------------------------
+
+@router.get("/players/{player_id}/ball-age-split", summary="New-ball vs old-ball bowling")
+@limiter.limit("60/minute")
+async def get_ball_age_split(
+    request: Request,
+    player_id: int,
+    format: str = Query(default="T20"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Bowling effectiveness by ball age: new, middle, and old (death)."""
+    fmt = format.upper()
+    ck = cache_key("player_ball_age_split", player_id, fmt)
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    rows = (
+        client.table("deliveries")
+        .select("runs_total,wicket_type,over_ball,extras_type,match_id")
+        .eq("bowler_id", player_id)
+        .limit(8000)
+        .execute()
+        .data or []
+    )
+    if rows:
+        match_ids = {d["match_id"] for d in rows if d.get("match_id")}
+        allowed = _fmt_allowed(client, match_ids, fmt)
+        rows = [d for d in rows if d.get("match_id") in allowed]
+
+    if not rows:
+        result = {"player_id": player_id, "format": fmt, "insufficient_data": True}
+        cache_set(ck, result, ttl_seconds=3600)
+        return result
+
+    new_cut, old_cut = (6.0, 15.0) if fmt == "T20" else (10.0, 40.0)
+    segs = {k: {"balls": 0, "runs": 0, "wickets": 0} for k in ("new_ball", "middle", "old_ball")}
+
+    for d in rows:
+        ob = float(d.get("over_ball") or 0)
+        if ob < new_cut:
+            seg = "new_ball"
+        elif ob >= old_cut:
+            seg = "old_ball"
+        else:
+            seg = "middle"
+        segs[seg]["runs"] += d.get("runs_total") or 0
+        if d.get("extras_type") not in ("wides", "no-balls", "noballs"):
+            segs[seg]["balls"] += 1
+        if d.get("wicket_type"):
+            segs[seg]["wickets"] += 1
+
+    out = {}
+    for seg, v in segs.items():
+        b = v["balls"]
+        out[seg] = {
+            "balls": b,
+            "runs": v["runs"],
+            "wickets": v["wickets"],
+            "economy": round(v["runs"] / b * 6, 2) if b else 0.0,
+            "wickets_per_over": round(v["wickets"] / (b / 6), 2) if b else 0.0,
+        }
+
+    eligible = {s: out[s]["economy"] for s in out if out[s]["balls"] >= 12}
+    best_phase = min(eligible, key=eligible.get) if eligible else None
+    specialist = {
+        "new_ball": "new_ball_specialist",
+        "old_ball": "death_specialist",
+        "middle": "first_change",
+    }.get(best_phase, "utility")
+
+    result = {
+        "player_id": player_id,
+        "format": fmt,
+        "new_ball": out["new_ball"],
+        "middle": out["middle"],
+        "old_ball": out["old_ball"],
+        "best_phase": best_phase,
+        "specialist_type": specialist,
+    }
+    cache_set(ck, result, ttl_seconds=3600)
+    return result

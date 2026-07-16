@@ -258,3 +258,142 @@ async def get_optimal_bowler(
 
     cache_set(ck, result.model_dump(), ttl_seconds=1800)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Response model — Partnership
+# ---------------------------------------------------------------------------
+
+
+class PartnershipResponse(BaseModel):
+    batter1_id: int
+    batter1_name: str | None
+    batter2_id: int
+    batter2_name: str | None
+    format: str | None
+    partnerships: int
+    total_runs: int
+    total_balls: int
+    combined_sr: float
+    runs_per_partnership: float
+    best_partnership: int
+    chemistry_delta: float
+    verdict: str
+
+
+# ---------------------------------------------------------------------------
+# Endpoint: Partnership chemistry
+# ---------------------------------------------------------------------------
+
+
+@router.get(
+    "/matchups/partnership",
+    response_model=PartnershipResponse,
+    summary="Batting partnership chemistry between two players",
+)
+@limiter.limit("60/minute")
+async def get_partnership(
+    request: Request,
+    batter1_id: int = Query(..., description="First batter's player ID"),
+    batter2_id: int = Query(..., description="Second batter's player ID"),
+    format: str | None = Query(None, description="Optional format filter: `T20` or `ODI`"),
+    _key_id: str = Depends(require_api_key),
+):
+    """Combined scoring and chemistry when two batters are at the crease together."""
+    fmt = format.upper() if format else None
+    ck = cache_key("partnership", batter1_id, batter2_id, fmt or "")
+    cached = cache_get(ck)
+    if cached:
+        return cached
+
+    from cricveda_ingest.db import get_client
+    client = get_client()
+
+    # Deliveries where both are at the crease (either as striker/non-striker)
+    d1 = (client.table("deliveries")
+          .select("runs_total,extras_type,match_id")
+          .eq("striker_id", batter1_id).eq("non_striker_id", batter2_id)
+          .limit(4000).execute().data or [])
+    d2 = (client.table("deliveries")
+          .select("runs_total,extras_type,match_id")
+          .eq("striker_id", batter2_id).eq("non_striker_id", batter1_id)
+          .limit(4000).execute().data or [])
+    together = d1 + d2
+
+    # Optional format filter
+    if fmt and together:
+        match_ids = list({d["match_id"] for d in together if d.get("match_id")})[:500]
+        lr = (client.table("matches").select("match_id,leagues(format)")
+              .in_("match_id", match_ids).execute().data or [])
+        allowed = set()
+        for m in lr:
+            li = m.get("leagues") or {}
+            if isinstance(li, list):
+                li = li[0] if li else {}
+            if str(li.get("format", "")).upper() == fmt:
+                allowed.add(m["match_id"])
+        together = [d for d in together if d.get("match_id") in allowed]
+
+    # names
+    names = {}
+    nr = (client.table("player_meta").select("player_id,name")
+          .in_("player_id", [batter1_id, batter2_id]).execute().data or [])
+    for r in nr:
+        names[r["player_id"]] = r.get("name")
+
+    _empty = PartnershipResponse(
+        batter1_id=batter1_id, batter1_name=names.get(batter1_id),
+        batter2_id=batter2_id, batter2_name=names.get(batter2_id), format=fmt,
+        partnerships=0, total_runs=0, total_balls=0, combined_sr=0.0,
+        runs_per_partnership=0.0, best_partnership=0, chemistry_delta=0.0, verdict="insufficient_data",
+    )
+    if not together:
+        cache_set(ck, _empty.model_dump(), ttl_seconds=3600)
+        return _empty
+
+    from collections import defaultdict
+    by_match: dict = defaultdict(int)
+    total_runs = 0
+    total_balls = 0
+    for d in together:
+        total_runs += d.get("runs_total") or 0
+        if d.get("extras_type") not in ("wides", "no-balls", "noballs"):
+            total_balls += 1
+        by_match[d["match_id"]] += d.get("runs_total") or 0
+
+    partnerships = len(by_match)
+    combined_sr = round(total_runs / total_balls * 100, 2) if total_balls else 0.0
+    runs_per_partnership = round(total_runs / partnerships, 2) if partnerships else 0.0
+    best_partnership = max(by_match.values()) if by_match else 0
+
+    # Solo baselines
+    def _solo_sr(pid):
+        rows = (client.table("deliveries").select("runs_batter,extras_type")
+                .eq("striker_id", pid).limit(6000).execute().data or [])
+        balls = [d for d in rows if d.get("extras_type") not in ("wides",)]
+        runs = sum(d.get("runs_batter") or 0 for d in balls)
+        return (runs / len(balls) * 100) if balls else 0.0
+
+    solo1 = _solo_sr(batter1_id)
+    solo2 = _solo_sr(batter2_id)
+    baseline = (solo1 + solo2) / 2 if (solo1 or solo2) else 0.0
+    chemistry_delta = round(combined_sr - baseline, 2)
+
+    if chemistry_delta > 10 and partnerships >= 5:
+        verdict = "elite_pairing"
+    elif chemistry_delta < -10:
+        verdict = "underwhelming"
+    elif partnerships >= 5:
+        verdict = "solid"
+    else:
+        verdict = "average"
+
+    result = PartnershipResponse(
+        batter1_id=batter1_id, batter1_name=names.get(batter1_id),
+        batter2_id=batter2_id, batter2_name=names.get(batter2_id), format=fmt,
+        partnerships=partnerships, total_runs=total_runs, total_balls=total_balls,
+        combined_sr=combined_sr, runs_per_partnership=runs_per_partnership,
+        best_partnership=best_partnership, chemistry_delta=chemistry_delta, verdict=verdict,
+    )
+    cache_set(ck, result.model_dump(), ttl_seconds=3600)
+    return result
