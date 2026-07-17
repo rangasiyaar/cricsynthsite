@@ -67,23 +67,33 @@
                 <li><a href="#get-format-switch"><span class="method-badge">GET</span> /players/{id}/format-switch-impact</a></li>
                 <li><a href="#get-spell"><span class="method-badge">GET</span> /players/{id}/spell-analysis</a></li>
                 <li><a href="#get-scoring-zones"><span class="method-badge">GET</span> /players/{id}/scoring-zones</a></li>
+                <li><a href="#get-chase-master"><span class="method-badge">GET</span> /players/{id}/chase-master</a></li>
+                <li><a href="#get-strike-rotation"><span class="method-badge">GET</span> /players/{id}/strike-rotation</a></li>
+                <li><a href="#get-six-map"><span class="method-badge">GET</span> /players/{id}/six-map</a></li>
+                <li><a href="#get-workload"><span class="method-badge">GET</span> /players/{id}/workload</a></li>
+                <li><a href="#get-ball-age-split"><span class="method-badge">GET</span> /players/{id}/ball-age-split</a></li>
 
                 <li class="sidebar-category-label">Venues</li>
                 <li><a href="#get-toss-intel"><span class="method-badge">GET</span> /venues/{id}/toss-intelligence</a></li>
                 <li><a href="#get-day-night"><span class="method-badge">GET</span> /venues/{id}/day-night-analysis</a></li>
+                <li><a href="#get-par-score"><span class="method-badge">GET</span> /venues/{id}/par-score</a></li>
 
                 <li class="sidebar-category-label">Teams</li>
                 <li><a href="#get-batting-depth"><span class="method-badge">GET</span> /teams/{name}/batting-depth</a></li>
+                <li><a href="#get-comeback-index"><span class="method-badge">GET</span> /teams/{name}/comeback-index</a></li>
+                <li><a href="#get-rivalry"><span class="method-badge">GET</span> /teams/{a}/rivalry/{b}</a></li>
 
                 <li class="sidebar-category-label">Matches</li>
                 <li><a href="#get-pitch-reading"><span class="method-badge">GET</span> /matches/{id}/pitch-reading</a></li>
                 <li><a href="#get-momentum-curve"><span class="method-badge">GET</span> /matches/{id}/momentum-curve</a></li>
+                <li><a href="#get-turning-points"><span class="method-badge">GET</span> /matches/{id}/turning-points</a></li>
 
                 <li class="sidebar-category-label">Leaderboards</li>
                 <li><a href="#get-final-over"><span class="method-badge">GET</span> /leagues/{id}/final-over-specialists</a></li>
 
                 <li class="sidebar-category-label">Matchups</li>
                 <li><a href="#get-optimal-bowler"><span class="method-badge">GET</span> /matchups/optimal-bowler</a></li>
+                <li><a href="#get-partnership"><span class="method-badge">GET</span> /matchups/partnership</a></li>
 
 
             </ul>
@@ -1263,6 +1273,445 @@ X-RateLimit-Reset: 1735689600</pre></div>
   ],
   <span class="str">"recommendation"</span>: <span class="str">"Jasprit Bumrah is the best choice with 5 dismissals in 48 balls (one every 9.6 balls) and an SR conceded of just 79.2."</span>,
   <span class="str">"caveat"</span>: <span class="kw">null</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ─────────────────── NEW ENDPOINTS ─────────────────── -->
+
+        <!-- Chase Master -->
+        <section id="get-chase-master" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/chase-master</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/chase-master</span>
+                    <span class="endpoint-summary">Record in run chases</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How a batter performs specifically when chasing. Compares chase strike rate against overall SR, plus finishing rate in successful chases and a chaser verdict.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/chase-master?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"chase_innings"</span>: <span class="num">42</span>,
+  <span class="str">"overall_sr"</span>: <span class="num">138.6</span>,
+  <span class="str">"chase_sr"</span>: <span class="num">146.2</span>,
+  <span class="str">"chase_avg"</span>: <span class="num">48.5</span>,
+  <span class="str">"chases_finished_won"</span>: <span class="num">11</span>,
+  <span class="str">"finishing_rate"</span>: <span class="num">0.45</span>,
+  <span class="str">"verdict"</span>: <span class="str">"elite_chaser"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Strike Rotation -->
+        <section id="get-strike-rotation" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/strike-rotation</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/strike-rotation</span>
+                    <span class="endpoint-summary">Strike rotation profile</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How well a batter keeps the scoreboard ticking. Breaks down singles %, dot %, boundary %, and non-boundary strike rate into an overall rotation score and archetype.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/strike-rotation?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"balls"</span>: <span class="num">2840</span>,
+  <span class="str">"singles_pct"</span>: <span class="num">0.42</span>,
+  <span class="str">"dot_pct"</span>: <span class="num">0.34</span>,
+  <span class="str">"boundary_pct"</span>: <span class="num">0.15</span>,
+  <span class="str">"non_boundary_sr"</span>: <span class="num">92.4</span>,
+  <span class="str">"rotation_score"</span>: <span class="num">7.8</span>,
+  <span class="str">"archetype"</span>: <span class="str">"rotator"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Six Map -->
+        <section id="get-six-map" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/six-map</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/six-map</span>
+                    <span class="endpoint-summary">Six-hitting power profile</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>A batter's six-hitting profile, including total sixes, six rate, sixes per innings, and how those sixes are distributed across powerplay, middle, and death phases.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/253802/six-map?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">253802</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"total_sixes"</span>: <span class="num">184</span>,
+  <span class="str">"six_rate"</span>: <span class="num">3.2</span>,
+  <span class="str">"sixes_per_innings"</span>: <span class="num">1.6</span>,
+  <span class="str">"six_phase_distribution"</span>: {
+    <span class="str">"powerplay"</span>: {<span class="str">"count"</span>: <span class="num">38</span>, <span class="str">"pct"</span>: <span class="num">0.21</span>},
+    <span class="str">"middle"</span>:    {<span class="str">"count"</span>: <span class="num">72</span>, <span class="str">"pct"</span>: <span class="num">0.39</span>},
+    <span class="str">"death"</span>:     {<span class="str">"count"</span>: <span class="num">74</span>, <span class="str">"pct"</span>: <span class="num">0.40</span>}
+  },
+  <span class="str">"dominant_six_phase"</span>: <span class="str">"death"</span>,
+  <span class="str">"power_rating"</span>: <span class="num">6.4</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Workload -->
+        <section id="get-workload" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/workload</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/workload</span>
+                    <span class="endpoint-summary">Bowler workload and fatigue</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Recent bowling workload and fatigue signals over a rolling window: balls bowled, back-to-back matches, and the economy delta between the first and second half of the window.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                            <tr><td class="param-name">days</td><td class="param-type">query</td><td class="param-type">integer</td><td class="param-optional">optional</td><td class="param-desc">Lookback window in days (default 30)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/277916/workload?days=30"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">277916</span>,
+  <span class="str">"days"</span>: <span class="num">30</span>,
+  <span class="str">"total_balls_bowled"</span>: <span class="num">192</span>,
+  <span class="str">"matches_bowled"</span>: <span class="num">8</span>,
+  <span class="str">"days_active"</span>: <span class="num">26</span>,
+  <span class="str">"balls_per_match"</span>: <span class="num">24.0</span>,
+  <span class="str">"back_to_back_matches"</span>: <span class="num">3</span>,
+  <span class="str">"first_half_economy"</span>: <span class="num">6.4</span>,
+  <span class="str">"second_half_economy"</span>: <span class="num">7.8</span>,
+  <span class="str">"economy_delta"</span>: <span class="num">1.4</span>,
+  <span class="str">"workload_level"</span>: <span class="str">"high"</span>,
+  <span class="str">"fatigue_signal"</span>: <span class="str">"elevated"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Ball Age Split -->
+        <section id="get-ball-age-split" class="docs-section">
+            <h2 class="docs-section-title">/players/{player_id}/ball-age-split</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/players/{player_id}/ball-age-split</span>
+                    <span class="endpoint-summary">New-ball vs old-ball bowling</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>A bowler's effectiveness split by ball age: new ball, middle overs, and old ball. Surfaces economy and wickets per over in each phase and a specialist classification.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">player_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/players/277916/ball-age-split?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"player_id"</span>: <span class="num">277916</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"new_ball"</span>: {<span class="str">"balls"</span>: <span class="num">420</span>, <span class="str">"runs"</span>: <span class="num">448</span>, <span class="str">"wickets"</span>: <span class="num">22</span>, <span class="str">"economy"</span>: <span class="num">6.4</span>, <span class="str">"wickets_per_over"</span>: <span class="num">0.31</span>},
+  <span class="str">"middle"</span>:   {<span class="str">"balls"</span>: <span class="num">180</span>, <span class="str">"runs"</span>: <span class="num">216</span>, <span class="str">"wickets"</span>: <span class="num">6</span>,  <span class="str">"economy"</span>: <span class="num">7.2</span>, <span class="str">"wickets_per_over"</span>: <span class="num">0.20</span>},
+  <span class="str">"old_ball"</span>: {<span class="str">"balls"</span>: <span class="num">360</span>, <span class="str">"runs"</span>: <span class="num">432</span>, <span class="str">"wickets"</span>: <span class="num">28</span>, <span class="str">"economy"</span>: <span class="num">7.2</span>, <span class="str">"wickets_per_over"</span>: <span class="num">0.47</span>},
+  <span class="str">"best_phase"</span>: <span class="str">"new_ball"</span>,
+  <span class="str">"specialist_type"</span>: <span class="str">"new_ball_specialist"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Par Score -->
+        <section id="get-par-score" class="docs-section">
+            <h2 class="docs-section-title">/venues/{venue_id}/par-score</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/venues/{venue_id}/par-score</span>
+                    <span class="endpoint-summary">Over-by-over par progression</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Over-by-over par progression for a venue, showing the expected first-innings total at key over marks plus the winning threshold derived from historical results.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">venue_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Venue ID</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/venues/2/par-score?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"venue_id"</span>: <span class="num">2</span>,
+  <span class="str">"venue_name"</span>: <span class="str">"Wankhede Stadium"</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"matches_analyzed"</span>: <span class="num">64</span>,
+  <span class="str">"par_progression"</span>: [
+    {<span class="str">"over"</span>: <span class="num">6</span>,  <span class="str">"par_runs"</span>: <span class="num">52.0</span>},
+    {<span class="str">"over"</span>: <span class="num">10</span>, <span class="str">"par_runs"</span>: <span class="num">84.0</span>},
+    {<span class="str">"over"</span>: <span class="num">15</span>, <span class="str">"par_runs"</span>: <span class="num">128.0</span>},
+    {<span class="str">"over"</span>: <span class="num">20</span>, <span class="str">"par_runs"</span>: <span class="num">178.0</span>}
+  ],
+  <span class="str">"avg_first_innings_total"</span>: <span class="num">176.4</span>,
+  <span class="str">"winning_threshold"</span>: <span class="num">182.0</span>,
+  <span class="str">"confidence"</span>: <span class="str">"high"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Comeback Index -->
+        <section id="get-comeback-index" class="docs-section">
+            <h2 class="docs-section-title">/teams/{team_name}/comeback-index</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/teams/{team_name}/comeback-index</span>
+                    <span class="endpoint-summary">Win rate from losing positions</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>How often a team wins from a losing position. Measures the share of matches where the team was behind at a key checkpoint yet went on to win, as a resilience rating.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">team_name</td><td class="param-type">path</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">URL-encoded team name (e.g. <code>India</code>)</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                            <tr><td class="param-name">season</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc">Filter to a specific season (e.g. <code>2024</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/teams/India/comeback-index?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"team_name"</span>: <span class="str">"India"</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"season"</span>: <span class="kw">null</span>,
+  <span class="str">"matches_analyzed"</span>: <span class="num">180</span>,
+  <span class="str">"losing_position_matches"</span>: <span class="num">48</span>,
+  <span class="str">"comebacks_won"</span>: <span class="num">19</span>,
+  <span class="str">"comeback_index"</span>: <span class="num">0.4</span>,
+  <span class="str">"resilience"</span>: <span class="str">"elite"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Rivalry -->
+        <section id="get-rivalry" class="docs-section">
+            <h2 class="docs-section-title">/teams/{team1_name}/rivalry/{team2_name}</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/teams/{team1_name}/rivalry/{team2_name}</span>
+                    <span class="endpoint-summary">Head-to-head rivalry record</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Head-to-head rivalry record between two teams: total meetings, win split, recent results, current streak, and the dominant team overall.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">team1_name</td><td class="param-type">path</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">URL-encoded team name (e.g. <code>India</code>)</td></tr>
+                            <tr><td class="param-name">team2_name</td><td class="param-type">path</td><td class="param-type">string</td><td class="param-required">required</td><td class="param-desc">URL-encoded team name (e.g. <code>Australia</code>)</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">query</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code> (default <code>T20</code>)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/teams/India/rivalry/Australia?format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"team1_name"</span>: <span class="str">"India"</span>,
+  <span class="str">"team2_name"</span>: <span class="str">"Australia"</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"total_meetings"</span>: <span class="num">32</span>,
+  <span class="str">"team1_wins"</span>: <span class="num">18</span>,
+  <span class="str">"team2_wins"</span>: <span class="num">13</span>,
+  <span class="str">"no_results"</span>: <span class="num">1</span>,
+  <span class="str">"team1_win_pct"</span>: <span class="num">0.56</span>,
+  <span class="str">"last_5_results"</span>: [
+    {<span class="str">"match_date"</span>: <span class="str">"2026-06-14"</span>, <span class="str">"winner"</span>: <span class="str">"India"</span>},
+    {<span class="str">"match_date"</span>: <span class="str">"2026-03-02"</span>, <span class="str">"winner"</span>: <span class="str">"Australia"</span>}
+  ],
+  <span class="str">"current_streak"</span>: <span class="str">"India won last 2"</span>,
+  <span class="str">"dominant_team"</span>: <span class="str">"India"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Partnership -->
+        <section id="get-partnership" class="docs-section">
+            <h2 class="docs-section-title">/matchups/partnership</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matchups/partnership</span>
+                    <span class="endpoint-summary">Batting partnership chemistry</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>Chemistry between two batters at the crease together: total partnerships, combined strike rate, best stand, and a chemistry delta versus their individual baselines.</p>
+
+                    <p class="response-label">Query parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">batter1_id</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID of the first batter</td></tr>
+                            <tr><td class="param-name">batter2_id</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">ESPNcricinfo player ID of the second batter</td></tr>
+                            <tr><td class="param-name">format</td><td class="param-type">string</td><td class="param-optional">optional</td><td class="param-desc"><code>T20</code> or <code>ODI</code></td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matchups/partnership?batter1_id=253802&amp;batter2_id=34102&amp;format=T20"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"batter1_id"</span>: <span class="num">253802</span>,
+  <span class="str">"batter1_name"</span>: <span class="str">"Virat Kohli"</span>,
+  <span class="str">"batter2_id"</span>: <span class="num">34102</span>,
+  <span class="str">"batter2_name"</span>: <span class="str">"Rohit Sharma"</span>,
+  <span class="str">"format"</span>: <span class="str">"T20"</span>,
+  <span class="str">"partnerships"</span>: <span class="num">38</span>,
+  <span class="str">"total_runs"</span>: <span class="num">1240</span>,
+  <span class="str">"total_balls"</span>: <span class="num">892</span>,
+  <span class="str">"combined_sr"</span>: <span class="num">139.0</span>,
+  <span class="str">"runs_per_partnership"</span>: <span class="num">32.6</span>,
+  <span class="str">"best_partnership"</span>: <span class="num">143</span>,
+  <span class="str">"chemistry_delta"</span>: <span class="num">12.4</span>,
+  <span class="str">"verdict"</span>: <span class="str">"elite_pairing"</span>
+}</pre></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Turning Points -->
+        <section id="get-turning-points" class="docs-section">
+            <h2 class="docs-section-title">/matches/{match_id}/turning-points</h2>
+
+            <details class="endpoint-card" open>
+                <summary class="endpoint-header">
+                    <span class="method-get">GET</span>
+                    <span class="endpoint-path">/v1/matches/{match_id}/turning-points</span>
+                    <span class="endpoint-summary">Biggest momentum-swing overs</span>
+                </summary>
+                <div class="endpoint-body">
+                    <p>The overs that swung a historical match the most, ranked by win-probability shift, with the key event and a plain-language description of each turning point.</p>
+
+                    <p class="response-label">Parameters</p>
+                    <table class="params-table">
+                        <thead><tr><th>Name</th><th>In</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td class="param-name">match_id</td><td class="param-type">path</td><td class="param-type">integer</td><td class="param-required">required</td><td class="param-desc">Match ID</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="response-label">Example request</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre><span class="kw">curl</span> <span class="str">"https://api.cricsynthesis.in/v1/matches/12345/turning-points"</span> \
+  -H <span class="str">"X-API-Key: cv_live_your_key_here"</span></pre></div>
+
+                    <p class="response-label">Example response</p>
+                    <div class="code-panel active" style="border-radius:var(--radius-md)"><pre>{
+  <span class="str">"match_id"</span>: <span class="num">12345</span>,
+  <span class="str">"team1"</span>: <span class="str">"India"</span>,
+  <span class="str">"team2"</span>: <span class="str">"Australia"</span>,
+  <span class="str">"winner"</span>: <span class="str">"India"</span>,
+  <span class="str">"turning_points"</span>: [
+    {<span class="str">"innings"</span>: <span class="num">2</span>, <span class="str">"over"</span>: <span class="num">17</span>, <span class="str">"wp_before"</span>: <span class="num">0.52</span>, <span class="str">"wp_after"</span>: <span class="num">0.71</span>, <span class="str">"wp_swing"</span>: <span class="num">0.19</span>, <span class="str">"key_event"</span>: {<span class="str">"striker_id"</span>: <span class="num">253802</span>, <span class="str">"bowler_id"</span>: <span class="num">277916</span>, <span class="str">"runs"</span>: <span class="num">18</span>, <span class="str">"wicket_type"</span>: <span class="kw">null</span>}, <span class="str">"description"</span>: <span class="str">"Over 17 (innings 2): 18 runs swung win probability +0.19 toward the chasing side."</span>}
+  ]
 }</pre></div>
                 </div>
             </details>
