@@ -200,6 +200,81 @@ const MOCKS = {
     ],
     recommendation: 'Jasprit Bumrah is the best choice — 5 dismissals in 48 balls (1 every 9.6 balls) with SR conceded of just 79.2.',
     caveat: null
+  },
+  'chase-master': {
+    player_id: 253802, format: 'T20', chase_innings: 42, overall_sr: 138.6,
+    chase_sr: 146.2, chase_avg: 48.5, chases_finished_won: 11,
+    finishing_rate: 0.45, verdict: 'elite_chaser'
+  },
+  'strike-rotation': {
+    player_id: 253802, format: 'T20', balls: 2840, singles_pct: 0.42,
+    dot_pct: 0.34, boundary_pct: 0.15, non_boundary_sr: 92.4,
+    rotation_score: 7.8, archetype: 'rotator'
+  },
+  'six-map': {
+    player_id: 253802, format: 'T20', total_sixes: 184, six_rate: 3.2,
+    sixes_per_innings: 1.6,
+    six_phase_distribution: {
+      powerplay: { count: 38, pct: 0.21 },
+      middle:    { count: 72, pct: 0.39 },
+      death:     { count: 74, pct: 0.40 }
+    },
+    dominant_six_phase: 'death', power_rating: 6.4
+  },
+  'workload': {
+    player_id: 277916, days: 30, total_balls_bowled: 192, matches_bowled: 8,
+    days_active: 26, balls_per_match: 24.0, back_to_back_matches: 3,
+    first_half_economy: 6.4, second_half_economy: 7.8, economy_delta: 1.4,
+    workload_level: 'high', fatigue_signal: 'elevated'
+  },
+  'ball-age-split': {
+    player_id: 277916, format: 'T20',
+    new_ball: { balls: 420, runs: 448, wickets: 22, economy: 6.4, wickets_per_over: 0.31 },
+    middle:   { balls: 180, runs: 216, wickets: 6,  economy: 7.2, wickets_per_over: 0.20 },
+    old_ball: { balls: 360, runs: 432, wickets: 28, economy: 7.2, wickets_per_over: 0.47 },
+    best_phase: 'new_ball', specialist_type: 'new_ball_specialist'
+  },
+  'comeback-index': {
+    team_name: 'India', format: 'T20', season: null, matches_analyzed: 180,
+    losing_position_matches: 48, comebacks_won: 19, comeback_index: 0.4,
+    resilience: 'elite'
+  },
+  'rivalry': {
+    team1_name: 'India', team2_name: 'Australia', format: 'T20',
+    total_meetings: 32, team1_wins: 18, team2_wins: 13, no_results: 1,
+    team1_win_pct: 0.56,
+    last_5_results: [
+      { match_date: '2026-06-14', winner: 'India' },
+      { match_date: '2026-03-02', winner: 'Australia' }
+    ],
+    current_streak: 'India won last 2', dominant_team: 'India'
+  },
+  'partnership': {
+    batter1_id: 253802, batter1_name: 'Virat Kohli',
+    batter2_id: 34102,  batter2_name: 'Rohit Sharma', format: 'T20',
+    partnerships: 38, total_runs: 1240, total_balls: 892, combined_sr: 139.0,
+    runs_per_partnership: 32.6, best_partnership: 143, chemistry_delta: 12.4,
+    verdict: 'elite_pairing'
+  },
+  'par-score': {
+    venue_id: 2, venue_name: 'Wankhede Stadium', format: 'T20', matches_analyzed: 64,
+    par_progression: [
+      { over: 6,  par_runs: 52.0 },
+      { over: 10, par_runs: 84.0 },
+      { over: 15, par_runs: 128.0 },
+      { over: 20, par_runs: 178.0 }
+    ],
+    avg_first_innings_total: 176.4, winning_threshold: 182.0, confidence: 'high'
+  },
+  'turning-points': {
+    match_id: 12345, team1: 'India', team2: 'Australia', winner: 'India',
+    turning_points: [
+      {
+        innings: 2, over: 17, wp_before: 0.52, wp_after: 0.71, wp_swing: 0.19,
+        key_event: { striker_id: 253802, bowler_id: 277916, runs: 18, wicket_type: null },
+        description: 'Over 17 (innings 2): 18 runs swung win probability +0.19 toward the chasing side.'
+      }
+    ]
   }
 };
 
@@ -525,6 +600,137 @@ const ENDPOINTS = [
       const q = new URLSearchParams({ batter_id: p.batter_id||253802, bowler_ids: p.bowler_ids||'277916,290716,322890' });
       if (p.format) q.set('format', p.format);
       return `/v1/matchups/optimal-bowler?${q}`;
+    }
+  },
+  // ── Players (new) ──
+  {
+    id: 'chase-master',
+    label: 'Chase Master',
+    path: '/v1/players/{id}/chase-master',
+    mockKey: 'chase-master',
+    params: [
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/players/${p.player_id||253802}/chase-master?format=${p.format||'T20'}`; }
+  },
+  {
+    id: 'strike-rotation',
+    label: 'Strike Rotation',
+    path: '/v1/players/{id}/strike-rotation',
+    mockKey: 'strike-rotation',
+    params: [
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/players/${p.player_id||253802}/strike-rotation?format=${p.format||'T20'}`; }
+  },
+  {
+    id: 'six-map',
+    label: 'Six Map',
+    path: '/v1/players/{id}/six-map',
+    mockKey: 'six-map',
+    params: [
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '253802', default: '253802', desc: 'Player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/players/${p.player_id||253802}/six-map?format=${p.format||'T20'}`; }
+  },
+  {
+    id: 'workload',
+    label: 'Workload',
+    path: '/v1/players/{id}/workload',
+    mockKey: 'workload',
+    params: [
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '277916', default: '277916', desc: 'Player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['','T20','ODI'], default: '', desc: 'Format (optional)' },
+      { name: 'days',      label: 'days',      type: 'number', placeholder: '30', default: '30', min: 7, max: 180, desc: 'Look-back window in days' }
+    ],
+    buildPath(p) {
+      const q = new URLSearchParams();
+      if (p.format) q.set('format', p.format);
+      q.set('days', p.days||30);
+      return `/v1/players/${p.player_id||277916}/workload?${q}`;
+    }
+  },
+  {
+    id: 'ball-age-split',
+    label: 'Ball Age Split',
+    path: '/v1/players/{id}/ball-age-split',
+    mockKey: 'ball-age-split',
+    params: [
+      { name: 'player_id', label: 'player_id', type: 'number', placeholder: '277916', default: '277916', desc: 'Player registry ID' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/players/${p.player_id||277916}/ball-age-split?format=${p.format||'T20'}`; }
+  },
+  // ── Venues (new) ──
+  {
+    id: 'par-score',
+    label: 'Par Score',
+    path: '/v1/venues/{id}/par-score',
+    mockKey: 'par-score',
+    params: [
+      { name: 'venue_id', label: 'venue_id', type: 'number', placeholder: '2',   default: '2',   desc: 'Venue ID' },
+      { name: 'format',   label: 'format',   type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/venues/${p.venue_id||2}/par-score?format=${p.format||'T20'}`; }
+  },
+  // ── Teams (new) ──
+  {
+    id: 'comeback-index',
+    label: 'Comeback Index',
+    path: '/v1/teams/{name}/comeback-index',
+    mockKey: 'comeback-index',
+    params: [
+      { name: 'team_name', label: 'team_name', type: 'text',   placeholder: 'India', default: 'India', desc: 'Team name (URL-encoded)' },
+      { name: 'format',    label: 'format',    type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' },
+      { name: 'season',    label: 'season',    type: 'text',   placeholder: '2024', default: '', desc: 'Season (optional)' }
+    ],
+    buildPath(p) {
+      const q = new URLSearchParams({ format: p.format||'T20' });
+      if (p.season) q.set('season', p.season);
+      return `/v1/teams/${encodeURIComponent(p.team_name||'India')}/comeback-index?${q}`;
+    }
+  },
+  {
+    id: 'rivalry',
+    label: 'Rivalry',
+    path: '/v1/teams/{a}/rivalry/{b}',
+    mockKey: 'rivalry',
+    params: [
+      { name: 'team1_name', label: 'team1_name', type: 'text',   placeholder: 'India',     default: 'India',     desc: 'First team name (URL-encoded)' },
+      { name: 'team2_name', label: 'team2_name', type: 'text',   placeholder: 'Australia', default: 'Australia', desc: 'Second team name (URL-encoded)' },
+      { name: 'format',     label: 'format',     type: 'select', options: ['T20','ODI'], default: 'T20', desc: 'Match format' }
+    ],
+    buildPath(p) { return `/v1/teams/${encodeURIComponent(p.team1_name||'India')}/rivalry/${encodeURIComponent(p.team2_name||'Australia')}?format=${p.format||'T20'}`; }
+  },
+  // ── Matches (new) ──
+  {
+    id: 'turning-points',
+    label: 'Turning Points',
+    path: '/v1/matches/{id}/turning-points',
+    mockKey: 'turning-points',
+    params: [
+      { name: 'match_id', label: 'match_id', type: 'number', placeholder: '12345', default: '12345', desc: 'Historical match ID' }
+    ],
+    buildPath(p) { return `/v1/matches/${p.match_id||12345}/turning-points`; }
+  },
+  // ── Matchups (new) ──
+  {
+    id: 'partnership',
+    label: 'Partnership',
+    path: '/v1/matchups/partnership',
+    mockKey: 'partnership',
+    params: [
+      { name: 'batter1_id', label: 'batter1_id', type: 'number', placeholder: '253802', default: '253802', desc: 'First batter player ID' },
+      { name: 'batter2_id', label: 'batter2_id', type: 'number', placeholder: '34102',  default: '34102',  desc: 'Second batter player ID' },
+      { name: 'format',     label: 'format',     type: 'select', options: ['','T20','ODI'], default: 'T20', desc: 'Format (optional)' }
+    ],
+    buildPath(p) {
+      const q = new URLSearchParams({ batter1_id: p.batter1_id||253802, batter2_id: p.batter2_id||34102 });
+      if (p.format) q.set('format', p.format);
+      return `/v1/matchups/partnership?${q}`;
     }
   }
 ];
