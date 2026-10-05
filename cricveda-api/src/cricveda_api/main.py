@@ -2,10 +2,13 @@
 from __future__ import annotations
 
 import logging
+import os
+import time
+import uuid
 from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from scalar_fastapi import get_scalar_api_reference
@@ -20,18 +23,21 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 _DESCRIPTION = """
 ## CricVeda Cricket Intelligence API
 
-25 unique ball-by-ball analytics endpoints powered by Cricsheet data across
+35 ball-by-ball analytics endpoints powered by Cricsheet data across
 22 leagues, all T20 and ODI formats, professional and domestic.
 
 ### Authentication
-Pass your API key in every request header:
+One key per account works for every product your plan includes. Send it as
+either header:
 ```
-X-API-Key: cv_live_your_key_here
+X-API-Key: cs_live_your_key_here
+Authorization: cs_live_your_key_here
 ```
 
 ### Rate Limits
-Free tier: **100 requests / day** per key.
-All responses include `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers.
+Daily limits depend on your plan (Free: **100 requests / day**). Every
+response includes `X-RateLimit-Limit`, `X-RateLimit-Remaining` and
+`X-RateLimit-Reset` headers; over the limit you get `429` with `Retry-After`.
 
 ### Base URL
 ```
@@ -95,6 +101,8 @@ app = FastAPI(
         {"name": "Leaderboards", "description": "Phase-specific and situational player rankings."},
         {"name": "Matchups", "description": "Head-to-head optimal bowler recommendations."},
         {"name": "Keys", "description": "API key management for authenticated users."},
+        {"name": "Account", "description": "Your plan and entitlements (v2)."},
+        {"name": "Admin", "description": "Fixtures, squads and subscription tiers. Admins only."},
         {"name": "System", "description": "Health and operational endpoints."},
     ],
 )
@@ -102,15 +110,35 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# API keys and Supabase JWTs travel in headers, never cookies, so any origin
+# may call the API (the playground, customer sites, the dashboard).
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["GET"],
-    allow_headers=["X-API-Key"],
+    allow_origins=[o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["X-API-Key", "Authorization", "Content-Type"],
+    expose_headers=[
+        "X-Request-ID", "X-Response-Time",
+        "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset", "Retry-After",
+    ],
+    max_age=600,
 )
+
+
+@app.middleware("http")
+async def request_id_and_timing(request: Request, call_next):
+    """Every response carries a request ID and how long the server took."""
+    request_id = request.headers.get("X-Request-ID") or f"req_{uuid.uuid4().hex[:12]}"
+    request.state.request_id = request_id
+    start = time.perf_counter()
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    response.headers["X-Response-Time"] = f"{(time.perf_counter() - start) * 1000:.0f}ms"
+    return response
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 from cricveda_api.routes import (  # noqa: E402
+    admin,
     keys,
     leaderboards,
     matchups,
@@ -119,6 +147,7 @@ from cricveda_api.routes import (  # noqa: E402
     players,
     teams,
     venues,
+    v2,
 )
 
 app.include_router(oracle.router,       prefix="/v1", tags=["Oracle"])
@@ -129,6 +158,8 @@ app.include_router(matches.router,      prefix="/v1", tags=["Matches"])
 app.include_router(leaderboards.router, prefix="/v1", tags=["Leaderboards"])
 app.include_router(matchups.router,     prefix="/v1", tags=["Matchups"])
 app.include_router(keys.router,         prefix="/v1", tags=["Keys"])
+app.include_router(admin.router,        prefix="/v1")
+app.include_router(v2.router,           prefix="/v2")
 
 
 @app.get("/health", tags=["System"])

@@ -60,7 +60,10 @@ npm run dev
 ## Data pipeline (run once to populate Supabase)
 
 ```bash
-# 1. Run schema.sql + upcoming_matches.sql in Supabase SQL editor
+# 1. In the Supabase SQL editor run, in order:
+#    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql
+#    then make yourself an admin:
+#    UPDATE user_profiles SET is_admin = TRUE WHERE email = 'you@example.com';
 
 # 2. Download Cricsheet data
 curl -L https://cricsheet.org/downloads/t20s.zip -o /tmp/t20s.zip
@@ -84,9 +87,18 @@ uv run python -m cricveda_core.models.train
 ## Tests
 
 ```bash
-uv run pytest cricveda-core/tests/ -q
-# 30 tests — scoring engine unit + hypothesis property tests
+uv run pytest cricveda-core/tests/ cricveda-api/tests/ -q
+# core: scoring engine unit + hypothesis property tests
+# api: keys, plans/entitlements, daily quotas, CORS, admin fixtures (in-memory store, no Supabase needed)
 ```
+
+## Accounts, plans and admin
+
+- One API key per account (`cs_live_…`), sent as `X-API-Key` or `Authorization`.
+- The account's plan (`plans` / `subscriptions` tables) decides which products it can call
+  and its daily request limit. Free: CricVeda. Pro: + MatchSynth. Enterprise: + GraphSynth.
+- Admins (`user_profiles.is_admin`) manage fixtures, squads and user plans at
+  `app.cricsynthesis.in/admin`.
 
 ## Deployment (zero-cost)
 
@@ -118,3 +130,4 @@ cd cricveda-web && npx vercel
 - **IPL 2024 holdout**: 74 matches never used in training — reserved as final test set.
 - **Dream team optimizer**: PuLP LP, not ML — deterministic given predicted points.
 - **Predictions cached 1 hour**: Supabase + Upstash Redis both hit before any computation.
+- **Sign-in lives on the dashboard app**: `login.html` links to `app.cricsynthesis.in/login?provider=google`, so the OAuth round trip starts and ends on one origin.

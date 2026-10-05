@@ -11,7 +11,7 @@ import statistics
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -83,7 +83,7 @@ async def get_toss_intelligence(
     request: Request,
     venue_id: int,
     format: str = Query("T20", description="Match format: `T20` or `ODI`"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Return toss win rates and batting/fielding preference statistics for a venue."""
     fmt = format.upper()
@@ -283,7 +283,7 @@ async def get_day_night_analysis(
     request: Request,
     venue_id: int,
     format: str = Query("T20", description="Match format: `T20` or `ODI`"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Return dew factor proxy and 2nd-innings advantage statistics."""
     fmt = format.upper()
@@ -478,7 +478,7 @@ async def get_par_score(
     request: Request,
     venue_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Median 1st-innings score at the end of each over, plus the winning threshold."""
     fmt = format.upper()

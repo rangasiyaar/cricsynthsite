@@ -11,7 +11,7 @@ from collections import Counter
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -93,7 +93,7 @@ async def get_win_probability(
     wickets: int = Query(..., ge=0, le=10, description="Wickets fallen so far"),
     runs: int = Query(0, ge=0, description="Runs scored so far by batting team"),
     target: int | None = Query(None, ge=1, description="Chase target (required for innings=2)"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Compute win probability for the batting team given current match state."""
     fmt = format.upper()
@@ -340,7 +340,7 @@ async def get_collapse_probability(
     over: int = Query(..., ge=1, le=50, description="Current over (1-indexed)"),
     wickets: int = Query(..., ge=0, le=10, description="Wickets fallen so far"),
     score: int = Query(..., ge=0, description="Runs scored so far"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Compute batting collapse probability from current match state."""
     fmt = format.upper()

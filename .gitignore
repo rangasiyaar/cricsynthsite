@@ -44,3 +44,4 @@ __pycache__/
 # uv workspace
 .venv/
 uv.lock
+tsconfig.tsbuildinfo

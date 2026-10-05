@@ -8,6 +8,7 @@ POST   /v1/user/keys              → create a new key (raw key returned ONCE)
 DELETE /v1/user/keys/{key_id}     → revoke a key
 GET    /v1/user/usage             → daily usage stats for last 30 days
 GET    /v1/user/profile           → current user profile
+GET    /v1/user/subscription      → plan, included products and today's usage
 """
 from __future__ import annotations
 
@@ -17,7 +18,8 @@ from datetime import date, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import create_api_key, hash_key
+from cricveda_api import store
+from cricveda_api.auth import clear_cache, create_api_key, plan_for_user
 from cricveda_api.deps import limiter
 from cricveda_api.jwt_auth import require_user
 
@@ -30,6 +32,7 @@ router = APIRouter()
 class ApiKeyInfo(BaseModel):
     key_id: str
     label: str | None
+    key_prefix: str | None = None
     daily_limit: int
     created_at: str
     last_used_at: str | None
@@ -55,6 +58,17 @@ class UsageResponse(BaseModel):
     total_today: int
     total_this_month: int
     daily: list[UsageDay]
+
+
+class SubscriptionInfo(BaseModel):
+    plan_id: str
+    plan_name: str
+    products: list[str]
+    daily_limit: int
+    max_keys: int
+    used_today: int
+    status: str
+    current_period_end: str | None
 
 
 class UserProfile(BaseModel):
@@ -108,7 +122,7 @@ async def list_keys(
 
     keys = (
         client.table("api_keys")
-        .select("key_id, label, daily_limit, created_at, last_used_at")
+        .select("key_id, label, key_prefix, created_at, last_used_at")
         .eq("user_id", user_id)
         .order("created_at", desc=True)
         .execute()
@@ -123,12 +137,14 @@ async def list_keys(
         .execute()
     )
     usage_map = {r["key_id"]: r["request_count"] for r in usage_today.data}
+    plan = plan_for_user(user_id)
 
     return [
         ApiKeyInfo(
             key_id=k["key_id"],
             label=k.get("label"),
-            daily_limit=k["daily_limit"],
+            key_prefix=k.get("key_prefix"),
+            daily_limit=plan["daily_limit"],
             created_at=k["created_at"],
             last_used_at=k.get("last_used_at"),
             requests_today=usage_map.get(k["key_id"], 0),
@@ -145,7 +161,7 @@ async def list_keys(
     description=(
         "Creates a new API key for the authenticated user. "
         "The raw key is returned **once** — store it securely. "
-        "Maximum 5 keys per user."
+        "How many keys you can hold depends on your plan."
     ),
     tags=["Keys"],
 )
@@ -155,34 +171,21 @@ async def create_key(
     body: dict,
     user_id: str = Depends(require_user),
 ):
-    from cricveda_ingest.db import get_client
-    client = get_client()
-
-    # Enforce max 5 keys per user
-    existing = (
-        client.table("api_keys")
-        .select("key_id", count="exact")
-        .eq("user_id", user_id)
-        .execute()
-    )
-    if (existing.count or len(existing.data)) >= 5:
+    plan = plan_for_user(user_id)
+    if store.count_user_keys(user_id) >= plan["max_keys"]:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Maximum 5 API keys per user. Revoke an existing key first.",
+            detail=f"Your {plan['name']} plan allows {plan['max_keys']} API keys. Revoke one first.",
         )
 
     label = str(body.get("label", "My API Key"))[:64]
-    raw_key, key_id = create_api_key(label=label, user_id=user_id)
-
-    # Fetch the created row for timestamps
-    row = client.table("api_keys").select("*").eq("key_id", key_id).execute()
-    k = row.data[0]
+    raw_key, k = create_api_key(label=label, user_id=user_id)
 
     return NewKeyResponse(
-        key_id=key_id,
+        key_id=k["key_id"],
         label=k.get("label"),
         raw_key=raw_key,
-        daily_limit=k["daily_limit"],
+        daily_limit=plan["daily_limit"],
         created_at=k["created_at"],
     )
 
@@ -215,6 +218,7 @@ async def revoke_key(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Key not found")
 
     client.table("api_keys").delete().eq("key_id", key_id).execute()
+    clear_cache()  # a revoked key must stop working immediately
 
 
 @router.get(
@@ -264,4 +268,37 @@ async def get_usage(
         total_today=total_today,
         total_this_month=total_month,
         daily=daily,
+    )
+
+
+@router.get(
+    "/user/subscription",
+    response_model=SubscriptionInfo,
+    summary="Your plan and today's usage",
+    description="The plan your account is on, which products it includes, and requests used today (UTC).",
+    tags=["Keys"],
+)
+@limiter.limit("30/minute")
+async def get_subscription(
+    request: Request,
+    user_id: str = Depends(require_user),
+):
+    from cricveda_ingest.db import get_client
+
+    plan = plan_for_user(user_id)
+    sub = store.get_subscription(user_id) or {}
+    today = date.today().isoformat()
+    rows = (
+        get_client().table("usage_daily").select("request_count")
+        .eq("user_id", user_id).eq("date", today).execute()
+    )
+    return SubscriptionInfo(
+        plan_id=plan["plan_id"],
+        plan_name=plan["name"],
+        products=list(plan["products"]),
+        daily_limit=plan["daily_limit"],
+        max_keys=plan["max_keys"],
+        used_today=sum(r["request_count"] for r in rows.data),
+        status=sub.get("status", "active"),
+        current_period_end=sub.get("current_period_end"),
     )

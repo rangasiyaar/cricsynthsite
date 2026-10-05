@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase";
 import { useEffect, useRef, useState } from "react";
+import { PRODUCT_NAMES, type Subscription, userFetch } from "@/lib/platform";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api.cricsynthesis.in";
 
@@ -27,6 +28,9 @@ export default function KeysPage() {
   const [revoking, setRevoking] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const copyRef = useRef<HTMLInputElement>(null);
+  const [plan, setPlan] = useState<Subscription | null>(null);
+
+  useEffect(() => { userFetch<Subscription>("/v1/user/subscription").then(setPlan).catch(() => {}); }, [keys.length]);
 
   async function getToken(): Promise<string> {
     const supabase = createClient();
@@ -102,7 +106,10 @@ export default function KeysPage() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>API Keys</h1>
-        <p className="text-sm mt-1" style={{ color: "#6b7280" }}>Create and manage keys for your applications. Max 5 keys per account.</p>
+        <p className="text-sm mt-1" style={{ color: "#6b7280" }}>
+          One key works for every product your plan includes.
+          {plan && <> You&apos;re on <b className="text-white">{plan.plan_name}</b>: {plan.products.map(p => PRODUCT_NAMES[p] ?? p).join(", ")} · {plan.used_today.toLocaleString("en-IN")} / {plan.daily_limit.toLocaleString("en-IN")} requests today · up to {plan.max_keys} keys.</>}
+        </p>
       </div>
 
       {error && (

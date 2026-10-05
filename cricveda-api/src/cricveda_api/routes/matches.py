@@ -5,7 +5,7 @@ import math
 import statistics
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -84,7 +84,7 @@ async def get_pitch_reading(
     request: Request,
     match_id: int,
     after_over: int = Query(3, ge=1, le=20, description="Read pitch from first N completed overs"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ) -> PitchReadingResponse:
     """Return a pitch classification based on early-overs deliveries."""
     ck = cache_key("pitch_reading", match_id, after_over)
@@ -279,7 +279,7 @@ async def get_pitch_reading(
 async def get_momentum_curve(
     request: Request,
     match_id: int,
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ) -> MomentumCurveResponse:
     """Return a ball-by-ball win-probability momentum curve for a match."""
     ck = cache_key("momentum_curve", match_id)
@@ -527,7 +527,7 @@ class TurningPointsResponse(BaseModel):
 async def get_turning_points(
     request: Request,
     match_id: int,
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Identify the 3-5 overs with the biggest win-probability swings."""
     ck = cache_key("turning_points", match_id)

@@ -10,7 +10,7 @@ import statistics
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -65,7 +65,7 @@ async def get_final_over_specialists(
     season: str | None = Query(None, description="Season string, e.g. `2024`"),
     role: str = Query("bowler", description="`bowler` or `batter`"),
     limit: int = Query(10, ge=1, le=25, description="Number of results (max 25)"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Return the top final-over specialists (bowlers or batters) in a league."""
     if role not in ("bowler", "batter"):

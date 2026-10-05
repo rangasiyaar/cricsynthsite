@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const { data: profile } = await supabase
     .from("user_profiles")
-    .select("display_name, email, avatar_url")
+    .select("display_name, email, avatar_url, is_admin")
     .eq("user_id", user.id)
     .single();
 
@@ -57,6 +57,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
               {item.label}
             </Link>
           ))}
+          {profile?.is_admin && (
+            <Link href="/admin" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors" style={{ color: "#f59e0b" }}>
+              Admin panel
+            </Link>
+          )}
         </nav>
 
         {/* User + sign out */}

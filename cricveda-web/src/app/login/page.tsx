@@ -2,12 +2,14 @@
 
 import { createClient } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 function LoginCard() {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const provider = searchParams.get("provider");
+  const autoStarted = useRef(false);
 
   async function signInWithGoogle() {
     setLoading(true);
@@ -19,6 +21,14 @@ function LoginCard() {
       },
     });
   }
+
+  // cricsynthesis.in/login.html links here with ?provider=google — start straight away.
+  useEffect(() => {
+    if (provider === "google" && !error && !autoStarted.current) {
+      autoStarted.current = true;
+      signInWithGoogle();
+    }
+  }, [provider, error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "var(--color-bg-primary, #06080d)" }}>
@@ -72,14 +82,14 @@ function LoginCard() {
 
           <p className="mt-6 text-xs text-center" style={{ color: "#4b5263" }}>
             By signing in you agree to our{" "}
-            <a href="/terms.html" style={{ color: "#818cf8" }}>Terms</a> and{" "}
-            <a href="/privacy.html" style={{ color: "#818cf8" }}>Privacy Policy</a>.
+            <a href="https://cricsynthesis.in/terms.html" style={{ color: "#818cf8" }}>Terms</a> and{" "}
+            <a href="https://cricsynthesis.in/privacy.html" style={{ color: "#818cf8" }}>Privacy Policy</a>.
           </p>
         </div>
 
         <p className="mt-6 text-center text-xs" style={{ color: "#4b5263" }}>
           Don&apos;t have access?{" "}
-          <a href="/#request-access" style={{ color: "#818cf8" }}>Request an invite →</a>
+          <a href="https://cricsynthesis.in/#request-access" style={{ color: "#818cf8" }}>Request an invite →</a>
         </p>
       </div>
     </div>

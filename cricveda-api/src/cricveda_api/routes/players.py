@@ -26,7 +26,7 @@ from datetime import date, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -43,7 +43,7 @@ async def get_player_clutch(
     request: Request,
     player_id: int,
     season: str | None = Query(default=None),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Compute clutch batting & bowling metrics for high-leverage situations."""
     ck = cache_key("player_clutch", player_id, season or "all")
@@ -158,7 +158,7 @@ async def get_phase_profile(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Break down batting performance across powerplay / middle / death overs."""
     fmt = format.upper()
@@ -275,7 +275,7 @@ async def get_pressure_fingerprint(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Analyze dot-ball streaks and pressure patterns for a bowler."""
     fmt = format.upper()
@@ -432,7 +432,7 @@ async def get_dismissal_map(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Show how a batter gets out across powerplay/middle/death phases."""
     fmt = format.upper()
@@ -531,7 +531,7 @@ async def get_player_momentum(
     request: Request,
     player_id: int,
     days: int = Query(default=60),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Cross-format, time-decayed form score weighted by league difficulty."""
     ck = cache_key("player_momentum", player_id, days)
@@ -690,7 +690,7 @@ async def get_player_nemesis(
     request: Request,
     player_id: int,
     role: str = Query(..., description="'batter' or 'bowler'"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Find bowlers who dismiss this batter most (role=batter) or batters who own this bowler (role=bowler)."""
     if role not in ("batter", "bowler"):
@@ -843,7 +843,7 @@ async def get_player_consistency(
     player_id: int,
     format: str | None = Query(default=None),
     season: str | None = Query(default=None),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Coefficient of variation, floor/ceiling FP, and risk profile."""
     ck = cache_key("player_consistency", player_id, format or "all", season or "all")
@@ -931,7 +931,7 @@ async def get_win_contribution(
     request: Request,
     player_id: int,
     season: str | None = Query(default=None),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Compare player performance in wins vs losses; compute WCI score."""
     ck = cache_key("player_wci", player_id, season or "all")
@@ -1060,7 +1060,7 @@ async def get_scoring_rhythm(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Analyze dot streaks, boundary clusters, and SR by balls-faced bucket."""
     fmt = format.upper()
@@ -1218,7 +1218,7 @@ async def get_milestone_behaviour(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Determine if batter accelerates or freezes when approaching 25/50/100."""
     fmt = format.upper()
@@ -1365,7 +1365,7 @@ async def get_milestone_behaviour(
 async def get_league_adjusted_performance(
     request: Request,
     player_id: int,
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Z-score performance normalized per league-season, weighted by difficulty."""
     ck = cache_key("player_lap", player_id)
@@ -1522,7 +1522,7 @@ async def get_position_analysis(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Determine batting positions across innings and compute optimal position."""
     fmt = format.upper()
@@ -1657,7 +1657,7 @@ async def get_inherited_pressure(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Classify match state when batter arrived and compute SR/avg per state."""
     fmt = format.upper()
@@ -1814,7 +1814,7 @@ async def get_inherited_pressure(
 async def get_format_switch_impact(
     request: Request,
     player_id: int,
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Measure performance degradation when switching between T20 and ODI within 7 days."""
     ck = cache_key("player_format_switch", player_id)
@@ -1959,7 +1959,7 @@ async def get_spell_analysis(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Analyze how a bowler's economy and wickets evolve across spells."""
     fmt = format.upper()
@@ -2113,7 +2113,7 @@ async def get_scoring_zones(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Bucket-level SR and boundary rates showing when the batter hits peak form."""
     fmt = format.upper()
@@ -2255,7 +2255,7 @@ async def get_chase_master(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Batting record specifically in run chases: SR, average, finishing rate."""
     fmt = format.upper()
@@ -2371,7 +2371,7 @@ async def get_strike_rotation(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Singles %, dot %, non-boundary SR, and rotation score."""
     fmt = format.upper()
@@ -2449,7 +2449,7 @@ async def get_six_map(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Six rate, sixes per innings, and six distribution by phase."""
     fmt = format.upper()
@@ -2530,7 +2530,7 @@ async def get_workload(
     player_id: int,
     format: str = Query(default=""),
     days: int = Query(default=30, ge=1, le=365),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Recent bowling workload over N days with an economy-trend fatigue signal."""
     from datetime import date, timedelta
@@ -2660,7 +2660,7 @@ async def get_ball_age_split(
     request: Request,
     player_id: int,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Bowling effectiveness by ball age: new, middle, and old (death)."""
     fmt = format.upper()

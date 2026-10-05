@@ -10,7 +10,7 @@ import statistics
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -76,7 +76,7 @@ async def get_optimal_bowler(
     batter_id: int = Query(..., description="Player ID of the batter to analyse against"),
     bowler_ids: str = Query(..., description="Comma-separated list of bowler player IDs (max 10)"),
     format: str | None = Query(None, description="Optional format filter: `T20` or `ODI`"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Rank a set of bowlers by historical effectiveness against a batter."""
     # Parse bowler IDs
@@ -297,7 +297,7 @@ async def get_partnership(
     batter1_id: int = Query(..., description="First batter's player ID"),
     batter2_id: int = Query(..., description="Second batter's player ID"),
     format: str | None = Query(None, description="Optional format filter: `T20` or `ODI`"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Combined scoring and chemistry when two batters are at the crease together."""
     fmt = format.upper() if format else None

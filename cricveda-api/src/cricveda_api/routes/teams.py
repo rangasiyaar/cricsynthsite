@@ -10,7 +10,7 @@ import statistics
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
-from cricveda_api.auth import require_api_key
+from cricveda_api.auth import ApiPrincipal, require_cricveda
 from cricveda_api.cache import cache_get, cache_key, cache_set
 from cricveda_api.deps import limiter
 
@@ -59,7 +59,7 @@ async def get_batting_depth(
     team_name: str,
     format: str = Query("T20", description="Match format: `T20` or `ODI`"),
     season: str | None = Query(None, description="Season string, e.g. `2024` or `2023/24`"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Return batting depth analysis — positional run percentages and depth score."""
     fmt = format.upper()
@@ -335,7 +335,7 @@ async def get_comeback_index(
     team_name: str,
     format: str = Query(default="T20"),
     season: str | None = Query(default=None),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """How often a team wins after being in a losing position."""
     fmt = format.upper()
@@ -482,7 +482,7 @@ async def get_rivalry(
     team1_name: str,
     team2_name: str,
     format: str = Query(default="T20"),
-    _key_id: str = Depends(require_api_key),
+    _principal: ApiPrincipal = Depends(require_cricveda),
 ):
     """Head-to-head record between two teams."""
     fmt = format.upper()
