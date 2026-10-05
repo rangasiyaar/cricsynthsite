@@ -1,690 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="CricSynthesis builds cricket intelligence APIs. CricVeda for player performance analytics, MatchSynth for match simulation, and GraphSynth for broadcast-grade visualizations.">
-    <meta name="keywords"
-        content="cricket analytics API, cricket analytics, match simulation, cricket data visualization, CricVeda, MatchSynth, GraphSynth">
+    <meta name="description" content="CricSynthesis builds cricket intelligence APIs. CricVeda for player performance analytics, MatchSynth for match simulation, and GraphSynth for broadcast-grade visualizations.">
+    <meta name="keywords" content="cricket analytics API, cricket analytics, match simulation, cricket data visualization, CricVeda, MatchSynth, GraphSynth">
     <meta name="author" content="CricSynthesis">
-
-    <!-- Open Graph / Link Preview -->
+    <meta name="theme-color" content="#f2f2f3">
     <meta property="og:type" content="website">
     <meta property="og:title" content="CricSynthesis | Cricket Intelligence APIs">
-    <meta property="og:description" content="CricSynthesis builds cricket intelligence APIs. CricVeda for player performance analytics, MatchSynth for match simulation, and GraphSynth for broadcast-grade visualizations.">
-
-    <!-- Twitter -->
+    <meta property="og:description" content="Form predictions, ball-by-ball simulation and broadcast-grade graphics — three REST APIs for analysts, franchises and broadcasters.">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="CricSynthesis | Cricket Intelligence APIs">
-    <meta name="twitter:description" content="CricSynthesis builds cricket intelligence APIs. CricVeda for player performance analytics, MatchSynth for match simulation, and GraphSynth for broadcast-grade visualizations.">
-
+    <meta name="twitter:description" content="Form predictions, ball-by-ball simulation and broadcast-grade graphics — three REST APIs for analysts, franchises and broadcasters.">
     <title>CricSynthesis | Cricket Intelligence APIs</title>
-
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/theme.css">
 </head>
-
 <body>
-    <!-- Noise Grain Overlay -->
-    <div class="noise-overlay" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="nav" id="mainNav">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/logo New.png" alt="CricSynthesis" class="logo-image">
-            </div>
-            <div class="nav-links">
-                <a href="#products" class="nav-link">Products</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="docs.html" class="nav-link">Docs</a>
-                <a href="playground.html" class="nav-link">Playground</a>
-                <a href="login.html" class="nav-link nav-cta">Get API Key</a>
-            </div>
-            <!-- Mobile nav -->
-            <div class="mobile-nav">
-                <a href="docs.html" class="nav-link" style="font-size:0.85rem">Docs</a>
-                <a href="contact.html" class="mobile-cta">Contact Sales</a>
+<!-- Nav: replaced at runtime by js/layout.js (kept here for no-JS) -->
+<nav class="nav" id="mainNav">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="cs-brand" aria-label="CricSynthesis home">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M20 11H29M31 11H40"/><path class="cs-cursor" d="M38 15V40"/></svg>
+                <span>Cric<b>Synthesis</b></span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="#products" class="nav-link">Products</a>
+            <a href="#how-it-works" class="nav-link">How it works</a>
+            <a href="mcp.html" class="nav-link">MCP</a>
+            <a href="docs.html" class="nav-link">Docs</a>
+            <a href="playground.html" class="nav-link">Playground</a>
+            <a href="login.html" class="nav-link nav-cta">Sign in</a>
+        </div>
+    </div>
+</nav>
+
+<main class="cs-wrap">
+
+    <!-- Hero -->
+    <section class="cs-hero">
+        <div>
+            <p class="cs-eyebrow"><span class="cs-live-dot"></span>CricVeda API v2.0 · live</p>
+            <h1><span>Cricket intelligence.</span><span>Delivered as APIs.</span></h1>
+            <p class="cs-lede">Form predictions, ball-by-ball simulation and broadcast-grade graphics — three REST APIs for analysts, franchises and broadcasters, trained on 15,000+ matches.</p>
+            <div class="cs-hero-ctas">
+                <a class="cs-btn cs-btn--primary" href="login.html">Get API key
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </a>
+                <a class="cs-btn cs-btn--secondary" href="docs.html">Read the docs</a>
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-background">
-            <canvas id="particleCanvas" aria-hidden="true"></canvas>
-            <div class="grid-overlay"></div>
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
-        </div>
-
-        <div class="hero-content">
-            <h1 class="hero-title">
-                Cricket Intelligence<br>
-                <span class="title-gradient">Delivered as APIs</span>
-            </h1>
-
-            <p class="hero-description">
-                Three API products built for sports analysts, professional franchises, and broadcasters.
-                One platform that brings together predictive analytics, match simulation, and broadcast-grade visualizations.
-            </p>
-
-            <div class="hero-metrics" id="heroMetrics">
-                <div class="metric">
-                    <span class="metric-value" data-count="3" data-suffix="">0</span>
-                    <span class="metric-label">API Products</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric">
-                    <span class="metric-value" data-count="15000" data-suffix="+">0</span>
-                    <span class="metric-label">Matches Analyzed</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric">
-                    <span class="metric-value" data-prefix="<" data-count="500" data-suffix="ms">0</span>
-                    <span class="metric-label">API Latency</span>
-                </div>
+        <div class="cs-frame" aria-label="Example CricVeda prediction">
+            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+            <div class="cs-plate-bar">
+                <span>Pre-match · ipl-2026-m042</span>
+                <span class="cs-mono" id="plLat" style="letter-spacing:0;text-transform:none;font-weight:400;color:var(--cs-ink-3)">143ms</span>
+                <span class="ok">200 OK</span>
             </div>
-        </div>
-    </section>
-
-    <!-- Trusted By Section -->
-    <section class="trusted-section" aria-label="Built for these segments">
-        <p class="trusted-label">Built for the cricket ecosystem</p>
-        <div class="marquee-container">
-            <div class="marquee-track" id="marqueeTrack">
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Analytics Platforms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    IPL Franchises
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                    Broadcasters
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
-                    Analytics Firms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                    Cricket Boards
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M13 17V9l4 4V5"/></svg>
-                    Gaming Platforms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    Sports Media
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-                    Cricket Academies
-                </span>
-                <!-- Duplicated for seamless loop -->
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Analytics Platforms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                    IPL Franchises
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                    Broadcasters
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
-                    Analytics Firms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                    Cricket Boards
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M13 17V9l4 4V5"/></svg>
-                    Gaming Platforms
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    Sports Media
-                </span>
-                <span class="marquee-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-                    Cricket Academies
-                </span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="section-container">
-            <div class="section-header" data-reveal>
-                <span class="section-label">Our Products</span>
-                <h2 class="section-title">Three APIs. One Platform.</h2>
-                <p class="section-description">
-                    Each API is purpose-built for a specific segment of the cricket ecosystem.
-                    
-                </p>
-            </div>
-
-            <div class="products-grid">
-                <!-- CricVeda -->
-                <div class="product-card product-card--cricveda" data-reveal data-reveal-delay="1">
-                    <div class="product-status">
-                        <span class="status-dot status-dot--live"></span>
-                        <span class="status-text">Live</span>
-                    </div>
-                    <div class="product-icon product-icon--cricveda">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M3 3v18h18" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 16l4-4 4 4 6-6" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <h3 class="product-name">CricVeda</h3>
-                    <p class="product-tagline">Player Performance Intelligence</p>
-                    <p class="product-description">
-                        Pre-match analytics API for sports analysts and platform developers.
-                        Delivers player form predictions, head-to-head matchup analysis,
-                        and data-driven team recommendations.
-                    </p>
-                    <ul class="product-features">
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Player form prediction
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Matchup analysis
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Pre-match performance insights
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Platform integration ready
-                        </li>
-                    </ul>
-                    <div class="product-audience">
-                        <span class="audience-label">Built for</span>
-                        <span class="audience-tags">
-                            <span class="audience-tag">Cricket Analysts</span>
-                            <span class="audience-tag">Analytics Platforms</span>
-                        </span>
-                    </div>
-                    <a href="login.html" class="product-cta product-cta--outline">
-                        <span>Get Access</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
-
-                <!-- MatchSynth -->
-                <div class="product-card product-card--matchsynth" data-reveal data-reveal-delay="2">
-                    <div class="product-status">
-                        
-                        <span class="status-text">Coming Soon</span>
-                    </div>
-                    <div class="product-icon product-icon--matchsynth">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 6v6l4 2" stroke-linecap="round" />
-                        </svg>
-                    </div>
-                    <h3 class="product-name">MatchSynth</h3>
-                    <p class="product-tagline">Match Simulation Engine</p>
-                    <p class="product-description">
-                        Pre-match simulation API for professional franchises.
-                        Ball-by-ball simulation, auction value modeling, and deep
-                        opposition analysis for strategic decision-making.
-                    </p>
-                    <ul class="product-features">
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Pre-match simulation
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Auction value modeling
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Opposition weakness analysis
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Scenario planning engine
-                        </li>
-                    </ul>
-                    <div class="product-audience">
-                        <span class="audience-label">Built for</span>
-                        <span class="audience-tags">
-                            <span class="audience-tag">Professional Franchises</span>
-                            <span class="audience-tag">Coaching Staff</span>
-                        </span>
-                    </div>
-                    <a href="contact.html" class="product-cta product-cta--outline">
-                        <span>Contact Sales</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
-
-                <!-- GraphSynth -->
-                <div class="product-card product-card--graphsynth" data-reveal data-reveal-delay="3">
-                    <div class="product-status">
-                        
-                        <span class="status-text">Coming Soon</span>
-                    </div>
-                    <div class="product-icon product-icon--graphsynth">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" />
-                            <path d="M3 9h18M9 21V9" />
-                        </svg>
-                    </div>
-                    <h3 class="product-name">GraphSynth</h3>
-                    <p class="product-tagline">Broadcast-Grade Visualizations</p>
-                    <p class="product-description">
-                        Visualization and analytics API for broadcasters.
-                        Historical data analysis, live probability graphics, and
-                        AI-powered score projections built for on-air integration.
-                    </p>
-                    <ul class="product-features">
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Historical data visualizations
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Live probability graphics
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            AI score projections
-                        </li>
-                        <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/></svg>
-                            Broadcast integration SDK
-                        </li>
-                    </ul>
-                    <div class="product-audience">
-                        <span class="audience-label">Built for</span>
-                        <span class="audience-tags">
-                            <span class="audience-tag">Broadcasters</span>
-                            <span class="audience-tag">Sports Media</span>
-                        </span>
-                    </div>
-                    <a href="contact.html" class="product-cta product-cta--outline">
-                        <span>Contact Sales</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="section-container">
-            <div class="section-header" data-reveal>
-                <span class="section-label">How It Works</span>
-                <h2 class="section-title">From Data to Intelligence in Minutes</h2>
-                <p class="section-description">
-                    Simple REST APIs backed by advanced algorithms and 15,000+ matches of historical data.
-                </p>
-            </div>
-
-            <div class="steps-grid">
-                <div class="step-card" data-reveal data-reveal-delay="1">
-                    <div class="step-number">01</div>
-                    <h3 class="step-title">Get Your API Key</h3>
-                    <p class="step-description">
-                        Get in touch with our team. Once approved, receive your API credentials and full documentation access.
-                    </p>
-                </div>
-
-                <div class="step-connector" data-reveal>
-                    <svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M0 12h40M36 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-
-                <div class="step-card" data-reveal data-reveal-delay="2">
-                    <div class="step-number">02</div>
-                    <h3 class="step-title">Integrate the API</h3>
-                    <p class="step-description">
-                        Choose your product: CricVeda, MatchSynth, or GraphSynth. Hit the endpoints from your platform with simple REST calls.
-                    </p>
-                </div>
-
-                <div class="step-connector" data-reveal>
-                    <svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M0 12h40M36 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-
-                <div class="step-card" data-reveal data-reveal-delay="3">
-                    <div class="step-number">03</div>
-                    <h3 class="step-title">Deliver Insights</h3>
-                    <p class="step-description">
-                        Serve real-time predictions, simulations, and visualizations to your users with sub-500ms response times.
-                    </p>
-                </div>
-            </div>
-
-            <!-- API Explorer -->
-            <div class="api-window" data-reveal="scale">
-
-              <!-- Title bar -->
-              <div class="api-titlebar">
-                <div class="api-dots">
-                  <div class="api-dot api-dot-r"></div>
-                  <div class="api-dot api-dot-y"></div>
-                  <div class="api-dot api-dot-g"></div>
-                </div>
-                <span class="api-tb-label">Example · CricVeda API v2.0</span>
-                <span class="api-tb-badge">Live</span>
-              </div>
-
-              <!-- Two-panel layout -->
-              <div class="api-panels">
-
-                <!-- REQUEST -->
-                <div class="api-panel">
-                  <div class="api-panel-header">
-                    <span class="api-method">POST</span>
-                    <span class="api-panel-label">Request</span>
-                  </div>
-                  <div class="api-panel-body">
-                    <div class="api-endpoint-row">
-                      <span class="api-dim">POST </span><span class="api-endpoint">/v2/predictions/player</span>
-                    </div>
-                    <div class="api-token-row">
-                      <span class="api-token-key">Authorization:</span>
-                      <span class="api-token-blur">cv_live_••••••••</span>
-                    </div>
-                    <span class="api-p">{</span>
-                      <span class="api-i1"><span class="api-c">// identity</span></span>
-                      <span class="api-i1"><span class="api-k">"match_id"</span><span class="api-p">:</span> <span class="api-s">"ipl-2026-m042"</span><span class="api-p">,</span></span>
-                      <span class="api-i1"><span class="api-k">"player_id"</span><span class="api-p">:</span> <span class="api-s">"p-vk18"</span><span class="api-p">,</span></span>
-                      <span class="api-i1 api-mt"><span class="api-c">// options</span></span>
-                      <span class="api-i1"><span class="api-k">"context"</span><span class="api-p">: {</span></span>
-                        <span class="api-i2"><span class="api-k">"batting_position"</span><span class="api-p">:</span> <span class="api-n">3</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"xi_confirmed"</span><span class="api-p">:</span> <span class="api-b">true</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"include_conditions"</span><span class="api-p">:</span> <span class="api-b">true</span></span>
-                      <span class="api-i1"><span class="api-p">}</span></span>
-                    <span class="api-p">}</span>
-                  </div>
-                </div>
-
-                <!-- RESPONSE -->
-                <div class="api-panel">
-                  <div class="api-panel-header">
-                    <span class="api-panel-label">Response</span>
-                  </div>
-                  <div class="api-panel-body">
-                    <div class="api-res-status">
-                      <span class="api-http-200">200 OK</span>
-                      <span class="api-res-ms">143ms</span>
-                      <span class="api-res-size">1.2 KB</span>
-                    </div>
-                    <span class="api-p">{</span>
-                      <span class="api-i1"><span class="api-k">"request_id"</span><span class="api-p">:</span> <span class="api-s">"req_01hx4kz"</span><span class="api-p">,</span></span>
-                      <span class="api-i1"><span class="api-k">"data_as_of"</span><span class="api-p">:</span> <span class="api-s">"2026-04-10T06:25Z"</span><span class="api-p">,</span></span>
-                      <span class="api-i1"><span class="api-k">"ttl_seconds"</span><span class="api-p">:</span> <span class="api-n">300</span><span class="api-p">,</span></span>
-                      <span class="api-i1 api-mt"><span class="api-k">"player"</span><span class="api-p">: {</span></span>
-                        <span class="api-i2"><span class="api-k">"id"</span><span class="api-p">:</span> <span class="api-s">"p-vk18"</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"name"</span><span class="api-p">:</span> <span class="api-s">"Virat Kohli"</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"role"</span><span class="api-p">:</span> <span class="api-s">"BAT"</span></span>
-                      <span class="api-i1"><span class="api-p">},</span></span>
-                      <span class="api-i1 api-mt"><span class="api-k">"form"</span><span class="api-p">: {</span></span>
-                        <span class="api-i2"><span class="api-k">"score"</span><span class="api-p">:</span> <span class="api-n">0.87</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"trend"</span><span class="api-p">:</span> <span class="api-s">"rising"</span></span>
-                      <span class="api-i1"><span class="api-p">},</span></span>
-                      <span class="api-i1 api-mt"><span class="api-k">"prediction"</span><span class="api-p">: {</span></span>
-                        <span class="api-i2"><span class="api-k">"runs"</span><span class="api-p">: {</span></span>
-                          <span class="api-i3"><span class="api-k">"p10"</span><span class="api-p">:</span> <span class="api-n">18</span><span class="api-p">,</span></span>
-                          <span class="api-i3"><span class="api-k">"median"</span><span class="api-p">:</span> <span class="api-n">44</span><span class="api-p">,</span></span>
-                          <span class="api-i3"><span class="api-k">"p90"</span><span class="api-p">:</span> <span class="api-n">78</span></span>
-                        <span class="api-i2"><span class="api-p">},</span></span>
-                        <span class="api-i2"><span class="api-k">"confidence"</span><span class="api-p">:</span> <span class="api-n">0.91</span></span>
-                      <span class="api-i1"><span class="api-p">},</span></span>
-                      <span class="api-i1 api-mt"><span class="api-k">"performance"</span><span class="api-p">: {</span></span>
-                        <span class="api-i2"><span class="api-k">"tier"</span><span class="api-p">:</span> <span class="api-s">"S"</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"composite_score"</span><span class="api-p">:</span> <span class="api-n">0.84</span><span class="api-p">,</span></span>
-                        <span class="api-i2"><span class="api-k">"captain_value"</span><span class="api-p">:</span> <span class="api-n">0.91</span></span>
-                      <span class="api-i1"><span class="api-p">}</span></span>
-                    <span class="api-p">}</span>
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- Status bar -->
-              <div class="api-statusbar">
-                <div class="api-status-ok">
-                  <div class="api-status-dot"></div>
-                  200 OK
-                </div>
-                <span class="api-status-time">143ms · 1.2 KB</span>
-                <span class="api-status-id">req_01hx4kz · ipl-2026-m042</span>
-              </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Social Proof / Testimonials Section (disabled for now)
-    <section class="testimonials" aria-label="Testimonials">
-        <div class="section-container">
-            <div class="section-header" data-reveal>
-                <span class="section-label">Early Feedback</span>
-                <h2 class="section-title">What Beta Users Say</h2>
-            </div>
-        </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card" data-reveal data-reveal-delay="1">
-                <div class="testimonial-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="testimonial-text">"CricVeda's player form predictions have increased user engagement on our analytics platform by 40%. The API is fast, reliable, and the docs are excellent."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">AM</div>
+            <div class="cs-plate-player">
+                <div class="cs-plate-head">
                     <div>
-                        <div class="testimonial-name">Arjun Mehta</div>
-                        <div class="testimonial-role">CTO, Sports Analytics Platform</div>
+                        <div class="cs-k" id="plId">p-vk18 · BAT</div>
+                        <div class="cs-plate-name" id="plName">Virat Kohli</div>
                     </div>
+                    <div class="cs-plate-stats">
+                        <div><div class="cs-k">Form</div><div class="cs-v" id="plForm">0.87</div></div>
+                        <div><div class="cs-k">Tier</div><div class="cs-v cs-v--accent" id="plTier">S</div></div>
+                        <div><div class="cs-k">Conf.</div><div class="cs-v" id="plConf">0.91</div></div>
+                    </div>
+                </div>
+                <div class="cs-range">
+                    <div class="cs-range-row cs-k"><span id="plMetric">Runs · p10 — p90</span><span class="cs-mono" id="plVals" style="letter-spacing:0">18 / 44 / 78</span></div>
+                    <div class="cs-range-track"><div class="cs-range-band" id="plBand"></div><div class="cs-range-mid" id="plMid"></div></div>
+                    <div class="cs-axis"><span>0</span><span id="plAxMid">50</span><span id="plAxMax">100</span></div>
                 </div>
             </div>
-
-            <div class="testimonial-card" data-reveal data-reveal-delay="2">
-                <div class="testimonial-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="testimonial-text">"MatchSynth has transformed how we approach match preparation. The simulation accuracy and opposition analysis gives us a genuine edge in auction planning."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">RK</div>
-                    <div>
-                        <div class="testimonial-name">Rahul Kapoor</div>
-                        <div class="testimonial-role">Head of Analytics, IPL Franchise</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card" data-reveal data-reveal-delay="3">
-                <div class="testimonial-stars">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-                <p class="testimonial-text">"GraphSynth's live probability overlays integrate seamlessly with our broadcast graphics pipeline. Our viewers love the real-time score projections."</p>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">SP</div>
-                    <div>
-                        <div class="testimonial-name">Sneha Patel</div>
-                        <div class="testimonial-role">Director of Technology, Sports Broadcaster</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Request Access / Registration Section -->
-    <section id="request-access" class="register">
-        <div class="register-container">
-            <div class="register-content" data-reveal="scale">
-                <span class="section-label">Contact Sales</span>
-                <h2 class="register-title">Start Building with CricSynthesis</h2>
-                <p class="register-description">
-                    Whether you're a fantasy platform, a franchise analytics team, or a broadcast partner,
-                    we'll get you up and running with the right API, credentials, and dedicated onboarding.
-                </p>
-
-                <form class="register-form" id="registrationForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">Work Email</label>
-                            <input type="email" id="email" name="email" class="form-input"
-                                placeholder="name@company.com" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="organization" class="form-label">Organization</label>
-                            <input type="text" id="organization" name="organization" class="form-input"
-                                placeholder="Company or team name">
-                        </div>
-                        <div class="form-group">
-                            <label for="segment" class="form-label">Interested Product</label>
-                            <select id="segment" name="segment" class="form-input">
-                                <option value="">Select a product</option>
-                                <option value="cricveda">CricVeda (Player Analytics)</option>
-                                <option value="matchsynth">MatchSynth (Match Simulation)</option>
-                                <option value="graphsynth">GraphSynth (Broadcast Visualizations)</option>
-                                <option value="multiple">Multiple Products</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="form-submit" id="submitBtn">
-                        <span>Contact Sales</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            class="submit-arrow">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </button>
-
-                    <p class="form-disclaimer">
-                        By submitting, you agree to receive product updates from CricSynthesis.
-                        We respect your privacy and will never share your information with third parties.
-                    </p>
-                </form>
-
-                <div class="register-success" id="successMessage">
-                    <div class="success-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                            <polyline points="22 4 12 14.01 9 11.01" />
-                        </svg>
-                    </div>
-                    <h3 class="success-title">Request Received</h3>
-                    <p class="success-message">
-                        Thank you for your interest. Our team will review your request and reach out with next steps.
-                    </p>
-                </div>
+            <div class="cs-plate-chart">
+                <div class="cs-range-row cs-k"><span>Simulated win probability · MI v CSK</span><span id="wpPct" style="color:var(--cs-steel-700);font-weight:600">MI 76%</span></div>
+                <svg viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="80" x2="400" y2="80" stroke="currentColor" stroke-opacity=".25" stroke-dasharray="3 4"/>
+                    <line x1="120" y1="0" x2="120" y2="160" stroke="currentColor" stroke-opacity=".1"/>
+                    <line x1="300" y1="0" x2="300" y2="160" stroke="currentColor" stroke-opacity=".1"/>
+                    <polygon id="wpArea" fill="#d6ebff" fill-opacity=".8" points="0,160 0,80 20,76.8 40,72 60,78.4 80,83.2 100,75.2 120,68.8 140,64 160,67.2 180,60.8 200,72 220,80 240,73.6 260,65.6 280,59.2 300,62.4 320,54.4 340,48 360,41.6 380,46.4 400,38.4 400,160"/>
+                    <polyline id="wpLine" fill="none" stroke="#416180" stroke-width="2" vector-effect="non-scaling-stroke" points="0,80 20,76.8 40,72 60,78.4 80,83.2 100,75.2 120,68.8 140,64 160,67.2 180,60.8 200,72 220,80 240,73.6 260,65.6 280,59.2 300,62.4 320,54.4 340,48 360,41.6 380,46.4 400,38.4"/>
+                </svg>
+                <div class="cs-axis"><span>Ov 0</span><span>PP</span><span>Middle</span><span>Death</span><span>20</span></div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-main">
-                <div class="footer-brand">
-                    <img src="assets/logo New.png" alt="CricSynthesis" class="footer-logo">
-                    <p class="footer-tagline">Cricket Intelligence APIs</p>
-                </div>
+    <!-- Metrics (counters animated by js/index.js) -->
+    <section class="cs-metrics" id="heroMetrics" aria-label="Platform data">
+        <div class="cs-metric"><p class="cs-eyebrow">01 · Products</p><span class="metric-value" data-count="3" data-suffix="">3</span><p>Purpose-built APIs, one key</p></div>
+        <div class="cs-metric"><p class="cs-eyebrow">02 · History</p><span class="metric-value" data-count="15000" data-suffix="+">15,000+</span><p>Matches behind every model</p></div>
+        <div class="cs-metric"><p class="cs-eyebrow">03 · Response</p><span class="metric-value" data-prefix="&lt;" data-count="500" data-suffix="ms">&lt;500ms</span><p>From request to prediction</p></div>
+        <div class="cs-metric"><p class="cs-eyebrow">04 · Interface</p><span class="metric-value">REST</span><p>JSON over HTTPS, versioned</p></div>
+    </section>
 
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Products</h4>
-                        <a href="index.html#products" class="footer-link">CricVeda</a>
-                        <a href="index.html#products" class="footer-link">MatchSynth</a>
-                        <a href="index.html#products" class="footer-link">GraphSynth</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Developers</h4>
-                        <a href="docs.html" class="footer-link">API Docs</a>
-                        <a href="playground.html" class="footer-link">Playground</a>
-                        <a href="login.html" class="footer-link">Dashboard</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4 class="footer-heading">Company</h4>
-                        <a href="careers.html" class="footer-link">Careers</a>
-                        <a href="contact.html" class="footer-link">Contact</a>
-                        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-                        <a href="terms.html" class="footer-link">Terms of Service</a>
-                    </div>
+    <section class="cs-builtfor" aria-label="Built for">
+        <span class="cs-k" style="font-size:12px;font-weight:600">Built for</span>
+        <div>
+            <span class="cs-tag">IPL franchises</span>
+            <span class="cs-tag">Broadcasters</span>
+            <span class="cs-tag">Analytics platforms</span>
+            <span class="cs-tag">Cricket boards</span>
+            <span class="cs-tag">Gaming platforms</span>
+            <span class="cs-tag">Sports media</span>
+            <span class="cs-tag">Academies</span>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="cs-section">
+        <div class="cs-section-head" data-reveal>
+            <div>
+                <p class="cs-eyebrow">The platform</p>
+                <h2 class="cs-h2">Three APIs.<br>One key.</h2>
+            </div>
+            <p class="cs-lede">Each product is cut for one seat in the game — the analyst's desk, the dugout, the broadcast truck. Same auth, same schema conventions, same latency budget.</p>
+        </div>
+
+        <div class="cs-products">
+            <article class="cs-frame cs-product" data-reveal>
+                <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+                <div class="cs-product-top"><span class="cs-mono">/v2/predictions</span><span class="cs-tag cs-tag--live"><span class="cs-live-dot"></span>Live</span></div>
+                <h3>CricVeda</h3>
+                <p class="cs-product-tagline">Player performance intelligence</p>
+                <p class="cs-product-desc">Pre-match analytics for analysts and platform builders: form predictions, head-to-head matchups and data-driven XI recommendations.</p>
+                <ul>
+                    <li><span>Player form prediction</span><span class="cs-mono">01</span></li>
+                    <li><span>Matchup analysis</span><span class="cs-mono">02</span></li>
+                    <li><span>Pre-match performance insights</span><span class="cs-mono">03</span></li>
+                    <li><span>Platform integration ready</span><span class="cs-mono">04</span></li>
+                </ul>
+                <p class="cs-product-for">For cricket analysts · analytics platforms</p>
+                <a class="cs-btn cs-btn--primary" href="login.html">Get access</a>
+            </article>
+
+            <article class="cs-frame cs-product" data-reveal>
+                <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+                <div class="cs-product-top"><span class="cs-mono">/v2/simulate</span><span class="cs-tag cs-tag--soon">Coming soon</span></div>
+                <h3>MatchSynth</h3>
+                <p class="cs-product-tagline">Match simulation engine</p>
+                <p class="cs-product-desc">Ball-by-ball simulation for professional franchises — auction value modelling and opposition analysis for the decisions that cost crores.</p>
+                <ul>
+                    <li><span>Pre-match simulation</span><span class="cs-mono">01</span></li>
+                    <li><span>Auction value modelling</span><span class="cs-mono">02</span></li>
+                    <li><span>Opposition weakness analysis</span><span class="cs-mono">03</span></li>
+                    <li><span>Scenario planning engine</span><span class="cs-mono">04</span></li>
+                </ul>
+                <p class="cs-product-for">For professional franchises · coaching staff</p>
+                <a class="cs-btn cs-btn--secondary" href="#request-access">Contact sales</a>
+            </article>
+
+            <article class="cs-frame cs-product" data-reveal>
+                <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+                <div class="cs-product-top"><span class="cs-mono">/v2/graphics</span><span class="cs-tag cs-tag--soon">Coming soon</span></div>
+                <h3>GraphSynth</h3>
+                <p class="cs-product-tagline">Broadcast-grade visualisations</p>
+                <p class="cs-product-desc">Historical analysis, live probability graphics and AI score projections — rendered for on-air integration, not a dashboard screenshot.</p>
+                <ul>
+                    <li><span>Historical data visualisations</span><span class="cs-mono">01</span></li>
+                    <li><span>Live probability graphics</span><span class="cs-mono">02</span></li>
+                    <li><span>AI score projections</span><span class="cs-mono">03</span></li>
+                    <li><span>Broadcast integration SDK</span><span class="cs-mono">04</span></li>
+                </ul>
+                <p class="cs-product-for">For broadcasters · sports media</p>
+                <a class="cs-btn cs-btn--secondary" href="#request-access">Contact sales</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="cs-section">
+        <p class="cs-eyebrow">How it works</p>
+        <h2 class="cs-h2" style="max-width:16ch">From data to the dugout in minutes</h2>
+        <ol class="cs-steps">
+            <li data-reveal><div class="cs-step-n">01</div><h3>Get your key</h3><p>Talk to our team. Once approved you receive credentials and full documentation access.</p></li>
+            <li data-reveal><div class="cs-step-n">02</div><h3>Integrate</h3><p>Pick CricVeda, MatchSynth or GraphSynth and call the endpoints from your stack with plain REST.</p></li>
+            <li data-reveal><div class="cs-step-n">03</div><h3>Ship insight</h3><p>Serve predictions, simulations and graphics to your users with sub-500ms responses.</p></li>
+        </ol>
+    </section>
+
+    <!-- API explorer -->
+    <section id="api" class="cs-section">
+        <div class="cs-api" data-reveal>
+            <div class="cs-api-head">
+                <div>
+                    <p class="cs-eyebrow">Developer experience</p>
+                    <h2 class="cs-h2">One request. A full read.</h2>
+                </div>
+                <div class="cs-tabs" role="tablist" aria-label="API product">
+                    <button role="tab" aria-selected="true" aria-controls="api-cricveda" data-tab="cricveda">CricVeda</button>
+                    <button role="tab" aria-selected="false" aria-controls="api-matchsynth" data-tab="matchsynth">MatchSynth</button>
+                    <button role="tab" aria-selected="false" aria-controls="api-graphsynth" data-tab="graphsynth">GraphSynth</button>
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <p class="footer-copyright">&copy; 2026 CricSynthesis. All rights reserved.</p>
-                <div class="footer-social">
-                    <a href="#" class="social-link" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                    </a>
+            <div class="cs-api-panels" id="api-cricveda" role="tabpanel">
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Request</span><span>Live</span></div>
+<pre class="req">POST /v2/predictions/player
+Authorization: cv_live_••••••••
+
+{
+  "match_id": "ipl-2026-m042",
+  "player_id": "p-vk18",
+  "context": {
+    "batting_position": 3,
+    "xi_confirmed": true,
+    "include_conditions": true
+  }
+}</pre>
                 </div>
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Response</span><span class="cs-mono" style="letter-spacing:0;text-transform:none">200 OK · 143ms · 1.2 KB</span></div>
+<pre>{
+  "request_id": "req_01hx4kz",
+  "player": { "id": "p-vk18", "name": "Virat Kohli", "role": "BAT" },
+  "form": { "score": 0.87, "trend": "rising" },
+  "prediction": {
+    "runs": { "p10": 18, "median": 44, "p90": 78 },
+    "confidence": 0.91
+  },
+  "performance": {
+    "tier": "S",
+    "composite_score": 0.84,
+    "captain_value": 0.91
+  }
+}</pre>
+                </div>
+            </div>
+
+            <div class="cs-api-panels" id="api-matchsynth" role="tabpanel" hidden>
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Request</span><span>Preview</span></div>
+<pre class="req">POST /v2/simulate/match
+Authorization: ms_live_••••••••
+
+{
+  "match_id": "ipl-2026-m042",
+  "iterations": 10000,
+  "xi": { "home": "confirmed", "away": "projected" },
+  "toss": "home_bowl"
+}</pre>
+                </div>
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Response</span><span class="cs-mono" style="letter-spacing:0;text-transform:none">200 OK · illustrative</span></div>
+<pre>{
+  "iterations": 10000,
+  "win_probability": { "MI": 0.58, "CSK": 0.42 },
+  "first_innings": {
+    "total": { "p10": 151, "median": 178, "p90": 204 }
+  },
+  "pressure_phase": "overs_16_20",
+  "opposition_weakness": ["left_arm_pace_death"]
+}</pre>
+                </div>
+            </div>
+
+            <div class="cs-api-panels" id="api-graphsynth" role="tabpanel" hidden>
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Request</span><span>Preview</span></div>
+<pre class="req">GET /v2/graphics/win-probability
+  ?match_id=ipl-2026-m042
+  &amp;format=svg
+  &amp;theme=broadcast_dark
+Authorization: gs_live_••••••••</pre>
+                </div>
+                <div class="cs-api-panel">
+                    <div class="cs-api-panel-head"><span>Response</span><span class="cs-mono" style="letter-spacing:0;text-transform:none">200 OK · illustrative</span></div>
+<pre>{
+  "graphic": "win_probability_worm",
+  "format": "svg",
+  "series": [0.50, 0.55, 0.48, 0.60, 0.62, 0.76],
+  "projection": { "score": 186, "band": 9 }
+}</pre>
+                </div>
+            </div>
+
+            <div class="cs-api-ctas">
+                <a class="cs-btn cs-btn--light" href="playground.html">Open playground</a>
+                <a class="cs-btn cs-btn--ghost-light" href="docs.html">API reference</a>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script src="js/index.js"></script>
-    <script src="js/layout.js"></script>
+    <!-- Contact sales (form handled by js/index.js) -->
+    <section id="request-access" class="cs-section cs-contact">
+        <div>
+            <p class="cs-eyebrow">Contact sales</p>
+            <h2 class="cs-h2">Start building with CricSynthesis</h2>
+            <p class="cs-lede">Fantasy platform, franchise analytics team or broadcast partner — we'll match you to the right API, issue credentials and onboard you directly.</p>
+        </div>
+        <div class="cs-frame cs-form-card">
+            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+            <form class="register-form" id="registrationForm" novalidate>
+                <div class="form-group">
+                    <label for="name" class="form-label">Full name</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Work email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group form-group--wide">
+                    <label for="organization" class="form-label">Organisation</label>
+                    <input type="text" id="organization" name="organization" class="form-input" placeholder="Team, network or platform">
+                </div>
+                <div class="form-group form-group--wide">
+                    <label for="segment" class="form-label">Interested in</label>
+                    <select id="segment" name="segment" class="form-input">
+                        <option value="">Select a product</option>
+                        <option value="cricveda">CricVeda — player analytics</option>
+                        <option value="matchsynth">MatchSynth — match simulation</option>
+                        <option value="graphsynth">GraphSynth — broadcast visualisations</option>
+                        <option value="multiple">Multiple products</option>
+                    </select>
+                </div>
+                <div class="cs-form-foot">
+                    <button type="submit" class="cs-btn cs-btn--primary form-submit" id="submitBtn"><span>Contact sales</span></button>
+                    <p class="form-disclaimer">We never share your details with third parties.</p>
+                </div>
+            </form>
+            <div class="register-success" id="successMessage" role="status">
+                <p class="cs-eyebrow">Request received</p>
+                <h3>We'll be in touch</h3>
+                <p>Our team will review your request and reach out with next steps.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer: replaced at runtime by js/layout.js -->
+<footer class="footer"></footer>
+
+<script>
+// Hero plate: cycles example predictions (illustrative values) and redraws the win-probability worm
+(function () {
+    var P = [
+        { id: 'p-vk18', role: 'BAT', name: 'Virat Kohli', form: '0.87', tier: 'S', conf: '0.91', metric: 'Runs', v: [18, 44, 78], max: 100, ms: 143 },
+        { id: 'p-jb93', role: 'BOWL', name: 'Jasprit Bumrah', form: '0.92', tier: 'S', conf: '0.88', metric: 'Wickets', v: [0, 2, 4], max: 5, ms: 128 },
+        { id: 'p-sg77', role: 'BAT', name: 'Shubman Gill', form: '0.79', tier: 'A', conf: '0.86', metric: 'Runs', v: [12, 38, 71], max: 100, ms: 151 },
+        { id: 'p-hp33', role: 'AR', name: 'Hardik Pandya', form: '0.74', tier: 'A', conf: '0.83', metric: 'Fantasy pts', v: [14, 41, 86], max: 100, ms: 137 }
+    ];
+    var $ = function (id) { return document.getElementById(id); };
+    if (!$('plName')) return;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var line = $('wpLine'), area = $('wpArea'), i = 0;
+
+    function worm(seed) {
+        var pts = [], y = 80, r = seed;
+        for (var k = 0; k <= 20; k++) {
+            r = (r * 9301 + 49297) % 233280;
+            y = Math.max(20, Math.min(140, y + (r / 233280 - 0.62) * 14));
+            pts.push((k * 20) + ',' + y.toFixed(1));
+        }
+        return pts;
+    }
+    function drawWorm(seed) {
+        var pts = worm(seed);
+        line.setAttribute('points', pts.join(' '));
+        area.setAttribute('points', '0,160 ' + pts.join(' ') + ' 400,160');
+        var last = parseFloat(pts[pts.length - 1].split(',')[1]);
+        $('wpPct').textContent = 'MI ' + Math.round(100 - last / 1.6) + '%';
+        if (reduce || !line.getTotalLength) return;
+        var len = line.getTotalLength();
+        line.style.transition = 'none';
+        line.style.strokeDasharray = len;
+        line.style.strokeDashoffset = len;
+        area.style.transition = 'none';
+        area.style.opacity = 0;
+        line.getBoundingClientRect();
+        line.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)';
+        line.style.strokeDashoffset = 0;
+        area.style.transition = 'opacity .8s ease .9s';
+        area.style.opacity = 1;
+    }
+    function show(p) {
+        var pct = function (n) { return (n / p.max * 100) + '%'; };
+        $('plId').textContent = p.id + ' · ' + p.role;
+        $('plName').textContent = p.name;
+        $('plForm').textContent = p.form;
+        $('plTier').textContent = p.tier;
+        $('plConf').textContent = p.conf;
+        $('plMetric').textContent = p.metric + ' · p10 — p90';
+        $('plVals').textContent = p.v.join(' / ');
+        $('plAxMid').textContent = p.max / 2;
+        $('plAxMax').textContent = p.max;
+        $('plLat').textContent = p.ms + 'ms';
+        $('plBand').style.left = pct(p.v[0]);
+        $('plBand').style.width = pct(p.v[2] - p.v[0]);
+        $('plMid').style.left = pct(p.v[1]);
+    }
+    show(P[0]);
+    drawWorm(7);
+    if (reduce) return;
+    setInterval(function () {
+        if (document.hidden) return;
+        i = (i + 1) % P.length;
+        show(P[i]);
+        drawWorm(7 + i * 13);
+    }, 3200);
+})();
+
+document.querySelectorAll('.cs-tabs [data-tab]').forEach(function (btn, _, all) {
+    btn.addEventListener('click', function () {
+        all.forEach(function (b) {
+            var on = b === btn;
+            b.setAttribute('aria-selected', on);
+            document.getElementById('api-' + b.dataset.tab).hidden = !on;
+        });
+    });
+});
+</script>
+<script src="js/index.js"></script>
+<script src="js/layout.js"></script>
 </body>
-
 </html>
