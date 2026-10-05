@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/theme-init.js"></script>
   <title>Sign In | CricSynthesis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,17 +32,17 @@
     .google-btn {
       display: flex; align-items: center; justify-content: center; gap: 0.75rem;
       width: 100%; padding: 0.75rem 1rem;
-      background: rgba(29,31,32,0.06);
-      border: 1px solid rgba(29,31,32,0.1);
+      background: var(--color-bg-card-hover);
+      border: 1px solid var(--cs-neutral-bg);
       border-radius: var(--radius-lg);
       font-size: 0.9rem; font-weight: 600; color: var(--color-text-primary);
       cursor: pointer; transition: background var(--transition-fast), border-color var(--transition-fast);
     }
-    .google-btn:hover:not(:disabled) { background: rgba(29,31,32,0.1); border-color: rgba(29,31,32,0.18); }
+    .google-btn:hover:not(:disabled) { background: var(--cs-neutral-bg); border-color: var(--cs-line); }
     .google-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .spinner {
       width: 18px; height: 18px; border-radius: 50%;
-      border: 2px solid rgba(29,31,32,0.2);
+      border: 2px solid var(--cs-line);
       border-top-color: var(--color-accent-secondary);
       animation: spin 0.7s linear infinite;
     }
@@ -52,7 +53,7 @@
     .error-box {
       padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;
       background: rgba(168,68,59,0.08); border: 1px solid rgba(168,68,59,0.2);
-      font-size: 0.8rem; color: #a8443b; display: none;
+      font-size: 0.8rem; color: var(--cs-danger); display: none;
     }
   </style>
   <link rel="stylesheet" href="css/theme.css">

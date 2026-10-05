@@ -30,6 +30,13 @@ const LOGO_MARK = `
 
 const BRAND = `<a href="index.html" class="cs-brand" aria-label="CricSynthesis home">${LOGO_MARK}<span>Cric<b>Synthesis</b></span></a>`;
 
+// Theme toggle: shows a moon in light mode and a sun in dark mode (CSS swaps them).
+const THEME_TOGGLE = `
+<button type="button" class="cs-theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch theme">
+    <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg>
+    <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+</button>`;
+
 const NAV_HTML = `
 <nav class="nav" id="mainNav">
     <div class="nav-container">
@@ -40,11 +47,13 @@ const NAV_HTML = `
             <a href="mcp.html" class="nav-link">MCP</a>
             <a href="docs.html" class="nav-link">Docs</a>
             <a href="playground.html" class="nav-link">Playground</a>
+            ${THEME_TOGGLE}
             <a href="login.html" class="nav-link nav-cta">Sign in</a>
         </div>
         <div class="mobile-nav">
             <a href="docs.html" class="mobile-nav-link">Docs</a>
-            <a href="mcp.html" class="mobile-nav-link">MCP</a>
+            <a href="mcp.html" class="mobile-nav-link mobile-nav-link--mcp">MCP</a>
+            ${THEME_TOGGLE}
             <a href="login.html" class="mobile-nav-cta">Sign in</a>
             <button type="button" class="cs-burger" id="csBurger" aria-label="Open menu" aria-expanded="false" aria-controls="csDrawer">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>
@@ -55,6 +64,7 @@ const NAV_HTML = `
         <a href="index.html#products">Products</a>
         <a href="index.html#how-it-works">How it works</a>
         <a href="playground.html">Playground</a>
+        <a href="mcp.html" class="cs-drawer-mcp">MCP</a>
         <a href="contact.html">Contact</a>
     </div>
 </nav>`;
@@ -143,6 +153,42 @@ document.addEventListener('DOMContentLoaded', function () {
         drawer.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
         document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
         window.addEventListener('resize', function () { if (window.innerWidth > 860) setOpen(false); });
+    }
+
+    // ── Light / dark theme ──
+    var themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) {
+        themeMeta = document.createElement('meta');
+        themeMeta.name = 'theme-color';
+        document.head.appendChild(themeMeta);
+    }
+    var applyTheme = function (t) {
+        document.documentElement.setAttribute('data-theme', t);
+        themeMeta.setAttribute('content', t === 'dark' ? '#111315' : '#f2f2f3');
+        document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+            var label = t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+            b.setAttribute('aria-label', label);
+            b.setAttribute('title', label);
+        });
+    };
+    applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+        b.addEventListener('click', function () {
+            var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem('cs-theme', next); } catch (e) {}
+        });
+    });
+    // Follow OS changes until the visitor picks a theme explicitly.
+    if (window.matchMedia) {
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var onSystemChange = function (e) {
+            var stored = null;
+            try { stored = localStorage.getItem('cs-theme'); } catch (err) {}
+            if (stored !== 'light' && stored !== 'dark') applyTheme(e.matches ? 'dark' : 'light');
+        };
+        if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+        else if (mq.addListener) mq.addListener(onSystemChange);
     }
 
     var nav = document.getElementById('mainNav');

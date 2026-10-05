@@ -135,8 +135,8 @@
     font-weight: 700;
     padding: 1px 5px;
     border-radius: 3px;
-    background: rgba(65,97,128,0.15);
-    color: #416180;
+    background: var(--cs-accent-bg);
+    color: var(--cs-steel-700);
     flex-shrink: 0;
 }
 .pg-ep-path {
@@ -339,8 +339,8 @@
     padding: 2px 8px;
     border-radius: var(--radius-sm);
 }
-.pg-status-badge.ok  { background: rgba(65,97,128,0.15); color: #416180; }
-.pg-status-badge.err { background: rgba(168,68,59,0.15);  color: #a8443b; }
+.pg-status-badge.ok  { background: var(--cs-accent-bg); color: var(--cs-steel-700); }
+.pg-status-badge.err { background: var(--cs-danger-bg);  color: var(--cs-danger); }
 .pg-status-latency { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--color-text-muted); }
 .pg-status-mode { margin-left: auto; font-size: 0.68rem; color: var(--color-text-muted); font-style: italic; }
 
@@ -359,9 +359,9 @@
     white-space: pre-wrap;
 }
 .pg-json .j-key  { color: var(--color-accent-secondary); }
-.pg-json .j-str  { color: #2c455d; }
-.pg-json .j-num  { color: #597ea3; }
-.pg-json .j-bool { color: #416180; }
+.pg-json .j-str  { color: var(--cs-steel-800); }
+.pg-json .j-num  { color: var(--cs-steel-600); }
+.pg-json .j-bool { color: var(--cs-steel-700); }
 .pg-json .j-null { color: var(--color-text-muted); }
 
 /* ── Empty / error states ── */
@@ -378,12 +378,12 @@
 }
 .pg-empty svg { opacity: 0.3; }
 .pg-error-card {
-    background: rgba(168,68,59,0.06);
+    background: var(--cs-danger-bg);
     border: 1px solid rgba(168,68,59,0.2);
     border-radius: var(--radius-md);
     padding: 1rem 1.25rem;
 }
-.pg-error-card p { font-size: 0.82rem; color: #a8443b; line-height: 1.6; }
+.pg-error-card p { font-size: 0.82rem; color: var(--cs-danger); line-height: 1.6; }
 
 /* ── Mobile ── */
 @media (max-width: 860px) {
@@ -438,11 +438,11 @@
     flex-shrink: 0;
 }
 .pg-product-badge--live {
-    background: rgba(65,97,128,0.12);
-    color: #416180;
+    background: var(--cs-accent-bg);
+    color: var(--cs-steel-700);
 }
 .pg-product-badge--soon {
-    background: rgba(29,31,32,0.1);
+    background: var(--cs-neutral-bg);
     color: var(--color-text-muted);
 }
 

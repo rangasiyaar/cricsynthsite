@@ -83,7 +83,7 @@
     border-radius: 50%;
     flex-shrink: 0;
 }
-.sidebar-product-dot--live { background: #416180; }
+.sidebar-product-dot--live { background: var(--cs-steel-700); }
 .sidebar-product-dot--soon { background: var(--color-text-muted); }
 
 .sidebar-coming-soon {
@@ -153,8 +153,8 @@
     letter-spacing: 0.06em;
     padding: 3px 8px;
     border-radius: 4px;
-    background: rgba(65,97,128, 0.15);
-    color: #416180;
+    background: var(--cs-accent-bg);
+    color: var(--cs-steel-700);
     flex-shrink: 0;
 }
 
@@ -193,7 +193,7 @@
 .params-table tr:last-child td { border-bottom: none; }
 .param-name { font-family: 'JetBrains Mono', monospace; color: var(--color-accent-secondary); font-size: 0.8rem; }
 .param-type { color: var(--color-text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
-.param-required { color: #a8443b; font-size: 0.7rem; font-weight: 600; }
+.param-required { color: var(--cs-danger); font-size: 0.7rem; font-weight: 600; }
 .param-optional { color: var(--color-text-muted); font-size: 0.7rem; }
 .param-desc { color: var(--color-text-secondary); }
 
@@ -240,10 +240,10 @@
     color: var(--color-text-secondary);
 }
 .code-panel .kw { color: var(--color-accent-secondary); }
-.code-panel .str { color: #2c455d; }
+.code-panel .str { color: var(--cs-steel-800); }
 .code-panel .cm { color: var(--color-text-muted); font-style: italic; }
-.code-panel .num { color: #597ea3; }
-.code-panel .fn { color: #416180; }
+.code-panel .num { color: var(--cs-steel-600); }
+.code-panel .fn { color: var(--cs-steel-700); }
 
 /* ── Response example ── */
 .response-label {
@@ -266,7 +266,7 @@
     margin: 1.25rem 0;
 }
 .info-box.info { background: rgba(89,128,166,0.08); border: 1px solid rgba(89,128,166,0.2); color: var(--color-text-secondary); }
-.info-box.warn { background: rgba(138,106,31,0.07); border: 1px solid rgba(138,106,31,0.2); color: #8a6a1f; }
+.info-box.warn { background: var(--cs-warn-bg); border: 1px solid rgba(138,106,31,0.2); color: var(--cs-warn); }
 .info-box svg { flex-shrink: 0; margin-top: 2px; }
 
 /* ── Auth key display ── */
@@ -476,11 +476,11 @@
     border-radius: 99px;
 }
 .sidebar-product-badge--live {
-    background: rgba(65,97,128,0.12);
-    color: #416180;
+    background: var(--cs-accent-bg);
+    color: var(--cs-steel-700);
 }
 .sidebar-product-badge--soon {
-    background: rgba(29,31,32,0.1);
+    background: var(--cs-neutral-bg);
     color: var(--color-text-muted);
 }
 
