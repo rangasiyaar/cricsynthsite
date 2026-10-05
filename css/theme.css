@@ -318,3 +318,22 @@ body .footer::before, body .footer::after { display: none; }
 [data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.2, .7, .2, 1), transform .6s cubic-bezier(.2, .7, .2, 1); }
 [data-reveal].revealed { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+/* ── Mobile fixes ─────────────────────────────── */
+@media (max-width: 640px) {
+  /* developer-experience block: tighter frame so code has room */
+  .cs-api { padding: 24px 16px; }
+  .cs-api-head { margin-bottom: 20px; }
+  .cs-tabs { width: 100%; }
+  .cs-tabs button { flex: 1 1 0; min-width: 0; padding: 10px 6px; font-size: 13px; letter-spacing: .02em; }
+  .cs-api-panel-head { flex-wrap: wrap; gap: 4px 12px; padding: 10px 14px; }
+  .cs-api pre { padding: 14px; font-size: 12px; }
+  .cs-api-ctas .cs-btn { flex: 1 1 auto; justify-content: center; }
+}
+
+/* footer links: wrap instead of truncating with an ellipsis */
+body .footer .footer-link, body .footer .footer-heading { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+@media (max-width: 400px) {
+  body .footer .footer-links { gap: 16px; }
+  body .footer .footer-link { font-size: 13px; }
+}

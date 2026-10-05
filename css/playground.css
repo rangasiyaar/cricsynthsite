@@ -395,8 +395,10 @@
         border-bottom: 1px solid var(--color-border);
     }
     .pg-params-bar { flex-direction: column; align-items: stretch; }
-    .pg-params-inline { flex-direction: column; }
+    .pg-params-inline { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; }
     .pg-param-group { min-width: 0; }
+    .pg-param-label { white-space: normal; }
+    .pg-param-input, .pg-param-select { font-size: 16px; } /* ≥16px stops iOS zoom-on-focus */
     .pg-run-btn-inline { width: 100%; justify-content: center; height: auto; padding: 0.6rem 1rem; }
     .pg-response-body { max-height: 40vh; }
 }
