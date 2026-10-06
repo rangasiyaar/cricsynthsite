@@ -6,6 +6,8 @@ requires-python = ">=3.12"
 dependencies = [
     "numpy>=1.26",
     "pyarrow>=16",
+    "duckdb>=1.1",          # pattern lab: window-function features straight off Parquet
+    "click>=8.1",
 ]
 
 [build-system]

@@ -1,0 +1,48 @@
+name: Pattern Lab
+
+# Tests cricket folklore on the full Cricsheet archive (free on GitHub's runners,
+# no Google setup needed). The report lands in the job summary and as an artifact.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/**", "cricdata/src/**", ".github/workflows/pattern-lab.yml"]
+
+permissions:
+  contents: read
+
+concurrency: { group: pattern-lab, cancel-in-progress: true }
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run pytest cricsim/tests cricdata/tests -q
+      - name: Download Cricsheet
+        run: uv run cricdata download --kind all --dest data/raw
+      - name: Build Parquet
+        run: |
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata audit --parquet data/parquet --report data/audit/coverage
+          rm data/raw/all_json.zip
+      - name: Run Pattern Lab
+        run: uv run python -m cricsim.patterns --parquet data/parquet --out data/patterns/report --memory 5GB
+      - name: Publish report
+        if: always()
+        run: |
+          [ -f data/patterns/report.md ] && cat data/patterns/report.md >> "$GITHUB_STEP_SUMMARY"
+          [ -f data/audit/coverage.md ] && head -40 data/audit/coverage.md >> "$GITHUB_STEP_SUMMARY"
+          true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pattern-lab
+          path: |
+            data/patterns/
+            data/audit/
+          if-no-files-found: ignore
