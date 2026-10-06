@@ -76,6 +76,7 @@ def build_balls(con: duckdb.DuckDBPyConnection, parquet_dir: Path, attributes: P
         lag(wides) OVER inn AS prev_wides,
         lag(noballs) OVER inn AS prev_noballs,
         lag(is_six) OVER bat AS batter_prev_six,
+        lag(runs_batter) OVER bat AS batter_prev_runs,
         lag(is_boundary) OVER bat AS batter_prev_boundary,
         lag(is_boundary, 2) OVER bat AS batter_prev2_boundary,
         lag(is_six) OVER bowl AS bowler_prev_six,

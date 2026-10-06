@@ -1,0 +1,57 @@
+name: Engine (fit + backtest)
+
+# Fits the simulation model on the full Cricsheet archive and backtests it on matches the model
+# never saw. The backtest report lands in the job summary; the fitted model is an artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff: { description: "Backtest: train before this date", default: "2025-01-01" }
+      matches: { description: "Backtest matches", default: "800" }
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/src/cricsim/engine/**", ".github/workflows/engine.yml"]
+
+permissions:
+  contents: read
+
+concurrency: { group: engine, cancel-in-progress: true }
+
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      CUTOFF: ${{ inputs.cutoff || '2025-01-01' }}
+      MATCHES: ${{ inputs.matches || '800' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run pytest cricsim/tests cricdata/tests -q
+      - name: Data
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm data/raw/all_json.zip
+      - name: Backtest
+        run: |
+          uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff "$CUTOFF" \
+            --matches "$MATCHES" --sims 1000 --out data/backtest/report --memory 3GB
+      - name: Fit production model (all data)
+        run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB
+      - name: Publish
+        if: always()
+        run: |
+          [ -f data/backtest/report.md ] && cat data/backtest/report.md >> "$GITHUB_STEP_SUMMARY"
+          true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: engine
+          path: |
+            data/backtest/
+            data/models/latest/
+          if-no-files-found: ignore
+          retention-days: 14
