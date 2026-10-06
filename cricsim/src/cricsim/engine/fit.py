@@ -318,9 +318,9 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
     names = list(ids["players"])
     hand = np.zeros(P, dtype=np.int8)
     kind = np.zeros(P, dtype=np.int8)
-    pl = parquet / "players" / "players.parquet"
-    if pl.exists():
-        for pid, name in con.execute(f"SELECT player_id, name FROM read_parquet('{pl.as_posix()}')").fetchall():
+    pl = parquet / "players"
+    if any(pl.glob("*.parquet")):
+        for pid, name in con.execute(f"SELECT player_id, name FROM read_parquet('{(pl / '*.parquet').as_posix()}')").fetchall():
             if pid in pidx:
                 names[pidx[pid]] = name
     at = parquet / "attributes" / "attributes.parquet"

@@ -54,7 +54,7 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0)
                 [mid, team]).fetchall()]
         if any(len(v) != 11 or None in v for v in xi.values()):
             continue
-        innings = con.execute(f"""SELECT innings_no, team, runs FROM read_parquet('{inn}')
+        innings = con.execute(f"""SELECT innings_no, team, runs, wickets FROM read_parquet('{inn}')
                                   WHERE match_id = ? AND innings_no <= 2 ORDER BY innings_no""", [mid]).fetchall()
         out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp,
                     "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings})
@@ -115,6 +115,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
         for inn0, lg in enumerate(part.innings):
             actual = mt["innings"][inn0][2]
             sim = lg.runs
+            act_wk = mt["innings"][inn0][3] if len(mt["innings"][inn0]) > 3 else None
+            res.setdefault("team", []).append({"inn": inn0 + 1, "pred_runs": float(sim.mean()), "act_runs": actual,
+                                               "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk})
             if inn0 == 0:
                 res["score"].append({"pit": float((sim < actual).mean() + 0.5 * (sim == actual).mean()),
                                      "in80": bool(np.percentile(sim, 10) <= actual <= np.percentile(sim, 90)),
@@ -125,7 +128,10 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
             for s, p in enumerate(lg.order):
                 if (inn0 + 1, p) not in actual_order:
                     continue                           # didn't bat
-                sim_r = lg.bat_runs[:, s]
+                batted = lg.bat_balls[:, s] > 0              # like with like: simulations where he batted too
+                if not batted.any():
+                    continue
+                sim_r = lg.bat_runs[batted, s]
                 act = runs_by.get(p, 0)
                 group = ("established" if f"{p}|{mt['comp']}" in seen else
                          "cross-league debutant" if model.knows(p) else "unknown")
@@ -182,6 +188,17 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                          "log_loss_coin_flip": round(float(np.log(2)), 4),
                          "accuracy": round(float(((p > 0.5) == (y == 1)).mean()), 3),
                          "calibration": _calibration([(a, b) for a, b, _ in res["win"]], 5)}
+    if res.get("team"):
+        out["team_innings"] = {}
+        for inn in (1, 2):
+            rows = [r for r in res["team"] if r["inn"] == inn]
+            if rows:
+                out["team_innings"][str(inn)] = {
+                    "n": len(rows),
+                    "runs_predicted": round(float(np.mean([r["pred_runs"] for r in rows])), 1),
+                    "runs_actual": round(float(np.mean([r["act_runs"] for r in rows])), 1),
+                    "wickets_predicted": round(float(np.mean([r["pred_wkts"] for r in rows])), 2),
+                    "wickets_actual": round(float(np.mean([r["act_wkts"] for r in rows if r["act_wkts"] is not None])), 2)}
     if res["score"]:
         pit = np.array([s["pit"] for s in res["score"]])
         out["first_innings_total"] = {
@@ -231,8 +248,14 @@ def write_report(rep: dict, path: Path) -> None:
               f"median error {s['median_abs_error']} runs", "",
               "Where real scores fell in the simulated distribution, by decile (calibrated = 10% each): "
               + " · ".join(f"{100 * x:.0f}%" for x in s["pit_deciles"]), ""]
+    if rep.get("team_innings"):
+        L += ["## Team innings (average)", "", "| Innings | Matches | Runs predicted | Runs actual | Wickets predicted | Wickets actual |",
+              "|---|---|---|---|---|---|"]
+        for k, r in rep["team_innings"].items():
+            L.append(f"| {k} | {r['n']} | {r['runs_predicted']} | {r['runs_actual']} | {r['wickets_predicted']} | {r['wickets_actual']} |")
+        L.append("")
     if rep.get("player_runs"):
-        L += ["## Player runs", "", "| Group | Innings | Predicted mean | Actual mean | In 80% band | Brier 30+ (base rate) | Corr |",
+        L += ["## Player runs (players who batted, v simulations where they batted)", "", "| Group | Innings | Predicted mean | Actual mean | In 80% band | Brier 30+ (base rate) | Corr |",
               "|---|---|---|---|---|---|---|"]
         for g, r in rep["player_runs"].items():
             L.append(f"| {g} | {r['n']} | {r['mean_predicted']} | {r['mean_actual']} | {100 * r['in_80pct_band']:.1f}% | "
