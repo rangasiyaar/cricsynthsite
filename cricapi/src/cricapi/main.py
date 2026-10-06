@@ -306,6 +306,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         (st.settings.publish_dir / "index.json").write_text(_json.dumps(idx))
         return card
 
+    @app.get("/admin/players", dependencies=[Depends(admin)])
+    def admin_players(q: str = Query(..., min_length=2), limit: int = Query(15, le=50)):
+        from cricsim.engine.analytics import search_players
+        return {"players": search_players(st.model, q, limit)}
+
     @app.post("/admin/keys", dependencies=[Depends(admin)])
     def new_key(owner: str, plan: Literal["free", "pro", "business"] = "free"):
         return {"key": st.keys.create(owner, plan), "plan": plan, "note": "Shown once — store it now."}

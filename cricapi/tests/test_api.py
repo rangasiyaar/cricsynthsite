@@ -92,6 +92,8 @@ def test_admin_coverage_flow(client, key, env):
     assert card["id"] == "m2"
     ids = [m["id"] for m in client.get("/v1/matches", headers=h(key)).json()["matches"]]
     assert ids == ["m1", "m2"]
+    assert client.get("/admin/players", params={"q": "P0"}, headers=a).json()["players"]
+    assert client.get("/admin/players", params={"q": "P0"}).status_code == 403
     assert client.delete("/admin/coverage/m2", headers=a).status_code == 200
     assert client.get("/v1/matches/m2", headers=h(key)).status_code == 404
 
