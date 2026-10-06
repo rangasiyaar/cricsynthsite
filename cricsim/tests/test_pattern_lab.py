@@ -96,3 +96,14 @@ def test_matchups_with_attributes(lab, tmp_path):
     assert lap["verdict"] == "real", lap
     assert 1.4 < lap["full"]["rr"] < 2.3            # planted 1.8
     assert r["offspin_v_lhb"]["verdict"] in ("myth", "inconclusive", "weak"), r["offspin_v_lhb"]
+
+
+def test_cli_end_to_end(lab, tmp_path):
+    from click.testing import CliRunner
+
+    from cricsim.patterns.lab import main
+    *_, out = lab
+    report = tmp_path / "new" / "dir" / "report"          # output folder doesn't exist yet
+    res = CliRunner().invoke(main, ["--parquet", str(out), "--out", str(report), "--memory", "1GB"])
+    assert res.exit_code == 0, res.output
+    assert report.with_suffix(".md").exists() and "Pattern Lab" in res.output

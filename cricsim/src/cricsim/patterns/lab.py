@@ -187,7 +187,9 @@ def main(parquet: Path, attributes: Path | None, out: Path, split_year: int, mem
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
-    con.execute(f"SET temp_directory='{(out.parent / '.duckdb_tmp').as_posix()}'")   # spill big windows to disk
+    spill = out.parent / ".duckdb_tmp"
+    spill.mkdir(parents=True, exist_ok=True)
+    con.execute(f"SET temp_directory='{spill.as_posix()}'")   # spill big windows to disk
     con.execute("SET preserve_insertion_order=false")
     attributes = attributes or parquet / "attributes" / "attributes.parquet"
     n = build_balls(con, parquet, attributes)
