@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>GraphSynth overlay</title>
+<!--
+  Browser-source overlay for OBS, vMix and CasparCG. Transparent background.
+  overlay.html?key=cs_live_…&graphic=win-probability&match=ipl-2026-m042&theme=transparent&refresh=10
+  Optional: home=#004ba0&away=#f9cd05  player=p-vk18 (for player-form)  api=https://…
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+  #g { width: 100vw; height: 100vh; }
+  #msg { position: fixed; left: 16px; bottom: 16px; font: 14px/1.4 system-ui, sans-serif; color: #fff;
+         background: rgba(0,0,0,.6); padding: 6px 10px; border-radius: 4px; display: none; }
+</style>
+</head>
+<body>
+<div id="g" role="img" aria-label="GraphSynth graphic"></div>
+<div id="msg"></div>
+<script src="graphsynth.js"></script>
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search);
+    var msg = document.getElementById("msg");
+    function show(t) { msg.textContent = t; msg.style.display = t ? "block" : "none"; }
+    try {
+      GraphSynth.mount(document.getElementById("g"), {
+        apiKey: p.get("key"),
+        graphic: p.get("graphic") || "win-probability",
+        matchId: p.get("match"),
+        playerId: p.get("player"),
+        theme: p.get("theme") || "transparent",
+        homeColor: p.get("home"),
+        awayColor: p.get("away"),
+        refreshSeconds: Number(p.get("refresh") || 10),
+        apiBase: p.get("api") || undefined,
+        onUpdate: function () { show(""); },
+        // only visible on the operator's preview if something is wrong; hide with &quiet=1
+        onError: function (e) { if (!p.get("quiet")) show("GraphSynth: " + e.message); },
+      });
+    } catch (e) { show(e.message); }
+  })();
+</script>
+</body>
+</html>

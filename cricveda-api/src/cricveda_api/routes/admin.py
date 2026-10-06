@@ -251,3 +251,42 @@ async def set_subscription(request: Request, user_id: str, body: SubscriptionIn,
     )
     clear_cache()  # new limits apply to this user's keys straight away
     return row
+
+
+# ── Live scoring (public GraphSynth data) ────────────────────────────────────
+
+class LiveStateIn(BaseModel):
+    innings: Literal[1, 2]
+    batting: Literal["home", "away"]
+    runs: int = Field(..., ge=0, le=600)
+    wickets: int = Field(..., ge=0, le=10)
+    overs: str = Field(..., examples=["12.3"])
+    first_innings_total: int | None = Field(None, ge=0, le=600)
+
+
+@router.post("/fixtures/{upcoming_id}/live", status_code=status.HTTP_201_CREATED, summary="Record the live score")
+@limiter.limit("240/minute")
+async def post_live(request: Request, upcoming_id: int, body: LiveStateIn, _admin: str = Depends(require_admin)):
+    from cricveda_api.routes.graphics_v2 import StateIn, record_state
+    from fastapi.concurrency import run_in_threadpool
+
+    fx = store.get_fixture(upcoming_id)
+    if not fx:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Fixture not found")
+    try:
+        state = StateIn(match_id=fx.get("slug") or "", **body.model_dump())
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    return await run_in_threadpool(record_state, fx, state, "public", "admin")
+
+
+@router.get("/fixtures/{upcoming_id}/live", summary="Public live snapshots so far")
+@limiter.limit("120/minute")
+async def get_live(request: Request, upcoming_id: int, _admin: str = Depends(require_admin)):
+    return store.list_snapshots(upcoming_id, "public")
+
+
+@router.delete("/fixtures/{upcoming_id}/live", status_code=status.HTTP_204_NO_CONTENT, summary="Reset live scoring")
+@limiter.limit("30/minute")
+async def reset_live(request: Request, upcoming_id: int, _admin: str = Depends(require_admin)):
+    store.delete_snapshots(upcoming_id, "public")

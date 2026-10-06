@@ -32,6 +32,10 @@ class FakeStore:
         self.credits: dict[int, float] = {}
         self.sim_squads: dict[int, list[dict]] = {}
         self.simulations: dict[tuple[int, str], dict] = {}
+        self.snapshots: list[dict] = []
+        self.hist_matches: dict[int, dict] = {}
+        self.hist_deliveries: dict[int, list[dict]] = {}
+        self.points: dict[int, list[dict]] = {}
         self.calls = {"list_legacy_keys": 0}
 
     # keys
@@ -157,6 +161,30 @@ class FakeStore:
 
     def put_stored_simulation(self, row):
         self.simulations[(row["upcoming_id"], row["toss_key"])] = row
+
+    def put_snapshot(self, row):
+        key = (row["upcoming_id"], row["scope"], row["innings"], row["legal_balls"])
+        self.snapshots = [r for r in self.snapshots
+                          if (r["upcoming_id"], r["scope"], r["innings"], r["legal_balls"]) != key]
+        stored = {**row, "snapshot_id": len(self.snapshots) + 1}
+        self.snapshots.append(stored)
+        return stored
+
+    def list_snapshots(self, upcoming_id, scope):
+        rows = [r for r in self.snapshots if r["upcoming_id"] == upcoming_id and r["scope"] == scope]
+        return sorted(rows, key=lambda r: (r["innings"], r["legal_balls"]))
+
+    def delete_snapshots(self, upcoming_id, scope):
+        self.snapshots = [r for r in self.snapshots if not (r["upcoming_id"] == upcoming_id and r["scope"] == scope)]
+
+    def historical_match(self, match_id):
+        return self.hist_matches.get(match_id)
+
+    def match_deliveries(self, match_id):
+        return self.hist_deliveries.get(match_id, [])
+
+    def player_points(self, player_id, last=10):
+        return self.points.get(player_id, [])[-last:]
 
     def resolve_public_id(self, entity_type, slug):
         return self.public_ids.get((entity_type, slug))

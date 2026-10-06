@@ -271,3 +271,42 @@ def get_stored_simulation(upcoming_id: int, toss_key: str) -> dict | None:
 
 def put_stored_simulation(row: dict) -> None:
     _client().table("match_simulations").upsert(row, on_conflict="upcoming_id,toss_key").execute()
+
+
+# ── GraphSynth ───────────────────────────────────────────────────────────────
+
+def put_snapshot(row: dict) -> dict:
+    return (_client().table("live_snapshots")
+            .upsert(row, on_conflict="upcoming_id,scope,innings,legal_balls").execute().data[0])
+
+
+def list_snapshots(upcoming_id: int, scope: str) -> list[dict]:
+    return (_client().table("live_snapshots").select("*")
+            .eq("upcoming_id", upcoming_id).eq("scope", scope)
+            .order("innings").order("legal_balls").limit(1000).execute().data)
+
+
+def delete_snapshots(upcoming_id: int, scope: str) -> None:
+    _client().table("live_snapshots").delete().eq("upcoming_id", upcoming_id).eq("scope", scope).execute()
+
+
+def historical_match(match_id: int) -> dict | None:
+    rows = (_client().table("matches")
+            .select("match_id, match_date, team1, team2, toss_winner, toss_decision, winner, leagues(format, name)")
+            .eq("match_id", match_id).limit(1).execute().data)
+    return rows[0] if rows else None
+
+
+def match_deliveries(match_id: int) -> list[dict]:
+    from cricveda_ingest.db import fetch_all
+    return fetch_all("deliveries", "delivery_id, innings, over_ball, runs_total, wicket_type",
+                     order="delivery_id", where=lambda q: q.eq("match_id", match_id))
+
+
+def player_points(player_id: int, last: int = 10) -> list[dict]:
+    rows = (_client().table("fantasy_points").select("match_id, total_points, matches(match_date)")
+            .eq("player_id", player_id).execute().data)
+    for r in rows:
+        r["match_date"] = (r.pop("matches", None) or {}).get("match_date")
+    rows.sort(key=lambda r: str(r["match_date"]))
+    return rows[-last:]

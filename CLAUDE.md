@@ -12,6 +12,7 @@ cricsynthsite/                  ← git root (also the landing website)
 ├── cricveda-ingest/            ← Python package: data ingestion pipeline
 ├── cricveda-api/               ← Python package: FastAPI service
 ├── cricveda-web/               ← Next.js fan dashboard
+├── sdk/                        ← GraphSynth broadcast SDK + OBS/vMix/CasparCG overlay (static)
 ├── supabase/                   ← DB schema SQL files
 ├── data/
 │   ├── cricsheet/              ← gitignored — Cricsheet YAML files
@@ -62,7 +63,7 @@ npm run dev
 ```bash
 # 1. In the Supabase SQL editor run, in order:
 #    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql, predictions_v2.sql,
-#    matchsynth_v2.sql
+#    matchsynth_v2.sql, graphsynth_v2.sql
 #    then make yourself an admin:
 #    UPDATE user_profiles SET is_admin = TRUE WHERE email = 'you@example.com';
 
@@ -146,6 +147,11 @@ cd cricveda-web && npx vercel
   free), so the default `/v2/simulate/match` result is pre-computed into `match_simulations`.
   Auction ₹ values need `MATCHSYNTH_CRORE_PER_WIN` (calibrate against past auction prices);
   without it the API returns wins added only.
+- **GraphSynth needs no paid feed**: live graphics read `live_snapshots`, fed by customers pushing
+  their own scoring (`POST /v2/graphics/state`, private to their account) or admin manual scoring
+  (`/admin/fixtures/<id>/live`, public). A paid feed plugs in later as a `LiveFeed`
+  (`cricveda_core/graphsynth/live.py`). Graphics are pure SVG; PNG via resvg-py with bundled
+  Barlow fonts (`graphsynth/fonts`, OFL — family names fixed so `font-family: Barlow` matches).
 - **Supabase returns ≤1,000 rows per request**: bulk loads must use `cricveda_ingest.db.fetch_all`.
 - **PuLP pinned below 4**: 4.x drops the bundled CBC solver the XI optimizer needs.
 - **Sign-in lives on the dashboard app**: `login.html` links to `app.cricsynthesis.in/login?provider=google`, so the OAuth round trip starts and ends on one origin.

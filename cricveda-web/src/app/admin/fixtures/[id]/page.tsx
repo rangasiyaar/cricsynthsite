@@ -170,7 +170,11 @@ export default function FixtureEditor() {
     <div className="p-8 max-w-5xl">
       <Link href="/admin/fixtures" className="text-sm" style={{ color: "#818cf8" }}>← All fixtures</Link>
       <PageHeader title={`${fx.team1} v ${fx.team2}`} sub={`${fx.slug ?? "no public ID"} · ${fx.match_date} · ${fx.format}`}>
-        <Button variant="danger" onClick={remove} disabled={busy}>Delete fixture</Button>
+        <div className="flex gap-2">
+          <Link href={`/admin/fixtures/${id}/live`} className="px-4 py-2 rounded-lg text-sm font-semibold"
+            style={{ border: "1px solid rgba(255,255,255,0.15)", color: "#d1d5db" }}>Live scoring</Link>
+          <Button variant="danger" onClick={remove} disabled={busy}>Delete fixture</Button>
+        </div>
       </PageHeader>
 
       {error && <Notice kind="error">{error}</Notice>}
