@@ -349,40 +349,40 @@ class FeaturePipeline:
     @classmethod
     def from_supabase(cls) -> "FeaturePipeline":
         """Load all required tables from Supabase and return a ready pipeline."""
-        from cricveda_ingest.db import get_client
-        client = get_client()
+        from cricveda_ingest.db import fetch_all
 
         log.info("Loading fantasy_points...")
-        fp_raw = client.table("fantasy_points").select(
-            "player_id, match_id, batting_points, bowling_points, fielding_points, total_points, training_exclude, "
-            "matches(match_date, league_id, team1, team2, venue_id, rain_affected)"
-        ).execute()
         fp_rows = []
-        for r in fp_raw.data:
+        for r in fetch_all(
+            "fantasy_points",
+            "player_id, match_id, batting_points, bowling_points, fielding_points, total_points, training_exclude, "
+            "matches(match_date, league_id, team1, team2, venue_id, rain_affected)",
+            order="match_id,player_id",
+        ):
             m = r.pop("matches", {}) or {}
             r.update(m)
             fp_rows.append(r)
         fp_df = pd.DataFrame(fp_rows)
 
         log.info("Loading matches...")
-        matches_raw = client.table("matches").select("*").execute()
-        matches_df = pd.DataFrame(matches_raw.data)
+        matches_df = pd.DataFrame(fetch_all("matches", "*", order="match_id"))
 
         log.info("Loading player_meta...")
-        player_raw = client.table("player_meta").select("*").execute()
-        player_df = pd.DataFrame(player_raw.data)
+        player_df = pd.DataFrame(fetch_all("player_meta", "*", order="player_id"))
 
         log.info("Loading leagues...")
-        leagues_raw = client.table("leagues").select("*").execute()
-        leagues_df = pd.DataFrame(leagues_raw.data)
+        leagues_df = pd.DataFrame(fetch_all("leagues", "*", order="league_id"))
 
         log.info("Loading deliveries (this may take a while)...")
         # Only load the columns needed for feature computation (not raw name strings)
-        delivery_raw = client.table("deliveries").select(
+        deliveries_df = pd.DataFrame(fetch_all(
+            "deliveries",
             "delivery_id, match_id, innings, over_ball, striker_id, bowler_id, "
-            "runs_batter, runs_total, extras_type, wicket_type"
-        ).not_.is_("striker_id", "null").execute()
-        deliveries_df = pd.DataFrame(delivery_raw.data)
+            "runs_batter, runs_total, extras_type, wicket_type",
+            order="delivery_id",
+            where=lambda q: q.not_.is_("striker_id", "null"),
+        ))
+        log.info("Loaded %d deliveries across %d matches", len(deliveries_df), len(matches_df))
 
         log.info("Building per-player-per-match delivery aggregates...")
         delivery_stats_df = _aggregate_delivery_stats(deliveries_df, matches_df)

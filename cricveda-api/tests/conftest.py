@@ -30,6 +30,8 @@ class FakeStore:
         self.predictions: list[dict] = []
         self.players: dict[int, dict] = {}
         self.credits: dict[int, float] = {}
+        self.sim_squads: dict[int, list[dict]] = {}
+        self.simulations: dict[tuple[int, str], dict] = {}
         self.calls = {"list_legacy_keys": 0}
 
     # keys
@@ -146,6 +148,15 @@ class FakeStore:
 
     def squad_credits(self, upcoming_id):
         return dict(self.credits)
+
+    def simulation_squad(self, upcoming_id):
+        return [dict(r) for r in self.sim_squads.get(upcoming_id, [])]
+
+    def get_stored_simulation(self, upcoming_id, toss_key):
+        return self.simulations.get((upcoming_id, toss_key))
+
+    def put_stored_simulation(self, row):
+        self.simulations[(row["upcoming_id"], row["toss_key"])] = row
 
     def resolve_public_id(self, entity_type, slug):
         return self.public_ids.get((entity_type, slug))

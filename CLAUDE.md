@@ -61,7 +61,8 @@ npm run dev
 
 ```bash
 # 1. In the Supabase SQL editor run, in order:
-#    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql, predictions_v2.sql
+#    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql, predictions_v2.sql,
+#    matchsynth_v2.sql
 #    then make yourself an admin:
 #    UPDATE user_profiles SET is_admin = TRUE WHERE email = 'you@example.com';
 
@@ -83,9 +84,11 @@ uv run python -m cricveda_ingest.validate
 # 5. Train models (requires populated DB) — also trains the v2 range models,
 #    scores them on the IPL 2024 holdout and uploads them to Supabase Storage
 uv run python -m cricveda_core.models.train
+uv run python -m cricveda_core.matchsynth.train      # MatchSynth ball-outcome model
 
-# 6. Predict upcoming fixtures (needs fixtures + squads from the admin panel)
+# 6. Predict / pre-simulate upcoming fixtures (needs fixtures + squads from the admin panel)
 uv run python -m cricveda_core.predictions.batch --dry-run
+uv run python -m cricveda_core.matchsynth.batch --dry-run
 ```
 
 ## Tests
@@ -137,5 +140,12 @@ cd cricveda-web && npx vercel
 - **CricVeda v2 predictions are pre-computed**: `predict.yml` runs hourly in match hours,
   re-predicting only fixtures whose squad changed; `/v2/predictions/*` just reads
   `player_predictions`. Ranges are XGBoost multi-quantile models (P10/median/P90).
+- **MatchSynth is a factored ball model + vectorised Monte Carlo**: P(0/1/2/3/4/6/W/extra) =
+  situation baseline × batter × bowler × batter-vs-bowler-type × chase pressure, each player
+  factor shrunk toward average. 10k T20 simulations ≈ 0.7s locally (several seconds on Render
+  free), so the default `/v2/simulate/match` result is pre-computed into `match_simulations`.
+  Auction ₹ values need `MATCHSYNTH_CRORE_PER_WIN` (calibrate against past auction prices);
+  without it the API returns wins added only.
+- **Supabase returns ≤1,000 rows per request**: bulk loads must use `cricveda_ingest.db.fetch_all`.
 - **PuLP pinned below 4**: 4.x drops the bundled CBC solver the XI optimizer needs.
 - **Sign-in lives on the dashboard app**: `login.html` links to `app.cricsynthesis.in/login?provider=google`, so the OAuth round trip starts and ends on one origin.

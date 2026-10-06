@@ -249,3 +249,25 @@ def squad_credits(upcoming_id: int) -> dict[int, float]:
         .eq("upcoming_id", upcoming_id).execute().data
     )
     return {r["player_id"]: float(r.get("credits") or 8.0) for r in rows}
+
+
+# ── MatchSynth ───────────────────────────────────────────────────────────────
+
+def simulation_squad(upcoming_id: int) -> list[dict]:
+    return (
+        _client().table("squad_selections")
+        .select("player_id, team, batting_order, is_playing_xi, is_confirmed, player_meta(primary_role, bowling_style)")
+        .eq("upcoming_id", upcoming_id).execute().data
+    )
+
+
+def get_stored_simulation(upcoming_id: int, toss_key: str) -> dict | None:
+    rows = (
+        _client().table("match_simulations").select("*")
+        .eq("upcoming_id", upcoming_id).eq("toss_key", toss_key).limit(1).execute().data
+    )
+    return rows[0] if rows else None
+
+
+def put_stored_simulation(row: dict) -> None:
+    _client().table("match_simulations").upsert(row, on_conflict="upcoming_id,toss_key").execute()

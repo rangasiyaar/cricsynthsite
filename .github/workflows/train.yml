@@ -52,6 +52,9 @@ jobs:
           uv run python -m cricveda_core.models.train \
             --cutoff "${{ inputs.cutoff }}" \
             --version "$VERSION"
+          uv run python -m cricveda_core.matchsynth.train \
+            --cutoff "${{ inputs.cutoff }}" \
+            --version "$VERSION"
 
       - name: Verify model uploaded to storage
         run: |
@@ -64,7 +67,8 @@ jobs:
           files = client.storage.from_(bucket).list()
           names = [f["name"] for f in files]
           print(f"Storage bucket contents: {names}")
-          assert "player_fp_latest.json" in names, "Upload failed!"
+          for required in ("player_fp_latest.json", "player_q_latest.meta.json", "ball_model_latest.npz"):
+              assert required in names, f"Upload failed: {required}"
           print("✓ Model verified in storage")
           EOF
 

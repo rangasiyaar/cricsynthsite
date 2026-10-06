@@ -26,3 +26,5 @@ services:
         value: "1"
       - key: SUPABASE_JWT_SECRET
         sync: false          # Supabase dashboard → Settings → API → JWT Secret
+      - key: MATCHSYNTH_CRORE_PER_WIN
+        sync: false          # optional: ₹ crore per season win, for /v2/simulate/auction
