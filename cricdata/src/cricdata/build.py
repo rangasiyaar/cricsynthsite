@@ -42,7 +42,14 @@ def _write(rows: list[dict], table: str, out: Path, part: int) -> None:
     if not rows:
         return
     schema = SCHEMAS[table]
-    cols = {f.name: [r.get(f.name) for r in rows] for f in schema}
+    cols = {}
+    for f in schema:
+        vals = [r.get(f.name) for r in rows]
+        if pa.types.is_string(f.type):       # Cricsheet sometimes uses numbers for text fields (e.g. event.group: 1)
+            vals = [v if v is None or isinstance(v, str) else str(v) for v in vals]
+        elif pa.types.is_list(f.type) and pa.types.is_string(f.type.value_type):
+            vals = [v if v is None else [x if x is None or isinstance(x, str) else str(x) for x in v] for v in vals]
+        cols[f.name] = vals
     tbl = pa.Table.from_pydict(cols, schema=schema)
     (out / table).mkdir(parents=True, exist_ok=True)
     pq.write_table(tbl, out / table / f"part-{part:05d}.parquet", compression="zstd")

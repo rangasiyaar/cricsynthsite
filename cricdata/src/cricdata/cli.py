@@ -2,6 +2,7 @@
 
     cricdata download --kind all|recent --dest data/raw
     cricdata build    --zip data/raw/all_json.zip --people data/raw/people.csv --out data/parquet
+    cricdata attributes --out data/parquet                               (batting hand / bowling style)
     cricdata audit    --parquet data/parquet --report data/audit/coverage
     cricdata publish  --parquet data/parquet --project P --dataset cricket --bucket P-data
     cricdata ingest   --project P --dataset cricket --bucket P-data      (all of the above; the Cloud Run job)
@@ -44,6 +45,20 @@ def build(zip_path: Path, people: Path, names: Path | None, out: Path, limit: in
     counts = run_build(zip_path, out, limit=limit)
     counts["players"] = build_players(people, names, out)
     click.echo(json.dumps(counts, indent=2))
+
+
+@main.command()
+@click.option("--rda", type=click.Path(path_type=Path), default=None,
+              help="player_meta.rda (downloaded to data/raw if omitted)")
+@click.option("--overrides", type=click.Path(path_type=Path), default=None,
+              help="CSV of player_id + attribute columns that win over the dataset")
+@click.option("--out", type=click.Path(path_type=Path), default=Path("data/parquet"))
+def attributes(rda: Path | None, overrides: Path | None, out: Path) -> None:
+    """Batting hand + bowling style per player → <out>/attributes/attributes.parquet."""
+    from cricdata.attributes import build_attributes
+    from cricdata.download import fetch
+    rda = rda if rda and rda.exists() else fetch("player_meta", Path("data/raw"))
+    click.echo(json.dumps(build_attributes(rda, out, overrides), indent=2))
 
 
 @main.command()

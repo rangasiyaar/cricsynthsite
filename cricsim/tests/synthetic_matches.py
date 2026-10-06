@@ -13,6 +13,22 @@ RUN_P = [0.38, 0.37, 0.08, 0.12, 0.05]
 
 PLANT_AFTER_SIX = 2.0        # batter just hit a six → twice as likely out
 PLANT_NEW_BATTER = 1.6       # first 5 balls faced → 1.6x
+PLANT_LEFT_ARM_PACE = 1.8    # right-hander v left-arm pace in the powerplay → 1.8x
+
+# Attributes by position: each side's bowlers are [left-arm pace, right-arm pace, off-spin, leg-spin, SLA];
+# even-numbered batters are right-handed.
+BOWLER_STYLES = [("left", "pace"), ("right", "pace"), ("right", "off_spin"), ("right", "leg_spin"),
+                 ("left", "left_arm_orthodox")]
+
+
+def attributes() -> list[dict]:
+    rows = []
+    for side in "AB":
+        for k in range(11):
+            arm, kind = BOWLER_STYLES[k - 6] if k >= 6 else (None, None)
+            rows.append({"player_id": f"id-{side}{k}", "batting_hand": "right" if k % 2 == 0 else "left",
+                         "bowling_arm": arm, "bowling_kind": kind})
+    return rows
 
 
 def innings(rng: random.Random, team: str, batters: list[str], bowlers: list[str], target: int | None):
@@ -35,6 +51,8 @@ def innings(rng: random.Random, team: str, batters: list[str], bowlers: list[str
                 p_w *= PLANT_AFTER_SIX
             if faced[bat] < 5:
                 p_w *= PLANT_NEW_BATTER
+            if o < 6 and OVER_PLAN[o] == 0 and int(bat[1:]) % 2 == 0:
+                p_w *= PLANT_LEFT_ARM_PACE
             faced[bat] += 1
             d = {"batter": bat, "bowler": bowler, "non_striker": batters[non]}
             if rng.random() < p_w:

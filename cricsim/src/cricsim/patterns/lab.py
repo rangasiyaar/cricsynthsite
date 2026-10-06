@@ -58,11 +58,12 @@ def _effect_dict(e: Effect) -> dict:
 WICKET_OUTCOMES = {"wicket", "bowler_wicket"}
 _TOKEN = re.compile(r"[a-z_][a-z0-9_]*")
 _SQL_WORDS = {"and", "or", "not", "is", "null", "between", "true", "false", "coalesce", "least", "cast", "as",
-              "int", "over", "left", "right", "pace", "off_spin"}
+              "int", "over", "in"}
+_LITERAL = re.compile(r"'[^']*'")
 
 
 def _columns(sql: str) -> set[str]:
-    return {t for t in _TOKEN.findall(sql.lower()) if t not in _SQL_WORDS}
+    return {t for t in _TOKEN.findall(_LITERAL.sub(" ", sql.lower())) if t not in _SQL_WORDS}
 
 
 def _adjusted(p: Pattern, real: list[Pattern]) -> Pattern:
@@ -150,7 +151,9 @@ def write_report(summary: dict, results: list[dict], curves: dict, path: Path) -
     lines = ["# Pattern Lab", "",
              f"{summary['balls']:,} limited-overs balls · discovery before {summary['split_year']}, "
              f"validation {summary['split_year']} onwards. RR = rate on pattern balls ÷ rate on comparable "
-             "balls in the same situation (1.00 = no effect).", "",
+             "balls in the same situation (1.00 = no effect). Balls with known batting hand: "
+             f"{100 * summary.get('attribute_coverage', {}).get('batting_hand', 0):.0f}%, bowling style: "
+             f"{100 * summary.get('attribute_coverage', {}).get('bowling_kind', 0):.0f}%.", "",
              "| Pattern | Verdict | RR (95% CI) | Situation-only RR | Rate: pattern v expected | Discovery RR | Validation RR | Pattern balls |",
              "|---|---|---|---|---|---|---|---|"]
     for r in results:
@@ -175,7 +178,8 @@ def write_report(summary: dict, results: list[dict], curves: dict, path: Path) -
 @click.command()
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--attributes", type=click.Path(path_type=Path), default=None,
-              help="Optional Parquet: player_id, batting_hand, bowling_arm, bowling_kind")
+              help="Parquet with player_id, batting_hand, bowling_arm, bowling_kind "
+                   "(default: <parquet>/attributes/attributes.parquet if present — see `cricdata attributes`)")
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/patterns/report"))
 @click.option("--split-year", default=SPLIT_YEAR, show_default=True)
 @click.option("--memory", default="3GB", show_default=True)
@@ -185,11 +189,15 @@ def main(parquet: Path, attributes: Path | None, out: Path, split_year: int, mem
     con.execute(f"SET memory_limit='{memory}'")
     con.execute(f"SET temp_directory='{(out.parent / '.duckdb_tmp').as_posix()}'")   # spill big windows to disk
     con.execute("SET preserve_insertion_order=false")
+    attributes = attributes or parquet / "attributes" / "attributes.parquet"
     n = build_balls(con, parquet, attributes)
     log.info("Built features for %d balls", n)
     results = run_patterns(con, split_year)
     curves = hazard_curves(con)
+    covered = con.execute("SELECT avg(CAST(batting_hand IS NOT NULL AS DOUBLE)), "
+                          "avg(CAST(bowling_kind IS NOT NULL AS DOUBLE)) FROM balls").fetchone()
     summary = {"balls": n, "split_year": split_year,
+               "attribute_coverage": {"batting_hand": round(covered[0] or 0, 3), "bowling_kind": round(covered[1] or 0, 3)},
                "verdicts": {k: sum(r["verdict"] == k for r in results) for k in ICON}}
     write_report(summary, results, curves, out)
     click.echo(out.with_suffix(".md").read_text())

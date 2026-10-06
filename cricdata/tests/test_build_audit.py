@@ -51,3 +51,16 @@ def test_audit(tmp_path):
     write_report(r, tmp_path / "audit" / "coverage")
     md = (tmp_path / "audit" / "coverage.md").read_text()
     assert "Indian Premier League" in md and "| HUNDRED | male | 1 |" in md
+
+
+def test_numbers_in_text_fields(tmp_path):
+    import json
+    import zipfile
+    m = fx.t20_ipl()
+    m["info"]["event"]["group"] = 1            # real Cricsheet files do this
+    m["info"]["event"].pop("stage", None)
+    m["info"]["season"] = 2019
+    with zipfile.ZipFile(tmp_path / "all.zip", "w") as z:
+        z.writestr("1.json", json.dumps(m))
+    build(tmp_path / "all.zip", tmp_path / "out")
+    assert read_table(tmp_path / "out", "matches").column("stage").to_pylist() == ["1"]

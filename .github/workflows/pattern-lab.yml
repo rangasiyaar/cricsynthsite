@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["cricsim/**", "cricdata/src/**", ".github/workflows/pattern-lab.yml"]
+    paths: ["cricsim/**", "cricdata/**", ".github/workflows/pattern-lab.yml"]
 
 permissions:
   contents: read
@@ -28,6 +28,7 @@ jobs:
         run: |
           uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
             --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
           uv run cricdata audit --parquet data/parquet --report data/audit/coverage
           rm data/raw/all_json.zip
       - name: Run Pattern Lab

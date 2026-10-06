@@ -10,7 +10,7 @@ from cricsim.patterns.features import build_balls
 from cricsim.patterns.lab import hazard_curves, run_patterns, write_report
 from cricsim.patterns.stats import benjamini_hochberg, mantel_haenszel
 
-from .synthetic_matches import PLANT_AFTER_SIX, PLANT_NEW_BATTER, write_zip
+from .synthetic_matches import PLANT_AFTER_SIX, PLANT_LEFT_ARM_PACE, PLANT_NEW_BATTER, attributes, write_zip
 
 
 @pytest.fixture(scope="module")
@@ -20,11 +20,11 @@ def lab(tmp_path_factory):
     build(write_zip(tmp / "all_json.zip"), out)
     con = duckdb.connect()
     n = build_balls(con, out)
-    return con, n, {r["id"]: r for r in run_patterns(con, split_year=2021)}
+    return con, n, {r["id"]: r for r in run_patterns(con, split_year=2021)}, out
 
 
 def test_features(lab):
-    con, n, _ = lab
+    con, n, _, _ = lab
     assert n > 300_000
     # spells: bowler 0 bowls overs 0, 2 (same spell) then 15, 18 → a new spell at 15
     spells = con.execute("""SELECT DISTINCT "over", spell_start, spell_over FROM balls
@@ -39,7 +39,7 @@ def test_features(lab):
 
 
 def test_planted_effects_are_found(lab):
-    _, _, r = lab
+    _, _, r, _ = lab
     six = r["after_six_batter"]
     assert six["verdict"] == "real", six
     assert 1.6 < six["full"]["rr"] < 2.5          # planted 2.0
@@ -49,7 +49,7 @@ def test_planted_effects_are_found(lab):
 
 
 def test_unplanted_effects_are_not_real(lab):
-    _, _, r = lab
+    _, _, r, _ = lab
     for pid in ("dots_3", "first_ball_of_over", "last_ball_of_over", "wickets_in_pairs"):
         assert r[pid]["verdict"] in ("myth", "inconclusive", "weak"), (pid, r[pid])
     assert r["dots_3"]["verdict"] == "myth", r["dots_3"]
@@ -57,7 +57,7 @@ def test_unplanted_effects_are_not_real(lab):
 
 
 def test_curves_and_report(lab, tmp_path):
-    con, n, r = lab
+    con, n, r, _ = lab
     curves = hazard_curves(con)
     faced = {row["value"]: row["o_e"] for row in curves["batter_balls_faced"]}
     # each point is relative to the situation average (which includes new batters), so compare
@@ -81,3 +81,18 @@ def test_stats_helpers():
     assert e.expected_events == pytest.approx(30.0)
     assert benjamini_hochberg([0.01, 0.04, None, 0.03]) == [pytest.approx(0.03), pytest.approx(0.04), None,
                                                              pytest.approx(0.04)]
+
+
+def test_matchups_with_attributes(lab, tmp_path):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    *_, out = lab
+    path = tmp_path / "attributes.parquet"
+    pq.write_table(pa.Table.from_pylist(attributes()), path)
+    con2 = duckdb.connect()
+    build_balls(con2, out, path)
+    r = {x["id"]: x for x in run_patterns(con2, split_year=2021)}
+    lap = r["left_arm_pace_rhb_early"]
+    assert lap["verdict"] == "real", lap
+    assert 1.4 < lap["full"]["rr"] < 2.3            # planted 1.8
+    assert r["offspin_v_lhb"]["verdict"] in ("myth", "inconclusive", "weak"), r["offspin_v_lhb"]

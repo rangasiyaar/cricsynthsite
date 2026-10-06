@@ -13,6 +13,8 @@ SOURCES = {
     "recent": f"{BASE}/downloads/recently_added_30_json.zip",
     "people": f"{BASE}/register/people.csv",
     "names": f"{BASE}/register/names.csv",
+    # batting hand / bowling style keyed by Cricsheet ID (see cricdata.attributes)
+    "player_meta": "https://raw.githubusercontent.com/robjhyndman/cricketdata/master/data/player_meta.rda",
 }
 
 

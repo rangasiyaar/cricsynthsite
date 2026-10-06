@@ -44,17 +44,22 @@ cricsynthsite/
 - Wides don't count as balls faced; no-balls do. `retired hurt` / `retired not out` are not dismissals.
 - Teams/venues get stable IDs via `cricdata/src/cricdata/aliases/*.json` (franchise renames, venue spellings).
 - Cricsheet's data licence requires attribution — show it on the site and in API docs.
+- Batting hand / bowling style (not in Cricsheet) come from `player_meta` in the cricketdata R package
+  (GPL-3, compiled from ESPNcricinfo, keyed by Cricsheet ID, snapshot Mar 2025): `cricdata attributes`
+  → `attributes/attributes.parquet`. Newer players come from an overrides CSV (admin). Credit it too.
 
 ## Commands
 
 ```bash
 uv sync --all-extras
-uv run pytest cricdata/tests infra/billing_guard -q
+uv run pytest cricdata/tests cricsim/tests infra/billing_guard -q
 
 # local ingest (Cricsheet must be reachable)
 uv run cricdata download --kind all --dest data/raw
 uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv --names data/raw/names.csv
+uv run cricdata attributes                  # batting hand / bowling style
 uv run cricdata audit                       # → data/audit/coverage.md
+uv run python -m cricsim.patterns --parquet data/parquet   # Pattern Lab → data/patterns/report.md
 ```
 
 ## Google Cloud setup
