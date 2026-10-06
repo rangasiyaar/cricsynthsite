@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 
-concurrency: { group: engine, cancel-in-progress: true }
+concurrency: { group: engine, cancel-in-progress: false }   # queue: never throw away a running backtest
 
 jobs:
   engine:
