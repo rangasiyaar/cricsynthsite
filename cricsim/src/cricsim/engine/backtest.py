@@ -135,7 +135,10 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
             for j, p in enumerate(lg.bowlers):
                 if p not in wk_by:
                     continue
-                sim_w = lg.bowl_wkts[:, j]
+                bowled = lg.bowl_balls[:, j] > 0              # compare like with like: simulations where he bowled
+                if not bowled.any():
+                    continue
+                sim_w = lg.bowl_wkts[bowled, j]
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
                                        "pred_mean": float(sim_w.mean()), "actual": wk_by[p]})
     return score(res, cutoff, len(matches))

@@ -9,7 +9,7 @@ on:
       matches: { description: "Backtest matches", default: "800" }
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["cricsim/src/cricsim/engine/**", ".github/workflows/engine.yml"]
+    paths: ["cricsim/src/cricsim/**", "cricsim/demo/**", "app/**", ".github/workflows/engine.yml"]
 
 permissions:
   contents: read
@@ -41,6 +41,31 @@ jobs:
             --matches "$MATCHES" --sims 1000 --out data/backtest/report --memory 3GB
       - name: Fit production model (all data)
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB
+      - name: Pattern Lab + demo match centre
+        run: |
+          uv run python -m cricsim.patterns --parquet data/parquet --out data/patterns/report --memory 3GB > /dev/null
+          uv run python -m cricsim.publish --model data/models/latest --coverage cricsim/demo/coverage \
+            --out data/publish --n 20000
+          cp data/patterns/report.json data/publish/patterns.json
+          uv run python - <<'PY'
+          import json, glob
+          for f in glob.glob("data/publish/matches/*.json"):
+              if f.endswith(".pack.json"):
+                  continue
+              d = json.load(open(f))
+              print("##", d["match"]["title"], d["summary"]["result"]["win"])
+              for i in d["insights"]:
+                  print("-", i["text"])
+              for t in d["summary"]["teams"]:
+                  for p in t["players"]:
+                      b, w = p.get("batting") or {}, p.get("bowling") or {}
+                      print(f"  {t['name']:10} {p['name']:22} known={p['known']} runs={b.get('runs',{}).get('mean')} "
+                            f"p30={b.get('p_at_least',{}).get('30')} wk={w.get('wickets',{}).get('mean') if w.get('p_bowls',0)>0.5 else '-'} "
+                            f"faced={p['profile'].get('balls_faced')}")
+          PY
+      - name: Build app with the published data
+        run: |
+          cd app && npm ci && cp -r ../data/publish public/data && npx tsc --noEmit && npm test && npx next build
       - name: Publish
         if: always()
         run: |
@@ -53,5 +78,7 @@ jobs:
           path: |
             data/backtest/
             data/models/latest/
+            data/publish/
+            app/out/
           if-no-files-found: ignore
           retention-days: 14

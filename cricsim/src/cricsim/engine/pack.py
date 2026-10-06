@@ -9,7 +9,8 @@ from __future__ import annotations
 import numpy as np
 
 from cricsim.engine import states as S
-from cricsim.engine.model import BOWLER_DISMISSALS, DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, RUN_OUT, SITUATION, Model
+from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, RUN_OUT, SITUATION,
+                                  Model, era_vector)
 from cricsim.engine.simulate import _Tables
 from cricsim.engine.spec import MatchSpec, Scenario
 
@@ -24,7 +25,9 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
     K = S.K
     fmt = FORMAT_LIST.index(spec.format)
     g = GENDERS.index(spec.gender)
-    base = model.factors["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g][:, :rules["overs"]]
+    fam = 1 if spec.format == "OD" else 0
+    base = (model.factors["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g][:, :rules["overs"]]
+            + era_vector(model, fam))
     batting = []
     for t in (0, 1):
         order, bowlers = list(spec.teams[t].players), list(spec.teams[1 - t].players)

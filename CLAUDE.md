@@ -16,7 +16,9 @@ read `infra/COSTS.md` before adding any cloud resource.
 cricsynthsite/
 ├── index.html, css/, js/, …   ← current static site (replaced by app/ before launch)
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
-├── cricsim/                   ← simulation engine, player ratings, format rules (in progress)
+├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
+├── cricapi/                   ← FastAPI: one catalog (analytics, simulation, graphics) + admin coverage
+├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
 └── .github/workflows/         ← test + deploy (keyless auth to Google Cloud)
@@ -60,6 +62,15 @@ uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv -
 uv run cricdata attributes                  # batting hand / bowling style
 uv run cricdata audit                       # → data/audit/coverage.md
 uv run python -m cricsim.patterns --parquet data/parquet   # Pattern Lab → data/patterns/report.md
+
+# engine
+uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest
+uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff 2025-01-01
+uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish
+uv run cricapi                              # API on :8080 (CRICAPI_* env vars, see cricapi/main.py)
+
+# app (reads data from public/data = a copy of data/publish)
+cd app && npm ci && npm run dev             # npm test runs the browser-engine tests
 ```
 
 ## Google Cloud setup
@@ -67,6 +78,13 @@ uv run python -m cricsim.patterns --parquet data/parquet   # Pattern Lab → dat
 One-time: follow `infra/README.md` (create project, Blaze, run `infra/bootstrap.sh`).
 Deploys run from GitHub Actions with Workload Identity Federation (no keys); they
 only run once the repo variable `GCP_ENABLED=true` is set.
+
+## Engine rules
+
+- `cricsim/engine/states.py` is the single definition of outcome classes and situation buckets; the
+  browser port `app/lib/engine/sim.ts` must mirror `simulate.py` — `test_browser_parity.py` enforces it.
+- Only Pattern Lab effects that verified as real go into the ball model; myths stay out.
+- Judge changes by the backtest (Engine workflow): result Brier, total-score PIT/coverage, player-run groups.
 
 ## Rules for new work
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 
 from cricsim.engine import states as S
-from cricsim.engine.model import FORMAT_LIST, GENDERS, MAX_OVERS, Model
+from cricsim.engine.model import Model
 from cricsim.engine.simulate import _Tables, simulate
 from cricsim.engine.spec import MatchSpec, Scenario, TeamSpec
 from cricsim.engine.summary import _players, profile
@@ -17,8 +17,7 @@ def _ball_probs(model: Model, spec: MatchSpec, bat: str, bowl: str, phase: str, 
     rules = spec.rules
     over = min(int(PHASE_OVER[phase] * rules["overs"]), rules["overs"] - 1)
     T = _Tables(model, spec, Scenario(), 0, [bat], [bowl])
-    fmt, g = FORMAT_LIST.index(spec.format), GENDERS.index(spec.gender)
-    base = model.factors["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, S.K)[fmt, g, 0, over, wickets]
+    base = T.base[over, wickets]
     L = (base + T.sit["set"][S.set_bucket(balls_faced)] + T.sit["streak"][2] + T.sit["dots"][0]
          + T.sit["mile"][S.milestone_bucket(15)] + T.sit["spell"][0] + T.sit["freehit"][0] + T.pair[0, 0])
     p = np.exp(L - L.max())

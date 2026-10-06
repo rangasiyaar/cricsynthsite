@@ -25,18 +25,18 @@ import pyarrow as pa
 import pyarrow.compute as pc
 
 from cricsim.engine import states as S
-from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE,
-                                  N_DECILES, SITUATION, Model, base_index)
+from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE, N_DECILES,
+                                  N_ERA, SITUATION, Model, base_index, era_index)
 from cricsim.patterns.features import build_balls
 
 log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "comp": 6000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "comp": 6000, "era": 20000,
     "bat": 300, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
-ORDER = ("base", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "comp",
+ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "comp",
          "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
 
 
@@ -44,7 +44,7 @@ ORDER = ("base", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "
 class FitConfig:
     cutoff: date | None = None                 # only balls strictly before this date (backtests)
     min_date: date = date(2004, 1, 1)
-    half_life_years: float = 4.0
+    half_life_years: float = 3.0
     passes: int = 4
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
 
@@ -131,6 +131,7 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "spell": per_family(d["spell"].astype(np.int32), 2),
         "freehit": per_family(d["fh"].astype(np.int32), 2),
         "hand_kind": per_family(d["hand"].astype(np.int32) * nk + d["kind"], SITUATION["hand_kind"]),
+        "era": (fam * N_ERA + era_index(d["day"]), 2 * N_ERA),
         "venue": (d["venue"], n_venues), "comp": (d["comp"], n_comps),
         "bat": (d["bat"], n_players), "bowl": (d["bowl"], n_players),
         "bat_fmt": (d["bat"] * 2 + fam, n_players * 2), "bowl_fmt": (d["bowl"] * 2 + fam, n_players * 2),
@@ -201,6 +202,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
                                 "pred_wicket": round(float(pred[S.WKT]), 5), "obs_wicket": round(float(obs[S.WKT]), 5)})
         log.info("pass %d: weighted log-loss %.5f (%.0fs)", it + 1, ll, time.time() - t0)
     stats["conditions_sd"] = match_conditions_sd(d, P / w[:, None])
+    stats["era_index"] = int(era_index(np.array([d["day"].max()]))[0])      # simulate at the latest season's level
     log.info("match-to-match conditions sd: %s", stats["conditions_sd"])
     # player 0 / venue 0 / comp 0 are "unknown": exactly average
     for name in ("bat", "bowl", "venue", "comp"):

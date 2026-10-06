@@ -4,6 +4,7 @@ P(outcome | ball) ∝ exp( Σ factor[level(ball)] )  over outcome classes (state
 
 Factor layout (levels × K, natural-log multipliers):
     base       format × gender × innings × over × wickets-down     (the match situation)
+    era        season × format family                             (scoring levels drift; simulate at the latest)
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
     venue comp                                                       (ground and competition environment)
     bat bowl                                                         (player, all formats and leagues together)
@@ -42,6 +43,20 @@ def base_index(fmt, gender, innings0, over, wkts):
 
 
 N_BASE = len(FORMAT_LIST) * 2 * 2 * MAX_OVERS * 10
+ERA_START, N_ERA = 2000, 40          # one scoring-level factor per season and format family
+
+
+def era_index(days_since_epoch):
+    years = (np.asarray(days_since_epoch).astype("datetime64[D]").astype("datetime64[Y]").astype(int) + 1970)
+    return np.clip(years - ERA_START, 0, N_ERA - 1)
+
+
+def era_vector(model: "Model", fam: int) -> np.ndarray:
+    """Log-multipliers for the most recent season — scoring levels drift (T20 run rates rose sharply after 2022)."""
+    f = model.factors.get("era")
+    if f is None:                                       # models fitted before the era factor existed
+        return np.zeros(10, dtype=np.float32)
+    return f[fam * N_ERA + int(model.meta.get("fit", {}).get("era_index", N_ERA - 1))]
 
 # situation factors: name → levels per family
 SITUATION = {

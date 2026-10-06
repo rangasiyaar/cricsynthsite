@@ -1,0 +1,22 @@
+{
+  "id": "ind-v-aus-t20i-demo",
+  "title": "India v Australia",
+  "date": "2026-10-31",
+  "start_time": "19:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "T20I (demo fixture)",
+  "comp_key": null,
+  "venue": "Melbourne Cricket Ground",
+  "venue_id": "melbourne-cricket-ground",
+  "status": "scheduled",
+  "published": true,
+  "teams": [
+    {"name": "India", "short": "IND", "players": [
+      "f29185a1", "b4b99816", "271f83cd", "b0482a1d", "dbe50b21", "a4e37e47",
+      "2e171977", "800d2d97", "8d2c70ad", "462411b3", "5b7ab5a9"]},
+    {"name": "Australia", "short": "AUS", "players": [
+      "3d8feaf8", "12b610c2", "989889ff", "f1f99156", "f2c936d7", "d9273ee7",
+      "b681e71e", "3b53243a", "9eb1455b", "14f96089", "03806cf8"]}
+  ]
+}

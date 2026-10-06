@@ -13,7 +13,7 @@ import numpy as np
 
 from cricsim.engine import states as S
 from cricsim.engine.model import (BOWLER_DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_DECILES, RUN_OUT,
-                                  SITUATION, Model)
+                                  SITUATION, Model, era_vector)
 from cricsim.engine.spec import MatchSpec, Scenario
 
 SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow")}
@@ -78,7 +78,7 @@ class _Tables:
         fmt = FORMAT_LIST.index(spec.format)
         g = GENDERS.index(spec.gender)
         fam = 1 if spec.format == "OD" else 0
-        self.base = f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0]
+        self.base = f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam)
         self.sit = {name: f[name].reshape(2, n, K)[fam] for name, n in SITUATION.items()}
         nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
         pb = np.array([model.pid(p) for p in order])
