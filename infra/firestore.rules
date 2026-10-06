@@ -1,0 +1,33 @@
+rules_version = '2';
+
+// CricSynthesis Firestore rules.
+// Browsers may READ published public content and their own account document.
+// Every WRITE goes through the API / batch jobs (Admin SDK bypasses these rules),
+// so no client-side write is ever allowed.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function published() { return resource.data.published == true; }
+
+    // Match centre: header doc + one doc per tab + the browser-simulation tables.
+    match /matches/{matchId} {
+      allow read: if published();
+      match /views/{view} { allow read: if published(); }
+    }
+
+    // Public analytics pages.
+    match /players/{id}       { allow read: if true; }
+    match /venues/{id}        { allow read: if true; }
+    match /leagues/{id}       { allow read: if true; }
+    match /trackRecord/{id}   { allow read: if true; }
+    match /site/{id}          { allow read: if true; }   // home page lists, featured matches
+
+    // A signed-in user may read their own profile / plan; nothing else.
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Fixtures, squads, API keys, usage, jobs: server only.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

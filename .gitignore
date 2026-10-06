@@ -44,3 +44,11 @@ __pycache__/
 # uv workspace
 .venv/
 uv.lock
+
+# CricSynthesis platform
+data/
+*.parquet
+.firebase/
+firebase-debug.log
+infra/.state/
+tsconfig.tsbuildinfo

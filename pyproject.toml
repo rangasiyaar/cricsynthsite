@@ -1,18 +1,17 @@
+# CricSynthesis platform — uv workspace
+#   cricdata   Cricsheet ingest → Parquet / BigQuery
+#   cricsim    simulation engine, player ratings, format rules
+#   (cricapi   API on Cloud Run — added in a later phase)
+
 [tool.uv.workspace]
-members = [
-    "cricveda-core",
-    "cricveda-ingest",
-    "cricveda-api",
-]
+members = ["cricdata", "cricsim"]
 
 [tool.uv.sources]
-cricveda-core = { workspace = true }
-cricveda-ingest = { workspace = true }
-cricveda-api = { workspace = true }
+cricdata = { workspace = true }
+cricsim = { workspace = true }
 
 [tool.uv]
 dev-dependencies = [
     "pytest>=8.0",
     "hypothesis>=6.100",
-    "pytest-asyncio>=0.23",
 ]

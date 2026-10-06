@@ -1,0 +1,5 @@
+[
+  {"name": "keep-newest-two", "action": {"type": "Keep"}, "mostRecentVersions": {"keepCount": 2}},
+  {"name": "delete-untagged", "action": {"type": "Delete"}, "condition": {"tagState": "untagged", "olderThan": "1d"}},
+  {"name": "delete-older", "action": {"type": "Delete"}, "condition": {"tagState": "any", "olderThan": "3d"}}
+]
