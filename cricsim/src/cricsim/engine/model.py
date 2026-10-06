@@ -44,6 +44,7 @@ def base_index(fmt, gender, innings0, over, wkts):
 
 N_BASE = len(FORMAT_LIST) * 2 * 2 * MAX_OVERS * 10
 ERA_START, N_ERA = 2000, 40          # one scoring-level factor per season and format family
+ERA_TREND = 0.5                      # share of the latest season-on-season change projected forward
 
 
 def era_index(days_since_epoch):
@@ -56,7 +57,11 @@ def era_vector(model: "Model", fam: int) -> np.ndarray:
     f = model.factors.get("era")
     if f is None:                                       # models fitted before the era factor existed
         return np.zeros(10, dtype=np.float32)
-    return f[fam * N_ERA + int(model.meta.get("fit", {}).get("era_index", N_ERA - 1))]
+    i = int(model.meta.get("fit", {}).get("era_index", N_ERA - 1))
+    v = f[fam * N_ERA + i]
+    if i > 0:      # scoring keeps rising: carry part of last season's change forward (backtest-tuned)
+        v = v + model.meta.get("era_trend", ERA_TREND) * (v - f[fam * N_ERA + i - 1])
+    return v
 
 # situation factors: name → levels per family
 SITUATION = {

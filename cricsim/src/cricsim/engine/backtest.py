@@ -116,8 +116,15 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
             actual = mt["innings"][inn0][2]
             sim = lg.runs
             act_wk = mt["innings"][inn0][3] if len(mt["innings"][inn0]) > 3 else None
+            used = con.execute("SELECT count(DISTINCT bowler_id), max(c) FROM (SELECT bowler_id, count(*) FILTER "
+                               "(WHERE wides = 0 AND noballs = 0) OVER (PARTITION BY bowler_id) AS c FROM hold "
+                               "WHERE match_id = ? AND innings_no = ?)", [mt["match_id"], inn0 + 1]).fetchone()
             res.setdefault("team", []).append({"inn": inn0 + 1, "pred_runs": float(sim.mean()), "act_runs": actual,
-                                               "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk})
+                                               "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk,
+                                               "pred_bowlers": float((lg.bowl_balls > 0).sum(1).mean()),
+                                               "act_bowlers": used[0],
+                                               "pred_top_balls": float(lg.bowl_balls.max(1).mean()),
+                                               "act_top_balls": used[1]})
             if inn0 == 0:
                 res["score"].append({"pit": float((sim < actual).mean() + 0.5 * (sim == actual).mean()),
                                      "in80": bool(np.percentile(sim, 10) <= actual <= np.percentile(sim, 90)),
@@ -198,7 +205,11 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                     "runs_predicted": round(float(np.mean([r["pred_runs"] for r in rows])), 1),
                     "runs_actual": round(float(np.mean([r["act_runs"] for r in rows])), 1),
                     "wickets_predicted": round(float(np.mean([r["pred_wkts"] for r in rows])), 2),
-                    "wickets_actual": round(float(np.mean([r["act_wkts"] for r in rows if r["act_wkts"] is not None])), 2)}
+                    "wickets_actual": round(float(np.mean([r["act_wkts"] for r in rows if r["act_wkts"] is not None])), 2),
+                    "bowlers_used_predicted": round(float(np.mean([r["pred_bowlers"] for r in rows])), 2),
+                    "bowlers_used_actual": round(float(np.mean([r["act_bowlers"] for r in rows if r["act_bowlers"]])), 2),
+                    "top_bowler_balls_predicted": round(float(np.mean([r["pred_top_balls"] for r in rows])), 1),
+                    "top_bowler_balls_actual": round(float(np.mean([r["act_top_balls"] for r in rows if r["act_top_balls"]])), 1)}
     if res["score"]:
         pit = np.array([s["pit"] for s in res["score"]])
         out["first_innings_total"] = {
@@ -249,10 +260,12 @@ def write_report(rep: dict, path: Path) -> None:
               "Where real scores fell in the simulated distribution, by decile (calibrated = 10% each): "
               + " · ".join(f"{100 * x:.0f}%" for x in s["pit_deciles"]), ""]
     if rep.get("team_innings"):
-        L += ["## Team innings (average)", "", "| Innings | Matches | Runs predicted | Runs actual | Wickets predicted | Wickets actual |",
-              "|---|---|---|---|---|---|"]
+        L += ["## Team innings (average, predicted / actual)", "",
+              "| Innings | Matches | Runs | Wickets | Bowlers used | Top bowler's balls |", "|---|---|---|---|---|---|"]
         for k, r in rep["team_innings"].items():
-            L.append(f"| {k} | {r['n']} | {r['runs_predicted']} | {r['runs_actual']} | {r['wickets_predicted']} | {r['wickets_actual']} |")
+            L.append(f"| {k} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} | {r['wickets_predicted']} / "
+                     f"{r['wickets_actual']} | {r['bowlers_used_predicted']} / {r['bowlers_used_actual']} | "
+                     f"{r['top_bowler_balls_predicted']} / {r['top_bowler_balls_actual']} |")
         L.append("")
     if rep.get("player_runs"):
         L += ["## Player runs (players who batted, v simulations where they batted)", "", "| Group | Innings | Predicted mean | Actual mean | In 80% band | Brier 30+ (base rate) | Corr |",
