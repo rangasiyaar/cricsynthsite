@@ -237,6 +237,13 @@ class FeaturePipeline:
         log.info("Adding venue, matchup, static features...")
         enriched_rows = []
 
+        # Per-(player, match) runs and wickets — targets for the quantile models.
+        # NaN means the player didn't bat / bowl, so that target is skipped for the row.
+        match_stats = {
+            (r["player_id"], r["match_id"]): {"runs": r.get("runs"), "wickets": r.get("wickets")}
+            for r in self.delivery_stats_df[["player_id", "match_id", "runs", "wickets"]].to_dict("records")
+        }
+
         # Build a match lookup once
         match_meta = self.matches_df.set_index("match_id")[
             ["team1", "team2", "venue_id", "league_id", "toss_winner", "toss_decision"]
@@ -253,21 +260,11 @@ class FeaturePipeline:
             toss_winner = meta.get("toss_winner")
             toss_decision = meta.get("toss_decision")
 
-            # Determine player's team for this match (which team they appeared in)
-            player_deliveries = self.deliveries_df[
-                (self.deliveries_df["match_id"] == mid) &
-                (self.deliveries_df["striker_id"] == pid)
-            ]
-            if len(player_deliveries) == 0:
-                player_deliveries = self.deliveries_df[
-                    (self.deliveries_df["match_id"] == mid) &
-                    (self.deliveries_df["bowler_id"] == pid)
-                ]
-
-            # Infer team from which team the player appeared for
             team1, team2 = meta.get("team1", ""), meta.get("team2", "")
-            player_team = team1  # fallback
-            opposition_team = team2
+            player_team = infer_player_team(
+                pid, mid, team1, team2, toss_winner, toss_decision, self.deliveries_df,
+            )
+            opposition_team = team2 if player_team == team1 else team1
 
             enriched = self.build_row(
                 pid, player_team, opposition_team, cutoff,
@@ -276,6 +273,9 @@ class FeaturePipeline:
             enriched["match_id"] = mid
             enriched["match_date"] = cutoff
             enriched["target_points"] = base_row["target_points"]
+            stats = match_stats.get((pid, mid), {})
+            enriched["target_runs"] = stats.get("runs")
+            enriched["target_wickets"] = stats.get("wickets")
             # Merge form features into enriched row
             for col in base_row.index:
                 if col not in ("player_id", "match_id", "match_date", "target_points"):
@@ -388,6 +388,37 @@ class FeaturePipeline:
         delivery_stats_df = _aggregate_delivery_stats(deliveries_df, matches_df)
 
         return cls(fp_df, matches_df, deliveries_df, player_df, leagues_df, delivery_stats_df)
+
+
+def infer_player_team(
+    player_id: int,
+    match_id: int,
+    team1: str,
+    team2: str,
+    toss_winner: str | None,
+    toss_decision: str | None,
+    deliveries_df: pd.DataFrame,
+) -> str:
+    """Which side a player was on, from the innings they batted or bowled in.
+
+    The team batting first is the toss winner if they chose to bat, otherwise
+    the other side. A batter in innings 1 (or a bowler in innings 2) is on it.
+    Falls back to team1 when there's no toss or delivery data.
+    """
+    if not toss_winner or toss_decision not in ("bat", "field") or toss_winner not in (team1, team2):
+        return team1
+    other = team2 if toss_winner == team1 else team1
+    batting_first = toss_winner if toss_decision == "bat" else other
+    fielding_first = other if batting_first == toss_winner else toss_winner
+
+    in_match = deliveries_df[deliveries_df["match_id"] == match_id]
+    batted = in_match.loc[in_match["striker_id"] == player_id, "innings"]
+    if len(batted):
+        return batting_first if int(batted.iloc[0]) == 1 else fielding_first
+    bowled = in_match.loc[in_match["bowler_id"] == player_id, "innings"]
+    if len(bowled):
+        return fielding_first if int(bowled.iloc[0]) == 1 else batting_first
+    return team1
 
 
 def _aggregate_delivery_stats(

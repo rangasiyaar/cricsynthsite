@@ -161,6 +161,8 @@ def replace_squad(upcoming_id: int, rows: list[dict[str, Any]]) -> None:
     c.table("squad_selections").delete().eq("upcoming_id", upcoming_id).execute()
     if rows:
         c.table("squad_selections").insert([{**r, "upcoming_id": upcoming_id} for r in rows]).execute()
+    # Mark the fixture as changed so the prediction job recomputes it.
+    c.table("upcoming_matches").update({"updated_at": _now()}).eq("upcoming_id", upcoming_id).execute()
 
 
 def search_players(query: str, limit: int = 20) -> list[dict]:
@@ -206,3 +208,44 @@ def public_ids_for(entity_type: str, internal_ids: list[str]) -> dict[str, str]:
 def get_fixture_by_slug(slug: str) -> dict | None:
     rows = _client().table("upcoming_matches").select(FIXTURE_FIELDS).eq("slug", slug).limit(1).execute()
     return rows.data[0] if rows.data else None
+
+
+# ── CricVeda v2 predictions ──────────────────────────────────────────────────
+
+def get_player_prediction(upcoming_id: int, player_id: int, batting_position: int,
+                          include_conditions: bool) -> dict | None:
+    rows = (
+        _client().table("player_predictions").select("*")
+        .eq("upcoming_id", upcoming_id).eq("player_id", player_id)
+        .eq("batting_position", batting_position).eq("include_conditions", include_conditions)
+        .limit(1).execute().data
+    )
+    return rows[0] if rows else None
+
+
+def list_match_predictions(upcoming_id: int, include_conditions: bool = True) -> list[dict]:
+    """Projected-XI predictions (batting_position 0) for every player in a fixture."""
+    return (
+        _client().table("player_predictions").select("*")
+        .eq("upcoming_id", upcoming_id).eq("batting_position", 0)
+        .eq("include_conditions", include_conditions)
+        .execute().data
+    )
+
+
+def player_names(player_ids: list[int]) -> dict[int, dict]:
+    if not player_ids:
+        return {}
+    rows = (
+        _client().table("player_meta").select("player_id, name, primary_role")
+        .in_("player_id", player_ids).execute().data
+    )
+    return {r["player_id"]: r for r in rows}
+
+
+def squad_credits(upcoming_id: int) -> dict[int, float]:
+    rows = (
+        _client().table("squad_selections").select("player_id, credits")
+        .eq("upcoming_id", upcoming_id).execute().data
+    )
+    return {r["player_id"]: float(r.get("credits") or 8.0) for r in rows}

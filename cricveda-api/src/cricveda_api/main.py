@@ -101,6 +101,7 @@ app = FastAPI(
         {"name": "Leaderboards", "description": "Phase-specific and situational player rankings."},
         {"name": "Matchups", "description": "Head-to-head optimal bowler recommendations."},
         {"name": "Keys", "description": "API key management for authenticated users."},
+        {"name": "CricVeda v2", "description": "Player form, P10/median/P90 ranges, tier and captain value for upcoming fixtures."},
         {"name": "Account", "description": "Your plan and entitlements (v2)."},
         {"name": "Admin", "description": "Fixtures, squads and subscription tiers. Admins only."},
         {"name": "System", "description": "Health and operational endpoints."},
@@ -145,6 +146,7 @@ from cricveda_api.routes import (  # noqa: E402
     matches,
     oracle,
     players,
+    predictions_v2,
     teams,
     venues,
     v2,
@@ -160,6 +162,7 @@ app.include_router(matchups.router,     prefix="/v1", tags=["Matchups"])
 app.include_router(keys.router,         prefix="/v1", tags=["Keys"])
 app.include_router(admin.router,        prefix="/v1")
 app.include_router(v2.router,           prefix="/v2")
+app.include_router(predictions_v2.router, prefix="/v2")
 
 
 @app.get("/health", tags=["System"])

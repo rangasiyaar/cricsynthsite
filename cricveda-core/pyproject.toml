@@ -8,7 +8,7 @@ dependencies = [
     "numpy>=1.26",
     "xgboost>=2.0",
     "scikit-learn>=1.4",
-    "pulp>=2.8",
+    "pulp>=2.8,<4",  # 4.x drops the bundled CBC solver the optimizer uses
 ]
 
 [build-system]

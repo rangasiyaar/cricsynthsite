@@ -27,6 +27,9 @@ class FakeStore:
         self.fixtures: dict[int, dict] = {}
         self.squads: dict[int, list[dict]] = {}
         self.public_ids: dict[tuple[str, str], str] = {}
+        self.predictions: list[dict] = []
+        self.players: dict[int, dict] = {}
+        self.credits: dict[int, float] = {}
         self.calls = {"list_legacy_keys": 0}
 
     # keys
@@ -128,6 +131,21 @@ class FakeStore:
 
     def public_ids_for(self, entity_type, internal_ids):
         return {i: s for (e, s), i in self.public_ids.items() if e == entity_type and i in internal_ids}
+
+    def get_player_prediction(self, upcoming_id, player_id, batting_position, include_conditions):
+        return next((dict(r) for r in self.predictions if r["upcoming_id"] == upcoming_id
+                     and r["player_id"] == player_id and r["batting_position"] == batting_position
+                     and r["include_conditions"] == include_conditions), None)
+
+    def list_match_predictions(self, upcoming_id, include_conditions=True):
+        return [dict(r) for r in self.predictions if r["upcoming_id"] == upcoming_id
+                and r["batting_position"] == 0 and r["include_conditions"] == include_conditions]
+
+    def player_names(self, player_ids):
+        return {p: self.players[p] for p in player_ids if p in self.players}
+
+    def squad_credits(self, upcoming_id):
+        return dict(self.credits)
 
     def resolve_public_id(self, entity_type, slug):
         return self.public_ids.get((entity_type, slug))

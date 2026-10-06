@@ -1,18 +1,28 @@
-name: Pre-Match Predictions
+name: Pre-Match Predictions (CricVeda v2)
 
+# Recomputes player predictions for upcoming fixtures whose squad or details
+# changed in the admin panel (or that are over a day old). Runs hourly through
+# Indian match hours so confirmed XIs are picked up before the toss, plus nightly.
 on:
+  schedule:
+    - cron: "15 3 * * *"        # nightly, after the 2 AM data pipeline
+    - cron: "40 6-16 * * *"     # hourly, 12:10–22:10 IST
   workflow_dispatch:
     inputs:
-      upcoming_id:
-        description: "upcoming_matches.upcoming_id to predict for"
-        required: true
-        type: string
-      write_db:
-        description: "Write predictions to Supabase"
+      fixture:
+        description: "Public match ID to recompute now (blank = every changed fixture)"
         required: false
-        default: "true"
+        type: string
+      dry_run:
+        description: "Compute without writing to Supabase"
+        required: false
+        default: "false"
         type: choice
-        options: ["true", "false"]
+        options: ["false", "true"]
+
+concurrency:
+  group: predictions
+  cancel-in-progress: false
 
 env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -22,9 +32,9 @@ env:
 
 jobs:
   predict:
-    name: Generate predictions for match ${{ inputs.upcoming_id }}
+    name: Predict upcoming fixtures
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout
@@ -34,38 +44,49 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
 
-      - name: Install uv
-        run: pip install uv --quiet
-
-      - name: Install full workspace
+      # Cheap check before the full install: is any fixture due?
+      - name: Anything to predict?
+        id: due
         run: |
+          pip install --quiet "supabase>=2.4" python-dotenv pandas click
+          if [ -n "${{ inputs.fixture }}" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          PYTHONPATH=cricveda-core/src:cricveda-ingest/src python - <<'EOF'
+          import os
+          from cricveda_core.predictions.batch import fixtures_needing_predictions
+          due = fixtures_needing_predictions(days_ahead=7)
+          print(f"{len(due)} fixture(s) due:", [f.get("slug") for f in due])
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"run={'true' if due else 'false'}\n")
+          EOF
+
+      - name: Install uv and workspace
+        if: steps.due.outputs.run == 'true'
+        run: |
+          pip install uv --quiet
           uv sync --no-dev
           uv pip install -e cricveda-core -e cricveda-ingest
 
-      - name: Download latest model from Supabase Storage
+      - name: Download models from Supabase Storage
+        if: steps.due.outputs.run == 'true'
         run: |
           uv run python - <<'EOF'
           import os, pathlib
           from cricveda_ingest.db import get_client
-
           bucket = os.getenv("MODEL_BUCKET", "cricveda-models")
-          dest = pathlib.Path("data/models/player_fp_latest.json")
-          dest.parent.mkdir(parents=True, exist_ok=True)
-
-          client = get_client()
-          data = client.storage.from_(bucket).download("player_fp_latest.json")
-          dest.write_bytes(data)
-          print(f"Model downloaded: {dest} ({len(data):,} bytes)")
+          dest = pathlib.Path("data/models"); dest.mkdir(parents=True, exist_ok=True)
+          store = get_client().storage.from_(bucket)
+          for name in ["player_q_latest.meta.json", "player_q_runs_latest.json",
+                       "player_q_wickets_latest.json", "player_q_points_latest.json"]:
+              data = store.download(name)
+              (dest / name).write_bytes(data)
+              print(f"{name}: {len(data):,} bytes")
           EOF
 
       - name: Run predictions
+        if: steps.due.outputs.run == 'true'
         run: |
-          WRITE_FLAG=""
-          if [ "${{ inputs.write_db }}" = "true" ]; then
-            WRITE_FLAG="--write-db"
-          fi
-          uv run python -m cricveda_core.models.predict \
-            --upcoming-id ${{ inputs.upcoming_id }} \
-            $WRITE_FLAG
+          ARGS=""
+          if [ -n "${{ inputs.fixture }}" ]; then ARGS="$ARGS --fixture ${{ inputs.fixture }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          uv run python -m cricveda_core.predictions.batch $ARGS

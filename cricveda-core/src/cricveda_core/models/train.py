@@ -27,7 +27,8 @@ from sklearn.metrics import mean_squared_error
 
 log = logging.getLogger(__name__)
 
-MODELS_DIR = Path(__file__).parent.parent.parent.parent.parent.parent / "data" / "models"
+# repo/cricveda-core/src/cricveda_core/models/<file> → repo/data/models
+MODELS_DIR = Path(__file__).resolve().parents[4] / "data" / "models"
 
 PLAYER_FP_FEATURES = [
     # Form
@@ -242,18 +243,59 @@ def main(cutoff: str, version: str | None) -> None:
             (pipe.matches_df["season"].astype(str) == "2024")
         ]["match_id"].tolist()
     )
+    holdout_df = df[df["match_id"].isin(ipl_2024_matches)]
     df = df[~df["match_id"].isin(ipl_2024_matches)]
 
     train_df = df[pd.to_datetime(df["match_date"]).dt.date < train_cutoff]
     val_df = df[pd.to_datetime(df["match_date"]).dt.date >= train_cutoff]
 
-    log.info("Train rows: %d | Val rows: %d", len(train_df), len(val_df))
+    log.info("Train rows: %d | Val rows: %d | IPL 2024 holdout rows: %d",
+             len(train_df), len(val_df), len(holdout_df))
 
     train_player_fp_model(train_df, val_df, version)
+
+    qm = train_and_save_quantile_models(train_df, val_df, holdout_df, version)
     log.info("Training complete. Models saved to %s", MODELS_DIR)
 
-    # Upload to Supabase Storage so the API can download on next cold start
+    # Upload to Supabase Storage so the API / prediction job can download them
     _upload_model_to_storage(version)
+    _upload_quantile_models(qm)
+
+
+def train_and_save_quantile_models(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    holdout_df: pd.DataFrame,
+    version: str,
+    out_dir: Path = MODELS_DIR,
+):
+    """CricVeda v2 range models. Scored on the IPL 2024 holdout but never trained on it."""
+    from cricveda_core.predictions.quantile import evaluate, train_quantile_models
+
+    qm = train_quantile_models(train_df, val_df, PLAYER_FP_FEATURES, version)
+    if len(holdout_df):
+        qm.metrics["holdout_ipl_2024"] = evaluate(qm, holdout_df)
+        for target, m in qm.metrics["holdout_ipl_2024"].items():
+            log.info("HOLDOUT %s — P10–P90 coverage %.1f%% (target ~80%%) | median MAE %.2f vs baseline %.2f",
+                     target, m["coverage_p10_p90"] * 100, m["median_mae"], m["baseline_mae"])
+    qm.save(out_dir)
+    qm.save(out_dir, name="latest")  # stable name the prediction job loads
+    return qm
+
+
+def _upload_quantile_models(qm) -> None:
+    import os
+    bucket = os.getenv("MODEL_BUCKET", "cricveda-models")
+    names = [f"player_q_{t}_latest.json" for t in qm.models] + ["player_q_latest.meta.json"]
+    try:
+        from cricveda_ingest.db import get_client
+        store = get_client().storage.from_(bucket)
+        for name in names:
+            store.upload(name, (MODELS_DIR / name).read_bytes(),
+                         {"content-type": "application/json", "upsert": "true"})
+        log.info("Quantile models uploaded to bucket '%s'", bucket)
+    except Exception as e:
+        log.warning("Could not upload quantile models: %s", e)
 
 
 def _upload_model_to_storage(version: str) -> None:

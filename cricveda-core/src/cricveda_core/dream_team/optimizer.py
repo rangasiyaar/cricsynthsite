@@ -100,7 +100,7 @@ def build_dream_team(
         log.error("LP solver status: %s — no feasible lineup found", pulp.LpStatus[status])
         return None
 
-    selected = [candidates[i] for i in range(n) if pulp.value(x[i]) == 1]
+    selected = [candidates[i] for i in range(n) if round(pulp.value(x[i]) or 0) == 1]
 
     # Captain = highest predicted points, Vice-Captain = second highest
     sorted_by_pts = sorted(selected, key=lambda c: c.predicted_points, reverse=True)

@@ -61,7 +61,7 @@ npm run dev
 
 ```bash
 # 1. In the Supabase SQL editor run, in order:
-#    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql
+#    schema.sql, auth_schema.sql, upcoming_matches.sql, platform_v2.sql, predictions_v2.sql
 #    then make yourself an admin:
 #    UPDATE user_profiles SET is_admin = TRUE WHERE email = 'you@example.com';
 
@@ -80,8 +80,12 @@ uv run python -m cricveda_ingest.name_mapper --all-unresolved
 uv run python -m cricveda_ingest.compute_fantasy --all-missing
 uv run python -m cricveda_ingest.validate
 
-# 5. Train model (requires populated DB)
+# 5. Train models (requires populated DB) — also trains the v2 range models,
+#    scores them on the IPL 2024 holdout and uploads them to Supabase Storage
 uv run python -m cricveda_core.models.train
+
+# 6. Predict upcoming fixtures (needs fixtures + squads from the admin panel)
+uv run python -m cricveda_core.predictions.batch --dry-run
 ```
 
 ## Tests
@@ -130,4 +134,8 @@ cd cricveda-web && npx vercel
 - **IPL 2024 holdout**: 74 matches never used in training — reserved as final test set.
 - **Dream team optimizer**: PuLP LP, not ML — deterministic given predicted points.
 - **Predictions cached 1 hour**: Supabase + Upstash Redis both hit before any computation.
+- **CricVeda v2 predictions are pre-computed**: `predict.yml` runs hourly in match hours,
+  re-predicting only fixtures whose squad changed; `/v2/predictions/*` just reads
+  `player_predictions`. Ranges are XGBoost multi-quantile models (P10/median/P90).
+- **PuLP pinned below 4**: 4.x drops the bundled CBC solver the XI optimizer needs.
 - **Sign-in lives on the dashboard app**: `login.html` links to `app.cricsynthesis.in/login?provider=google`, so the OAuth round trip starts and ends on one origin.

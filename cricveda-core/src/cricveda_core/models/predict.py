@@ -20,7 +20,8 @@ from cricveda_core.models.train import PLAYER_FP_FEATURES
 
 log = logging.getLogger(__name__)
 
-MODELS_DIR = Path(__file__).parent.parent.parent.parent.parent.parent / "data" / "models"
+# repo/cricveda-core/src/cricveda_core/models/<file> → repo/data/models
+MODELS_DIR = Path(__file__).resolve().parents[4] / "data" / "models"
 _TMP_MODEL = Path("/tmp/player_fp_latest.json")
 
 
