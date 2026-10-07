@@ -25,8 +25,8 @@ import pyarrow as pa
 import pyarrow.compute as pc
 
 from cricsim.engine import states as S
-from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE, N_DECILES,
-                                  N_ERA, SITUATION, Model, base_index, era_index)
+from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, ERA_START, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE,
+                                  N_DECILES, N_ERA, SITUATION, Model, base_index, era_index)
 from cricsim.patterns.features import build_balls
 
 log = logging.getLogger(__name__)
@@ -202,7 +202,11 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
                                 "pred_wicket": round(float(pred[S.WKT]), 5), "obs_wicket": round(float(obs[S.WKT]), 5)})
         log.info("pass %d: weighted log-loss %.5f (%.0fs)", it + 1, ll, time.time() - t0)
     stats["conditions_sd"] = match_conditions_sd(d, P / w[:, None])
-    stats["era_index"] = int(era_index(np.array([d["day"].max()]))[0])      # simulate at the latest season's level
+    last = np.array([d["day"].max()]).astype("datetime64[D]")
+    stats["era_index"] = int(era_index(last)[0])                            # latest season seen
+    stats["era_asof"] = round(float((last - np.datetime64(f"{ERA_START}-01-01")).astype(int)[0]) / 365.25, 3)
+    stats["era_balls"] = np.bincount(d["fam"].astype(np.int64) * N_ERA + era_index(d["day"]),
+                                     minlength=2 * N_ERA).reshape(2, N_ERA).tolist()
     era = logf["era"].reshape(2, N_ERA, K)
     stats["era_recent"] = {fam_name: {str(2000 + y): {"four": round(float(era[f, y, S.FOUR]), 3),
                                                        "six": round(float(era[f, y, S.SIX]), 3),

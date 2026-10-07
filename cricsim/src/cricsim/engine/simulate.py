@@ -20,6 +20,8 @@ SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_ort
 PACE = {S.BOWLING_KINDS.index(k) for k in ("pace_right", "pace_left")}
 BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
+PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
+                         # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
 
 
 @dataclass
@@ -212,6 +214,8 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
     else:
         queue = np.array(list(range(2, 11)) + [11] * 11)
     qpos = np.zeros(n, dtype=np.int64)
+    plan = rng.random((n, used.shape[1])) < np.minimum(1.0, T.bowl_weights.mean(1) / PLAN_WEIGHT)
+    plan |= used > 0
 
     def over_of(lg):
         return np.minimum(lg // bpo, overs - 1)
@@ -234,6 +238,9 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
                 prev = bowler[sel]
                 has = prev >= 0
                 w[np.flatnonzero(has), prev[has]] = 0
+            planned = w * plan[sel]
+            keep = planned.sum(1) > 0            # plan exhausted → anyone else who may bowl
+            w[keep] = planned[keep]
             empty = w.sum(1) == 0
             if empty.any():
                 w[empty] = (quota - used[sel[empty]] > 0).astype(float) + 1e-9

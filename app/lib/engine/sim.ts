@@ -32,6 +32,7 @@ const K = 10;
 const [DOT, ONE, TWO, THREE, FOUR, SIX, WKT, WIDE, NOBALL, BYE] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const SPIN = new Set(["off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow"]);
 const PACE = new Set(["pace_right", "pace_left"]);
+const PLAN_WEIGHT = 0.01;   // simulate.py PLAN_WEIGHT
 
 export function rng(seed: number) {                       // mulberry32
   let a = seed >>> 0;
@@ -121,6 +122,8 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     queue = remaining.filter((i) => i !== striker && i !== non);
     res.runs = start.runs; res.wkts = start.wickets; res.legal = start.balls;
   }
+  // bowling plan for this innings (mirrors PLAN_WEIGHT in simulate.py)
+  const plan = P.weights.map((row) => r() < Math.min(1, row.reduce((a, v) => a + v, 0) / row.length / PLAN_WEIGHT));
   let inOver = res.legal % bpo, bowler = -1, spell = 0, freeHit = 0, dots = 0;
   const L = new Float64Array(K), w = new Float64Array(11);
   const maxBalls = overs * bpo;
@@ -129,9 +132,11 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     if (bowler < 0 || (inOver === 0 && lastOver[bowler] !== ov)) {
       const dec = Math.min(Math.floor((ov * 10) / overs), 9);
       let any = 0;
-      for (let j = 0; j < 11; j++) {
-        w[j] = used[j] < quota && (consecutiveOk || j !== bowler) ? P.weights[j][dec] : 0;
-        any += w[j];
+      for (let pass = 0; pass < 2 && any === 0; pass++) {     // plan exhausted → anyone else who may bowl
+        for (let j = 0; j < 11; j++) {
+          w[j] = used[j] < quota && (consecutiveOk || j !== bowler) && (pass === 1 || plan[j]) ? P.weights[j][dec] : 0;
+          any += w[j];
+        }
       }
       if (any === 0) for (let j = 0; j < 11; j++) w[j] = (used[j] < quota ? 1 : 0) + 1e-9;
       const b = choose(r, w, 11);

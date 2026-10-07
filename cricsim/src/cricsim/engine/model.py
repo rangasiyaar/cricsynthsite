@@ -44,7 +44,8 @@ def base_index(fmt, gender, innings0, over, wkts):
 
 N_BASE = len(FORMAT_LIST) * 2 * 2 * MAX_OVERS * 10
 ERA_START, N_ERA = 2000, 40          # one scoring-level factor per season and format family
-ERA_TREND = 0.5                      # share of the latest season-on-season change projected forward
+ERA_SEASONS = 4                      # seasons the scoring-trend line is fitted on
+ERA_AHEAD = 0.5                      # years past the last training ball the forecast is aimed at
 
 
 def era_index(days_since_epoch):
@@ -53,15 +54,27 @@ def era_index(days_since_epoch):
 
 
 def era_vector(model: "Model", fam: int) -> np.ndarray:
-    """Log-multipliers for the most recent season — scoring levels drift (T20 run rates rose sharply after 2022)."""
+    """Log-multipliers for the coming months — scoring levels drift (T20 run rates rose sharply after 2022).
+
+    A straight line through the last few seasons' levels (weighted by how many balls each season has, so a
+    half-played season counts less), read off half a year past the last training ball."""
     f = model.factors.get("era")
     if f is None:                                       # models fitted before the era factor existed
         return np.zeros(10, dtype=np.float32)
-    i = int(model.meta.get("fit", {}).get("era_index", N_ERA - 1))
-    v = f[fam * N_ERA + i]
-    if i > 0:      # scoring keeps rising: carry part of last season's change forward (backtest-tuned)
-        v = v + model.meta.get("era_trend", ERA_TREND) * (v - f[fam * N_ERA + i - 1])
-    return v
+    fit = model.meta.get("fit", {})
+    i = int(fit.get("era_index", N_ERA - 1))
+    seasons = np.arange(max(0, i - ERA_SEASONS + 1), i + 1)
+    if len(seasons) < 3:
+        return f[fam * N_ERA + i]
+    y = f[fam * N_ERA + seasons].astype(np.float64)
+    balls = np.asarray(fit.get("era_balls", [[1.0] * N_ERA] * 2)[fam], dtype=np.float64)[seasons]
+    w = balls / max(balls.max(), 1.0) + 1e-6
+    x = seasons + 0.5                                   # a season's level sits mid-year
+    xm = (w * x).sum() / w.sum()
+    ym = (w[:, None] * y).sum(0) / w.sum()
+    slope = (w[:, None] * (x - xm)[:, None] * (y - ym)).sum(0) / (w * (x - xm) ** 2).sum()
+    target = fit.get("era_asof", i + 1.0) + ERA_AHEAD
+    return (ym + slope * (target - xm)).astype(np.float32)
 
 # situation factors: name → levels per family
 SITUATION = {
