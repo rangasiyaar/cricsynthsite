@@ -18,11 +18,13 @@ def main() -> None:
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/models/latest"))
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), default=None, help="Train only on matches before this date")
+@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
 @click.option("--memory", default="4GB")
-def fit(parquet: Path, out: Path, cutoff, memory: str) -> None:
+def fit(parquet: Path, out: Path, cutoff, half_life: float | None, memory: str) -> None:
     """Fit the ball-outcome model and player ratings."""
     from cricsim.engine.fit import FitConfig, fit as run_fit
-    m = run_fit(parquet, FitConfig(cutoff=cutoff.date() if cutoff else None), memory=memory)
+    cfg = FitConfig(cutoff=cutoff.date() if cutoff else None, **({"half_life_years": half_life} if half_life else {}))
+    m = run_fit(parquet, cfg, memory=memory)
     m.save(out)
     click.echo(json.dumps({"players": len(m.players), "venues": len(m.venues), "comps": len(m.comps),
                            "fit": m.meta["fit"]}, indent=2))
@@ -56,13 +58,17 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), required=True)
 @click.option("--matches", default=600)
 @click.option("--insample", default=0, help="Also re-run the model on this many matches from its last six months")
+@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
+@click.option("--fantasy-bowlers", is_flag=True, help="Also score fantasy XIs picked with the real bowling plan")
 @click.option("--sims", default=1000)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
-def backtest(parquet: Path, cutoff, matches: int, insample: int, sims: int, out: Path, memory: str) -> None:
+def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: float | None, fantasy_bowlers: bool,
+             sims: int, out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
-    rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample)
+    rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample,
+                       half_life=half_life, fantasy_bowlers=fantasy_bowlers)
     write_report(rep, out)
     click.echo(out.with_suffix(".md").read_text())
 

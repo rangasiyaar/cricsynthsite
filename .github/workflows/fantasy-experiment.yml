@@ -1,0 +1,53 @@
+name: Fantasy experiment
+
+# Compares model variants on fantasy-XI quality: a backtest on held-out T20-type matches (XI picked from the
+# simulations, scored on the real match) plus the picked XI for each fixture in cricsim/fixtures/.
+on:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: [".github/workflows/fantasy-experiment.yml", "cricsim/src/cricsim/fantasy.py"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  variant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        half_life: ["3.0", "1.5", "0.75"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Fantasy backtest
+        run: |
+          uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff 2025-01-01 --matches 400 \
+            --sims 1000 --half-life ${{ matrix.half_life }} --fantasy-bowlers --out data/backtest/report --memory 3GB
+      - name: Fixture XIs with this model
+        run: |
+          uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/hl --half-life ${{ matrix.half_life }} --memory 3GB > /dev/null
+          for f in cricsim/fixtures/*.json; do
+            uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" --out "data/coverage/$(basename "$f")" > /dev/null
+            echo "## $(basename "$f") (half-life ${{ matrix.half_life }})"
+            uv run python -m cricsim.fantasy --model data/models/hl --coverage "data/coverage/$(basename "$f")"
+          done

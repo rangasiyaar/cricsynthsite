@@ -26,6 +26,7 @@ from cricsim.engine.fit import FitConfig, fit
 from cricsim.engine.model import Model
 from cricsim.engine.simulate import simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
+from cricsim.fantasy import actual_points, pick_xi, sim_points, team_points
 
 log = logging.getLogger(__name__)
 
@@ -85,21 +86,25 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 
 
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
-                 model: Model | None = None, memory: str = "4GB", insample: int = 0) -> dict:
+                 model: Model | None = None, memory: str = "4GB", insample: int = 0,
+                 half_life: float | None = None, fantasy_bowlers: bool = False) -> dict:
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
-    model = model or fit(parquet, FitConfig(cutoff=cutoff), memory=memory, con=con)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims)
+    cfg = FitConfig(cutoff=cutoff, **({"half_life_years": half_life} if half_life else {}))
+    model = model or fit(parquet, cfg, memory=memory, con=con)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
+    rep["half_life_years"] = cfg.half_life_years
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
         log.info("in-sample check from %s", start)
-        ins = _run(con, parquet, model, start, cutoff, insample, n_sims)
+        ins = _run(con, parquet, model, start, cutoff, insample, n_sims, False)
         rep["insample"] = {"from": str(start), "team_innings": ins.get("team_innings"),
                            "first_innings_by_group": ins.get("first_innings_by_group")}
     return rep
 
 
-def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int) -> dict:
+def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
+         fantasy_bowlers: bool = False) -> dict:
     matches = holdout_matches(con, parquet, cutoff, limit, end=end)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
@@ -125,6 +130,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         if mt["winner"] in (t1, t2):
             res["win"].append((p1, 1.0 if mt["winner"] == t1 else 0.0, mt["format"]))
         actual_order = batting_order(con, mt["match_id"])
+        if mt["format"] != "OD":
+            res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers))
         for inn0, lg in enumerate(part.innings):
             actual = mt["innings"][inn0][2]
             sim = lg.runs
@@ -183,6 +190,36 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
 def _horizon(day, cutoff: date) -> str:
     months = (day.year - cutoff.year) * 12 + day.month - cutoff.month
     return "0-5" if months < 6 else "6-11" if months < 12 else "12+"
+
+
+def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool) -> dict:
+    """Pick fantasy XIs from the simulations, score them on the real match (no fielding points either side)."""
+    team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
+    real = actual_points(con, mt["match_id"])
+    real = {p: real.get(p, 4.0) for p in team_of}            # in the XI but did nothing: playing points only
+    pids, pts = sim_points(sims)
+    mean = dict(zip(pids, pts.mean(0)))
+    upside = dict(zip(pids, np.percentile(pts, 90, axis=0)))
+    out = {}
+    xi, c, vc = pick_xi(mean, team_of)
+    out["mean"] = team_points(xi, c, vc, real)
+    out["overlap"] = len(set(xi) & set(pick_xi(real, team_of)[0]))
+    xi, c, vc = pick_xi(mean, team_of, captain_score=upside)
+    out["upside_captain"] = team_points(xi, c, vc, real)
+    xi, c, vc = pick_xi(real, team_of)
+    out["best"] = team_points(xi, c, vc, real)
+    out["random"] = 12.5 * float(np.mean(list(real.values())))
+    if bowlers_known:   # upper bound for entering the bowling plan: who actually bowled
+        used = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
+                                          [mt["match_id"]]).fetchall()}
+        spec2 = MatchSpec(spec.format, spec.gender, tuple(TeamSpec(t.name, t.players, [p for p in t.players if p in used])
+                                                          for t in spec.teams),
+                          venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first)
+        sims2 = simulate(model, spec2, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
+        pids2, pts2 = sim_points(sims2)
+        xi, c, vc = pick_xi(dict(zip(pids2, pts2.mean(0))), team_of)
+        out["bowlers_known"] = team_points(xi, c, vc, real)
+    return out
 
 
 def _actual_player_stats(con, match_id: str):
@@ -276,6 +313,15 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
             "brier_30plus_base_rate": round(float(np.var([r["hit30"] for r in rows])), 4),
             "corr_pred_actual": round(float(np.corrcoef([r["pred_mean"] for r in rows],
                                                         [r["actual"] for r in rows])[0, 1]), 3) if len(rows) > 2 else None}
+    if res.get("fantasy"):
+        f = res["fantasy"]
+        best = np.mean([r["best"] for r in f])
+        out["fantasy"] = {"n": len(f), "best_possible": round(float(best), 1),
+                          "overlap_with_best_xi": round(float(np.mean([r["overlap"] for r in f])), 2),
+                          "strategies": {k: {"points": round(float(np.mean([r[k] for r in f])), 1),
+                                             "share_of_best": round(float(np.mean([r[k] for r in f]) / best), 3)}
+                                         for k in ("mean", "upside_captain", "bowlers_known", "random")
+                                         if k in f[0]}}
     if res["bowlers"]:
         b = res["bowlers"]
         out["bowler_wickets"] = {"n": len(b), "brier_2plus": round(float(np.mean([(r["p2"] - r["hit2"]) ** 2 for r in b])), 4),
@@ -341,6 +387,15 @@ def write_report(rep: dict, path: Path) -> None:
         b = rep["bowler_wickets"]
         L += ["## Bowler wickets", "", f"Brier for 2+ wickets **{b['brier_2plus']}** (base rate {b['brier_2plus_base_rate']}) · "
               f"mean predicted {b['mean_predicted']} v actual {b['mean_actual']}", ""]
+    if rep.get("fantasy"):
+        fz = rep["fantasy"]
+        L += [f"## Fantasy XI (picked from simulations, scored on the real match; {fz['n']} T20-type matches, "
+              f"half-life {rep.get('half_life_years')} y)", "",
+              f"Best possible XI averages **{fz['best_possible']}** points · picked XI shares "
+              f"**{fz['overlap_with_best_xi']}** of 11 players with it", "",
+              "| Strategy | Avg points | Share of best |", "|---|---|---|"]
+        L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
+        L.append("")
     if rep.get("era_recent"):
         L += ["## Season scoring levels learned (log-multipliers; T20-type family)", "",
               " · ".join(f"{y}: 4s {v['four']:+.3f} 6s {v['six']:+.3f} W {v['wicket']:+.3f}"
