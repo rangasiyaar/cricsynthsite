@@ -11,11 +11,68 @@
   "published": true,
   "batting_first": 1,
   "teams": [
-    {"name": "India", "short": "IND", "players": [
-      "Abhishek Sharma", "Sanju Samson", "Ishan Kishan", "Shreyas Iyer", "Tilak Varma", "Shivam Dube",
-      "Naman Dhir", "Axar Patel", "Arshdeep Singh", "Kuldeep Yadav", "Mayank Yadav"]},
-    {"name": "West Indies", "short": "WI", "players": [
-      "Shai Hope", "Kamil Pooran", "Shimron Hetmyer", "Rovman Powell", "Sherfane Rutherford", "Romario Shepherd",
-      "Matthew Forde", "Roston Chase", "Akeal Hosein", "Shamar Springer", "Shamar Joseph"]}
-  ]
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Abhishek Sharma",
+        "Sanju Samson",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Shivam Dube",
+        "Naman Dhir",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Kuldeep Yadav",
+        "Mayank Yadav"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ]
+    },
+    {
+      "name": "West Indies",
+      "short": "WI",
+      "players": [
+        "Shai Hope",
+        "Kamil Pooran",
+        "Shimron Hetmyer",
+        "Rovman Powell",
+        "Sherfane Rutherford",
+        "Romario Shepherd",
+        "Matthew Forde",
+        "Roston Chase",
+        "Akeal Hosein",
+        "Shamar Springer",
+        "Shamar Joseph"
+      ],
+      "roles": [
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ]
+    }
+  ],
+  "sample": {
+    "top_scorer": "SS Iyer"
+  }
 }

@@ -166,3 +166,25 @@ def test_backtest_runs_and_reports(world, tmp_path):
     write_report(rep, tmp_path / "bt")
     text = (tmp_path / "bt.md").read_text()
     assert "Backtest" in text and "In-sample check" in text
+
+
+def test_sample_a_simulated_match(world, tmp_path):
+    from click.testing import CliRunner
+    from cricsim.sample import main as sample_main
+    m = world["model"]
+    spec = _spec(world["world"], batting_first=0)
+    roles = ["BAT", "WK", "BAT", "BAT", "AR", "AR", "AR", "BOWL", "BOWL", "BOWL", "BOWL"]
+    cov = {"id": "t", "format": "T20", "gender": "male", "venue_id": spec.venue_id, "comp_key": spec.comp_key,
+           "batting_first": 0, "teams": [{"name": t.name, "players": list(t.players), "roles": roles}
+                                         for t in spec.teams]}
+    f = tmp_path / "cov.json"
+    f.write_text(json.dumps(cov))
+    star = m.names[m.pid(spec.teams[0].players[0])]
+    res = CliRunner().invoke(sample_main, ["--model", str(world["tmp"] / "model"), "--coverage", str(f),
+                                           "--top-scorer", star, "--n", "500"])
+    assert res.exit_code == 0, res.output
+    card = json.loads(res.output.split("\n", 1)[1])
+    first = card["innings"][0]["batting"][0]
+    assert first["runs"] == max(b.get("runs", 0) for inn in card["innings"] for b in inn["batting"])
+    xi = card["fantasy_xi"]["players"]
+    assert len(xi) == 11 and {p["role"] for p in xi} == {"WK", "BAT", "AR", "BOWL"}

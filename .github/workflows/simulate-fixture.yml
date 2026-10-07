@@ -82,3 +82,11 @@ jobs:
               for m in s["matchups"][:12]:
                   print(" ", m)
           PY
+      - name: Sample a simulated match
+        run: |
+          for f in data/coverage/matches/*.json; do
+            ts=$(python3 -c "import json,sys; print((json.load(open(sys.argv[1])).get('sample') or {}).get('top_scorer',''))" "$f")
+            [ -n "$ts" ] || continue
+            echo "## $(basename "$f"): a simulation where $ts top-scores"
+            uv run python -m cricsim.sample --model data/models/latest --coverage "$f" --top-scorer "$ts"
+          done
