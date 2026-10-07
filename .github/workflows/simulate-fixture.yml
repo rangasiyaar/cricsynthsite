@@ -1,0 +1,70 @@
+name: Simulate fixture
+
+# Simulates the fixtures in cricsim/fixtures/ (player names in batting order) with a model fitted on
+# the full archive, and prints the forecast.
+on:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/fixtures/**", ".github/workflows/simulate-fixture.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Data
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm data/raw/all_json.zip
+      - name: Fit (all data)
+        run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - name: Resolve players
+        run: |
+          for f in cricsim/fixtures/*.json; do
+            uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" \
+              --out "data/coverage/matches/$(basename "$f")"
+          done
+      - name: Simulate
+        run: |
+          uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
+          uv run python - <<'PY'
+          import json, glob
+          for f in glob.glob("data/publish/matches/*.json"):
+              if f.endswith(".pack.json"):
+                  continue
+              d = json.load(open(f)); s = d["summary"]; r = s["result"]
+              print("##", d["match"]["title"], "|", d["match"]["competition"], "|", s["meta"]["simulations"], "sims")
+              print("win", r["win"], "tie", r["tie"])
+              for b in r["by_toss"]:
+                  print("  if batting first:", b)
+              print("margin runs", r["margin_runs"]); print("margin wickets", r["margin_wickets"])
+              for t in s["teams"]:
+                  bt = t["batting"]
+                  print(f"\n### {t['name']} batting: score {bt['score']['mean']} q={bt['score']['q']}")
+                  print("  p_at_least", bt["score"]["p_at_least"])
+                  print("  by innings", bt.get("by_innings"))
+                  print("  phases", bt.get("phases"))
+                  print("  wickets", bt.get("wickets"))
+                  for p in t["players"]:
+                      b, w = p.get("batting") or {}, p.get("bowling") or {}
+                      print(f"  {p['name']:24} known={p['known']} runs={b.get('runs',{}).get('mean')} "
+                            f"q={b.get('runs',{}).get('q')} p30={b.get('p_at_least',{}).get('30')} top={b.get('p_top')} "
+                            f"| bowls={w.get('p_bowls')} wk={w.get('wickets',{}).get('mean')} "
+                            f"p2wk={w.get('p_at_least',{}).get('2')} econ={w.get('economy',{}).get('mean') if isinstance(w.get('economy'), dict) else w.get('economy')}")
+              print("\n### insights")
+              for i in d["insights"]:
+                  print("-", i["text"])
+              print("\n### top matchups")
+              for m in s["matchups"][:12]:
+                  print(" ", m)
+          PY
