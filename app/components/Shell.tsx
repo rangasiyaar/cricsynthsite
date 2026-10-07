@@ -35,7 +35,7 @@ function ThemeToggle() {
   );
 }
 
-const LINKS: [string, string][] = [["/#matches", "Matches"], ["/#how-it-works", "How it works"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"]];
+const LINKS: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"]];
 
 export function Nav() {
   const path = usePathname() || "/";
@@ -55,7 +55,6 @@ export function Nav() {
         <div className="nav-links">
           {LINKS.map(([h, l]) => <Link key={h} href={h} className={cls(h)}>{l}</Link>)}
           <ThemeToggle />
-          <Link href="/developers/#plans" className="nav-link nav-cta">Get API key</Link>
         </div>
         <div className="mobile-nav">
           <Link href="/patterns/" className="mobile-nav-link">Pattern Lab</Link>
@@ -67,7 +66,6 @@ export function Nav() {
       </div>
       <div className="cs-drawer" id="csDrawer" hidden={!open}>
         {LINKS.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}</Link>)}
-        <Link href="/developers/#plans" onClick={() => setOpen(false)}>Get API key</Link>
       </div>
     </nav>
   );
@@ -88,7 +86,6 @@ export function Footer() {
             <div className="footer-column">
               <h4 className="footer-heading">Match centre</h4>
               <Link href="/#matches" className="footer-link">Upcoming matches</Link>
-              <Link href="/#how-it-works" className="footer-link">How it works</Link>
               <Link href="/patterns/" className="footer-link">Pattern Lab</Link>
             </div>
             <div className="footer-column">

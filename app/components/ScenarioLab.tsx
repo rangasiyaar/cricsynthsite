@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { OverBars, WinBar } from "@/components/charts";
+import { Num, OverBars, Pct, WinBar } from "@/components/charts";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
 import type { LabSummary } from "@/lib/engine/summary";
@@ -129,7 +129,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
         <div className="card" style={{ opacity: busy ? 0.6 : 1, transition: "opacity .2s" }}>
           <div className="eyebrow">Win chance{busy ? " · simulating…" : ""}</div>
           <div className="wins" style={{ fontSize: 30 }}>
-            <span style={{ color: COLORS[0] }}>{pct(cur.win[0])}</span><span style={{ color: COLORS[1] }}>{pct(cur.win[1])}</span>
+            <span style={{ color: COLORS[0] }}><Pct p={cur.win[0]} /></span><span style={{ color: COLORS[1] }}><Pct p={cur.win[1]} /></span>
           </div>
           <WinBar a={teams[0]} b={teams[1]} pa={cur.win[0]} pb={cur.win[1]} big />
           <div className="wins small" style={{ marginTop: 6 }}>
@@ -142,9 +142,9 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
             <div className="table-wrap"><table>
               <thead><tr><th></th><th className="num">Now</th><th className="num">Change</th></tr></thead>
               <tbody>
-                <tr><td>Projected score</td><td className="num">{num(t.score.q50)}</td><td className="num"><Delta d={t.score.q50 - base.teams[k].score.q50} /></td></tr>
+                <tr><td>Projected score</td><td className="num"><Num value={t.score.q50} /></td><td className="num"><Delta d={t.score.q50 - base.teams[k].score.q50} /></td></tr>
                 {t.phases.map((ph, i) => (
-                  <tr key={ph.phase}><td>{ph.phase} runs / wickets</td><td className="num">{num(ph.runs)} / {num(ph.wickets, 1)}</td>
+                  <tr key={ph.phase}><td>{ph.phase} runs / wickets</td><td className="num"><Num value={ph.runs} /> / <Num value={ph.wickets} digits={1} /></td>
                     <td className="num"><Delta d={ph.runs - base.teams[k].phases[i].runs} /></td></tr>
                 ))}
                 <tr><td>First wicket (typical over)</td><td className="num">{num(t.firstWicketOver)}</td>

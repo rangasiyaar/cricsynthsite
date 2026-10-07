@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import ScenarioLab from "@/components/ScenarioLab";
-import { Histogram, OverBars, P, WicketHeatmap, WinBar } from "@/components/charts";
+import { Histogram, Num, OverBars, P, Pct, WicketHeatmap, WinBar } from "@/components/charts";
+import { Tiles } from "@/components/Tiles";
 import { FORMAT, KIND, num, pct, range } from "@/lib/format";
 import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
@@ -9,8 +10,8 @@ const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups", "Scenario 
 type Tab = (typeof TABS)[number];
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 
-export default function MatchCentre({ doc }: { doc: MatchDoc }) {
-  const [tab, setTab] = useState<Tab>("Overview");
+export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
+  const [tab, setTab] = useState<Tab>(initialTab === "lab" ? "Scenario Lab" : "Overview");
   const { match, summary: s } = doc;
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
@@ -25,8 +26,8 @@ export default function MatchCentre({ doc }: { doc: MatchDoc }) {
           {s.result.tie > 0.002 && <span className="ok">tie {pct(s.result.tie, 1)}</span>}
         </div>
         <div className="wins" style={{ fontSize: 56, lineHeight: 1, marginBottom: 14 }}>
-          <span style={{ color: COLORS[0] }}>{pct(pa)}</span>
-          <span style={{ color: COLORS[1] }}>{pct(pb)}</span>
+          <span style={{ color: COLORS[0] }}><Pct p={pa} /></span>
+          <span style={{ color: COLORS[1] }}><Pct p={pb} /></span>
         </div>
         <WinBar a={a} b={b} pa={pa} pb={pb} big />
         <div className="wins cs-k" style={{ marginTop: 10, fontFamily: "var(--cs-body)" }}><span>{a}</span><span>{b}</span></div>
@@ -40,12 +41,14 @@ export default function MatchCentre({ doc }: { doc: MatchDoc }) {
         ))}
       </div>
 
-      {tab === "Overview" && <Overview doc={doc} />}
-      {tab === "Scores" && <Scores doc={doc} />}
-      {tab === "Wickets" && <Wickets doc={doc} />}
-      {tab === "Players" && <Players doc={doc} />}
-      {tab === "Matchups" && <Matchups doc={doc} />}
-      {tab === "Scenario Lab" && <ScenarioLab doc={doc} />}
+      <div key={tab} className="anim-fade">
+        {tab === "Overview" && <Overview doc={doc} />}
+        {tab === "Scores" && <Scores doc={doc} />}
+        {tab === "Wickets" && <Wickets doc={doc} />}
+        {tab === "Players" && <Players doc={doc} />}
+        {tab === "Matchups" && <Matchups doc={doc} />}
+        {tab === "Scenario Lab" && <ScenarioLab doc={doc} />}
+      </div>
 
       <p className="small muted" style={{ marginTop: 40 }}>
         Simulated {new Date(doc.generated_at).toLocaleString()} · probabilities, not predictions: a 70% favourite still loses
@@ -57,34 +60,22 @@ export default function MatchCentre({ doc }: { doc: MatchDoc }) {
 
 function Overview({ doc }: { doc: MatchDoc }) {
   const s = doc.summary;
+  const short = doc.match.teams.map((t) => t.short) as [string, string];
   return (
-    <div className="grid g2">
-      <div>
-        <h3>What the simulations say</h3>
-        <ul className="insights">{doc.insights.map((x, i) => <li key={i}>{x.text}</li>)}</ul>
-      </div>
-      <div className="grid">
+    <div className="grid">
+      <Tiles s={s} short={short} />
+      <div className="tiles">
         {s.teams.map((t, k) => (
-          <div key={t.name} className="card">
-            <div className="cs-k" style={{ marginBottom: 6 }}>{t.name} · projected score</div>
-            <div className="stat" style={{ color: COLORS[k] }}>{num(t.batting.score.q["50"])}</div>
-            <div className="small muted">80% of simulations between {range(t.batting.score.q)} · {num(t.batting.wickets.mean, 1)} wickets on average</div>
+          <div key={t.name} className="card tile anim-rise" style={{ animationDelay: `${420 + k * 60}ms` }}>
+            <div className="cs-k">{t.name} · score range</div>
+            <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
+                       height={150} series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
           </div>
         ))}
-        {s.result.by_toss.length === 2 && (
-          <div className="card">
-            <div className="cs-k" style={{ marginBottom: 6 }}>Toss effect</div>
-            <table><tbody>
-              {s.result.by_toss.map((bt) => (
-                <tr key={bt.batting_first}><td>If {bt.batting_first} bat first</td>
-                  {s.teams.map((t, k) => <td key={t.name} className="num" style={{ color: COLORS[k] }}>{pct(bt.win[t.name])}</td>)}</tr>
-              ))}
-            </tbody></table>
-          </div>
-        )}
-        <div className="card">
-          <div className="cs-k" style={{ marginBottom: 6 }}>Winning margin</div>
-          <div className="small">Batting first wins by a median of <b>{num(s.result.margin_runs.q["50"])} runs</b>; chasing wins by a median of <b>{num(s.result.margin_wickets.q["50"])} wickets</b>.</div>
+        <div className="card tile anim-rise" style={{ animationDelay: "540ms" }}>
+          <div className="cs-k">Winning margin (median)</div>
+          <div className="tile-row"><span className="tile-left">Batting first</span><span className="tile-right"><b className="tile-big"><Num value={s.result.margin_runs.q["50"]} /></b><span className="tile-sub">runs</span></span></div>
+          <div className="tile-row"><span className="tile-left">Chasing</span><span className="tile-right"><b className="tile-big"><Num value={s.result.margin_wickets.q["50"]} /></b><span className="tile-sub">wickets</span></span></div>
         </div>
       </div>
     </div>

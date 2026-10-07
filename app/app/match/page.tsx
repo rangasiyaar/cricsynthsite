@@ -6,7 +6,8 @@ import { loadMatch } from "@/lib/data";
 import type { MatchDoc } from "@/lib/types";
 
 function Loader() {
-  const id = useSearchParams().get("id") || "";
+  const params = useSearchParams();
+  const id = params.get("id") || "";
   const [doc, setDoc] = useState<MatchDoc | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -16,7 +17,7 @@ function Loader() {
   }, [id]);
   if (error) return <p className="notice" style={{ marginTop: 32 }}>{error}</p>;
   if (!doc) return <div className="skeleton card" style={{ marginTop: 32, minHeight: 320 }} />;
-  return <MatchCentre doc={doc} />;
+  return <MatchCentre doc={doc} initialTab={params.get("tab")} />;
 }
 
 export default function MatchPage() {
