@@ -38,7 +38,7 @@ jobs:
       - name: Backtest
         run: |
           uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff "$CUTOFF" \
-            --matches "$MATCHES" --sims 1000 --out data/backtest/report --memory 3GB
+            --matches "$MATCHES" --insample 300 --sims 1000 --out data/backtest/report --memory 3GB
       - name: Fit production model (all data)
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB
       - name: Pattern Lab + demo match centre

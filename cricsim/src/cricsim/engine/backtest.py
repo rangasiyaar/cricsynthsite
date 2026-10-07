@@ -30,7 +30,7 @@ from cricsim.engine.spec import MatchSpec, TeamSpec
 log = logging.getLogger(__name__)
 
 
-def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0) -> list[dict]:
+def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None) -> list[dict]:
     m = (parquet / "matches" / "*.parquet").as_posix()
     mp = (parquet / "match_players" / "*.parquet").as_posix()
     inn = (parquet / "innings" / "*.parquet").as_posix()
@@ -42,7 +42,7 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0)
                coalesce(m.competition_id, 'intl-' || coalesce(m.team_type, '') || '-' || m.format) AS comp,
                m.team1, m.team2, m.winner, m.result, m.overs, m.method
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
-        WHERE m.match_date >= DATE '{cutoff}' AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
+        WHERE m.match_date >= DATE '{cutoff}' {f"AND m.match_date < DATE '{end}'" if end else ""} AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
           AND m.gender IN ('male', 'female') AND m.method IS NULL
         ORDER BY hash(m.match_id || '{seed}') LIMIT {limit}""").fetchall()
     out = []
@@ -84,18 +84,30 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 
 
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
-                 model: Model | None = None, memory: str = "4GB") -> dict:
+                 model: Model | None = None, memory: str = "4GB", insample: int = 0) -> dict:
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     model = model or fit(parquet, FitConfig(cutoff=cutoff), memory=memory, con=con)
-    matches = holdout_matches(con, parquet, cutoff, limit)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims)
+    if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
+        start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
+        log.info("in-sample check from %s", start)
+        ins = _run(con, parquet, model, start, cutoff, insample, n_sims)
+        rep["insample"] = {"from": str(start), "team_innings": ins.get("team_innings"),
+                           "first_innings_by_group": ins.get("first_innings_by_group")}
+    return rep
+
+
+def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int) -> dict:
+    matches = holdout_matches(con, parquet, cutoff, limit, end=end)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
         SELECT DISTINCT batter_id || '|' || coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format)
         FROM read_parquet('{d}') WHERE match_date < DATE '{cutoff}' AND batter_id IS NOT NULL""").fetchall()}
     con.execute(f"""CREATE OR REPLACE TABLE hold AS SELECT * FROM read_parquet('{d}')
-                    WHERE match_date >= DATE '{cutoff}' AND NOT is_super_over""")
+                    WHERE match_date >= DATE '{cutoff}' {f"AND match_date < DATE '{end}'" if end else ""}
+                    AND NOT is_super_over""")
 
     res = {"win": [], "score": [], "players": [], "bowlers": []}
     for mt in matches:
@@ -119,7 +131,13 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
             used = con.execute("SELECT count(DISTINCT bowler_id), max(c) FROM (SELECT bowler_id, count(*) FILTER "
                                "(WHERE wides = 0 AND noballs = 0) OVER (PARTITION BY bowler_id) AS c FROM hold "
                                "WHERE match_id = ? AND innings_no = ?)", [mt["match_id"], inn0 + 1]).fetchone()
+            bat_xi = mt["xi"][spec.teams[(bf + inn0) % 2].name]
+            n_new = sum(not model.knows(p) for p in bat_xi)
             res.setdefault("team", []).append({"inn": inn0 + 1, "pred_runs": float(sim.mean()), "act_runs": actual,
+                                               "split": {"competition": "seen" if model.comp(mt["comp"]) else "new",
+                                                         "venue": "seen" if model.venue(mt["venue_id"]) else "new",
+                                                         "unknown batters": "0" if n_new == 0 else
+                                                         "1-2" if n_new <= 2 else "3+"},
                                                "group": f"{mt['format']} {mt['gender']} {mt['team_type']}",
                                                "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk,
                                                "pred_bowlers": float((lg.bowl_balls > 0).sum(1).mean()),
@@ -222,6 +240,15 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                              "runs_predicted": round(float(np.mean([r["pred_runs"] for r in rows])), 1),
                                              "runs_actual": round(float(np.mean([r["act_runs"] for r in rows])), 1)}
                                          for g, rows in sorted(groups.items(), key=lambda kv: -len(kv[1])) if len(rows) >= 15}
+        splits: dict[str, list] = {}
+        for r in res["team"]:
+            if r["inn"] == 1 and "split" in r:
+                for k, v in r["split"].items():
+                    splits.setdefault(f"{k}: {v}", []).append(r)
+        out["first_innings_by_split"] = {k: {"n": len(rows),
+                                             "runs_predicted": round(float(np.mean([r["pred_runs"] for r in rows])), 1),
+                                             "runs_actual": round(float(np.mean([r["act_runs"] for r in rows])), 1)}
+                                         for k, rows in sorted(splits.items())}
     if res["score"]:
         pit = np.array([s["pit"] for s in res["score"]])
         out["first_innings_total"] = {
@@ -282,6 +309,19 @@ def write_report(rep: dict, path: Path) -> None:
     if rep.get("first_innings_by_group"):
         L += ["## First-innings runs by group (predicted / actual)", "", "| Group | Matches | Runs |", "|---|---|---|"]
         L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |" for g, r in rep["first_innings_by_group"].items()]
+        L.append("")
+    if rep.get("first_innings_by_split"):
+        L += ["## First-innings runs by split (predicted / actual)", "", "| Split | Matches | Runs |", "|---|---|---|"]
+        L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |" for g, r in rep["first_innings_by_split"].items()]
+        L.append("")
+    if rep.get("insample"):
+        ins = rep["insample"]
+        L += [f"## In-sample check (same model, matches from {ins['from']} to the cutoff)", "",
+              "| Innings / group | Matches | Runs |", "|---|---|---|"]
+        L += [f"| innings {k} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |"
+              for k, r in (ins.get("team_innings") or {}).items()]
+        L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |"
+              for g, r in (ins.get("first_innings_by_group") or {}).items()]
         L.append("")
     if rep.get("player_runs"):
         L += ["## Player runs (players who batted, v simulations where they batted)", "", "| Group | Innings | Predicted mean | Actual mean | In 80% band | Brier 30+ (base rate) | Corr |",

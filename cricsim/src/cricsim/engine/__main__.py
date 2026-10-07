@@ -55,13 +55,14 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), required=True)
 @click.option("--matches", default=600)
+@click.option("--insample", default=0, help="Also re-run the model on this many matches from its last six months")
 @click.option("--sims", default=1000)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
-def backtest(parquet: Path, cutoff, matches: int, sims: int, out: Path, memory: str) -> None:
+def backtest(parquet: Path, cutoff, matches: int, insample: int, sims: int, out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
-    rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory)
+    rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample)
     write_report(rep, out)
     click.echo(out.with_suffix(".md").read_text())
 

@@ -158,8 +158,11 @@ def test_unknown_players_and_json_specs(world):
 
 
 def test_backtest_runs_and_reports(world, tmp_path):
-    rep = run_backtest(world["parquet"], date(2024, 1, 1), limit=12, n_sims=200)
+    rep = run_backtest(world["parquet"], date(2024, 1, 1), limit=12, n_sims=200, insample=8)
     assert rep["matches"] > 0 and "result" in rep and "first_innings_total" in rep
     assert "established" in rep["player_runs"]
+    assert "competition: seen" in rep["first_innings_by_split"]
+    assert rep["insample"]["team_innings"]["1"]["n"] > 0
     write_report(rep, tmp_path / "bt")
-    assert "Backtest" in (tmp_path / "bt.md").read_text()
+    text = (tmp_path / "bt.md").read_text()
+    assert "Backtest" in text and "In-sample check" in text
