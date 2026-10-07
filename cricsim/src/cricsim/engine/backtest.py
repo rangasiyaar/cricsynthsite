@@ -40,13 +40,13 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
           GROUP BY 1 HAVING count(*) = 2)
         SELECT m.match_id, m.format, m.gender, m.venue_id, m.team_type,
                coalesce(m.competition_id, 'intl-' || coalesce(m.team_type, '') || '-' || m.format) AS comp,
-               m.team1, m.team2, m.winner, m.result, m.overs, m.method
+               m.team1, m.team2, m.winner, m.result, m.overs, m.method, m.match_date
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
         WHERE m.match_date >= DATE '{cutoff}' {f"AND m.match_date < DATE '{end}'" if end else ""} AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
           AND m.gender IN ('male', 'female') AND m.method IS NULL
         ORDER BY hash(m.match_id || '{seed}') LIMIT {limit}""").fetchall()
     out = []
-    for mid, fmt, gender, venue, team_type, comp, t1, t2, winner, result, overs, method in rows:
+    for mid, fmt, gender, venue, team_type, comp, t1, t2, winner, result, overs, method, day in rows:
         xi = {}
         for team in (t1, t2):
             xi[team] = [r[0] for r in con.execute(
@@ -57,7 +57,8 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
         innings = con.execute(f"""SELECT innings_no, team, runs, wickets FROM read_parquet('{inn}')
                                   WHERE match_id = ? AND innings_no <= 2 ORDER BY innings_no""", [mid]).fetchall()
         out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp, "team_type": team_type,
-                    "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings})
+                    "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings,
+                    "date": day})
     return out
 
 
@@ -137,7 +138,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                                "split": {"competition": "seen" if model.comp(mt["comp"]) else "new",
                                                          "venue": "seen" if model.venue(mt["venue_id"]) else "new",
                                                          "unknown batters": "0" if n_new == 0 else
-                                                         "1-2" if n_new <= 2 else "3+"},
+                                                         "1-2" if n_new <= 2 else "3+",
+                                                         "months after cutoff": _horizon(mt["date"], cutoff)},
                                                "group": f"{mt['format']} {mt['gender']} {mt['team_type']}",
                                                "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk,
                                                "pred_bowlers": float((lg.bowl_balls > 0).sum(1).mean()),
@@ -176,6 +178,11 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     rep = score(res, cutoff, len(matches))
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
     return rep
+
+
+def _horizon(day, cutoff: date) -> str:
+    months = (day.year - cutoff.year) * 12 + day.month - cutoff.month
+    return "0-5" if months < 6 else "6-11" if months < 12 else "12+"
 
 
 def _actual_player_stats(con, match_id: str):
