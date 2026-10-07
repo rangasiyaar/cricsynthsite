@@ -6,7 +6,7 @@ The fixture is a coverage document whose team "players" are names in batting ord
 "venue_search" (text matched against known venue names). Each name is matched against players who have
 played for that team (same gender), by full name, registry aliases, then surname + initials; the most
 recent appearance wins ties. A name not found in the team falls back to every player of that gender
-(full name or surname + initial only), so league records count for players not yet capped. A name that matches nobody is kept as a new player (simulated as a
+(same rules), so league records count for players not yet capped. A name that matches nobody is kept as a new player (simulated as a
 league-average newcomer) and reported.
 """
 from __future__ import annotations
@@ -50,7 +50,8 @@ def candidates(con, parquet: Path, team: str | None, gender: str) -> list[dict]:
     return out
 
 
-def match_name(name: str, cands: list[dict], surname_only: bool = True) -> tuple[dict | None, str]:
+def match_name(name: str, cands: list[dict]) -> tuple[dict | None, str]:
+    """Full name / alias, else surname + first initial. Never surname alone: "Kamil Pooran" is not "N Pooran"."""
     full, sur, ini = _keys(name)
     exact = [c for c in cands if any(_keys(x)[0] == full for x in c["names"])]
     if exact:
@@ -61,9 +62,6 @@ def match_name(name: str, cands: list[dict], surname_only: bool = True) -> tuple
                                      for x in c["names"])]
     if loose:
         return max(loose, key=lambda c: (c["last"], c["n"])), "surname+initial"
-    sur_only = [c for c in cands if any(_keys(x)[1] == sur for x in c["names"])]
-    if surname_only and len(sur_only) == 1:
-        return sur_only[0], "surname"
     return None, "unresolved"
 
 
@@ -91,7 +89,7 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
             c, how = match_name(name, cands)
             if c is None:      # not capped for this team yet: their league / domestic record still counts
                 everyone = everyone or candidates(con, parquet, None, fx["gender"])
-                c, how = match_name(name, everyone, surname_only=False)
+                c, how = match_name(name, everyone)
                 how = f"{how}, other teams"
             if c is None:
                 missing.append(f"{team['name']}: {name}")
