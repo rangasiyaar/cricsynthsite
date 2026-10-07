@@ -1,0 +1,40 @@
+name: Data freshness
+
+# Lists the newest matches in Cricsheet's archive: by match date, and the ones added most recently.
+on:
+  push:
+    paths: [".github/workflows/data-freshness.yml"]
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -sSfL -o all.zip https://cricsheet.org/downloads/all_json.zip
+          curl -sSfL -o recent.zip https://cricsheet.org/downloads/recently_added_7_json.zip || true
+          python3 - <<'PY'
+          import json, zipfile
+          def rows(path):
+              out = []
+              with zipfile.ZipFile(path) as z:
+                  for n in z.namelist():
+                      if not n.endswith(".json"):
+                          continue
+                      info = json.load(z.open(n))["info"]
+                      ev = info.get("event", {})
+                      out.append((info["dates"][-1], info.get("match_type"), info.get("gender"),
+                                  " v ".join(info.get("teams", [])), ev.get("name", "") if isinstance(ev, dict) else "", n))
+              return sorted(out, reverse=True)
+          a = rows("all.zip")
+          print(f"## Archive: {len(a)} matches; newest match dates:")
+          for r in a[:25]:
+              print(" | ".join(map(str, r)))
+          try:
+              rec = rows("recent.zip")
+              print(f"\n## Added to Cricsheet in the last 7 days: {len(rec)} matches")
+              for r in rec[:40]:
+                  print(" | ".join(map(str, r)))
+          except Exception as e:
+              print("recently-added feed not available:", e)
+          PY
