@@ -203,6 +203,12 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
         log.info("pass %d: weighted log-loss %.5f (%.0fs)", it + 1, ll, time.time() - t0)
     stats["conditions_sd"] = match_conditions_sd(d, P / w[:, None])
     stats["era_index"] = int(era_index(np.array([d["day"].max()]))[0])      # simulate at the latest season's level
+    era = logf["era"].reshape(2, N_ERA, K)
+    stats["era_recent"] = {fam_name: {str(2000 + y): {"four": round(float(era[f, y, S.FOUR]), 3),
+                                                       "six": round(float(era[f, y, S.SIX]), 3),
+                                                       "wicket": round(float(era[f, y, S.WKT]), 3)}
+                                      for y in range(max(0, stats["era_index"] - 7), stats["era_index"] + 1)}
+                           for f, fam_name in enumerate(S.FAMILY_LIST)}
     log.info("match-to-match conditions sd: %s", stats["conditions_sd"])
     # player 0 / venue 0 / comp 0 are "unknown": exactly average
     for name in ("bat", "bowl", "venue", "comp"):

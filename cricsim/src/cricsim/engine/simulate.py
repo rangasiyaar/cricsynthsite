@@ -18,7 +18,8 @@ from cricsim.engine.spec import MatchSpec, Scenario
 
 SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow")}
 PACE = {S.BOWLING_KINDS.index(k) for k in ("pace_right", "pace_left")}
-BOWL_FOCUS = 1.6
+BOWL_FOCUS = 2.0
+PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
 
 
 @dataclass
@@ -132,7 +133,7 @@ class _Tables:
         per_decile = rules["overs"] / N_DECILES if fam else 2.0
         share = model.usage[pw, fam].astype(np.float64) / per_decile
         # captains lean on their frontline bowlers: sharpen the usage shares (backtest: wickets were spread too thin)
-        weights = share ** BOWL_FOCUS + 0.003                                         # part-timers: rarely
+        weights = share ** BOWL_FOCUS + PART_TIMER
         allowed = np.array([p not in sc.exclude_bowlers for p in bowlers])
         if allowed_bowlers:
             listed = np.array([p in allowed_bowlers for p in bowlers])

@@ -56,7 +56,7 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0)
             continue
         innings = con.execute(f"""SELECT innings_no, team, runs, wickets FROM read_parquet('{inn}')
                                   WHERE match_id = ? AND innings_no <= 2 ORDER BY innings_no""", [mid]).fetchall()
-        out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp,
+        out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp, "team_type": team_type,
                     "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings})
     return out
 
@@ -120,6 +120,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                                "(WHERE wides = 0 AND noballs = 0) OVER (PARTITION BY bowler_id) AS c FROM hold "
                                "WHERE match_id = ? AND innings_no = ?)", [mt["match_id"], inn0 + 1]).fetchone()
             res.setdefault("team", []).append({"inn": inn0 + 1, "pred_runs": float(sim.mean()), "act_runs": actual,
+                                               "group": f"{mt['format']} {mt['gender']} {mt['team_type']}",
                                                "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk,
                                                "pred_bowlers": float((lg.bowl_balls > 0).sum(1).mean()),
                                                "act_bowlers": used[0],
@@ -154,7 +155,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                 sim_w = lg.bowl_wkts[bowled, j]
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
                                        "pred_mean": float(sim_w.mean()), "actual": wk_by[p]})
-    return score(res, cutoff, len(matches))
+    rep = score(res, cutoff, len(matches))
+    rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
+    return rep
 
 
 def _actual_player_stats(con, match_id: str):
@@ -210,6 +213,15 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                     "bowlers_used_actual": round(float(np.mean([r["act_bowlers"] for r in rows if r["act_bowlers"]])), 2),
                     "top_bowler_balls_predicted": round(float(np.mean([r["pred_top_balls"] for r in rows])), 1),
                     "top_bowler_balls_actual": round(float(np.mean([r["act_top_balls"] for r in rows if r["act_top_balls"]])), 1)}
+    if res.get("team"):
+        groups: dict[str, list] = {}
+        for r in res["team"]:
+            if r["inn"] == 1:
+                groups.setdefault(r["group"], []).append(r)
+        out["first_innings_by_group"] = {g: {"n": len(rows),
+                                             "runs_predicted": round(float(np.mean([r["pred_runs"] for r in rows])), 1),
+                                             "runs_actual": round(float(np.mean([r["act_runs"] for r in rows])), 1)}
+                                         for g, rows in sorted(groups.items(), key=lambda kv: -len(kv[1])) if len(rows) >= 15}
     if res["score"]:
         pit = np.array([s["pit"] for s in res["score"]])
         out["first_innings_total"] = {
@@ -267,6 +279,10 @@ def write_report(rep: dict, path: Path) -> None:
                      f"{r['wickets_actual']} | {r['bowlers_used_predicted']} / {r['bowlers_used_actual']} | "
                      f"{r['top_bowler_balls_predicted']} / {r['top_bowler_balls_actual']} |")
         L.append("")
+    if rep.get("first_innings_by_group"):
+        L += ["## First-innings runs by group (predicted / actual)", "", "| Group | Matches | Runs |", "|---|---|---|"]
+        L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |" for g, r in rep["first_innings_by_group"].items()]
+        L.append("")
     if rep.get("player_runs"):
         L += ["## Player runs (players who batted, v simulations where they batted)", "", "| Group | Innings | Predicted mean | Actual mean | In 80% band | Brier 30+ (base rate) | Corr |",
               "|---|---|---|---|---|---|---|"]
@@ -278,4 +294,8 @@ def write_report(rep: dict, path: Path) -> None:
         b = rep["bowler_wickets"]
         L += ["## Bowler wickets", "", f"Brier for 2+ wickets **{b['brier_2plus']}** (base rate {b['brier_2plus_base_rate']}) · "
               f"mean predicted {b['mean_predicted']} v actual {b['mean_actual']}", ""]
+    if rep.get("era_recent"):
+        L += ["## Season scoring levels learned (log-multipliers; T20-type family)", "",
+              " · ".join(f"{y}: 4s {v['four']:+.3f} 6s {v['six']:+.3f} W {v['wicket']:+.3f}"
+                         for y, v in rep["era_recent"].get("short", {}).items()), ""]
     path.with_suffix(".md").write_text("\n".join(L) + "\n")
