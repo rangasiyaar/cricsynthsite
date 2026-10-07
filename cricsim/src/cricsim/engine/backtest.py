@@ -26,7 +26,7 @@ from cricsim.engine.fit import FitConfig, fit
 from cricsim.engine.model import Model
 from cricsim.engine.simulate import simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
-from cricsim.fantasy import actual_points, pick_xi, sim_points, team_points
+from cricsim.fantasy import actual_points, pick_xi, portfolio, sim_points, team_points
 
 log = logging.getLogger(__name__)
 
@@ -208,6 +208,19 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     out["upside_captain"] = team_points(xi, c, vc, real)
     xi, c, vc = pick_xi(real, team_of)
     out["best"] = team_points(xi, c, vc, real)
+    teams = portfolio(pids, pts, team_of, k=5)
+    got = [team_points(*t, real) for t in teams]
+    out["portfolio_3"], out["portfolio_5"] = max(got[:3]), max(got)
+    xi, _, _ = pick_xi(mean, team_of)                   # baseline: same XI, five different captains
+    caps = sorted(xi, key=lambda p: -mean[p])[:6]
+    out["captains_5"] = max(team_points(xi, caps[i], caps[i + 1], real) for i in range(5))
+    rng = np.random.default_rng(zlib.crc32(mt["match_id"].encode()))
+    every = list(team_of)
+    rand = []
+    for _ in range(5):
+        r = list(rng.choice(every, 11, replace=False))
+        rand.append(team_points(r, r[0], r[1], real))
+    out["random_5"] = max(rand)
     out["random"] = 12.5 * float(np.mean(list(real.values())))
     if bowlers_known:   # upper bound for entering the bowling plan: who actually bowled
         used = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
@@ -320,7 +333,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                           "overlap_with_best_xi": round(float(np.mean([r["overlap"] for r in f])), 2),
                           "strategies": {k: {"points": round(float(np.mean([r[k] for r in f])), 1),
                                              "share_of_best": round(float(np.mean([r[k] for r in f]) / best), 3)}
-                                         for k in ("mean", "upside_captain", "bowlers_known", "random")
+                                         for k in ("mean", "upside_captain", "bowlers_known", "random",
+                                                   "captains_5", "random_5", "portfolio_3", "portfolio_5")
                                          if k in f[0]}}
     if res["bowlers"]:
         b = res["bowlers"]

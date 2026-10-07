@@ -119,6 +119,48 @@ def team_points(xi: list[str], c: str, vc: str, real: dict[str, float]) -> float
     return sum(real.get(p, 4.0) for p in xi) + real.get(c, 4.0) + 0.5 * real.get(vc, 4.0)
 
 
+def _roles_ok(xi, roles) -> bool:
+    if not roles:
+        return True
+    per_role = [sum(roles.get(p) == r for p in xi) for r in ("WK", "BAT", "AR", "BOWL")]
+    return min(per_role) >= 1 and max(per_role) <= 8
+
+
+def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int = 5,
+              roles: dict[str, str] | None = None, n_candidates: int = 300,
+              seed: int = 0) -> list[tuple[list[str], str, str]]:
+    """k teams that together cover the likely matches: start from the expected-points XI, then greedily add
+    the candidate that most raises the average (over simulations) of the portfolio's best team.
+    Candidates are the best XI of individual simulations, so each is the right team for some plausible game."""
+    col = {p: i for i, p in enumerate(pids)}
+    half = len(pts) // 2
+    ev = pts[half:]                                     # candidates come from one half, are judged on the other
+
+    def scores(team):                                   # points of a team in every evaluation simulation
+        xi, c, vc = team
+        return ev[:, [col[p] for p in xi]].sum(1) + ev[:, col[c]] + 0.5 * ev[:, col[vc]]
+
+    mean = dict(zip(pids, pts.mean(0)))
+    teams = [pick_xi(mean, team_of, roles)]
+    rng = np.random.default_rng(seed)
+    rows = rng.choice(half, size=min(n_candidates, half), replace=False)
+    cands, seen = [], set()
+    for r in rows:
+        t = pick_xi(dict(zip(pids, pts[r])), team_of)
+        key = (frozenset(t[0]), t[1], t[2])
+        if key not in seen and _roles_ok(t[0], roles):
+            seen.add(key)
+            cands.append(t)
+    best = scores(teams[0])
+    cand_scores = [scores(t) for t in cands]
+    while len(teams) < k and cands:
+        gains = [np.maximum(best, s).mean() for s in cand_scores]
+        j = int(np.argmax(gains))
+        teams.append(cands.pop(j))
+        best = np.maximum(best, cand_scores.pop(j))
+    return teams
+
+
 def main() -> None:
     """python -m cricsim.fantasy --model M --coverage C.json [--real real.json] : expected points + picked XI."""
     import json
@@ -157,6 +199,8 @@ def main() -> None:
         xi, c, vc = pick_xi(mean, team_of, roles)
         out = {"players": rows, "xi": [name[p] for p in sorted(xi, key=lambda q: -mean[q])],
                "captain": name[c], "vice_captain": name[vc]}
+        out["portfolio"] = [{"xi": [name[p] for p in sorted(x, key=lambda q: -mean[q])], "captain": name[c_],
+                             "vice_captain": name[v_]} for x, c_, v_ in portfolio(pids, pts, team_of, 5, roles)]
         xi_u, c_u, vc_u = pick_xi(mean, team_of, roles, captain_score=p90)
         out["upside_captain"] = {"captain": name[c_u], "vice_captain": name[vc_u]}
         click.echo(json.dumps(out, indent=1))
