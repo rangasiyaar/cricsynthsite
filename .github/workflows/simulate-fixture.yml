@@ -19,14 +19,28 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
+      # data + fitted model are cached per day: the first run of the day builds them (~9 min), later runs
+      # (e.g. once the playing XIs are announced) only resolve names and simulate (~1-2 min)
+      - name: Day key
+        id: day
+        run: echo "key=engine-$(date -u +%Y-%m-%d)-${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
       - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           uv run cricdata download --kind all --dest data/raw
           uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
             --names data/raw/names.csv --out data/parquet
           uv run cricdata attributes --out data/parquet
-          rm data/raw/all_json.zip
+          rm -rf data/raw
       - name: Fit (all data)
+        if: steps.cache.outputs.cache-hit != 'true'
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
       - name: Resolve players
         run: |
