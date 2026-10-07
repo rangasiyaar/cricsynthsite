@@ -1,6 +1,6 @@
 {
-  "id": "ind-v-wi-t20i-ekana-2026-10-07",
-  "title": "India v West Indies",
+  "id": "ind-v-wi-t20i-ekana-2026-10-07-plan",
+  "title": "India v West Indies (bowling plan)",
   "date": "2026-10-07",
   "format": "T20",
   "gender": "male",
@@ -39,6 +39,14 @@
         "BOWL",
         "BOWL",
         "BOWL"
+      ],
+      "bowlers": [
+        "Arshdeep Singh",
+        "Mayank Yadav",
+        "Axar Patel",
+        "Kuldeep Yadav",
+        "Naman Dhir",
+        "Shivam Dube"
       ]
     },
     {

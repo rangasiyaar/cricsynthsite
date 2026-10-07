@@ -90,3 +90,10 @@ jobs:
             echo "## $(basename "$f"): a simulation where $ts top-scores"
             uv run python -m cricsim.sample --model data/models/latest --coverage "$f" --top-scorer "$ts"
           done
+      - name: Fantasy XI
+        run: |
+          for f in data/coverage/matches/*.json; do
+            echo "## $(basename "$f")"
+            uv run python -m cricsim.fantasy --model data/models/latest --coverage "$f" \
+              | python3 -c "import json,sys; d=json.load(sys.stdin); [print(f\"{p['player']:20} {p['team']:12} {p['role'] or '':5} mean {p['mean']:6} p90 {p['p90']:6} bowls {p['bowls']}\") for p in d['players']]; print('XI', d['xi']); print('C', d['captain'], 'VC', d['vice_captain'])"
+          done

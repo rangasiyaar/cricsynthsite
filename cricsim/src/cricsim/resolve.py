@@ -98,6 +98,9 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
                 continue
             ids.append(c["id"])
             click.echo(f"  {team['name']:12} {name:28} → {c['id']} {c['name']:24} ({how}; {c['n']} matches, last {c['last']})")
+        if team.get("bowlers"):      # bowling plan, written as names from the XI
+            by_name = dict(zip(team["players"], ids))
+            team["bowlers"] = [by_name[b] for b in team["bowlers"]]
         team["players"] = ids
     if fx.get("venue_search"):
         vid, vname = find_venue(con, parquet, fx.pop("venue_search"))
