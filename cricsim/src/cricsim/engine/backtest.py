@@ -131,7 +131,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
             res["win"].append((p1, 1.0 if mt["winner"] == t1 else 0.0, mt["format"]))
         actual_order = batting_order(con, mt["match_id"])
         if mt["format"] != "OD":
-            res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers))
+            res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
+                                                          actual_order))
         for inn0, lg in enumerate(part.innings):
             actual = mt["innings"][inn0][2]
             sim = lg.runs
@@ -192,7 +193,21 @@ def _horizon(day, cutoff: date) -> str:
     return "0-5" if months < 6 else "6-11" if months < 12 else "12+"
 
 
-def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool) -> dict:
+def _p_top(pids: list[str], pts: np.ndarray, xi: list[str]) -> dict[str, float]:
+    """Chance each XI player is the XI's top scorer (captain by "who is most often the best")."""
+    cols = [pids.index(p) for p in xi]
+    top = np.bincount(pts[:, cols].argmax(1), minlength=len(cols)) / len(pts)
+    return {p: float(top[i]) for i, p in enumerate(xi)}
+
+
+def _xi_score(pids, pts, team) -> np.ndarray:
+    xi, c, vc = team
+    col = {p: i for i, p in enumerate(pids)}
+    return pts[:, [col[p] for p in xi]].sum(1) + pts[:, col[c]] + 0.5 * pts[:, col[vc]]
+
+
+def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool,
+             actual_order: dict | None = None) -> dict:
     """Pick fantasy XIs from the simulations, score them on the real match (no fielding points either side)."""
     team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
     real = actual_points(con, mt["match_id"])
@@ -204,6 +219,17 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     xi, c, vc = pick_xi(mean, team_of)
     out["mean"] = team_points(xi, c, vc, real)
     out["overlap"] = len(set(xi) & set(pick_xi(real, team_of)[0]))
+    # ceiling: the same single team inside the simulations, v each simulation's own best team
+    # (what a perfect model could reach; only cricket's randomness stands in the way)
+    srt = -np.sort(-pts, axis=1)
+    out["ceil_team"] = float(_xi_score(pids, pts, (xi, c, vc)).mean())
+    out["ceil_best"] = float((srt[:, :11].sum(1) + srt[:, 0] + 0.5 * srt[:, 1]).mean())
+    # where the points go: our XI with hindsight captain / vice-captain
+    rc = sorted(xi, key=lambda p: -real[p])
+    out["oracle_captain"] = team_points(xi, rc[0], rc[1], real)
+    ptop = _p_top(pids, pts, xi)
+    pc = sorted(xi, key=lambda p: -ptop[p])
+    out["ptop_captain"] = team_points(xi, pc[0], pc[1], real)
     xi, c, vc = pick_xi(mean, team_of, captain_score=upside)
     out["upside_captain"] = team_points(xi, c, vc, real)
     xi, c, vc = pick_xi(real, team_of)
@@ -232,6 +258,27 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
         pids2, pts2 = sim_points(sims2)
         xi, c, vc = pick_xi(dict(zip(pids2, pts2.mean(0))), team_of)
         out["bowlers_known"] = team_points(xi, c, vc, real)
+        # toss unknown: half the simulations each way (the backtest otherwise knows who batted first)
+        spec_u = MatchSpec(spec.format, spec.gender, spec.teams, venue_id=spec.venue_id, comp_key=spec.comp_key)
+        pids_u, pts_u = sim_points(simulate(model, spec_u, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()) + 1))
+        out["toss_unknown"] = team_points(*pick_xi(dict(zip(pids_u, pts_u.mean(0))), team_of), real)
+        # full team news: real batting order and who bowls; then also captain by top-scorer chance
+        if actual_order:
+            def order(t):
+                k = {p: v for (_, p), v in actual_order.items() if p in t.players}
+                return sorted(t.players, key=lambda p: (k.get(p, 10 ** 6), t.players.index(p)))
+            spec3 = MatchSpec(spec.format, spec.gender,
+                              tuple(TeamSpec(t.name, order(t), [p for p in t.players if p in used]) for t in spec.teams),
+                              venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first)
+            pids3, pts3 = sim_points(simulate(model, spec3, n=n_sims, seed=zlib.crc32(mt["match_id"].encode())))
+            m3 = dict(zip(pids3, pts3.mean(0)))
+            xi3, c3, vc3 = pick_xi(m3, team_of)
+            out["team_news"] = team_points(xi3, c3, vc3, real)
+            pt3 = _p_top(pids3, pts3, xi3)
+            pc3 = sorted(xi3, key=lambda p: -pt3[p])
+            out["team_news_ptop"] = team_points(xi3, pc3[0], pc3[1], real)
+            rc3 = sorted(xi3, key=lambda p: -real[p])
+            out["team_news_oracle_captain"] = team_points(xi3, rc3[0], rc3[1], real)
     return out
 
 
@@ -333,9 +380,13 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                           "overlap_with_best_xi": round(float(np.mean([r["overlap"] for r in f])), 2),
                           "strategies": {k: {"points": round(float(np.mean([r[k] for r in f])), 1),
                                              "share_of_best": round(float(np.mean([r[k] for r in f]) / best), 3)}
-                                         for k in ("mean", "upside_captain", "bowlers_known", "random",
-                                                   "captains_5", "random_5", "portfolio_3", "portfolio_5")
-                                         if k in f[0]}}
+                                         for k in ("random", "mean", "upside_captain", "ptop_captain",
+                                                   "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
+                                                   "team_news_ptop", "team_news_oracle_captain", "captains_5",
+                                                   "random_5", "portfolio_3", "portfolio_5")
+                                         if all(k in r for r in f)},
+                          "ceiling_perfect_model": round(float(np.mean([r["ceil_team"] for r in f])
+                                                               / np.mean([r["ceil_best"] for r in f])), 3)}
     if res["bowlers"]:
         b = res["bowlers"]
         out["bowler_wickets"] = {"n": len(b), "brier_2plus": round(float(np.mean([(r["p2"] - r["hit2"]) ** 2 for r in b])), 4),
@@ -406,7 +457,8 @@ def write_report(rep: dict, path: Path) -> None:
         L += [f"## Fantasy XI (picked from simulations, scored on the real match; {fz['n']} T20-type matches, "
               f"half-life {rep.get('half_life_years')} y)", "",
               f"Best possible XI averages **{fz['best_possible']}** points · picked XI shares "
-              f"**{fz['overlap_with_best_xi']}** of 11 players with it", "",
+              f"**{fz['overlap_with_best_xi']}** of 11 players with it · ceiling if the model were perfect "
+              f"(single team v each simulation's best): **{100 * fz['ceiling_perfect_model']:.1f}%**", "",
               "| Strategy | Avg points | Share of best |", "|---|---|---|"]
         L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
         L.append("")

@@ -5,7 +5,7 @@ name: Fantasy experiment
 on:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: [".github/workflows/fantasy-experiment.yml", "cricsim/src/cricsim/fantasy.py"]
+    paths: [".github/workflows/fantasy-experiment.yml", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/engine/backtest.py"]
   workflow_dispatch:
 
 permissions:
