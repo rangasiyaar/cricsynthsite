@@ -10,6 +10,7 @@
   "status": "scheduled",
   "published": true,
   "batting_first": 1,
+  "sample": {},
   "teams": [
     {
       "name": "India",

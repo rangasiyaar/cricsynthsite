@@ -227,6 +227,17 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     # where the points go: our XI with hindsight captain / vice-captain
     rc = sorted(xi, key=lambda p: -real[p])
     out["oracle_captain"] = team_points(xi, rc[0], rc[1], real)
+    # "most probable scenario" teams
+    d = np.abs(pts - pts.mean(0)).sum(1)                 # (a) the single most typical simulation
+    out["typical_sim"] = team_points(*pick_xi(dict(zip(pids, pts[int(np.argmin(d))])), team_of), real)
+    win = np.concatenate([p.winner for p in sims.parts])
+    first = np.concatenate([p.innings[0].runs for p in sims.parts])
+    fav = 0 if (win == 0).mean() >= 0.5 else 1
+    band = np.digitize(first, np.percentile(first, [33.3, 66.7]))
+    key = win * 3 + band                                  # (b) most common (winner, first-innings band) scenario
+    common = np.bincount(key, minlength=6).argmax()
+    out["common_scenario"] = team_points(*pick_xi(dict(zip(pids, pts[key == common].mean(0))), team_of), real)
+    out["favourite_wins"] = team_points(*pick_xi(dict(zip(pids, pts[win == fav].mean(0))), team_of), real)  # (c)
     ptop = _p_top(pids, pts, xi)
     pc = sorted(xi, key=lambda p: -ptop[p])
     out["ptop_captain"] = team_points(xi, pc[0], pc[1], real)
@@ -380,7 +391,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                           "overlap_with_best_xi": round(float(np.mean([r["overlap"] for r in f])), 2),
                           "strategies": {k: {"points": round(float(np.mean([r[k] for r in f])), 1),
                                              "share_of_best": round(float(np.mean([r[k] for r in f]) / best), 3)}
-                                         for k in ("random", "mean", "upside_captain", "ptop_captain",
+                                         for k in ("random", "mean", "typical_sim", "common_scenario",
+                                                   "favourite_wins", "upside_captain", "ptop_captain",
                                                    "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
                                                    "random_5", "portfolio_3", "portfolio_5")

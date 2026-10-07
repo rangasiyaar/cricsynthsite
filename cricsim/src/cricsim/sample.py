@@ -162,6 +162,10 @@ def main(model_dir: Path, coverage: Path, top_scorer: str | None, n: int, seed: 
         ir = np.concatenate([r[:, list(dict.fromkeys(
             p for lg in part.innings for p in lg.order)).index(target_pid)] for r, part in zip(runs, sims.parts)])
         dist = dist + np.abs(ir[idx] - np.median(ir[idx]))
+    else:      # most typical match overall: every player's fantasy points closest to their average
+        from cricsim.fantasy import sim_points
+        _, fp = sim_points(sims, roles)
+        dist = np.abs(fp - fp.mean(0)).sum(1)[idx]
     i = int(idx[np.argmin(dist)])
     card = scorecard(model, sims, i, roles)
     pts, name = card.pop("_pts"), card.pop("_name")

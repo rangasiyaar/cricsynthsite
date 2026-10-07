@@ -85,10 +85,15 @@ jobs:
       - name: Sample a simulated match
         run: |
           for f in data/coverage/matches/*.json; do
-            ts=$(python3 -c "import json,sys; print((json.load(open(sys.argv[1])).get('sample') or {}).get('top_scorer',''))" "$f")
-            [ -n "$ts" ] || continue
-            echo "## $(basename "$f"): a simulation where $ts top-scores"
-            uv run python -m cricsim.sample --model data/models/latest --coverage "$f" --top-scorer "$ts"
+            mode=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print('none' if 'sample' not in d else (d['sample'] or {}).get('top_scorer', ''))" "$f")
+            [ "$mode" != "none" ] || continue
+            if [ -n "$mode" ]; then
+              echo "## $(basename "$f"): a simulation where $mode top-scores"
+              uv run python -m cricsim.sample --model data/models/latest --coverage "$f" --top-scorer "$mode"
+            else
+              echo "## $(basename "$f"): the most typical simulation"
+              uv run python -m cricsim.sample --model data/models/latest --coverage "$f"
+            fi
           done
       - name: Fantasy XI
         run: |
