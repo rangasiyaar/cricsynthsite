@@ -61,7 +61,7 @@ class _State:
 
 class Team(BaseModel):
     name: str
-    players: list[str] = Field(min_length=11, max_length=11, description="Cricsheet player ids, batting order")
+    players: list[str] = Field(min_length=11, max_length=11, description="Player ids (from /v1/players), batting order")
     bowlers: list[str] | None = None
 
 
@@ -125,7 +125,7 @@ CATALOG = {
     },
     "scenario_fields": ["boundary_mult", "wicket_mult", "spin_wicket_mult", "pace_wicket_mult", "dew", "extras_mult",
                         "player_form", "exclude_bowlers", "batting_order", "target", "conditions", "start"],
-    "data": "Ball-by-ball data from Cricsheet (cricsheet.org); playing styles from the cricketdata R package / ESPNcricinfo.",
+    "data_credits": "https://cricsynthesis.in/credits/",
 }
 
 

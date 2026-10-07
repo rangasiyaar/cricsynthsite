@@ -2,7 +2,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const GROUPS: { title: string; blurb: string; rows: [string, string][] }[] = [
   { title: "Analytics", blurb: "Ratings and per-ball probabilities straight from the model.", rows: [
-    ["GET /v1/players?q=", "Search players (Cricsheet IDs)"],
+    ["GET /v1/players?q=", "Search players and get their IDs"],
     ["GET /v1/players/{id}", "Cross-league, cross-format rating and playing style"],
     ["POST /v1/players/{id}/projection", "Runs and wickets distribution: typical match or against an XI"],
     ["GET /v1/matchups?batter=&bowler=", "Per-ball outcome odds for a batter against a bowler, compared with an average pairing"],
@@ -32,7 +32,7 @@ const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
   -H "X-API-Key: cs_live_…" -H "Content-Type: application/json" \\
   -d '{
     "format": "T20",
-    "teams": [{"name": "Team A", "players": ["<11 Cricsheet ids, batting order>"]},
+    "teams": [{"name": "Team A", "players": ["<11 player ids, batting order>"]},
               {"name": "Team B", "players": ["…"]}],
     "venue_id": "wankhede-stadium",
     "scenario": {"dew": 0.7, "boundary_mult": 1.1},
@@ -42,10 +42,10 @@ const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
 
 export default function Developers() {
   return (
-    <div style={{ paddingTop: 36 }}>
-      <div className="eyebrow">API</div>
-      <h1>One catalog: analytics, simulation, graphics</h1>
-      <p className="lead" style={{ maxWidth: 760 }}>
+    <div className="page-head">
+      <p className="cs-eyebrow">API</p>
+      <h1><span>One catalog.</span><span>Three kinds of answer.</span></h1>
+      <p className="cs-lede">
         The engine behind the match centre, for broadcasters, fantasy platforms, media and analysts. We sell projections
         and analytics built on simulation, not live scores or raw data.
       </p>
@@ -63,21 +63,21 @@ export default function Developers() {
           </div>
         ))}
       </div>
-      <h2 style={{ marginTop: 40 }}>Example</h2>
-      <pre className="card mono" style={{ overflowX: "auto", fontSize: 13, lineHeight: 1.55, margin: 0 }}>{EXAMPLE}</pre>
-      <h2 style={{ marginTop: 40 }}>Plans</h2>
+      <h2 style={{ marginTop: 56 }}>Example</h2>
+      <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Request</span><span>curl</span></div>
+        <pre className="req">{EXAMPLE}</pre></div></div>
+      <h2 id="plans" style={{ marginTop: 56, scrollMarginTop: 88 }}>Plans</h2>
       <div className="grid g3">
         {PLANS.map((p) => (
           <div key={p.name} className="card">
-            <div className="eyebrow">{p.name}</div>
+            <p className="cs-eyebrow">{p.name}</p>
             <div className="stat" style={{ fontSize: 30 }}>{p.price}</div>
             <ul className="small" style={{ paddingLeft: 18, color: "var(--ink-2)" }}>{p.lines.map((l) => <li key={l}>{l}</li>)}</ul>
           </div>
         ))}
       </div>
-      <p className="small muted" style={{ marginTop: 20 }}>
-        Interactive reference: <a href={`${API}/docs`}>{API}/docs</a>. Data: Cricsheet ball-by-ball (attribution required in
-        anything you publish), playing styles from the cricketdata R package.
+      <p className="small muted" style={{ marginTop: 20, paddingBottom: 80 }}>
+        Interactive reference: <a href={`${API}/docs`}>{API}/docs</a>.
       </p>
     </div>
   );

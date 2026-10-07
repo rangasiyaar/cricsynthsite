@@ -21,8 +21,8 @@ def _frame(t: dict, title: str, subtitle: str, body: str, watermark: bool) -> st
             f"<text x='40' y='64' fill='{t['text']}' font-size='38' font-weight='700' {FONT}>{escape(title)}</text>"
             f"<text x='40' y='100' fill='{t['muted']}' font-size='22' {FONT}>{escape(subtitle)}</text>"
             f"{body}"
-            f"<text x='40' y='{H - 28}' fill='{t['muted']}' font-size='18' {FONT}>CricSynthesis · simulated from "
-            f"Cricsheet ball-by-ball data</text>{wm}</svg>")
+            f"<text x='40' y='{H - 28}' fill='{t['muted']}' font-size='18' {FONT}>CricSynthesis · ball-by-ball simulation"
+            f"</text>{wm}</svg>")
 
 
 def _sub(doc: dict) -> str:

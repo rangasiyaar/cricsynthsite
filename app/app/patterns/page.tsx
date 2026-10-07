@@ -27,10 +27,10 @@ export default function Patterns() {
   }, [rep, filter]);
 
   return (
-    <div style={{ paddingTop: 36 }}>
-      <div className="eyebrow">Pattern Lab</div>
-      <h1>Cricket folklore, tested on every ball</h1>
-      <p className="lead" style={{ maxWidth: 760 }}>
+    <div className="page-head" style={{ paddingBottom: 80 }}>
+      <p className="cs-eyebrow">Pattern Lab</p>
+      <h1><span>Cricket folklore.</span><span>Tested on every ball.</span></h1>
+      <p className="cs-lede">
         Is a batter really in danger straight after hitting a six? Do wickets come in pairs? Each belief is tested against
         comparable balls in the same match situation, found in matches before {rep?.summary.split_year ?? 2021}, then
         checked again on everything since. Only effects that survive both go into our simulations.
@@ -40,16 +40,16 @@ export default function Patterns() {
         <>
           <p className="small muted">{rep.summary.balls.toLocaleString()} limited-overs balls. Effect = how much likelier the outcome is
             on these balls than on comparable ones (1.00× = no difference).</p>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "12px 0 20px" }}>
+          <div className="filters" style={{ margin: "16px 0 32px" }}>
             {["all", "real", "reversed", "myth", "weak", "inconclusive"].map((v) => (
-              <button key={v} className={`btn ${filter === v ? "" : "ghost"}`} style={{ padding: "6px 12px" }} onClick={() => setFilter(v)}>
+              <button key={v} aria-pressed={filter === v} onClick={() => setFilter(v)}>
                 {v === "all" ? "All" : VERDICT[v][0]}
               </button>
             ))}
           </div>
           {groups.map(([cat, rows]) => (
             <section key={cat} style={{ marginBottom: 28 }}>
-              <h3 style={{ textTransform: "capitalize" }}>{cat}</h3>
+              <p className="cs-eyebrow" style={{ marginTop: 12 }}>{cat}</p>
               <div className="grid g2">
                 {rows.map((p) => {
                   const [label, cls] = VERDICT[p.verdict] ?? [p.verdict, ""];
@@ -74,11 +74,11 @@ export default function Patterns() {
               </div>
             </section>
           ))}
-          <h2 style={{ marginTop: 36 }}>How wicket risk moves</h2>
+          <h2 style={{ marginTop: 56 }}>How wicket risk moves</h2>
           <p className="small muted">Wicket rate relative to what the match situation alone predicts (1.0 = normal).</p>
           <div className="grid g3">
             {Object.entries(rep.curves).map(([k, pts]) => (
-              <div key={k} className="card"><div className="eyebrow">{CURVE_TITLES[k] ?? k}</div><Curve points={pts} label={CURVE_TITLES[k] ?? k} /></div>
+              <div key={k} className="card"><div className="cs-k" style={{ marginBottom: 8 }}>{CURVE_TITLES[k] ?? k}</div><Curve points={pts} label={CURVE_TITLES[k] ?? k} /></div>
             ))}
           </div>
         </>

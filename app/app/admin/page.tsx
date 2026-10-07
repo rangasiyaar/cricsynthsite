@@ -82,8 +82,8 @@ export default function Admin() {
         <label className="small">Gender<select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })}>
           <option value="male">Men</option><option value="female">Women</option></select></label>
         {field("start_time", "Start time")}
-        {field("competition", "Competition (display)")}{field("comp_key", "Competition ID (Cricsheet slug, optional)")}
-        {field("venue", "Venue (display)")}{field("venue_id", "Venue ID (Cricsheet slug, optional)")}
+        {field("competition", "Competition (display)")}{field("comp_key", "Competition ID (optional)")}
+        {field("venue", "Venue (display)")}{field("venue_id", "Venue ID (optional)")}
       </div>
       <div className="grid g2" style={{ marginTop: 16 }}>
         {teams.map((t, i) => (
@@ -135,7 +135,7 @@ function TeamEditor({ team, onChange, search }: { team: Team; onChange: (t: Team
           </button>
         ))}
         <button className="btn ghost" style={{ marginTop: 8, padding: "4px 10px" }} onClick={() => {
-          const id = prompt("Cricsheet ID, or a new ID for a debutant with no history:"); if (id) onChange({ ...team, players: [...team.players, { id, name: id }] });
+          const id = prompt("Player ID, or a new ID for a debutant with no history:"); if (id) onChange({ ...team, players: [...team.players, { id, name: id }] });
         }}>Add by ID</button>
       </>}
     </div>

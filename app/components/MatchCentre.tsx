@@ -15,23 +15,27 @@ export default function MatchCentre({ doc }: { doc: MatchDoc }) {
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
   return (
-    <div style={{ paddingTop: 28 }}>
-      <div className="eyebrow">{[match.competition, FORMAT[match.format] ?? match.format, match.venue, match.date].filter(Boolean).join(" · ")}</div>
-      <h1 style={{ marginBottom: 18 }}>{a} <span className="muted">v</span> {b}</h1>
+    <div className="page-head" style={{ paddingBottom: 80 }}>
+      <p className="cs-eyebrow">{[match.competition, FORMAT[match.format] ?? match.format, match.venue, match.date].filter(Boolean).join(" · ")}</p>
+      <h1 style={{ marginBottom: 32 }}><span>{a}</span><span>v {b}</span></h1>
       <div className="card">
-        <div className="wins" style={{ fontSize: 34, marginBottom: 8 }}>
+        <div className="plate-bar">
+          <span>Win chance</span>
+          <span className="cs-mono" style={{ letterSpacing: 0, textTransform: "none", fontWeight: 400, color: "var(--cs-ink-3)" }}>{s.meta.simulations.toLocaleString()} simulations</span>
+          {s.result.tie > 0.002 && <span className="ok">tie {pct(s.result.tie, 1)}</span>}
+        </div>
+        <div className="wins" style={{ fontSize: 56, lineHeight: 1, marginBottom: 14 }}>
           <span style={{ color: COLORS[0] }}>{pct(pa)}</span>
-          <span className="muted small hide-sm" style={{ alignSelf: "center" }}>win chance · {s.meta.simulations.toLocaleString()} simulations</span>
           <span style={{ color: COLORS[1] }}>{pct(pb)}</span>
         </div>
         <WinBar a={a} b={b} pa={pa} pb={pb} big />
-        <div className="wins small" style={{ marginTop: 8 }}><span>{a}</span>{s.result.tie > 0.002 && <span className="muted">tie {pct(s.result.tie, 1)}</span>}<span>{b}</span></div>
+        <div className="wins cs-k" style={{ marginTop: 10, fontFamily: "var(--cs-body)" }}><span>{a}</span><span>{b}</span></div>
       </div>
 
       <div className="tabs" role="tablist">
         {TABS.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            {t}{t === "Scenario Lab" && <span className="tag pro" style={{ marginLeft: 6 }}>Pro</span>}
+            {t}{t === "Scenario Lab" && <span className="tag pro">Pro</span>}
           </button>
         ))}
       </div>
@@ -43,7 +47,7 @@ export default function MatchCentre({ doc }: { doc: MatchDoc }) {
       {tab === "Matchups" && <Matchups doc={doc} />}
       {tab === "Scenario Lab" && <ScenarioLab doc={doc} />}
 
-      <p className="small muted" style={{ marginTop: 32 }}>
+      <p className="small muted" style={{ marginTop: 40 }}>
         Simulated {new Date(doc.generated_at).toLocaleString()} · probabilities, not predictions: a 70% favourite still loses
         three times in ten.
       </p>
@@ -62,14 +66,14 @@ function Overview({ doc }: { doc: MatchDoc }) {
       <div className="grid">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
-            <div className="eyebrow">{t.name} · projected score</div>
+            <div className="cs-k" style={{ marginBottom: 6 }}>{t.name} · projected score</div>
             <div className="stat" style={{ color: COLORS[k] }}>{num(t.batting.score.q["50"])}</div>
             <div className="small muted">80% of simulations between {range(t.batting.score.q)} · {num(t.batting.wickets.mean, 1)} wickets on average</div>
           </div>
         ))}
         {s.result.by_toss.length === 2 && (
           <div className="card">
-            <div className="eyebrow">Toss effect</div>
+            <div className="cs-k" style={{ marginBottom: 6 }}>Toss effect</div>
             <table><tbody>
               {s.result.by_toss.map((bt) => (
                 <tr key={bt.batting_first}><td>If {bt.batting_first} bat first</td>
@@ -79,7 +83,7 @@ function Overview({ doc }: { doc: MatchDoc }) {
           </div>
         )}
         <div className="card">
-          <div className="eyebrow">Winning margin</div>
+          <div className="cs-k" style={{ marginBottom: 6 }}>Winning margin</div>
           <div className="small">Batting first wins by a median of <b>{num(s.result.margin_runs.q["50"])} runs</b>; chasing wins by a median of <b>{num(s.result.margin_wickets.q["50"])} wickets</b>.</div>
         </div>
       </div>

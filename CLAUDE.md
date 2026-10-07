@@ -45,10 +45,11 @@ cricsynthsite/
 - Formats: `T20`, `T10`, `HUNDRED` (5-ball overs), `OD` (50-over), `MULTIDAY`. Limited-overs are simulated first.
 - Wides don't count as balls faced; no-balls do. `retired hurt` / `retired not out` are not dismissals.
 - Teams/venues get stable IDs via `cricdata/src/cricdata/aliases/*.json` (franchise renames, venue spellings).
-- Cricsheet's data licence requires attribution — show it on the site and in API docs.
+- Cricsheet's data licence (ODC-BY) requires attribution: it lives only on the app's `/credits/` page (footer "Data credits")
+  and the API catalog's `data_credits` link. Don't name data sources anywhere else on the site, cards or API.
 - Batting hand / bowling style (not in Cricsheet) come from `player_meta` in the cricketdata R package
   (GPL-3, compiled from ESPNcricinfo, keyed by Cricsheet ID, snapshot Mar 2025): `cricdata attributes`
-  → `attributes/attributes.parquet`. Newer players come from an overrides CSV (admin). Credit it too.
+  → `attributes/attributes.parquet`. Newer players come from an overrides CSV (admin). Credited on `/credits/` only.
 
 ## Commands
 
@@ -78,6 +79,11 @@ cd app && npm ci && npm run dev             # npm test runs the browser-engine t
 One-time: follow `infra/README.md` (create project, Blaze, run `infra/bootstrap.sh`).
 Deploys run from GitHub Actions with Workload Identity Federation (no keys); they
 only run once the repo variable `GCP_ENABLED=true` is set.
+
+## App design
+
+- `app/app/site.css` is a verbatim copy of the website's `css/theme.css`; reuse its `cs-*` classes (hero, frames,
+  metrics, steps, API block, nav/footer markup from `js/layout.js`). App-only pieces in `globals.css` use the same tokens.
 
 ## Engine rules
 
