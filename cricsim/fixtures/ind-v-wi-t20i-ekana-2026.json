@@ -1,0 +1,21 @@
+{
+  "id": "ind-v-wi-t20i-ekana-2026-10-07",
+  "title": "India v West Indies",
+  "date": "2026-10-07",
+  "format": "T20",
+  "gender": "male",
+  "competition": "T20I, Ekana Stadium, Lucknow",
+  "comp_key": "intl-international-T20",
+  "venue_search": "ekana",
+  "status": "scheduled",
+  "published": true,
+  "batting_first": 1,
+  "teams": [
+    {"name": "India", "short": "IND", "players": [
+      "Abhishek Sharma", "Sanju Samson", "Ishan Kishan", "Shreyas Iyer", "Tilak Varma", "Shivam Dube",
+      "Naman Dhir", "Axar Patel", "Arshdeep Singh", "Kuldeep Yadav", "Mayank Yadav"]},
+    {"name": "West Indies", "short": "WI", "players": [
+      "Shai Hope", "Kamil Pooran", "Shimron Hetmyer", "Rovman Powell", "Sherfane Rutherford", "Romario Shepherd",
+      "Matthew Forde", "Roston Chase", "Akeal Hosein", "Shamar Springer", "Shamar Joseph"]}
+  ]
+}

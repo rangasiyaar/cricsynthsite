@@ -5,7 +5,8 @@
 The fixture is a coverage document whose team "players" are names in batting order, plus an optional
 "venue_search" (text matched against known venue names). Each name is matched against players who have
 played for that team (same gender), by full name, registry aliases, then surname + initials; the most
-recent appearance wins ties. A name that matches nobody is kept as a new player (simulated as a
+recent appearance wins ties. A name not found in the team falls back to every player of that gender
+(full name or surname + initial only), so league records count for players not yet capped. A name that matches nobody is kept as a new player (simulated as a
 league-average newcomer) and reported.
 """
 from __future__ import annotations
@@ -30,7 +31,8 @@ def _keys(name: str) -> tuple[str, str, str]:
     return " ".join(w), (w[-1] if w else ""), (w[0][0] if w else "")
 
 
-def candidates(con, parquet: Path, team: str, gender: str) -> list[dict]:
+def candidates(con, parquet: Path, team: str | None, gender: str) -> list[dict]:
+    """Players who have played for `team` (or, with team=None, for anyone) in matches of this gender."""
     mp = (parquet / "match_players" / "*.parquet").as_posix()
     m = (parquet / "matches" / "*.parquet").as_posix()
     pl = (parquet / "players" / "*.parquet").as_posix()
@@ -39,8 +41,8 @@ def candidates(con, parquet: Path, team: str, gender: str) -> list[dict]:
                any_value(p.name), any_value(p.unique_name), any_value(p.aliases)
         FROM read_parquet('{mp}') x JOIN read_parquet('{m}') m USING (match_id)
         LEFT JOIN read_parquet('{pl}') p ON p.player_id = x.player_id
-        WHERE x.team = ? AND m.gender = ? AND x.player_id IS NOT NULL
-        GROUP BY x.player_id""", [team, gender]).fetchall()
+        WHERE (x.team = ? OR ? IS NULL) AND m.gender = ? AND x.player_id IS NOT NULL
+        GROUP BY x.player_id""", [team, team, gender]).fetchall()
     out = []
     for pid, scored, last, n, reg, uniq, aliases in rows:
         names = {x for x in [scored, reg, uniq, *(aliases or [])] if x}
@@ -48,7 +50,7 @@ def candidates(con, parquet: Path, team: str, gender: str) -> list[dict]:
     return out
 
 
-def match_name(name: str, cands: list[dict]) -> tuple[dict | None, str]:
+def match_name(name: str, cands: list[dict], surname_only: bool = True) -> tuple[dict | None, str]:
     full, sur, ini = _keys(name)
     exact = [c for c in cands if any(_keys(x)[0] == full for x in c["names"])]
     if exact:
@@ -60,7 +62,7 @@ def match_name(name: str, cands: list[dict]) -> tuple[dict | None, str]:
     if loose:
         return max(loose, key=lambda c: (c["last"], c["n"])), "surname+initial"
     sur_only = [c for c in cands if any(_keys(x)[1] == sur for x in c["names"])]
-    if len(sur_only) == 1:
+    if surname_only and len(sur_only) == 1:
         return sur_only[0], "surname"
     return None, "unresolved"
 
@@ -81,11 +83,16 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
     fx = json.loads(fixture.read_text())
     con = duckdb.connect()
     missing = []
+    everyone = None
     for team in fx["teams"]:
         cands = candidates(con, parquet, team["name"], fx["gender"])
         ids = []
         for name in team["players"]:
             c, how = match_name(name, cands)
+            if c is None:      # not capped for this team yet: their league / domestic record still counts
+                everyone = everyone or candidates(con, parquet, None, fx["gender"])
+                c, how = match_name(name, everyone, surname_only=False)
+                how = f"{how}, other teams"
             if c is None:
                 missing.append(f"{team['name']}: {name}")
                 click.echo(f"  {team['name']:12} {name:28} → no record, simulated as a newcomer")
