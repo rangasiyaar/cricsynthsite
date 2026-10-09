@@ -11,7 +11,7 @@
   "venue_search": "holkar",
   "status": "scheduled",
   "published": true,
-  "note": "Likely XIs carried over from the previous T20I (Lucknow); update when the playing XIs are announced.",
+  "note": "Squads announced; likely XIs are the sides from the previous T20I (all in the squads). Update when the playing XIs are announced.",
   "teams": [
     {
       "name": "India",
@@ -41,7 +41,25 @@
         "BOWL",
         "BOWL",
         "BOWL"
-      ]
+      ],
+      "squad": [
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Abhishek Sharma",
+        "Arshdeep Singh",
+        "Shivam Dube",
+        "Ishan Kishan",
+        "Kuldeep Yadav",
+        "Naman Dhir",
+        "Nitish Kumar Reddy",
+        "Axar Patel",
+        "Prince Yadav",
+        "Ravi Bishnoi",
+        "Sanju Samson",
+        "Vaibhav Sooryavanshi",
+        "Mayank Yadav"
+      ],
+      "captain": "Shreyas Iyer"
     },
     {
       "name": "West Indies",
@@ -71,7 +89,26 @@
         "BOWL",
         "AR",
         "BOWL"
-      ]
+      ],
+      "squad": [
+        "Shai Hope",
+        "Jewel Andrew",
+        "Roston Chase",
+        "Matthew Forde",
+        "Shimron Hetmyer",
+        "Akeal Hosein",
+        "Amir Jangoo",
+        "Shamar Joseph",
+        "Gudakesh Motie",
+        "Keemo Paul",
+        "Kamil Pooran",
+        "Rovman Powell",
+        "Sherfane Rutherford",
+        "Quentin Sampson",
+        "Romario Shepherd",
+        "Shamar Springer"
+      ],
+      "captain": "Shai Hope"
     }
   ]
 }
