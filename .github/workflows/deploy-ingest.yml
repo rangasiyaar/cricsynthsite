@@ -22,7 +22,7 @@ jobs:
 
   deploy:
     needs: test
-    if: ${{ vars.GCP_ENABLED == 'true' }}     # set this repo variable once infra/bootstrap.sh has run
+    if: ${{ vars.GCP_BILLING == 'true' }}     # needs billing: set once infra/bootstrap.sh has run
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -4,6 +4,8 @@ name: Publish site
 # build the website/app with those forecasts and deploy it to Firebase Hosting. The heavy work runs
 # here on GitHub's runners, so Google only serves static files (Hosting free tier).
 # Without Google set up (repo variable GCP_ENABLED != true) the built site is kept as an artifact.
+# GCP_BILLING=true (after infra/bootstrap.sh) also syncs the model and forecasts to Cloud Storage
+# for the API; the website itself needs no billing (Firebase Spark plan).
 on:
   schedule:
     - cron: "30 21 * * *"          # 03:00 IST
@@ -14,12 +16,14 @@ on:
 
 permissions:
   contents: read
+  actions: read                    # latest Pattern Lab report artifact
   id-token: write                  # keyless auth to Google Cloud (Workload Identity Federation)
 
 concurrency: { group: publish-site, cancel-in-progress: true }
 
 env:
   GCP: ${{ vars.GCP_ENABLED == 'true' }}
+  BILLING: ${{ vars.GCP_BILLING == 'true' }}
   PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
@@ -75,15 +79,23 @@ jobs:
           service_account: ${{ secrets.GCP_DEPLOYER_SA }}
       - uses: google-github-actions/setup-gcloud@v2
         if: env.GCP == 'true'
+      - name: Pattern Lab report (latest weekly run) for the patterns page
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow pattern-lab.yml --status success -L 1 --json databaseId -q '.[0].databaseId')
+          if [ -n "$id" ] && gh run download "$id" -R "$GITHUB_REPOSITORY" -n pattern-lab -D data/pattern-lab; then
+            cp data/pattern-lab/patterns/report.json data/publish/patterns.json
+          else
+            echo "no Pattern Lab report yet"
+          fi
       - name: Sync model + forecasts to Cloud Storage (read by the API)
-        if: env.GCP == 'true'
+        if: env.BILLING == 'true'
         run: |
           B="gs://${PROJECT}-models"
           gcloud storage rsync -r --delete-unmatched-destination-objects data/models/latest "$B/models/latest"
           gcloud storage rsync -r --delete-unmatched-destination-objects data/publish "$B/publish"
           gcloud storage rsync -r --delete-unmatched-destination-objects data/coverage "$B/coverage"
-          # Pattern Lab report (uploaded by the Pattern Lab workflow) for the site's patterns page
-          gcloud storage cp "$B/patterns/report.json" data/publish/patterns.json || echo "no Pattern Lab report yet"
+          [ -f data/publish/patterns.json ] && gcloud storage cp data/publish/patterns.json "$B/patterns/report.json" || true
 
       - name: Build site
         run: |
@@ -94,9 +106,9 @@ jobs:
         run: |
           cat > .firebaserc <<EOF
           {"projects": {"default": "${PROJECT}"},
-           "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"], "api": ["${PROJECT}-api"]}}}}
+           "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"]}}}}
           EOF
-          npx --yes firebase-tools@13.29.1 deploy --only hosting:app,firestore --project "$PROJECT" --non-interactive
+          npx --yes firebase-tools@13.29.1 deploy --only hosting:app --project "$PROJECT" --non-interactive
       - uses: actions/upload-artifact@v4
         if: env.GCP != 'true'
         with: { name: site, path: app/out, retention-days: 7 }

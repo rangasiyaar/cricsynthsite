@@ -25,7 +25,7 @@ jobs:
 
   deploy:
     needs: test
-    if: ${{ vars.GCP_ENABLED == 'true' }}
+    if: ${{ vars.GCP_BILLING == 'true' }}
     runs-on: ubuntu-latest
     env:
       PROJECT: ${{ secrets.GCP_PROJECT_ID }}

@@ -5,6 +5,19 @@ linked (Cloud Run, Storage and BigQuery require it), but the design keeps usage
 inside the free tiers — see [COSTS.md](COSTS.md) — and a kill-switch turns
 billing off if spend ever reaches the budget.
 
+## Free plan first (no billing)
+
+The website needs no billing: Firebase Hosting runs on the free Spark plan and the nightly
+data/fit/simulate work runs on GitHub Actions. Create the Firebase project, then run
+
+```bash
+./infra/bootstrap-free.sh <PROJECT_ID> rangasiyaar/cricsynthsite
+```
+
+add the three secrets it prints and the variable `GCP_ENABLED=true` to the GitHub repo, and run
+**Publish site**. The API, buckets, BigQuery and the budget kill-switch need billing: when you
+link a billing account, follow the steps below and set `GCP_BILLING=true` as well.
+
 ## Your one-time steps (≈ 20 minutes)
 
 1. **Create the project.** <https://console.firebase.google.com> → *Add project* →
