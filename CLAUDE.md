@@ -29,7 +29,7 @@ cricsynthsite/
 | Concern | Service | Notes |
 |---|---|---|
 | Website + fan app | Firebase Hosting (static Next.js export) at cricsynthesis.in | Forecasts are static JSON built nightly (`publish-site.yml`); Firestore for accounts/Pro later |
-| Auth | Firebase Auth | Google + email; no SMS (billed) |
+| Auth | Firebase Auth (`app/lib/firebase.ts`) | Google + email; no SMS (billed). Pro = any signed-in account during the beta |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
 | API + admin | Cloud Run service `cricapi` | Served through the `api` Hosting site (Cloud Run has only 1 GB free egress) |
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
@@ -69,6 +69,7 @@ uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/lat
 uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff 2025-01-01
 uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish
 uv run cricapi                              # API on :8080 (CRICAPI_* env vars, see cricapi/main.py)
+uv run python -m cricapi.reference > app/data-static/api-reference.json   # after API changes (/docs page; tested)
 
 # app (reads data from public/data = a copy of data/publish)
 cd app && npm ci && npm run dev             # npm test runs the browser-engine tests

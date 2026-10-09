@@ -1,0 +1,442 @@
+{
+ "title": "CricSynthesis API",
+ "version": "1",
+ "endpoints": [
+  {
+   "method": "GET",
+   "path": "/v1",
+   "summary": "Catalog",
+   "description": "",
+   "params": [],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/players",
+   "summary": "Players",
+   "description": "",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/players/{pid}",
+   "summary": "Player",
+   "description": "",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "POST",
+   "path": "/v1/players/{pid}/projection",
+   "summary": "Player Projection",
+   "description": "",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "body": [
+    {
+     "name": "format",
+     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "required": false,
+     "description": "",
+     "default": "T20"
+    },
+    {
+     "name": "gender",
+     "type": "\"male\" | \"female\"",
+     "required": false,
+     "description": "",
+     "default": "male"
+    },
+    {
+     "name": "position",
+     "type": "integer",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "opposition",
+     "type": "string[]",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 4000
+    }
+   ]
+  },
+  {
+   "method": "GET",
+   "path": "/v1/matchups",
+   "summary": "Matchups",
+   "description": "",
+   "params": [
+    {
+     "name": "batter",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "bowler",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "\"male\" | \"female\"",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "\"powerplay\" | \"middle\" | \"death\"",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/patterns",
+   "summary": "Patterns",
+   "description": "",
+   "params": [],
+   "body": null
+  },
+  {
+   "method": "POST",
+   "path": "/v1/simulate",
+   "summary": "Simulate Match",
+   "description": "",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "required": false,
+     "description": "",
+     "default": "T20"
+    },
+    {
+     "name": "gender",
+     "type": "\"male\" | \"female\"",
+     "required": false,
+     "description": "",
+     "default": "male"
+    },
+    {
+     "name": "teams",
+     "type": "Team[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": true,
+       "description": ""
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": true,
+       "description": "Player ids (from /v1/players), batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "batting_first",
+     "type": "integer",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "attributes",
+     "type": "object",
+     "required": false,
+     "description": "",
+     "default": {}
+    },
+    {
+     "name": "scenario",
+     "type": "object",
+     "required": false,
+     "description": "Pitch, dew, form, start state \u2026 see /v1 catalog"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 10000
+    },
+    {
+     "name": "conditions",
+     "type": "Condition[]",
+     "required": false,
+     "description": "",
+     "default": [],
+     "fields": [
+      {
+       "name": "type",
+       "type": "\"team_score\" | \"player_runs\" | \"player_wickets\" | \"phase_wickets\" | \"batting_first\"",
+       "required": true,
+       "description": ""
+      },
+      {
+       "name": "team",
+       "type": "integer",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "player",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "phase",
+       "type": "\"Powerplay\" | \"Middle\" | \"Death\"",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "at_least",
+       "type": "integer",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "at_most",
+       "type": "integer",
+       "required": false,
+       "description": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "method": "GET",
+   "path": "/v1/matches",
+   "summary": "Matches",
+   "description": "",
+   "params": [],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/matches/{match_id}",
+   "summary": "Match",
+   "description": "",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/matches/{match_id}/pack",
+   "summary": "Match Pack",
+   "description": "",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/{card}.svg",
+   "summary": "Card",
+   "description": "",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "card",
+     "in": "path",
+     "type": "\"win\" | \"scores\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "\"dark\" | \"light\"",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/wickets/{team}.svg",
+   "summary": "Wickets",
+   "description": "",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "team",
+     "in": "path",
+     "type": "integer",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "\"dark\" | \"light\"",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/players/{pid}.svg",
+   "summary": "Player Card",
+   "description": "",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "\"dark\" | \"light\"",
+     "required": false,
+     "description": ""
+    }
+   ],
+   "body": null
+  }
+ ]
+}

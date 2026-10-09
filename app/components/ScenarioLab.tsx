@@ -6,18 +6,10 @@ import type { Pack, Scenario } from "@/lib/engine/sim";
 import type { LabSummary } from "@/lib/engine/summary";
 import { num, pct, signed } from "@/lib/format";
 import type { MatchDoc } from "@/lib/types";
+import { usePro } from "@/lib/firebase";
 
 const N = 5000;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
-
-// Pro is enforced with Firebase Auth once accounts go live; until then a local "preview" switch unlocks it.
-function usePro(): [boolean, () => void] {
-  const [pro, setPro] = useState(false);
-  useEffect(() => {
-    try { setPro(process.env.NEXT_PUBLIC_PRO_PREVIEW === "1" || localStorage.getItem("cs-pro-preview") === "1"); } catch {}
-  }, []);
-  return [pro, () => { try { localStorage.setItem("cs-pro-preview", "1"); } catch {} setPro(true); }];
-}
 
 type Levers = {
   battingFirst: "" | "0" | "1"; boundary: number; wickets: number; spin: number; pace: number; dew: number;
@@ -46,7 +38,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const [res, setRes] = useState<LabSummary | null>(null);
   const [busy, setBusy] = useState(false);
   const [levers, setLevers] = useState<Levers>(DEFAULT);
-  const [pro, unlock] = usePro();
+  const pro = usePro() === true;
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
   const pending = useRef(new Map<number, (s: LabSummary) => void>());
@@ -104,7 +96,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
           </select>
         </div>
         <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
-        <Locked pro={pro} unlock={unlock}>
+        <Locked pro={pro}>
           <Slider label="Pitch: wickets" lo="Batting paradise" hi="Green top" value={levers.wickets} min={0.75} max={1.35} onChange={(v) => set("wickets", v)} />
           <Slider label="Help for spinners" lo="None" hi="Raging turner" value={levers.spin} min={0.8} max={1.6} onChange={(v) => set("spin", v)} />
           <Slider label="Help for seamers" lo="None" hi="Swing and seam" value={levers.pace} min={0.8} max={1.6} onChange={(v) => set("pace", v)} />
@@ -210,13 +202,16 @@ function Situation({ levers, set, teams, pack }: { levers: Levers; set: <K exten
   );
 }
 
-function Locked({ pro, unlock, children }: { pro: boolean; unlock: () => void; children: React.ReactNode }) {
+function Locked({ pro, children }: { pro: boolean; children: React.ReactNode }) {
   if (pro) return <>{children}</>;
   return (
     <div className="notice">
       <b>More levers with Pro</b>: pitch wickets, spin and seam help, dew, player form, ruling bowlers out, and jumping to any
       match situation.
-      <div style={{ marginTop: 10 }}><button className="btn" onClick={unlock}>Try the Pro preview</button></div>
+      <div style={{ marginTop: 10 }}>
+        <a className="btn" href={`/login/?next=${encodeURIComponent(typeof window === "undefined" ? "/" : window.location.pathname + window.location.search)}`}>Sign in free to unlock</a>
+        <span className="small muted" style={{ marginLeft: 12 }}>Pro is free during the launch beta.</span>
+      </div>
     </div>
   );
 }

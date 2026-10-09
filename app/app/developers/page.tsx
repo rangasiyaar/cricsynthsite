@@ -1,3 +1,6 @@
+import Link from "next/link";
+import RequestAccess from "@/components/RequestAccess";
+
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const GROUPS: { title: string; blurb: string; rows: [string, string][] }[] = [
@@ -76,9 +79,11 @@ export default function Developers() {
           </div>
         ))}
       </div>
-      <p className="small muted" style={{ marginTop: 20, paddingBottom: 80 }}>
-        Interactive reference: <a href={`${API}/docs`}>{API}/docs</a>.
+      <p className="small muted" style={{ marginTop: 20 }}>
+        Every endpoint and field: <Link href="/docs/">API reference</Link>. Try simulations now in the <Link href="/playground/">playground</Link>.
       </p>
+      <RequestAccess />
+      <div style={{ paddingBottom: 40 }} />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useUser } from "@/lib/firebase";
 
 export function Logo() {
   return (
@@ -35,7 +36,16 @@ function ThemeToggle() {
   );
 }
 
-const LINKS: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"]];
+const LINKS: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
+                                   ["/docs/", "Docs"], ["/playground/", "Playground"]];
+
+function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
+  const user = useUser();
+  if (user === undefined) return <span className={className} style={{ visibility: "hidden" }}>Sign in</span>;
+  return user
+    ? <Link href="/account/" className={className} onClick={onClick}>Account</Link>
+    : <Link href="/login/" className={className} onClick={onClick}>Sign in</Link>;
+}
 
 export function Nav() {
   const path = usePathname() || "/";
@@ -54,10 +64,11 @@ export function Nav() {
         <div className="nav-logo"><Brand /></div>
         <div className="nav-links">
           {LINKS.map(([h, l]) => <Link key={h} href={h} className={cls(h)}>{l}</Link>)}
+          <AccountLink className={`${cls("/login/")} nav-signin`} />
           <ThemeToggle />
         </div>
         <div className="mobile-nav">
-          <Link href="/patterns/" className="mobile-nav-link">Pattern Lab</Link>
+          <AccountLink className="mobile-nav-link" />
           <ThemeToggle />
           <button type="button" className="cs-burger" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="csDrawer" onClick={() => setOpen(!open)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"><path className="b1" d="M4 7h16" /><path className="b2" d="M4 12h16" /><path className="b3" d="M4 17h16" /></svg>
@@ -66,12 +77,11 @@ export function Nav() {
       </div>
       <div className="cs-drawer" id="csDrawer" hidden={!open}>
         {LINKS.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}</Link>)}
+        <AccountLink className="" onClick={() => setOpen(false)} />
       </div>
     </nav>
   );
 }
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "";
 
 export function Footer() {
   return (
@@ -91,14 +101,17 @@ export function Footer() {
             <div className="footer-column">
               <h4 className="footer-heading">Developers</h4>
               <Link href="/developers/" className="footer-link">API</Link>
+              <Link href="/docs/" className="footer-link">Docs</Link>
+              <Link href="/playground/" className="footer-link">Playground</Link>
+              <Link href="/mcp/" className="footer-link">MCP</Link>
               <Link href="/developers/#plans" className="footer-link">Plans</Link>
             </div>
             <div className="footer-column">
               <h4 className="footer-heading">Company</h4>
-              <a href={`${SITE}/careers.html`} className="footer-link">Careers</a>
-              <a href={`${SITE}/contact.html`} className="footer-link">Contact</a>
-              <a href={`${SITE}/privacy.html`} className="footer-link">Privacy policy</a>
-              <a href={`${SITE}/terms.html`} className="footer-link">Terms of service</a>
+              <Link href="/careers/" className="footer-link">Careers</Link>
+              <Link href="/contact/" className="footer-link">Contact</Link>
+              <Link href="/privacy/" className="footer-link">Privacy policy</Link>
+              <Link href="/terms/" className="footer-link">Terms of service</Link>
               <Link href="/credits/" className="footer-link">Data credits</Link>
             </div>
           </div>

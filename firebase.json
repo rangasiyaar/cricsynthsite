@@ -41,6 +41,53 @@
             }
           ]
         }
+      ],
+      "redirects": [
+        {
+          "source": "/login.html",
+          "destination": "/login/",
+          "type": 301
+        },
+        {
+          "source": "/docs.html",
+          "destination": "/docs/",
+          "type": 301
+        },
+        {
+          "source": "/playground.html",
+          "destination": "/playground/",
+          "type": 301
+        },
+        {
+          "source": "/mcp.html",
+          "destination": "/mcp/",
+          "type": 301
+        },
+        {
+          "source": "/careers.html",
+          "destination": "/careers/",
+          "type": 301
+        },
+        {
+          "source": "/contact.html",
+          "destination": "/contact/",
+          "type": 301
+        },
+        {
+          "source": "/privacy.html",
+          "destination": "/privacy/",
+          "type": 301
+        },
+        {
+          "source": "/terms.html",
+          "destination": "/terms/",
+          "type": 301
+        },
+        {
+          "source": "/index.html",
+          "destination": "/",
+          "type": 301
+        }
       ]
     },
     {
