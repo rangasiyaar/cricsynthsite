@@ -1,8 +1,11 @@
 name: Pattern Lab
 
 # Tests cricket folklore on the full Cricsheet archive (free on GitHub's runners,
-# no Google setup needed). The report lands in the job summary and as an artifact.
+# no Google setup needed). The report lands in the job summary and as an artifact, and (once Google
+# is set up) in the models bucket, where the nightly site build picks it up for the patterns page.
 on:
+  schedule:
+    - cron: "0 20 * * 0"           # weekly, Monday 01:30 IST
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
@@ -10,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency: { group: pattern-lab, cancel-in-progress: true }
 
@@ -47,3 +51,13 @@ jobs:
             data/patterns/
             data/audit/
           if-no-files-found: ignore
+      - uses: google-github-actions/auth@v2
+        if: ${{ vars.GCP_ENABLED == 'true' }}
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+        if: ${{ vars.GCP_ENABLED == 'true' }}
+      - name: Upload report for the site
+        if: ${{ vars.GCP_ENABLED == 'true' }}
+        run: gcloud storage cp data/patterns/report.json "gs://${{ secrets.GCP_PROJECT_ID }}-models/patterns/report.json"

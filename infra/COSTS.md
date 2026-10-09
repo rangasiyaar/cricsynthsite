@@ -9,14 +9,15 @@ changes its pricing pages.
 
 | Service | Free each month | How we stay under |
 |---|---|---|
-| **Firebase Hosting** (fan app, API front door) | ~10 GB transfer, 10 GB storage | Static app; long-lived caching of JS/CSS/fonts; API responses cacheable at the CDN |
+| **Firebase Hosting** (website + app at cricsynthesis.in, API front door) | 10 GB storage · 360 MB/day transfer | Static export; forecasts are static JSON (≈60 KB per match, 10-min cache); JS/CSS/fonts cached for a year; only the newest release is needed |
 | **Firestore** | 1 GiB stored · 50k reads/day · 20k writes/day · 10 GiB egress | One doc per match tab (a page ≈ 2–4 reads); writes only from batch jobs; usage counters batched |
 | **Cloud Run** (API + jobs) | 2M requests · 180k vCPU-s · 360k GiB-s · **1 GB egress** | Max 2 API instances, scale to zero, CPU only during requests; fans never hit Cloud Run (they read Firestore / Hosting); the Scenario Lab runs in the browser |
 | **BigQuery** | 10 GiB storage · 1 TiB queries | Tables partitioned + clustered; every query sets `maximum_bytes_billed`; daily quota 50 GiB; load jobs are free |
-| **Cloud Storage** | 5 GB-months (us-central1) | Raw Cricsheet zips expire after 21 days; soft-delete off; Parquet only |
+| **Cloud Storage** | 5 GB-months · 5k class A / 50k class B ops (us-central1) | Raw Cricsheet zips expire after 21 days; soft-delete off; Parquet only; models bucket holds one model + the current forecasts (nightly rsync, a few dozen writes), mounted read-mostly by the API |
 | **Artifact Registry** | 0.5 GB | Only the two newest images kept |
 | **Cloud Scheduler** | 3 jobs | Weekly ingest, nightly simulate refresh, nightly accuracy scoring |
-| **Secret Manager** | 6 active versions | Only Upstash Redis URL + Firebase config |
+| **Secret Manager** | 6 active versions | `cricapi-admin-key` (one version) |
+| **GitHub Actions** (not Google) | Free on public repos; 2,000 min/month on private | Nightly publish ≈ 12–15 min (data + fit + simulate + build), weekly Pattern Lab; the heavy batch work never runs on Google |
 | **Firebase Auth** | Google / email sign-in | No phone (SMS) auth — SMS is billed |
 | **Upstash Redis** (not Google) | Free tier | API usage counters, flushed to Firestore in batches |
 

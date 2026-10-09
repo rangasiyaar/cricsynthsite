@@ -83,15 +83,36 @@ for R in roles/datastore.user roles/bigquery.dataViewer roles/bigquery.jobUser r
 for R in roles/datastore.user roles/bigquery.dataEditor roles/bigquery.jobUser; do grant cs-jobs "$R"; done
 for R in roles/run.admin roles/artifactregistry.writer roles/iam.serviceAccountUser \
          roles/firebasehosting.admin roles/cloudscheduler.admin roles/firebaserules.admin \
-         roles/datastore.indexAdmin; do grant cs-deployer "$R"; done
+         roles/datastore.indexAdmin roles/serviceusage.serviceUsageConsumer; do grant cs-deployer "$R"; done
+# The nightly publish (GitHub Actions) uploads the model, forecasts and Pattern Lab report here.
+gcloud storage buckets add-iam-policy-binding "gs://$MODELS_BUCKET" \
+  --member="serviceAccount:cs-deployer@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectAdmin >/dev/null
 gcloud storage buckets add-iam-policy-binding "gs://$DATA_BUCKET" \
   --member="serviceAccount:cs-jobs@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectAdmin >/dev/null
 gcloud storage buckets add-iam-policy-binding "gs://$MODELS_BUCKET" \
   --member="serviceAccount:cs-jobs@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectAdmin >/dev/null
+# The API mounts this bucket at /srv/data; it writes only its API-key store (keys/).
 gcloud storage buckets add-iam-policy-binding "gs://$MODELS_BUCKET" \
-  --member="serviceAccount:cs-api@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectViewer >/dev/null
+  --member="serviceAccount:cs-api@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectUser >/dev/null
 # The API starts simulation jobs when an admin presses "Simulate".
 grant cs-api roles/run.developer
+
+log "API admin secret (Secret Manager: 6 free active versions)"
+if ! exists gcloud secrets describe cricapi-admin-key; then
+  head -c 32 /dev/urandom | base64 | tr -d '/+=\n' | gcloud secrets create cricapi-admin-key \
+    --replication-policy=user-managed --locations="$REGION" --data-file=-
+fi
+gcloud secrets add-iam-policy-binding cricapi-admin-key \
+  --member="serviceAccount:cs-api@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/secretmanager.secretAccessor >/dev/null
+
+log "Firebase Hosting sites: ${PROJECT_ID} (website + app) and ${PROJECT_ID}-api (API front door)"
+TOKEN="$(gcloud auth print-access-token)"
+hosting() { curl -fsS -H "Authorization: Bearer $TOKEN" -H "x-goog-user-project: $PROJECT_ID" "$@"; }
+SITES="https://firebasehosting.googleapis.com/v1beta1/projects/${PROJECT_ID}/sites"
+hosting "$SITES/${PROJECT_ID}" >/dev/null \
+  || { echo "Firebase is not enabled on ${PROJECT_ID}: add it at console.firebase.google.com first"; exit 1; }
+hosting "$SITES/${PROJECT_ID}-api" >/dev/null 2>&1 \
+  || hosting -X POST -H "Content-Type: application/json" -d '{}' "$SITES?siteId=${PROJECT_ID}-api" >/dev/null
 
 log "Keyless GitHub Actions deploys (Workload Identity Federation, limited to ${GITHUB_REPO})"
 POOL="github"; PROVIDER="github-oidc"
@@ -137,6 +158,7 @@ cat <<EOF
    Region            ${REGION}
    BigQuery dataset  ${PROJECT_ID}:${DATASET}
    Buckets           gs://${DATA_BUCKET}  gs://${MODELS_BUCKET}
+   Hosting           https://${PROJECT_ID}.web.app (site)  https://${PROJECT_ID}-api.web.app (API)
    Budget            ${BUDGET}/month — email at 1%, billing switched off at 100%
    GitHub secrets    GCP_PROJECT_ID=${PROJECT_ID}
                      GCP_WIF_PROVIDER=projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${POOL}/providers/${PROVIDER}

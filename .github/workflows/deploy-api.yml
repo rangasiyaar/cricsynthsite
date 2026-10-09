@@ -1,0 +1,64 @@
+name: Deploy API
+
+# Builds the cricapi image and deploys it to Cloud Run (scale to zero, sizes from infra/limits.env),
+# then deploys the "api" Hosting site that fronts it. The model, forecasts and API keys live in the
+# models bucket, mounted at /srv/data; the nightly Publish site workflow keeps them fresh.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricapi/**", "cricsim/src/**", "infra/limits.env", "infra/api-hosting/**", ".github/workflows/deploy-api.yml"]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency: { group: deploy-api, cancel-in-progress: true }
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras && uv run pytest cricapi/tests -q
+
+  deploy:
+    needs: test
+    if: ${{ vars.GCP_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Build and push image
+        run: |
+          IMAGE="us-central1-docker.pkg.dev/${PROJECT}/cricsynthesis/cricapi:${GITHUB_SHA}"
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          docker build -f cricapi/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+      - name: Deploy Cloud Run service
+        run: |
+          source infra/limits.env
+          gcloud run deploy cricapi --project="$PROJECT" --region="$REGION" --image="$IMAGE" \
+            --service-account="cs-api@${PROJECT}.iam.gserviceaccount.com" \
+            --min-instances="$API_MIN_INSTANCES" --max-instances="$API_MAX_INSTANCES" \
+            --cpu="$API_CPU" --memory="$API_MEMORY" --concurrency="$API_CONCURRENCY" --timeout="$API_TIMEOUT" \
+            --cpu-throttling --execution-environment=gen2 --allow-unauthenticated \
+            --add-volume="name=data,type=cloud-storage,bucket=${PROJECT}-models" \
+            --add-volume-mount="volume=data,mount-path=/srv/data" \
+            --set-env-vars="^@^CRICAPI_COVERAGE_DIR=/srv/data/coverage@CRICAPI_PATTERNS=/srv/data/patterns/report.json@CRICAPI_KEYS_FILE=/srv/data/keys/keys.json@CRICAPI_CORS=https://cricsynthesis.in,https://www.cricsynthesis.in,https://${PROJECT}.web.app" \
+            --set-secrets="CRICAPI_ADMIN_KEY=cricapi-admin-key:latest"
+      - name: Deploy API front door (Hosting)
+        run: |
+          cat > .firebaserc <<EOF
+          {"projects": {"default": "${PROJECT}"},
+           "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"], "api": ["${PROJECT}-api"]}}}}
+          EOF
+          npx --yes firebase-tools@13.29.1 deploy --only hosting:api --project "$PROJECT" --non-interactive

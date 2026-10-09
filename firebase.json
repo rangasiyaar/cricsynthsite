@@ -8,17 +8,53 @@
       "target": "app",
       "public": "app/out",
       "cleanUrls": true,
-      "trailingSlash": false,
-      "ignore": ["firebase.json", "**/.*"],
+      "trailingSlash": true,
+      "ignore": [
+        "firebase.json",
+        "**/.*"
+      ],
       "headers": [
-        {"source": "**/*.@(js|css|woff2|ttf|png|svg|webp)", "headers": [{"key": "Cache-Control", "value": "public, max-age=31536000, immutable"}]},
-        {"source": "**/*.html", "headers": [{"key": "Cache-Control", "value": "public, max-age=300"}]}
+        {
+          "source": "**/*.@(js|css|woff2|ttf|png|svg|webp)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "/data/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=600"
+            }
+          ]
+        },
+        {
+          "source": "**/*.html",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=300"
+            }
+          ]
+        }
       ]
     },
     {
       "target": "api",
       "public": "infra/api-hosting",
-      "rewrites": [{"source": "**", "run": {"serviceId": "cricapi", "region": "us-central1"}}]
+      "rewrites": [
+        {
+          "source": "**",
+          "run": {
+            "serviceId": "cricapi",
+            "region": "us-central1"
+          }
+        }
+      ]
     }
   ]
 }

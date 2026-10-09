@@ -28,11 +28,11 @@ cricsynthsite/
 
 | Concern | Service | Notes |
 |---|---|---|
-| Fan app | Firebase Hosting (static Next.js export) | Reads published data straight from Firestore |
+| Website + fan app | Firebase Hosting (static Next.js export) at cricsynthesis.in | Forecasts are static JSON built nightly (`publish-site.yml`); Firestore for accounts/Pro later |
 | Auth | Firebase Auth | Google + email; no SMS (billed) |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
 | API + admin | Cloud Run service `cricapi` | Served through the `api` Hosting site (Cloud Run has only 1 GB free egress) |
-| Batch | Cloud Run Jobs + Cloud Scheduler | ingest weekly, simulate on demand / nightly |
+| Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |
 | Scenario Lab | Runs in the browser (Web Worker) | Zero server cost |

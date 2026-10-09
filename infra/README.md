@@ -33,6 +33,26 @@ billing off if spend ever reaches the budget.
 8. **Make yourself an admin** after your first sign-in to the app — the API exposes a
    one-time `cricapi admin grant <email>` command (added with the API phase).
 
+9. **Turn deploys on.** Repo → Settings → Secrets and variables → Actions → *Variables* →
+   `GCP_ENABLED` = `true`. Then run, in this order (Actions tab → *Run workflow*):
+   **Pattern Lab** (patterns page data) → **Publish site** (data, model, forecasts, website) →
+   **Deploy API**. After that *Publish site* runs nightly at 03:00 IST and *Pattern Lab* weekly.
+10. **Your domain.** Firebase console → *Hosting*:
+    - site `<PROJECT_ID>` → *Add custom domain* → `cricsynthesis.in` (and `www.cricsynthesis.in`,
+      redirecting to it);
+    - site `<PROJECT_ID>-api` → *Add custom domain* → `api.cricsynthesis.in`.
+    Add the DNS records Firebase shows at your domain registrar (A/TXT records; SSL is issued
+    automatically, free). Until DNS switches, the site is at `https://<PROJECT_ID>.web.app`.
+
+## What runs where
+
+| Piece | Where | When |
+|---|---|---|
+| Website + app (home, match centre, Scenario Lab, Pattern Lab, developers, credits) | Firebase Hosting, site `<PROJECT_ID>` | Rebuilt nightly and on every push to `app/` or `cricsim/fixtures/` |
+| Data → fit → simulate | GitHub Actions (`publish-site.yml`) | Nightly; upcoming fixtures come from `cricsim/fixtures/*.json` |
+| API | Cloud Run `cricapi` behind Hosting site `<PROJECT_ID>-api` | Deployed on push to `cricapi/` or `cricsim/src/`; reads `gs://<PROJECT_ID>-models` mounted at `/srv/data` |
+| Pattern Lab report | GitHub Actions (`pattern-lab.yml`) → `gs://<PROJECT_ID>-models/patterns/` | Weekly |
+
 ## What the bootstrap creates
 
 | Resource | Name | Notes |
@@ -44,6 +64,8 @@ billing off if spend ever reaches the budget.
 | Artifact Registry | `cricsynthesis` | Keeps only the newest two images (0.5 GB free) |
 | Service accounts | `cs-api`, `cs-jobs`, `cs-deployer`, `cs-billing-guard` | Least privilege |
 | GitHub access | Workload Identity pool `github` | Keyless, limited to this repository |
+| Hosting sites | `<PROJECT_ID>`, `<PROJECT_ID>-api` | Website/app and API front door |
+| Secret | `cricapi-admin-key` | Admin routes of the API (`gcloud secrets versions access latest --secret=cricapi-admin-key`) |
 | Budget | `cricsynthesis-zero-cost` | ₹100 / $1 a month: email at 1%, billing off at 100% |
 | Kill-switch | Cloud Run function `billing-guard` | Unlinks billing when the budget is reached |
 

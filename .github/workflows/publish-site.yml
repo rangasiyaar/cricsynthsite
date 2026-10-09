@@ -1,0 +1,111 @@
+name: Publish site
+
+# Nightly: rebuild the data, refit the model, simulate the upcoming fixtures in cricsim/fixtures/,
+# build the website/app with those forecasts and deploy it to Firebase Hosting. The heavy work runs
+# here on GitHub's runners, so Google only serves static files (Hosting free tier).
+# Without Google set up (repo variable GCP_ENABLED != true) the built site is kept as an artifact.
+on:
+  schedule:
+    - cron: "30 21 * * *"          # 03:00 IST
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["app/**", "cricsim/fixtures/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+
+permissions:
+  contents: read
+  id-token: write                  # keyless auth to Google Cloud (Workload Identity Federation)
+
+concurrency: { group: publish-site, cancel-in-progress: true }
+
+env:
+  GCP: ${{ vars.GCP_ENABLED == 'true' }}
+  PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: app/package-lock.json }
+      - run: uv sync --all-extras
+      # same daily cache as the Simulate fixture workflow: data + model are built once a day
+      - name: Day key
+        id: day
+        run: echo "key=engine-$(date -u +%Y-%m-%d)-${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Fit (all data)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - name: Upcoming fixtures
+        run: |
+          mkdir -p data/coverage/matches
+          today=$(TZ=Asia/Kolkata date +%Y-%m-%d)
+          for f in cricsim/fixtures/*.json; do
+            [ -e "$f" ] || continue
+            date=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('date', ''))" "$f")
+            [ -n "$date" ] && [ "$date" \< "$today" ] && { echo "skip $f (played $date)"; continue; }
+            uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" \
+              --out "data/coverage/matches/$(basename "$f")"
+          done
+      - name: Simulate + publish
+        run: uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
+
+      - uses: google-github-actions/auth@v2
+        if: env.GCP == 'true'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+        if: env.GCP == 'true'
+      - name: Sync model + forecasts to Cloud Storage (read by the API)
+        if: env.GCP == 'true'
+        run: |
+          B="gs://${PROJECT}-models"
+          gcloud storage rsync -r --delete-unmatched-destination-objects data/models/latest "$B/models/latest"
+          gcloud storage rsync -r --delete-unmatched-destination-objects data/publish "$B/publish"
+          gcloud storage rsync -r --delete-unmatched-destination-objects data/coverage "$B/coverage"
+          # Pattern Lab report (uploaded by the Pattern Lab workflow) for the site's patterns page
+          gcloud storage cp "$B/patterns/report.json" data/publish/patterns.json || echo "no Pattern Lab report yet"
+
+      - name: Build site
+        run: |
+          rm -rf app/public/data && cp -r data/publish app/public/data
+          cd app && npm ci && npm test && npx next build
+      - name: Deploy to Firebase Hosting
+        if: env.GCP == 'true'
+        run: |
+          cat > .firebaserc <<EOF
+          {"projects": {"default": "${PROJECT}"},
+           "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"], "api": ["${PROJECT}-api"]}}}}
+          EOF
+          npx --yes firebase-tools@13.29.1 deploy --only hosting:app,firestore --project "$PROJECT" --non-interactive
+      - uses: actions/upload-artifact@v4
+        if: env.GCP != 'true'
+        with: { name: site, path: app/out, retention-days: 7 }
+      - name: Summary
+        run: |
+          python3 - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json
+          d = json.load(open("data/publish/index.json"))
+          print(f"### Published {len(d['matches'])} match(es)")
+          for m in d["matches"]:
+              print(f"- {m['date']} {m['title']} — {m.get('headline') or ''}")
+          PY
