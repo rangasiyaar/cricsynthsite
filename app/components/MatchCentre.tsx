@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
+import LiveEngine from "@/components/LiveEngine";
 import ScenarioLab from "@/components/ScenarioLab";
 import { Histogram, Num, OverBars, P, Pct, WicketHeatmap, WinBar } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
@@ -63,6 +65,8 @@ function Overview({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid">
       <Tiles s={s} short={short} />
+      <LiveEngine doc={doc} />
+      <div className="grid g2"><RunFan s={s} /><WinCurve s={s} /></div>
       <div className="tiles">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card tile anim-rise" style={{ animationDelay: `${420 + k * 60}ms` }}>
@@ -77,6 +81,7 @@ function Overview({ doc }: { doc: MatchDoc }) {
           <div className="tile-row"><span className="tile-left">Chasing</span><span className="tile-right"><b className="tile-big"><Num value={s.result.margin_wickets.q["50"]} /></b><span className="tile-sub">wickets</span></span></div>
         </div>
       </div>
+      <Methodology doc={doc} />
     </div>
   );
 }
@@ -162,6 +167,7 @@ function Players({ doc }: { doc: MatchDoc }) {
   const [m1, m2] = od ? ["50", "100"] : ["30", "50"];
   return (
     <div className="grid">
+      <PlayerLadder s={s} />
       {s.teams.map((t, k) => (
         <div key={t.name} className="card">
           <h3 style={{ color: COLORS[k] }}>{t.name}</h3>
@@ -218,6 +224,20 @@ function Matchups({ doc }: { doc: MatchDoc }) {
 
 /** Home-page view of the next match: score ranges, scoring and wicket rhythm, and when wickets fall. */
 export function Spotlight({ doc }: { doc: MatchDoc }) {
+  return (
+    <>
+      <SpotlightCharts doc={doc} />
+      <div className="grid" style={{ marginTop: 28 }}>
+        <LiveEngine doc={doc} />
+        <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
+        <PlayerLadder s={doc.summary} />
+        <Methodology doc={doc} />
+      </div>
+    </>
+  );
+}
+
+function SpotlightCharts({ doc }: { doc: MatchDoc }) {
   const s = doc.summary;
   const overs = s.meta.rules.overs;
   const hist = s.teams[0].batting.score.hist;

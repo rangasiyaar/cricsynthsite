@@ -75,6 +75,11 @@ def _team_batting(sims: MatchSims, team: int, mask, model: Model) -> dict:
                            "p_no_wicket": _r((pw == 0).mean())})
     per_over = [{"over": o + 1, "runs": _r(over_runs[:, o].mean(), 2), "p_wicket": _r((over_wkts[:, o] > 0).mean()),
                  "wickets": _r(over_wkts[:, o].mean())} for o in range(rules["overs"])]
+    cum_runs, cum_wkts = over_runs.cumsum(1), over_wkts.cumsum(1)
+    fan_q = np.percentile(cum_runs, (10, 25, 50, 75, 90), axis=0)
+    fan = [{"over": o + 1, "q10": _r(fan_q[0, o], 0), "q25": _r(fan_q[1, o], 0), "q50": _r(fan_q[2, o], 0),
+            "q75": _r(fan_q[3, o], 0), "q90": _r(fan_q[4, o], 0), "wickets": _r(cum_wkts[:, o].mean(), 2)}
+           for o in range(rules["overs"])]
     bpo = rules["bpo"]
     fow_ball, fow_runs = _cat(logs, "fow_ball"), _cat(logs, "fow_runs")
     fow_bowler, fow_slot = _cat(logs, "fow_bowler"), _cat(logs, "fow_slot")
@@ -103,6 +108,7 @@ def _team_batting(sims: MatchSims, team: int, mask, model: Model) -> dict:
     return {"score": {**_dist(runs), "hist": hist, "p_at_least": {str(t): _r((runs >= t).mean()) for t in thresholds}},
             "wickets": {**_dist(wkts), "dist": [_r((wkts == k).mean(), 4) for k in range(11)]},
             "balls": _dist(_cat(logs, "legal")), "by_innings": by_toss, "phases": phase_rows, "per_over": per_over,
+            "fan": fan,
             "fall_of_wickets": fow,
             "extras": {"wides": _r(extras[:, 0].mean(), 2), "no_balls": _r(extras[:, 1].mean(), 2),
                        "byes": _r(extras[:, 2].mean(), 2), "total": _dist(extras.sum(1))}}
@@ -248,19 +254,62 @@ def summarize(sims: MatchSims, model: Model, mask: np.ndarray | None = None) -> 
         by_toss.append({"batting_first": spec.teams[bf].name, "n": int(sel.sum()),
                         "win": {spec.teams[t].name: _r((wv == t).mean()) for t in (0, 1)}})
     n_tot = max(n_sel, 1)
+    curve = _first_innings_curve(sims, mask)
     mr = np.concatenate(margins["runs"]) if margins["runs"] else np.array([])
     mw = np.concatenate(margins["wickets"]) if margins["wickets"] else np.array([])
     return {
         "meta": {"format": spec.format, "gender": spec.gender, "venue_id": spec.venue_id, "comp_key": spec.comp_key,
-                 "simulations": n_sel, "rules": sims.rules, "model": model.meta.get("cutoff"),
+                 "simulations": n_sel, "rules": sims.rules, "model": model.meta.get("cutoff"), "engine": _engine(model, sims),
                  "scenario": _scenario_dict(sims)},
         "result": {"win": {spec.teams[t].name: _r(win[t] / n_tot) for t in (0, 1)}, "tie": _r(tie / n_tot),
+                   "win_ci95": {spec.teams[t].name: _r(1.96 * np.sqrt(max(win[t] / n_tot * (1 - win[t] / n_tot), 1e-9) / n_tot), 4)
+                                for t in (0, 1)},
+                   "win_by_first_innings": curve,
                    "by_toss": by_toss,
                    "margin_runs": _dist(mr), "margin_wickets": _dist(mw)},
         "teams": [{"name": spec.teams[t].name, "batting": _team_batting(sims, t, mask, model),
                    "players": _players(sims, model, t, mask)} for t in (0, 1)],
         "matchups": _matchups(sims, model, mask)[:60],
     }
+
+
+def _engine(model: Model, sims: MatchSims) -> dict:
+    """What produced this forecast: training volume, fit quality, match-to-match variation, simulation effort."""
+    fit = model.meta.get("fit", {})
+    passes = fit.get("passes") or [{}]
+    balls = sum(int(lg.legal.sum()) for p in sims.parts for lg in p.innings)
+    return {"balls_trained": fit.get("balls"), "players": len(model.players) - 1, "venues": len(model.venues) - 1,
+            "competitions": len(model.comps) - 1, "log_loss": passes[-1].get("log_loss"), "fit_passes": len(passes),
+            "conditions_sd": fit.get("conditions_sd"), "data_through": _asof(fit.get("era_asof")),
+            "balls_simulated": balls, "outcomes": list(S.OUTCOMES)}
+
+
+def _asof(years: float | None) -> str | None:
+    if years is None:
+        return None
+    from datetime import date, timedelta
+    return str(date(2000, 1, 1) + timedelta(days=int(years * 365.25)))
+
+
+def _first_innings_curve(sims: MatchSims, mask) -> list[dict]:
+    """P(side batting first wins | its total), in 10-run bins with enough simulations."""
+    first, won = [], []
+    start = 0
+    for p in sims.parts:
+        sel = np.ones(p.n, dtype=bool) if mask is None else mask[start:start + p.n]
+        start += p.n
+        first.append(p.innings[0].runs[sel])
+        won.append(p.winner[sel] == p.batting_first)
+    if not first:
+        return []
+    f, w = np.concatenate(first), np.concatenate(won)
+    width = 10 if sims.rules["overs"] <= 20 else 20
+    out = []
+    for b in range(int(f.min()) // width * width, int(f.max()) + 1, width):
+        sel = (f >= b) & (f < b + width)
+        if sel.sum() >= 40:
+            out.append({"from": b, "to": b + width, "p_win": _r(w[sel].mean(), 4), "n": int(sel.sum())})
+    return out
 
 
 def _scenario_dict(sims: MatchSims) -> dict:

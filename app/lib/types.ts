@@ -37,20 +37,30 @@ export type TeamSummary = {
     score: Dist & { hist: { from: number; to: number; p: number }[]; p_at_least: Record<string, number> };
     wickets: Dist & { dist: number[] };
     balls: Dist;
+    by_innings?: { innings: number; score: Dist; n: number }[];
     phases: { phase: string; overs: [number, number]; runs: Dist; wickets: Dist; p_no_wicket: number }[];
     per_over: { over: number; runs: number; p_wicket: number; wickets: number }[];
     fall_of_wickets: Fow[];
     extras: { wides: number; no_balls: number; byes: number; total: Dist };
+    fan?: { over: number; q10: number; q25: number; q50: number; q75: number; q90: number; wickets: number }[];
   };
   players: PlayerRow[];
 };
 
+export type Engine = {
+  balls_trained?: number; players?: number; venues?: number; competitions?: number; log_loss?: number; fit_passes?: number;
+  conditions_sd?: { boundary?: number; wicket?: number }; data_through?: string; balls_simulated?: number; outcomes?: string[];
+};
+
 export type Summary = {
-  meta: { format: string; gender: string; simulations: number; rules: { overs: number; pp: number; bpo: number; quota: number } };
+  meta: { format: string; gender: string; simulations: number; rules: { overs: number; pp: number; bpo: number; quota: number };
+          engine?: Engine };
   result: {
     win: Record<string, number>; tie: number;
     by_toss: { batting_first: string; n: number; win: Record<string, number> }[];
     margin_runs: Dist; margin_wickets: Dist;
+    win_ci95?: Record<string, number>;
+    win_by_first_innings?: { from: number; to: number; p_win: number; n: number }[];
   };
   teams: [TeamSummary, TeamSummary];
   matchups: { batter: string; bowler: string; p: number }[];
