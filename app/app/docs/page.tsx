@@ -1,83 +1,159 @@
-import type { Metadata } from "next";
-import ref from "@/data-static/api-reference.json";
+"use client";
+import { useState } from "react";
+import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, urlFor, type Endpoint, type Field } from "@/lib/apiref";
 
-export const metadata: Metadata = { title: "API reference | CricSynthesis" };
+const PLANS = [
+  ["Free", "200", "2,000", "Watermarked graphics"],
+  ["Pro", "5,000", "20,000", "Clean graphics"],
+  ["Business", "50,000", "50,000", "Priority support"],
+];
+const ERRORS = [
+  ["401", "Missing or invalid API key"], ["404", "Unknown player, venue, team, competition or match"],
+  ["422", "Invalid parameters or body; the detail names the field"], ["429", "Daily request limit reached for your plan"],
+  ["500", "Server error"],
+];
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
+function flat(rows: Field[], prefix = ""): (Field & { label: string })[] {
+  return rows.flatMap((f) => [{ ...f, label: prefix + f.name },
+    ...(f.fields ? flat(f.fields, `${prefix}${f.name}${f.type.endsWith("[]") ? "[]" : ""}.`) : [])]);
+}
 
-type Field = { name: string; type: string; required: boolean; description: string; default?: unknown; fields?: Field[] };
-type Endpoint = { method: string; path: string; summary: string; description: string;
-                  params: { name: string; in: string; type: string; required: boolean; description: string }[]; body: Field[] | null };
-
-const WHAT: Record<string, string> = {
-  "/v1": "The catalog: every endpoint, your plan and its limits.",
-  "/v1/players": "Search players by name and get their IDs.",
-  "/v1/players/{pid}": "Cross-league, cross-format rating and playing style.",
-  "/v1/players/{pid}/projection": "Runs and wickets distribution for a typical match, or against a given XI.",
-  "/v1/matchups": "Per-ball outcome odds for a batter against a bowler, compared with an average pairing.",
-  "/v1/patterns": "Pattern Lab: which cricket beliefs hold up in the data, and by how much.",
-  "/v1/simulate": "Simulate any limited-overs match ball by ball: XIs, venue, pitch, dew, form and match situation.",
-  "/v1/matches": "Upcoming matches we cover.",
-  "/v1/matches/{match_id}": "The full pre-computed match centre for one match.",
-  "/v1/matches/{match_id}/pack": "Engine pack for running what-ifs in your own client.",
-  "/v1/graphics/matches/{match_id}/{card}.svg": "Share-ready card: win probability or score distribution, light or dark.",
-  "/v1/graphics/matches/{match_id}/wickets/{team}.svg": "Wicket-timing heatmap for one side.",
-  "/v1/graphics/matches/{match_id}/players/{pid}.svg": "Player probability card.",
-};
-
-const slug = (e: Endpoint) => `${e.method}-${e.path}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "");
-
-function Fields({ rows, depth = 0 }: { rows: Field[]; depth?: number }) {
+function Params({ rows, title }: { rows: (Field & { label?: string; in?: string })[]; title: string }) {
+  if (!rows.length) return null;
   return (
     <>
-      {rows.map((f) => (
-        <div key={`${depth}-${f.name}`}>
-          <div className="ref-row" style={{ paddingLeft: depth * 18 }}>
-            <span className="mono">{f.name}{f.required && <span className="ref-req">*</span>}</span>
-            <span className="mono muted">{f.type}</span>
-            <span className="small">{f.description}{f.default !== undefined && <span className="muted"> Default {JSON.stringify(f.default)}.</span>}</span>
-          </div>
-          {f.fields && <Fields rows={f.fields} depth={depth + 1} />}
-        </div>
-      ))}
+      <p className="response-label">{title}</p>
+      <table className="params-table">
+        <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          {rows.map((p) => (
+            <tr key={p.label ?? p.name}>
+              <td className="param-name">{p.label ?? p.name}</td>
+              <td className="param-type">{p.type}{p.in === "path" ? " · path" : ""}</td>
+              <td className={p.required ? "param-required" : "param-optional"}>{p.required ? "required" : "optional"}</td>
+              <td className="param-desc">
+                {describe(p)}
+                {p.enum && <span className="param-enum"> {p.enum.map((v) => <code key={String(v)}>{String(v)}</code>)}</span>}
+                {p.default !== undefined && p.default !== "" && <> Default <code>{JSON.stringify(p.default)}</code>.</>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }
 
-export default function Docs() {
-  const endpoints = ref.endpoints as Endpoint[];
+function EndpointSection({ ep }: { ep: Endpoint }) {
+  const ex = EXAMPLES[ep.id];
   return (
-    <div className="page-head docs">
-      <p className="cs-eyebrow">Version {ref.version}</p>
-      <h1><span>API reference</span></h1>
-      <p className="cs-lede">Base URL <span className="mono">{API}</span>. Authenticate with the <span className="mono">X-API-Key</span> header.
-        Errors return a <span className="mono">detail</span> message; 429 means the daily limit is reached.</p>
-      <nav className="card ref-index" aria-label="Endpoints">
-        {endpoints.map((e) => <a key={slug(e)} href={`#${slug(e)}`} className="mono small"><b>{e.method}</b> {e.path}</a>)}
-      </nav>
-      {endpoints.map((e) => (
-        <section key={slug(e)} id={slug(e)} className="ref-endpoint">
-          <h2 className="mono"><span className={`ref-method ${e.method.toLowerCase()}`}>{e.method}</span> {e.path}</h2>
-          <p>{WHAT[e.path] ?? e.summary}</p>
-          {e.params.length > 0 && (<>
-            <h3>Parameters</h3>
-            <div className="ref-table">
-              {e.params.map((p) => (
-                <div key={p.name} className="ref-row">
-                  <span className="mono">{p.name}{p.required && <span className="ref-req">*</span>}</span>
-                  <span className="mono muted">{p.type} · {p.in}</span>
-                  <span className="small">{p.description}</span>
-                </div>
-              ))}
+    <section id={ep.id} className="docs-section">
+      <h2 className="docs-section-title">{ep.summary}</h2>
+      <details className="endpoint-card" open>
+        <summary className="endpoint-header">
+          <span className={ep.method === "GET" ? "method-get" : "method-post"}>{ep.method}</span>
+          <span className="endpoint-path">{ep.path}</span>
+        </summary>
+        <div className="endpoint-body">
+          <p>{ep.description}</p>
+          <Params rows={ep.params} title="Parameters" />
+          {ep.body && <Params rows={flat(ep.body)} title="JSON body" />}
+          {ex && (<>
+            <p className="response-label">Example request</p>
+            <div className="code-panel active"><pre>{curl(ep, urlFor(ex, ep), ex.body ?? undefined)}</pre></div>
+            <p className="response-label">Example response{ep.returns === "svg" ? " (image/svg+xml)" : ""}</p>
+            <div className="code-panel active">
+              {ep.returns === "svg" && typeof ex.response === "string" ? <Svg markup={ex.response} /> : <Json value={ex.response} />}
             </div>
           </>)}
-          {e.body && e.body.length > 0 && (<>
-            <h3>JSON body</h3>
-            <div className="ref-table"><Fields rows={e.body} /></div>
-          </>)}
-        </section>
-      ))}
-      <p className="small muted" style={{ paddingBottom: 80 }}>* required</p>
+          <p className="small" style={{ marginTop: 12 }}><a href={`/playground/#${ep.id}`}>Try it in the playground →</a></p>
+        </div>
+      </details>
+    </section>
+  );
+}
+
+export default function Docs() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bleed">
+      <div className="docs-layout">
+        <button className={`docs-sidebar-toggle${open ? " open" : ""}`} aria-expanded={open} onClick={() => setOpen(!open)}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          API Reference
+        </button>
+        <aside className={`docs-sidebar${open ? " open" : ""}`} onClick={() => setOpen(false)}>
+          <details className="sidebar-product-group" open>
+            <summary className="sidebar-product-summary">
+              <span className="sidebar-product-name">Getting started</span>
+              <svg className="sidebar-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+            </summary>
+            <ul className="sidebar-nav">
+              <li><a href="#overview">Overview</a></li>
+              <li><a href="#authentication">Authentication</a></li>
+              <li><a href="#rate-limits">Rate limits</a></li>
+              <li><a href="#errors">Errors</a></li>
+            </ul>
+          </details>
+          {CATEGORIES.map((c) => {
+            const eps = ENDPOINTS.filter((e) => e.category === c);
+            return (
+              <details key={c} className="sidebar-product-group" open>
+                <summary className="sidebar-product-summary">
+                  <span className="sidebar-product-dot sidebar-product-dot--live" />
+                  <span className="sidebar-product-name">{c}</span>
+                  <span className="sidebar-product-badge sidebar-product-badge--live">{eps.length}</span>
+                  <svg className="sidebar-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+                </summary>
+                <ul className="sidebar-nav">
+                  {eps.map((e) => (
+                    <li key={e.id}><a href={`#${e.id}`}><span className={`method-badge${e.method === "POST" ? " post" : ""}`}>{e.method}</span> {e.path.replace("/v1", "")}</a></li>
+                  ))}
+                </ul>
+              </details>
+            );
+          })}
+        </aside>
+
+        <main className="docs-main">
+          <section id="overview" className="docs-section">
+            <h1 className="docs-section-title" style={{ fontSize: "2rem" }}>CricSynthesis API</h1>
+            <p className="docs-section-desc">
+              {ENDPOINTS.length} endpoints in three groups. <b>Analytics</b> reads the ball-by-ball model directly: player
+              profiles by phase, bowling type and situation, rankings, match-ups, venues, competitions, teams and scoring
+              trends. <b>Simulation &amp; modelling</b> plays matches out ball by ball: win probability from any state,
+              projections, par scores, chase curves, toss calls, lineup and scenario comparisons, and fantasy projections.
+              <b> Graphics</b> returns share-ready SVG cards. Base URL <code>{API}</code>.
+            </p>
+          </section>
+          <section id="authentication" className="docs-section">
+            <h2 className="docs-section-title">Authentication</h2>
+            <p className="docs-section-desc">Send your key in the <code>X-API-Key</code> header (or <code>Authorization: Bearer</code>).
+              Keys are issued on request: <a href="/developers/#request-access">request access</a>.</p>
+            <div className="code-panel active"><pre>{`curl "${API}/v1/players?q=kohli" \\\n  -H "X-API-Key: cs_live_your_key"`}</pre></div>
+          </section>
+          <section id="rate-limits" className="docs-section">
+            <h2 className="docs-section-title">Rate limits</h2>
+            <table className="params-table">
+              <thead><tr><th>Plan</th><th>Requests / day</th><th>Simulations / request</th><th>Notes</th></tr></thead>
+              <tbody>{PLANS.map((p) => <tr key={p[0]}>{p.map((x, i) => <td key={i} className={i ? "param-desc" : "param-name"}>{x}</td>)}</tr>)}</tbody>
+            </table>
+          </section>
+          <section id="errors" className="docs-section">
+            <h2 className="docs-section-title">Errors</h2>
+            <table className="params-table">
+              <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+              <tbody>{ERRORS.map(([c, m]) => <tr key={c}><td className="param-name">{c}</td><td className="param-desc">{m}</td></tr>)}</tbody>
+            </table>
+          </section>
+          {CATEGORIES.map((c) => (
+            <div key={c}>
+              <p className="cs-eyebrow" style={{ marginTop: 24 }}>{c}</p>
+              {ENDPOINTS.filter((e) => e.category === c).map((e) => <EndpointSection key={e.id} ep={e} />)}
+            </div>
+          ))}
+        </main>
+      </div>
     </div>
   );
 }

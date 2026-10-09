@@ -17,7 +17,7 @@ cricsynthsite/
 ├── index.html, css/, js/, …   ← current static site (replaced by app/ before launch)
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
-├── cricapi/                   ← FastAPI: one catalog (analytics, simulation, graphics) + admin coverage
+├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
@@ -70,6 +70,7 @@ uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff 2025-01
 uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish
 uv run cricapi                              # API on :8080 (CRICAPI_* env vars, see cricapi/main.py)
 uv run python -m cricapi.reference > app/data-static/api-reference.json   # after API changes (/docs page; tested)
+uv run python -m cricapi.examples --model data/models/latest --out app/data-static/api-examples.json   # sample calls (nightly in CI)
 
 # app (reads data from public/data = a copy of data/publish)
 cd app && npm ci && npm run dev             # npm test runs the browser-engine tests
@@ -87,6 +88,9 @@ only run once the repo variable `GCP_ENABLED=true` is set.
   metrics, steps, API block, nav/footer markup from `js/layout.js`). App-only pieces in `globals.css` use the same tokens.
 
 ## Engine rules
+
+- Model-derived analytics live in `cricsim/engine/insight.py`; decision models (win probability, par, chase,
+  toss, lineups, fantasy) in `cricsim/engine/modelling.py`. API routes are tagged with their category.
 
 - `cricsim/engine/states.py` is the single definition of outcome classes and situation buckets; the
   browser port `app/lib/engine/sim.ts` must mirror `simulate.py` — `test_browser_parity.py` enforces it.

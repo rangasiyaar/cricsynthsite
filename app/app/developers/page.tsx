@@ -1,29 +1,8 @@
 import Link from "next/link";
 import RequestAccess from "@/components/RequestAccess";
+import { CATEGORIES, ENDPOINTS } from "@/lib/apiref";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
-
-const GROUPS: { title: string; blurb: string; rows: [string, string][] }[] = [
-  { title: "Analytics", blurb: "Ratings, projections and matchups.", rows: [
-    ["GET /v1/players?q=", "Search players and get their IDs"],
-    ["GET /v1/players/{id}", "Cross-league, cross-format rating and playing style"],
-    ["POST /v1/players/{id}/projection", "Runs and wickets distribution: typical match or against an XI"],
-    ["GET /v1/matchups?batter=&bowler=", "Per-ball outcome odds for a batter against a bowler, compared with an average pairing"],
-    ["GET /v1/patterns", "Pattern Lab: which cricket beliefs hold up"],
-  ] },
-  { title: "Simulation", blurb: "Ball-by-ball match simulation.", rows: [
-    ["POST /v1/simulate", "Any limited-overs match: XIs, venue, pitch, dew, form, match situation"],
-    ["GET /v1/matches", "Upcoming matches we cover"],
-    ["GET /v1/matches/{id}", "The full pre-computed match centre"],
-    ["GET /v1/matches/{id}/pack", "Engine pack for client-side what-ifs"],
-  ] },
-  { title: "Graphics", blurb: "SVG cards, light or dark.", rows: [
-    ["GET /v1/graphics/matches/{id}/win.svg", "Win-probability card"],
-    ["GET /v1/graphics/matches/{id}/scores.svg", "Score distribution card"],
-    ["GET /v1/graphics/matches/{id}/wickets/{team}.svg", "Wicket-timing heatmap"],
-    ["GET /v1/graphics/matches/{id}/players/{id}.svg", "Player probability card"],
-  ] },
-];
 
 const PLANS = [
   { name: "Free", price: "₹0", lines: ["200 requests a day", "Up to 2,000 simulations per request", "Graphics carry a watermark"] },
@@ -48,20 +27,22 @@ export default function Developers() {
     <div className="page-head">
       <p className="cs-eyebrow">Developers</p>
       <h1><span>CricSynthesis API</span></h1>
-      <p className="cs-lede">Analytics, simulation and graphics endpoints. Projections only; no live scores or raw data.</p>
+      <p className="cs-lede">{ENDPOINTS.length} endpoints for analytics, simulation and modelling, and graphics. Projections only; no live scores or raw data.</p>
       <div className="grid g3" style={{ marginTop: 20 }}>
-        {GROUPS.map((g) => (
-          <div key={g.title} className="card">
-            <h3>{g.title}</h3>
-            <p className="small">{g.blurb}</p>
-            {g.rows.map(([path, what]) => (
-              <div key={path} style={{ padding: "8px 0", borderTop: "1px solid var(--tick)" }}>
-                <div className="mono" style={{ fontSize: 12.5, wordBreak: "break-all" }}>{path}</div>
-                <div className="small muted">{what}</div>
-              </div>
-            ))}
-          </div>
-        ))}
+        {CATEGORIES.map((c) => {
+          const eps = ENDPOINTS.filter((e) => e.category === c);
+          return (
+            <div key={c} className="card">
+              <h3>{c} <span className="muted small">{eps.length}</span></h3>
+              {eps.map((e) => (
+                <a key={e.id} href={`/docs/#${e.id}`} style={{ display: "block", padding: "7px 0", borderTop: "1px solid var(--tick)", color: "inherit" }}>
+                  <div className="small">{e.summary}</div>
+                  <div className="mono muted" style={{ fontSize: 11.5, wordBreak: "break-all" }}>{e.method} {e.path}</div>
+                </a>
+              ))}
+            </div>
+          );
+        })}
       </div>
       <h2 style={{ marginTop: 56 }}>Example</h2>
       <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Request</span><span>curl</span></div>

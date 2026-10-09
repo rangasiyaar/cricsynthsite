@@ -348,6 +348,55 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
             "hand": hand, "kind": kind}
 
 
+def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> dict:
+    """Display names and recency for venues, competitions and teams (for the analytics endpoints)."""
+    mt = parquet / "matches"
+    if not any(mt.glob("*.parquet")):
+        return {"venues": {}, "comps": {}, "teams": {}, "player_gender": ""}
+    m = f"read_parquet('{(mt / '*.parquet').as_posix()}')"
+    cut = f"AND match_date < DATE '{cfg.cutoff}'" if cfg.cutoff else ""
+    lim = f"format IN ('T20', 'T10', 'HUNDRED', 'OD') AND match_date >= DATE '{cfg.min_date}' {cut}"
+    known_v, known_c = set(ids["venues"]), set(ids["comps"])
+    venues = {v: {"name": n, "city": c, "matches": k, "last": str(d)} for v, n, c, k, d in con.execute(f"""
+        SELECT venue_id, any_value(venue), any_value(city), count(*), max(match_date) FROM {m}
+        WHERE {lim} AND venue_id IS NOT NULL GROUP BY 1""").fetchall() if v in known_v}
+    comps = {c: {"name": n, "format": f, "gender": g, "matches": k, "last": str(d)} for c, n, f, g, k, d in con.execute(f"""
+        SELECT coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format),
+               coalesce(any_value(competition), 'International ' || any_value(format)), any_value(format),
+               any_value(gender), count(*), max(match_date) FROM {m} WHERE {lim} GROUP BY 1""").fetchall()
+        if c in known_c}
+    teams: dict[str, dict] = {}
+    mp = parquet / "match_players"
+    rows = con.execute(f"""
+        WITH t AS (SELECT team1_id AS tid, team1 AS name, match_id, match_date, format, gender FROM {m} WHERE {lim}
+                   UNION ALL SELECT team2_id, team2, match_id, match_date, format, gender FROM {m} WHERE {lim}),
+             r AS (SELECT *, row_number() OVER (PARTITION BY tid, format ORDER BY match_date DESC) AS rk FROM t
+                   WHERE tid IS NOT NULL)
+        SELECT tid, format, any_value(name), any_value(gender), count(*), max(match_date),
+               arg_max(match_id, match_date) FROM r GROUP BY 1, 2""").fetchall()
+    last_ids = {mid for *_, mid in rows}
+    xi: dict[tuple[str, str], list[str]] = {}
+    if any(mp.glob("*.parquet")) and last_ids:
+        ph = ",".join(f"'{x}'" for x in last_ids)
+        for mid, tid, pid in con.execute(f"""
+            SELECT match_id, team_id, player_id FROM read_parquet('{(mp / '*.parquet').as_posix()}')
+            WHERE match_id IN ({ph}) ORDER BY match_id, team_id, list_order""").fetchall():
+            xi.setdefault((mid, tid), []).append(pid)
+    gender = ["u"] * len(ids["players"])
+    if any(mp.glob("*.parquet")):
+        pidx = {p: i for i, p in enumerate(ids["players"])}
+        for pid, g in con.execute(f"""
+            SELECT p.player_id, mode(m.gender) FROM read_parquet('{(mp / '*.parquet').as_posix()}') p
+            JOIN {m} m USING (match_id) WHERE {lim.replace('format', 'm.format').replace('match_date', 'm.match_date')}
+            GROUP BY 1""").fetchall():
+            if pid in pidx and g:
+                gender[pidx[pid]] = g[0]
+    for tid, fmt, name, g, k, d, mid in rows:
+        e = teams.setdefault(tid, {"name": name, "gender": g, "formats": {}})
+        e["formats"][fmt] = {"matches": k, "last": str(d), "last_xi": xi.get((mid, tid), [])}
+    return {"venues": venues, "comps": comps, "teams": teams, "player_gender": "".join(gender)}
+
+
 def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=None) -> Model:
     cfg = cfg or FitConfig()
     con = con or duckdb.connect()
@@ -365,5 +414,6 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
     return Model(factors=factors, players=ids["players"], venues=ids["venues"], comps=ids["comps"], names=names,
                  runout_non_striker=ro,
                  meta={"cutoff": str(cfg.cutoff) if cfg.cutoff else None, "half_life_years": cfg.half_life_years,
-                       "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist()},
+                       "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist(),
+                       "catalog": _catalog(con, cfg, ids, parquet)},
                  **tables)

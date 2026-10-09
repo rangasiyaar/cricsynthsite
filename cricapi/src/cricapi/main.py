@@ -25,7 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
-from cricapi import graphics
+from cricapi import extra, graphics
 from cricapi.store import PLANS, Content, KeyStore, Usage
 
 Format = Literal["T20", "T10", "HUNDRED", "OD"]
@@ -103,30 +103,11 @@ CATALOG = {
     "about": "Analytics and projections from ball-by-ball simulation. We don't sell live scores or raw data.",
     "auth": "Send your key as X-API-Key (or Authorization: Bearer).",
     "plans": PLANS,
-    "endpoints": {
-        "analytics": [
-            {"GET /v1/players?q=": "search players"},
-            {"GET /v1/players/{id}": "profile: cross-league/format rating, experience, style"},
-            {"POST /v1/players/{id}/projection": "run / wicket distribution in a typical match (or v an opposition XI)"},
-            {"GET /v1/matchups?batter=&bowler=&format=&phase=": "per-ball outcome probabilities v an average pairing"},
-            {"GET /v1/patterns": "Pattern Lab: which cricket beliefs hold up in 6M balls"},
-        ],
-        "simulation": [
-            {"POST /v1/simulate": "simulate any limited-overs match (XIs, venue, scenario, conditions)"},
-            {"GET /v1/matches": "covered upcoming matches"},
-            {"GET /v1/matches/{id}": "full pre-computed match centre"},
-            {"GET /v1/matches/{id}/pack": "engine pack for client-side what-if simulation"},
-        ],
-        "graphics": [
-            {"GET /v1/graphics/matches/{id}/{win|scores}.svg": "share cards"},
-            {"GET /v1/graphics/matches/{id}/wickets/{team}.svg": "wicket-timing heatmap"},
-            {"GET /v1/graphics/matches/{id}/players/{player}.svg": "player probability card"},
-        ],
-    },
     "scenario_fields": ["boundary_mult", "wicket_mult", "spin_wicket_mult", "pace_wicket_mult", "dew", "extras_mult",
                         "player_form", "exclude_bowlers", "batting_order", "target", "conditions", "start"],
     "data_credits": "https://cricsynthesis.in/credits/",
 }
+CATEGORIES = ("Analytics", "Simulation & modelling", "Graphics")
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -158,46 +139,60 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def health():
         return {"ok": True}
 
-    @app.get("/v1")
+    @app.get("/v1", include_in_schema=False)
     def catalog():
-        return CATALOG
+        eps = {c: [] for c in CATEGORIES}
+        for r in app.routes:
+            tags = getattr(r, "tags", None)
+            if tags and tags[0] in eps:
+                for m in sorted(r.methods - {"HEAD"}):
+                    eps[tags[0]].append({"method": m, "path": r.path, "summary": r.summary})
+        return {**CATALOG, "endpoints": eps}
+
+    extra.register(app, st, account)
 
     # ── analytics ──
-    @app.get("/v1/players")
+    @app.get("/v1/players", tags=["Analytics"], summary="Search players")
     def players(q: str = Query(..., min_length=2), limit: int = Query(20, le=50), acct=Depends(account)):
+        """Find players by name and get their ids."""
         from cricsim.engine.analytics import search_players
         return {"players": search_players(st.model, q, limit)}
 
-    @app.get("/v1/players/{pid}")
+    @app.get("/v1/players/{pid}", tags=["Analytics"], summary="Player rating")
     def player(pid: str, format: Format = "T20", acct=Depends(account)):
+        """Cross-league, cross-format rating, experience and playing style."""
         from cricsim.engine.analytics import _who
         from cricsim.engine.summary import profile
         if not st.model.knows(pid):
             raise HTTPException(404, "Unknown player")
         return {**_who(st.model, pid), "profile": profile(st.model, pid, format)}
 
-    @app.post("/v1/players/{pid}/projection")
+    @app.post("/v1/players/{pid}/projection", tags=["Simulation & modelling"], summary="Player projection")
     def player_projection(pid: str, body: ProjectionRequest, acct=Depends(account)):
+        """Runs and wickets distribution in a typical match, or against a given XI."""
         from cricsim.engine.analytics import projection
         return projection(st.model, pid, body.format, body.gender, body.position, body.opposition, body.venue_id,
                           body.comp_key, n=min(body.n, acct["limits"]["max_simulations"]))
 
-    @app.get("/v1/matchups")
+    @app.get("/v1/matchups", tags=["Analytics"], summary="Batter v bowler")
     def matchups(batter: str, bowler: str, format: Format = "T20", gender: Literal["male", "female"] = "male",
                  phase: Literal["powerplay", "middle", "death"] = "middle", acct=Depends(account)):
+        """Per-ball outcome probabilities for a batter against a bowler, against an average pairing."""
         from cricsim.engine.analytics import matchup
         return matchup(st.model, batter, bowler, format, gender, phase)
 
-    @app.get("/v1/patterns")
+    @app.get("/v1/patterns", tags=["Analytics"], summary="Pattern Lab")
     def patterns(acct=Depends(account)):
+        """Which cricket beliefs hold up in ball-by-ball data, and by how much."""
         p = st.content.patterns()
         if p is None:
             raise HTTPException(404, "Pattern Lab report not published yet")
         return p
 
     # ── simulation ──
-    @app.post("/v1/simulate")
+    @app.post("/v1/simulate", tags=["Simulation & modelling"], summary="Simulate a match")
     def simulate_match(body: SimulateRequest, acct=Depends(account)):
+        """Ball-by-ball simulation of any limited-overs match with XIs, venue, scenario and optional conditions."""
         from cricsim.engine.io import spec_from_dict
         from cricsim.engine.simulate import simulate
         from cricsim.engine.summary import masks, summarize
@@ -228,8 +223,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         out["meta"]["plan"] = acct["plan"]
         return out
 
-    @app.get("/v1/matches")
+    @app.get("/v1/matches", tags=["Simulation & modelling"], summary="Covered matches")
     def matches(acct=Depends(account)):
+        """Upcoming matches with published forecasts."""
         return {"matches": [m for m in st.content.index()["matches"] if m.get("published", True)]}
 
     def _doc(match_id: str) -> dict:
@@ -238,12 +234,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise HTTPException(404, "Match not found")
         return d
 
-    @app.get("/v1/matches/{match_id}")
+    @app.get("/v1/matches/{match_id}", tags=["Simulation & modelling"], summary="Match forecast")
     def match(match_id: str, acct=Depends(account)):
+        """The full pre-computed match centre for one match."""
         return _doc(match_id)
 
-    @app.get("/v1/matches/{match_id}/pack")
+    @app.get("/v1/matches/{match_id}/pack", tags=["Simulation & modelling"], summary="Engine pack")
     def match_pack(match_id: str, acct=Depends(account)):
+        """Compact engine data for running what-ifs in your own client."""
         _doc(match_id)
         return st.content.pack(match_id)
 
@@ -253,27 +251,24 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise HTTPException(404, "Not found")
         return Response(svg, media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=600"})
 
-    @app.get("/v1/graphics/matches/{match_id}/{card}.svg")
-    def card(match_id: str, card: Literal["win", "scores"], theme: Literal["dark", "light"] = "dark",
-             acct=Depends(account)):
-        return _svg(graphics.CARDS[card](_doc(match_id), theme, acct["limits"]["watermark"]))
-
-    @app.get("/v1/graphics/matches/{match_id}/wickets/{team}.svg")
+    @app.get("/v1/graphics/matches/{match_id}/wickets/{team}.svg", tags=["Graphics"], summary="Wicket timing card", response_class=Response)
     def wickets(match_id: str, team: int, theme: Literal["dark", "light"] = "dark", acct=Depends(account)):
+        """Heatmap of the overs in which each wicket is likely to fall."""
         if team not in (0, 1):
             raise HTTPException(404, "team is 0 or 1")
         return _svg(graphics.wickets_card(_doc(match_id), team, theme, acct["limits"]["watermark"]))
 
-    @app.get("/v1/graphics/matches/{match_id}/players/{pid}.svg")
+    @app.get("/v1/graphics/matches/{match_id}/players/{pid}.svg", tags=["Graphics"], summary="Player match card", response_class=Response)
     def player_card(match_id: str, pid: str, theme: Literal["dark", "light"] = "dark", acct=Depends(account)):
+        """A player's run and wicket probabilities for a covered match."""
         return _svg(graphics.player_card(_doc(match_id), pid, theme, acct["limits"]["watermark"]))
 
     # ── admin: decide which matches are covered, publish them, issue keys ──
-    @app.get("/admin/coverage", dependencies=[Depends(admin)])
+    @app.get("/admin/coverage", dependencies=[Depends(admin)], include_in_schema=False)
     def coverage_list():
         return {"matches": st.content.coverage_list()}
 
-    @app.put("/admin/coverage/{match_id}", dependencies=[Depends(admin)])
+    @app.put("/admin/coverage/{match_id}", dependencies=[Depends(admin)], include_in_schema=False)
     async def coverage_put(match_id: str, request: Request):
         from cricsim.engine.io import spec_from_dict
         doc = await request.json()
@@ -285,13 +280,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         st.content.put_coverage(match_id, doc)
         return {"ok": True, "id": match_id}
 
-    @app.delete("/admin/coverage/{match_id}", dependencies=[Depends(admin)])
+    @app.delete("/admin/coverage/{match_id}", dependencies=[Depends(admin)], include_in_schema=False)
     def coverage_delete(match_id: str):
         if not st.content.delete_coverage(match_id):
             raise HTTPException(404, "Not found")
         return {"ok": True}
 
-    @app.post("/admin/coverage/{match_id}/publish", dependencies=[Depends(admin)])
+    @app.post("/admin/coverage/{match_id}/publish", dependencies=[Depends(admin)], include_in_schema=False)
     def coverage_publish(match_id: str, n: int = Query(20_000, ge=1000, le=50_000)):
         import json as _json
 
@@ -306,12 +301,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         (st.settings.publish_dir / "index.json").write_text(_json.dumps(idx))
         return card
 
-    @app.get("/admin/players", dependencies=[Depends(admin)])
+    @app.get("/admin/players", dependencies=[Depends(admin)], include_in_schema=False)
     def admin_players(q: str = Query(..., min_length=2), limit: int = Query(15, le=50)):
         from cricsim.engine.analytics import search_players
         return {"players": search_players(st.model, q, limit)}
 
-    @app.post("/admin/keys", dependencies=[Depends(admin)])
+    @app.post("/admin/keys", dependencies=[Depends(admin)], include_in_schema=False)
     def new_key(owner: str, plan: Literal["free", "pro", "business"] = "free"):
         return {"key": st.keys.create(owner, plan), "plan": plan, "note": "Shown once — store it now."}
 

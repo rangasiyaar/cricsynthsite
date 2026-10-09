@@ -88,6 +88,11 @@ jobs:
           else
             echo "no Pattern Lab report yet"
           fi
+      - name: API examples for the docs and playground (real model)
+        run: |
+          uv run python -m cricapi.examples --model data/models/latest --publish data/publish \
+            --coverage data/coverage --patterns data/publish/patterns.json \
+            --out app/data-static/api-examples.json || echo "keeping the committed examples"
       - name: Sync model + forecasts to Cloud Storage (read by the API)
         if: env.BILLING == 'true'
         run: |

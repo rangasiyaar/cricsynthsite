@@ -1,20 +1,1024 @@
 {
  "title": "CricSynthesis API",
  "version": "1",
+ "categories": [
+  "Analytics",
+  "Simulation & modelling",
+  "Graphics"
+ ],
  "endpoints": [
   {
+   "id": "get-v1-players-compare",
+   "category": "Analytics",
    "method": "GET",
-   "path": "/v1",
-   "summary": "Catalog",
-   "description": "",
-   "params": [],
+   "path": "/v1/players/compare",
+   "summary": "Compare players side by side",
+   "description": "Batting and bowling expectations by phase for up to five players, with the format average.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "ids",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": "2\u20135 comma-separated player ids"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
    "body": null
   },
   {
+   "id": "get-v1-players-pid-phases",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/phases",
+   "summary": "Phase profile",
+   "description": "Strike rate, dismissal rate, dot and boundary share in the powerplay, middle and death overs, batting and bowling, each against the format average.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-vs-bowling",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/vs-bowling",
+   "summary": "Batter v bowling types",
+   "description": "Expected scoring and dismissal rate against right- and left-arm pace, off-spin, leg-spin, left-arm orthodox and wrist spin, with the strongest and weakest match-up.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-vs-batting-hand",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/vs-batting-hand",
+   "summary": "Bowler v left- and right-handers",
+   "description": "Economy, balls per wicket and dot share against right- and left-handed batters.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-situations",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/situations",
+   "summary": "Situational batting",
+   "description": "How the batter performs on the first ball, while new, once set, and when chasing at each required rate.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-formats",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/formats",
+   "summary": "Format split",
+   "description": "Short-format (T20, T10, Hundred) versus one-day expectations, with data volume in each.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-role",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/role",
+   "summary": "Role and workload",
+   "description": "Usual batting position, overs per match by phase, bowling role (e.g. death specialist) and last appearance.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players-pid-similar",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/players/{pid}/similar",
+   "summary": "Similar players",
+   "description": "Nearest players by style fingerprint (scoring, boundary and dismissal rates by phase and bowling type). Useful for replacements and scouting.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "side",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "batting",
+     "enum": [
+      "batting",
+      "bowling"
+     ]
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 10
+    },
+    {
+     "name": "min_balls",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 300
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-rankings-batting",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/rankings/batting",
+   "summary": "Batting rankings",
+   "description": "Model leaderboard of active batters. Impact = runs added per 120 balls against an average batter, with wickets priced at a format-typical run value.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "impact",
+     "enum": [
+      "impact",
+      "strike_rate",
+      "balls_per_dismissal",
+      "runs_per_dismissal",
+      "boundary_pct",
+      "dot_pct"
+     ]
+    },
+    {
+     "name": "min_balls",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 500
+    },
+    {
+     "name": "active_days",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 730
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 25
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-rankings-bowling",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/rankings/bowling",
+   "summary": "Bowling rankings",
+   "description": "Model leaderboard of active bowlers. Impact = runs saved per 120 balls against an average bowler.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    },
+    {
+     "name": "sort",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "impact",
+     "enum": [
+      "impact",
+      "economy",
+      "balls_per_wicket",
+      "dot_pct",
+      "boundary_pct"
+     ]
+    },
+    {
+     "name": "min_balls",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 500
+    },
+    {
+     "name": "active_days",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 730
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 25
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-matchups-grid",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/matchups/grid",
+   "summary": "Match-up grid",
+   "description": "Every batter against every bowler: strike rate, balls per dismissal and edges against an average pairing.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "batters",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": "1\u201311 batter ids"
+    },
+    {
+     "name": "bowlers",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": "1\u201311 bowler ids"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-matchups-counter",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/matchups/counter",
+   "summary": "Best bowler for a batter",
+   "description": "Ranks your bowling options against one batter by net runs per over, with wickets priced in.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "batter",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "candidates",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": "2\u201311 bowler ids"
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-venues",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/venues",
+   "summary": "Venues",
+   "description": "Grounds the model knows, by matches played. Filter by name or city.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 50
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-venues-vid",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/venues/{vid}",
+   "summary": "Venue profile",
+   "description": "Scoring and wicket environment by phase against a neutral ground, and a one-line character.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "vid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-competitions",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/competitions",
+   "summary": "Competitions",
+   "description": "Leagues and international categories the model covers, most recent first.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 50
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-competitions-key",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/competitions/{key}",
+   "summary": "Competition profile",
+   "description": "Scoring and wicket environment of a competition against a neutral one, by phase.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "key",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-trends-scoring",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/trends/scoring",
+   "summary": "Scoring trend",
+   "description": "Runs per over, balls per wicket and boundary share by season and phase, plus the model's current level.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-teams",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/teams",
+   "summary": "Teams",
+   "description": "Franchise and national teams with formats played and latest match.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "q",
+     "in": "query",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "limit",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 50
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-teams-tid",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/teams/{tid}",
+   "summary": "Team profile",
+   "description": "Latest XI and its batting and bowling profile.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "tid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "post-v1-teams-profile",
+   "category": "Analytics",
+   "method": "POST",
+   "path": "/v1/teams/profile",
+   "summary": "Profile any XI",
+   "description": "Batting order strength, survival against spin and pace, left-hander count, bowling options and phase economy for any eleven.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "players",
+     "type": "string[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "bowlers",
+     "type": "string[]",
+     "required": false,
+     "description": ""
+    }
+   ]
+  },
+  {
+   "id": "get-v1-patterns-pattern_id",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/patterns/{pattern_id}",
+   "summary": "Pattern detail",
+   "description": "One Pattern Lab test: effect size, confidence interval, holdout check and verdict.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pattern_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-players",
+   "category": "Analytics",
    "method": "GET",
    "path": "/v1/players",
-   "summary": "Players",
-   "description": "",
+   "summary": "Search players",
+   "description": "Find players by name and get their ids.",
+   "returns": "json",
    "params": [
     {
      "name": "q",
@@ -28,16 +1032,20 @@
      "in": "query",
      "type": "integer",
      "required": false,
-     "description": ""
+     "description": "",
+     "default": 20
     }
    ],
    "body": null
   },
   {
+   "id": "get-v1-players-pid",
+   "category": "Analytics",
    "method": "GET",
    "path": "/v1/players/{pid}",
-   "summary": "Player",
-   "description": "",
+   "summary": "Player rating",
+   "description": "Cross-league, cross-format rating, experience and playing style.",
+   "returns": "json",
    "params": [
     {
      "name": "pid",
@@ -49,18 +1057,972 @@
     {
      "name": "format",
      "in": "query",
-     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "type": "enum",
      "required": false,
-     "description": ""
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
     }
    ],
    "body": null
   },
   {
+   "id": "get-v1-matchups",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/matchups",
+   "summary": "Batter v bowler",
+   "description": "Per-ball outcome probabilities for a batter against a bowler, against an average pairing.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "batter",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "bowler",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-patterns",
+   "category": "Analytics",
+   "method": "GET",
+   "path": "/v1/patterns",
+   "summary": "Pattern Lab",
+   "description": "Which cricket beliefs hold up in ball-by-ball data, and by how much.",
+   "returns": "json",
+   "params": [],
+   "body": null
+  },
+  {
+   "id": "post-v1-win-probability",
+   "category": "Simulation & modelling",
    "method": "POST",
-   "path": "/v1/players/{pid}/projection",
-   "summary": "Player Projection",
-   "description": "",
+   "path": "/v1/win-probability",
+   "summary": "Win probability from any state",
+   "description": "Re-simulates the rest of the match from a score, wickets and overs: win chances, projected total and the required rate when chasing.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "state",
+     "type": "object",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "innings",
+       "type": "enum",
+       "required": false,
+       "description": "",
+       "default": 1,
+       "enum": [
+        1,
+        2
+       ]
+      },
+      {
+       "name": "batting",
+       "type": "enum",
+       "required": false,
+       "description": "Index of the team batting now",
+       "default": 0,
+       "enum": [
+        0,
+        1
+       ]
+      },
+      {
+       "name": "runs",
+       "type": "integer",
+       "required": false,
+       "description": "",
+       "default": 0
+      },
+      {
+       "name": "wickets",
+       "type": "integer",
+       "required": false,
+       "description": "",
+       "default": 0
+      },
+      {
+       "name": "overs",
+       "type": "number",
+       "required": false,
+       "description": "Overs bowled in this innings, cricket notation (12.3)",
+       "default": 0
+      },
+      {
+       "name": "target",
+       "type": "integer",
+       "required": false,
+       "description": "Required in the second innings"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "post-v1-innings-projection",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/innings/projection",
+   "summary": "Innings projection",
+   "description": "Final total and wickets distribution for the innings in progress, chance of passing each score and expected runs in every remaining over.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "state",
+     "type": "object",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "innings",
+       "type": "enum",
+       "required": false,
+       "description": "",
+       "default": 1,
+       "enum": [
+        1,
+        2
+       ]
+      },
+      {
+       "name": "batting",
+       "type": "enum",
+       "required": false,
+       "description": "Index of the team batting now",
+       "default": 0,
+       "enum": [
+        0,
+        1
+       ]
+      },
+      {
+       "name": "runs",
+       "type": "integer",
+       "required": false,
+       "description": "",
+       "default": 0
+      },
+      {
+       "name": "wickets",
+       "type": "integer",
+       "required": false,
+       "description": "",
+       "default": 0
+      },
+      {
+       "name": "overs",
+       "type": "number",
+       "required": false,
+       "description": "Overs bowled in this innings, cricket notation (12.3)",
+       "default": 0
+      },
+      {
+       "name": "target",
+       "type": "integer",
+       "required": false,
+       "description": "Required in the second innings"
+      }
+     ]
+    },
+    {
+     "name": "thresholds",
+     "type": "integer[]",
+     "required": false,
+     "description": ""
+    }
+   ]
+  },
+  {
+   "id": "post-v1-par-score",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/par-score",
+   "summary": "Par score",
+   "description": "Median first-innings total for each side batting first, and the totals that make it 50, 60 and 70% to win.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    }
+   ]
+  },
+  {
+   "id": "post-v1-chase-curve",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/chase-curve",
+   "summary": "Chase curve",
+   "description": "Chance of chasing down each target in a range, and the target that makes it a coin flip.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "chasing",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": 1,
+     "enum": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "target_from",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 120
+    },
+    {
+     "name": "target_to",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 220
+    },
+    {
+     "name": "step",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 10
+    }
+   ]
+  },
+  {
+   "id": "post-v1-toss",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/toss",
+   "summary": "Toss decision",
+   "description": "Win chances for each side batting first and chasing, and the better call at the toss.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    }
+   ]
+  },
+  {
+   "id": "post-v1-scenarios-compare",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/scenarios/compare",
+   "summary": "Compare scenarios",
+   "description": "Same match under two sets of conditions (pitch, dew, form, bowlers ruled out), simulated with common random numbers so the difference is the effect of the change.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "base",
+     "type": "object",
+     "required": false,
+     "description": "",
+     "default": {
+      "boundary_mult": 1.0,
+      "wicket_mult": 1.0,
+      "spin_wicket_mult": 1.0,
+      "pace_wicket_mult": 1.0,
+      "dew": 0.0,
+      "extras_mult": 1.0,
+      "player_form": {},
+      "exclude_bowlers": []
+     },
+     "fields": [
+      {
+       "name": "boundary_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "spin_wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "pace_wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "dew",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 0.0
+      },
+      {
+       "name": "extras_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "player_form",
+       "type": "object",
+       "required": false,
+       "description": "",
+       "default": {}
+      },
+      {
+       "name": "exclude_bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "",
+       "default": []
+      },
+      {
+       "name": "batting_first",
+       "type": "enum",
+       "required": false,
+       "description": "",
+       "enum": [
+        0,
+        1
+       ]
+      }
+     ]
+    },
+    {
+     "name": "scenario",
+     "type": "object",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "boundary_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "spin_wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "pace_wicket_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "dew",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 0.0
+      },
+      {
+       "name": "extras_mult",
+       "type": "number",
+       "required": false,
+       "description": "",
+       "default": 1.0
+      },
+      {
+       "name": "player_form",
+       "type": "object",
+       "required": false,
+       "description": "",
+       "default": {}
+      },
+      {
+       "name": "exclude_bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "",
+       "default": []
+      },
+      {
+       "name": "batting_first",
+       "type": "enum",
+       "required": false,
+       "description": "",
+       "enum": [
+        0,
+        1
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "post-v1-players-pid-impact",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/players/{pid}/impact",
+   "summary": "Player impact",
+   "description": "Win probability and runs the player adds to their XI over a replacement-level player in the same slot.",
+   "returns": "json",
    "params": [
     {
      "name": "pid",
@@ -73,17 +2035,902 @@
    "body": [
     {
      "name": "format",
-     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "type": "enum",
      "required": false,
      "description": "",
-     "default": "T20"
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
     },
     {
      "name": "gender",
-     "type": "\"male\" | \"female\"",
+     "type": "enum",
      "required": false,
      "description": "",
-     "default": "male"
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    }
+   ]
+  },
+  {
+   "id": "post-v1-lineups-swap",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/lineups/swap",
+   "summary": "Swap a player",
+   "description": "Effect of replacing one player with another on win chances and scores.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "out_player",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "in_player",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ]
+  },
+  {
+   "id": "post-v1-lineups-batting-order",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/lineups/batting-order",
+   "summary": "Batting order optimiser",
+   "description": "Tests the given order, adjacent swaps in the top eight and promotions to No. 3, and ranks them by win probability.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 1500
+    },
+    {
+     "name": "team",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": 0,
+     "enum": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "post-v1-lineups-bowling-plan",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/lineups/bowling-plan",
+   "summary": "Bowling plan",
+   "description": "Over-by-over allocation within quotas, matching each bowler to the phase and batters where they're most effective.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "bowling_team",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": 1,
+     "enum": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "bowlers",
+     "type": "string[]",
+     "required": false,
+     "description": ""
+    }
+   ]
+  },
+  {
+   "id": "post-v1-fantasy-projections",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/fantasy/projections",
+   "summary": "Fantasy projections",
+   "description": "Fantasy points distribution for all 22 players: mean, median, 10th and 90th percentile and chance of top-scoring.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "roles",
+     "type": "object",
+     "required": false,
+     "description": "Player id \u2192 role; inferred if omitted",
+     "default": {}
+    },
+    {
+     "name": "captain_rule",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "mean",
+     "enum": [
+      "mean",
+      "upside"
+     ]
+    },
+    {
+     "name": "teams_count",
+     "type": "integer",
+     "required": false,
+     "description": "Portfolio size",
+     "default": 5
+    }
+   ]
+  },
+  {
+   "id": "post-v1-fantasy-team",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/fantasy/team",
+   "summary": "Fantasy team",
+   "description": "Highest expected-points XI within 1\u201310 players per side (and role limits when roles are given), with captain and vice-captain.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "roles",
+     "type": "object",
+     "required": false,
+     "description": "Player id \u2192 role; inferred if omitted",
+     "default": {}
+    },
+    {
+     "name": "captain_rule",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "mean",
+     "enum": [
+      "mean",
+      "upside"
+     ]
+    },
+    {
+     "name": "teams_count",
+     "type": "integer",
+     "required": false,
+     "description": "Portfolio size",
+     "default": 5
+    }
+   ]
+  },
+  {
+   "id": "post-v1-fantasy-portfolio",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/fantasy/portfolio",
+   "summary": "Fantasy portfolio",
+   "description": "A set of different teams that together cover the likely match scripts, for multi-entry contests.",
+   "returns": "json",
+   "params": [],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "teams",
+     "type": "object[]",
+     "required": true,
+     "description": "",
+     "fields": [
+      {
+       "name": "name",
+       "type": "string",
+       "required": false,
+       "description": ""
+      },
+      {
+       "name": "team_id",
+       "type": "string",
+       "required": false,
+       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
+      },
+      {
+       "name": "players",
+       "type": "string[]",
+       "required": false,
+       "description": "Player ids, batting order"
+      },
+      {
+       "name": "bowlers",
+       "type": "string[]",
+       "required": false,
+       "description": "Who may bowl (default: anyone, by usual workload)"
+      }
+     ]
+    },
+    {
+     "name": "venue_id",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "comp_key",
+     "type": "string",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "overs",
+     "type": "integer",
+     "required": false,
+     "description": "Reduced-overs match"
+    },
+    {
+     "name": "n",
+     "type": "integer",
+     "required": false,
+     "description": "Simulations (capped by plan)",
+     "default": 4000
+    },
+    {
+     "name": "roles",
+     "type": "object",
+     "required": false,
+     "description": "Player id \u2192 role; inferred if omitted",
+     "default": {}
+    },
+    {
+     "name": "captain_rule",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "mean",
+     "enum": [
+      "mean",
+      "upside"
+     ]
+    },
+    {
+     "name": "teams_count",
+     "type": "integer",
+     "required": false,
+     "description": "Portfolio size",
+     "default": 5
+    }
+   ]
+  },
+  {
+   "id": "get-v1-matches-match_id-win-probability",
+   "category": "Simulation & modelling",
+   "method": "GET",
+   "path": "/v1/matches/{match_id}/win-probability",
+   "summary": "Live win probability for a covered match",
+   "description": "Win chances from the current score of a match we cover, using the published XIs and venue.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "innings",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 1
+    },
+    {
+     "name": "batting",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 0
+    },
+    {
+     "name": "runs",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 0
+    },
+    {
+     "name": "wickets",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 0
+    },
+    {
+     "name": "overs",
+     "in": "query",
+     "type": "number",
+     "required": false,
+     "description": "",
+     "default": 0
+    },
+    {
+     "name": "target",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": ""
+    },
+    {
+     "name": "n",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 3000
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-matches-match_id-fantasy",
+   "category": "Simulation & modelling",
+   "method": "GET",
+   "path": "/v1/matches/{match_id}/fantasy",
+   "summary": "Fantasy projections for a covered match",
+   "description": "Player projections and the expected-points XI for a match we cover, using its roles when published.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "n",
+     "in": "query",
+     "type": "integer",
+     "required": false,
+     "description": "",
+     "default": 3000
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "post-v1-players-pid-projection",
+   "category": "Simulation & modelling",
+   "method": "POST",
+   "path": "/v1/players/{pid}/projection",
+   "summary": "Player projection",
+   "description": "Runs and wickets distribution in a typical match, or against a given XI.",
+   "returns": "json",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "body": [
+    {
+     "name": "format",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
     },
     {
      "name": "position",
@@ -119,81 +2966,42 @@
    ]
   },
   {
-   "method": "GET",
-   "path": "/v1/matchups",
-   "summary": "Matchups",
-   "description": "",
-   "params": [
-    {
-     "name": "batter",
-     "in": "query",
-     "type": "string",
-     "required": true,
-     "description": ""
-    },
-    {
-     "name": "bowler",
-     "in": "query",
-     "type": "string",
-     "required": true,
-     "description": ""
-    },
-    {
-     "name": "format",
-     "in": "query",
-     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "gender",
-     "in": "query",
-     "type": "\"male\" | \"female\"",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "phase",
-     "in": "query",
-     "type": "\"powerplay\" | \"middle\" | \"death\"",
-     "required": false,
-     "description": ""
-    }
-   ],
-   "body": null
-  },
-  {
-   "method": "GET",
-   "path": "/v1/patterns",
-   "summary": "Patterns",
-   "description": "",
-   "params": [],
-   "body": null
-  },
-  {
+   "id": "post-v1-simulate",
+   "category": "Simulation & modelling",
    "method": "POST",
    "path": "/v1/simulate",
-   "summary": "Simulate Match",
-   "description": "",
+   "summary": "Simulate a match",
+   "description": "Ball-by-ball simulation of any limited-overs match with XIs, venue, scenario and optional conditions.",
+   "returns": "json",
    "params": [],
    "body": [
     {
      "name": "format",
-     "type": "\"T20\" | \"T10\" | \"HUNDRED\" | \"OD\"",
+     "type": "enum",
      "required": false,
      "description": "",
-     "default": "T20"
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
     },
     {
      "name": "gender",
-     "type": "\"male\" | \"female\"",
+     "type": "enum",
      "required": false,
      "description": "",
-     "default": "male"
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
     },
     {
      "name": "teams",
-     "type": "Team[]",
+     "type": "object[]",
      "required": true,
      "description": "",
      "fields": [
@@ -263,16 +3071,23 @@
     },
     {
      "name": "conditions",
-     "type": "Condition[]",
+     "type": "object[]",
      "required": false,
      "description": "",
      "default": [],
      "fields": [
       {
        "name": "type",
-       "type": "\"team_score\" | \"player_runs\" | \"player_wickets\" | \"phase_wickets\" | \"batting_first\"",
+       "type": "enum",
        "required": true,
-       "description": ""
+       "description": "",
+       "enum": [
+        "team_score",
+        "player_runs",
+        "player_wickets",
+        "phase_wickets",
+        "batting_first"
+       ]
       },
       {
        "name": "team",
@@ -288,9 +3103,14 @@
       },
       {
        "name": "phase",
-       "type": "\"Powerplay\" | \"Middle\" | \"Death\"",
+       "type": "enum",
        "required": false,
-       "description": ""
+       "description": "",
+       "enum": [
+        "Powerplay",
+        "Middle",
+        "Death"
+       ]
       },
       {
        "name": "at_least",
@@ -309,18 +3129,24 @@
    ]
   },
   {
+   "id": "get-v1-matches",
+   "category": "Simulation & modelling",
    "method": "GET",
    "path": "/v1/matches",
-   "summary": "Matches",
-   "description": "",
+   "summary": "Covered matches",
+   "description": "Upcoming matches with published forecasts.",
+   "returns": "json",
    "params": [],
    "body": null
   },
   {
+   "id": "get-v1-matches-match_id",
+   "category": "Simulation & modelling",
    "method": "GET",
    "path": "/v1/matches/{match_id}",
-   "summary": "Match",
-   "description": "",
+   "summary": "Match forecast",
+   "description": "The full pre-computed match centre for one match.",
+   "returns": "json",
    "params": [
     {
      "name": "match_id",
@@ -333,10 +3159,13 @@
    "body": null
   },
   {
+   "id": "get-v1-matches-match_id-pack",
+   "category": "Simulation & modelling",
    "method": "GET",
    "path": "/v1/matches/{match_id}/pack",
-   "summary": "Match Pack",
-   "description": "",
+   "summary": "Engine pack",
+   "description": "Compact engine data for running what-ifs in your own client.",
+   "returns": "json",
    "params": [
     {
      "name": "match_id",
@@ -349,40 +3178,409 @@
    "body": null
   },
   {
+   "id": "get-v1-graphics-matches-match_id-win-svg",
+   "category": "Graphics",
    "method": "GET",
-   "path": "/v1/graphics/matches/{match_id}/{card}.svg",
-   "summary": "Card",
-   "description": "",
+   "path": "/v1/graphics/matches/{match_id}/win.svg",
+   "summary": "Win probability card",
+   "description": "Win chances, projected scores and the headline insight.",
+   "returns": "svg",
    "params": [
     {
      "name": "match_id",
      "in": "path",
      "type": "string",
-     "required": true,
-     "description": ""
-    },
-    {
-     "name": "card",
-     "in": "path",
-     "type": "\"win\" | \"scores\"",
      "required": true,
      "description": ""
     },
     {
      "name": "theme",
      "in": "query",
-     "type": "\"dark\" | \"light\"",
+     "type": "enum",
      "required": false,
-     "description": ""
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
     }
    ],
    "body": null
   },
   {
+   "id": "get-v1-graphics-matches-match_id-scores-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/scores.svg",
+   "summary": "Score distribution card",
+   "description": "Where each side's total lands, with the 80% range.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-matches-match_id-worm-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/worm.svg",
+   "summary": "Run worm card",
+   "description": "Expected cumulative score over by over for both sides.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-matches-match_id-phases-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/phases.svg",
+   "summary": "Phase card",
+   "description": "Expected runs and wickets in each phase for both sides.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-matches-match_id-duels-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/matches/{match_id}/duels.svg",
+   "summary": "Key duels card",
+   "description": "The bowler-batter pairings most likely to produce a wicket.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "match_id",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-players-pid-profile-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/players/{pid}/profile.svg",
+   "summary": "Player profile card",
+   "description": "Strike rate and economy by phase against the format average.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "pid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-matchups-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/matchups.svg",
+   "summary": "Match-up card",
+   "description": "Head-to-head per-ball expectations against an average pairing.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "batter",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "bowler",
+     "in": "query",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "phase",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "middle",
+     "enum": [
+      "powerplay",
+      "middle",
+      "death"
+     ]
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-venues-vid-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/venues/{vid}.svg",
+   "summary": "Venue card",
+   "description": "Runs per over and balls per wicket by phase against a neutral ground.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "vid",
+     "in": "path",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-trends-scoring-svg",
+   "category": "Graphics",
+   "method": "GET",
+   "path": "/v1/graphics/trends/scoring.svg",
+   "summary": "Scoring trend card",
+   "description": "Runs per over by season for each phase.",
+   "returns": "svg",
+   "params": [
+    {
+     "name": "format",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "T20",
+     "enum": [
+      "T20",
+      "T10",
+      "HUNDRED",
+      "OD"
+     ]
+    },
+    {
+     "name": "gender",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "male",
+     "enum": [
+      "male",
+      "female"
+     ]
+    },
+    {
+     "name": "theme",
+     "in": "query",
+     "type": "enum",
+     "required": false,
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
+    }
+   ],
+   "body": null
+  },
+  {
+   "id": "get-v1-graphics-matches-match_id-wickets-team-svg",
+   "category": "Graphics",
    "method": "GET",
    "path": "/v1/graphics/matches/{match_id}/wickets/{team}.svg",
-   "summary": "Wickets",
-   "description": "",
+   "summary": "Wicket timing card",
+   "description": "Heatmap of the overs in which each wicket is likely to fall.",
+   "returns": "svg",
    "params": [
     {
      "name": "match_id",
@@ -401,18 +3599,26 @@
     {
      "name": "theme",
      "in": "query",
-     "type": "\"dark\" | \"light\"",
+     "type": "enum",
      "required": false,
-     "description": ""
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
     }
    ],
    "body": null
   },
   {
+   "id": "get-v1-graphics-matches-match_id-players-pid-svg",
+   "category": "Graphics",
    "method": "GET",
    "path": "/v1/graphics/matches/{match_id}/players/{pid}.svg",
-   "summary": "Player Card",
-   "description": "",
+   "summary": "Player match card",
+   "description": "A player's run and wicket probabilities for a covered match.",
+   "returns": "svg",
    "params": [
     {
      "name": "match_id",
@@ -431,9 +3637,14 @@
     {
      "name": "theme",
      "in": "query",
-     "type": "\"dark\" | \"light\"",
+     "type": "enum",
      "required": false,
-     "description": ""
+     "description": "",
+     "default": "dark",
+     "enum": [
+      "dark",
+      "light"
+     ]
     }
    ],
    "body": null

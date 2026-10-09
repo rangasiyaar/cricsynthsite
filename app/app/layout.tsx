@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import "./legacy-docs.css";
+import "./legacy-playground.css";
 import "./site.css";
 import "./globals.css";
 import { Footer, Nav } from "@/components/Shell";

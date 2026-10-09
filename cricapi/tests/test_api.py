@@ -27,7 +27,7 @@ def h(key):
 
 def test_public_and_auth(client, key):
     assert client.get("/health").json() == {"ok": True}
-    assert "simulation" in client.get("/v1").json()["endpoints"]
+    assert set(client.get("/v1").json()["endpoints"]) == {"Analytics", "Simulation & modelling", "Graphics"}
     assert client.get("/v1/matches").status_code == 401
     assert client.get("/v1/matches", headers={"X-API-Key": "cs_live_nope"}).status_code == 401
     assert client.get("/v1/matches", headers={"Authorization": f"Bearer {key}"}).status_code == 200
