@@ -36,9 +36,9 @@ function ThemeToggle() {
   );
 }
 
-const LINKS: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
+const LINKS: [string, string][] = [["/#next", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
                                    ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
-const DRAWER: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
+const DRAWER: [string, string][] = [["/#next", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
                                     ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
@@ -102,7 +102,7 @@ export function Footer() {
           <div className="footer-links">
             <div className="footer-column">
               <h4 className="footer-heading">Match centre</h4>
-              <Link href="/#matches" className="footer-link">Upcoming matches</Link>
+              <Link href="/#next" className="footer-link">Upcoming matches</Link>
               <Link href="/patterns/" className="footer-link">Pattern Lab</Link>
             </div>
             <div className="footer-column">

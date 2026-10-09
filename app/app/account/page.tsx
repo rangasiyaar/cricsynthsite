@@ -22,7 +22,7 @@ export default function Account() {
         <div className="card">
           <h3>Plan <span className="tag pro">Pro · beta</span></h3>
           <p className="small">All Scenario Lab controls are included during the beta.</p>
-          <Link href="/#matches" className="btn">Matches</Link>
+          <Link href="/#next" className="btn">Matches</Link>
         </div>
         <div className="card">
           <h3>API access</h3>

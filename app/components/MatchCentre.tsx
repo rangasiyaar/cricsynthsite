@@ -215,3 +215,41 @@ function Matchups({ doc }: { doc: MatchDoc }) {
     </div>
   );
 }
+
+/** Home-page view of the next match: score ranges, scoring and wicket rhythm, and when wickets fall. */
+export function Spotlight({ doc }: { doc: MatchDoc }) {
+  const s = doc.summary;
+  const overs = s.meta.rules.overs;
+  const hist = s.teams[0].batting.score.hist;
+  const width = hist.length > 1 ? hist[1].from - hist[0].from : 10;
+  const legend = <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>;
+  return (
+    <div className="grid g2" style={{ marginTop: 28 }}>
+      <div className="card anim-rise">
+        <h3>Where each innings lands</h3>{legend}
+        <Histogram width={width} height={200} xLabel="runs"
+                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }))} />
+      </div>
+      <div className="card anim-rise" style={{ animationDelay: "80ms" }}>
+        <h3>Runs per over</h3>{legend}
+        <OverBars height={200} format={(v) => v.toFixed(1)}
+                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
+      </div>
+      <div className="card anim-rise" style={{ animationDelay: "160ms" }}>
+        <h3>Chance of a wicket in each over</h3>{legend}
+        <OverBars height={200} series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
+      </div>
+      <div className="card anim-rise" style={{ animationDelay: "240ms" }}>
+        <h3>When wickets fall</h3>
+        {s.teams.map((t, k) => (
+          <div key={t.name} style={{ marginTop: k ? 18 : 8 }}>
+            <div className="cs-k" style={{ color: COLORS[k], marginBottom: 6 }}>{t.name} batting</div>
+            <WicketHeatmap color={COLORS[k]} overs={overs}
+                           rows={t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.05).slice(0, 6)
+                             .map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

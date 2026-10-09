@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import HeroPlate from "@/components/HeroPlate";
 import RequestAccess from "@/components/RequestAccess";
 import { useEffect, useState } from "react";
 import { Num, Pct, WinBar } from "@/components/charts";
+import { Spotlight } from "@/components/MatchCentre";
 import { Tiles } from "@/components/Tiles";
 import { loadIndex, loadMatch, loadPatterns } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
@@ -104,30 +104,20 @@ export default function Home() {
 
   return (
     <>
-      <section className="cs-hero">
-        <div>
-          <h1><span>Cricket, simulated.</span><span>Before the first ball.</span></h1>
-          <p className="cs-lede">Win probabilities, score ranges and player projections for every match we cover, built from
-            20,000 ball-by-ball simulations of the likely playing XIs.</p>
-          <div className="cs-hero-ctas">
-            <a className="cs-btn cs-btn--primary" href="#matches">View matches
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
-            </a>
-            <Link className="cs-btn cs-btn--secondary" href="/developers/">Explore the API</Link>
-          </div>
-        </div>
-        <HeroPlate doc={featured} />
-      </section>
-
-      <section id="matches" style={{ paddingTop: "clamp(16px, 3vw, 32px)", scrollMarginTop: 80 }}>
-        <div className="row-head"><h2>Upcoming matches</h2></div>
+      <section id="next" style={{ paddingTop: "clamp(32px, 5vw, 56px)" }}>
+        <div className="row-head"><h2>Next match</h2>{matches && matches.length > 1 && <a href="#matches" className="row-link">All upcoming <Arrow /></a>}</div>
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
-        {!matches && !error && <div className="fixtures"><div className="skeleton" /><div className="skeleton" /><div className="skeleton" /></div>}
-        {matches && matches.length === 0 && <p className="notice">No upcoming matches.</p>}
-        <div className="fixtures">{matches?.map((m, i) => <Fixture key={m.id} m={m} i={i} />)}</div>
+        {!featured && !error && matches?.length !== 0 && <div className="skeleton" style={{ minHeight: 320 }} />}
+        {matches && matches.length === 0 && <p className="notice">No upcoming matches are published yet.</p>}
+        {featured && <><Featured doc={featured} /><Spotlight doc={featured} /></>}
       </section>
 
-      {featured ? <Featured doc={featured} /> : matches?.length ? <div className="skeleton" style={{ marginTop: 40, minHeight: 320 }} /> : null}
+      {matches && matches.length > 1 && (
+        <section id="matches" style={{ paddingTop: 72, scrollMarginTop: 80 }}>
+          <div className="row-head"><h2>Upcoming matches</h2></div>
+          <div className="fixtures">{matches.map((m, i) => <Fixture key={m.id} m={m} i={i} />)}</div>
+        </section>
+      )}
 
       {patterns && <PatternTeaser rep={patterns} />}
 
