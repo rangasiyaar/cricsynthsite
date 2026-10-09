@@ -1,0 +1,77 @@
+{
+  "id": "ind-v-wi-t20i-indore-2026-10-11",
+  "title": "India v West Indies",
+  "date": "2026-10-11",
+  "start_time": "19:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "West Indies tour of India 2026/27 \u00b7 T20I no. 4188",
+  "comp_key": "intl-international-T20",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar",
+  "status": "scheduled",
+  "published": true,
+  "note": "Likely XIs carried over from the previous T20I (Lucknow); update when the playing XIs are announced.",
+  "teams": [
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Abhishek Sharma",
+        "Sanju Samson",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Shivam Dube",
+        "Naman Dhir",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Kuldeep Yadav",
+        "Mayank Yadav"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ]
+    },
+    {
+      "name": "West Indies",
+      "short": "WI",
+      "players": [
+        "Shai Hope",
+        "Kamil Pooran",
+        "Shimron Hetmyer",
+        "Rovman Powell",
+        "Sherfane Rutherford",
+        "Romario Shepherd",
+        "Matthew Forde",
+        "Roston Chase",
+        "Akeal Hosein",
+        "Shamar Springer",
+        "Shamar Joseph"
+      ],
+      "roles": [
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ]
+    }
+  ]
+}
