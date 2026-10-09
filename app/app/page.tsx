@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import HeroPlate from "@/components/HeroPlate";
 import RequestAccess from "@/components/RequestAccess";
 import { useEffect, useState } from "react";
 import { Num, Pct, WinBar } from "@/components/charts";
@@ -103,17 +104,19 @@ export default function Home() {
 
   return (
     <>
-      <section className="cs-hero" style={{ gridTemplateColumns: "minmax(0, 1fr)" }}>
+      <section className="cs-hero">
         <div>
-          <h1><span>Every match, simulated.</span></h1>
-          <p className="cs-lede">Win probabilities, score ranges and player projections for upcoming matches.</p>
+          <h1><span>Cricket, simulated.</span><span>Before the first ball.</span></h1>
+          <p className="cs-lede">Win probabilities, score ranges and player projections for every match we cover, built from
+            20,000 ball-by-ball simulations of the likely playing XIs.</p>
           <div className="cs-hero-ctas">
-            <a className="cs-btn cs-btn--primary" href="#matches">Upcoming matches
+            <a className="cs-btn cs-btn--primary" href="#matches">View matches
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
             </a>
-            <Link className="cs-btn cs-btn--secondary" href="/developers/">API</Link>
+            <Link className="cs-btn cs-btn--secondary" href="/developers/">Explore the API</Link>
           </div>
         </div>
+        <HeroPlate doc={featured} />
       </section>
 
       <section id="matches" style={{ paddingTop: "clamp(16px, 3vw, 32px)", scrollMarginTop: 80 }}>

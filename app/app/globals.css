@@ -228,8 +228,8 @@ select:focus, textarea:focus, input:focus { border-color: var(--cs-steel); outli
 .pg-code { width: 100%; font-size: 12.5px; line-height: 1.5; resize: vertical; }
 .pg-out { margin: 8px 0 0; max-height: 560px; overflow: auto; white-space: pre; background: var(--cs-surface); padding: 12px; border: 1px solid var(--cs-line); }
 .auth-form .form-label, .playground .form-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--cs-ink-2); margin: 6px 0 0; display: block; }
-.docs h1 span, .auth-page h1 span { overflow-wrap: anywhere; }
-.cs-hero h1 span { overflow-wrap: anywhere; }
+.docs h1 span, .auth-page h1 span { overflow-wrap: break-word; }
+.cs-hero h1 span { overflow-wrap: break-word; }
 
 /* ── Docs and playground (previous site's layout, full width under the nav) ── */
 .bleed { width: 100vw; margin-left: calc(50% - 50vw); }

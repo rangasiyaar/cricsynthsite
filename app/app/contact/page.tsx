@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Contact | CricSynthesis" };
 export default function Contact() {
   return (
     <>
-      <Legal title="Contact">
+      <Legal title="Contact" subtitle="Partnerships, API access and general enquiries.">
         <ul>
           <li>General questions: <a href="mailto:hello@cricsynthesis.in">hello@cricsynthesis.in</a></li>
                     <li>Privacy: <a href="mailto:privacy@cricsynthesis.in">privacy@cricsynthesis.in</a></li>

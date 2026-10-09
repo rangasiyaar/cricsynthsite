@@ -29,7 +29,7 @@ export default function Patterns() {
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">Pattern Lab</p>
-      <h1><span>Pattern Lab</span></h1>
+      <h1><span>Cricket wisdom,</span><span>put to the test.</span></h1>
       <p className="cs-lede">Common cricket beliefs, tested on ball-by-ball data before {rep?.summary.split_year ?? 2021} and re-checked on
         everything since. Only effects that hold up are used in the model.</p>
       {err && <p className="notice">{err}</p>}

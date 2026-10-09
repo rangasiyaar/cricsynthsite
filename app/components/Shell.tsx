@@ -37,14 +37,19 @@ function ThemeToggle() {
 }
 
 const LINKS: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
-                                   ["/docs/", "Docs"], ["/playground/", "Playground"]];
+                                   ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
+const DRAWER: [string, string][] = [["/#matches", "Matches"], ["/patterns/", "Pattern Lab"], ["/developers/", "API"],
+                                    ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
   const user = useUser();
-  if (user === undefined) return <span className={className} style={{ visibility: "hidden" }}>Sign in</span>;
-  return user
-    ? <Link href="/account/" className={className} onClick={onClick}>Account</Link>
-    : <Link href="/login/" className={className} onClick={onClick}>Sign in</Link>;
+  const signedIn = !!user;
+  return (
+    <Link href={signedIn ? "/account/" : "/login/"} className={className} onClick={onClick}
+          style={user === undefined ? { visibility: "hidden" } : undefined}>
+      {signedIn ? "Account" : "Sign in"}
+    </Link>
+  );
 }
 
 export function Nav() {
@@ -64,20 +69,22 @@ export function Nav() {
         <div className="nav-logo"><Brand /></div>
         <div className="nav-links">
           {LINKS.map(([h, l]) => <Link key={h} href={h} className={cls(h)}>{l}</Link>)}
-          <AccountLink className={`${cls("/login/")} nav-signin`} />
           <ThemeToggle />
+          <AccountLink className="nav-link nav-cta" />
         </div>
         <div className="mobile-nav">
-          <AccountLink className="mobile-nav-link" />
+          <Link href="/docs/" className="mobile-nav-link">Docs</Link>
+          <Link href="/mcp/" className="mobile-nav-link mobile-nav-link--mcp">MCP</Link>
           <ThemeToggle />
+          <AccountLink className="mobile-nav-cta" />
           <button type="button" className="cs-burger" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="csDrawer" onClick={() => setOpen(!open)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"><path className="b1" d="M4 7h16" /><path className="b2" d="M4 12h16" /><path className="b3" d="M4 17h16" /></svg>
           </button>
         </div>
       </div>
       <div className="cs-drawer" id="csDrawer" hidden={!open}>
-        {LINKS.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}</Link>)}
-        <AccountLink className="" onClick={() => setOpen(false)} />
+        {DRAWER.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}</Link>)}
+        <Link href="/mcp/" className="cs-drawer-mcp" onClick={() => setOpen(false)}>MCP</Link>
       </div>
     </nav>
   );
@@ -90,7 +97,7 @@ export function Footer() {
         <div className="footer-main">
           <div className="footer-brand">
             <Brand />
-            <p className="footer-tagline">Cricket simulation and analytics.</p>
+            <p className="footer-tagline">Cricket simulation and analytics</p>
           </div>
           <div className="footer-links">
             <div className="footer-column">
@@ -117,7 +124,7 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p className="footer-copyright">&copy; 2026 CricSynthesis. Probabilities from simulation, not certainties.</p>
+          <p className="footer-copyright">&copy; 2026 CricSynthesis. All rights reserved.</p>
           <div className="footer-social">
             <a href="https://in.linkedin.com/company/cricsynthesis" className="social-link" aria-label="CricSynthesis on LinkedIn" target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>

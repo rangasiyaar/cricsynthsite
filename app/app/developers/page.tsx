@@ -25,9 +25,14 @@ const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
 export default function Developers() {
   return (
     <div className="page-head">
-      <p className="cs-eyebrow">Developers</p>
-      <h1><span>CricSynthesis API</span></h1>
-      <p className="cs-lede">{ENDPOINTS.length} endpoints for analytics, simulation and modelling, and graphics. Projections only; no live scores or raw data.</p>
+      <p className="cs-eyebrow">CricSynthesis API</p>
+      <h1><span>Cricket intelligence.</span><span>One API.</span></h1>
+      <p className="cs-lede">{ENDPOINTS.length} endpoints for player and venue analytics, match simulation and decision modelling, and
+        broadcast-ready graphics, for fantasy platforms, broadcasters, media and franchise analysts.</p>
+      <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
+        <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>
+        <Link className="cs-btn cs-btn--secondary" href="/playground/">Open the playground</Link>
+      </div>
       <div className="grid g3" style={{ marginTop: 20 }}>
         {CATEGORIES.map((c) => {
           const eps = ENDPOINTS.filter((e) => e.category === c);
