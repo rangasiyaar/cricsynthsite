@@ -1,7 +1,6 @@
 "use client";
 // API playground without a server: the request is a Scenario for a published match, run by the same in-browser
 // engine as the Scenario Lab. The response has the shape of POST /v1/simulate's summary.
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { loadIndex, loadPack } from "@/lib/data";
 import type { Pack } from "@/lib/engine/sim";
@@ -44,11 +43,10 @@ export default function Playground() {
 
   return (
     <div className="page-head">
-      <p className="cs-eyebrow">Playground</p>
-      <h1><span>Try the engine.</span><span>No key needed.</span></h1>
-      <p className="cs-lede">Pick a published match, edit the scenario and send it. Simulations run in your browser with the same engine
-        as the API (up to {N_MAX.toLocaleString("en-IN")} per request here). See the <Link href="/docs/">API reference</Link> for every field.</p>
-      {matches && matches.length === 0 && <p className="notice">No matches are published right now. The playground opens with the next fixture.</p>}
+      <p className="cs-eyebrow">Developers</p>
+      <h1><span>Playground</span></h1>
+      <p className="cs-lede">Run simulation requests against published matches. Runs in your browser; no key required.</p>
+      {matches && matches.length === 0 && <p className="notice">No published matches.</p>}
       {matches && matches.length > 0 && (
         <div className="grid g2 playground" style={{ marginTop: 24 }}>
           <div className="card">
@@ -61,12 +59,12 @@ export default function Playground() {
             <textarea id="pg-body" className="form-input mono pg-code" rows={14} spellCheck={false} value={body} onChange={(e) => setBody(e.target.value)} />
             <p className="small muted">Scenario fields: battingFirst (0/1), boundaryMult, wicketMult, spinWicketMult, paceWicketMult, dew (0–1),
               playerForm {"{ playerId: multiplier }"}, excludeBowlers [ids], start {"{ innings, runs, wickets, balls, firstInningsTotal }"}.</p>
-            <button type="button" className="btn" onClick={send} disabled={!pack || busy}>{busy ? "Running…" : pack ? "Send request" : "Loading match…"}</button>
+            <button type="button" className="btn" onClick={send} disabled={!pack || busy}>{busy ? "Running…" : pack ? "Send" : "Loading…"}</button>
           </div>
           <div className="card">
             <div className="form-label">Response</div>
             <div className="mono small muted">{meta || "—"}</div>
-            <pre className="pg-code pg-out">{out || "Send a request to see the response."}</pre>
+            <pre className="pg-code pg-out">{out || ""}</pre>
           </div>
         </div>
       )}

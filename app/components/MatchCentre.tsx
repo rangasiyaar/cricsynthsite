@@ -51,8 +51,7 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
       </div>
 
       <p className="small muted" style={{ marginTop: 40 }}>
-        Simulated {new Date(doc.generated_at).toLocaleString()} · probabilities, not predictions: a 70% favourite still loses
-        three times in ten.
+        Simulated {new Date(doc.generated_at).toLocaleString()}. Probabilities, not predictions.
       </p>
     </div>
   );

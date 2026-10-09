@@ -72,7 +72,7 @@ function PatternTeaser({ rep }: { rep: PatternReport }) {
   if (!picks.length) return null;
   return (
     <section className="cs-section" style={{ paddingTop: 72 }}>
-      <div className="row-head"><h2>Cricket myths, tested</h2><Link href="/patterns/" className="row-link">All {rep.patterns.length} <Arrow /></Link></div>
+      <div className="row-head"><h2>Pattern Lab</h2><Link href="/patterns/" className="row-link">All {rep.patterns.length} <Arrow /></Link></div>
       <div className="grid g3">
         {picks.map((p, i) => (
           <Link key={p!.id} href="/patterns/" className="card myth anim-rise" style={{ animationDelay: `${i * 80}ms` }}>
@@ -105,23 +105,22 @@ export default function Home() {
     <>
       <section className="cs-hero" style={{ gridTemplateColumns: "minmax(0, 1fr)" }}>
         <div>
-          <h1><span>Every match,</span><span>simulated before the first ball.</span></h1>
-          <p className="cs-lede">Win chances, score bands, wicket timing and player probabilities for upcoming matches, from
-            20,000 ball-by-ball simulations. Free for fans; one API for businesses.</p>
+          <h1><span>Every match, simulated.</span></h1>
+          <p className="cs-lede">Win probabilities, score ranges and player projections for upcoming matches.</p>
           <div className="cs-hero-ctas">
-            <a className="cs-btn cs-btn--primary" href="#matches">See upcoming matches
+            <a className="cs-btn cs-btn--primary" href="#matches">Upcoming matches
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
             </a>
-            <Link className="cs-btn cs-btn--secondary" href="/developers/">For businesses: the API</Link>
+            <Link className="cs-btn cs-btn--secondary" href="/developers/">API</Link>
           </div>
         </div>
       </section>
 
       <section id="matches" style={{ paddingTop: "clamp(16px, 3vw, 32px)", scrollMarginTop: 80 }}>
-        <div className="row-head"><h2>Upcoming matches</h2><span className="cs-k">Simulated ball by ball before every fixture</span></div>
+        <div className="row-head"><h2>Upcoming matches</h2></div>
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
         {!matches && !error && <div className="fixtures"><div className="skeleton" /><div className="skeleton" /><div className="skeleton" /></div>}
-        {matches && matches.length === 0 && <p className="notice">No matches published yet.</p>}
+        {matches && matches.length === 0 && <p className="notice">No upcoming matches.</p>}
         <div className="fixtures">{matches?.map((m, i) => <Fixture key={m.id} m={m} i={i} />)}</div>
       </section>
 
@@ -129,18 +128,6 @@ export default function Home() {
 
       {patterns && <PatternTeaser rep={patterns} />}
 
-      <section id="how-it-works" className="cs-section">
-        <p className="cs-eyebrow">How it works</p>
-        <h2 className="cs-h2" style={{ maxWidth: "18ch" }}>From ball-by-ball history to tomorrow&apos;s match</h2>
-        <ol className="cs-steps">
-          <li><div className="cs-step-n">01</div><h3>Learn every ball</h3><p>The engine learns how each batter and bowler scores and takes
-            wickets by phase, venue and match situation, across leagues and formats.</p></li>
-          <li><div className="cs-step-n">02</div><h3>Play it 20,000 times</h3><p>Each upcoming match is simulated ball by ball with the
-            likely XIs, giving a full range of results, not a single guess.</p></li>
-          <li><div className="cs-step-n">03</div><h3>Ask what if</h3><p>Change the toss, pitch, dew, form or the match situation in the
-            Scenario Lab and re-run it in your browser. <Link href="/login/">Free account</Link>.</p></li>
-        </ol>
-      </section>
 
       <RequestAccess />
       <div style={{ height: "clamp(40px, 6vw, 72px)" }} />

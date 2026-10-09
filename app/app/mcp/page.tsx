@@ -8,12 +8,10 @@ export default function Mcp() {
     <section className="cs-hero" style={{ gridTemplateColumns: "minmax(0, 1fr)" }}>
       <div>
         <p className="cs-eyebrow"><span className="cs-tag cs-tag--soon">Coming soon</span></p>
-        <h1><span>CricSynthesis MCP.</span><span>Cricket for AI agents.</span></h1>
-        <p className="cs-lede">A Model Context Protocol server for the CricSynthesis API, so assistants and agents can ask for match
-          forecasts, player projections, simulations and graphics directly.</p>
+        <h1><span>MCP server</span></h1>
+        <p className="cs-lede">Model Context Protocol access to the CricSynthesis API.</p>
         <div className="cs-hero-ctas">
           <Link className="cs-btn cs-btn--primary" href="/developers/#request-access">Get notified</Link>
-          <Link className="cs-btn cs-btn--secondary" href="/docs/">Read the API docs</Link>
         </div>
       </div>
     </section>

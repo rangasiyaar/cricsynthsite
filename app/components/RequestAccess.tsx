@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const SHEET = "https://script.google.com/macros/s/AKfycbxLxYswUwhcZThYQLRCnjBcRLw9EIXmjyXJL5Yz6cN6yFesjvvUu2fScPfXgofVLoDi/exec";
 
-export default function RequestAccess({ title = "Start building with CricSynthesis" }: { title?: string }) {
+export default function RequestAccess({ title = "Contact sales" }: { title?: string }) {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -27,18 +27,15 @@ export default function RequestAccess({ title = "Start building with CricSynthes
   return (
     <section id="request-access" className="cs-section cs-contact" style={{ scrollMarginTop: 88 }}>
       <div>
-        <p className="cs-eyebrow">Contact sales</p>
+        <p className="cs-eyebrow">API access</p>
         <h2 className="cs-h2">{title}</h2>
-        <p className="cs-lede">Fantasy platform, franchise analytics team, broadcaster or media house: tell us what you need and
-          we'll set up API access and onboard you directly.</p>
       </div>
       <div className="cs-frame cs-form-card">
         <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
         {sent ? (
           <div className="register-success active" role="status">
-            <p className="cs-eyebrow">Request received</p>
-            <h3>We'll be in touch</h3>
-            <p>We'll review your request and reach out with next steps.</p>
+            <h3>Thank you</h3>
+            <p>We'll be in touch shortly.</p>
           </div>
         ) : (
           <form id="registrationForm" className="register-form" onSubmit={submit} noValidate>

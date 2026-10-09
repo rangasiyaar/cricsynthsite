@@ -29,12 +29,9 @@ export default function Patterns() {
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">Pattern Lab</p>
-      <h1><span>Cricket folklore.</span><span>Tested on every ball.</span></h1>
-      <p className="cs-lede">
-        Is a batter really in danger straight after hitting a six? Do wickets come in pairs? Each belief is tested against
-        comparable balls in the same match situation, found in matches before {rep?.summary.split_year ?? 2021}, then
-        checked again on everything since. Only effects that survive both go into our simulations.
-      </p>
+      <h1><span>Pattern Lab</span></h1>
+      <p className="cs-lede">Common cricket beliefs, tested on ball-by-ball data before {rep?.summary.split_year ?? 2021} and re-checked on
+        everything since. Only effects that hold up are used in the model.</p>
       {err && <p className="notice">{err}</p>}
       {rep && (
         <>

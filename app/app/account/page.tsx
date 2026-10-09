@@ -21,14 +21,13 @@ export default function Account() {
         </div>
         <div className="card">
           <h3>Plan <span className="tag pro">Pro · beta</span></h3>
-          <p className="small">Every Scenario Lab lever is included while we're in beta: pitch, spin and seam help, dew, player form,
-            ruling bowlers out and jumping to any match situation.</p>
-          <Link href="/#matches" className="btn">Open a match</Link>
+          <p className="small">All Scenario Lab controls are included during the beta.</p>
+          <Link href="/#matches" className="btn">Matches</Link>
         </div>
         <div className="card">
           <h3>API access</h3>
-          <p className="small">Building on the engine? Tell us what you need and we'll issue a key when the API opens.</p>
-          <Link href="/developers/#request-access" className="btn ghost">Request API access</Link>
+          <p className="small">API keys are issued on request.</p>
+          <Link href="/developers/#request-access" className="btn ghost">Request access</Link>
         </div>
       </div>
       <div style={{ paddingBottom: 80 }} />

@@ -4,20 +4,20 @@ import RequestAccess from "@/components/RequestAccess";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const GROUPS: { title: string; blurb: string; rows: [string, string][] }[] = [
-  { title: "Analytics", blurb: "Ratings and per-ball probabilities straight from the model.", rows: [
+  { title: "Analytics", blurb: "Ratings, projections and matchups.", rows: [
     ["GET /v1/players?q=", "Search players and get their IDs"],
     ["GET /v1/players/{id}", "Cross-league, cross-format rating and playing style"],
     ["POST /v1/players/{id}/projection", "Runs and wickets distribution: typical match or against an XI"],
     ["GET /v1/matchups?batter=&bowler=", "Per-ball outcome odds for a batter against a bowler, compared with an average pairing"],
     ["GET /v1/patterns", "Pattern Lab: which cricket beliefs hold up"],
   ] },
-  { title: "Simulation", blurb: "Full ball-by-ball simulations with your scenario and conditions.", rows: [
+  { title: "Simulation", blurb: "Ball-by-ball match simulation.", rows: [
     ["POST /v1/simulate", "Any limited-overs match: XIs, venue, pitch, dew, form, match situation"],
     ["GET /v1/matches", "Upcoming matches we cover"],
     ["GET /v1/matches/{id}", "The full pre-computed match centre"],
     ["GET /v1/matches/{id}/pack", "Engine pack for client-side what-ifs"],
   ] },
-  { title: "Graphics", blurb: "Share-ready SVG cards, light or dark.", rows: [
+  { title: "Graphics", blurb: "SVG cards, light or dark.", rows: [
     ["GET /v1/graphics/matches/{id}/win.svg", "Win-probability card"],
     ["GET /v1/graphics/matches/{id}/scores.svg", "Score distribution card"],
     ["GET /v1/graphics/matches/{id}/wickets/{team}.svg", "Wicket-timing heatmap"],
@@ -46,12 +46,9 @@ const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
 export default function Developers() {
   return (
     <div className="page-head">
-      <p className="cs-eyebrow">API</p>
-      <h1><span>One catalog.</span><span>Three kinds of answer.</span></h1>
-      <p className="cs-lede">
-        The engine behind the match centre, for broadcasters, fantasy platforms, media and analysts. We sell projections
-        and analytics built on simulation, not live scores or raw data.
-      </p>
+      <p className="cs-eyebrow">Developers</p>
+      <h1><span>CricSynthesis API</span></h1>
+      <p className="cs-lede">Analytics, simulation and graphics endpoints. Projections only; no live scores or raw data.</p>
       <div className="grid g3" style={{ marginTop: 20 }}>
         {GROUPS.map((g) => (
           <div key={g.title} className="card">
@@ -80,7 +77,7 @@ export default function Developers() {
         ))}
       </div>
       <p className="small muted" style={{ marginTop: 20 }}>
-        Every endpoint and field: <Link href="/docs/">API reference</Link>. Try simulations now in the <Link href="/playground/">playground</Link>.
+        <Link href="/docs/">API reference</Link> · <Link href="/playground/">Playground</Link>
       </p>
       <RequestAccess />
       <div style={{ paddingBottom: 40 }} />

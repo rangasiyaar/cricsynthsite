@@ -206,11 +206,9 @@ function Locked({ pro, children }: { pro: boolean; children: React.ReactNode }) 
   if (pro) return <>{children}</>;
   return (
     <div className="notice">
-      <b>More levers with Pro</b>: pitch wickets, spin and seam help, dew, player form, ruling bowlers out, and jumping to any
-      match situation.
+      Sign in to use all Scenario Lab controls.
       <div style={{ marginTop: 10 }}>
-        <a className="btn" href={`/login/?next=${encodeURIComponent(typeof window === "undefined" ? "/" : window.location.pathname + window.location.search)}`}>Sign in free to unlock</a>
-        <span className="small muted" style={{ marginLeft: 12 }}>Pro is free during the launch beta.</span>
+        <a className="btn" href={`/login/?next=${encodeURIComponent(typeof window === "undefined" ? "/" : window.location.pathname + window.location.search)}`}>Sign in</a>
       </div>
     </div>
   );

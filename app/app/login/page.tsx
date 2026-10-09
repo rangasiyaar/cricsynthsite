@@ -50,9 +50,7 @@ export default function Login() {
 
   return (
     <div className="page-head auth-page">
-      <p className="cs-eyebrow">Account</p>
-      <h1><span>{mode === "in" ? "Sign in." : "Create an account."}</span><span>Free during beta.</span></h1>
-      <p className="cs-lede">Accounts are free during the launch beta and include every Pro lever in the Scenario Lab.</p>
+      <h1><span>{mode === "in" ? "Sign in" : "Create account"}</span></h1>
       <div className="card auth-card">
         <button type="button" className="btn ghost auth-google" onClick={google} disabled={busy}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">

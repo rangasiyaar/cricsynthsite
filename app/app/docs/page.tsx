@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ref from "@/data-static/api-reference.json";
 
 export const metadata: Metadata = { title: "API reference | CricSynthesis" };
@@ -49,11 +48,10 @@ export default function Docs() {
   const endpoints = ref.endpoints as Endpoint[];
   return (
     <div className="page-head docs">
-      <p className="cs-eyebrow">API reference · v{ref.version}</p>
-      <h1><span>{ref.title}.</span><span>Every endpoint.</span></h1>
-      <p className="cs-lede">Base URL <span className="mono">{API}</span>. Send your key in the <span className="mono">X-API-Key</span> header.
-        Responses are JSON (graphics are SVG). Errors use standard HTTP codes with a <span className="mono">detail</span> message; 429 means
-        you've reached your plan's daily limit. <Link href="/developers/#request-access">Request a key</Link>.</p>
+      <p className="cs-eyebrow">Version {ref.version}</p>
+      <h1><span>API reference</span></h1>
+      <p className="cs-lede">Base URL <span className="mono">{API}</span>. Authenticate with the <span className="mono">X-API-Key</span> header.
+        Errors return a <span className="mono">detail</span> message; 429 means the daily limit is reached.</p>
       <nav className="card ref-index" aria-label="Endpoints">
         {endpoints.map((e) => <a key={slug(e)} href={`#${slug(e)}`} className="mono small"><b>{e.method}</b> {e.path}</a>)}
       </nav>
@@ -79,7 +77,7 @@ export default function Docs() {
           </>)}
         </section>
       ))}
-      <p className="small muted" style={{ paddingBottom: 80 }}>* required. Try simulations without a key in the <Link href="/playground/">playground</Link>.</p>
+      <p className="small muted" style={{ paddingBottom: 80 }}>* required</p>
     </div>
   );
 }

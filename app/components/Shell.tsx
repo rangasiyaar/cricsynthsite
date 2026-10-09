@@ -90,7 +90,7 @@ export function Footer() {
         <div className="footer-main">
           <div className="footer-brand">
             <Brand />
-            <p className="footer-tagline">Every match, simulated before the first ball.</p>
+            <p className="footer-tagline">Cricket simulation and analytics.</p>
           </div>
           <div className="footer-links">
             <div className="footer-column">
