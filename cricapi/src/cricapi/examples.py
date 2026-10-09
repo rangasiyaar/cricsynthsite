@@ -58,7 +58,7 @@ def context(model, client, headers) -> dict:
         good = [tid for tid, t in cat.items() if len(next(iter(t["formats"].values())).get("last_xi", [])) == 11]
         teams = [{"team_id": good[0]}, {"team_id": good[1]}]
     t0 = cat[teams[0]["team_id"]]
-    xi = next(iter(t0["formats"].values()))["last_xi"]
+    xi = (t0["formats"].get("T20") or next(iter(t0["formats"].values())))["last_xi"]
     pats = client.get("/v1/patterns", headers=headers)
     pattern = (pats.json().get("patterns") or [{}])[0].get("id") if pats.status_code == 200 else None
     return {"bat": bat[:3], "bowl": bowl[:3], "venue": venue, "comp": comps[0]["key"] if comps else None,
@@ -157,7 +157,8 @@ def build(model_dir: Path, publish: Path, coverage: Path, patterns: Path) -> dic
     simulate_teams = []
     for t in ctx["teams"]:
         info = model.meta["catalog"]["teams"][t["team_id"]]
-        simulate_teams.append({"name": info["name"], "players": next(iter(info["formats"].values()))["last_xi"]})
+        f = info["formats"].get("T20") or next(iter(info["formats"].values()))
+        simulate_teams.append({"name": info["name"], "players": f["last_xi"]})
     reqs["POST /v1/simulate"] = {"body": {"teams": simulate_teams, "venue_id": ctx["venue"]["id"], "n": 2000}}
     out, failed = {}, []
     for ep in reference()["endpoints"]:
