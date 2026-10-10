@@ -1,10 +1,12 @@
 "use client";
-// "Contact sales" form: same Google Sheet endpoint the original website used (Apps Script web app, free).
+// API access: the developer pitch beside the request form. The form posts to the same Google Sheet endpoint the
+// original website used (Apps Script web app, free).
+import Link from "next/link";
 import { useState } from "react";
 
 const SHEET = "https://script.google.com/macros/s/AKfycbxLxYswUwhcZThYQLRCnjBcRLw9EIXmjyXJL5Yz6cN6yFesjvvUu2fScPfXgofVLoDi/exec";
 
-export default function RequestAccess({ title = "Contact sales" }: { title?: string }) {
+export default function RequestAccess() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -26,16 +28,29 @@ export default function RequestAccess({ title = "Contact sales" }: { title?: str
 
   return (
     <section id="request-access" className="cs-section cs-contact" style={{ scrollMarginTop: 88 }}>
-      <div>
-        <p className="cs-eyebrow">API access</p>
-        <h2 className="cs-h2">{title}</h2>
+      <div className="build-cta">
+        <p className="cs-eyebrow">For developers</p>
+        <h2 className="cs-h2">Build with CricSynthesis</h2>
+        <p className="cs-lede">One API for ball-by-ball cricket intelligence: player and venue analytics, match simulation and
+          decision models, and broadcast-ready graphics. Tell us what you're building and we'll set up your key.</p>
+        <ul className="build-points">
+          <li><b>56 endpoints</b> across analytics, simulation and graphics</li>
+          <li><b>JSON over HTTPS</b> with API-key auth and clear rate limits</li>
+          <li><b>Free to prototype</b>, with Pro and Business limits when you ship</li>
+          <li><b>MCP server</b> for Claude, Cursor and other AI assistants</li>
+        </ul>
+        <div className="build-links">
+          <Link href="/docs/">Read the docs</Link>
+          <Link href="/playground/">Try the playground</Link>
+          <Link href="/mcp/">Connect via MCP</Link>
+        </div>
       </div>
       <div className="cs-frame cs-form-card">
         <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
         {sent ? (
           <div className="register-success active" role="status">
             <h3>Thank you</h3>
-            <p>We'll be in touch shortly.</p>
+            <p>We'll be in touch with your key and next steps, usually within one working day.</p>
           </div>
         ) : (
           <form id="registrationForm" className="register-form" onSubmit={submit} noValidate>
@@ -63,8 +78,8 @@ export default function RequestAccess({ title = "Contact sales" }: { title?: str
             </div>
             {err && <p className="small" role="alert" style={{ color: "var(--cs-danger, #c0392b)" }}>{err}</p>}
             <div className="cs-form-foot">
-              <button type="submit" className="cs-btn cs-btn--primary form-submit" disabled={busy}><span>{busy ? "Sending…" : "Contact sales"}</span></button>
-              <p className="form-disclaimer">We never share your details with third parties.</p>
+              <button type="submit" className="cs-btn cs-btn--primary form-submit" disabled={busy}><span>{busy ? "Sending…" : "Request API access"}</span></button>
+              <p className="form-disclaimer">We usually reply within one working day. We never share your details.</p>
             </div>
           </form>
         )}

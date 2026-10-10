@@ -127,3 +127,14 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .nav-pro { margin-left: 6px; font-size: 10px; padding: 1px 6px; vertical-align: 2px; letter-spacing: .04em; }
 .cs-drawer .nav-pro { font-size: 12px; vertical-align: 4px; }
 .login-dev { margin-top: .75rem; }
+
+/* "Build with CricSynthesis" beside the API access form */
+.build-cta .cs-lede { margin-top: 18px; }
+.build-points { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; max-width: 46ch; }
+.build-points li { position: relative; padding-left: 22px; color: var(--cs-ink-2); line-height: 1.5; }
+.build-points li::before { content: ""; position: absolute; left: 0; top: .55em; width: 8px; height: 8px; border-radius: 2px;
+  background: var(--cs-steel); }
+.build-points b { color: var(--cs-ink); font-weight: 600; }
+.build-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 26px; }
+.build-links a { font-weight: 600; color: var(--cs-steel-700); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+.build-links a:hover { color: var(--cs-ink); }
