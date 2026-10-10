@@ -24,10 +24,16 @@ function friendly(e: unknown): string {
 
 export function Dashboard() {
   const { user, plan, source } = usePlan();
+  // usePlan starts as "still checking" on first render, even inside RequireSignIn; wait for the account.
+  if (!user || plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
+  return <DashboardFor user={user} plan={plan} source={source} />;
+}
+
+function DashboardFor({ user, plan, source }: { user: User; plan: string; source: string | null }) {
   const [section, setSection] = useState<Section>("Overview");
   const [keys, setKeys] = useState<ApiKey[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const u = user as User;
+  const u = user;
 
   const refresh = useCallback(() => {
     listKeys(u.uid).then(setKeys).catch((e) => { setKeys([]); setErr(friendly(e)); });
