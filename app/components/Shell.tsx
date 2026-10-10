@@ -2,8 +2,9 @@
 // Nav and footer: the same markup and classes as the website's js/layout.js, so both look identical.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useUser } from "@/lib/firebase";
+import { useEffect, useRef, useState } from "react";
+import { signOut } from "firebase/auth";
+import { auth, useUser } from "@/lib/firebase";
 
 export function Logo() {
   return (
@@ -43,12 +44,37 @@ const DRAWER: [string, string][] = [["/#next", "Matches"], ["/lab/", "MatchSynth
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
   const user = useUser();
-  const signedIn = !!user;
+  const [open, setOpen] = useState(false);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node)) setOpen(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("mousedown", close); document.removeEventListener("keydown", esc); };
+  }, [open]);
+  if (!user) {
+    return (
+      <Link href="/login/" className={className} onClick={onClick} style={user === undefined ? { visibility: "hidden" } : undefined}>
+        Sign in
+      </Link>
+    );
+  }
   return (
-    <Link href={signedIn ? "/account/" : "/login/"} className={className} onClick={onClick}
-          style={user === undefined ? { visibility: "hidden" } : undefined}>
-      {signedIn ? "Dashboard" : "Sign in"}
-    </Link>
+    <div className="acct-menu" ref={box}>
+      <button type="button" className={className} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+        Dashboard
+        <svg className="acct-caret" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.8" /></svg>
+      </button>
+      {open && (
+        <div className="acct-pop" role="menu">
+          <div className="acct-who">{user.email}</div>
+          <Link href="/account/" role="menuitem" onClick={() => { setOpen(false); onClick?.(); }}>Account</Link>
+          <button type="button" role="menuitem" onClick={() => signOut(auth()).then(() => window.location.replace("/"))}>Log out</button>
+        </div>
+      )}
+    </div>
   );
 }
 
