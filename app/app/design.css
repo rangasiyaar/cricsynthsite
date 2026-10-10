@@ -1,149 +1,35 @@
-/* CricSynthesis design system v2 — "the scorecard" (see app/DESIGN.md). Loaded last: re-maps the shared tokens
-   used by site.css / globals.css and resets the generic treatments (all-caps labels, corner ticks, mono labels). */
+/* CricSynthesis layout layer (see app/DESIGN.md). Loaded last. Colours, fonts and type treatments stay as defined in
+   site.css / globals.css; this file only sets shape and layout: card radius, the scoreboard, symmetric grids. */
 
-:root {
-  --cs-bg: #F3F5F4;
-  --cs-surface: #FFFFFF;
-  --cs-card: #FFFFFF;
-  --cs-ink: #16202E;
-  --cs-ink-2: #3E4A57;
-  --cs-ink-3: #66727D;
-  --cs-line: #DCE2E6;
-  --cs-tick: #EDF1F3;
-  --cs-steel: #0F7A4F;
-  --cs-steel-600: #12865A;
-  --cs-steel-700: #0B6340;
-  --cs-steel-800: #084A30;
-  --cs-steel-900: #06331F;
-  --cs-steel-100: #E7F4EE;
-  --cs-steel-200: #CDE9DB;
-  --cs-steel-300: #A4D4BC;
-  --cs-steel-400: #6FB894;
-  --cs-btn-hover: #0B6340;
-  --cs-paper: #FFFFFF;
-  --cs-nav-bg: rgba(255, 255, 255, .94);
-  --cs-nav-bg-solid: #FFFFFF;
-  --cs-chart-fill: #E4EEF9;
-  --cs-chart-line: #1F5FBF;
-  --cs-range-mid: #16202E;
-  --cs-accent-bg: #E7F4EE;
-  --cs-head: "Archivo", system-ui, sans-serif;
-  --cs-body: "Archivo", system-ui, sans-serif;
-  --team-a: #1F5FBF;
-  --team-b: #C23A2B;
-  --team-a-soft: rgba(31, 95, 191, .12);
-  --team-b-soft: rgba(194, 58, 43, .12);
-  --shadow: 0 1px 2px rgba(22, 32, 46, .05), 0 1px 1px rgba(22, 32, 46, .03);
-  --r-card: 12px;
-  --r-btn: 8px;
-  --color-bg-secondary: #FFFFFF;
-  --color-bg-tertiary: #EEF2F1;
-  --color-bg-card: #FFFFFF;
-  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
-}
-:root[data-theme="dark"] {
-  --cs-bg: #0E1822;
-  --cs-surface: #142231;
-  --cs-card: #142231;
-  --cs-ink: #E8EEF2;
-  --cs-ink-2: #B9C6D1;
-  --cs-ink-3: #8698A7;
-  --cs-line: #22354A;
-  --cs-tick: #1B2B3C;
-  --cs-steel: #2E9C6A;
-  --cs-steel-700: #5CC492;
-  --cs-steel-800: #8AD8B1;
-  --cs-btn-hover: #258A5C;
-  --cs-nav-bg: rgba(14, 24, 34, .94);
-  --cs-nav-bg-solid: #0E1822;
-  --cs-chart-fill: #1A2F47;
-  --cs-chart-line: #6EA2F0;
-  --cs-range-mid: #E8EEF2;
-  --cs-accent-bg: rgba(46, 156, 106, .16);
-  --team-a: #6EA2F0;
-  --team-b: #F07B6B;
-  --team-a-soft: rgba(110, 162, 240, .16);
-  --team-b-soft: rgba(240, 123, 107, .16);
-  --shadow: none;
-  --color-bg-secondary: #142231;
-  --color-bg-tertiary: #1B2B3C;
-  --color-bg-card: #142231;
-}
+:root { --r-card: 12px; --r-btn: 8px; }
 
-html body { font-family: var(--cs-body); font-variant-numeric: tabular-nums; letter-spacing: 0; }
-
-/* Headings: sentence case, condensed width, no tracking */
-html body h1, html body h2, html body h3, html body .cs-h2, html body .cs-hero h1, html body .legal-title,
-html body .docs-section-title, html body .featured-name, html body .cs-plate-name, html body .myth-title,
-html body .mcard .teams, html body .cs-brand span, html body .tile-big, html body .stat, html body .le-v,
-html body .method-v, html body .featured-pct, html body .fixture-teams {
-  text-transform: none; letter-spacing: -.01em; font-stretch: 82%; font-weight: 700;
-}
-html body h1 { font-size: clamp(36px, 5vw, 60px); line-height: 1.02; }
-html body h2, html body .cs-h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.1; }
-html body h3 { font-size: 19px; line-height: 1.25; letter-spacing: 0; }
-html body .cs-hero h1 { font-size: clamp(40px, 5.6vw, 72px); }
-html body .cs-brand span { font-size: 21px; letter-spacing: 0; }
-html body .cs-brand span b { font-weight: 700; color: var(--cs-steel); }
-
-/* Labels: sentence case, body face, no tracking, no mono */
-html body .cs-k, html body .cs-eyebrow, html body .eyebrow, html body .plate-bar, html body .cs-plate-bar,
-html body .fixture-top, html body .fixture-foot, html body .footer-heading, html body .form-label, html body th,
-html body .verdict, html body .tabs button, html body .tag, html body .chart text, html body .response-label,
-html body .pg-block-title, html body .pg-key-label, html body .pg-param-label, html body .le-u, html body .ladder-dots,
-html body .sidebar-product-name, html body .legal-subtitle {
-  text-transform: none; letter-spacing: 0; font-family: var(--cs-body);
-}
-html body .cs-k { font-size: 12.5px; color: var(--cs-ink-3); font-weight: 500; }
-html body .cs-eyebrow { font-size: 13.5px; font-weight: 600; color: var(--cs-steel-700); }
-html body .chart text { font-size: 11.5px; }
-
-/* Surfaces: cards with radius and a hairline, no corner ticks */
+/* Surfaces: rounded cards with a hairline, no corner ticks */
 html body .card, html body .cs-frame, html body .endpoint-card, html body .pg-block, html body .code-panel {
-  background: var(--cs-card); border: 1px solid var(--cs-line); border-radius: var(--r-card); box-shadow: var(--shadow);
+  border: 1px solid var(--cs-line); border-radius: var(--r-card);
 }
 html body .card::before, html body .card::after, html body .cs-frame > i { display: none !important; }
 html body .card { padding: 22px 24px; }
-html body .plate-bar { margin: -22px -24px 18px; border-radius: var(--r-card) var(--r-card) 0 0; background: var(--cs-bg); }
-html body .notice { border-radius: var(--r-card); background: var(--cs-card); border-style: solid; }
+html body .plate-bar { margin: -22px -24px 18px; border-radius: var(--r-card) var(--r-card) 0 0; }
+html body .notice { border-radius: var(--r-card); }
 html body .table-wrap, html body .code-panel { border-radius: 10px; }
 
-/* Buttons */
-html body .btn, html body .cs-btn, html body .pg-run-btn-inline, html body .nav .nav-cta, html body .nav .mobile-nav-cta {
-  border-radius: var(--r-btn); text-transform: none; letter-spacing: 0; font-family: var(--cs-body); font-weight: 600;
-  font-size: 15px; font-stretch: 100%;
+/* Buttons and inputs: shape only */
+html body .btn, html body .cs-btn, html body .pg-run-btn-inline, html body .nav .nav-cta, html body .nav .mobile-nav-cta,
+html body .cs-theme-toggle, html body .cs-burger, html body input, html body select, html body textarea, html body .form-input {
+  border-radius: var(--r-btn);
 }
-html body .btn, html body .cs-btn--primary, html body .nav .nav-cta, html body .nav .mobile-nav-cta, html body .pg-run-btn-inline {
-  background: var(--cs-steel); color: #fff !important;
-}
-html body .btn:hover, html body .cs-btn--primary:hover, html body .nav .nav-cta:hover { background: var(--cs-btn-hover); }
-html body .btn.ghost, html body .cs-btn--secondary { background: var(--cs-card); color: var(--cs-ink) !important; border: 1px solid var(--cs-line); }
-html body .btn.ghost:hover, html body .cs-btn--secondary:hover { background: var(--cs-bg); }
-html body .cs-btn svg { display: none; }
-html body input, html body select, html body textarea, html body .form-input { border-radius: var(--r-btn); }
-
-/* Nav and footer */
-html body .nav { background: var(--cs-nav-bg); border-bottom: 1px solid var(--cs-line); backdrop-filter: saturate(1.4) blur(8px); }
-html body .nav .nav-link { font-weight: 500; color: var(--cs-ink-2); }
-html body .nav .nav-link:hover, html body .nav .nav-link.active { color: var(--cs-ink); }
-html body .nav .nav-cta { padding: 8px 16px; }
-html body .cs-theme-toggle, html body .cs-burger { border-radius: var(--r-btn); }
-html body .footer { background: var(--cs-card); border-top: 1px solid var(--cs-line); }
 
 /* Tabs as a segmented control */
 html body .tabs { border-radius: 10px; background: var(--cs-card); padding: 4px; gap: 4px; border: 1px solid var(--cs-line); }
-html body .tabs button { border-radius: 7px; font-weight: 600; font-size: 14.5px; border: 0 !important; }
+html body .tabs button { border-radius: 7px; border: 0 !important; }
 html body .tabs button[aria-selected="true"] { background: var(--cs-ink); color: var(--cs-bg); }
-:root[data-theme="dark"] body .tabs button[aria-selected="true"] { background: var(--cs-steel); color: #fff; }
-html body .tag.pro { border-radius: 999px; background: var(--cs-steel); border-color: var(--cs-steel); }
+html body .tag.pro { border-radius: 999px; }
 
 /* Bars and charts */
-html body .winbar { border-radius: 999px; border: 0; background: var(--cs-tick); }
+html body .winbar { border-radius: 999px; border: 0; }
 html body .winbar.big { height: 14px; }
 html body .legend i { border-radius: 3px; }
 
-/* Motion: only the live engine and the win bar move by themselves */
-html body .anim-rise { animation: none; opacity: 1; transform: none; }
 
 /* ── Home: section rhythm ── */
 .section { padding-top: clamp(40px, 6vw, 72px); }
@@ -154,15 +40,15 @@ html body .anim-rise { animation: none; opacity: 1; transform: none; }
 /* ── Scoreboard hero ── */
 .scoreboard { padding: 0 !important; overflow: hidden; }
 .sb-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 24px; border-bottom: 1px solid var(--cs-line);
-  font-size: 14px; color: var(--cs-ink-2); background: var(--cs-bg); }
+  font-family: var(--cs-head); font-weight: 600; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; color: var(--cs-ink-3); }
 .sb-top b { color: var(--cs-ink); font-weight: 600; }
 .sb-main { display: grid; grid-template-columns: 1fr minmax(160px, auto) 1fr; align-items: center; gap: 24px; padding: 28px 32px 20px; }
 .sb-team { display: flex; align-items: center; gap: 18px; }
 .sb-team.right { flex-direction: row-reverse; text-align: right; }
-.sb-badge { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700;
-  font-stretch: 82%; font-size: 22px; flex: none; }
-.sb-name { font-size: clamp(22px, 2.6vw, 34px); font-weight: 700; font-stretch: 82%; line-height: 1.05; }
-.sb-pct { font-size: clamp(40px, 5vw, 64px); font-weight: 700; font-stretch: 82%; line-height: 1; margin-top: 4px; }
+.sb-badge { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-family: var(--cs-head);
+  font-weight: 600; font-size: 22px; letter-spacing: .04em; flex: none; }
+.sb-name { font-family: var(--cs-head); font-size: clamp(24px, 2.8vw, 36px); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; line-height: 1.05; }
+.sb-pct { font-family: var(--cs-head); font-size: clamp(44px, 5.4vw, 68px); font-weight: 600; line-height: 1; margin-top: 4px; font-variant-numeric: tabular-nums; }
 .sb-mid { text-align: center; color: var(--cs-ink-3); font-size: 14px; display: grid; gap: 4px; justify-items: center; }
 .sb-mid .sb-v { font-size: 15px; font-weight: 600; color: var(--cs-ink-2); }
 .sb-mid .when { font-weight: 600; }
@@ -188,11 +74,10 @@ html body .g2 { gap: 16px; }
 
 /* Fixtures */
 html body .fixture { border-radius: var(--r-card); }
-html body .fixture:hover { background: var(--cs-card); transform: none; border-color: var(--cs-steel-400); }
+html body .fixture:hover { transform: none; }
 html body .featured { margin-top: 0; }
 html body .when .cs-live-dot { border-radius: 50%; }
 html body .le-stats { border-radius: 10px; overflow: hidden; }
-html body .method-steps .cs-step-n { color: var(--cs-steel-400); font-weight: 700; font-stretch: 82%; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .page-head > .scoreboard { margin-bottom: 28px; }
