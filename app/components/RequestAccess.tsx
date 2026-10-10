@@ -26,7 +26,7 @@ export default function RequestAccess() {
   };
 
   return (
-    <section id="request-access" className="cs-section cs-contact" style={{ scrollMarginTop: 88 }}>
+    <section id="request-access" className="cs-section cs-contact cs-ruled" style={{ scrollMarginTop: 88 }}>
       <div className="build-cta">
         <h2 className="cs-h2">Build with CricSynthesis</h2>
         <p className="cs-lede">One API for ball-by-ball cricket intelligence: player and venue analytics, match simulation and
