@@ -1,7 +1,6 @@
 "use client";
 // API access: the developer pitch beside the request form. The form posts to the same Google Sheet endpoint the
 // original website used (Apps Script web app, free).
-import Link from "next/link";
 import { useState } from "react";
 
 const SHEET = "https://script.google.com/macros/s/AKfycbxLxYswUwhcZThYQLRCnjBcRLw9EIXmjyXJL5Yz6cN6yFesjvvUu2fScPfXgofVLoDi/exec";
@@ -29,21 +28,10 @@ export default function RequestAccess() {
   return (
     <section id="request-access" className="cs-section cs-contact" style={{ scrollMarginTop: 88 }}>
       <div className="build-cta">
-        <p className="cs-eyebrow">For developers</p>
         <h2 className="cs-h2">Build with CricSynthesis</h2>
         <p className="cs-lede">One API for ball-by-ball cricket intelligence: player and venue analytics, match simulation and
           decision models, and broadcast-ready graphics. Tell us what you're building and we'll set up your key.</p>
-        <ul className="build-points">
-          <li><b>56 endpoints</b> across analytics, simulation and graphics</li>
-          <li><b>JSON over HTTPS</b> with API-key auth and clear rate limits</li>
-          <li><b>Free to prototype</b>, with Pro and Business limits when you ship</li>
-          <li><b>MCP server</b> for Claude, Cursor and other AI assistants</li>
-        </ul>
-        <div className="build-links">
-          <Link href="/docs/">Read the docs</Link>
-          <Link href="/playground/">Try the playground</Link>
-          <Link href="/mcp/">Connect via MCP</Link>
-        </div>
+      </div>
       </div>
       <div className="cs-frame cs-form-card">
         <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
