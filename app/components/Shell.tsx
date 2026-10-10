@@ -69,7 +69,10 @@ function AccountLink({ className, onClick }: { className: string; onClick?: () =
       </button>
       {open && (
         <div className="acct-pop" role="menu">
-          <div className="acct-who">{user.email}</div>
+          <div className="acct-who">
+            {user.displayName && <div className="acct-name">{user.displayName}</div>}
+            <div className="acct-email">{user.email}</div>
+          </div>
           <Link href="/account/" role="menuitem" onClick={() => { setOpen(false); onClick?.(); }}>Account</Link>
           <button type="button" role="menuitem" onClick={() => signOut(auth()).then(() => window.location.replace("/"))}>Log out</button>
         </div>

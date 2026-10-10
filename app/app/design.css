@@ -236,3 +236,5 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .acct-pop a, .acct-pop button { display: block; width: 100%; text-align: left; padding: 9px 10px; border-radius: 7px; border: 0; background: none;
   font: 600 14px var(--cs-body); color: var(--cs-ink); text-decoration: none; cursor: pointer; text-transform: none; letter-spacing: 0; }
 .acct-pop a:hover, .acct-pop button:hover { background: var(--cs-bg); }
+.acct-name { font: 700 14px var(--cs-body); color: var(--cs-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+.acct-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
