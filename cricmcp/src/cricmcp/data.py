@@ -73,9 +73,6 @@ class Store:
     def pack(self, mid: str) -> dict:
         return self.get(f"matches/{urllib.parse.quote(mid)}.pack.json")
 
-    def patterns(self) -> dict:
-        return self.get("patterns.json")
-
     # ── analytics kit (cricsim/kit.py) ──
     def kit_file(self, path: str):
         try:

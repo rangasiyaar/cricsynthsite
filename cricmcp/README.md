@@ -24,7 +24,7 @@ Needs [uv](https://docs.astral.sh/uv/). In Claude Desktop open Settings → Deve
 
 Claude Code: `claude mcp add cricsynthesis -- uvx --index https://cricsynthesis.in/pypi/simple/ cricsynthesis-mcp`
 
-## Tools (43)
+## Tools (41)
 
 **Analytics** — any player, venue, competition or team
 
@@ -46,7 +46,6 @@ Claude Code: `claude mcp add cricsynthesis -- uvx --index https://cricsynthesis.
 | `competitions`, `competition_profile` | How leagues play |
 | `scoring_trend` | Run rates by phase, season by season |
 | `teams`, `team_profile` | A side's batting and bowling, or any XI |
-| `pattern_lab`, `pattern_detail` | Cricket folklore tested on the data |
 
 **Simulation and modelling** — upcoming covered matches
 

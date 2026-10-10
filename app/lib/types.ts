@@ -71,15 +71,3 @@ export type MatchDoc = {
            venue?: string; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
 };
-
-export type PatternRow = {
-  id: string; title: string; question: string; category: string; outcome: string; folklore: string; verdict: string;
-  why?: string; full?: { rr: number | null; lo: number | null; hi: number | null; exposed_balls: number;
-                         exposed_rate: number | null; expected_rate: number | null };
-  disc?: { rr: number | null }; valid?: { rr: number | null };
-};
-export type PatternReport = {
-  summary: { balls: number; split_year: number; attribute_coverage?: Record<string, number> };
-  patterns: PatternRow[];
-  curves: Record<string, { value: number; balls: number; wicket_rate: number | null; o_e: number | null }[]>;
-};

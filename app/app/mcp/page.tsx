@@ -22,7 +22,7 @@ const GROUPS: { title: string; text: string; tools: string[] }[] = [
   { title: "Rankings and match-ups", text: "Model leaderboards by format, phase and metric, and any batter against any bowler, ball by ball.",
     tools: ["rankings", "matchup", "matchup_grid", "best_bowler_against"] },
   { title: "Venues, leagues and teams", text: "How grounds and competitions play, scoring trends by season, and the profile of any side or XI.",
-    tools: ["venues", "venue_profile", "competitions", "competition_profile", "scoring_trend", "teams", "team_profile", "pattern_lab", "pattern_detail"] },
+    tools: ["venues", "venue_profile", "competitions", "competition_profile", "scoring_trend", "teams", "team_profile"] },
   { title: "Match forecasts", text: "Win chances, projected scores, phases, wicket timing, key duels and player outlooks for upcoming matches.",
     tools: ["list_matches", "match_forecast", "innings_shape", "key_matchups", "player_outlook", "about_the_model"] },
   { title: "Decisions", text: "What-ifs, win probability and projections from any score, par score, chase curve, toss call, batting order, bowling plan and player impact.",

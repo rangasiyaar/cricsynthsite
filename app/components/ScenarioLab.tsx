@@ -6,7 +6,6 @@ import type { Pack, Scenario } from "@/lib/engine/sim";
 import type { LabSummary } from "@/lib/engine/summary";
 import { num, pct, signed } from "@/lib/format";
 import type { MatchDoc } from "@/lib/types";
-import { usePro } from "@/lib/firebase";
 
 const N = 5000;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
@@ -38,13 +37,12 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const [res, setRes] = useState<LabSummary | null>(null);
   const [busy, setBusy] = useState(false);
   const [levers, setLevers] = useState<Levers>(DEFAULT);
-  const pro = usePro() === true;
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
   const pending = useRef(new Map<number, (s: LabSummary) => void>());
 
   useEffect(() => {
-    loadPack(doc.match.id).then(setPack).catch(() => setErr("Scenario data for this match isn't available."));
+    loadPack(doc.match.id).then(setPack).catch(() => setErr("Simulation data for this match isn't available."));
     const w = new Worker(new URL("../lib/engine/worker.ts", import.meta.url), { type: "module" });
     w.onmessage = (e) => {
       const cb = pending.current.get(e.data.id);
@@ -96,7 +94,6 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
           </select>
         </div>
         <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
-        <Locked pro={pro}>
           <Slider label="Pitch: wickets" lo="Batting paradise" hi="Green top" value={levers.wickets} min={0.75} max={1.35} onChange={(v) => set("wickets", v)} />
           <Slider label="Help for spinners" lo="None" hi="Raging turner" value={levers.spin} min={0.8} max={1.6} onChange={(v) => set("spin", v)} />
           <Slider label="Help for seamers" lo="None" hi="Swing and seam" value={levers.pace} min={0.8} max={1.6} onChange={(v) => set("pace", v)} />
@@ -113,7 +110,6 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
             ))}</div>}
           </div>
           <Situation levers={levers} set={set} teams={teams} pack={pack} />
-        </Locked>
         <button className="btn ghost" onClick={() => setLevers(DEFAULT)}>Reset</button>
       </div>
 
@@ -198,18 +194,6 @@ function Situation({ levers, set, teams, pack }: { levers: Levers; set: <K exten
           <span className="small">Overs bowled<input type="number" min={0} max={pack.rules.overs - 1} step={1} value={levers.overs} onChange={(e) => set("overs", Math.min(pack.rules.overs - 1, Number(e.target.value)))} /></span>
         </div>
       )}
-    </div>
-  );
-}
-
-function Locked({ pro, children }: { pro: boolean; children: React.ReactNode }) {
-  if (pro) return <>{children}</>;
-  return (
-    <div className="notice">
-      Sign in to use all Scenario Lab controls.
-      <div style={{ marginTop: 10 }}>
-        <a className="btn" href={`/login/?next=${encodeURIComponent(typeof window === "undefined" ? "/" : window.location.pathname + window.location.search)}`}>Sign in</a>
-      </div>
     </div>
   );
 }

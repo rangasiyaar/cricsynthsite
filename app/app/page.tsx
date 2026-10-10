@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { Num, Pct, WinBar } from "@/components/charts";
 import { Spotlight } from "@/components/MatchCentre";
 import { Tiles } from "@/components/Tiles";
-import { loadIndex, loadMatch, loadPatterns } from "@/lib/data";
+import { loadIndex, loadMatch } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { useCountdown } from "@/lib/motion";
-import type { MatchCard, MatchDoc, PatternReport } from "@/lib/types";
+import type { MatchCard, MatchDoc } from "@/lib/types";
 
 function When({ date, time }: { date?: string; time?: string }) {
   const left = useCountdown(date, time);
@@ -42,7 +42,7 @@ function Featured({ doc }: { doc: MatchDoc }) {
     <section className="featured">
       <Scoreboard doc={doc} mid={<When date={match.date} time={match.start_time} />} foot={<>
         <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
-        <Link className="cs-btn cs-btn--secondary" href={`${href}&tab=lab`}>Try a scenario</Link>
+        <Link className="cs-btn cs-btn--secondary" href={`/lab/?id=${encodeURIComponent(match.id)}`}>Open in MatchSynth Lab</Link>
         <span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches{ci ? <>, accurate to ±{(100 * ci).toFixed(1)} points</> : null}.</span>
       </>} />
       <Tiles s={s} short={short} />
@@ -50,36 +50,10 @@ function Featured({ doc }: { doc: MatchDoc }) {
   );
 }
 
-const TEASE = ["after_six_batter", "steep_chase", "new_batter_first5", "after_fifty", "wickets_in_pairs"];
-const VERDICT: Record<string, string> = { real: "v-real", myth: "v-myth", reversed: "v-reversed" };
-
-function PatternTeaser({ rep }: { rep: PatternReport }) {
-  // prefer clear verdicts (myth / real / reversed) — they make the point
-  const ranked = TEASE.map((id) => rep.patterns.find((p) => p.id === id)).filter((p) => p && p.full?.rr != null);
-  const picks = [...ranked.filter((p) => p!.verdict in VERDICT), ...ranked.filter((p) => !(p!.verdict in VERDICT))].slice(0, 3);
-  if (!picks.length) return null;
-  return (
-    <section className="cs-section" style={{ paddingTop: 72 }}>
-      <div className="section-head"><div><h2>Pattern Lab</h2><p>Common cricket beliefs, tested against ball-by-ball data.</p></div>
-        <Link href="/patterns/" className="row-link">See all {rep.patterns.length}</Link></div>
-      <div className="grid g3">
-        {picks.map((p, i) => (
-          <Link key={p!.id} href="/patterns/" className="card myth anim-rise" style={{ animationDelay: `${i * 80}ms` }}>
-            <span className={`verdict ${VERDICT[p!.verdict] ?? ""}`}>{p!.verdict}</span>
-            <div className="myth-title">{p!.title}</div>
-            <div className="myth-rr"><Num value={p!.full!.rr} digits={2} />×</div>
-            <div className="cs-k">wicket rate v comparable balls</div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 export default function Home() {
   const [matches, setMatches] = useState<MatchCard[] | null>(null);
   const [featured, setFeatured] = useState<MatchDoc | null>(null);
-  const [patterns, setPatterns] = useState<PatternReport | null>(null);
   const [error, setError] = useState(false);
   useEffect(() => {
     loadIndex().then((i) => {
@@ -87,7 +61,6 @@ export default function Home() {
       setMatches(ms);
       if (ms[0]) loadMatch(ms[0].id).then(setFeatured).catch(() => {});
     }).catch(() => setError(true));
-    loadPatterns().then(setPatterns).catch(() => {});
   }, []);
 
   return (
@@ -108,7 +81,6 @@ export default function Home() {
         </section>
       )}
 
-      {patterns && <PatternTeaser rep={patterns} />}
 
 
       <RequestAccess />

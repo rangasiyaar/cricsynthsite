@@ -18,7 +18,7 @@ cricsynthsite/
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
-├── cricmcp/                   ← MCP server (43 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
+├── cricmcp/                   ← MCP server (41 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config

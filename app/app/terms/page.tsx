@@ -16,8 +16,8 @@ export default function Terms() {
       <p>Every forecast is a probability from simulation, not a certainty. Results will often differ. Nothing on the site or in the API
         is betting, financial or professional advice, and you must not present our output as a guaranteed outcome.</p>
       <h2>4. Accounts</h2>
-      <p>You're responsible for activity under your account and for keeping your sign-in secure. Pro features are free during the launch
-        beta; we'll give notice before any paid plan applies to you.</p>
+      <p>You're responsible for activity under your account and for keeping your sign-in secure. Every signed-in account has Pro, including
+        MatchSynth Lab, free during the launch beta; we'll give notice before any paid plan applies to you.</p>
       <h2>5. API use</h2>
       <ul>
         <li><b>Keys.</b> Keep API keys confidential and server-side. You are responsible for requests made with your key.</li>

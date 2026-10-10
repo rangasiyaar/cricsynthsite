@@ -1,20 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveEngine from "@/components/LiveEngine";
-import ScenarioLab from "@/components/ScenarioLab";
+import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
 import { KIND, num, pct, range } from "@/lib/format";
 import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
-const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups", "Scenario Lab"] as const;
+const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
 type Tab = (typeof TABS)[number];
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 
 export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
-  const [tab, setTab] = useState<Tab>(initialTab === "lab" ? "Scenario Lab" : "Overview");
+  const [tab, setTab] = useState<Tab>("Overview");
+  useEffect(() => { if (initialTab === "lab") window.location.replace(`/lab/?id=${encodeURIComponent(doc.match.id)}`); }, [initialTab, doc.match.id]);
   const { match, summary: s } = doc;
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
@@ -27,9 +28,12 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
       <div className="tabs" role="tablist">
         {TABS.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            {t}{t === "Scenario Lab" && <span className="tag pro">Pro</span>}
+            {t}
           </button>
         ))}
+        <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
+          MatchSynth Lab <span className="tag pro">Pro</span>
+        </Link>
       </div>
 
       <div key={tab} className="anim-fade">
@@ -38,7 +42,6 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
         {tab === "Wickets" && <Wickets doc={doc} />}
         {tab === "Players" && <Players doc={doc} />}
         {tab === "Matchups" && <Matchups doc={doc} />}
-        {tab === "Scenario Lab" && <ScenarioLab doc={doc} />}
       </div>
 
       <p className="small muted" style={{ marginTop: 40 }}>

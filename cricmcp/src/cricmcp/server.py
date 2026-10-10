@@ -39,7 +39,7 @@ Three kinds of tools:
 Numbers are model expectations or shares of simulations, not certainties; quote ranges where given. Ratings are
 relative to an average player in the same format (1.00 = average). Data is rebuilt nightly."""
 
-mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.2.1")
+mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.3.0")
 store = Store()
 READ = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
 
@@ -316,33 +316,6 @@ def live_win_probability(
         res["runs_needed"] = target - runs
         res["balls_left"] = pack["rules"]["overs"] * pack["rules"]["bpo"] - start["balls"]
     return res
-
-
-# ── Pattern Lab ────────────────────────────────────────────────────────────────────────────────────────────────────
-
-@mcp.tool(annotations=READ)
-def pattern_lab(
-    search: Annotated[str | None, Field(description="Words to look for, e.g. 'new batter', 'six', 'chase'")] = None,
-    verdict: Literal["real", "myth", "reversed", "any"] = "any",
-) -> dict:
-    """Cricket folklore tested on ball-by-ball data: does a wicket follow a six, are new batters vulnerable, do chases
-    collapse? Each pattern has a verdict and the measured effect (rate ratio, 1 = no effect) with a 95% interval."""
-    rep = store.patterns()
-    rows = rep["patterns"]
-    if search:
-        ws = search.lower().split()
-        rows = [r for r in rows if all(w in f"{r['title']} {r['question']} {r['category']}".lower() for w in ws)]
-    if verdict != "any":
-        rows = [r for r in rows if r["verdict"] == verdict]
-    def eff(r):
-        f = r.get("full") or {}
-        return {"rate_ratio": f.get("rr"), "ci95": [f.get("lo"), f.get("hi")], "balls": f.get("exposed_balls")}
-    return {"balls_analysed": rep["summary"]["balls"], "count": len(rows),
-            "patterns": [{"title": r["title"], "question": r["question"], "category": r["category"],
-                          "outcome": r["outcome"], "folklore_says": r["folklore"], "verdict": r["verdict"],
-                          "why": r.get("why"), "effect": eff(r)} for r in rows[:40]],
-            "link": f"{SITE}/patterns/"}
-
 
 
 # ── analytics (any player, venue, competition, team) ───────────────────────────────────────────────────────────────
@@ -627,19 +600,6 @@ def team_profile(team: Annotated[str | None, Field(description="Team name or id;
     if info:
         out = {"team": info.get("name"), **out}
     return out
-
-
-@mcp.tool(annotations=READ)
-def pattern_detail(pattern: Annotated[str, Field(description="Pattern id or words from its title")]) -> dict:
-    """One Pattern Lab test in full: the question, folklore, verdict, why, and the effect in the discovery and
-    validation periods with intervals."""
-    rows = store.patterns()["patterns"]
-    q = pattern.lower()
-    r = next((r for r in rows if r["id"] == q), None) or next(
-        (r for r in rows if all(w in f"{r['title']} {r['question']}".lower() for w in q.split())), None)
-    if not r:
-        raise DataError(f"No pattern matches '{pattern}'.")
-    return r
 
 
 # ── more decision models for covered matches ───────────────────────────────────────────────────────────────────────

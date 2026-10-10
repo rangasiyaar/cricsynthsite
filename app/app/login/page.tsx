@@ -12,7 +12,9 @@ const MESSAGES: Record<string, string> = {
   "auth/invalid-email": "That email address doesn't look right.",
   "auth/popup-closed-by-user": "The Google window was closed before signing in.",
   "auth/too-many-requests": "Too many attempts. Wait a minute and try again.",
-  "auth/configuration-not-found": "Sign-in isn't switched on yet. Please try again later.",
+  "auth/configuration-not-found": "Sign-in isn't available yet. Please try again later.",
+  "auth/unauthorized-domain": "Sign-in isn't enabled on this address yet. Please use cricsynthesis.web.app for now.",
+  "auth/popup-blocked": "Your browser blocked the Google window. Allow pop-ups for this site and try again.",
   "auth/operation-not-allowed": "This sign-in method isn't switched on yet.",
 };
 const explain = (e: unknown) => MESSAGES[(e as { code?: string }).code ?? ""] ?? "Something went wrong. Please try again.";
@@ -52,8 +54,8 @@ export default function Login() {
     <div className="page-head auth-page">
       <p className="cs-eyebrow">Account</p>
       <h1><span>{mode === "in" ? "Welcome back." : "Create your account."}</span></h1>
-      <p className="cs-lede">{mode === "in" ? "Sign in to use the full Scenario Lab and manage API access."
-                                             : "Free during the beta, with every Scenario Lab control included."}</p>
+      <p className="cs-lede">{mode === "in" ? "Sign in to open MatchSynth Lab and manage your account."
+                                             : "Every account gets Pro free during the beta, including MatchSynth Lab."}</p>
       <div className="card auth-card">
         <button type="button" className="btn ghost auth-google" onClick={google} disabled={busy}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">

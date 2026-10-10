@@ -96,6 +96,16 @@
           "source": "/index.html",
           "destination": "/",
           "type": 301
+        },
+        {
+          "source": "/patterns/**",
+          "destination": "/",
+          "type": 301
+        },
+        {
+          "source": "/patterns",
+          "destination": "/",
+          "type": 301
         }
       ]
     },

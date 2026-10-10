@@ -16,7 +16,7 @@ export default function Privacy() {
         <li><b>Contact and access requests.</b> Name, work email, organisation and interest you enter in our forms.</li>
         <li><b>API usage.</b> For API customers: API key, request counts, endpoints called, timestamps and IP addresses, used to
           enforce plan limits and keep the service secure.</li>
-        <li><b>Scenario Lab inputs.</b> What-if simulations run inside your browser. The levers you set are not sent to us.</li>
+        <li><b>MatchSynth Lab inputs.</b> What-if simulations run inside your browser. The levers you set are not sent to us.</li>
         <li><b>Preferences.</b> Your light/dark theme choice is stored in your browser only.</li>
       </ul>
       <h2>3. How we use it</h2>

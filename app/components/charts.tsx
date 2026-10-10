@@ -121,28 +121,6 @@ export function WicketHeatmap({ rows, color, overs }: { rows: { label: string; v
   );
 }
 
-/** Pattern Lab hazard curve: O/E by value, 1.0 = normal — the line draws itself. */
-export function Curve({ points, label }: { points: { value: number; o_e: number | null; balls: number }[]; label: string }) {
-  const pts = points.filter((p) => p.o_e !== null && p.balls >= 2000) as { value: number; o_e: number; balls: number }[];
-  if (pts.length < 2) return null;
-  const W = 320, H = 120, pad = { l: 30, r: 6, t: 6, b: 20 };
-  const xs = pts.map((p) => p.value), lo = Math.min(...xs), hi = Math.max(...xs);
-  const ys = pts.map((p) => p.o_e), ymin = Math.min(0.8, ...ys), ymax = Math.max(1.2, ...ys);
-  const sx = (x: number) => pad.l + ((x - lo) / Math.max(hi - lo, 1)) * (W - pad.l - pad.r);
-  const sy = (y: number) => H - pad.b - ((y - ymin) / (ymax - ymin)) * (H - pad.t - pad.b);
-  return (
-    <svg className="chart" viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={label}>
-      <line x1={pad.l} x2={W - pad.r} y1={sy(1)} y2={sy(1)} stroke="var(--cs-line)" strokeDasharray="4 3" />
-      <text x={pad.l - 4} y={sy(1) + 4} textAnchor="end">1.0</text>
-      <polyline className="anim-draw" pathLength={1} fill="none" stroke="var(--cs-steel-700)" strokeWidth={2}
-                points={pts.map((p) => `${sx(p.value)},${sy(p.o_e)}`).join(" ")} />
-      {pts.map((p, i) => <circle key={p.value} className="anim-pop" style={{ animationDelay: `${300 + i * 30}ms` }} cx={sx(p.value)} cy={sy(p.o_e)} r={2.5} fill="var(--cs-steel-700)"><title>{`${p.value}: ${p.o_e.toFixed(2)}×`}</title></circle>)}
-      <text x={sx(lo)} y={H - 4}>{lo}</text>
-      <text x={sx(hi)} y={H - 4} textAnchor="end">{hi}</text>
-    </svg>
-  );
-}
-
 export function P({ p, width = 60 }: { p: number | null | undefined; width?: number }) {
   const on = useMounted();
   return (

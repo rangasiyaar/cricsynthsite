@@ -14,9 +14,9 @@ def call(name, **args):
 def test_tools_listed():
     names = {t.name for t in asyncio.run(server.mcp.list_tools())}
     assert {"list_matches", "match_forecast", "player_outlook", "key_matchups", "innings_shape", "about_the_model",
-            "simulate_scenario", "live_win_probability", "fantasy_team", "pattern_lab", "rankings", "matchup",
+            "simulate_scenario", "live_win_probability", "fantasy_team", "rankings", "matchup",
             "team_profile", "venue_profile", "par_score", "bowling_plan", "match_graphic"} <= names
-    assert len(names) >= 40
+    assert len(names) >= 40 and not {"pattern_lab", "pattern_detail"} & names
     assert "api_request" not in names          # only with a key
 
 
@@ -73,13 +73,6 @@ def test_fantasy_team_rules():
     assert len(proj) == 22 and proj[0]["mean"] >= proj[-1]["mean"] and {r["role"] for r in proj} <= {"BAT", "AR", "BOWL"}
     port = server.fantasy_portfolio(teams_count=3, simulations=1000)
     assert len(port["teams"]) == 3 and port["expected_best_of_portfolio"] >= port["teams"][0]["expected_points"] - 1
-
-
-def test_pattern_lab():
-    all_ = server.pattern_lab()
-    assert all_["count"] > 0
-    myths = server.pattern_lab(verdict="myth")
-    assert all(p["verdict"] == "myth" for p in myths["patterns"])
 
 
 def test_call_tool_returns_json():

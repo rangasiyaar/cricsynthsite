@@ -25,8 +25,34 @@ export function useUser(): User | null | undefined {
   return user;
 }
 
-/** Pro during the launch beta: every signed-in account. Paid plans will use a custom claim instead. */
-export function usePro(): boolean | undefined {
+// ── plans ──────────────────────────────────────────────────────────────────────────────────────────────────────
+// Guest: not signed in (forecasts and match centre). Free: signed in. Pro: MatchSynth Lab.
+// A paid plan is a custom claim `plan` on the account ("free" | "pro"), set from server code once payments exist.
+// Until then BETA_PRO gives every signed-in account Pro.
+export type Plan = "guest" | "free" | "pro";
+export const BETA_PRO = true;
+
+export type PlanState = { user: User | null | undefined; plan: Plan | undefined; source: "beta" | "subscription" | null };
+
+export function usePlan(): PlanState {
   const user = useUser();
-  return user === undefined ? undefined : user !== null;
+  const [claim, setClaim] = useState<string | null | undefined>(undefined);
+  useEffect(() => {
+    if (!user) { setClaim(user === null ? null : undefined); return; }
+    let live = true;
+    user.getIdTokenResult().then((r) => { if (live) setClaim(typeof r.claims.plan === "string" ? r.claims.plan : null); })
+      .catch(() => { if (live) setClaim(null); });
+    return () => { live = false; };
+  }, [user]);
+  if (user === undefined || (user && claim === undefined)) return { user, plan: undefined, source: null };
+  if (!user) return { user, plan: "guest", source: null };
+  if (claim === "pro") return { user, plan: "pro", source: "subscription" };
+  if (BETA_PRO) return { user, plan: "pro", source: "beta" };
+  return { user, plan: "free", source: claim ? "subscription" : null };
+}
+
+/** Pro (true / false), or undefined while the account is still being checked. */
+export function usePro(): boolean | undefined {
+  const { plan } = usePlan();
+  return plan === undefined ? undefined : plan === "pro";
 }

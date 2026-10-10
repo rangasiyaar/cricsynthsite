@@ -54,7 +54,6 @@ def test_venues_competitions_trends_teams():
     assert tp["team"] == "Premier 0" and len(tp["batting"]) == 11
     xi = [f"P0-{i}" for i in (0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11)]
     assert server.team_profile(players=xi)["summary"]["bowling_depth"] >= 1
-    assert server.pattern_detail("spell")["id"]
 
 
 def test_decision_models():
