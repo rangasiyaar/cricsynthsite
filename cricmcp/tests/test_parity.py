@@ -9,7 +9,7 @@ import pytest
 from cricmcp import sim
 
 ROOT = Path(__file__).resolve().parents[2]
-PACK = Path(__file__).resolve().parent / "data" / "matches" / "m1.pack.json"
+PACK = Path(__file__).resolve().parent / "fixtures" / "matches" / "m1.pack.json"
 SCRIPT = """
 import { readFileSync } from "node:fs";
 import { simulateMatches } from "%s";

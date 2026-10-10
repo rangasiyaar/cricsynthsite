@@ -1,0 +1,2183 @@
+{
+  "summary": {
+    "balls": 103723,
+    "split_year": 2021,
+    "attribute_coverage": {
+      "batting_hand": 1.0,
+      "bowling_kind": 1.0
+    },
+    "verdicts": {
+      "real": 2,
+      "reversed": 0,
+      "weak": 1,
+      "myth": 4,
+      "inconclusive": 26,
+      "insufficient data": 3,
+      "needs data": 0
+    }
+  },
+  "patterns": [
+    {
+      "id": "spell_first_ball",
+      "title": "First ball of a new spell",
+      "question": "Is a bowler more likely to strike with the first ball of a new spell?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.915,
+        "lo": 0.821,
+        "hi": 1.021,
+        "p": 0.1115514087193405,
+        "exposed_balls": 5785,
+        "exposed_events": 360,
+        "expected_events": 392.3136176500411,
+        "exposed_rate": 0.06223,
+        "expected_rate": 0.06782
+      },
+      "valid": {
+        "rr": 0.948,
+        "lo": 0.854,
+        "hi": 1.053,
+        "p": 0.31782482371364373,
+        "exposed_balls": 5644,
+        "exposed_events": 381,
+        "expected_events": 403.3413286105551,
+        "exposed_rate": 0.06751,
+        "expected_rate": 0.07146
+      },
+      "full": {
+        "rr": 0.936,
+        "lo": 0.868,
+        "hi": 1.009,
+        "p": 0.08410897225172441,
+        "exposed_balls": 11432,
+        "exposed_events": 743,
+        "expected_events": 794.5112488524047,
+        "exposed_rate": 0.06499,
+        "expected_rate": 0.0695
+      },
+      "situation_only_rr": 0.936,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.325358,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "after_six_batter",
+      "title": "Batter out straight after hitting a six",
+      "question": "After a batter hits a six, is he more likely to get out next ball?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.835,
+        "lo": 0.712,
+        "hi": 0.979,
+        "p": 0.026109841560506233,
+        "exposed_balls": 3045,
+        "exposed_events": 152,
+        "expected_events": 182.20173970959587,
+        "exposed_rate": 0.04992,
+        "expected_rate": 0.05984
+      },
+      "valid": {
+        "rr": 0.989,
+        "lo": 0.854,
+        "hi": 1.146,
+        "p": 0.8841760582152928,
+        "exposed_balls": 2796,
+        "exposed_events": 177,
+        "expected_events": 179.7587713133746,
+        "exposed_rate": 0.0633,
+        "expected_rate": 0.06429
+      },
+      "full": {
+        "rr": 0.911,
+        "lo": 0.818,
+        "hi": 1.015,
+        "p": 0.08955591364869778,
+        "exposed_balls": 5841,
+        "exposed_events": 329,
+        "expected_events": 361.8424283778105,
+        "exposed_rate": 0.05633,
+        "expected_rate": 0.06195
+      },
+      "situation_only_rr": 0.911,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.114231,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "after_six_bowler",
+      "title": "Bowler strikes back after conceding a six",
+      "question": "After a bowler concedes a six, is his next ball more likely to take a wicket?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.796,
+        "lo": 0.676,
+        "hi": 0.937,
+        "p": 0.006090425217514457,
+        "exposed_balls": 2968,
+        "exposed_events": 144,
+        "expected_events": 181.24420435665735,
+        "exposed_rate": 0.04852,
+        "expected_rate": 0.06107
+      },
+      "valid": {
+        "rr": 0.976,
+        "lo": 0.84,
+        "hi": 1.134,
+        "p": 0.7524056690389231,
+        "exposed_balls": 2695,
+        "exposed_events": 169,
+        "expected_events": 173.66281998614843,
+        "exposed_rate": 0.06271,
+        "expected_rate": 0.06444
+      },
+      "full": {
+        "rr": 0.879,
+        "lo": 0.787,
+        "hi": 0.982,
+        "p": 0.022291634180813213,
+        "exposed_balls": 5664,
+        "exposed_events": 313,
+        "expected_events": 356.40172830414207,
+        "exposed_rate": 0.05526,
+        "expected_rate": 0.06292
+      },
+      "situation_only_rr": 0.879,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.054952,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "new_batter_first5",
+      "title": "New batter in his first 5 balls",
+      "question": "Are new batters more likely to fall in their first 5 balls than once they have faced 5\u201329?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.176,
+        "lo": 1.089,
+        "hi": 1.269,
+        "p": 3.1507833219860466e-05,
+        "exposed_balls": 16614,
+        "exposed_events": 1291,
+        "expected_events": 1133.106640774696,
+        "exposed_rate": 0.07771,
+        "expected_rate": 0.0682
+      },
+      "valid": {
+        "rr": 1.188,
+        "lo": 1.101,
+        "hi": 1.281,
+        "p": 8.134994743214529e-06,
+        "exposed_balls": 16985,
+        "exposed_events": 1348,
+        "expected_events": 1135.516016628936,
+        "exposed_rate": 0.07936,
+        "expected_rate": 0.06685
+      },
+      "full": {
+        "rr": 1.188,
+        "lo": 1.126,
+        "hi": 1.253,
+        "p": 3.1422714694703366e-10,
+        "exposed_balls": 33664,
+        "exposed_events": 2647,
+        "expected_events": 2257.011244301753,
+        "exposed_rate": 0.07863,
+        "expected_rate": 0.06705
+      },
+      "situation_only_rr": 1.188,
+      "adjusted_for": [],
+      "q_discovery": 0.000551,
+      "verdict": "real",
+      "why": "Holds in both periods, in the direction people expect."
+    },
+    {
+      "id": "after_powerplay",
+      "title": "First over after the powerplay",
+      "question": "Do wickets come just after fielding restrictions are lifted?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.011,
+        "lo": 0.852,
+        "hi": 1.201,
+        "p": 0.8964977628221633,
+        "exposed_balls": 2863,
+        "exposed_events": 158,
+        "expected_events": 154.70747719776344,
+        "exposed_rate": 0.05519,
+        "expected_rate": 0.05404
+      },
+      "valid": {
+        "rr": 0.971,
+        "lo": 0.824,
+        "hi": 1.144,
+        "p": 0.7261156087200984,
+        "exposed_balls": 2880,
+        "exposed_events": 169,
+        "expected_events": 174.9969058799329,
+        "exposed_rate": 0.05868,
+        "expected_rate": 0.06076
+      },
+      "full": {
+        "rr": 0.986,
+        "lo": 0.876,
+        "hi": 1.11,
+        "p": 0.8124278553432611,
+        "exposed_balls": 5743,
+        "exposed_events": 327,
+        "expected_events": 330.6226836645748,
+        "exposed_rate": 0.05694,
+        "expected_rate": 0.05757
+      },
+      "situation_only_rr": 0.986,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.950831,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "bowler_change_partnership",
+      "title": "Bowling change breaks a set partnership",
+      "question": "When a partnership has lasted 24+ balls, does a new spell break it?",
+      "category": "wicket timing",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.115,
+        "lo": 0.768,
+        "hi": 1.618,
+        "p": 0.5662593621692521,
+        "exposed_balls": 1275,
+        "exposed_events": 57,
+        "expected_events": 49.76581212335938,
+        "exposed_rate": 0.04471,
+        "expected_rate": 0.03903
+      },
+      "valid": {
+        "rr": 0.955,
+        "lo": 0.673,
+        "hi": 1.356,
+        "p": 0.7980610641643668,
+        "exposed_balls": 1140,
+        "exposed_events": 57,
+        "expected_events": 66.64716392025102,
+        "exposed_rate": 0.05,
+        "expected_rate": 0.05846
+      },
+      "full": {
+        "rr": 0.997,
+        "lo": 0.778,
+        "hi": 1.279,
+        "p": 0.9840770652495311,
+        "exposed_balls": 2434,
+        "exposed_events": 116,
+        "expected_events": 115.56985927913557,
+        "exposed_rate": 0.04766,
+        "expected_rate": 0.04748
+      },
+      "situation_only_rr": 0.997,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.908633,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "left_arm_pace_rhb_early",
+      "title": "Left-arm pace v right-handers early",
+      "question": "Early on, do right-handers fall more often to left-arm pace than to right-arm pace?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.065,
+        "lo": 0.843,
+        "hi": 1.344,
+        "p": 0.5971020074901816,
+        "exposed_balls": 2613,
+        "exposed_events": 152,
+        "expected_events": 146.01099976156698,
+        "exposed_rate": 0.05817,
+        "expected_rate": 0.05588
+      },
+      "valid": {
+        "rr": 1.135,
+        "lo": 0.891,
+        "hi": 1.445,
+        "p": 0.3040363283248227,
+        "exposed_balls": 2616,
+        "exposed_events": 141,
+        "expected_events": 118.53899814089868,
+        "exposed_rate": 0.0539,
+        "expected_rate": 0.04531
+      },
+      "full": {
+        "rr": 1.106,
+        "lo": 0.936,
+        "hi": 1.307,
+        "p": 0.23771940863687113,
+        "exposed_balls": 5258,
+        "exposed_events": 297,
+        "expected_events": 263.9416420084147,
+        "exposed_rate": 0.05649,
+        "expected_rate": 0.0502
+      },
+      "situation_only_rr": 1.106,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.908633,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "dots_3",
+      "title": "After 3+ dot balls in a row",
+      "question": "Does dot-ball pressure bring wickets?",
+      "category": "pressure",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.982,
+        "lo": 0.853,
+        "hi": 1.129,
+        "p": 0.7952413913969412,
+        "exposed_balls": 2732,
+        "exposed_events": 199,
+        "expected_events": 202.74392223160717,
+        "exposed_rate": 0.07284,
+        "expected_rate": 0.07421
+      },
+      "valid": {
+        "rr": 0.922,
+        "lo": 0.802,
+        "hi": 1.059,
+        "p": 0.24891832792327162,
+        "exposed_balls": 2743,
+        "exposed_events": 200,
+        "expected_events": 217.55766866836237,
+        "exposed_rate": 0.07291,
+        "expected_rate": 0.07931
+      },
+      "full": {
+        "rr": 0.957,
+        "lo": 0.868,
+        "hi": 1.056,
+        "p": 0.3830204819889703,
+        "exposed_balls": 5475,
+        "exposed_events": 399,
+        "expected_events": 417.14911969169117,
+        "exposed_rate": 0.07288,
+        "expected_rate": 0.07619
+      },
+      "situation_only_rr": 0.957,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.926854,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "dots_5",
+      "title": "After 5+ dot balls in a row",
+      "question": "Does sustained dot-ball pressure bring wickets?",
+      "category": "pressure",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.96,
+        "lo": 0.676,
+        "hi": 1.364,
+        "p": 0.820927699708982,
+        "exposed_balls": 400,
+        "exposed_events": 30,
+        "expected_events": 31.045268326623276,
+        "exposed_rate": 0.075,
+        "expected_rate": 0.07761
+      },
+      "valid": {
+        "rr": 0.877,
+        "lo": 0.623,
+        "hi": 1.236,
+        "p": 0.45476173007924076,
+        "exposed_balls": 415,
+        "exposed_events": 31,
+        "expected_events": 35.21808354359318,
+        "exposed_rate": 0.0747,
+        "expected_rate": 0.08486
+      },
+      "full": {
+        "rr": 0.926,
+        "lo": 0.726,
+        "hi": 1.182,
+        "p": 0.539367792141106,
+        "exposed_balls": 815,
+        "exposed_events": 61,
+        "expected_events": 65.59033834998904,
+        "exposed_rate": 0.07485,
+        "expected_rate": 0.08048
+      },
+      "situation_only_rr": 0.926,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.926854,
+      "verdict": "insufficient data",
+      "why": "Too few exposed balls or events in one of the two periods."
+    },
+    {
+      "id": "stuck_on_zero",
+      "title": "Batter stuck on 0 after 3+ balls",
+      "question": "Is a batter still on 0 after 3 balls in danger?",
+      "category": "pressure",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.14,
+        "lo": 0.723,
+        "hi": 1.796,
+        "p": 0.5724691536863113,
+        "exposed_balls": 205,
+        "exposed_events": 18,
+        "expected_events": 15.732068390259554,
+        "exposed_rate": 0.0878,
+        "expected_rate": 0.07674
+      },
+      "valid": {
+        "rr": 1.055,
+        "lo": 0.641,
+        "hi": 1.736,
+        "p": 0.834283117587135,
+        "exposed_balls": 175,
+        "exposed_events": 16,
+        "expected_events": 14.83419925072221,
+        "exposed_rate": 0.09143,
+        "expected_rate": 0.08477
+      },
+      "full": {
+        "rr": 1.087,
+        "lo": 0.782,
+        "hi": 1.509,
+        "p": 0.6201892950757807,
+        "exposed_balls": 381,
+        "exposed_events": 34,
+        "expected_events": 31.10213202375317,
+        "exposed_rate": 0.08924,
+        "expected_rate": 0.08163
+      },
+      "situation_only_rr": 1.087,
+      "adjusted_for": [],
+      "q_discovery": 0.908633,
+      "verdict": "insufficient data",
+      "why": "Too few exposed balls or events in one of the two periods."
+    },
+    {
+      "id": "steep_chase",
+      "title": "Chasing at 10+ an over",
+      "question": "Does a steep required rate cause wickets?",
+      "category": "pressure",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.001,
+        "lo": 0.895,
+        "hi": 1.12,
+        "p": 0.9839501950840797,
+        "exposed_balls": 6699,
+        "exposed_events": 505,
+        "expected_events": 540.1917725771178,
+        "exposed_rate": 0.07538,
+        "expected_rate": 0.08064
+      },
+      "valid": {
+        "rr": 1.035,
+        "lo": 0.92,
+        "hi": 1.164,
+        "p": 0.5691449525766502,
+        "exposed_balls": 5435,
+        "exposed_events": 430,
+        "expected_events": 409.0260165632463,
+        "exposed_rate": 0.07912,
+        "expected_rate": 0.07526
+      },
+      "full": {
+        "rr": 1.008,
+        "lo": 0.93,
+        "hi": 1.093,
+        "p": 0.8455657257594424,
+        "exposed_balls": 12307,
+        "exposed_events": 948,
+        "expected_events": 924.4563326476582,
+        "exposed_rate": 0.07703,
+        "expected_rate": 0.07512
+      },
+      "situation_only_rr": 1.008,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.98395,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "easy_chase",
+      "title": "Chasing at under 6 an over",
+      "question": "Do batters play safer in an easy chase?",
+      "category": "pressure",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 0.918,
+        "lo": 0.814,
+        "hi": 1.034,
+        "p": 0.15850218904084518,
+        "exposed_balls": 5533,
+        "exposed_events": 327,
+        "expected_events": 370.3016310778703,
+        "exposed_rate": 0.0591,
+        "expected_rate": 0.06693
+      },
+      "valid": {
+        "rr": 0.991,
+        "lo": 0.891,
+        "hi": 1.102,
+        "p": 0.8604634083558458,
+        "exposed_balls": 6592,
+        "exposed_events": 446,
+        "expected_events": 478.7788924002476,
+        "exposed_rate": 0.06766,
+        "expected_rate": 0.07263
+      },
+      "full": {
+        "rr": 0.958,
+        "lo": 0.885,
+        "hi": 1.037,
+        "p": 0.28587009565127613,
+        "exposed_balls": 12156,
+        "exposed_events": 774,
+        "expected_events": 830.7097541502737,
+        "exposed_rate": 0.06367,
+        "expected_rate": 0.06834
+      },
+      "situation_only_rr": 0.958,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.396255,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "wickets_in_pairs",
+      "title": "Wickets come in pairs",
+      "question": "Is a wicket more likely within 12 balls of the last one?",
+      "category": "momentum",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.87,
+        "lo": 0.787,
+        "hi": 0.961,
+        "p": 0.006280185612602005,
+        "exposed_balls": 20714,
+        "exposed_events": 1489,
+        "expected_events": 1669.683538866854,
+        "exposed_rate": 0.07188,
+        "expected_rate": 0.08061
+      },
+      "valid": {
+        "rr": 0.931,
+        "lo": 0.849,
+        "hi": 1.022,
+        "p": 0.13224048836084398,
+        "exposed_balls": 21068,
+        "exposed_events": 1631,
+        "expected_events": 1718.5828513707065,
+        "exposed_rate": 0.07742,
+        "expected_rate": 0.08157
+      },
+      "full": {
+        "rr": 0.918,
+        "lo": 0.858,
+        "hi": 0.982,
+        "p": 0.013063609139616825,
+        "exposed_balls": 44701,
+        "exposed_events": 3370,
+        "expected_events": 3531.2085377459093,
+        "exposed_rate": 0.07539,
+        "expected_rate": 0.079
+      },
+      "situation_only_rr": 0.918,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.054952,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "collapse",
+      "title": "Collapse in progress (2+ wickets in 18 balls)",
+      "question": "Once two wickets have fallen quickly, does a collapse continue?",
+      "category": "momentum",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.893,
+        "lo": 0.809,
+        "hi": 0.986,
+        "p": 0.02518460434141515,
+        "exposed_balls": 11966,
+        "exposed_events": 972,
+        "expected_events": 1110.029891318223,
+        "exposed_rate": 0.08123,
+        "expected_rate": 0.09277
+      },
+      "valid": {
+        "rr": 0.898,
+        "lo": 0.817,
+        "hi": 0.988,
+        "p": 0.026986116048617018,
+        "exposed_balls": 12349,
+        "exposed_events": 1078,
+        "expected_events": 1210.5319573116878,
+        "exposed_rate": 0.08729,
+        "expected_rate": 0.09803
+      },
+      "full": {
+        "rr": 0.893,
+        "lo": 0.834,
+        "hi": 0.956,
+        "p": 0.0011457021793113522,
+        "exposed_balls": 24627,
+        "exposed_events": 2086,
+        "expected_events": 2270.4961233824024,
+        "exposed_rate": 0.0847,
+        "expected_rate": 0.0922
+      },
+      "situation_only_rr": 0.893,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.114231,
+      "verdict": "weak",
+      "why": "Shows up in one period but not convincingly in both, or the effect is tiny."
+    },
+    {
+      "id": "after_two_boundaries",
+      "title": "Batter out after back-to-back boundaries",
+      "question": "After two boundaries in a row, is the batter more likely to get out?",
+      "category": "momentum",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.868,
+        "lo": 0.707,
+        "hi": 1.067,
+        "p": 0.17855408624429672,
+        "exposed_balls": 1892,
+        "exposed_events": 92,
+        "expected_events": 105.14842491136443,
+        "exposed_rate": 0.04863,
+        "expected_rate": 0.05558
+      },
+      "valid": {
+        "rr": 1.063,
+        "lo": 0.886,
+        "hi": 1.275,
+        "p": 0.5093786161453582,
+        "exposed_balls": 1785,
+        "exposed_events": 114,
+        "expected_events": 108.06367660692618,
+        "exposed_rate": 0.06387,
+        "expected_rate": 0.06054
+      },
+      "full": {
+        "rr": 0.961,
+        "lo": 0.839,
+        "hi": 1.101,
+        "p": 0.5673936997162037,
+        "exposed_balls": 3679,
+        "exposed_events": 206,
+        "expected_events": 214.51853298009814,
+        "exposed_rate": 0.05599,
+        "expected_rate": 0.05831
+      },
+      "situation_only_rr": 0.961,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.416626,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "long_partnership",
+      "title": "Partnership of 36+ balls",
+      "question": "Do long partnerships get harder to break?",
+      "category": "partnerships",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 1.014,
+        "lo": 0.841,
+        "hi": 1.221,
+        "p": 0.886508157884463,
+        "exposed_balls": 3588,
+        "exposed_events": 169,
+        "expected_events": 219.43923683796345,
+        "exposed_rate": 0.0471,
+        "expected_rate": 0.06116
+      },
+      "valid": {
+        "rr": 1.048,
+        "lo": 0.873,
+        "hi": 1.258,
+        "p": 0.6154567161448286,
+        "exposed_balls": 2842,
+        "exposed_events": 163,
+        "expected_events": 183.70932797459776,
+        "exposed_rate": 0.05735,
+        "expected_rate": 0.06464
+      },
+      "full": {
+        "rr": 0.998,
+        "lo": 0.876,
+        "hi": 1.136,
+        "p": 0.9751324433432845,
+        "exposed_balls": 6603,
+        "exposed_events": 336,
+        "expected_events": 386.3437382284908,
+        "exposed_rate": 0.05089,
+        "expected_rate": 0.05851
+      },
+      "situation_only_rr": 0.998,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.950831,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "nervous_40s",
+      "title": "Batter in the 40s",
+      "question": "Do batters get out more in the 40s, approaching a fifty?",
+      "category": "milestones",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.961,
+        "lo": 0.784,
+        "hi": 1.179,
+        "p": 0.7022332178015296,
+        "exposed_balls": 2909,
+        "exposed_events": 131,
+        "expected_events": 149.49517896696184,
+        "exposed_rate": 0.04503,
+        "expected_rate": 0.05139
+      },
+      "valid": {
+        "rr": 1.053,
+        "lo": 0.87,
+        "hi": 1.276,
+        "p": 0.5948752368068227,
+        "exposed_balls": 2541,
+        "exposed_events": 153,
+        "expected_events": 159.89658544283625,
+        "exposed_rate": 0.06021,
+        "expected_rate": 0.06293
+      },
+      "full": {
+        "rr": 0.998,
+        "lo": 0.868,
+        "hi": 1.149,
+        "p": 0.9810396467665529,
+        "exposed_balls": 5476,
+        "exposed_events": 286,
+        "expected_events": 296.4174146541276,
+        "exposed_rate": 0.05223,
+        "expected_rate": 0.05413
+      },
+      "situation_only_rr": 0.998,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.926854,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "after_fifty",
+      "title": "Just after reaching fifty",
+      "question": "Do batters relax and get out just after reaching 50?",
+      "category": "milestones",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.955,
+        "lo": 0.681,
+        "hi": 1.341,
+        "p": 0.792267929352868,
+        "exposed_balls": 1214,
+        "exposed_events": 51,
+        "expected_events": 58.70497901695676,
+        "exposed_rate": 0.04201,
+        "expected_rate": 0.04836
+      },
+      "valid": {
+        "rr": 0.804,
+        "lo": 0.588,
+        "hi": 1.098,
+        "p": 0.17017074781724587,
+        "exposed_balls": 979,
+        "exposed_events": 54,
+        "expected_events": 70.4643636102662,
+        "exposed_rate": 0.05516,
+        "expected_rate": 0.07198
+      },
+      "full": {
+        "rr": 0.866,
+        "lo": 0.691,
+        "hi": 1.085,
+        "p": 0.21064103608853518,
+        "exposed_balls": 2200,
+        "exposed_events": 105,
+        "expected_events": 128.6484168196876,
+        "exposed_rate": 0.04773,
+        "expected_rate": 0.05848
+      },
+      "situation_only_rr": 0.866,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.926854,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "new_bowler_first_over",
+      "title": "Bowler's first over of the match",
+      "question": "Does a new bowler strike in his first over?",
+      "category": "bowling",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.026,
+        "lo": 0.835,
+        "hi": 1.261,
+        "p": 0.8078700077778421,
+        "exposed_balls": 2836,
+        "exposed_events": 177,
+        "expected_events": 173.32045775544225,
+        "exposed_rate": 0.06241,
+        "expected_rate": 0.06111
+      },
+      "valid": {
+        "rr": 0.945,
+        "lo": 0.775,
+        "hi": 1.152,
+        "p": 0.5738086046047497,
+        "exposed_balls": 2826,
+        "exposed_events": 181,
+        "expected_events": 194.42643741171076,
+        "exposed_rate": 0.06405,
+        "expected_rate": 0.0688
+      },
+      "full": {
+        "rr": 0.994,
+        "lo": 0.862,
+        "hi": 1.145,
+        "p": 0.9302285909096035,
+        "exposed_balls": 5664,
+        "exposed_events": 358,
+        "expected_events": 363.52468763540895,
+        "exposed_rate": 0.06321,
+        "expected_rate": 0.06418
+      },
+      "situation_only_rr": 0.994,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.926854,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "bowler_last_over_t20",
+      "title": "Bowler's 4th (last) over in a T20",
+      "question": "Is a bowler more dangerous \u2014 or tired \u2014 in his final over?",
+      "category": "bowling",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 1.221,
+        "lo": 0.984,
+        "hi": 1.516,
+        "p": 0.06989009084137474,
+        "exposed_balls": 2391,
+        "exposed_events": 179,
+        "expected_events": 144.83219117159206,
+        "exposed_rate": 0.07486,
+        "expected_rate": 0.06057
+      },
+      "valid": {
+        "rr": 1.161,
+        "lo": 0.938,
+        "hi": 1.437,
+        "p": 0.17075783223722651,
+        "exposed_balls": 2299,
+        "exposed_events": 177,
+        "expected_events": 153.83638629525075,
+        "exposed_rate": 0.07699,
+        "expected_rate": 0.06691
+      },
+      "full": {
+        "rr": 1.197,
+        "lo": 1.029,
+        "hi": 1.391,
+        "p": 0.01946027380193956,
+        "exposed_balls": 4700,
+        "exposed_events": 357,
+        "expected_events": 302.37919854667757,
+        "exposed_rate": 0.07596,
+        "expected_rate": 0.06434
+      },
+      "situation_only_rr": 1.197,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.222378,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "after_wide",
+      "title": "Ball after a wide",
+      "question": "Does a bowler who has just bowled a wide lose rhythm?",
+      "category": "bowling",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 0.917,
+        "lo": 0.749,
+        "hi": 1.122,
+        "p": 0.4002531289360305,
+        "exposed_balls": 1502,
+        "exposed_events": 91,
+        "expected_events": 99.49221465593416,
+        "exposed_rate": 0.06059,
+        "expected_rate": 0.06624
+      },
+      "valid": {
+        "rr": 0.952,
+        "lo": 0.782,
+        "hi": 1.158,
+        "p": 0.6224204369587035,
+        "exposed_balls": 1470,
+        "exposed_events": 97,
+        "expected_events": 101.01906164218829,
+        "exposed_rate": 0.06599,
+        "expected_rate": 0.06872
+      },
+      "full": {
+        "rr": 0.94,
+        "lo": 0.817,
+        "hi": 1.082,
+        "p": 0.38854380504468006,
+        "exposed_balls": 2972,
+        "exposed_events": 188,
+        "expected_events": 199.8289856264867,
+        "exposed_rate": 0.06326,
+        "expected_rate": 0.06724
+      },
+      "situation_only_rr": 0.94,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.737308,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "free_hit_sanity",
+      "title": "Free hit (sanity check)",
+      "question": "Free hits can only produce run-outs \u2014 bowler wickets should be ~0.",
+      "category": "sanity check",
+      "outcome": "bowler_wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": null,
+        "lo": null,
+        "hi": null,
+        "p": null,
+        "exposed_balls": 0,
+        "exposed_events": 0,
+        "expected_events": 0.0,
+        "exposed_rate": null,
+        "expected_rate": null
+      },
+      "valid": {
+        "rr": null,
+        "lo": null,
+        "hi": null,
+        "p": null,
+        "exposed_balls": 0,
+        "exposed_events": 0,
+        "expected_events": 0.0,
+        "exposed_rate": null,
+        "expected_rate": null
+      },
+      "full": {
+        "rr": null,
+        "lo": null,
+        "hi": null,
+        "p": null,
+        "exposed_balls": 0,
+        "exposed_events": 0,
+        "expected_events": 0.0,
+        "exposed_rate": null,
+        "expected_rate": null
+      },
+      "situation_only_rr": null,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": null,
+      "verdict": "insufficient data",
+      "why": "Too few exposed balls or events in one of the two periods."
+    },
+    {
+      "id": "first_ball_of_over",
+      "title": "First ball of an over",
+      "question": "Is the first ball of an over more dangerous?",
+      "category": "over position",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.912,
+        "lo": 0.831,
+        "hi": 1.0,
+        "p": 0.05087700361093295,
+        "exposed_balls": 8571,
+        "exposed_events": 507,
+        "expected_events": 555.5496710615246,
+        "exposed_rate": 0.05915,
+        "expected_rate": 0.06482
+      },
+      "valid": {
+        "rr": 0.973,
+        "lo": 0.891,
+        "hi": 1.063,
+        "p": 0.5495419138087227,
+        "exposed_balls": 8422,
+        "exposed_events": 556,
+        "expected_events": 571.6157972240555,
+        "exposed_rate": 0.06602,
+        "expected_rate": 0.06787
+      },
+      "full": {
+        "rr": 0.947,
+        "lo": 0.889,
+        "hi": 1.009,
+        "p": 0.09415264837834268,
+        "exposed_balls": 16998,
+        "exposed_events": 1065,
+        "expected_events": 1124.7010414260012,
+        "exposed_rate": 0.06265,
+        "expected_rate": 0.06617
+      },
+      "situation_only_rr": 0.947,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.17807,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "last_ball_of_over",
+      "title": "Last ball of an over",
+      "question": "Do batters take risks on the last ball (strike, run-outs)?",
+      "category": "over position",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.067,
+        "lo": 0.977,
+        "hi": 1.165,
+        "p": 0.14790400598264358,
+        "exposed_balls": 8346,
+        "exposed_events": 568,
+        "expected_events": 530.3430282831167,
+        "exposed_rate": 0.06806,
+        "expected_rate": 0.06354
+      },
+      "valid": {
+        "rr": 1.019,
+        "lo": 0.934,
+        "hi": 1.112,
+        "p": 0.6735942373637811,
+        "exposed_balls": 8182,
+        "exposed_events": 567,
+        "expected_events": 557.5119905355189,
+        "exposed_rate": 0.0693,
+        "expected_rate": 0.06814
+      },
+      "full": {
+        "rr": 1.036,
+        "lo": 0.975,
+        "hi": 1.102,
+        "p": 0.2547803819701552,
+        "exposed_balls": 16544,
+        "exposed_events": 1136,
+        "expected_events": 1097.2435685553758,
+        "exposed_rate": 0.06867,
+        "expected_rate": 0.06632
+      },
+      "situation_only_rr": 1.036,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.396255,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "release_boundary",
+      "title": "Boundary after 3+ dots",
+      "question": "Do batters release pressure with a boundary?",
+      "category": "scoring",
+      "outcome": "boundary",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.981,
+        "lo": 0.902,
+        "hi": 1.067,
+        "p": 0.6573270205408457,
+        "exposed_balls": 2732,
+        "exposed_events": 478,
+        "expected_events": 488.6271768731591,
+        "exposed_rate": 0.17496,
+        "expected_rate": 0.17885
+      },
+      "valid": {
+        "rr": 0.991,
+        "lo": 0.91,
+        "hi": 1.079,
+        "p": 0.82935113488475,
+        "exposed_balls": 2743,
+        "exposed_events": 472,
+        "expected_events": 476.2641586859568,
+        "exposed_rate": 0.17207,
+        "expected_rate": 0.17363
+      },
+      "full": {
+        "rr": 0.978,
+        "lo": 0.922,
+        "hi": 1.038,
+        "p": 0.4699528910283613,
+        "exposed_balls": 5475,
+        "exposed_events": 950,
+        "expected_events": 969.5441364534012,
+        "exposed_rate": 0.17352,
+        "expected_rate": 0.17709
+      },
+      "situation_only_rr": 0.978,
+      "adjusted_for": [],
+      "q_discovery": 0.926854,
+      "verdict": "myth",
+      "why": "Measured precisely and there is no meaningful effect."
+    },
+    {
+      "id": "boundary_momentum",
+      "title": "Boundary after a boundary",
+      "question": "Does a boundary make the next one more likely?",
+      "category": "scoring",
+      "outcome": "boundary",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.992,
+        "lo": 0.948,
+        "hi": 1.037,
+        "p": 0.7182619274433252,
+        "exposed_balls": 9417,
+        "exposed_events": 1969,
+        "expected_events": 1989.4537790111733,
+        "exposed_rate": 0.20909,
+        "expected_rate": 0.21126
+      },
+      "valid": {
+        "rr": 1.003,
+        "lo": 0.958,
+        "hi": 1.051,
+        "p": 0.886902255094829,
+        "exposed_balls": 9068,
+        "exposed_events": 1856,
+        "expected_events": 1849.0967884474978,
+        "exposed_rate": 0.20468,
+        "expected_rate": 0.20391
+      },
+      "full": {
+        "rr": 1.021,
+        "lo": 0.989,
+        "hi": 1.054,
+        "p": 0.20555643539963842,
+        "exposed_balls": 18493,
+        "exposed_events": 3828,
+        "expected_events": 3749.7424237610267,
+        "exposed_rate": 0.207,
+        "expected_rate": 0.20277
+      },
+      "situation_only_rr": 1.021,
+      "adjusted_for": [],
+      "q_discovery": 0.926854,
+      "verdict": "myth",
+      "why": "Measured precisely and there is no meaningful effect."
+    },
+    {
+      "id": "six_after_six",
+      "title": "Six after a six",
+      "question": "Does a six make another six more likely?",
+      "category": "scoring",
+      "outcome": "six",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.835,
+        "lo": 0.724,
+        "hi": 0.963,
+        "p": 0.01327240383087436,
+        "exposed_balls": 3045,
+        "exposed_events": 191,
+        "expected_events": 229.0197092045976,
+        "exposed_rate": 0.06273,
+        "expected_rate": 0.07521
+      },
+      "valid": {
+        "rr": 0.915,
+        "lo": 0.79,
+        "hi": 1.061,
+        "p": 0.24018263510978954,
+        "exposed_balls": 2796,
+        "exposed_events": 179,
+        "expected_events": 195.7030701639235,
+        "exposed_rate": 0.06402,
+        "expected_rate": 0.06999
+      },
+      "full": {
+        "rr": 0.929,
+        "lo": 0.839,
+        "hi": 1.029,
+        "p": 0.15926464482186098,
+        "exposed_balls": 5841,
+        "exposed_events": 370,
+        "expected_events": 398.79115230460786,
+        "exposed_rate": 0.06335,
+        "expected_rate": 0.06827
+      },
+      "situation_only_rr": 0.929,
+      "adjusted_for": [],
+      "q_discovery": 0.092907,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "new_batter_scoring",
+      "title": "New batter's boundary rate",
+      "question": "Do new batters hit fewer boundaries in their first 5 balls?",
+      "category": "scoring",
+      "outcome": "boundary",
+      "folklore": "down",
+      "disc": {
+        "rr": 0.898,
+        "lo": 0.858,
+        "hi": 0.941,
+        "p": 4.909613949817063e-06,
+        "exposed_balls": 16614,
+        "exposed_events": 2988,
+        "expected_events": 3273.089389127943,
+        "exposed_rate": 0.17985,
+        "expected_rate": 0.19701
+      },
+      "valid": {
+        "rr": 0.907,
+        "lo": 0.866,
+        "hi": 0.95,
+        "p": 3.346797335499734e-05,
+        "exposed_balls": 16985,
+        "exposed_events": 3038,
+        "expected_events": 3245.772974729685,
+        "exposed_rate": 0.17886,
+        "expected_rate": 0.1911
+      },
+      "full": {
+        "rr": 0.901,
+        "lo": 0.872,
+        "hi": 0.931,
+        "p": 3.297323261492583e-10,
+        "exposed_balls": 33664,
+        "exposed_events": 6041,
+        "expected_events": 6553.479577146658,
+        "exposed_rate": 0.17945,
+        "expected_rate": 0.19467
+      },
+      "situation_only_rr": 0.901,
+      "adjusted_for": [],
+      "q_discovery": 0.000172,
+      "verdict": "real",
+      "why": "Holds in both periods, in the direction people expect."
+    },
+    {
+      "id": "wides_new_spell",
+      "title": "Wides in a spell's first over",
+      "question": "Do bowlers bowl more wides when starting a spell?",
+      "category": "extras",
+      "outcome": "wide",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.798,
+        "lo": 0.636,
+        "hi": 1.001,
+        "p": 0.05052781705024321,
+        "exposed_balls": 5039,
+        "exposed_events": 136,
+        "expected_events": 165.2160033503238,
+        "exposed_rate": 0.02699,
+        "expected_rate": 0.03279
+      },
+      "valid": {
+        "rr": 0.992,
+        "lo": 0.792,
+        "hi": 1.242,
+        "p": 0.9420246670063479,
+        "exposed_balls": 4933,
+        "exposed_events": 153,
+        "expected_events": 145.9773680716862,
+        "exposed_rate": 0.03102,
+        "expected_rate": 0.02959
+      },
+      "full": {
+        "rr": 0.891,
+        "lo": 0.762,
+        "hi": 1.043,
+        "p": 0.14990573445789424,
+        "exposed_balls": 9983,
+        "exposed_events": 289,
+        "expected_events": 318.21062266072846,
+        "exposed_rate": 0.02895,
+        "expected_rate": 0.03188
+      },
+      "situation_only_rr": 0.891,
+      "adjusted_for": [],
+      "q_discovery": 0.17807,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "wides_death",
+      "title": "Wides at the death",
+      "question": "Do wides rise in the last 20% of the innings?",
+      "category": "extras",
+      "outcome": "wide",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.981,
+        "lo": 0.838,
+        "hi": 1.15,
+        "p": 0.8158115097968056,
+        "exposed_balls": 7205,
+        "exposed_events": 222,
+        "expected_events": 236.17309904462982,
+        "exposed_rate": 0.03081,
+        "expected_rate": 0.03278
+      },
+      "valid": {
+        "rr": 0.998,
+        "lo": 0.844,
+        "hi": 1.181,
+        "p": 0.9849200209824627,
+        "exposed_balls": 6540,
+        "exposed_events": 193,
+        "expected_events": 192.0594584696418,
+        "exposed_rate": 0.02951,
+        "expected_rate": 0.02937
+      },
+      "full": {
+        "rr": 1.002,
+        "lo": 0.893,
+        "hi": 1.124,
+        "p": 0.9740140977789392,
+        "exposed_balls": 13745,
+        "exposed_events": 415,
+        "expected_events": 428.98139235241985,
+        "exposed_rate": 0.03019,
+        "expected_rate": 0.03121
+      },
+      "situation_only_rr": 1.002,
+      "adjusted_for": [],
+      "q_discovery": 0.926854,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "offspin_v_lhb",
+      "title": "Off-spin v left-handers",
+      "question": "Do left-handers fall more often to off-spin than right-handers do?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.078,
+        "lo": 0.905,
+        "hi": 1.285,
+        "p": 0.39994309897530134,
+        "exposed_balls": 2724,
+        "exposed_events": 179,
+        "expected_events": 186.0468769340034,
+        "exposed_rate": 0.06571,
+        "expected_rate": 0.0683
+      },
+      "valid": {
+        "rr": 0.971,
+        "lo": 0.813,
+        "hi": 1.161,
+        "p": 0.7499604909457127,
+        "exposed_balls": 2598,
+        "exposed_events": 182,
+        "expected_events": 202.485014666846,
+        "exposed_rate": 0.07005,
+        "expected_rate": 0.07794
+      },
+      "full": {
+        "rr": 1.034,
+        "lo": 0.915,
+        "hi": 1.168,
+        "p": 0.5963516344441273,
+        "exposed_balls": 5494,
+        "exposed_events": 371,
+        "expected_events": 380.72448952312857,
+        "exposed_rate": 0.06753,
+        "expected_rate": 0.0693
+      },
+      "situation_only_rr": 1.034,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.737308,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "leg_spin_v_lhb",
+      "title": "Leg-spin v left-handers",
+      "question": "Are left-handers harder for leg-spinners to dismiss (the ball turns in)?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 0.809,
+        "lo": 0.679,
+        "hi": 0.965,
+        "p": 0.018391172484133803,
+        "exposed_balls": 3421,
+        "exposed_events": 179,
+        "expected_events": 243.46396310414508,
+        "exposed_rate": 0.05232,
+        "expected_rate": 0.07117
+      },
+      "valid": {
+        "rr": 0.976,
+        "lo": 0.831,
+        "hi": 1.146,
+        "p": 0.7670383242940153,
+        "exposed_balls": 3419,
+        "exposed_events": 216,
+        "expected_events": 269.4995002461567,
+        "exposed_rate": 0.06318,
+        "expected_rate": 0.07882
+      },
+      "full": {
+        "rr": 0.885,
+        "lo": 0.789,
+        "hi": 0.993,
+        "p": 0.037313547692029256,
+        "exposed_balls": 7057,
+        "exposed_events": 411,
+        "expected_events": 518.1800354136114,
+        "exposed_rate": 0.05824,
+        "expected_rate": 0.07343
+      },
+      "situation_only_rr": 0.885,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.107282,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "sla_v_rhb",
+      "title": "Left-arm orthodox v right-handers",
+      "question": "Does left-arm orthodox (turning away) dismiss right-handers more?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.087,
+        "lo": 0.904,
+        "hi": 1.306,
+        "p": 0.3760405215336764,
+        "exposed_balls": 4865,
+        "exposed_events": 320,
+        "expected_events": 351.56637476540243,
+        "exposed_rate": 0.06578,
+        "expected_rate": 0.07226
+      },
+      "valid": {
+        "rr": 0.995,
+        "lo": 0.835,
+        "hi": 1.185,
+        "p": 0.9517897086171172,
+        "exposed_balls": 4762,
+        "exposed_events": 339,
+        "expected_events": 420.4147352821327,
+        "exposed_rate": 0.07119,
+        "expected_rate": 0.08829
+      },
+      "full": {
+        "rr": 1.039,
+        "lo": 0.919,
+        "hi": 1.176,
+        "p": 0.5414327944104204,
+        "exposed_balls": 10561,
+        "exposed_events": 728,
+        "expected_events": 815.731058615568,
+        "exposed_rate": 0.06893,
+        "expected_rate": 0.07724
+      },
+      "situation_only_rr": 1.039,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.737308,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "lhb_attack_leg_spin",
+      "title": "Left-handers hitting leg-spin",
+      "question": "Do left-handers hit more boundaries off leg-spin?",
+      "category": "matchups",
+      "outcome": "boundary",
+      "folklore": "up",
+      "disc": {
+        "rr": 0.971,
+        "lo": 0.885,
+        "hi": 1.066,
+        "p": 0.5422014104413265,
+        "exposed_balls": 3421,
+        "exposed_events": 672,
+        "expected_events": 653.7836089229127,
+        "exposed_rate": 0.19643,
+        "expected_rate": 0.19111
+      },
+      "valid": {
+        "rr": 1.071,
+        "lo": 0.976,
+        "hi": 1.174,
+        "p": 0.1463527948026827,
+        "exposed_balls": 3419,
+        "exposed_events": 693,
+        "expected_events": 626.4522724500706,
+        "exposed_rate": 0.20269,
+        "expected_rate": 0.18323
+      },
+      "full": {
+        "rr": 1.019,
+        "lo": 0.957,
+        "hi": 1.085,
+        "p": 0.560758578342885,
+        "exposed_balls": 7057,
+        "exposed_events": 1403,
+        "expected_events": 1322.8795422495627,
+        "exposed_rate": 0.19881,
+        "expected_rate": 0.18746
+      },
+      "situation_only_rr": 1.019,
+      "adjusted_for": [],
+      "q_discovery": 0.908633,
+      "verdict": "myth",
+      "why": "Measured precisely and there is no meaningful effect."
+    },
+    {
+      "id": "pace_v_spin_death",
+      "title": "Spin at the death",
+      "question": "Is spin in the last 20% of an innings more likely to take wickets than pace?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "up",
+      "disc": {
+        "rr": 1.091,
+        "lo": 0.934,
+        "hi": 1.274,
+        "p": 0.2726905761898147,
+        "exposed_balls": 4037,
+        "exposed_events": 391,
+        "expected_events": 376.73783877314355,
+        "exposed_rate": 0.09685,
+        "expected_rate": 0.09332
+      },
+      "valid": {
+        "rr": 1.163,
+        "lo": 0.994,
+        "hi": 1.361,
+        "p": 0.059691090542749396,
+        "exposed_balls": 3430,
+        "exposed_events": 378,
+        "expected_events": 341.18691221931516,
+        "exposed_rate": 0.1102,
+        "expected_rate": 0.09947
+      },
+      "full": {
+        "rr": 1.12,
+        "lo": 1.004,
+        "hi": 1.249,
+        "p": 0.04181986317972176,
+        "exposed_balls": 7725,
+        "exposed_events": 793,
+        "expected_events": 752.6236142049095,
+        "exposed_rate": 0.10265,
+        "expected_rate": 0.09743
+      },
+      "situation_only_rr": 1.12,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.596511,
+      "verdict": "inconclusive",
+      "why": "Not enough evidence either way."
+    },
+    {
+      "id": "mixed_hand_partnership",
+      "title": "Left\u2013right batting pair",
+      "question": "Is a left/right pair harder to dismiss?",
+      "category": "matchups",
+      "outcome": "wicket",
+      "folklore": "down",
+      "disc": {
+        "rr": 0.997,
+        "lo": 0.93,
+        "hi": 1.07,
+        "p": 0.9351564973392228,
+        "exposed_balls": 22430,
+        "exposed_events": 1443,
+        "expected_events": 1479.7439854384247,
+        "exposed_rate": 0.06433,
+        "expected_rate": 0.06597
+      },
+      "valid": {
+        "rr": 1.038,
+        "lo": 0.97,
+        "hi": 1.111,
+        "p": 0.2771830736750325,
+        "exposed_balls": 22211,
+        "exposed_events": 1532,
+        "expected_events": 1538.5935758713376,
+        "exposed_rate": 0.06897,
+        "expected_rate": 0.06927
+      },
+      "full": {
+        "rr": 1.026,
+        "lo": 0.978,
+        "hi": 1.077,
+        "p": 0.2983826360141569,
+        "exposed_balls": 44792,
+        "exposed_events": 2987,
+        "expected_events": 2944.4274954436855,
+        "exposed_rate": 0.06669,
+        "expected_rate": 0.06574
+      },
+      "situation_only_rr": 1.026,
+      "adjusted_for": [
+        "new_batter_first5"
+      ],
+      "q_discovery": 0.962661,
+      "verdict": "myth",
+      "why": "Measured precisely and there is no meaningful effect."
+    }
+  ],
+  "curves": {
+    "batter_balls_faced": [
+      {
+        "value": 0,
+        "balls": 8183,
+        "wicket_rate": 0.08395,
+        "o_e": 1.14
+      },
+      {
+        "value": 1,
+        "balls": 7353,
+        "wicket_rate": 0.08146,
+        "o_e": 1.134
+      },
+      {
+        "value": 2,
+        "balls": 6650,
+        "wicket_rate": 0.08286,
+        "o_e": 1.174
+      },
+      {
+        "value": 3,
+        "balls": 6004,
+        "wicket_rate": 0.06829,
+        "o_e": 0.984
+      },
+      {
+        "value": 4,
+        "balls": 5504,
+        "wicket_rate": 0.0734,
+        "o_e": 1.078
+      },
+      {
+        "value": 5,
+        "balls": 5010,
+        "wicket_rate": 0.07585,
+        "o_e": 1.129
+      },
+      {
+        "value": 6,
+        "balls": 4566,
+        "wicket_rate": 0.06965,
+        "o_e": 1.056
+      },
+      {
+        "value": 7,
+        "balls": 4199,
+        "wicket_rate": 0.06764,
+        "o_e": 1.037
+      },
+      {
+        "value": 8,
+        "balls": 3872,
+        "wicket_rate": 0.06612,
+        "o_e": 1.026
+      },
+      {
+        "value": 9,
+        "balls": 3560,
+        "wicket_rate": 0.05787,
+        "o_e": 0.907
+      },
+      {
+        "value": 10,
+        "balls": 3321,
+        "wicket_rate": 0.06745,
+        "o_e": 1.064
+      },
+      {
+        "value": 11,
+        "balls": 3056,
+        "wicket_rate": 0.06054,
+        "o_e": 0.961
+      },
+      {
+        "value": 12,
+        "balls": 2839,
+        "wicket_rate": 0.05918,
+        "o_e": 0.938
+      },
+      {
+        "value": 13,
+        "balls": 2632,
+        "wicket_rate": 0.05471,
+        "o_e": 0.874
+      },
+      {
+        "value": 14,
+        "balls": 2458,
+        "wicket_rate": 0.0598,
+        "o_e": 0.952
+      },
+      {
+        "value": 15,
+        "balls": 2287,
+        "wicket_rate": 0.06603,
+        "o_e": 1.049
+      },
+      {
+        "value": 16,
+        "balls": 2111,
+        "wicket_rate": 0.05448,
+        "o_e": 0.869
+      },
+      {
+        "value": 17,
+        "balls": 1965,
+        "wicket_rate": 0.05852,
+        "o_e": 0.94
+      },
+      {
+        "value": 18,
+        "balls": 1827,
+        "wicket_rate": 0.052,
+        "o_e": 0.835
+      },
+      {
+        "value": 19,
+        "balls": 1724,
+        "wicket_rate": 0.04698,
+        "o_e": 0.747
+      },
+      {
+        "value": 20,
+        "balls": 1633,
+        "wicket_rate": 0.0594,
+        "o_e": 0.939
+      },
+      {
+        "value": 21,
+        "balls": 1518,
+        "wicket_rate": 0.05599,
+        "o_e": 0.888
+      },
+      {
+        "value": 22,
+        "balls": 1416,
+        "wicket_rate": 0.05085,
+        "o_e": 0.805
+      },
+      {
+        "value": 23,
+        "balls": 1330,
+        "wicket_rate": 0.05789,
+        "o_e": 0.917
+      },
+      {
+        "value": 24,
+        "balls": 1232,
+        "wicket_rate": 0.05357,
+        "o_e": 0.842
+      },
+      {
+        "value": 25,
+        "balls": 1141,
+        "wicket_rate": 0.05259,
+        "o_e": 0.83
+      },
+      {
+        "value": 26,
+        "balls": 1061,
+        "wicket_rate": 0.05938,
+        "o_e": 0.941
+      },
+      {
+        "value": 27,
+        "balls": 981,
+        "wicket_rate": 0.04587,
+        "o_e": 0.727
+      },
+      {
+        "value": 28,
+        "balls": 918,
+        "wicket_rate": 0.05664,
+        "o_e": 0.896
+      },
+      {
+        "value": 29,
+        "balls": 853,
+        "wicket_rate": 0.05979,
+        "o_e": 0.948
+      },
+      {
+        "value": 30,
+        "balls": 785,
+        "wicket_rate": 0.04968,
+        "o_e": 0.787
+      },
+      {
+        "value": 31,
+        "balls": 736,
+        "wicket_rate": 0.05571,
+        "o_e": 0.884
+      },
+      {
+        "value": 32,
+        "balls": 681,
+        "wicket_rate": 0.05433,
+        "o_e": 0.865
+      },
+      {
+        "value": 33,
+        "balls": 636,
+        "wicket_rate": 0.06132,
+        "o_e": 0.957
+      },
+      {
+        "value": 34,
+        "balls": 589,
+        "wicket_rate": 0.06961,
+        "o_e": 1.081
+      },
+      {
+        "value": 35,
+        "balls": 535,
+        "wicket_rate": 0.05421,
+        "o_e": 0.842
+      },
+      {
+        "value": 36,
+        "balls": 491,
+        "wicket_rate": 0.06314,
+        "o_e": 0.983
+      },
+      {
+        "value": 37,
+        "balls": 443,
+        "wicket_rate": 0.04966,
+        "o_e": 0.768
+      },
+      {
+        "value": 38,
+        "balls": 407,
+        "wicket_rate": 0.04423,
+        "o_e": 0.689
+      },
+      {
+        "value": 39,
+        "balls": 384,
+        "wicket_rate": 0.0599,
+        "o_e": 0.923
+      },
+      {
+        "value": 40,
+        "balls": 3756,
+        "wicket_rate": 0.04313,
+        "o_e": 0.671
+      }
+    ],
+    "dot_streak": [
+      {
+        "value": 0,
+        "balls": 63051,
+        "wicket_rate": 0.06342,
+        "o_e": 0.986
+      },
+      {
+        "value": 1,
+        "balls": 23308,
+        "wicket_rate": 0.06929,
+        "o_e": 1.027
+      },
+      {
+        "value": 2,
+        "balls": 8811,
+        "wicket_rate": 0.07457,
+        "o_e": 1.049
+      },
+      {
+        "value": 3,
+        "balls": 3385,
+        "wicket_rate": 0.07001,
+        "o_e": 0.938
+      },
+      {
+        "value": 4,
+        "balls": 1277,
+        "wicket_rate": 0.07909,
+        "o_e": 1.042
+      },
+      {
+        "value": 5,
+        "balls": 488,
+        "wicket_rate": 0.07787,
+        "o_e": 1.005
+      },
+      {
+        "value": 6,
+        "balls": 200,
+        "wicket_rate": 0.06,
+        "o_e": 0.737
+      },
+      {
+        "value": 7,
+        "balls": 71,
+        "wicket_rate": 0.08451,
+        "o_e": 0.989
+      },
+      {
+        "value": 8,
+        "balls": 56,
+        "wicket_rate": 0.08929,
+        "o_e": 0.904
+      }
+    ],
+    "partnership_balls": [
+      {
+        "value": 0,
+        "balls": 25511,
+        "wicket_rate": 0.07667,
+        "o_e": 0.979
+      },
+      {
+        "value": 6,
+        "balls": 22060,
+        "wicket_rate": 0.07167,
+        "o_e": 1.012
+      },
+      {
+        "value": 12,
+        "balls": 19726,
+        "wicket_rate": 0.06235,
+        "o_e": 0.978
+      },
+      {
+        "value": 18,
+        "balls": 9287,
+        "wicket_rate": 0.05965,
+        "o_e": 1.013
+      },
+      {
+        "value": 24,
+        "balls": 8705,
+        "wicket_rate": 0.05928,
+        "o_e": 1.044
+      },
+      {
+        "value": 30,
+        "balls": 4151,
+        "wicket_rate": 0.05854,
+        "o_e": 1.051
+      },
+      {
+        "value": 36,
+        "balls": 3948,
+        "wicket_rate": 0.05623,
+        "o_e": 1.056
+      },
+      {
+        "value": 42,
+        "balls": 1928,
+        "wicket_rate": 0.05809,
+        "o_e": 1.125
+      },
+      {
+        "value": 48,
+        "balls": 1885,
+        "wicket_rate": 0.04828,
+        "o_e": 0.933
+      },
+      {
+        "value": 54,
+        "balls": 920,
+        "wicket_rate": 0.05652,
+        "o_e": 1.108
+      },
+      {
+        "value": 60,
+        "balls": 2526,
+        "wicket_rate": 0.04473,
+        "o_e": 0.892
+      }
+    ],
+    "ball_in_over": [
+      {
+        "value": 1,
+        "balls": 17000,
+        "wicket_rate": 0.06265,
+        "o_e": 0.956
+      },
+      {
+        "value": 2,
+        "balls": 16901,
+        "wicket_rate": 0.06384,
+        "o_e": 0.966
+      },
+      {
+        "value": 3,
+        "balls": 16816,
+        "wicket_rate": 0.06815,
+        "o_e": 1.029
+      },
+      {
+        "value": 4,
+        "balls": 16730,
+        "wicket_rate": 0.07053,
+        "o_e": 1.062
+      },
+      {
+        "value": 5,
+        "balls": 16649,
+        "wicket_rate": 0.06391,
+        "o_e": 0.958
+      },
+      {
+        "value": 6,
+        "balls": 16551,
+        "wicket_rate": 0.06864,
+        "o_e": 1.03
+      }
+    ],
+    "wickets_last_12_balls": [
+      {
+        "value": 0,
+        "balls": 52121,
+        "wicket_rate": 0.05796,
+        "o_e": 1.024
+      },
+      {
+        "value": 1,
+        "balls": 32303,
+        "wicket_rate": 0.06937,
+        "o_e": 0.992
+      },
+      {
+        "value": 2,
+        "balls": 11442,
+        "wicket_rate": 0.08714,
+        "o_e": 0.978
+      },
+      {
+        "value": 3,
+        "balls": 4781,
+        "wicket_rate": 0.08597,
+        "o_e": 0.932
+      }
+    ],
+    "bowler_spell_over": [
+      {
+        "value": 1,
+        "balls": 67450,
+        "wicket_rate": 0.06919,
+        "o_e": 0.997
+      },
+      {
+        "value": 2,
+        "balls": 33197,
+        "wicket_rate": 0.06034,
+        "o_e": 1.008
+      }
+    ]
+  }
+}
