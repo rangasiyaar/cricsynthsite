@@ -193,3 +193,20 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .key-rename { display: flex; gap: 8px; align-items: center; }
 .key-rename .form-input { padding: 4px 8px; min-width: 140px; }
 .linkbtn.danger, .danger-btn { color: var(--bad, #b3473b) !important; }
+
+/* Dashboard: sections in a side panel */
+.dash-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; margin-top: 28px; align-items: start; }
+.dash-side { position: sticky; top: 88px; display: grid; gap: 4px; border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px);
+  padding: 8px; background: var(--color-bg-secondary, var(--cs-surface)); }
+.dash-side button { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; background: none;
+  padding: 10px 12px; border-radius: 8px; font: 600 14.5px var(--cs-body); color: var(--cs-ink-2); cursor: pointer; }
+.dash-side button:hover { background: var(--cs-bg); color: var(--cs-ink); }
+.dash-side button[aria-current="page"] { background: var(--cs-ink); color: var(--cs-bg); }
+.dash-ico { display: inline-flex; opacity: .85; }
+.dash-main { min-width: 0; }
+.dash-section-title { font-size: 22px !important; margin: 0 0 16px; }
+@media (max-width: 860px) {
+  .dash-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .dash-side { position: static; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .dash-side button { flex: none; width: auto; }
+}

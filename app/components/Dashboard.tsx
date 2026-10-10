@@ -10,6 +10,15 @@ import {
 
 const SECTIONS = ["Overview", "Subscription", "API keys", "Profile"] as const;
 export type Section = (typeof SECTIONS)[number];
+const ico = (d: string) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+);
+const ICONS: Record<string, React.ReactNode> = {
+  Overview: ico("M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z"),
+  Subscription: ico("M3 7h18v10H3zM3 11h18M7 15h3"),
+  "API keys": ico("M14 7a4 4 0 1 1-3.9 5H3v3h3v2h3v-2h1.1A4 4 0 0 1 14 7zm1.5 2.5h.01"),
+  Profile: ico("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0"),
+};
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const fmtDate = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—");
@@ -57,14 +66,23 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
         </div>
         <span className="tag pro dash-plan">{plan === "pro" ? `Pro${source === "beta" ? " · beta" : ""}` : "Free"}</span>
       </div>
-      <div className="tabs" role="tablist">
-        {SECTIONS.map((s) => <button key={s} role="tab" aria-selected={section === s} onClick={() => go(s)}>{s}</button>)}
+      <div className="dash-layout">
+        <nav className="dash-side" aria-label="Dashboard">
+          {SECTIONS.map((s) => (
+            <button key={s} type="button" aria-current={section === s ? "page" : undefined} onClick={() => go(s)}>
+              <span className="dash-ico" aria-hidden="true">{ICONS[s]}</span>{s}
+            </button>
+          ))}
+        </nav>
+        <div className="dash-main">
+          {err && <p className="notice" role="alert">{err}</p>}
+          <h2 className="dash-section-title">{section}</h2>
+          {section === "Overview" && <Overview plan={plan} source={source} active={active} go={go} />}
+          {section === "Subscription" && <Subscription plan={plan} source={source} />}
+          {section === "API keys" && <Keys uid={u.uid} keys={keys} refresh={refresh} setErr={setErr} />}
+          {section === "Profile" && <ProfileSection user={u} setErr={setErr} />}
+        </div>
       </div>
-      {err && <p className="notice" role="alert">{err}</p>}
-      {section === "Overview" && <Overview plan={plan} source={source} active={active} go={go} />}
-      {section === "Subscription" && <Subscription plan={plan} source={source} />}
-      {section === "API keys" && <Keys uid={u.uid} keys={keys} refresh={refresh} setErr={setErr} />}
-      {section === "Profile" && <ProfileSection user={u} setErr={setErr} />}
     </>
   );
 }
