@@ -1,0 +1,340 @@
+{
+ "testCases": [
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "create",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "free",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "create",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "pro",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k6",
+    "method": "create",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "free",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u2"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "create",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "free",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": null,
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "get",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "get",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u2"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "get",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "update",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "free",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": true,
+      "revokedAt": "2026-10-10T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "update",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "business",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "update",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "name": "Prod",
+      "prefix": "cs_live_abc",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "plan": "free",
+      "created": "2026-10-10T12:00:00Z",
+      "revoked": false
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": true
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "delete",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": false
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/keys/k1",
+    "method": "delete",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {
+     "name": "Prod",
+     "prefix": "cs_live_abc",
+     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "plan": "free",
+     "created": "2026-10-10T12:00:00Z",
+     "revoked": true
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1",
+    "method": "update",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "company": "Acme",
+      "useCase": "fantasy",
+      "updated": "2026-10-10T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {}
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1",
+    "method": "update",
+    "time": "2026-10-10T12:00:00Z",
+    "resource": {
+     "data": {
+      "company": "Acme",
+      "plan": "pro"
+     }
+    }
+   },
+   "resource": {
+    "data": {}
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/fixtures/x",
+    "method": "get",
+    "time": "2026-10-10T12:00:00Z"
+   },
+   "resource": {
+    "data": {}
+   }
+  }
+ ]
+}

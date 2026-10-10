@@ -30,7 +30,8 @@ cricsynthsite/
 | Concern | Service | Notes |
 |---|---|---|
 | Website + fan app | Firebase Hosting (static Next.js export) at cricsynthesis.in | Forecasts are static JSON built nightly (`publish-site.yml`); Firestore for accounts/Pro later |
-| Auth | Firebase Auth (`app/lib/firebase.ts`) | Google + email; no SMS (billed). Pro = any signed-in account during the beta |
+| Auth | Firebase Auth (`app/lib/firebase.ts`) | Google + email; no SMS (billed). Pro = any signed-in account during the beta (`BETA_PRO`); a `plan` custom claim overrides |
+| Account dashboard | `/account/` (`components/Dashboard.tsx`) | Plan, API keys (Firestore, read by the API when `CRICAPI_FIRESTORE_PROJECT` is set), profile |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
 | API + admin | Cloud Run service `cricapi` | Served through the `api` Hosting site (Cloud Run has only 1 GB free egress) |
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
@@ -108,5 +109,7 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 
 - New cloud resource? Add its free-tier limit and our guard to `infra/COSTS.md` first.
 - BigQuery: never `SELECT *` on `deliveries`; filter on `match_date`; set `maximum_bytes_billed`.
-- Firestore: writes only from server code; public docs must include `published: true`; keep docs < 1 MB.
+- Firestore: writes only from server code, except a signed-in user's own `users/{uid}` profile fields and
+  `users/{uid}/keys/{k1..k5}` API keys (hash + prefix only, free plan only; rules in `infra/firestore.rules`, tests in
+  `infra/rules-tests/`). Public docs must include `published: true`; keep docs < 1 MB.
 - Cloud Run: sizes come from `infra/limits.env`; scale to zero.

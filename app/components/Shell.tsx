@@ -47,7 +47,7 @@ function AccountLink({ className, onClick }: { className: string; onClick?: () =
   return (
     <Link href={signedIn ? "/account/" : "/login/"} className={className} onClick={onClick}
           style={user === undefined ? { visibility: "hidden" } : undefined}>
-      {signedIn ? "Account" : "Sign in"}
+      {signedIn ? "Dashboard" : "Sign in"}
     </Link>
   );
 }

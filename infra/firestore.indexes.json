@@ -4,19 +4,49 @@
       "collectionGroup": "matches",
       "queryScope": "COLLECTION",
       "fields": [
-        {"fieldPath": "published", "order": "ASCENDING"},
-        {"fieldPath": "startTime", "order": "ASCENDING"}
+        {
+          "fieldPath": "published",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "startTime",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
       "collectionGroup": "matches",
       "queryScope": "COLLECTION",
       "fields": [
-        {"fieldPath": "published", "order": "ASCENDING"},
-        {"fieldPath": "competition", "order": "ASCENDING"},
-        {"fieldPath": "startTime", "order": "DESCENDING"}
+        {
+          "fieldPath": "published",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "competition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "startTime",
+          "order": "DESCENDING"
+        }
       ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "keys",
+      "fieldPath": "hash",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    }
+  ]
 }

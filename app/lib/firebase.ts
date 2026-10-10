@@ -3,6 +3,7 @@
 // enforced by Auth and the Firestore rules), so it lives in the code rather than in secrets.
 import { getApps, initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, type Auth, type User } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const CONFIG = {
@@ -14,8 +15,16 @@ const CONFIG = {
   appId: "1:738796128383:web:805a11670433963e73d74a",
 };
 
+function app() {
+  return getApps()[0] ?? initializeApp(CONFIG);
+}
+
 export function auth(): Auth {
-  return getAuth(getApps()[0] ?? initializeApp(CONFIG));
+  return getAuth(app());
+}
+
+export function db(): Firestore {
+  return getFirestore(app());
 }
 
 /** The signed-in user; undefined while Firebase is still checking. */

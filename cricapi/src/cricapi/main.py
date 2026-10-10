@@ -39,6 +39,7 @@ class Settings:
     patterns_file: Path = Path(os.environ.get("CRICAPI_PATTERNS", "data/patterns/report.json"))
     keys_file: Path = Path(os.environ.get("CRICAPI_KEYS_FILE", "data/keys.json"))
     admin_key: str | None = os.environ.get("CRICAPI_ADMIN_KEY")
+    firestore_project: str | None = os.environ.get("CRICAPI_FIRESTORE_PROJECT")   # accept dashboard-created keys
     cors: str = os.environ.get("CRICAPI_CORS", "https://cricsynthesis.in,https://app.cricsynthesis.in,http://localhost:3000")
 
 
@@ -46,6 +47,8 @@ class _State:
     def __init__(self, s: Settings):
         self.settings = s
         self.keys = KeyStore(s.keys_file)
+        if s.firestore_project:
+            self.keys.attach_firestore(s.firestore_project)
         self.usage = Usage()
         self.content = Content(s.publish_dir, s.coverage_dir, s.patterns_file)
 

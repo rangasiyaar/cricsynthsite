@@ -1,6 +1,7 @@
 """Storage behind the API. Local files today; Firestore / Cloud Storage implement the same methods later.
 
-    KeyStore      API keys (stored as SHA-256 hashes) → plan, owner
+    KeyStore      API keys (stored as SHA-256 hashes) → plan, owner; also looks up keys users create in the
+                  account dashboard (Firestore users/{uid}/keys/{slot}) when a Firestore lookup is attached
     Usage         per-key daily request counter
     Content       published match docs, engine packs, index, Pattern Lab report, admin coverage files
 """
@@ -11,6 +12,7 @@ import json
 import re
 import secrets
 import threading
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -34,8 +36,35 @@ class KeyStore:
         if path and path.exists():
             self._keys = {k["hash"]: k for k in json.loads(path.read_text()).get("keys", [])}
 
+    remote = None     # callable(hash) -> dict | None, set by attach_firestore()
+
     def lookup(self, key: str) -> dict | None:
-        return self._keys.get(hash_key(key))
+        h = hash_key(key)
+        rec = self._keys.get(h)
+        if rec is None and self.remote is not None:
+            rec = self.remote(h)
+        return rec
+
+    def attach_firestore(self, project: str, ttl: float = 60.0) -> None:
+        """Accept keys created in the account dashboard. Revoked keys stop working within `ttl` seconds."""
+        from google.cloud import firestore            # optional dependency, installed on Cloud Run only
+        db = firestore.Client(project=project)
+        cache: dict[str, tuple[float, dict | None]] = {}
+
+        def find(h: str) -> dict | None:
+            now = time.monotonic()
+            hit = cache.get(h)
+            if hit and now - hit[0] < ttl:
+                return hit[1]
+            docs = list(db.collection_group("keys").where("hash", "==", h).limit(1).stream())
+            rec = None
+            if docs:
+                d = docs[0].to_dict() or {}
+                if not d.get("revoked") and d.get("plan") in PLANS:
+                    rec = {"hash": h, "owner": docs[0].reference.parent.parent.id, "plan": d["plan"], "source": "dashboard"}
+            cache[h] = (now, rec)
+            return rec
+        self.remote = find
 
     def create(self, owner: str, plan: str) -> str:
         if plan not in PLANS:

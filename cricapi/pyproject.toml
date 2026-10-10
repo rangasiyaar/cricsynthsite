@@ -10,6 +10,9 @@ dependencies = [
     "httpx>=0.27",          # TestClient
 ]
 
+[project.optional-dependencies]
+cloud = ["google-cloud-firestore>=2.16"]   # dashboard API keys (Cloud Run)
+
 [project.scripts]
 cricapi = "cricapi.main:run"
 

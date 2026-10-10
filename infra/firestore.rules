@@ -2,8 +2,8 @@ rules_version = '2';
 
 // CricSynthesis Firestore rules.
 // Browsers may READ published public content and their own account document.
-// Every WRITE goes through the API / batch jobs (Admin SDK bypasses these rules),
-// so no client-side write is ever allowed.
+// The only client-side writes are a signed-in user's own profile fields and own API keys (below);
+// everything else goes through the API / batch jobs (Admin SDK bypasses these rules).
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -22,9 +22,34 @@ service cloud.firestore {
     match /trackRecord/{id}   { allow read: if true; }
     match /site/{id}          { allow read: if true; }   // home page lists, featured matches
 
-    // A signed-in user may read their own profile / plan; nothing else.
+    function me(uid) { return request.auth != null && request.auth.uid == uid; }
+
+    // A signed-in user's profile. They may set their company and use case; the plan is server-only.
     match /users/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
+      allow read: if me(uid);
+      allow create, update: if me(uid)
+        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated'])
+        && (!('company' in request.resource.data) || (request.resource.data.company is string && request.resource.data.company.size() <= 80))
+        && (!('useCase' in request.resource.data) || (request.resource.data.useCase is string && request.resource.data.useCase.size() <= 280));
+
+      // API keys: up to five slots (k1..k5). The browser generates the key, shows it once and stores only its
+      // SHA-256 hash and a short prefix. New keys are always on the free API plan; upgrades are server-only.
+      // A key can be renamed or revoked, and a revoked key deleted to free its slot.
+      match /keys/{slot} {
+        allow read: if me(uid);
+        allow create: if me(uid) && slot in ['k1', 'k2', 'k3', 'k4', 'k5']
+          && request.resource.data.keys().hasOnly(['name', 'prefix', 'hash', 'plan', 'created', 'revoked'])
+          && request.resource.data.plan == 'free' && request.resource.data.revoked == false
+          && request.resource.data.hash is string && request.resource.data.hash.matches('^[0-9a-f]{64}$')
+          && request.resource.data.prefix is string && request.resource.data.prefix.size() <= 20
+          && request.resource.data.name is string && request.resource.data.name.size() <= 40
+          && request.resource.data.created == request.time;
+        allow update: if me(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'revoked', 'revokedAt'])
+          && request.resource.data.name is string && request.resource.data.name.size() <= 40
+          && (request.resource.data.revoked == resource.data.revoked || request.resource.data.revoked == true);
+        allow delete: if me(uid) && resource.data.revoked == true;
+      }
     }
 
     // Fixtures, squads, API keys, usage, jobs: server only.

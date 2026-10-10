@@ -164,3 +164,32 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .chart-caption { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; font-size: 12.5px; color: var(--cs-ink-2); }
 .chart-caption i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
 .chart-caption b { color: var(--cs-ink); font-variant-numeric: tabular-nums; }
+
+/* ── account dashboard ── */
+.dash-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.dash-title { font-size: clamp(32px, 4vw, 48px) !important; margin: 0 0 4px; }
+.dash-plan { font-size: 13px; padding: 4px 12px; }
+.dash-stat { font-size: 40px; line-height: 1.1; margin: 6px 0 4px; }
+.dash-of { font-size: 18px; color: var(--cs-ink-3); }
+.dash-links { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 10px; }
+.dash-links a { font-weight: 600; text-decoration: none; color: var(--cs-steel-700); }
+.dash-dl { display: grid; gap: 8px; margin: 14px 0; }
+.dash-dl div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--cs-line); padding-bottom: 8px; font-size: 14px; }
+.dash-dl dt { color: var(--cs-ink-3); }
+.dash-dl dd { margin: 0; font-weight: 600; text-align: right; }
+.dash-empty { border: 1px dashed var(--cs-line); border-radius: 8px; padding: 18px; text-align: center; color: var(--cs-ink-3); font-size: 14px; margin: 12px 0; }
+.dash-form { display: grid; gap: 8px; margin-top: 8px; }
+.key-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.key-form .form-input { flex: 1; min-width: 200px; }
+.key-reveal { border-color: var(--cs-steel) !important; }
+.key-box { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--cs-bg); border: 1px solid var(--cs-line);
+  border-radius: 8px; padding: 10px 12px; }
+.key-box code { flex: 1; word-break: break-all; font-size: 14px; }
+.key-table td { vertical-align: middle; }
+.key-table tr.revoked td { color: var(--cs-ink-3); }
+.key-live { color: var(--good, #2e8b57); font-weight: 600; }
+.key-actions { white-space: nowrap; }
+.key-actions .linkbtn + .linkbtn { margin-left: 12px; }
+.key-rename { display: flex; gap: 8px; align-items: center; }
+.key-rename .form-input { padding: 4px 8px; min-width: 140px; }
+.linkbtn.danger, .danger-btn { color: var(--bad, #b3473b) !important; }
