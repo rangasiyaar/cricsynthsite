@@ -74,9 +74,9 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
             </button>
           ))}
         </nav>
+        <h2 className="dash-section-title">{section}</h2>
         <div className="dash-main">
           {err && <p className="notice" role="alert">{err}</p>}
-          <h2 className="dash-section-title">{section}</h2>
           {section === "Overview" && <Overview plan={plan} source={source} active={active} go={go} />}
           {section === "Subscription" && <Subscription plan={plan} source={source} />}
           {section === "API keys" && <Keys uid={u.uid} keys={keys} refresh={refresh} setErr={setErr} />}

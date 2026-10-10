@@ -210,3 +210,12 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
   .dash-side { position: static; display: flex; overflow-x: auto; scrollbar-width: none; }
   .dash-side button { flex: none; width: auto; }
 }
+
+/* Title sits above the content column; side panel and first content card share the same top edge */
+.dash-layout { grid-template-columns: 220px minmax(0, 1fr); grid-template-areas: ". title" "side main"; row-gap: 14px; }
+.dash-section-title { grid-area: title; margin: 0 !important; align-self: end; }
+.dash-side { grid-area: side; }
+.dash-main { grid-area: main; }
+@media (max-width: 860px) {
+  .dash-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "title" "main"; }
+}
