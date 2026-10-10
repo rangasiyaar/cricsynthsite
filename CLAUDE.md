@@ -18,6 +18,7 @@ cricsynthsite/
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
+├── cricmcp/                   ← MCP server (runs on the user's machine via uvx): forecasts, what-ifs, fantasy, Pattern Lab
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
@@ -55,7 +56,7 @@ cricsynthsite/
 
 ```bash
 uv sync --all-extras
-uv run pytest cricdata/tests cricsim/tests infra/billing_guard -q
+uv run pytest cricdata/tests cricsim/tests cricapi/tests cricmcp/tests infra/billing_guard -q
 
 # local ingest (Cricsheet must be reachable)
 uv run cricdata download --kind all --dest data/raw
@@ -92,6 +93,8 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 - Model-derived analytics live in `cricsim/engine/insight.py`; decision models (win probability, par, chase,
   toss, lineups, fantasy) in `cricsim/engine/modelling.py`. API routes are tagged with their category.
 
+- `cricmcp/src/cricmcp/sim.py` is a third copy of the browser engine (pure Python, same RNG); `cricmcp/tests/test_parity.py`
+  requires it to reproduce `sim.ts` exactly, so change both together.
 - `cricsim/engine/states.py` is the single definition of outcome classes and situation buckets; the
   browser port `app/lib/engine/sim.ts` must mirror `simulate.py` — `test_browser_parity.py` enforces it.
 - Only Pattern Lab effects that verified as real go into the ball model; myths stay out.

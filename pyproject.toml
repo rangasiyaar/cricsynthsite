@@ -2,14 +2,16 @@
 #   cricdata   Cricsheet ingest → Parquet / BigQuery
 #   cricsim    simulation engine, player ratings, format rules
 #   cricapi    API (Cloud Run): analytics, simulation, graphics
+#   cricmcp    MCP server (runs on the user's machine): forecasts, what-ifs, fantasy, Pattern Lab
 
 [tool.uv.workspace]
-members = ["cricdata", "cricsim", "cricapi"]
+members = ["cricdata", "cricsim", "cricapi", "cricmcp"]
 
 [tool.uv.sources]
 cricdata = { workspace = true }
 cricsim = { workspace = true }
 cricapi = { workspace = true }
+cricsynthesis-mcp = { workspace = true }
 
 [tool.uv]
 dev-dependencies = [
