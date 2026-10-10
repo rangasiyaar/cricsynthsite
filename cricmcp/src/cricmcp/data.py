@@ -14,7 +14,8 @@ from pathlib import Path
 
 from mcp.server.mcpserver.exceptions import ToolError
 
-DEFAULT_URL = "https://cricsynthesis.web.app/data"
+DEFAULT_URL = "https://cricsynthesis.in/data"
+FALLBACK_URL = "https://cricsynthesis.web.app/data"     # same files; used if the main domain is unreachable
 TTL = 600          # seconds; forecasts are rebuilt nightly
 UA = "cricsynthesis-mcp/0.2"
 
@@ -38,14 +39,7 @@ class Store:
         if hit and time.time() - hit[0] < TTL:
             return hit[1]
         if re.match(r"^https?://", self.base):
-            req = urllib.request.Request(f"{self.base}/{path}", headers={"User-Agent": UA})
-            try:
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    data = json.loads(r.read())
-            except urllib.error.HTTPError as e:
-                raise DataError(f"{e.code} loading {path}") from e
-            except urllib.error.URLError as e:
-                raise DataError(f"Can't reach {self.base}: {e.reason}") from e
+            data = self._fetch(path)
         else:
             f = Path(self.base.removeprefix("file://")) / urllib.parse.unquote(path)
             if not f.exists():
@@ -53,6 +47,22 @@ class Store:
             data = json.loads(f.read_text())
         self._cache[path] = (time.time(), data)
         return data
+
+    def _fetch(self, path: str):
+        bases = [self.base] + ([FALLBACK_URL] if self.base == DEFAULT_URL else [])
+        for k, base in enumerate(bases):
+            req = urllib.request.Request(f"{base}/{path}", headers={"User-Agent": UA})
+            try:
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    data = json.loads(r.read())
+                if k:
+                    self.base = base                    # stick with the one that works
+                return data
+            except urllib.error.HTTPError as e:
+                raise DataError(f"{e.code} loading {path}") from e
+            except (urllib.error.URLError, OSError) as e:
+                if k == len(bases) - 1:
+                    raise DataError(f"Can't reach {base}: {getattr(e, 'reason', e)}") from e
 
     def index(self) -> list[dict]:
         return [m for m in self.get("index.json").get("matches", []) if m.get("published", True)]

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = { title: "MCP | CricSynthesis" };
 
-const INDEX = "https://cricsynthesis.web.app/pypi/simple/";
+const INDEX = "https://cricsynthesis.in/pypi/simple/";
 
 const CONFIG = `{
   "mcpServers": {

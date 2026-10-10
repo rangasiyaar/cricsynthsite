@@ -25,7 +25,7 @@ from cricmcp import graphics, modelling, sim
 from cricmcp.data import DataError, Store
 from cricmcp.insight import PHASES, Kit
 
-SITE = "https://cricsynthesis.web.app"
+SITE = "https://cricsynthesis.in"
 MAX_SIMS = 10_000
 
 INSTRUCTIONS = """CricSynthesis: cricket analytics and forecasts from a ball-by-ball model of every recorded delivery.
@@ -39,7 +39,7 @@ Three kinds of tools:
 Numbers are model expectations or shares of simulations, not certainties; quote ranges where given. Ratings are
 relative to an average player in the same format (1.00 = average). Data is rebuilt nightly."""
 
-mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.2.0")
+mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.2.1")
 store = Store()
 READ = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
 

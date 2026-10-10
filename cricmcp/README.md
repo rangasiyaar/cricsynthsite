@@ -16,13 +16,13 @@ Needs [uv](https://docs.astral.sh/uv/). In Claude Desktop open Settings → Deve
   "mcpServers": {
     "cricsynthesis": {
       "command": "uvx",
-      "args": ["--index", "https://cricsynthesis.web.app/pypi/simple/", "cricsynthesis-mcp"]
+      "args": ["--index", "https://cricsynthesis.in/pypi/simple/", "cricsynthesis-mcp"]
     }
   }
 }
 ```
 
-Claude Code: `claude mcp add cricsynthesis -- uvx --index https://cricsynthesis.web.app/pypi/simple/ cricsynthesis-mcp`
+Claude Code: `claude mcp add cricsynthesis -- uvx --index https://cricsynthesis.in/pypi/simple/ cricsynthesis-mcp`
 
 ## Tools (43)
 
@@ -67,6 +67,6 @@ Players, matches, venues and teams can be named in plain words.
 
 | Variable | Default | |
 |---|---|---|
-| `CRICSYNTHESIS_DATA_URL` | `https://cricsynthesis.web.app/data` | Where published data is read from |
+| `CRICSYNTHESIS_DATA_URL` | `https://cricsynthesis.in/data` | Where published data is read from |
 | `CRICSYNTHESIS_OUT` | `~/CricSynthesis/cards` | Where graphics are saved |
 | `CRICSYNTHESIS_API_KEY` | — | Adds `api_request` for the CricSynthesis API |
