@@ -118,11 +118,17 @@ def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
             if fw:
                 l = math.log(fw); o[WKT] += l; o[FOUR] -= 0.5 * l; o[SIX] -= 0.5 * l
             pair.append(o)
+    order = list(b["order"])
+    new = (sc.get("battingOrder") or {}).get(team) or (sc.get("battingOrder") or {}).get(str(team))
+    if new:                                     # MCP-only lever (batting-order optimiser); not in sim.ts
+        perm = [order.index(p) for p in new]
+        pair = [pair[perm[i] * 11 + j] for i in range(11) for j in range(11)]
+        order = list(new)
     excluded = set(sc.get("excludeBowlers") or [])
     weights = [[0] * len(row) if b["bowlers"][j] in excluded else row for j, row in enumerate(b["bowlWeights"])]
     if all(v == 0 for row in weights for v in row):
         weights = b["bowlWeights"]
-    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], b["order"], b["bowlers"])
+    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], order, b["bowlers"])
 
 
 def simulate_innings(pack: dict, P: Prepared, inn0: int, target: int | None, r, cond: list, start: dict | None = None

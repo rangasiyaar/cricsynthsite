@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read
@@ -71,6 +71,8 @@ jobs:
           done
       - name: Simulate + publish
         run: uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
+      - name: Analytics kit (static files the MCP server computes analytics from)
+        run: uv run python -m cricsim.kit --model data/models/latest --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
 
       - uses: google-github-actions/auth@v2
         if: env.GCP == 'true'
@@ -106,6 +108,8 @@ jobs:
         run: |
           rm -rf app/public/data && cp -r data/publish app/public/data
           cd app && npm ci && npm test && npx next build
+      - name: MCP package and its install index (served with the site under /pypi/)
+        run: uv run python cricmcp/build_index.py --out app/out/pypi
       - name: Deploy to Firebase Hosting
         if: env.GCP == 'true'
         run: |

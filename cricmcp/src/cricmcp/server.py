@@ -14,24 +14,32 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
 from typing import Annotated, Literal
 
 from mcp.server.mcpserver import MCPServer
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
-from cricmcp import sim
+from cricmcp import graphics, modelling, sim
 from cricmcp.data import DataError, Store
+from cricmcp.insight import PHASES, Kit
 
 SITE = "https://cricsynthesis.web.app"
 MAX_SIMS = 10_000
 
-INSTRUCTIONS = """CricSynthesis forecasts cricket matches by simulating them ball by ball (20,000 times per match).
-Start with list_matches or match_forecast. Matches can be named by id or by team names ("India v West Indies").
-Percentages are probabilities from simulation, not certainties; quote ranges where given. For what-ifs during or
-before a match use simulate_scenario or live_win_probability. Forecasts are rebuilt nightly."""
+INSTRUCTIONS = """CricSynthesis: cricket analytics and forecasts from a ball-by-ball model of every recorded delivery.
+Three kinds of tools:
+- Analytics (any player, venue, competition or team): player ratings, phase / bowling-type / situation splits, roles,
+  similar players, rankings, batter-v-bowler match-ups, venue and competition profiles, scoring trends, team profiles.
+  Players can be named in plain words; search_players helps when a name is ambiguous.
+- Simulation and modelling (upcoming covered matches, see list_matches): forecasts, what-ifs, live win probability,
+  par score, chase curve, toss call, batting order, bowling plan, player impact, fantasy projections, team and portfolio.
+- Graphics: shareable SVG cards for matches, players, match-ups, venues and trends.
+Numbers are model expectations or shares of simulations, not certainties; quote ranges where given. Ratings are
+relative to an average player in the same format (1.00 = average). Data is rebuilt nightly."""
 
-mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.1.0")
+mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.2.0")
 store = Store()
 READ = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
 
@@ -310,42 +318,6 @@ def live_win_probability(
     return res
 
 
-@mcp.tool(annotations=READ)
-def fantasy_team(
-    match: MatchQ = None,
-    simulations: Annotated[int, Field(ge=200, le=MAX_SIMS)] = 2000, seed: int = 1,
-) -> dict:
-    """Fantasy (Dream11-style T20 points) projections from simulation: expected points and range for all 22 players,
-    a suggested XI with 1-10 per side, and captain / vice-captain. Catches, run-outs and maidens aren't counted."""
-    card, _ = _doc(match)
-    pack, sims = _run(card["id"], {}, simulations, seed)
-    pts = sim.fantasy_points(pack, sims)
-    team_of = {p: t for t, team in enumerate(pack["teams"]) for p in team["players"]}
-    rows = []
-    for p, v in pts.items():
-        s = sorted(v)
-        rows.append({"id": p, "player": pack["players"].get(p, {}).get("name", p), "team": pack["teams"][team_of[p]]["name"],
-                     "expected": round(sum(v) / len(v), 1), "median": s[len(s) // 2], "p90": s[int(.9 * (len(s) - 1))],
-                     "ceiling_share": round(sum(x >= 60 for x in v) / len(v), 3)})
-    rows.sort(key=lambda r: -r["expected"])
-    xi = rows[:11]
-    for t in (0, 1):
-        if not any(team_of[r["id"]] == t for r in xi):
-            xi[-1] = next(r for r in rows if team_of[r["id"]] == t)
-    for t in (0, 1):
-        while sum(team_of[r["id"]] == t for r in xi) > 10:
-            drop = min((r for r in xi if team_of[r["id"]] == t), key=lambda r: r["expected"])
-            xi.remove(drop)
-            xi.append(next(r for r in rows if r not in xi and team_of[r["id"]] != t))
-    by_ceiling = sorted(xi, key=lambda r: -(r["expected"] + r["p90"]) / 2)
-    strip = lambda r: {k: v for k, v in r.items() if k != "id"}  # noqa: E731
-    return {"match": card["id"], "simulations": len(sims), "captain": by_ceiling[0]["player"],
-            "vice_captain": by_ceiling[1]["player"], "suggested_xi": [strip(r) for r in xi],
-            "all_players": [strip(r) for r in rows],
-            "note": "Points table: runs, boundaries, milestones, duck, strike rate, wickets, bowled/LBW, hauls, economy, "
-                    "+4 for playing. Check the announced XIs before locking a team."}
-
-
 # ── Pattern Lab ────────────────────────────────────────────────────────────────────────────────────────────────────
 
 @mcp.tool(annotations=READ)
@@ -372,6 +344,522 @@ def pattern_lab(
             "link": f"{SITE}/patterns/"}
 
 
+
+# ── analytics (any player, venue, competition, team) ───────────────────────────────────────────────────────────────
+
+Format = Literal["T20", "OD"]
+FormatAll = Literal["T20", "T10", "HUNDRED", "OD"]
+Gender = Literal["male", "female"]
+Phase = Literal["powerplay", "middle", "death"]
+PlayerQ = Annotated[str, Field(description="Player name (or part of it) or player id")]
+_kit: Kit | None = None
+
+
+def kit() -> Kit:
+    global _kit
+    if _kit is None:
+        _kit = Kit(store.kit_file("context.json"), store.player)
+    return _kit
+
+
+def _p(query: str) -> dict:
+    return store.resolve_player(query)
+
+
+def _gender(p: dict, gender: str | None) -> str:
+    return gender or p.get("gender") or "male"
+
+
+def _players_or_stubs(ids: list[str]) -> dict[str, dict]:
+    out = {}
+    for pid in ids:
+        try:
+            out[pid] = store.player(pid)
+        except DataError:
+            out[pid] = Kit.stub(pid)
+    return out
+
+
+@mcp.tool(annotations=READ)
+def search_players(query: Annotated[str, Field(description="Part of a name, e.g. 'Kohli' or 'Smith'")],
+                   limit: Annotated[int, Field(ge=1, le=50)] = 10) -> dict:
+    """Find players by name: ids, gender, batting hand, bowling type and how much data the model has on them."""
+    return {"players": [{**r, "balls": int(r["balls"])} for r in store.find_players(query, limit)]}
+
+
+@mcp.tool(annotations=READ)
+def player_rating(player: PlayerQ, format: Format = "T20") -> dict:
+    """A player's model rating: wicket, four and six multipliers batting and bowling against an average player
+    (1.0 = average), with the balls behind them in short formats and one-day cricket."""
+    return kit().rating(_p(player), format)
+
+
+@mcp.tool(annotations=READ)
+def player_phases(player: PlayerQ, format: FormatAll = "T20", gender: Gender | None = None) -> dict:
+    """Batting and bowling by powerplay, middle and death overs: strike rate, balls per dismissal, dot and boundary
+    rates, economy, balls per wicket, each also as a ratio to an average player."""
+    p = _p(player)
+    return kit().phase_profile(p, format, _gender(p, gender))
+
+
+@mcp.tool(annotations=READ)
+def player_vs_bowling(player: PlayerQ, format: FormatAll = "T20", phase: Phase = "middle",
+                      gender: Gender | None = None) -> dict:
+    """A batter against each bowling type (right/left-arm pace, off-spin, leg-spin, left-arm orthodox and wrist spin):
+    strike rate and balls per dismissal, with the strongest and weakest match-up."""
+    p = _p(player)
+    return kit().vs_bowling(p, format, _gender(p, gender), phase)
+
+
+@mcp.tool(annotations=READ)
+def bowler_vs_batting_hand(player: PlayerQ, format: FormatAll = "T20", phase: Phase = "middle",
+                           gender: Gender | None = None) -> dict:
+    """A bowler against right- and left-handed batters: economy, balls per wicket, dot and boundary rates."""
+    p = _p(player)
+    return kit().vs_batting_hand(p, format, _gender(p, gender), phase)
+
+
+@mcp.tool(annotations=READ)
+def player_situations(player: PlayerQ, format: FormatAll = "T20", gender: Gender | None = None) -> dict:
+    """How a batter's scoring and survival change from the first ball to being set, and when chasing at different
+    required run rates."""
+    p = _p(player)
+    return kit().situations(p, format, _gender(p, gender))
+
+
+@mcp.tool(annotations=READ)
+def player_formats(player: PlayerQ, gender: Gender | None = None) -> dict:
+    """The same player in T20 and one-day cricket, batting and bowling, with the data behind each."""
+    p = _p(player)
+    return kit().format_split(p, _gender(p, gender))
+
+
+@mcp.tool(annotations=READ)
+def player_role(player: PlayerQ, format: Format = "T20") -> dict:
+    """Usual batting position and role, overs per match and when they're bowled (powerplay / middle / death),
+    matches and when last played."""
+    return kit().role(_p(player), format)
+
+
+@mcp.tool(annotations=READ)
+def similar_players(player: PlayerQ, format: Format = "T20",
+                    side: Literal["batting", "bowling"] = "batting") -> dict:
+    """The ten players with the most similar style (outcome rates by phase and bowling type or batting hand)."""
+    p = _p(player)
+    rows = (p.get("similar") or {}).get(format, {}).get(side)
+    if not rows:
+        return {"player": Kit.who(p), "format": format, "side": side, "similar": [],
+                "note": f"Not enough {side} data in {format} (300 balls) to compare styles."}
+    return {"player": Kit.who(p), "format": format, "side": side,
+            "similar": [{"id": pid, "name": _name(pid), "similarity": round(1 / (1 + d), 3)} for pid, d in rows]}
+
+
+def _name(pid: str) -> str:
+    try:
+        return store.player(pid)["name"]
+    except DataError:
+        return pid
+
+
+@mcp.tool(annotations=READ)
+def compare_players(players: Annotated[list[str], Field(min_length=2, max_length=8, description="Names or ids")],
+                    format: FormatAll = "T20", gender: Gender | None = None) -> dict:
+    """Two to eight players side by side, batting and bowling by phase, with the average player for reference."""
+    ps = [_p(q) for q in players]
+    return kit().compare(ps, format, _gender(ps[0], gender))
+
+
+RankSort = Literal["impact", "strike_rate", "balls_per_dismissal", "boundary_pct", "six_pct", "dot_pct", "economy",
+                   "balls_per_wicket", "extras_per_over"]
+
+
+@mcp.tool(annotations=READ)
+def rankings(side: Literal["batting", "bowling"] = "batting", format: Format = "T20", gender: Gender = "male",
+             phase: Phase = "middle", sort: RankSort = "impact", limit: Annotated[int, Field(ge=1, le=100)] = 25,
+             min_balls: Annotated[int, Field(ge=500)] = 500) -> dict:
+    """Model leaderboard of active players (played in the last two years, 500+ balls). Impact = runs added (batting)
+    or saved (bowling) per 120 balls against an average player, each wicket priced at a typical run value."""
+    r = store.kit_file(f"rankings/{format}-{gender}-{side}-{phase}.json")
+    rows = [x for x in r["players"] if (x.get("balls") or 0) >= min_balls]
+    ascending = {"batting": {"dot_pct"}, "bowling": {"economy", "balls_per_wicket", "boundary_pct", "extras_per_over"}}[side]
+    if sort == "impact":
+        key = lambda x: -(x["impact_per_120"] or 0)  # noqa: E731
+    elif sort in ascending:
+        key = lambda x: x.get(sort) if x.get(sort) is not None else 1e9  # noqa: E731
+    else:
+        key = lambda x: -(x.get(sort) or 0)  # noqa: E731
+    rows = sorted(rows, key=key)[:limit]
+    return {**{k: r[k] for k in ("format", "gender", "side", "phase", "average") if k in r}, "sort": sort,
+            "players": [{**{k: v for k, v in x.items() if k != "rank"}, "rank": i + 1} for i, x in enumerate(rows)]}
+
+
+@mcp.tool(annotations=READ)
+def matchup(batter: PlayerQ, bowler: PlayerQ, format: FormatAll = "T20", phase: Phase = "middle",
+            gender: Gender | None = None) -> dict:
+    """Batter v bowler, ball by ball: chance of each outcome, strike rate, balls per dismissal, dot and boundary rates,
+    and the edge against an average pairing."""
+    b, w = _p(batter), _p(bowler)
+    return kit().matchup(b, w, format, _gender(b, gender), phase)
+
+
+@mcp.tool(annotations=READ)
+def matchup_grid(batters: Annotated[list[str], Field(min_length=1, max_length=11)],
+                 bowlers: Annotated[list[str], Field(min_length=1, max_length=11)],
+                 format: FormatAll = "T20", phase: Phase = "middle", gender: Gender | None = None) -> dict:
+    """Every batter against every bowler: strike rate, balls per dismissal and wicket / scoring edges."""
+    bs, ws = [_p(q) for q in batters], [_p(q) for q in bowlers]
+    return kit().matchup_grid(bs, ws, format, _gender(bs[0], gender), phase)
+
+
+@mcp.tool(annotations=READ)
+def best_bowler_against(batter: PlayerQ, candidates: Annotated[list[str], Field(min_length=1, max_length=15)],
+                        format: FormatAll = "T20", phase: Phase = "middle", gender: Gender | None = None) -> dict:
+    """Which of these bowlers to use against a batter: ranked by net runs per over with wickets priced in."""
+    b = _p(batter)
+    return kit().counter(b, [_p(q) for q in candidates], format, _gender(b, gender), phase)
+
+
+@mcp.tool(annotations=READ)
+def venues(search: str | None = None, limit: Annotated[int, Field(ge=1, le=100)] = 20) -> dict:
+    """Grounds the model knows, with city and matches; search by name or city."""
+    rows = store.kit_file("venues.json")["venues"]
+    if search:
+        q = search.lower()
+        rows = [v for v in rows if q in v["id"].lower() or q in (v.get("name") or "").lower()
+                or q in (v.get("city") or "").lower()]
+    return {"venues": rows[:limit]}
+
+
+def _venue(query: str) -> dict:
+    rows = venues(query, 1)["venues"]
+    if not rows:
+        raise DataError(f"No venue matches '{query}'.")
+    return rows[0]
+
+
+@mcp.tool(annotations=READ)
+def venue_profile(venue: Annotated[str, Field(description="Venue name, city or id")], format: Format = "T20",
+                  gender: Gender = "male") -> dict:
+    """How a ground plays: runs per over, balls per wicket and boundary rate by phase against a neutral ground, and
+    its character (high / low scoring, bowler / batting friendly)."""
+    v = _venue(venue)
+    prof = store.kit_file(f"venues/{_safe(v['id'])}.json").get(f"{format}:{gender}")
+    if not prof:
+        raise DataError(f"No {format} {gender} profile for {v.get('name') or v['id']}.")
+    return prof
+
+
+def _safe(x: str) -> str:
+    from cricmcp.data import safe_id
+    return safe_id(x)
+
+
+@mcp.tool(annotations=READ)
+def competitions(search: str | None = None, limit: Annotated[int, Field(ge=1, le=100)] = 20) -> dict:
+    """Leagues and series the model knows: format, gender, matches and the latest season."""
+    rows = store.kit_file("competitions.json")["competitions"]
+    if search:
+        q = search.lower()
+        rows = [c for c in rows if q in c["key"].lower() or q in (c.get("name") or "").lower()]
+    return {"competitions": rows[:limit]}
+
+
+@mcp.tool(annotations=READ)
+def competition_profile(competition: Annotated[str, Field(description="Competition name or key, e.g. 'IPL'")]) -> dict:
+    """How a competition plays compared with neutral conditions: scoring and wicket indices by phase."""
+    rows = competitions(competition, 1)["competitions"]
+    if not rows:
+        raise DataError(f"No competition matches '{competition}'.")
+    return store.kit_file(f"competitions/{_safe(rows[0]['key'])}.json")
+
+
+@mcp.tool(annotations=READ)
+def scoring_trend(format: Format = "T20", gender: Gender = "male") -> dict:
+    """Runs per over, balls per wicket and boundary rate by phase, season by season, plus the model's current level."""
+    return store.kit_file(f"trends/{format}-{gender}.json")
+
+
+@mcp.tool(annotations=READ)
+def teams(search: str | None = None, gender: Gender | None = None, limit: Annotated[int, Field(ge=1, le=100)] = 20) -> dict:
+    """Teams the model knows (international and franchise), with formats and last match."""
+    cat = store.kit_file("teams.json")["teams"]
+    rows = []
+    for tid, t in cat.items():
+        if search and search.lower() not in tid.lower() and search.lower() not in (t.get("name") or "").lower():
+            continue
+        if gender and t.get("gender") != gender:
+            continue
+        rows.append({"id": tid, "name": t.get("name"), "gender": t.get("gender"), "formats": sorted(t["formats"]),
+                     "last_match": max((v.get("last") or "" for v in t["formats"].values()), default="")})
+    rows.sort(key=lambda r: r["last_match"], reverse=True)
+    return {"teams": rows[:limit]}
+
+
+@mcp.tool(annotations=READ)
+def team_profile(team: Annotated[str | None, Field(description="Team name or id; its latest XI is used")] = None,
+                 players: Annotated[list[str] | None, Field(description="Or any 11 players in batting order")] = None,
+                 format: Format = "T20", gender: Gender | None = None) -> dict:
+    """A side's batting (each position v average, survival against spin and pace, left-handers in the top seven) and
+    bowling (options by type, economy and strike by phase). Give a team or any XI."""
+    k = kit()
+    info = None
+    if players:
+        if len(players) != 11:
+            raise DataError("Give exactly 11 players.")
+        xi = [_p(q) for q in players]
+    else:
+        if not team:
+            raise DataError("Give a team or 11 players.")
+        cat = store.kit_file("teams.json")["teams"]
+        q = team.lower()
+        tid = next((t for t in cat if t.lower() == q), None) or next(
+            (t for t, v in cat.items() if q in t.lower() or q in (v.get("name") or "").lower()), None)
+        if not tid:
+            raise DataError(f"No team matches '{team}'.")
+        info = cat[tid]
+        f = info["formats"].get(format) or next(iter(info["formats"].values()))
+        ids = f.get("last_xi") or []
+        if len(ids) != 11:
+            raise DataError(f"No full XI on record for {info.get('name')}.")
+        xi = list(_players_or_stubs(ids).values())
+        gender = gender or info.get("gender")
+    out = k.team_profile(xi, format, gender or xi[0].get("gender") or "male")
+    if info:
+        out = {"team": info.get("name"), **out}
+    return out
+
+
+@mcp.tool(annotations=READ)
+def pattern_detail(pattern: Annotated[str, Field(description="Pattern id or words from its title")]) -> dict:
+    """One Pattern Lab test in full: the question, folklore, verdict, why, and the effect in the discovery and
+    validation periods with intervals."""
+    rows = store.patterns()["patterns"]
+    q = pattern.lower()
+    r = next((r for r in rows if r["id"] == q), None) or next(
+        (r for r in rows if all(w in f"{r['title']} {r['question']}".lower() for w in q.split())), None)
+    if not r:
+        raise DataError(f"No pattern matches '{pattern}'.")
+    return r
+
+
+# ── more decision models for covered matches ───────────────────────────────────────────────────────────────────────
+
+TeamQ = Annotated[str, Field(description="Team name in this match")]
+
+
+def _match_pack(match: str | None) -> tuple[dict, dict, dict]:
+    card, doc = _doc(match)
+    return card, doc, store.pack(card["id"])
+
+
+@mcp.tool(annotations=READ)
+def innings_projection(
+    batting_team: Annotated[str, Field(description="Team batting now")],
+    runs: Annotated[int, Field(ge=0)], wickets: Annotated[int, Field(ge=0, le=9)],
+    overs: Annotated[float, Field(ge=0, description="Overs bowled as overs.balls, e.g. 12.3")],
+    target: Annotated[int | None, Field(description="Target in the second innings; empty = first innings")] = None,
+    thresholds: Annotated[list[int] | None, Field(description="Totals to give the chance of reaching")] = None,
+    match: MatchQ = None, simulations: Annotated[int, Field(ge=200, le=MAX_SIMS)] = 2000,
+) -> dict:
+    """Where an innings ends from its current score: final total and wickets with ranges, chance of reaching given
+    totals, chance of being bowled out and expected runs in each remaining over."""
+    card, _, pack = _match_pack(match)
+    t = _team_index(pack, batting_team)
+    bpo = pack["rules"]["bpo"]
+    balls = _balls(overs, bpo)
+    start = {"innings": 2 if target else 1, "runs": runs, "wickets": wickets, "balls": balls}
+    sc = {"start": start, "battingFirst": t if not target else 1 - t}
+    if target:
+        start["firstInningsTotal"] = target - 1
+        sc["target"] = target
+    sims = sim.simulate_matches(pack, simulations, sc, modelling.SEED)
+    inn = [sim.team_innings(m, t)[0] for m in sims]
+    final = [x.runs for x in inn]
+    lo = int(sim._quant(final, .05) // 10 * 10)
+    th = thresholds or list(range(lo, lo + 90, 10))
+    done = balls // bpo
+    n = len(inn)
+    return {"match": card["id"], "team": pack["teams"][t]["name"], "from": {"runs": runs, "wickets": wickets, "overs": overs},
+            "final_total": sim.dist(final), "final_wickets": sim.dist([x.wkts for x in inn]),
+            "chance_at_least": {str(x): _pct(sum(f >= x for f in final) / n) for x in th},
+            "chance_all_out": _pct(sum(x.wkts >= 10 for x in inn) / n),
+            "expected_runs_by_over": [{"over": o + 1, "runs": round(sum(x.over_runs[o] for x in inn) / n, 2)}
+                                      for o in range(done, pack["rules"]["overs"])],
+            "simulations": n}
+
+
+@mcp.tool(annotations=READ)
+def par_score(match: MatchQ = None, simulations: Annotated[int, Field(ge=500, le=MAX_SIMS)] = 3000) -> dict:
+    """Par first-innings score for each side batting first, its chance of winning, and the totals that make it
+    50%, 60% and 70% to win."""
+    card, _, pack = _match_pack(match)
+    return {"match": card["id"], **modelling.par_score(pack, simulations)}
+
+
+@mcp.tool(annotations=READ)
+def chase_curve(chasing_team: TeamQ, match: MatchQ = None,
+                target_from: Annotated[int, Field(ge=1)] = 120, target_to: Annotated[int, Field(ge=1)] = 220,
+                step: Annotated[int, Field(ge=1, le=50)] = 10,
+                simulations_per_target: Annotated[int, Field(ge=200, le=3000)] = 600) -> dict:
+    """Chance of a successful chase for each target, the coin-flip target and balls to spare when the chase succeeds."""
+    card, _, pack = _match_pack(match)
+    t = _team_index(pack, chasing_team)
+    targets = list(range(target_from, target_to + 1, step))[:25]
+    return {"match": card["id"], **modelling.chase_curve(pack, t, targets, simulations_per_target)}
+
+
+@mcp.tool(annotations=READ)
+def toss_decision(match: MatchQ = None, simulations: Annotated[int, Field(ge=1000, le=MAX_SIMS)] = 4000) -> dict:
+    """Bat or bowl: each side's win chance batting first and chasing, the better choice and by how much."""
+    card, _, pack = _match_pack(match)
+    return {"match": card["id"], **modelling.toss(pack, simulations)}
+
+
+@mcp.tool(annotations=READ)
+def batting_order(team: TeamQ, match: MatchQ = None,
+                  simulations_per_order: Annotated[int, Field(ge=300, le=5000)] = 1500) -> dict:
+    """Batting-order optimiser: the given order, every adjacent swap in the top eight and each batter promoted to
+    No. 3, ranked by win chance and score."""
+    card, _, pack = _match_pack(match)
+    return {"match": card["id"], **modelling.batting_order(pack, _team_index(pack, team), simulations_per_order)}
+
+
+@mcp.tool(annotations=READ)
+def bowling_plan(bowling_team: TeamQ, match: MatchQ = None,
+                 bowlers: Annotated[list[str] | None, Field(description="Who may bowl (default: the usual bowlers)")] = None) -> dict:
+    """Over-by-over bowling plan: each over to the bowler with the best expected value against the batters likely to
+    be in, within quotas and without consecutive overs."""
+    card, doc, pack = _match_pack(match)
+    t = _team_index(pack, bowling_team)
+    ids = [p for team in pack["teams"] for p in team["players"]]
+    ps = _players_or_stubs(ids)
+    for pid, p in ps.items():
+        p.setdefault("name", pack["players"].get(pid, {}).get("name", pid))
+        if not p.get("known", True):
+            p["name"] = pack["players"].get(pid, {}).get("name", pid)
+    pool = _resolve_ids(pack, bowlers) if bowlers else None
+    try:
+        out = modelling.bowling_plan(kit(), pack, ps, t, doc["match"].get("gender") or pack.get("gender") or "male", pool)
+    except ValueError as e:
+        raise DataError(str(e)) from e
+    return {"match": card["id"], **out}
+
+
+@mcp.tool(annotations=READ)
+def player_impact(player: PlayerQ, match: MatchQ = None,
+                  simulations: Annotated[int, Field(ge=500, le=MAX_SIMS)] = 2000) -> dict:
+    """How much a player moves the result: their team's win chance if they have a poor day (form 0.75), a normal
+    day and a good day (form 1.33), with the team's median score in each."""
+    card, _, pack = _match_pack(match)
+    pid = _resolve_ids(pack, [player])[0]
+    team = next(t for t, tm in enumerate(pack["teams"]) if pid in tm["players"])
+    name = pack["teams"][team]["name"]
+    out = {}
+    for label, f in (("poor_day", 0.75), ("normal", 1.0), ("good_day", 1.33)):
+        s = modelling.short(pack, sim.simulate_matches(pack, simulations, {"playerForm": {pid: f}}, modelling.SEED))
+        out[label] = {"win": _pct(s["win"][name]), "median_score": s["score"][name]["median"]}
+    swing = float(out["good_day"]["win"].rstrip("%")) - float(out["poor_day"]["win"].rstrip("%"))
+    return {"match": card["id"], "player": pack["players"].get(pid, {}).get("name", pid), "team": name, **out,
+            "win_swing_points": round(swing, 1), "simulations_each": simulations}
+
+
+def _roles(doc: dict, pack: dict, roles: dict | None) -> dict:
+    overs = {p["id"]: (p.get("bowling") or {}).get("overs") or 0.0 for t in doc["summary"]["teams"] for p in t["players"]}
+    named = dict(zip(_resolve_ids(pack, list((roles or {}).keys())), (roles or {}).values())) if roles else {}
+    return modelling.infer_roles(pack, overs, named)
+
+
+Role = Literal["WK", "BAT", "AR", "BOWL"]
+
+
+@mcp.tool(annotations=READ)
+def fantasy_projections(match: MatchQ = None, roles: dict[str, Role] | None = None,
+                        simulations: Annotated[int, Field(ge=500, le=MAX_SIMS)] = 3000) -> dict:
+    """Fantasy points (Dream11-style T20 table) for all 22 players from simulation: mean, median, 10th and 90th
+    percentiles and the chance of being the top scorer. Catches, run-outs and maidens aren't counted."""
+    card, doc, pack = _match_pack(match)
+    out = modelling.fantasy_projections(pack, _roles(doc, pack, roles), simulations)
+    for r in out["players"]:
+        r.pop("id", None)
+    return {"match": card["id"], **out}
+
+
+@mcp.tool(annotations=READ)
+def fantasy_team(match: MatchQ = None, captain_rule: Literal["mean", "upside"] = "mean",
+                 roles: dict[str, Role] | None = None,
+                 simulations: Annotated[int, Field(ge=500, le=MAX_SIMS)] = 3000) -> dict:
+    """Best fantasy XI by expected points (at least one from each side), with captain and vice-captain by expected
+    points ('mean') or by 90th-percentile upside ('upside'). Check the announced XIs before locking a team."""
+    card, doc, pack = _match_pack(match)
+    return {"match": card["id"], **modelling.fantasy_team(pack, _roles(doc, pack, roles), simulations, captain_rule)}
+
+
+@mcp.tool(annotations=READ)
+def fantasy_portfolio(match: MatchQ = None, teams_count: Annotated[int, Field(ge=2, le=10)] = 5,
+                      simulations: Annotated[int, Field(ge=1000, le=MAX_SIMS)] = 3000) -> dict:
+    """Several fantasy teams that together cover the likely matches (for multi-entry contests): each added team is
+    the one that most raises the expected score of the portfolio's best team."""
+    card, _, pack = _match_pack(match)
+    return {"match": card["id"], **modelling.fantasy_portfolio(pack, teams_count, simulations)}
+
+
+# ── graphics ───────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Theme = Literal["dark", "light"]
+
+
+def _save(name: str, svg: str) -> dict:
+    folder = Path(os.environ.get("CRICSYNTHESIS_OUT") or Path.home() / "CricSynthesis" / "cards")
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+        f = folder / f"{re.sub(r'[^A-Za-z0-9_.-]+', '-', name).strip('-')}.svg"
+        f.write_text(svg)
+        where = str(f)
+    except OSError:
+        where = None
+    return {"saved_to": where, "format": "image/svg+xml", "size": "1200x675", "svg": svg}
+
+
+@mcp.tool(annotations=READ)
+def match_graphic(card: Literal["win", "scores", "worm", "phases", "duels", "wickets", "player"] = "win",
+                  match: MatchQ = None, team: Annotated[str | None, Field(description="For 'wickets'")] = None,
+                  player: Annotated[str | None, Field(description="For 'player'")] = None, theme: Theme = "dark") -> dict:
+    """A 1200x675 SVG card for a covered match: win probability, score distributions, run worm, phases, key duels,
+    wicket timing for a team, or one player's outlook. Saved to ~/CricSynthesis/cards and returned as SVG text."""
+    card_, doc = _doc(match)
+    if card == "wickets":
+        t = 0 if not team else _team_index(store.pack(card_["id"]), team)
+        svg = graphics.wickets_card(doc, t, theme, True)
+    elif card == "player":
+        if not player:
+            raise DataError("Name the player for a player card.")
+        _, p = _find_player(doc, player)
+        svg = graphics.player_card(doc, p["id"], theme, True)
+    else:
+        svg = graphics.CARDS[card](doc, theme, True)
+    return _save(f"{card_['id']}-{card}", svg)
+
+
+@mcp.tool(annotations=READ)
+def analytics_graphic(card: Literal["player", "matchup", "venue", "trend"], player: str | None = None,
+                      bowler: str | None = None, venue: str | None = None, format: Format = "T20",
+                      gender: Gender = "male", theme: Theme = "dark") -> dict:
+    """A 1200x675 SVG card from the model: a player's phase profile, a batter-v-bowler match-up (player = batter),
+    a venue profile or the scoring trend. Saved to ~/CricSynthesis/cards and returned as SVG text."""
+    if card == "player":
+        prof = player_phases(player or "", format)
+        return _save(f"player-{prof['player']['name']}", graphics.player_profile_card(prof, theme, True))
+    if card == "matchup":
+        if not (player and bowler):
+            raise DataError("Give player (the batter) and bowler.")
+        mu = matchup(player, bowler, format)
+        return _save(f"matchup-{mu['batter']['name']}-v-{mu['bowler']['name']}", graphics.matchup_card(mu, theme, True))
+    if card == "venue":
+        v = venue_profile(venue or "", format, gender)
+        return _save(f"venue-{v['venue']['id']}", graphics.venue_card(v, theme, True))
+    return _save(f"trend-{format}-{gender}", graphics.trend_card(scoring_trend(format, gender), theme, True))
+
+
 # ── full API (needs a key) ─────────────────────────────────────────────────────────────────────────────────────────
 
 def _register_api(key: str) -> None:
@@ -387,7 +875,7 @@ def _register_api(key: str) -> None:
         url = base + path + (("?" + urllib.parse.urlencode(params, doseq=True)) if params else "")
         data = json.dumps(body).encode() if body is not None else None
         req = urllib.request.Request(url, data=data, method=method,
-                                     headers={"X-API-Key": key, "Content-Type": "application/json", "User-Agent": "cricsynthesis-mcp/0.1"})
+                                     headers={"X-API-Key": key, "Content-Type": "application/json", "User-Agent": "cricsynthesis-mcp/0.2"})
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
                 ct = r.headers.get("Content-Type", "")

@@ -14,7 +14,9 @@ def call(name, **args):
 def test_tools_listed():
     names = {t.name for t in asyncio.run(server.mcp.list_tools())}
     assert {"list_matches", "match_forecast", "player_outlook", "key_matchups", "innings_shape", "about_the_model",
-            "simulate_scenario", "live_win_probability", "fantasy_team", "pattern_lab"} <= names
+            "simulate_scenario", "live_win_probability", "fantasy_team", "pattern_lab", "rankings", "matchup",
+            "team_profile", "venue_profile", "par_score", "bowling_plan", "match_graphic"} <= names
+    assert len(names) >= 40
     assert "api_request" not in names          # only with a key
 
 
@@ -61,12 +63,16 @@ def test_live_overs_validation():
 
 
 def test_fantasy_team_rules():
-    f = server.fantasy_team(simulations=300)
-    xi = f["suggested_xi"]
-    assert len(xi) == 11 and len({r["player"] for r in xi}) == 11
+    f = server.fantasy_team(simulations=500)
+    xi = f["xi"]
+    assert len(xi) == 11 and len({r["name"] for r in xi}) == 11
     per = [sum(r["team"] == t for r in xi) for t in ("Premier 0", "Premier 1")]
-    assert min(per) >= 1 and max(per) <= 10
+    assert min(per) >= 1
     assert f["captain"] != f["vice_captain"]
+    proj = server.fantasy_projections(simulations=500)["players"]
+    assert len(proj) == 22 and proj[0]["mean"] >= proj[-1]["mean"] and {r["role"] for r in proj} <= {"BAT", "AR", "BOWL"}
+    port = server.fantasy_portfolio(teams_count=3, simulations=1000)
+    assert len(port["teams"]) == 3 and port["expected_best_of_portfolio"] >= port["teams"][0]["expected_points"] - 1
 
 
 def test_pattern_lab():

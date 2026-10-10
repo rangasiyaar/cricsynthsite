@@ -18,7 +18,7 @@ cricsynthsite/
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
-├── cricmcp/                   ← MCP server (runs on the user's machine via uvx): forecasts, what-ifs, fantasy, Pattern Lab
+├── cricmcp/                   ← MCP server (43 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
@@ -69,6 +69,7 @@ uv run python -m cricsim.patterns --parquet data/parquet   # Pattern Lab → dat
 uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest
 uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff 2025-01-01
 uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish
+uv run python -m cricsim.kit --model data/models/latest --out data/publish     # analytics kit for the MCP server
 uv run cricapi                              # API on :8080 (CRICAPI_* env vars, see cricapi/main.py)
 uv run python -m cricapi.reference > app/data-static/api-reference.json   # after API changes (/docs page; tested)
 uv run python -m cricapi.examples --model data/models/latest --out app/data-static/api-examples.json   # sample calls (nightly in CI)
@@ -93,6 +94,9 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 - Model-derived analytics live in `cricsim/engine/insight.py`; decision models (win probability, par, chase,
   toss, lineups, fantasy) in `cricsim/engine/modelling.py`. API routes are tagged with their category.
 
+- `cricmcp/src/cricmcp/insight.py` ports `insight.py` to pure Python over the analytics kit (`cricsim/kit.py`);
+  `test_insight_parity.py` checks them against each other. `cricmcp/.../graphics.py` is a verbatim copy of
+  `cricapi/graphics.py` (tested). The MCP package is served from the site, not GitHub (`cricmcp/build_index.py`).
 - `cricmcp/src/cricmcp/sim.py` is a third copy of the browser engine (pure Python, same RNG); `cricmcp/tests/test_parity.py`
   requires it to reproduce `sim.ts` exactly, so change both together.
 - `cricsim/engine/states.py` is the single definition of outcome classes and situation buckets; the

@@ -1,57 +1,72 @@
 # CricSynthesis MCP
 
-Cricket match forecasts for AI assistants (Claude, ChatGPT desktop, Cursor and any MCP client). Ask about the next
-match, a player, a toss or a live chase, and the assistant answers from 20,000 ball-by-ball simulations.
+Cricket analytics and match forecasts for AI assistants (Claude, ChatGPT desktop, Cursor and any MCP client).
+Ask about any player, venue, competition or team, or about an upcoming match, and the assistant answers from a
+ball-by-ball model of every recorded delivery.
 
-Runs on your machine and is free. Forecasts come from the CricSynthesis website; what-ifs are simulated locally
-with the same engine as the site's Scenario Lab.
+Runs on your machine and is free. It reads the analytics and forecasts CricSynthesis publishes each night and does
+the arithmetic and simulations locally.
 
 ## Install
 
-Needs [uv](https://docs.astral.sh/uv/). Add this to your client's MCP config (Claude Desktop:
-Settings → Developer → Edit config):
+Needs [uv](https://docs.astral.sh/uv/). In Claude Desktop open Settings → Developer → Edit config and add:
 
 ```json
 {
   "mcpServers": {
     "cricsynthesis": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/rangasiyaar/cricsynthsite#subdirectory=cricmcp", "cricsynthesis-mcp"]
+      "args": ["--index", "https://cricsynthesis.web.app/pypi/simple/", "cricsynthesis-mcp"]
     }
   }
 }
 ```
 
-Claude Code: `claude mcp add cricsynthesis -- uvx --from "git+https://github.com/rangasiyaar/cricsynthsite#subdirectory=cricmcp" cricsynthesis-mcp`
+Claude Code: `claude mcp add cricsynthesis -- uvx --index https://cricsynthesis.web.app/pypi/simple/ cricsynthesis-mcp`
 
-## Tools
+## Tools (43)
 
-| Tool | What it answers |
+**Analytics** — any player, venue, competition or team
+
+| Tool | |
 |---|---|
-| `list_matches` | Upcoming matches with forecasts, times in IST |
-| `match_forecast` | Win chances, by who bats first, projected scores and ranges, phases, likely top performers |
-| `player_outlook` | One player's runs, milestones, dismissal risks, wickets and economy |
-| `key_matchups` | The batter-v-bowler duels most likely to decide the match |
-| `innings_shape` | Over-by-over runs, wicket chance, score bands and fall of wickets |
-| `simulate_scenario` | What-if: toss, pitch, dew, ground size, player form, a bowler missing |
-| `live_win_probability` | Win chance from any score, e.g. 120/4 after 15.2 overs chasing 165 |
-| `fantasy_team` | Expected fantasy points for all 22, a suggested XI, captain and vice-captain |
-| `pattern_lab` | Cricket folklore tested on ball-by-ball data: real, myth or reversed |
-| `about_the_model` | How the forecast is made and how much data is behind it |
+| `search_players` | Find players and their ids |
+| `player_rating` | Wicket, four and six multipliers v an average player |
+| `player_phases` | Batting and bowling by powerplay, middle and death overs |
+| `player_vs_bowling` | A batter against each bowling type |
+| `bowler_vs_batting_hand` | A bowler against right- and left-handers |
+| `player_situations` | New at the crease v set, and chasing at different required rates |
+| `player_formats` | T20 v one-day |
+| `player_role` | Batting position, overs by phase, workload |
+| `similar_players` | Nearest players by style |
+| `compare_players` | Up to eight players side by side |
+| `rankings` | Model leaderboards by format, phase and metric |
+| `matchup`, `matchup_grid`, `best_bowler_against` | Batter v bowler, ball by ball |
+| `venues`, `venue_profile` | How grounds play |
+| `competitions`, `competition_profile` | How leagues play |
+| `scoring_trend` | Run rates by phase, season by season |
+| `teams`, `team_profile` | A side's batting and bowling, or any XI |
+| `pattern_lab`, `pattern_detail` | Cricket folklore tested on the data |
 
-Matches can be named by id or by team names ("India v West Indies"); with no match given, tools use the next one.
+**Simulation and modelling** — upcoming covered matches
+
+| Tool | |
+|---|---|
+| `list_matches`, `match_forecast`, `innings_shape`, `key_matchups`, `player_outlook`, `about_the_model` | The forecast |
+| `simulate_scenario` | What-if: toss, pitch, dew, ground size, form, a bowler missing |
+| `live_win_probability`, `innings_projection` | From any score |
+| `par_score`, `chase_curve`, `toss_decision` | Pre-match decisions |
+| `batting_order`, `bowling_plan`, `player_impact` | Line-ups |
+| `fantasy_projections`, `fantasy_team`, `fantasy_portfolio` | Fantasy |
+
+**Graphics** — `match_graphic`, `analytics_graphic`: 1200×675 SVG cards, saved to `~/CricSynthesis/cards`.
+
+Players, matches, venues and teams can be named in plain words.
 
 ## Settings
 
 | Variable | Default | |
 |---|---|---|
-| `CRICSYNTHESIS_DATA_URL` | `https://cricsynthesis.web.app/data` | Where forecasts are read from (a URL or a local folder) |
-| `CRICSYNTHESIS_API_KEY` | — | Adds `api_request`, which calls any of the 56 API endpoints |
-| `CRICSYNTHESIS_API_URL` | `https://api.cricsynthesis.in` | API base for `api_request` |
-
-## Development
-
-```bash
-uv run pytest cricmcp/tests -q        # includes exact parity with the browser engine (needs Node 22+)
-uv run cricsynthesis-mcp              # stdio server
-```
+| `CRICSYNTHESIS_DATA_URL` | `https://cricsynthesis.web.app/data` | Where published data is read from |
+| `CRICSYNTHESIS_OUT` | `~/CricSynthesis/cards` | Where graphics are saved |
+| `CRICSYNTHESIS_API_KEY` | — | Adds `api_request` for the CricSynthesis API |

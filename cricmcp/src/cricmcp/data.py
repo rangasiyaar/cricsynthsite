@@ -16,11 +16,16 @@ from mcp.server.mcpserver.exceptions import ToolError
 
 DEFAULT_URL = "https://cricsynthesis.web.app/data"
 TTL = 600          # seconds; forecasts are rebuilt nightly
-UA = "cricsynthesis-mcp/0.1"
+UA = "cricsynthesis-mcp/0.2"
 
 
 class DataError(ToolError):
     """A problem the user can act on; its message is shown to the assistant."""
+
+
+def safe_id(pid: str) -> str:
+    """File name of a published id (cricsim.kit.safe_id)."""
+    return re.sub(r"[^A-Za-z0-9_.-]", "_", pid)
 
 
 class Store:
@@ -60,6 +65,46 @@ class Store:
 
     def patterns(self) -> dict:
         return self.get("patterns.json")
+
+    # ── analytics kit (cricsim/kit.py) ──
+    def kit_file(self, path: str):
+        try:
+            return self.get(f"analytics/{path}")
+        except DataError as e:
+            if str(e).startswith("404"):
+                raise DataError("Not found in the published analytics.") from e
+            raise
+
+    def player(self, pid: str) -> dict:
+        return self.kit_file(f"players/{safe_id(pid)}.json")
+
+    def find_players(self, query: str, limit: int = 10) -> list[dict]:
+        """Players whose name contains every word of the query; exact and prefix matches first, then experience."""
+        idx = self.kit_file("players.json")
+        fields = idx["fields"]
+        q = query.strip().lower()
+        words = q.split()
+        hits = []
+        for row in idx["players"]:
+            r = dict(zip(fields, row))
+            name = (r["name"] or "").lower()
+            if r["id"].lower() == q or name == q:
+                rank = 0
+            elif name.startswith(q):
+                rank = 1
+            elif words and all(w in name for w in words):
+                rank = 2
+            else:
+                continue
+            hits.append((rank, -r["balls"], r))
+        hits.sort(key=lambda h: (h[0], h[1]))
+        return [h[2] for h in hits[:limit]]
+
+    def resolve_player(self, query: str) -> dict:
+        hits = self.find_players(query, 5)
+        if not hits:
+            raise DataError(f"No player matches '{query}'. Try search_players with part of the name.")
+        return self.player(hits[0]["id"])
 
     def find_match(self, query: str | None) -> dict:
         """A match card by id or by words from the title / team names; no query = the next match."""

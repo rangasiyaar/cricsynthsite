@@ -1,6 +1,6 @@
 [project]
 name = "cricsynthesis-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "CricSynthesis MCP server: cricket match forecasts, what-if simulations, fantasy picks and Pattern Lab for AI assistants"
 readme = "README.md"
 requires-python = ">=3.10"
