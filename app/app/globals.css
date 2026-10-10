@@ -48,7 +48,10 @@ h3 { font-size: 22px; letter-spacing: .02em; }
 .plate-bar > span + span { border-left: 1px solid var(--cs-line); }
 .plate-bar .ok { color: var(--cs-steel-700); }
 
-.grid { display: grid; gap: 28px; align-items: start; }
+.grid { display: grid; gap: 28px; align-items: stretch; }
+/* Cards in a row share one height; anything marked .card-foot sits on the bottom edge. */
+.grid > .card { display: flex; flex-direction: column; }
+.grid > .card > .card-foot { margin-top: auto; }
 .grid > * { min-width: 0; }
 .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }

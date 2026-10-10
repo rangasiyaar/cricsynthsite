@@ -22,6 +22,8 @@ const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
     "n": 10000
   }'`;
 
+const PER_CARD = 8;
+
 export default function Developers() {
   return (
     <div className="page-head">
@@ -39,12 +41,14 @@ export default function Developers() {
           return (
             <div key={c} className="card">
               <h3>{c} <span className="muted small">{eps.length}</span></h3>
-              {eps.map((e) => (
+              {eps.slice(0, PER_CARD).map((e) => (
                 <a key={e.id} href={`/docs/#${e.id}`} style={{ display: "block", padding: "7px 0", borderTop: "1px solid var(--tick)", color: "inherit" }}>
                   <div className="small">{e.summary}</div>
                   <div className="mono muted" style={{ fontSize: 11.5, wordBreak: "break-all" }}>{e.method} {e.path}</div>
                 </a>
               ))}
+              <Link className="card-foot small" href="/docs/" style={{ paddingTop: 12, borderTop: "1px solid var(--tick)" }}>
+                All {eps.length} {c.toLowerCase()} endpoints</Link>
             </div>
           );
         })}
