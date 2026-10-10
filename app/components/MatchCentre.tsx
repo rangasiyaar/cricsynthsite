@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ChaseCurve, Checkpoints, Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
+import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveEngine from "@/components/LiveEngine";
 import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
@@ -121,7 +121,6 @@ function Overview({ doc }: { doc: MatchDoc }) {
           </div>
         ))}
       </div>
-      <Methodology doc={doc} />
     </div>
   );
 }
@@ -302,9 +301,6 @@ export function Spotlight({ doc }: { doc: MatchDoc }) {
           <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
           <PlayerLadder s={doc.summary} />
         </div>
-      </div>
-      <div className="section">
-        <Methodology doc={doc} />
       </div>
     </>
   );

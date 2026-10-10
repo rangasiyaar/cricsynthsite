@@ -288,11 +288,3 @@ select:focus, textarea:focus, input:focus { border-color: var(--cs-steel); outli
 .ladder-dots span { display: inline-flex; align-items: center; gap: 4px; }
 .ladder-dots i { display: inline-block; height: 8px; transition: width .6s ease; }
 
-/* ── Methodology ── */
-.method-steps { list-style: none; padding: 0; margin: 8px 0 20px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-.method-steps li { display: grid; gap: 4px; align-content: start; }
-.method-steps .cs-step-n { font-size: 28px; }
-.method-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--cs-line); }
-.method-grid > div { padding: 12px 0; border-bottom: 1px solid var(--tick, var(--cs-line)); }
-.method-v { font-family: var(--cs-head); font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums; }
-@media (max-width: 760px) { .method-steps { grid-template-columns: 1fr 1fr; } .method-grid { grid-template-columns: 1fr 1fr; } }

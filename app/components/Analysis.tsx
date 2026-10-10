@@ -1,7 +1,7 @@
 "use client";
 // Forecast charts with their uncertainty shown: run fans, the first-innings win curve, per-player outcome ranges,
-// and how the forecast was produced. Lines draw in and bands fade in on mount.
-import { ChartFrame, Num, type Column } from "@/components/charts";
+// the chase curve and checkpoints. Lines draw in and bands fade in on mount.
+import { ChartFrame, type Column } from "@/components/charts";
 import type { MatchDoc, PlayerRow, Summary } from "@/lib/types";
 
 const COLORS = ["var(--team-a)", "var(--team-b)"];
@@ -150,41 +150,6 @@ function BowlRow({ p, color }: { p: PlayerRow; color: string }) {
         ))}
       </span>
       <span className="ladder-v">{(p.bowling!.wickets.mean ?? 0).toFixed(1)}</span>
-    </div>
-  );
-}
-
-/** How this forecast was produced. */
-export function Methodology({ doc }: { doc: MatchDoc }) {
-  const s = doc.summary, e = s.meta.engine;
-  const names = s.teams.map((t) => t.name);
-  const ci = s.result.win_ci95 ?? {};
-  const rows: [string, React.ReactNode][] = [
-    ["Simulations", <Num key="s" value={s.meta.simulations} />],
-    ["Balls simulated", <Num key="b" value={e?.balls_simulated} />],
-    ["Monte Carlo error (95%)", <>± {(100 * (ci[names[0]] ?? 0)).toFixed(1)} pts</>],
-    ["Balls in training", <Num key="t" value={e?.balls_trained} />],
-    ["Players rated", <Num key="p" value={e?.players} />],
-    ["Venues · competitions", <><Num value={e?.venues} /> · <Num value={e?.competitions} /></>],
-    ["Data through", e?.data_through ?? "—"],
-    ["Model log-loss", e?.log_loss?.toFixed(4) ?? "—"],
-    ["Day-to-day variation", e?.conditions_sd ? `±${Math.round(100 * (e.conditions_sd.boundary ?? 0))}% boundaries · ±${Math.round(100 * (e.conditions_sd.wicket ?? 0))}% wickets` : "—"],
-  ];
-  const steps = [
-    ["Ball model", "Each ball has ten outcomes (dot to six, wicket, extras), driven by the batter, the bowler, their match-up, phase, wickets down, required rate, venue and era."],
-    ["Ratings", "Players are rated across every league and format, adjusted for the strength of the opposition they faced."],
-    ["Simulation", `${s.meta.simulations.toLocaleString("en-IN")} full matches are played ball by ball, with the toss, bowling changes and a fresh draw of pitch and conditions each time.`],
-    ["Read-out", "Every number on this page is a share of those simulated matches, so each comes with its spread, not just an average."],
-  ];
-  return (
-    <div className="card anim-rise">
-      <h3>How this forecast is made</h3>
-      <ol className="method-steps">
-        {steps.map(([t, d], i) => <li key={t}><span className="cs-step-n">{String(i + 1).padStart(2, "0")}</span><b>{t}</b><span className="small">{d}</span></li>)}
-      </ol>
-      <div className="method-grid">
-        {rows.map(([k, v]) => <div key={k}><div className="cs-k">{k}</div><div className="method-v">{v}</div></div>)}
-      </div>
     </div>
   );
 }
