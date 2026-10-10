@@ -213,16 +213,21 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .dash-section-title { grid-area: title; margin: 0 !important; align-self: end; }
 .dash-side { grid-area: side; }
 .dash-main { grid-area: main; }
-/* Phones and small tablets: a slim rail (icon over a short label) keeps the same side-by-side layout */
+/* Phones and small tablets: the standard account-page pattern - a full-width tab bar (four equal tabs, icon over
+   label, active one underlined) pinned under the site header, then full-width content. */
 @media (max-width: 860px) {
-  .dash-layout { grid-template-columns: 70px minmax(0, 1fr); column-gap: 12px; }
-  .dash-side { top: 76px; padding: 5px; gap: 2px; }
-  .dash-side button { flex-direction: column; gap: 4px; padding: 9px 2px; font-size: 9.5px; text-align: center; line-height: 1.15;
-    width: 100%; min-width: 0; letter-spacing: -.01em; }
+  .dash-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "title" "main"; row-gap: 16px; margin-top: 20px; }
+  .dash-side { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 0;
+    border-radius: 0; border: 0; border-bottom: 1px solid var(--cs-line); background: var(--cs-bg); }
+  .dash-side button { flex-direction: column; gap: 4px; padding: 10px 2px 9px; border-radius: 0; font-size: 12px; text-align: center;
+    color: var(--cs-ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; min-width: 0; }
+  .dash-side button:hover { background: none; }
+  .dash-side button[aria-current="page"] { background: none; color: var(--cs-ink); border-bottom-color: var(--cs-steel); }
   .dash-label { display: none; }
   .dash-label-short { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .dash-section-title { font-size: 19px !important; }
+  .dash-section-title { display: none; }      /* the active tab already names the section */
 }
+
 
 /* Signed-in menu: Dashboard opens Account / Log out */
 .acct-menu { position: relative; display: inline-flex; }
