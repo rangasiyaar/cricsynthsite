@@ -19,6 +19,7 @@ const ICONS: Record<string, React.ReactNode> = {
   "API keys": ico("M14 7a4 4 0 1 1-3.9 5H3v3h3v2h3v-2h1.1A4 4 0 0 1 14 7zm1.5 2.5h.01"),
   Profile: ico("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20a8 8 0 0 1 16 0"),
 };
+const SHORT: Record<string, string> = { Overview: "Overview", Subscription: "Plan", "API keys": "API keys", Profile: "Profile" };
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const fmtDate = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—");
@@ -70,7 +71,7 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
         <nav className="dash-side" aria-label="Dashboard">
           {SECTIONS.map((s) => (
             <button key={s} type="button" aria-current={section === s ? "page" : undefined} onClick={() => go(s)}>
-              <span className="dash-ico" aria-hidden="true">{ICONS[s]}</span>{s}
+              <span className="dash-ico" aria-hidden="true">{ICONS[s]}</span><span className="dash-label">{s}</span><span className="dash-label-short">{SHORT[s]}</span>
             </button>
           ))}
         </nav>

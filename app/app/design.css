@@ -203,19 +203,23 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .dash-side button:hover { background: var(--cs-bg); color: var(--cs-ink); }
 .dash-side button[aria-current="page"] { background: var(--cs-ink); color: var(--cs-bg); }
 .dash-ico { display: inline-flex; opacity: .85; }
+.dash-label-short { display: none; }
 .dash-main { min-width: 0; }
 .dash-section-title { font-size: 22px !important; margin: 0 0 16px; }
-@media (max-width: 860px) {
-  .dash-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .dash-side { position: static; display: flex; overflow-x: auto; scrollbar-width: none; }
-  .dash-side button { flex: none; width: auto; }
-}
+
 
 /* Title sits above the content column; side panel and first content card share the same top edge */
 .dash-layout { grid-template-columns: 220px minmax(0, 1fr); grid-template-areas: ". title" "side main"; row-gap: 14px; }
 .dash-section-title { grid-area: title; margin: 0 !important; align-self: end; }
 .dash-side { grid-area: side; }
 .dash-main { grid-area: main; }
+/* Phones and small tablets: a slim rail (icon over a short label) keeps the same side-by-side layout */
 @media (max-width: 860px) {
-  .dash-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "title" "main"; }
+  .dash-layout { grid-template-columns: 70px minmax(0, 1fr); column-gap: 12px; }
+  .dash-side { top: 76px; padding: 5px; gap: 2px; }
+  .dash-side button { flex-direction: column; gap: 4px; padding: 9px 2px; font-size: 9.5px; text-align: center; line-height: 1.15;
+    width: 100%; min-width: 0; letter-spacing: -.01em; }
+  .dash-label { display: none; }
+  .dash-label-short { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dash-section-title { font-size: 19px !important; }
 }
