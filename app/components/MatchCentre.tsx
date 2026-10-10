@@ -12,6 +12,17 @@ import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
 type Tab = (typeof TABS)[number];
 const COLORS = ["var(--team-a)", "var(--team-b)"];
+const icon = (d: string) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+);
+const TAB_ICONS: Record<string, React.ReactNode> = {
+  Overview: icon("M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z"),
+  Scores: icon("M4 20V10M10 20V4M16 20v-7M22 20H2"),
+  Wickets: icon("M7 4v16M12 4v16M17 4v16M5 4h14"),
+  Players: icon("M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-4-5.6"),
+  Matchups: icon("M7 7h11l-3-3M17 17H6l3 3"),
+  Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
+};
 
 export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
   const [tab, setTab] = useState<Tab>("Overview");
@@ -25,14 +36,16 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
       <Scoreboard doc={doc} foot={<span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches
         {s.result.tie > 0.002 ? <>; tie {pct(s.result.tie, 1)}</> : null}.</span>} />
 
-      <div className="tabs" role="tablist">
+      <div className="tabs mc-tabs" role="tablist">
         {TABS.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            {t}
+            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{t}</span>
           </button>
         ))}
         <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
-          MatchSynth Lab <span className="tag pro">Pro</span>
+          <span className="mc-ico" aria-hidden="true">{TAB_ICONS.Lab}</span>
+          <span className="mc-label"><span className="mc-full">MatchSynth Lab</span><span className="mc-short">Lab</span></span>
+          <span className="tag pro">Pro</span>
         </Link>
       </div>
 

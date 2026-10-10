@@ -243,3 +243,21 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .acct-pop a:hover, .acct-pop button:hover { background: var(--cs-bg); }
 .acct-name { font: 700 14px var(--cs-body); color: var(--cs-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
 .acct-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Match-centre tabs: text tabs on desktop; on phones the same full-width tab bar as the dashboard
+   (six equal tabs, icon over a short label, active one underlined, pinned under the site header). */
+.mc-tabs .mc-ico, .mc-tabs .mc-short { display: none; }
+@media (max-width: 860px) {
+  .tabs.mc-tabs { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; padding: 0; margin-left: -12px; margin-right: -12px;
+    overflow: visible; border: 0; border-bottom: 1px solid var(--cs-line); border-radius: 0; background: var(--cs-bg); }
+  .tabs.mc-tabs button, .tabs.mc-tabs .tab-link { flex-direction: column; justify-content: center; gap: 4px; padding: 10px 0 9px; margin: 0 0 -1px;
+    border-radius: 0; border: 0 !important; border-bottom: 2px solid transparent !important; background: none !important; min-width: 0;
+    font: 600 10.5px var(--cs-body); letter-spacing: -0.01em; text-transform: none; color: var(--cs-ink-3); position: relative; }
+  .tabs.mc-tabs button[aria-selected="true"] { color: var(--cs-ink); border-bottom-color: var(--cs-steel) !important; }
+  .tabs.mc-tabs .tab-link { color: var(--cs-steel-700); }
+  .mc-tabs .mc-ico { display: inline-flex; }
+  .mc-tabs .mc-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mc-tabs .mc-full { display: none; }
+  .mc-tabs .mc-short { display: inline; }
+  .tabs.mc-tabs .tab-link .tag.pro { position: absolute; top: 4px; right: 50%; transform: translateX(22px); font-size: 8px; padding: 0 4px; line-height: 13px; }
+}
