@@ -1,0 +1,113 @@
+{
+  "id": "pak-v-sl-t20i-rawalpindi-2026-10-11",
+  "title": "Pakistan v Sri Lanka",
+  "date": "2026-10-11",
+  "start_time": "18:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Sri Lanka tour of Pakistan 2026 \u00b7 2nd T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Rawalpindi Cricket Stadium, Rawalpindi",
+  "venue_search": "rawalpindi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Squads announced; likely XIs picked from the squads. Update when the playing XIs are announced.",
+  "teams": [
+    {
+      "name": "Pakistan",
+      "short": "PAK",
+      "players": [
+        "Sahibzada Farhan",
+        "Saim Ayub",
+        "Fakhar Zaman",
+        "Khawaja Nafay",
+        "Hasan Nawaz",
+        "Abdul Samad",
+        "Shadab Khan",
+        "Maaz Sadaqat",
+        "Naseem Shah",
+        "Mohammad Salman Mirza",
+        "Abrar Ahmed"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Sahibzada Farhan",
+        "Khawaja Nafay",
+        "Fakhar Zaman",
+        "Maaz Sadaqat",
+        "Hasan Nawaz",
+        "Saim Ayub",
+        "Shadab Khan",
+        "Mohammad Imran Randhawa",
+        "Razaullah",
+        "Naseem Shah",
+        "Abrar Ahmed",
+        "Arafat Minhas",
+        "Sufyan Moqim",
+        "Abdul Samad",
+        "Mohammad Salman Mirza"
+      ],
+      "captain": "Sahibzada Farhan"
+    },
+    {
+      "name": "Sri Lanka",
+      "short": "SL",
+      "players": [
+        "Kamil Mishara",
+        "Lahiru Udara",
+        "Kusal Mendis",
+        "Kamindu Mendis",
+        "Sahan Arachchige",
+        "Dasun Shanaka",
+        "Dunith Wellalage",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Eshan Malinga",
+        "Nuwan Thushara"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Lahiru Udara",
+        "Kusal Mendis",
+        "Kamil Mishara",
+        "Kamindu Mendis",
+        "Sahan Arachchige",
+        "Dasun Shanaka",
+        "Dunith Wellalage",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Eshan Malinga",
+        "Nuwan Thushara",
+        "Sineth Jayawardena",
+        "Chamindu Wickramasinghe",
+        "Vijayakanth Viyaskanth",
+        "Binura Fernando"
+      ],
+      "captain": "Kusal Mendis"
+    }
+  ]
+}
