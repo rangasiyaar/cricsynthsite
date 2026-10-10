@@ -263,4 +263,7 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 }
 
 /* Divider line above the "Build with CricSynthesis" block */
-.cs-contact.cs-ruled { margin-top: clamp(56px, 8vw, 96px); padding-top: clamp(56px, 8vw, 96px); border-top: 1px solid var(--cs-line); }
+.cs-contact.cs-ruled { margin-top: clamp(56px, 8vw, 96px); padding-top: clamp(56px, 8vw, 96px);
+  background:
+    linear-gradient(var(--cs-steel), var(--cs-steel)) left top / 72px 3px no-repeat,
+    linear-gradient(90deg, var(--cs-steel-700), var(--cs-steel-400) 45%, transparent) left 1px / 100% 1px no-repeat; }
