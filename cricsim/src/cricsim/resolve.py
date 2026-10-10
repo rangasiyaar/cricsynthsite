@@ -50,16 +50,29 @@ def candidates(con, parquet: Path, team: str | None, gender: str) -> list[dict]:
     return out
 
 
-def match_name(name: str, cands: list[dict]) -> tuple[dict | None, str]:
-    """Full name / alias, else surname + first initial. Never surname alone: "Kamil Pooran" is not "N Pooran"."""
+def _loose(name: str, variant: str) -> bool:
+    """Same surname, and the first name agrees: initials ("BKG Mendis") must contain the first initial; a written
+    first name must start with it ("Hassan" for "Hasan"), or every word of the variant appears in the name
+    ("Salman Mirza" for "Mohammad Salman Mirza")."""
     full, sur, ini = _keys(name)
-    exact = [c for c in cands if any(_keys(x)[0] == full for x in c["names"])]
+    words = _norm(variant).split()
+    if len(words) < 2 or words[-1] != sur:
+        return False
+    raw = variant.split()[0]
+    if raw.isalpha() and raw.isupper() and len(raw) <= 4:      # registry initials
+        return ini in raw.lower()
+    return words[0][0] == ini or set(words) <= set(full.split())
+
+
+def match_name(name: str, cands: list[dict], taken: set[str] = frozenset()) -> tuple[dict | None, str]:
+    """Full name / alias, else surname + first initial. Never surname alone: "Kamil Pooran" is not "N Pooran".
+    Players in `taken` (already matched in this XI) are skipped, so two Mendises don't both become Kusal."""
+    full, _, _ = _keys(name)
+    pool = [c for c in cands if c["id"] not in taken]
+    exact = [c for c in pool if any(_keys(x)[0] == full for x in c["names"])]
     if exact:
         return max(exact, key=lambda c: (c["last"], c["n"])), "exact"
-    # registry names are usually "initials surname" (e.g. "JL Nkomo"): surname + first initial
-    loose = [c for c in cands if any(_keys(x)[1] == sur and (_keys(x)[0].split()[0][:1] == ini
-                                                                  or ini in _keys(x)[0].split()[0])
-                                     for x in c["names"])]
+    loose = [c for c in pool if any(_loose(name, x) for x in c["names"])]
     if loose:
         return max(loose, key=lambda c: (c["last"], c["n"])), "surname+initial"
     return None, "unresolved"
@@ -84,18 +97,26 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
     everyone = None
     for team in fx["teams"]:
         cands = candidates(con, parquet, team["name"], fx["gender"])
-        ids = []
+        # exact names first, so a loose match can't take a player who is named in full elsewhere in the XI
+        found: dict[str, tuple[dict | None, str]] = {}
         for name in team["players"]:
             c, how = match_name(name, cands)
+            if how == "exact":
+                found[name] = (c, how)
+        taken = {c["id"] for c, _ in found.values()}
+        ids = []
+        for name in team["players"]:
+            c, how = found.get(name) or match_name(name, cands, taken)
             if c is None:      # not capped for this team yet: their league / domestic record still counts
                 everyone = everyone or candidates(con, parquet, None, fx["gender"])
-                c, how = match_name(name, everyone)
+                c, how = match_name(name, everyone, taken)
                 how = f"{how}, other teams"
             if c is None:
                 missing.append(f"{team['name']}: {name}")
                 click.echo(f"  {team['name']:12} {name:28} → no record, simulated as a newcomer")
                 ids.append(f"new:{name}")
                 continue
+            taken.add(c["id"])
             ids.append(c["id"])
             click.echo(f"  {team['name']:12} {name:28} → {c['id']} {c['name']:24} ({how}; {c['n']} matches, last {c['last']})")
         if team.get("bowlers"):      # bowling plan, written as names from the XI

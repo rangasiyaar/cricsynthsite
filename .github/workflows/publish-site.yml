@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read
