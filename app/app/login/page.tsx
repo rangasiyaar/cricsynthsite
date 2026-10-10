@@ -93,7 +93,10 @@ export default function Login() {
         <div className="divider" />
         <p className="login-footer">
           By signing in you agree to our <a href="/terms/">Terms of Service</a> and <a href="/privacy/">Privacy Policy</a>.
-          <br /><br />Need API access? <a href="/contact/">Contact sales →</a>
+        </p>
+        <p className="login-footer login-dev">
+          Building with cricket data? <a href="/developers/">Explore the API</a> or <a href="/contact/">talk to our team</a> about
+          higher limits and enterprise access.
         </p>
       </div>
     </div>

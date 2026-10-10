@@ -122,3 +122,8 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
   .login-logo.cs-brand svg { width: 32px; height: 32px; }
   .login-logo.cs-brand span { font-size: 22px; }
 }
+
+/* Pro badge beside MatchSynth Lab in the menu */
+.nav-pro { margin-left: 6px; font-size: 10px; padding: 1px 6px; vertical-align: 2px; letter-spacing: .04em; }
+.cs-drawer .nav-pro { font-size: 12px; vertical-align: 4px; }
+.login-dev { margin-top: .75rem; }

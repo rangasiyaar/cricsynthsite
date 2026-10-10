@@ -52,6 +52,10 @@ function AccountLink({ className, onClick }: { className: string; onClick?: () =
   );
 }
 
+function ProTag() {
+  return <span className="tag pro nav-pro" aria-label="Pro feature">Pro</span>;
+}
+
 export function Nav() {
   const path = usePathname() || "/";
   const [open, setOpen] = useState(false);
@@ -68,7 +72,7 @@ export function Nav() {
       <div className="nav-container">
         <div className="nav-logo"><Brand /></div>
         <div className="nav-links">
-          {LINKS.map(([h, l]) => <Link key={h} href={h} className={cls(h)}>{l}</Link>)}
+          {LINKS.map(([h, l]) => <Link key={h} href={h} className={cls(h)}>{l}{h === "/lab/" && <ProTag />}</Link>)}
           <ThemeToggle />
           <AccountLink className="nav-link nav-cta" />
         </div>
@@ -83,7 +87,7 @@ export function Nav() {
         </div>
       </div>
       <div className="cs-drawer" id="csDrawer" hidden={!open}>
-        {DRAWER.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}</Link>)}
+        {DRAWER.map(([h, l]) => <Link key={h} href={h} onClick={() => setOpen(false)}>{l}{h === "/lab/" && <ProTag />}</Link>)}
         <Link href="/mcp/" className="cs-drawer-mcp" onClick={() => setOpen(false)}>MCP</Link>
       </div>
     </nav>
