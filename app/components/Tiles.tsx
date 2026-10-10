@@ -55,7 +55,14 @@ export function buildTiles(s: Summary, short: [string, string]): Tile[] {
     });
     tiles.push({ label: "Toss", rows });
   }
-  return tiles;
+  tiles.push({ label: "Winning margin (median)", rows: [
+    { left: "Batting first wins by", right: <><b className="tile-big"><Num value={s.result.margin_runs.q["50"]} /></b><span className="tile-sub">runs</span></> },
+    { left: "Chasing side wins by", right: <><b className="tile-big"><Num value={s.result.margin_wickets.q["50"]} /></b><span className="tile-sub">wickets</span></> },
+  ] });
+  if (tiles.length % 4) tiles.push({ label: "Wickets lost (average)", rows: s.teams.map((t, k) => ({
+    left: short[k], color: COLORS[k], right: <b className="tile-big"><Num value={t.batting.wickets.mean} digits={1} /></b>,
+  })) });
+  return tiles.slice(0, 8);
 }
 
 export function Tiles({ s, short }: { s: Summary; short: [string, string] }) {

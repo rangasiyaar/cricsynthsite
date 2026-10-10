@@ -115,7 +115,7 @@ export function PlayerLadder({ s }: { s: Summary }) {
                       <line x1={sx(q["50"])} x2={sx(q["50"])} y1={3} y2={rowH - 3} stroke={COLORS[k]} strokeWidth="2.5" />
                       <title>{`${p.name}: median ${q["50"]}, middle 50% ${q["25"]}–${q["75"]}, 80% ${q["10"]}–${q["90"]}`}</title>
                     </svg>
-                    <span className="ladder-v mono">{Math.round(q["50"])}</span>
+                    <span className="ladder-v">{Math.round(q["50"])}</span>
                   </div>
                 );
               })}
@@ -142,7 +142,7 @@ function BowlRow({ p, color }: { p: PlayerRow; color: string }) {
           </span>
         ))}
       </span>
-      <span className="ladder-v mono">{(p.bowling!.wickets.mean ?? 0).toFixed(1)}</span>
+      <span className="ladder-v">{(p.bowling!.wickets.mean ?? 0).toFixed(1)}</span>
     </div>
   );
 }

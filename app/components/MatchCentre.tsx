@@ -3,9 +3,10 @@ import { useState } from "react";
 import { Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveEngine from "@/components/LiveEngine";
 import ScenarioLab from "@/components/ScenarioLab";
-import { Histogram, Num, OverBars, P, Pct, WicketHeatmap, WinBar } from "@/components/charts";
+import Scoreboard from "@/components/Scoreboard";
+import { Histogram, Num, OverBars, P, WicketHeatmap } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
-import { FORMAT, KIND, num, pct, range } from "@/lib/format";
+import { KIND, num, pct, range } from "@/lib/format";
 import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups", "Scenario Lab"] as const;
@@ -18,22 +19,10 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
   return (
-    <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">{[match.competition, FORMAT[match.format] ?? match.format, match.venue, match.date].filter(Boolean).join(" · ")}</p>
-      <h1 style={{ marginBottom: 32 }}><span>{a}</span><span>v {b}</span></h1>
-      <div className="card">
-        <div className="plate-bar">
-          <span>Win chance</span>
-          <span className="cs-mono" style={{ letterSpacing: 0, textTransform: "none", fontWeight: 400, color: "var(--cs-ink-3)" }}>{s.meta.simulations.toLocaleString()} simulations</span>
-          {s.result.tie > 0.002 && <span className="ok">tie {pct(s.result.tie, 1)}</span>}
-        </div>
-        <div className="wins" style={{ fontSize: 56, lineHeight: 1, marginBottom: 14 }}>
-          <span style={{ color: COLORS[0] }}><Pct p={pa} /></span>
-          <span style={{ color: COLORS[1] }}><Pct p={pb} /></span>
-        </div>
-        <WinBar a={a} b={b} pa={pa} pb={pb} big />
-        <div className="wins cs-k" style={{ marginTop: 10, fontFamily: "var(--cs-body)" }}><span>{a}</span><span>{b}</span></div>
-      </div>
+    <div className="page-head" style={{ paddingTop: 40, paddingBottom: 80 }}>
+      <h1 className="sr-only">{a} v {b}</h1>
+      <Scoreboard doc={doc} foot={<span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches
+        {s.result.tie > 0.002 ? <>; tie {pct(s.result.tie, 1)}</> : null}.</span>} />
 
       <div className="tabs" role="tablist">
         {TABS.map((t) => (
@@ -226,11 +215,26 @@ function Matchups({ doc }: { doc: MatchDoc }) {
 export function Spotlight({ doc }: { doc: MatchDoc }) {
   return (
     <>
-      <SpotlightCharts doc={doc} />
-      <div className="grid" style={{ marginTop: 28 }}>
-        <LiveEngine doc={doc} />
-        <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
-        <PlayerLadder s={doc.summary} />
+      <div className="section">
+        <div className="section-head"><div><h2>How the innings unfold</h2>
+          <p>Where each total lands, the scoring and wicket rhythm over by over, and when each side&apos;s wickets fall.</p></div></div>
+        <SpotlightCharts doc={doc} />
+      </div>
+      <div className="section">
+        <div className="section-head"><div><h2>Watch the engine</h2>
+          <p>The same simulator, running in your browser on this match. The estimate settles as more matches are played.</p></div></div>
+        <LiveEngine doc={doc} heading={false} />
+      </div>
+      <div className="section">
+        <div className="section-head"><div><h2>Range of outcomes</h2>
+          <p>Every forecast is a spread, not a single number: team totals over time, what a first-innings score is worth,
+            and each player&apos;s likely range.</p></div></div>
+        <div className="grid">
+          <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
+          <PlayerLadder s={doc.summary} />
+        </div>
+      </div>
+      <div className="section">
         <Methodology doc={doc} />
       </div>
     </>
@@ -244,7 +248,7 @@ function SpotlightCharts({ doc }: { doc: MatchDoc }) {
   const width = hist.length > 1 ? hist[1].from - hist[0].from : 10;
   const legend = <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>;
   return (
-    <div className="grid g2" style={{ marginTop: 28 }}>
+    <div className="grid g2">
       <div className="card anim-rise">
         <h3>Where each innings lands</h3>{legend}
         <Histogram width={width} height={200} xLabel="runs"

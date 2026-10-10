@@ -14,7 +14,7 @@ const TARGET = 5000;
 
 type Point = { n: number; p: number; lo: number; hi: number };
 
-export default function LiveEngine({ doc }: { doc: MatchDoc }) {
+export default function LiveEngine({ doc, heading = true }: { doc: MatchDoc; heading?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const worker = useRef<Worker | null>(null);
   const [pack, setPack] = useState<Pack | null>(null);
@@ -74,11 +74,11 @@ export default function LiveEngine({ doc }: { doc: MatchDoc }) {
   return (
     <div className="card live-engine" ref={box}>
       <div className="le-head">
-        <div>
+        {heading ? <div>
           <h3>The engine, live</h3>
           <p className="small muted" style={{ margin: 0 }}>The ball-by-ball simulator running in your browser on this match&apos;s XIs.
             Each batch adds {BATCH} matches; the estimate settles as the 95% interval narrows.</p>
-        </div>
+        </div> : <p className="small muted" style={{ margin: 0 }}>Batches of {BATCH} matches, up to {TARGET.toLocaleString("en-IN")}.</p>}
         <button className="btn ghost" onClick={() => setRun(run + 1)} disabled={!pack || (n > 0 && n < TARGET)}>
           {n >= TARGET ? "Run again" : n ? "Running…" : "Start"}
         </button>
@@ -100,7 +100,7 @@ export default function LiveEngine({ doc }: { doc: MatchDoc }) {
           const order = [f.first, 1 - f.first];
           return (
             <div key={`${n}-${i}`} className="le-row">
-              <span className="mono muted">sim</span>
+              <span className="muted">Sim</span>
               <span>{order.map((t) => `${names[t]} ${f.totals[t]}/${f.wkts[t]}`).join("  ·  ")}</span>
               <span style={{ color: COLORS[f.winner] }}>{names[f.winner]} won</span>
               <span className="muted">top score {f.top[0]} {f.top[1]}</span>

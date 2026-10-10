@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import RequestAccess from "@/components/RequestAccess";
+import Scoreboard from "@/components/Scoreboard";
 import { useEffect, useState } from "react";
 import { Num, Pct, WinBar } from "@/components/charts";
 import { Spotlight } from "@/components/MatchCentre";
@@ -9,10 +10,6 @@ import { loadIndex, loadMatch, loadPatterns } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { useCountdown } from "@/lib/motion";
 import type { MatchCard, MatchDoc, PatternReport } from "@/lib/types";
-
-const Arrow = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
-);
 
 function When({ date, time }: { date?: string; time?: string }) {
   const left = useCountdown(date, time);
@@ -37,27 +34,17 @@ function Fixture({ m, i }: { m: MatchCard; i: number }) {
 
 function Featured({ doc }: { doc: MatchDoc }) {
   const { match, summary: s } = doc;
-  const [a, b] = s.teams.map((t) => t.name);
+  const [a] = s.teams.map((t) => t.name);
   const short = match.teams.map((t) => t.short) as [string, string];
+  const ci = s.result.win_ci95?.[a];
+  const href = `/match/?id=${encodeURIComponent(match.id)}`;
   return (
     <section className="featured">
-      <div className="card featured-head anim-rise">
-        <div className="plate-bar">
-          <span>{[match.competition, FORMAT[match.format] ?? match.format, match.venue].filter(Boolean).join(" · ")}</span>
-          <span className="ok"><When date={match.date} time={match.start_time} /></span>
-        </div>
-        <div className="featured-teams">
-          <div><div className="featured-name">{a}</div><div className="featured-pct" style={{ color: "var(--team-a)" }}><Pct p={s.result.win[a]} /></div></div>
-          <div className="featured-v">v</div>
-          <div style={{ textAlign: "right" }}><div className="featured-name">{b}</div><div className="featured-pct" style={{ color: "var(--team-b)" }}><Pct p={s.result.win[b]} /></div></div>
-        </div>
-        <WinBar a={a} b={b} pa={s.result.win[a]} pb={s.result.win[b]} big />
-        <div className="featured-ctas">
-          <Link className="cs-btn cs-btn--primary" href={`/match/?id=${encodeURIComponent(match.id)}`}>Match centre <Arrow /></Link>
-          <Link className="cs-btn cs-btn--secondary" href={`/match/?id=${encodeURIComponent(match.id)}&tab=lab`}>Change the scenario</Link>
-          <span className="cs-k" style={{ marginLeft: "auto" }}><Num value={s.meta.simulations} /> simulations</span>
-        </div>
-      </div>
+      <Scoreboard doc={doc} mid={<When date={match.date} time={match.start_time} />} foot={<>
+        <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
+        <Link className="cs-btn cs-btn--secondary" href={`${href}&tab=lab`}>Try a scenario</Link>
+        <span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches{ci ? <>, accurate to ±{(100 * ci).toFixed(1)} points</> : null}.</span>
+      </>} />
       <Tiles s={s} short={short} />
     </section>
   );
@@ -73,7 +60,8 @@ function PatternTeaser({ rep }: { rep: PatternReport }) {
   if (!picks.length) return null;
   return (
     <section className="cs-section" style={{ paddingTop: 72 }}>
-      <div className="row-head"><h2>Pattern Lab</h2><Link href="/patterns/" className="row-link">All {rep.patterns.length} <Arrow /></Link></div>
+      <div className="section-head"><div><h2>Pattern Lab</h2><p>Common cricket beliefs, tested against ball-by-ball data.</p></div>
+        <Link href="/patterns/" className="row-link">See all {rep.patterns.length}</Link></div>
       <div className="grid g3">
         {picks.map((p, i) => (
           <Link key={p!.id} href="/patterns/" className="card myth anim-rise" style={{ animationDelay: `${i * 80}ms` }}>
@@ -105,7 +93,8 @@ export default function Home() {
   return (
     <>
       <section id="next" style={{ paddingTop: "clamp(32px, 5vw, 56px)" }}>
-        <div className="row-head"><h2>Next match</h2>{matches && matches.length > 1 && <a href="#matches" className="row-link">All upcoming <Arrow /></a>}</div>
+        <div className="section-head"><div><h2>Next match</h2><p>Forecast from ball-by-ball simulation of the likely playing XIs.</p></div>
+          {matches && matches.length > 1 && <a href="#matches" className="row-link">All upcoming matches</a>}</div>
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
         {!featured && !error && matches?.length !== 0 && <div className="skeleton" style={{ minHeight: 320 }} />}
         {matches && matches.length === 0 && <p className="notice">No upcoming matches are published yet.</p>}
@@ -114,7 +103,7 @@ export default function Home() {
 
       {matches && matches.length > 1 && (
         <section id="matches" style={{ paddingTop: 72, scrollMarginTop: 80 }}>
-          <div className="row-head"><h2>Upcoming matches</h2></div>
+          <div className="section-head"><h2>Upcoming matches</h2></div>
           <div className="fixtures">{matches.map((m, i) => <Fixture key={m.id} m={m} i={i} />)}</div>
         </section>
       )}
