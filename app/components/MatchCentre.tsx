@@ -59,19 +59,16 @@ function Overview({ doc }: { doc: MatchDoc }) {
       <Tiles s={s} short={short} />
       <LiveEngine doc={doc} />
       <div className="grid g2"><RunFan s={s} /><WinCurve s={s} /></div>
-      <div className="tiles">
+      <div className="grid g2">
         {s.teams.map((t, k) => (
-          <div key={t.name} className="card tile anim-rise" style={{ animationDelay: `${420 + k * 60}ms` }}>
-            <div className="cs-k">{t.name} · score range</div>
+          <div key={t.name} className="card">
+            <h3>{t.name}: score range</h3>
+            <p className="small muted" style={{ margin: "0 0 10px" }}>Median {Math.round(t.batting.score.q["50"])}, 80% between {range(t.batting.score.q)}.</p>
             <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
-                       height={150} series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
+                       height={180} xLabel="runs"
+                       series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
           </div>
         ))}
-        <div className="card tile anim-rise" style={{ animationDelay: "540ms" }}>
-          <div className="cs-k">Winning margin (median)</div>
-          <div className="tile-row"><span className="tile-left">Batting first</span><span className="tile-right"><b className="tile-big"><Num value={s.result.margin_runs.q["50"]} /></b><span className="tile-sub">runs</span></span></div>
-          <div className="tile-row"><span className="tile-left">Chasing</span><span className="tile-right"><b className="tile-big"><Num value={s.result.margin_wickets.q["50"]} /></b><span className="tile-sub">wickets</span></span></div>
-        </div>
       </div>
       <Methodology doc={doc} />
     </div>
