@@ -1,6 +1,6 @@
 "use client";
 // Stat tiles: label, big number, a name — instead of sentences. Built straight from the summary.
-import { Num, Pct } from "@/components/charts";
+import { Num, Pct, RangeStrip } from "@/components/charts";
 import type { Summary } from "@/lib/types";
 
 type Tile = { label: string; rows: { left: React.ReactNode; right: React.ReactNode; color?: string }[] };
@@ -11,10 +11,15 @@ export function buildTiles(s: Summary, short: [string, string]): Tile[] {
   s.teams.forEach((t) => t.players.forEach((p) => names.set(p.id, p.name)));
   const tiles: Tile[] = [];
 
-  tiles.push({ label: "Projected score", rows: s.teams.map((t, k) => ({
-    left: short[k], color: COLORS[k],
-    right: <><b className="tile-big"><Num value={t.batting.score.q["50"]} /></b><span className="tile-sub">{Math.round(t.batting.score.q["10"])}–{Math.round(t.batting.score.q["90"])}</span></>,
-  })) });
+  const qs = s.teams.map((t) => t.batting.score.q);
+  const lo = Math.min(...qs.map((q) => q["10"])), hi = Math.max(...qs.map((q) => q["90"]));
+  tiles.push({ label: "Projected score · median, 10th–90th", rows: s.teams.map((t, k) => {
+    const q = t.batting.score.q;
+    return {
+      left: <>{short[k]}<RangeStrip q10={q["10"]} q50={q["50"]} q90={q["90"]} color={COLORS[k]} lo={lo} hi={hi} /></>, color: COLORS[k],
+      right: <><b className="tile-big"><Num value={q["50"]} /></b><span className="tile-sub">±{Math.round((q["90"] - q["10"]) / 2)}<br />{Math.round(q["10"])}–{Math.round(q["90"])}</span></>,
+    };
+  }) });
 
   tiles.push({ label: "Top scorer", rows: s.teams.map((t, k) => {
     const top = [...t.players].filter((p) => p.batting).sort((a, b) => (b.batting!.p_top_scorer ?? 0) - (a.batting!.p_top_scorer ?? 0))[0];

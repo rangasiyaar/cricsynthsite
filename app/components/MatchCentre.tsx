@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
+import { ChaseCurve, Checkpoints, Methodology, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveEngine from "@/components/LiveEngine";
 import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
-import { Histogram, Num, OverBars, P, WicketHeatmap } from "@/components/charts";
+import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
 import { KIND, num, pct, range } from "@/lib/format";
 import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
@@ -51,6 +51,44 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
   );
 }
 
+
+type Split = "all" | "first" | "second";
+
+/** Each side's median, mean and 80% range, for all simulations or only when batting first / chasing. */
+function markers(s: MatchDoc["summary"], split: Split = "all"): Marker[] {
+  return s.teams.map((t, k) => {
+    const sc = split === "all" ? t.batting.score
+      : t.batting.by_innings?.find((b) => b.innings === (split === "first" ? 1 : 2))?.score ?? t.batting.score;
+    return { color: COLORS[k], name: t.name, q10: sc.q["10"], q50: sc.q["50"], q90: sc.q["90"], mean: sc.mean ?? undefined };
+  });
+}
+
+function histSeries(s: MatchDoc["summary"]) {
+  return s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }));
+}
+
+function binWidth(s: MatchDoc["summary"]) {
+  const h = s.teams[0].batting.score.hist;
+  return h.length > 1 ? h[1].from - h[0].from : 10;
+}
+
+/** Expected wickets down by the usual checkpoints, from the per-over expectations. */
+function ExpectedWickets({ t, rules }: { t: TeamSummary; rules: { overs: number; pp: number } }) {
+  const marks = rules.overs <= 20 ? [rules.pp, Math.round(rules.overs / 2), Math.round(rules.overs * 0.75)] : [10, 25, 40];
+  const by = (o: number) => t.batting.per_over.filter((r) => r.over <= o).reduce((a, r) => a + r.wickets, 0);
+  return (
+    <div className="xw">Expected wickets down: {marks.map((o) => <span key={o}>by over {o} <b>{by(o).toFixed(1)}</b></span>)}</div>
+  );
+}
+
+function Seg<T extends string>({ value, options, onChange, label }: { value: T; options: [T, string][]; onChange: (v: T) => void; label: string }) {
+  return (
+    <div className="seg" role="group" aria-label={label}>
+      {options.map(([v, l]) => <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)}>{l}</button>)}
+    </div>
+  );
+}
+
 function Overview({ doc }: { doc: MatchDoc }) {
   const s = doc.summary;
   const short = doc.match.teams.map((t) => t.short) as [string, string];
@@ -77,14 +115,33 @@ function Overview({ doc }: { doc: MatchDoc }) {
 
 function Scores({ doc }: { doc: MatchDoc }) {
   const s = doc.summary;
-  const width = s.teams[0].batting.score.hist.length > 1 ? s.teams[0].batting.score.hist[1].from - s.teams[0].batting.score.hist[0].from : 10;
+  const [split, setSplit] = useState<Split>("all");
+  const [mode, setMode] = useState<"dist" | "cdf">("dist");
+  const legend = <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>;
   return (
     <div className="grid">
       <div className="card">
-        <h3>Where each innings lands</h3>
-        <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>
-        <Histogram width={width} xLabel="runs" series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }))} />
+        <div className="card-head">
+          <h3>Where each innings lands</h3>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <Seg label="Innings" value={split} onChange={setSplit} options={[["all", "All"], ["first", "Batting first"], ["second", "Chasing"]]} />
+            <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
+          </div>
+        </div>
+        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median; ring: mean; whiskers and shading: middle 80%
+          {split === "all" ? " of all simulations." : split === "first" ? " when batting first." : " when chasing."}</p>
+        {legend}
+        <Histogram W={1100} width={binWidth(s)} xLabel="runs" series={histSeries(s)} markers={markers(s, split)} mode={mode} height={260} />
       </div>
+      <div className="grid g2"><RunFan s={s} /><Checkpoints s={s} /></div>
+      <div className="card">
+        <h3>Runs per over</h3>
+        <p className="small muted" style={{ margin: "0 0 8px" }}>Bars: expected runs in each over. Line: three-over rolling average.</p>
+        {legend}
+        <OverBars W={1100} height={220} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
+                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
+      </div>
+      <div className="grid g2"><WinCurve s={s} /><ChaseCurve s={s} /></div>
       <div className="grid g2">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
@@ -107,10 +164,6 @@ function Scores({ doc }: { doc: MatchDoc }) {
           </div>
         ))}
       </div>
-      <div className="card">
-        <h3>Runs per over</h3>
-        <OverBars format={(v) => v.toFixed(1)} series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
-      </div>
     </div>
   );
 }
@@ -122,20 +175,23 @@ function Wickets({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <h3>Chance of a wicket in each over</h3>
+        <p className="small muted" style={{ margin: "0 0 8px" }}>Dashed line: the average across both innings.</p>
         <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name} batting</span>)}</div>
-        <OverBars series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
+        <OverBars W={1100} height={220} phases={s.meta.rules} average
+                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
       </div>
-      {s.teams.map((t, k) => <TeamWickets key={t.name} t={t} color={COLORS[k]} overs={overs} />)}
+      {s.teams.map((t, k) => <TeamWickets key={t.name} t={t} color={COLORS[k]} overs={overs} rules={s.meta.rules} />)}
     </div>
   );
 }
 
-function TeamWickets({ t, color, overs }: { t: TeamSummary; color: string; overs: number }) {
+function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string; overs: number; rules: { overs: number; pp: number } }) {
   const fow = t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.02);
   return (
     <div className="card">
       <h3 style={{ color }}>When {t.name} lose wickets</h3>
-      <p className="small muted">Each row is a wicket; darker cells are the overs it most often falls in.</p>
+      <p className="small muted">Each row is a wicket; darker cells are the overs it most often falls in. The outlined, numbered cell is its likeliest over.</p>
+      <ExpectedWickets t={t} rules={rules} />
       <WicketHeatmap color={color} overs={overs} rows={fow.map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
       <div className="table-wrap" style={{ marginTop: 16 }}><table>
         <thead><tr><th>Wicket</th><th className="num">Falls</th><th className="num">Typical over</th><th className="num">Score</th><th className="num">Partnership</th><th>Likeliest bowler</th><th>Likeliest batter out</th></tr></thead>
@@ -244,38 +300,39 @@ export function Spotlight({ doc }: { doc: MatchDoc }) {
 function SpotlightCharts({ doc }: { doc: MatchDoc }) {
   const s = doc.summary;
   const overs = s.meta.rules.overs;
-  const hist = s.teams[0].batting.score.hist;
-  const width = hist.length > 1 ? hist[1].from - hist[0].from : 10;
   const legend = <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>;
   return (
     <>
-    <div className="grid g3">
+    <div className="card anim-rise">
+      <h3>When wickets fall</h3>
+      <p className="small muted" style={{ margin: "0 0 4px" }}>Each row is a wicket; darker cells are the overs it most often falls in, and the
+        numbered cell is its likeliest over.</p>
+      <div className="grid g2" style={{ marginTop: 8 }}>
+        {s.teams.map((t, k) => (
+          <div key={t.name}>
+            <div className="cs-k" style={{ color: COLORS[k], marginBottom: 2 }}>{t.name} batting</div>
+            <ExpectedWickets t={t} rules={s.meta.rules} />
+            <WicketHeatmap color={COLORS[k]} overs={overs} cell={28}
+                           rows={t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.05).slice(0, 7)
+                             .map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
+          </div>
+        ))}
+      </div>
+    </div>
+    <div className="grid g3" style={{ marginTop: 28 }}>
       <div className="card anim-rise">
         <h3>Innings totals</h3>{legend}
-        <Histogram width={width} height={220} xLabel="runs"
-                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }))} />
+        <Histogram width={binWidth(s)} height={220} xLabel="runs" series={histSeries(s)} markers={markers(s)} compact />
       </div>
       <div className="card anim-rise" style={{ animationDelay: "80ms" }}>
         <h3>Runs per over</h3>{legend}
-        <OverBars height={220} format={(v) => v.toFixed(1)}
+        <OverBars height={236} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
       </div>
       <div className="card anim-rise" style={{ animationDelay: "160ms" }}>
         <h3>Wicket chance</h3>{legend}
-        <OverBars height={220} series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
-      </div>
-    </div>
-    <div className="card anim-rise" style={{ marginTop: 28, animationDelay: "240ms" }}>
-      <h3>When wickets fall</h3>
-      <div className="grid g2" style={{ marginTop: 8 }}>
-        {s.teams.map((t, k) => (
-          <div key={t.name}>
-            <div className="cs-k" style={{ color: COLORS[k], marginBottom: 6 }}>{t.name} batting</div>
-            <WicketHeatmap color={COLORS[k]} overs={overs}
-                           rows={t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.05).slice(0, 6)
-                             .map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
-          </div>
-        ))}
+        <OverBars height={236} phases={s.meta.rules} average
+                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
       </div>
     </div>
     </>
