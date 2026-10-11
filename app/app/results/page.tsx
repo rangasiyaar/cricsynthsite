@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import { loadResult, loadResults } from "@/lib/data";
 import type { ResultDoc, ResultIndex, TabScore } from "@/lib/types";
 
+const PER_PAGE = 3;
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
 const pct = (x: number | null | undefined) => (x === null || x === undefined ? "—" : `${Math.round(100 * x)}%`);
 const share = (t?: TabScore) => (t && t.checks ? t.hits / t.checks : null);
@@ -22,9 +23,10 @@ function Results() {
   const [id, setId] = useState<string | null>(params.get("id"));
   const [doc, setDoc] = useState<ResultDoc | null>(null);
   const [tab, setTab] = useState<string>("All");
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
-    loadResults().then((ix) => { setIndex(ix); if (!id && ix.matches.length) setId(ix.matches[0].id); }).catch(() => setErr(true));
+    loadResults().then((ix) => { setIndex(ix); if (!id && ix.matches.length) setId([...ix.matches].sort((x, y) => (y.date ?? "").localeCompare(x.date ?? ""))[0].id); }).catch(() => setErr(true));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!id) return;
@@ -39,6 +41,9 @@ function Results() {
     return <p className="notice">No results yet. Each match appears here once it has finished and its scorecard is in.</p>;
   }
   if (!index) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
+  const matches = [...index.matches].sort((x, y) => (y.date ?? "").localeCompare(x.date ?? "") || x.id.localeCompare(y.id));
+  const pages = Math.ceil(matches.length / PER_PAGE);
+  const shown = matches.slice(page * PER_PAGE, (page + 1) * PER_PAGE);
   const items = doc ? doc.items.filter((c) => tab === "All" || c.tab === tab) : [];
 
   return (
@@ -58,16 +63,27 @@ function Results() {
           </div></div>
       </div>
 
-      <div className="card res-pick">
-        <label htmlFor="res-match" className="cs-k">Match</label>
-        <select id="res-match" className="form-input" value={id ?? ""} onChange={(e) => { setId(e.target.value); setTab("All"); }}>
-          {index.matches.map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.title ?? m.teams.map((t) => t.name).join(" v ")} · {fmtDate(m.date)} · {pct(m.accuracy)} ({m.hits}/{m.checks})
-            </option>
-          ))}
-        </select>
+      <div className="grid res-cards">
+        {shown.map((m) => (
+          <button key={m.id} type="button" className={`card res-card${m.id === id ? " active" : ""}`} aria-pressed={m.id === id}
+            onClick={() => { setId(m.id); setTab("All"); }}>
+            <span className="cs-k">{fmtDate(m.date)}</span>
+            <b className="res-card-title">{m.title ?? m.teams.map((t) => t.name).join(" v ")}</b>
+            <span className="small muted">{m.result}</span>
+            <span className="res-card-score"><span className="stat dash-stat">{pct(m.accuracy)}</span>
+              <span className="small muted">{m.hits} of {m.checks} came true</span></span>
+          </button>
+        ))}
       </div>
+      {pages > 1 && (
+        <nav className="res-pages" aria-label="Matches pages">
+          <button type="button" disabled={page === 0} onClick={() => setPage(page - 1)} aria-label="Previous page">‹</button>
+          {Array.from({ length: pages }, (_, k) => (
+            <button key={k} type="button" aria-current={k === page ? "page" : undefined} onClick={() => setPage(k)}>{k + 1}</button>
+          ))}
+          <button type="button" disabled={page === pages - 1} onClick={() => setPage(page + 1)} aria-label="Next page">›</button>
+        </nav>
+      )}
 
       {id && !doc && <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />}
       {doc && (
