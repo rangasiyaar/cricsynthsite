@@ -377,6 +377,10 @@ def main(fixtures: Path, scorecards: Path, out: Path, show_started: bool) -> Non
     r = run(fixtures, scorecards, out)
     click.echo(f"archived {len(r['archived'])}, scored {len(r['scored'])}"
                + (f", forecast missing for {', '.join(r['missing'])}" if r["missing"] else ""))
+    for mid in r["scored"]:
+        rep = json.loads((out / "results" / f"{mid}.json").read_text())
+        tabs = ", ".join(f"{t} {v['hits']}/{v['checks']}" for t, v in rep["tabs"].items())
+        click.echo(f"- {mid}: {rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}")
 
 
 if __name__ == "__main__":
