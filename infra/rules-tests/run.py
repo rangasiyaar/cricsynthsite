@@ -6,6 +6,7 @@ import argparse
 import json
 import subprocess
 import sys
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -23,7 +24,11 @@ def main() -> int:
                                  data=json.dumps(body).encode(), method="POST",
                                  headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json",
                                           "x-goog-user-project": a.project})
-    res = json.load(urllib.request.urlopen(req))
+    try:
+        res = json.load(urllib.request.urlopen(req))
+    except urllib.error.HTTPError as e:
+        print(f"Rules API {e.code}: {e.read().decode()[:1500]}")
+        return 1
     if "testResults" not in res:
         print(json.dumps(res)[:2000])
         return 1

@@ -112,6 +112,7 @@ jobs:
         run: uv run python cricmcp/build_index.py --out app/out/pypi
       - name: Firestore rules (test against the Rules API, then release; unchanged rules are skipped)
         if: env.GCP == 'true'
+        continue-on-error: true          # a rules problem must not hold back the site deploy; it shows as a warning
         run: |
           python3 infra/rules-tests/run.py --project "$PROJECT"
           echo '{"projects": {"default": "'"$PROJECT"'"}}' > .firebaserc
