@@ -40,7 +40,7 @@ function ThemeToggle() {
 const LINKS: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
                                    ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
 const DRAWER: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
-                                    ["/playground/", "Playground"], ["/contact/", "Contact"]];
+                                    ["/docs/", "Docs"], ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
   const user = useUser();
@@ -106,7 +106,6 @@ export function Nav() {
           <AccountLink className="nav-link nav-cta" />
         </div>
         <div className="mobile-nav">
-          <Link href="/docs/" className="mobile-nav-link">Docs</Link>
           <Link href="/mcp/" className="mobile-nav-link mobile-nav-link--mcp">MCP</Link>
           <ThemeToggle />
           <AccountLink className="mobile-nav-cta" />
