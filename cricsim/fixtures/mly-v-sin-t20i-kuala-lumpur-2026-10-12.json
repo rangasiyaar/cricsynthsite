@@ -1,0 +1,112 @@
+{
+  "id": "mly-v-sin-t20i-kuala-lumpur-2026-10-12",
+  "title": "Malaysia v Singapore",
+  "date": "2026-10-12",
+  "start_time": "06:45",
+  "format": "T20",
+  "gender": "male",
+  "competition": "ICC Men's T20 World Cup Asia Sub Regional Qualifier B 2026 \u00b7 10th Match",
+  "comp_key": "intl-international-T20",
+  "venue": "Bayuemas Oval, Kuala Lumpur",
+  "venue_search": "bayuemas",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Malaysia",
+      "short": "MLY",
+      "players": [
+        "Syed Aziz Mubarak",
+        "Virandeep Singh",
+        "Muhammad Amir Azim",
+        "Nazmus Sakib",
+        "Muhamad Syahadat",
+        "Aqeel Wahid",
+        "Sharvin Muniandy",
+        "Pavandeep Singh",
+        "Vijay Unni",
+        "Muhammad Akram",
+        "Muhammad Wafiq"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Nazmus Sakib",
+        "Syed Aziz Mubarak",
+        "Virandeep Singh",
+        "Muhamad Syahadat",
+        "Aqeel Wahid",
+        "Sharvin Muniandy",
+        "Muhammad Amir Azim",
+        "Pavandeep Singh",
+        "Prashant Madhukar",
+        "Vijay Unni",
+        "Muhammad Akram",
+        "Azri Azhar",
+        "Aslam Khan Malik",
+        "Muhammad Wafiq"
+      ],
+      "captain": "Syed Aziz Mubarak"
+    },
+    {
+      "name": "Singapore",
+      "short": "SIN",
+      "players": [
+        "Surendran Chandramohan",
+        "Riaan Naik",
+        "Manpreet Singh",
+        "Daksh Pratap Singh Tyagi",
+        "Aahan Vuthandam",
+        "Harsh Venkataram",
+        "Harman Singh",
+        "Akshay Puri",
+        "Amartya Kaul",
+        "Jeevan Santhanam",
+        "Pranav Sudarshan"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Manpreet Singh",
+        "Suryansh Gulecha",
+        "Surendran Chandramohan",
+        "Daksh Pratap Singh Tyagi",
+        "Riaan Naik",
+        "Kabir Zandani",
+        "Jeevan Santhanam",
+        "Harsh Venkataram",
+        "Harman Singh",
+        "Pranav Sudarshan",
+        "Akshay Puri",
+        "Amartya Kaul",
+        "Girin Gune",
+        "Chandramauli Sridev",
+        "Aahan Vuthandam"
+      ],
+      "captain": "Manpreet Singh"
+    }
+  ]
+}
