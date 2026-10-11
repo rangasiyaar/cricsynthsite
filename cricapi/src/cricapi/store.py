@@ -2,7 +2,8 @@
 
     KeyStore      API keys (stored as SHA-256 hashes) → plan, owner; also looks up keys users create in the
                   account dashboard (Firestore users/{uid}/keys/{slot}) when a Firestore lookup is attached
-    Usage         per-key daily request counter
+    Usage         per-key daily request counter; dashboard keys also get per-day usage written to Firestore
+                  (users/{uid}/usage/{YYYY-MM-DD}), batched about once a minute to stay inside the free write quota
     Content       published match docs, engine packs, index, Pattern Lab report, admin coverage files
 """
 from __future__ import annotations
@@ -61,7 +62,8 @@ class KeyStore:
             if docs:
                 d = docs[0].to_dict() or {}
                 if not d.get("revoked") and d.get("plan") in PLANS:
-                    rec = {"hash": h, "owner": docs[0].reference.parent.parent.id, "plan": d["plan"], "source": "dashboard"}
+                    rec = {"hash": h, "owner": docs[0].reference.parent.parent.id, "slot": docs[0].id,
+                           "plan": d["plan"], "source": "dashboard"}
             cache[h] = (now, rec)
             return rec
         self.remote = find
@@ -83,20 +85,80 @@ class KeyStore:
             self.path.write_text(json.dumps({"keys": list(self._keys.values())}, indent=1))
 
 
+CATEGORY_SLUGS = {"Analytics": "analytics", "Simulation & modelling": "simulation", "Graphics": "graphics"}
+
+
 class Usage:
-    """In-memory daily counter (one Cloud Run instance at a time; a Firestore counter replaces it later)."""
+    """Daily request counter per key (in memory: one Cloud Run instance at a time). Requests made with dashboard keys
+    are also collected per account, day, key and endpoint category, for `drain()` / the Firestore writer."""
 
     def __init__(self):
         self._lock = threading.Lock()
         self._counts: dict[tuple[str, str], int] = {}
+        self._pending: dict[tuple[str, str], dict] = {}
+        self.collect = False
 
-    def hit(self, key_hash: str) -> int:
-        day = datetime.now(timezone.utc).date().isoformat()
+    def hit(self, key_hash: str, owner: str | None = None, slot: str | None = None, category: str | None = None) -> int:
+        now = datetime.now(timezone.utc)
+        day = now.date().isoformat()
         with self._lock:
             self._counts = {k: v for k, v in self._counts.items() if k[1] == day}
             n = self._counts.get((key_hash, day), 0) + 1
             self._counts[(key_hash, day)] = n
+            if self.collect and owner and slot:
+                p = self._pending.setdefault((owner, day), {"total": 0, "keys": {}, "cats": {}, "last": {}})
+                p["total"] += 1
+                p["keys"][slot] = p["keys"].get(slot, 0) + 1
+                cat = CATEGORY_SLUGS.get(category or "", "other")
+                p["cats"][cat] = p["cats"].get(cat, 0) + 1
+                p["last"][slot] = now
         return n
+
+    def drain(self) -> dict[tuple[str, str], dict]:
+        """Counts collected since the last drain, keyed by (account, day)."""
+        with self._lock:
+            out, self._pending = self._pending, {}
+        return out
+
+    def attach_firestore(self, project: str, every: float = 60.0) -> None:
+        """Write collected usage to users/{uid}/usage/{day} (increments) and the key's lastUsed, every `every` s."""
+        from google.cloud import firestore
+        db = firestore.Client(project=project)
+        self.collect = True
+
+        def flush() -> None:
+            pending = self.drain()
+            if not pending:
+                return
+            batch, ops = db.batch(), 0
+            for (uid, day), p in pending.items():
+                user = db.collection("users").document(uid)
+                batch.set(user.collection("usage").document(day), {
+                    "day": day, "total": firestore.Increment(p["total"]),
+                    "keys": {k: firestore.Increment(v) for k, v in p["keys"].items()},
+                    "cats": {k: firestore.Increment(v) for k, v in p["cats"].items()},
+                    "updated": firestore.SERVER_TIMESTAMP}, merge=True)
+                ops += 1
+                for slot, when in p["last"].items():
+                    batch.set(user.collection("keys").document(slot), {"lastUsed": when}, merge=True)
+                    ops += 1
+                if ops >= 450:
+                    batch.commit()
+                    batch, ops = db.batch(), 0
+            if ops:
+                batch.commit()
+
+        def loop() -> None:
+            while True:
+                time.sleep(every)
+                try:
+                    flush()
+                except Exception:          # never take the API down over a usage write; counts retry next round
+                    pass
+
+        threading.Thread(target=loop, daemon=True, name="usage-writer").start()
+        import atexit
+        atexit.register(lambda: flush())
 
 
 class Content:

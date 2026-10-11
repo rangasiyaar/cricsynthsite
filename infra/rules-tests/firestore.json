@@ -335,6 +335,274 @@
    "resource": {
     "data": {}
    }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
+    "method": "get",
+    "time": "2026-10-11T12:00:00Z"
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u2/usage/2026-10-11",
+    "method": "get",
+    "time": "2026-10-11T12:00:00Z"
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
+    "method": "create",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "total": 1
+     }
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "create",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "pending",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "create",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "approved",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/pro-free",
+    "method": "create",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "pro-free",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "pending",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-business",
+    "method": "create",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "pending",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "company": "Acme",
+      "notifyProduct": true,
+      "notifyUsage": false
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "pro"
+     }
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "cancelled",
+      "created": "2026-10-10T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "plan": "api-pro",
+     "volume": "1k-10k",
+     "note": "Fantasy app",
+     "status": "pending",
+     "created": "2026-10-10T12:00:00Z"
+    }
+   }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "pending",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "plan": "api-pro",
+     "volume": "1k-10k",
+     "note": "Fantasy app",
+     "status": "cancelled",
+     "created": "2026-10-10T12:00:00Z"
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "pending",
+      "created": "2026-10-11T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "plan": "api-pro",
+     "volume": "1k-10k",
+     "note": "Fantasy app",
+     "status": "approved",
+     "created": "2026-10-10T12:00:00Z"
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "auth": {
+     "uid": "u1"
+    },
+    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+    "method": "update",
+    "time": "2026-10-11T12:00:00Z",
+    "resource": {
+     "data": {
+      "plan": "api-pro",
+      "volume": "1k-10k",
+      "note": "Fantasy app",
+      "status": "approved",
+      "created": "2026-10-10T12:00:00Z"
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "plan": "api-pro",
+     "volume": "1k-10k",
+     "note": "Fantasy app",
+     "status": "pending",
+     "created": "2026-10-10T12:00:00Z"
+    }
+   }
   }
  ]
 }

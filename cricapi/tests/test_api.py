@@ -106,3 +106,20 @@ def test_free_plan_limits(client):
         app_state.usage.hit(rec["hash"])
     assert client.get("/v1/matches", headers=h(k)).status_code == 200      # 200th request
     assert client.get("/v1/matches", headers=h(k)).status_code == 429
+
+
+def test_dashboard_usage_is_collected_per_account_key_and_category(client):
+    from cricapi.store import hash_key
+    st = client.app.state.cs
+    dash = "cs_live_dashboardkey"
+    st.keys.remote = {hash_key(dash): {"hash": hash_key(dash), "owner": "uid9", "slot": "k2", "plan": "free"}}.get
+    st.usage.collect = True
+    st.usage.drain()
+    assert client.get("/v1/players", params={"q": "Pr"}, headers=h(dash)).status_code == 200
+    assert client.get("/v1/players", params={"q": "Pl"}, headers=h(dash)).status_code == 200
+    assert client.get("/v1/matches", headers=h(dash)).status_code == 200
+    (owner, _day), p = next(iter(st.usage.drain().items()))
+    assert owner == "uid9" and p["total"] == 3 and p["keys"] == {"k2": 3}
+    assert p["cats"]["analytics"] == 2 and sum(p["cats"].values()) == 3 and "k2" in p["last"]
+    assert st.usage.drain() == {}
+    st.keys.remote, st.usage.collect = None, False

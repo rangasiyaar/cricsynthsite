@@ -50,6 +50,8 @@ class _State:
         if s.firestore_project:
             self.keys.attach_firestore(s.firestore_project)
         self.usage = Usage()
+        if s.firestore_project:
+            self.usage.attach_firestore(s.firestore_project)
         self.content = Content(s.publish_dir, s.coverage_dir, s.patterns_file)
 
     @cached_property
@@ -122,13 +124,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                                                                                        "X-Admin-Key", "Content-Type"])
     app.state.cs = st
 
-    def account(x_api_key: str | None = Header(None), authorization: str | None = Header(None)) -> dict:
+    def account(request: Request, x_api_key: str | None = Header(None), authorization: str | None = Header(None)) -> dict:
         key = x_api_key or (authorization[7:] if authorization and authorization.lower().startswith("bearer ") else None)
         rec = st.keys.lookup(key) if key else None
         if not rec:
             raise HTTPException(401, "Missing or invalid API key")
         plan = PLANS[rec["plan"]]
-        if st.usage.hit(rec["hash"]) > plan["daily_requests"]:
+        tags = getattr(request.scope.get("route"), "tags", None) or [None]
+        if st.usage.hit(rec["hash"], rec.get("owner"), rec.get("slot"), tags[0]) > plan["daily_requests"]:
             raise HTTPException(429, f"Daily limit of {plan['daily_requests']} requests reached for the {rec['plan']} plan")
         return {**rec, "limits": plan}
 

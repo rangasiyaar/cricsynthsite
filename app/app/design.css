@@ -217,7 +217,7 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
    label, active one underlined) pinned under the site header, then full-width content. */
 @media (max-width: 860px) {
   .dash-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "side" "title" "main"; row-gap: 16px; margin-top: 20px; }
-  .dash-side { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding: 0;
+  .dash-side { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; padding: 0;
     border-radius: 0; border: 0; border-bottom: 1px solid var(--cs-line); background: var(--cs-bg); }
   .dash-side button { flex-direction: column; gap: 4px; padding: 10px 2px 9px; border-radius: 0; font-size: 12px; text-align: center;
     color: var(--cs-ink-3); border-bottom: 2px solid transparent; margin-bottom: -1px; min-width: 0; }
@@ -264,3 +264,40 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 
 /* Divider line above the "Build with CricSynthesis" block */
 .cs-contact.cs-ruled { margin-top: clamp(56px, 8vw, 96px); padding-top: clamp(56px, 8vw, 96px); border-top: 2px solid var(--cs-steel); }
+
+/* Dashboard: stats, usage, plans, notifications */
+.dash-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dash-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.dash-alert { margin: 0 0 20px; border-style: solid; border-color: var(--cs-steel); background: var(--cs-accent-bg); color: var(--cs-ink); }
+.meter { height: 6px; border-radius: 3px; background: var(--cs-line); overflow: hidden; margin-top: 6px; }
+.meter i { display: block; height: 100%; background: var(--cs-steel); border-radius: 3px; transition: width .6s ease; }
+.meter.warm i { background: #c98a2e; }
+.meter.hot i { background: #b4513a; }
+.dash-steps { list-style: none; padding: 0; margin: 8px 0 0; display: grid; }
+.dash-steps li { display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center; padding: 12px 0;
+  border-bottom: 1px solid var(--cs-line); font-size: 14.5px; }
+.dash-steps li.done > span:nth-child(2) { color: var(--cs-ink-3); text-decoration: line-through; }
+.dash-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--cs-line); display: inline-flex;
+  align-items: center; justify-content: center; font-size: 12px; color: var(--cs-bg); }
+.dash-steps li.done .dash-check { background: var(--cs-steel); border-color: var(--cs-steel); }
+.dash-cats { display: grid; gap: 16px; margin: 12px 0 20px; }
+.dash-cat-head { display: flex; justify-content: space-between; font-size: 14px; }
+.dash-tiers { gap: 16px; margin-top: 12px; }
+.dash-tier { border: 1px solid var(--cs-line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+.dash-tier.current { border-color: var(--cs-steel); box-shadow: inset 0 0 0 1px var(--cs-steel); }
+.dash-tier-price { font: 700 24px var(--cs-head); }
+.dash-tier ul { margin: 4px 0 14px; padding-left: 18px; font-size: 14px; color: var(--cs-ink-2); display: grid; gap: 4px; }
+.dash-tier-foot { margin-top: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.dash-status { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px;
+  background: var(--cs-line); color: var(--cs-ink-2); }
+.dash-status.pending { background: var(--cs-accent-bg); color: var(--cs-steel-700); }
+.dash-status.approved, .dash-status.ok { background: rgba(46, 125, 80, .14); color: #2e7d50; }
+.dash-status.declined { background: rgba(180, 81, 58, .14); color: #b4513a; }
+.dash-upgrade { display: grid; gap: 8px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--cs-line); max-width: 560px; }
+.dash-toggles { display: grid; gap: 4px; margin-top: 8px; }
+.dash-toggle { display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start; padding: 10px 0;
+  border-bottom: 1px solid var(--cs-line); cursor: pointer; }
+.dash-toggle input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--cs-steel); }
+.dash-toggle > span { display: grid; gap: 2px; font-size: 14.5px; }
+.dash-danger { flex-direction: row !important; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+@media (max-width: 860px) { .dash-stats { grid-template-columns: minmax(0, 1fr); } }

@@ -1,7 +1,8 @@
 # Firestore rules tests
 
 `firestore.json` is a Firebase Rules test suite (dashboard API keys and profile, server-only collections).
-Run it against `infra/firestore.rules` with the Rules API (needs a token with Firebase Rules access):
+`publish-site.yml` runs it with `run.py` and releases the rules when every case passes. By hand (needs a token with
+Firebase Rules access): `python3 infra/rules-tests/run.py --project cricsynthesis`, or:
 
 ```bash
 T=$(gcloud auth print-access-token)

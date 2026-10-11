@@ -28,9 +28,34 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if me(uid);
       allow create, update: if me(uid)
-        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated'])
+        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated', 'notifyProduct', 'notifyUsage', 'notifyBilling'])
         && (!('company' in request.resource.data) || (request.resource.data.company is string && request.resource.data.company.size() <= 80))
-        && (!('useCase' in request.resource.data) || (request.resource.data.useCase is string && request.resource.data.useCase.size() <= 280));
+        && (!('useCase' in request.resource.data) || (request.resource.data.useCase is string && request.resource.data.useCase.size() <= 280))
+        && (!('notifyProduct' in request.resource.data) || request.resource.data.notifyProduct is bool)
+        && (!('notifyUsage' in request.resource.data) || request.resource.data.notifyUsage is bool)
+        && (!('notifyBilling' in request.resource.data) || request.resource.data.notifyBilling is bool);
+
+      // API usage per day, written by the API (batched); the account holder can read it.
+      match /usage/{day} { allow read: if me(uid); }
+
+      // Upgrade requests, one per plan. The user files or cancels (and can re-file after cancelling);
+      // our team approves or declines server-side.
+      match /requests/{plan} {
+        allow read: if me(uid);
+        allow create: if me(uid) && plan in ['api-pro', 'api-business']
+          && request.resource.data.keys().hasOnly(['plan', 'volume', 'note', 'status', 'created'])
+          && request.resource.data.plan == plan && request.resource.data.status == 'pending'
+          && request.resource.data.volume in ['<1k', '1k-10k', '10k-50k', '>50k']
+          && request.resource.data.note is string && request.resource.data.note.size() <= 500
+          && request.resource.data.created == request.time;
+        allow update: if me(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'volume', 'note', 'created'])
+          && request.resource.data.volume in ['<1k', '1k-10k', '10k-50k', '>50k']
+          && request.resource.data.note is string && request.resource.data.note.size() <= 500
+          && ((resource.data.status == 'pending' && request.resource.data.status == 'cancelled')
+              || (resource.data.status in ['cancelled', 'declined'] && request.resource.data.status == 'pending'
+                  && request.resource.data.created == request.time));
+      }
 
       // API keys: up to five slots (k1..k5). The browser generates the key, shows it once and stores only its
       // SHA-256 hash and a short prefix. New keys are always on the free API plan; upgrades are server-only.

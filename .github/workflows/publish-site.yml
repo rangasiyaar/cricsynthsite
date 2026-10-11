@@ -110,6 +110,12 @@ jobs:
           cd app && npm ci && npm test && npx next build
       - name: MCP package and its install index (served with the site under /pypi/)
         run: uv run python cricmcp/build_index.py --out app/out/pypi
+      - name: Firestore rules (test against the Rules API, then release; unchanged rules are skipped)
+        if: env.GCP == 'true'
+        run: |
+          python3 infra/rules-tests/run.py --project "$PROJECT"
+          echo '{"projects": {"default": "'"$PROJECT"'"}}' > .firebaserc
+          npx --yes firebase-tools@13.29.1 deploy --only firestore:rules --project "$PROJECT" --non-interactive
       - name: Deploy to Firebase Hosting
         if: env.GCP == 'true'
         run: |
