@@ -46,6 +46,27 @@ function enrich(sum: Summary, doc: MatchDoc): Summary {
 
 const changed = (l: Levers) => JSON.stringify(l) !== JSON.stringify(DEFAULT);
 
+// Settings are kept per match in this browser until the user changes them or resets. If the XIs change, settings
+// for players who are no longer playing are dropped and everything else is kept.
+const storeKey = (id: string) => `cs-lab:${id}`;
+function loadLevers(id: string, pack: Pack): Levers | null {
+  try {
+    const raw = localStorage.getItem(storeKey(id));
+    if (!raw) return null;
+    const saved = { ...DEFAULT, ...(JSON.parse(raw) as Partial<Levers>) };
+    const playing = new Set(pack.teams.flatMap((t) => t.players));
+    saved.form = Object.fromEntries(Object.entries(saved.form ?? {}).filter(([p, f]) => playing.has(p) && typeof f === "number"));
+    saved.exclude = (saved.exclude ?? []).filter((p) => playing.has(p));
+    return saved;
+  } catch { return null; }
+}
+function saveLevers(id: string, l: Levers) {
+  try {
+    if (changed(l)) localStorage.setItem(storeKey(id), JSON.stringify(l));
+    else localStorage.removeItem(storeKey(id));
+  } catch { /* private mode: settings just aren't kept */ }
+}
+
 export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const [pack, setPack] = useState<Pack | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -53,6 +74,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const [res, setRes] = useState<Summary | null>(null);
   const [busy, setBusy] = useState(false);
   const [levers, setLevers] = useState<Levers>(DEFAULT);
+  const [restored, setRestored] = useState(false);
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
   const pending = useRef(new Map<number, (s: Summary) => void>());
@@ -76,17 +98,24 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   });
 
   useEffect(() => { if (pack) run({}).then((s) => setBase(enrich(s, doc))); }, [pack]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!pack || restored) return;
+    const saved = loadLevers(doc.match.id, pack);
+    if (saved) setLevers(saved);
+    setRestored(true);
+  }, [pack, restored, doc.match.id]);
+  useEffect(() => { if (restored) saveLevers(doc.match.id, levers); }, [levers, restored, doc.match.id]);
 
   const scenario = useMemo(() => (pack ? toScenario(levers, pack) : null), [levers, pack]);
   useEffect(() => {
-    if (!pack || !scenario) return;
+    if (!pack || !scenario || !restored) return;
     setBusy(true);
     const t = setTimeout(() => {
       const mine = reqId.current + 1;
       run(scenario).then((s) => { if (reqId.current === mine) { setRes(enrich(s, doc)); setBusy(false); } });
     }, 250);
     return () => clearTimeout(t);
-  }, [scenario]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [scenario, restored]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = res ?? base;
   const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], generated_at: new Date().toISOString() } : null),
@@ -141,7 +170,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
         <div className="grid lab-main" style={{ opacity: busy ? 0.6 : 1, transition: "opacity .2s" }}>
           <div className="card">
             <div className="card-head"><h3>Your scenario</h3>
-              <span className="small muted">{changed(levers) ? "Change v the match as published" : "No changes yet: this is the match as published"}</span></div>
+              <span className="small muted">{changed(levers) ? "Change v the match as published · your settings are saved for this match" : "No changes yet: this is the match as published"}</span></div>
             <div className="lab-compare">
               {teams.map((t, k) => (
                 <div key={t}>
