@@ -70,6 +70,10 @@ function Results() {
           </div></div>
       </div>
 
+      <div className="res-head">
+        <h2>Matches</h2>
+        <p className="small muted">Latest first. Pick a match to see every projection against what happened.</p>
+      </div>
       <div className="grid res-cards">
         {shown.map((m) => (
           <button key={m.id} type="button" className={`card res-card${m.id === id ? " active" : ""}`} aria-pressed={m.id === id}

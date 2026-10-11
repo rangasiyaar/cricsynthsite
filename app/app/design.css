@@ -346,3 +346,6 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .res-pages button[aria-current="page"] { background: var(--cs-steel); border-color: var(--cs-steel); color: var(--cs-paper); }
 .res-pages button:disabled { opacity: .4; cursor: default; }
 @media (max-width: 860px) { .res-cards { grid-template-columns: 1fr; } }
+.res-head { margin-top: 24px; padding-top: 28px; border-top: 2px solid var(--cs-steel); }
+.res-head h2 { margin: 0 0 4px; }
+.res-head p { margin: 0; }
