@@ -22,7 +22,7 @@ from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 
 from cricapi import extra, graphics
@@ -65,15 +65,15 @@ class _State:
 # ── request bodies ─────────────────────────────────────────────────────────────
 
 class Team(BaseModel):
-    name: str
+    name: str = Field(max_length=80)
     players: list[str] = Field(min_length=11, max_length=11, description="Player ids (from /v1/players), batting order")
-    bowlers: list[str] | None = None
+    bowlers: list[str] | None = Field(None, max_length=11)
 
 
 class Condition(BaseModel):
     type: Literal["team_score", "player_runs", "player_wickets", "phase_wickets", "batting_first"]
     team: int | None = Field(None, ge=0, le=1)
-    player: str | None = None
+    player: str | None = Field(None, max_length=80)
     phase: Literal["Powerplay", "Middle", "Death"] | None = None
     at_least: int | None = None
     at_most: int | None = None
@@ -87,10 +87,10 @@ class SimulateRequest(BaseModel):
     comp_key: str | None = None
     batting_first: int | None = Field(None, ge=0, le=1)
     overs: int | None = Field(None, ge=1, le=50)
-    attributes: dict[str, dict] = {}
+    attributes: dict[str, dict] = Field({}, max_length=22)
     scenario: dict | None = Field(None, description="Pitch, dew, form, start state … see /v1 catalog")
     n: int = Field(10_000, ge=100, le=50_000)
-    conditions: list[Condition] = []
+    conditions: list[Condition] = Field([], max_length=8)
 
 
 class ProjectionRequest(BaseModel):
@@ -113,6 +113,7 @@ CATALOG = {
     "data_credits": "https://cricsynthesis.in/credits/",
 }
 CATEGORIES = ("Analytics", "Simulation & modelling", "Graphics")
+MAX_BODY = 256 * 1024          # bytes; the largest real request (a full simulate body) is a few KB
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -123,6 +124,25 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                        allow_methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["X-API-Key", "Authorization",
                                                                                        "X-Admin-Key", "Content-Type"])
     app.state.cs = st
+
+    @app.middleware("http")
+    async def guard(request: Request, call_next):
+        """Refuse oversized bodies before they're read, and send standard security headers on every response."""
+        try:
+            size = int(request.headers.get("content-length") or 0)
+        except ValueError:
+            size = MAX_BODY + 1
+        if size > MAX_BODY:
+            return JSONResponse({"detail": "Request body too large"}, status_code=413)
+        resp = await call_next(request)
+        resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+        resp.headers.setdefault("X-Frame-Options", "DENY")
+        resp.headers.setdefault("Referrer-Policy", "no-referrer")
+        resp.headers.setdefault("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+        if resp.headers.get("content-type", "").startswith("image/svg"):
+            # graphics are images: no scripts, no external loads, even if opened directly
+            resp.headers["Content-Security-Policy"] = "default-src 'none'; style-src 'unsafe-inline'; img-src data:"
+        return resp
 
     def account(request: Request, x_api_key: str | None = Header(None), authorization: str | None = Header(None)) -> dict:
         key = x_api_key or (authorization[7:] if authorization and authorization.lower().startswith("bearer ") else None)

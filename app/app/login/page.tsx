@@ -20,9 +20,14 @@ const MESSAGES: Record<string, string> = {
 };
 const explain = (e: unknown) => MESSAGES[(e as { code?: string }).code ?? ""] ?? "Something went wrong. Please try again.";
 
+/** Where to go after signing in: only a path on this site ("/\\evil.com" or "//evil.com" would leave it). */
 function next(): string {
   const n = new URLSearchParams(window.location.search).get("next");
-  return n && n.startsWith("/") && !n.startsWith("//") ? n : "/account/";
+  if (!n || !n.startsWith("/") || /[\\\s]/.test(n)) return "/account/";
+  try {
+    const u = new URL(n, window.location.origin);
+    return u.origin === window.location.origin ? u.pathname + u.search + u.hash : "/account/";
+  } catch { return "/account/"; }
 }
 
 export default function Login() {

@@ -20,14 +20,17 @@ export default function Admin() {
                                      competition: "", comp_key: "", venue: "", venue_id: "" });
   const [teams, setTeams] = useState<[Team, Team]>([blankTeam(), blankTeam()]);
 
-  useEffect(() => { try { setKey(localStorage.getItem("cs-admin-key") || ""); setApi(localStorage.getItem("cs-admin-api") || DEFAULT_API); } catch {} }, []);
+  // The admin key lives only for this browser tab (sessionStorage), and is only ever sent to an https API
+  // (or localhost while developing).
+  useEffect(() => { try { localStorage.removeItem("cs-admin-key"); setKey(sessionStorage.getItem("cs-admin-key") || ""); setApi(localStorage.getItem("cs-admin-api") || DEFAULT_API); } catch {} }, []);
   const call = async (path: string, init: RequestInit = {}) => {
+    if (!(api.startsWith("https://") || /^http:\/\/localhost(:\d+)?\/?$/.test(api))) throw new Error("The API address must start with https://");
     const r = await fetch(`${api}${path}`, { ...init, headers: { "X-Admin-Key": key, "Content-Type": "application/json", ...(init.headers || {}) } });
     if (!r.ok) throw new Error(`${r.status}: ${(await r.json().catch(() => ({}))).detail ?? r.statusText}`);
     return r.json();
   };
   const refresh = () => call("/admin/coverage").then((d) => setList(d.matches)).catch((e) => setMsg(String(e)));
-  const connect = () => { try { localStorage.setItem("cs-admin-key", key); localStorage.setItem("cs-admin-api", api); } catch {} refresh(); };
+  const connect = () => { try { sessionStorage.setItem("cs-admin-key", key); localStorage.setItem("cs-admin-api", api); } catch {} refresh(); };
 
   const save = async (publish: boolean) => {
     setMsg(null);

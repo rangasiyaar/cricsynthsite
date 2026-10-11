@@ -21,10 +21,10 @@ A, SM, G = "Analytics", "Simulation & modelling", "Graphics"
 # ── request bodies ─────────────────────────────────────────────────────────────
 
 class TeamIn(BaseModel):
-    name: str | None = None
+    name: str | None = Field(None, max_length=80)
     team_id: str | None = Field(None, description="Team id from /v1/teams; its latest XI is used when players are omitted")
     players: list[str] | None = Field(None, min_length=11, max_length=11, description="Player ids, batting order")
-    bowlers: list[str] | None = Field(None, description="Who may bowl (default: anyone, by usual workload)")
+    bowlers: list[str] | None = Field(None, max_length=11, description="Who may bowl (default: anyone, by usual workload)")
 
 
 class MatchIn(BaseModel):
@@ -51,7 +51,7 @@ class WinProbIn(MatchIn):
 
 
 class ProjectionIn(WinProbIn):
-    thresholds: list[int] | None = None
+    thresholds: list[int] | None = Field(None, max_length=20)
 
 
 class ChaseIn(MatchIn):
@@ -68,8 +68,8 @@ class ScenarioIn(BaseModel):
     pace_wicket_mult: float = Field(1.0, gt=0, le=3)
     dew: float = Field(0.0, ge=0, le=1)
     extras_mult: float = Field(1.0, gt=0, le=3)
-    player_form: dict[str, float] = {}
-    exclude_bowlers: list[str] = []
+    player_form: dict[str, float] = Field({}, max_length=22)
+    exclude_bowlers: list[str] = Field([], max_length=22)
     batting_first: Literal[0, 1] | None = None
 
 
@@ -79,8 +79,8 @@ class CompareIn(MatchIn):
 
 
 class SwapIn(MatchIn):
-    out_player: str
-    in_player: str
+    out_player: str = Field(max_length=80)
+    in_player: str = Field(max_length=80)
 
 
 class ImpactIn(MatchIn):
@@ -98,7 +98,7 @@ class BowlingPlanIn(MatchIn):
 
 
 class FantasyIn(MatchIn):
-    roles: dict[str, Literal["WK", "BAT", "AR", "BOWL"]] = Field({}, description="Player id → role; inferred if omitted")
+    roles: dict[str, Literal["WK", "BAT", "AR", "BOWL"]] = Field({}, max_length=22, description="Player id → role; inferred if omitted")
     captain_rule: Literal["mean", "upside"] = "mean"
     teams_count: int = Field(5, ge=2, le=10, description="Portfolio size")
 

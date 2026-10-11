@@ -11,6 +11,7 @@ set -euo pipefail
 PROJECT_ID="${1:?usage: bootstrap.sh PROJECT_ID BILLING_ACCOUNT_ID GITHUB_OWNER/REPO}"
 BILLING_ACCOUNT="${2:?billing account id, e.g. 0X0X0X-0X0X0X-0X0X0X}"
 GITHUB_REPO="${3:?GitHub repo, e.g. rangasiyaar/cricsynthsite}"
+DEPLOY_BRANCH="${DEPLOY_BRANCH:-claude/cricsynthesis-platform}"   # only this branch's workflows may deploy
 
 # us-central1 is one of the regions where Cloud Storage's Always Free tier applies,
 # and keeping every service in one region avoids cross-region transfer charges.
@@ -122,7 +123,10 @@ exists gcloud iam workload-identity-pools providers describe "$PROVIDER" --locat
   || gcloud iam workload-identity-pools providers create-oidc "$PROVIDER" --location=global \
        --workload-identity-pool="$POOL" --issuer-uri="https://token.actions.githubusercontent.com" \
        --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
-       --attribute-condition="assertion.repository=='${GITHUB_REPO}'"
+       --attribute-condition="assertion.repository=='${GITHUB_REPO}' && assertion.ref=='refs/heads/${DEPLOY_BRANCH}'"
+# Existing pools: tighten to the deploy branch only (workflows on other branches can't get Google credentials):
+gcloud iam workload-identity-pools providers update-oidc "$PROVIDER" --location=global --workload-identity-pool="$POOL" \
+  --attribute-condition="assertion.repository=='${GITHUB_REPO}' && assertion.ref=='refs/heads/${DEPLOY_BRANCH}'" >/dev/null
 gcloud iam service-accounts add-iam-policy-binding "cs-deployer@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role=roles/iam.workloadIdentityUser \
   --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${POOL}/attribute.repository/${GITHUB_REPO}" >/dev/null

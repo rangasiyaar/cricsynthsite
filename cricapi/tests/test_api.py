@@ -111,7 +111,7 @@ def test_free_plan_limits(client):
 def test_dashboard_usage_is_collected_per_account_key_and_category(client):
     from cricapi.store import hash_key
     st = client.app.state.cs
-    dash = "cs_live_dashboardkey"
+    dash = "cs_live_dashboardkey000000000000000"
     st.keys.remote = {hash_key(dash): {"hash": hash_key(dash), "owner": "uid9", "slot": "k2", "plan": "free"}}.get
     st.usage.collect = True
     st.usage.drain()
@@ -123,3 +123,10 @@ def test_dashboard_usage_is_collected_per_account_key_and_category(client):
     assert p["cats"]["analytics"] == 2 and sum(p["cats"].values()) == 3 and "k2" in p["last"]
     assert st.usage.drain() == {}
     st.keys.remote, st.usage.collect = None, False
+
+
+def test_oversized_bodies_are_refused_and_security_headers_sent(client, key):
+    r = client.post("/v1/simulate", content=b"x" * (300 * 1024), headers={**h(key), "Content-Type": "application/json"})
+    assert r.status_code == 413
+    r = client.get("/health")
+    assert r.headers["X-Content-Type-Options"] == "nosniff" and r.headers["X-Frame-Options"] == "DENY"

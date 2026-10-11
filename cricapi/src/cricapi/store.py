@@ -23,6 +23,9 @@ PLANS = {
     "business": {"daily_requests": 50_000, "max_simulations": 50_000, "watermark": False},
 }
 SAFE_ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
+# Keys we issue: "cs_live_" + 32 random characters (dashboard, base-57) or token_urlsafe(24) (admin). Anything else is
+# rejected before any lookup, so junk keys never cost a Firestore read.
+KEY_FORMAT = re.compile(r"^cs_live_[A-Za-z0-9_-]{24,64}$")
 
 
 def hash_key(key: str) -> str:
@@ -40,33 +43,53 @@ class KeyStore:
     remote = None     # callable(hash) -> dict | None, set by attach_firestore()
 
     def lookup(self, key: str) -> dict | None:
+        if not KEY_FORMAT.match(key or ""):
+            return None
         h = hash_key(key)
         rec = self._keys.get(h)
         if rec is None and self.remote is not None:
             rec = self.remote(h)
         return rec
 
-    def attach_firestore(self, project: str, ttl: float = 60.0) -> None:
-        """Accept keys created in the account dashboard. Revoked keys stop working within `ttl` seconds."""
+    def attach_firestore(self, project: str, ttl: float = 60.0, max_cache: int = 5000, reads_per_min: int = 120) -> None:
+        """Accept keys created in the account dashboard. Revoked keys stop working within `ttl` seconds.
+        The cache is bounded and Firestore lookups are rate-limited per instance, so a flood of made-up keys can
+        neither grow memory nor run through the free read quota."""
         from google.cloud import firestore            # optional dependency, installed on Cloud Run only
         db = firestore.Client(project=project)
+        self.remote = self._cached_lookup(
+            lambda h: list(db.collection_group("keys").where("hash", "==", h).limit(1).stream()),
+            ttl, max_cache, reads_per_min)
+
+    def _cached_lookup(self, query, ttl: float, max_cache: int, reads_per_min: int):
         cache: dict[str, tuple[float, dict | None]] = {}
+        window: list[float] = []
+        lock = threading.Lock()
 
         def find(h: str) -> dict | None:
             now = time.monotonic()
-            hit = cache.get(h)
-            if hit and now - hit[0] < ttl:
-                return hit[1]
-            docs = list(db.collection_group("keys").where("hash", "==", h).limit(1).stream())
+            with lock:
+                hit = cache.get(h)
+                if hit and now - hit[0] < ttl:
+                    return hit[1]
+                window[:] = [t for t in window if now - t < 60]
+                if len(window) >= reads_per_min:
+                    return None                       # over budget: refuse rather than read
+                window.append(now)
+            docs = query(h)
             rec = None
             if docs:
                 d = docs[0].to_dict() or {}
                 if not d.get("revoked") and d.get("plan") in PLANS:
                     rec = {"hash": h, "owner": docs[0].reference.parent.parent.id, "slot": docs[0].id,
                            "plan": d["plan"], "source": "dashboard"}
-            cache[h] = (now, rec)
+            with lock:
+                if len(cache) >= max_cache:            # drop the oldest entries
+                    for k in sorted(cache, key=lambda k: cache[k][0])[: max_cache // 10 or 1]:
+                        cache.pop(k, None)
+                cache[h] = (now, rec)
             return rec
-        self.remote = find
+        return find
 
     def create(self, owner: str, plan: str) -> str:
         if plan not in PLANS:
