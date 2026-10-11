@@ -80,10 +80,10 @@ function Bar({ x, y0, w, h, frac, color, delay, dim = false }: { x: number; y0: 
   );
 }
 
-export type Marker = { color: string; name: string; q10: number; q50: number; q90: number; mean?: number };
+export type Marker = { color: string; name: string; q10: number; q25?: number; q50: number; q75?: number; q90: number; mean?: number };
 
-/** Score distributions: bars by bin, or the chance of reaching each total; markers show each side's median, mean and
- *  80% range so the point estimate is visible inside the spread. */
+/** Score distributions: bars by bin, or the chance of reaching each total; markers show each side's median, its likely
+ *  range (middle 50% of simulations, the bold band) and the 80% range (faint), so the call stands out inside the spread. */
 export function Histogram({ series, width = 10, height = 220, xLabel, markers, mode = "dist", W = 640, compact = false }: {
   series: Series[]; width?: number; height?: number; xLabel?: string; markers?: Marker[]; mode?: "dist" | "cdf"; W?: number; compact?: boolean;
 }) {
@@ -112,9 +112,12 @@ export function Histogram({ series, width = 10, height = 220, xLabel, markers, m
     <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} columns={columns} label={xLabel || "distribution"}>
       <g className="grid">{[0.25, 0.5, 0.75, 1].map((f) => <line key={f} x1={pad.l} x2={W - pad.r} y1={sy(pmax * f)} y2={sy(pmax * f)} />)}</g>
       {[0.5, 1].map((f) => <text key={f} x={pad.l - 6} y={sy(pmax * f) + 4} textAnchor="end">{pct(pmax * f)}</text>)}
-      {mk.map((m, k) => (                                      // 80% range bands behind the bars
-        <rect key={`band-${k}`} x={sx(m.q10)} y={pad.t} width={Math.max(sx(m.q90) - sx(m.q10), 1)} height={full}
-              fill={m.color} fillOpacity={0.07} />
+      {mk.map((m, k) => (                                      // 80% (faint) and likely (stronger) bands behind the bars
+        <g key={`band-${k}`}>
+          <rect x={sx(m.q10)} y={pad.t} width={Math.max(sx(m.q90) - sx(m.q10), 1)} height={full} fill={m.color} fillOpacity={0.04} />
+          {m.q25 != null && m.q75 != null &&
+            <rect x={sx(m.q25)} y={pad.t} width={Math.max(sx(m.q75) - sx(m.q25), 1)} height={full} fill={m.color} fillOpacity={0.1} />}
+        </g>
       ))}
       {mode === "dist" ? series.map((s, k) => s.points.map((p, i) => (
         <Bar key={`${k}-${p.x}`} x={sx(p.x) + k * bw + 1} y0={H - pad.b} w={bw - 2} h={full} frac={p.p / pmax}
@@ -127,9 +130,9 @@ export function Histogram({ series, width = 10, height = 220, xLabel, markers, m
         const y = 6 + k * 14;
         return (
           <g key={`m-${k}`}>
-            <line x1={sx(m.q10)} x2={sx(m.q90)} y1={y + 5} y2={y + 5} stroke={m.color} strokeWidth={2} />
-            <line x1={sx(m.q10)} x2={sx(m.q10)} y1={y + 1} y2={y + 9} stroke={m.color} strokeWidth={2} />
-            <line x1={sx(m.q90)} x2={sx(m.q90)} y1={y + 1} y2={y + 9} stroke={m.color} strokeWidth={2} />
+            <line x1={sx(m.q10)} x2={sx(m.q90)} y1={y + 5} y2={y + 5} stroke={m.color} strokeWidth={1.5} strokeOpacity={0.45} />
+            {m.q25 != null && m.q75 != null &&
+              <line x1={sx(m.q25)} x2={sx(m.q75)} y1={y + 5} y2={y + 5} stroke={m.color} strokeWidth={6} strokeLinecap="round" />}
             <line x1={sx(m.q50)} x2={sx(m.q50)} y1={y} y2={H - pad.b} stroke={m.color} strokeWidth={2} strokeDasharray="5 3" />
             {m.mean != null && <circle cx={sx(m.mean)} cy={y + 5} r={4} fill="var(--cs-bg)" stroke={m.color} strokeWidth={2} />}
           </g>
@@ -139,8 +142,9 @@ export function Histogram({ series, width = 10, height = 220, xLabel, markers, m
     </ChartFrame>
     {mk.length > 0 && (
       <div className="chart-caption">{mk.map((m) => (
-        <span key={m.name}><i style={{ background: m.color }} />{compact ? "" : `${m.name}: `}median <b>{Math.round(m.q50)}</b>
-          {!compact && m.mean != null && <>, mean <b>{Math.round(m.mean)}</b></>}, 80% <b>{Math.round(m.q10)}–{Math.round(m.q90)}</b></span>
+        <span key={m.name}><i style={{ background: m.color }} />{compact ? "" : `${m.name}: `}<b>{Math.round(m.q50)}</b>
+          {m.q25 != null && m.q75 != null && <>, likely <b>{Math.round(m.q25)}–{Math.round(m.q75)}</b></>}
+          {!compact && <span className="muted"> · 80% {Math.round(m.q10)}–{Math.round(m.q90)}</span>}</span>
       ))}</div>
     )}
     </>
@@ -241,12 +245,16 @@ export function WicketHeatmap({ rows, color, overs, cell = 22 }: { rows: { label
 }
 
 /** p10 · median · p90 on a small track, for stat tiles. */
-export function RangeStrip({ q10, q50, q90, color, lo, hi }: { q10: number; q50: number; q90: number; color: string; lo: number; hi: number }) {
+export function RangeStrip({ q10, q25, q50, q75, q90, color, lo, hi }: {
+  q10: number; q25?: number; q50: number; q75?: number; q90: number; color: string; lo: number; hi: number;
+}) {
   const W = 120, H = 16, x = (v: number) => 4 + ((v - lo) / Math.max(hi - lo, 1)) * (W - 8);
   return (
-    <svg className="range-strip" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label={`10th ${q10}, median ${q50}, 90th ${q90}`}>
+    <svg className="range-strip" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img"
+         aria-label={`median ${q50}${q25 != null ? `, likely ${q25}–${q75}` : ""}, 80% ${q10}–${q90}`}>
       <line x1={4} x2={W - 4} y1={8} y2={8} stroke="var(--cs-line)" strokeWidth={2} strokeLinecap="round" />
-      <line x1={x(q10)} x2={x(q90)} y1={8} y2={8} stroke={color} strokeWidth={4} strokeLinecap="round" strokeOpacity={0.45} />
+      <line x1={x(q10)} x2={x(q90)} y1={8} y2={8} stroke={color} strokeWidth={3} strokeLinecap="round" strokeOpacity={0.22} />
+      {q25 != null && q75 != null && <line x1={x(q25)} x2={x(q75)} y1={8} y2={8} stroke={color} strokeWidth={6} strokeLinecap="round" strokeOpacity={0.75} />}
       <circle cx={x(q50)} cy={8} r={4.5} fill={color} stroke="var(--cs-bg)" strokeWidth={1.5} />
     </svg>
   );

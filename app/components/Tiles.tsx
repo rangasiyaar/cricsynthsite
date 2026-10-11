@@ -13,11 +13,11 @@ export function buildTiles(s: Summary, short: [string, string]): Tile[] {
 
   const qs = s.teams.map((t) => t.batting.score.q);
   const lo = Math.min(...qs.map((q) => q["10"])), hi = Math.max(...qs.map((q) => q["90"]));
-  tiles.push({ label: "Projected score · median, 10th–90th", rows: s.teams.map((t, k) => {
+  tiles.push({ label: "Projected score · likely range", rows: s.teams.map((t, k) => {
     const q = t.batting.score.q;
     return {
-      left: <>{short[k]}<RangeStrip q10={q["10"]} q50={q["50"]} q90={q["90"]} color={COLORS[k]} lo={lo} hi={hi} /></>, color: COLORS[k],
-      right: <><b className="tile-big"><Num value={q["50"]} /></b><span className="tile-sub">±{Math.round((q["90"] - q["10"]) / 2)}<br />{Math.round(q["10"])}–{Math.round(q["90"])}</span></>,
+      left: <>{short[k]}<RangeStrip q10={q["10"]} q25={q["25"]} q50={q["50"]} q75={q["75"]} q90={q["90"]} color={COLORS[k]} lo={lo} hi={hi} /></>, color: COLORS[k],
+      right: <><b className="tile-big"><Num value={q["50"]} /></b><span className="tile-sub">likely<br />{Math.round(q["25"])}–{Math.round(q["75"])}</span></>,
     };
   }) });
 

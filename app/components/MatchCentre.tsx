@@ -77,12 +77,13 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
 
 type Split = "all" | "first" | "second";
 
-/** Each side's median, mean and 80% range, for all simulations or only when batting first / chasing. */
+/** Each side's median, likely (50%) and 80% ranges, for all simulations or only when batting first / chasing. */
 function markers(s: MatchDoc["summary"], split: Split = "all"): Marker[] {
   return s.teams.map((t, k) => {
     const sc = split === "all" ? t.batting.score
       : t.batting.by_innings?.find((b) => b.innings === (split === "first" ? 1 : 2))?.score ?? t.batting.score;
-    return { color: COLORS[k], name: t.name, q10: sc.q["10"], q50: sc.q["50"], q90: sc.q["90"], mean: sc.mean ?? undefined };
+    return { color: COLORS[k], name: t.name, q10: sc.q["10"], q25: sc.q["25"], q50: sc.q["50"], q75: sc.q["75"], q90: sc.q["90"],
+             mean: sc.mean ?? undefined };
   });
 }
 
@@ -124,7 +125,8 @@ function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
             <h3>{t.name}: score range</h3>
-            <p className="small muted" style={{ margin: "0 0 10px" }}>Median {Math.round(t.batting.score.q["50"])}, 80% between {range(t.batting.score.q)}.</p>
+            <p className="small" style={{ margin: "0 0 10px" }}>Projected <b>{Math.round(t.batting.score.q["50"])}</b>, likely <b>{range(t.batting.score.q, "25", "75")}</b>
+              <span className="muted"> · 80% of simulations {range(t.batting.score.q)}</span></p>
             <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
                        height={180} xLabel="runs"
                        series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
@@ -150,7 +152,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
             <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
           </div>
         </div>
-        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median; ring: mean; whiskers and shading: middle 80%
+        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median; bold band: likely range (middle 50%); faint band: middle 80%
           {split === "all" ? " of all simulations." : split === "first" ? " when batting first." : " when chasing."}</p>
         {legend}
         <Histogram W={1100} width={binWidth(s)} xLabel="runs" series={histSeries(s)} markers={markers(s, split)} mode={mode} height={260} />
@@ -169,10 +171,10 @@ function Scores({ doc }: { doc: MatchDoc }) {
           <div key={t.name} className="card">
             <h3 style={{ color: COLORS[k] }}>{t.name}: phase by phase</h3>
             <div className="table-wrap"><table>
-              <thead><tr><th>Phase</th><th>Overs</th><th className="num">Runs</th><th className="num">80% range</th><th className="num">Wickets</th><th className="num">No wicket</th></tr></thead>
+              <thead><tr><th>Phase</th><th>Overs</th><th className="num">Runs</th><th className="num">Likely</th><th className="num">Wickets</th><th className="num">No wicket</th></tr></thead>
               <tbody>{t.batting.phases.map((ph) => (
                 <tr key={ph.phase}><td>{ph.phase}</td><td className="mono">{ph.overs[0]}–{ph.overs[1]}</td>
-                  <td className="num">{num(ph.runs.mean)}</td><td className="num">{range(ph.runs.q)}</td>
+                  <td className="num">{num(ph.runs.q["50"])}</td><td className="num">{range(ph.runs.q, "25", "75")}</td>
                   <td className="num">{num(ph.wickets.mean, 1)}</td><td className="num">{pct(ph.p_no_wicket)}</td></tr>
               ))}</tbody>
             </table></div>
@@ -239,10 +241,10 @@ function Players({ doc }: { doc: MatchDoc }) {
         <div key={t.name} className="card">
           <h3 style={{ color: COLORS[k] }}>{t.name}</h3>
           <div className="table-wrap"><table>
-            <thead><tr><th>#</th><th>Batting</th><th className="num">Runs (avg)</th><th className="num">80% range</th><th className="num">{m1}+</th><th className="num">{m2}+</th><th className="num">Duck</th><th className="num">Top scorer</th><th>Most likely out to</th></tr></thead>
+            <thead><tr><th>#</th><th>Batting</th><th className="num">Runs (avg)</th><th className="num">Likely</th><th className="num">{m1}+</th><th className="num">{m2}+</th><th className="num">Duck</th><th className="num">Top scorer</th><th>Most likely out to</th></tr></thead>
             <tbody>{t.players.filter((p) => p.batting).sort((x, y) => x.batting!.slot - y.batting!.slot).map((p) => (
               <tr key={p.id}><td className="mono">{p.batting!.slot}</td><td><PlayerName p={p} /></td>
-                <td className="num">{num(p.batting!.runs.mean, 1)}</td><td className="num">{range(p.batting!.runs.q)}</td>
+                <td className="num">{num(p.batting!.runs.mean, 1)}</td><td className="num">{range(p.batting!.runs.q, "25", "75")}</td>
                 <td className="num"><P p={p.batting!.p_at_least[m1]} width={40} /></td><td className="num">{pct(p.batting!.p_at_least[m2])}</td>
                 <td className="num">{pct(p.batting!.p_duck)}</td><td className="num">{pct(p.batting!.p_top_scorer)}</td>
                 <td>{p.batting!.dismissed_by[0] ? `${p.batting!.dismissed_by[0].name} (${pct(p.batting!.dismissed_by[0].p)})` : "—"}</td></tr>

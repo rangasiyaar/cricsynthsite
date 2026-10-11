@@ -26,7 +26,7 @@ export function RunFan({ s }: { s: Summary }) {
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="run fan" columns={fans[0].map((r, i): Column => ({
         x0: sx(r.over - 0.5), x1: sx(r.over + 0.5), title: `After ${r.over} overs`,
         rows: fans.map((f, k) => ({ color: COLORS[k], label: s.teams[k].name,
-          value: f[i] ? `${f[i].q50} (${f[i].q10}–${f[i].q90}) · ${f[i].wickets.toFixed(1)} wkts` : "—" })),
+          value: f[i] ? `${f[i].q50}, likely ${f[i].q25}–${f[i].q75} · ${f[i].wickets.toFixed(1)} wkts` : "—" })),
       }))}>
         <g className="grid">{Array.from({ length: Math.floor(top / step) + 1 }, (_, i) => i * step).map((v) => (
           <line key={v} x1={pad.l} x2={W - pad.r} y1={sy(v)} y2={sy(v)} />))}</g>
@@ -204,14 +204,14 @@ export function Checkpoints({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Score checkpoints</h3>
-      <p className="small muted">Expected score and wickets after each stage: median, with the middle 80% of simulations.</p>
+      <p className="small muted">Expected score and wickets after each stage, with the likely range (middle 50% of simulations).</p>
       <div className="table-wrap"><table className="checkpoints">
         <thead><tr><th>After</th>{s.teams.map((t, k) => <th key={t.name} className="num" style={{ color: COLORS[k] }}>{t.name}</th>)}</tr></thead>
         <tbody>{marks.map((o) => (
           <tr key={o}><td>{o === overs ? "Innings" : `${o} overs`}</td>
             {s.teams.map((t, k) => {
               const r = row(k, o);
-              return <td key={t.name} className="num">{r ? <><b>{r.q50}/{Math.round(r.wickets)}</b> <span className="muted">({r.q10}–{r.q90})</span></> : "—"}</td>;
+              return <td key={t.name} className="num">{r ? <><b>{r.q50}/{Math.round(r.wickets)}</b> <span className="muted">({r.q25}–{r.q75})</span></> : "—"}</td>;
             })}</tr>
         ))}</tbody>
       </table></div>
