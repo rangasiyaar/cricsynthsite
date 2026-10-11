@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/results/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read
@@ -61,16 +61,17 @@ jobs:
       - name: Upcoming fixtures
         run: |
           mkdir -p data/coverage/matches
-          today=$(TZ=Asia/Kolkata date +%Y-%m-%d)
+          started=$(uv run python -m cricsim.results --started)      # forecasts freeze at the start time
           for f in cricsim/fixtures/*.json; do
             [ -e "$f" ] || continue
-            date=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('date', ''))" "$f")
-            [ -n "$date" ] && [ "$date" \< "$today" ] && { echo "skip $f (played $date)"; continue; }
+            echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; }
             uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" \
               --out "data/coverage/matches/$(basename "$f")"
           done
       - name: Simulate + publish
         run: uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
+      - name: Results (keep started matches' pre-match forecasts; score finished ones against their scorecards)
+        run: uv run python -m cricsim.results --fixtures cricsim/fixtures --scorecards cricsim/results --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Analytics kit (static files the MCP server computes analytics from)
         run: uv run python -m cricsim.kit --model data/models/latest --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
 

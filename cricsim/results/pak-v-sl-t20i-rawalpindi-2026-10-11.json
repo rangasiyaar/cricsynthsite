@@ -1,0 +1,319 @@
+{
+ "id": "pak-v-sl-t20i-rawalpindi-2026-10-11",
+ "innings": [
+  {
+   "team": "Pakistan",
+   "runs": 215,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sahibzada Farhan",
+     "dismissal": "c Maheesh Theekshana b Dasun Shanaka",
+     "runs": 73,
+     "balls": 44,
+     "fours": 4,
+     "sixes": 5
+    },
+    {
+     "name": "Fakhar Zaman",
+     "dismissal": "c Kamindu Mendis b Maheesh Theekshana",
+     "runs": 22,
+     "balls": 17,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Maaz Sadaqat",
+     "dismissal": "c Dasun Shanaka b Eshan Malinga",
+     "runs": 96,
+     "balls": 51,
+     "fours": 6,
+     "sixes": 7
+    },
+    {
+     "name": "Hasan Nawaz",
+     "dismissal": "not out",
+     "runs": 19,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Binura Fernando",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nuwan Thushara",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Maheesh Theekshana",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Eshan Malinga",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Dasun Shanaka",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kamindu Mendis",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Fakhar Zaman",
+     "score": 55,
+     "over": "6.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sahibzada Farhan",
+     "score": 143,
+     "over": "14.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Maaz Sadaqat",
+     "score": 215,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 46
+  },
+  {
+   "team": "Sri Lanka",
+   "runs": 133,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Lahiru Udara",
+     "dismissal": "c Khawaja Nafay b Salman Mirza",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sineth Jayawardena",
+     "dismissal": "c Fakhar Zaman b Mohammad Imran Randhawa",
+     "runs": 22,
+     "balls": 21,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Kusal Mendis",
+     "dismissal": "c Khawaja Nafay b Mohammad Imran Randhawa",
+     "runs": 9,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kamindu Mendis",
+     "dismissal": "c Hasan Nawaz b Shadab Khan",
+     "runs": 23,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Sahan Arachchige",
+     "dismissal": "c Khawaja Nafay b Mohammad Imran Randhawa",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dasun Shanaka",
+     "dismissal": "c Abrar Ahmed b Saim Ayub",
+     "runs": 9,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Chamindu Wickramasinghe",
+     "dismissal": "c Fakhar Zaman b Salman Mirza",
+     "runs": 29,
+     "balls": 24,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Maheesh Theekshana",
+     "dismissal": "not out",
+     "runs": 32,
+     "balls": 26,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Binura Fernando",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Salman Mirza",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Naseem Shah",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mohammad Imran Randhawa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abrar Ahmed",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Saim Ayub",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shadab Khan",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Lahiru Udara",
+     "score": 6,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sineth Jayawardena",
+     "score": 35,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kusal Mendis",
+     "score": 48,
+     "over": "7.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sahan Arachchige",
+     "score": 49,
+     "over": "7.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Dasun Shanaka",
+     "score": 64,
+     "over": "10.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kamindu Mendis",
+     "score": 74,
+     "over": "11.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Chamindu Wickramasinghe",
+     "score": 124,
+     "over": "18.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  }
+ ],
+ "winner": "Pakistan",
+ "result": "Pakistan won by 82 runs"
+}

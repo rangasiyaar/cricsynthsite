@@ -1,7 +1,7 @@
 // Where published data comes from. Today: static JSON next to the app (public/data, filled by
 // `cricsim.publish`). Later: Firestore documents with the same shapes.
 import type { Pack } from "./engine/sim.ts";
-import type { MatchDoc, MatchIndex } from "./types.ts";
+import type { MatchDoc, MatchIndex, ResultDoc, ResultIndex } from "./types.ts";
 
 const BASE = process.env.NEXT_PUBLIC_DATA_URL || "/data";
 
@@ -14,3 +14,5 @@ async function get<T>(path: string): Promise<T> {
 export const loadIndex = () => get<MatchIndex>("index.json");
 export const loadMatch = (id: string) => get<MatchDoc>(`matches/${encodeURIComponent(id)}.json`);
 export const loadPack = (id: string) => get<Pack>(`matches/${encodeURIComponent(id)}.pack.json`);
+export const loadResults = () => get<ResultIndex>("results/index.json");
+export const loadResult = (id: string) => get<ResultDoc>(`results/${encodeURIComponent(id)}.json`);

@@ -71,3 +71,17 @@ export type MatchDoc = {
            venue?: string; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
 };
+
+// Results (cricsim/results.py): how the published forecast compared with the match.
+export type TabScore = { hits: number; checks: number };
+export type ResultItem = { tab: string; check: string; projected: string; actual: string; hit: boolean; note?: string };
+export type ResultSummary = {
+  id: string; title?: string; date?: string; competition?: string; teams: { name: string; short?: string }[];
+  result?: string; winner?: string | null; scores: { team: string; runs: number; wickets: number; overs: string }[];
+  hits: number; checks: number; accuracy: number | null; brier: number | null; tabs: Record<string, TabScore>;
+  favourite_won?: boolean | null;
+};
+export type ResultDoc = ResultSummary & { forecast: { win: Record<string, number>; projected: (number | null)[]; generated_at?: string };
+                                         items: ResultItem[]; venue?: string };
+export type ResultIndex = { matches: ResultSummary[]; hits: number; checks: number; accuracy: number | null;
+                            tabs: Record<string, TabScore>; favourite_won: number; brier: number | null; generated_at?: string };
