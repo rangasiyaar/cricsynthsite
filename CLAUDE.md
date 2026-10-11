@@ -37,7 +37,7 @@ cricsynthsite/
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |
-| Scenario Lab | Runs in the browser (Web Worker) | Zero server cost |
+| Scenario Lab (MatchSynth Lab) | Runs in the browser (Web Worker) | Zero server cost; `lib/engine/full.ts` (browser port of `summary.py`) rebuilds every match-centre tab from the user's scenario |
 
 ## Data: Cricsheet only
 

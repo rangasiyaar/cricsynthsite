@@ -301,3 +301,21 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 .dash-toggle > span { display: grid; gap: 2px; font-size: 14.5px; }
 .dash-danger { flex-direction: row !important; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 @media (max-width: 860px) { .dash-stats { grid-template-columns: minmax(0, 1fr); } }
+
+/* MatchSynth Lab: levers beside the scenario's match centre */
+.lab-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 28px; }
+.lab-levers { position: sticky; top: 88px; max-height: calc(100vh - 104px); overflow-y: auto; }
+.lab-main { min-width: 0; gap: 20px; }
+.lab-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 6px 0 14px; }
+.lab-big { font: 700 30px var(--cs-head); line-height: 1.15; margin: 4px 0 2px; }
+.lab-big .delta-up, .lab-big .delta-down, .lab-big .muted { font-size: 15px; font-weight: 600; }
+.lab-movers { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin-top: 6px; }
+.lab-movers > div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--cs-line); padding: 6px 0; }
+.lab-main .mc-tabs { margin-top: 0; }
+@media (max-width: 960px) {
+  .lab-layout { grid-template-columns: minmax(0, 1fr); }
+  .lab-levers { position: static; max-height: none; }
+  .lab-movers { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 860px) { .tabs.mc-tabs.five { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }

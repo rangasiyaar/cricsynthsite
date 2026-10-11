@@ -65,7 +65,7 @@ export type InningsResult = {
   overRuns: Int16Array; overWkts: Int8Array;
   batRuns: Int16Array; batBalls: Int16Array; batOut: Uint8Array; batKind: Int8Array; batBy: Int8Array;
   bowlBalls: Int16Array; bowlRuns: Int16Array; bowlWkts: Int8Array;
-  fowBall: Int16Array; fowBowler: Int8Array; fowSlot: Int8Array;
+  fowBall: Int16Array; fowBowler: Int8Array; fowSlot: Int8Array; fowRuns: Int16Array;
 };
 
 type Prepared = { pair: Float64Array; weights: number[][]; dismissal: number[][]; kinds: string[];
@@ -108,6 +108,7 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     batKind: new Int8Array(11).fill(-1), batBy: new Int8Array(11).fill(-1),
     bowlBalls: new Int16Array(11), bowlRuns: new Int16Array(11), bowlWkts: new Int8Array(11),
     fowBall: new Int16Array(10).fill(-1), fowBowler: new Int8Array(10).fill(-1), fowSlot: new Int8Array(10).fill(-1),
+    fowRuns: new Int16Array(10).fill(-1),
   };
   const prevRuns = new Int16Array(11).fill(-1), prevBnd = new Uint8Array(11);
   const lastOver = new Int16Array(11).fill(-9), used = new Int16Array(11);
@@ -189,6 +190,7 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
       res.batOut[outSlot] = 1; res.batKind[outSlot] = kind; res.batBy[outSlot] = credited;
       if (credited >= 0) res.bowlWkts[credited] += 1;
       res.fowBall[res.wkts] = res.legal + 1; res.fowBowler[res.wkts] = credited; res.fowSlot[res.wkts] = outSlot;
+      res.fowRuns[res.wkts] = res.runs;   // score at the fall (recorded only; no effect on the draw sequence)
       res.wkts += 1; res.overWkts[ov] += 1;
       const nb = qpos < queue.length ? queue[qpos] : 11;
       qpos++;
@@ -246,5 +248,5 @@ function emptyInnings(pack: Pack, total: number): InningsResult {
     batRuns: new Int16Array(11), batBalls: new Int16Array(11), batOut: new Uint8Array(11),
     batKind: new Int8Array(11).fill(-1), batBy: new Int8Array(11).fill(-1), bowlBalls: new Int16Array(11),
     bowlRuns: new Int16Array(11), bowlWkts: new Int8Array(11), fowBall: new Int16Array(10).fill(-1),
-    fowBowler: new Int8Array(10).fill(-1), fowSlot: new Int8Array(10).fill(-1) };
+    fowBowler: new Int8Array(10).fill(-1), fowSlot: new Int8Array(10).fill(-1), fowRuns: new Int16Array(10).fill(-1) };
 }

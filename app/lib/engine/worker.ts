@@ -1,9 +1,11 @@
 // Web Worker: runs Scenario Lab simulations off the main thread.
-// raw: true returns compact per-match results (for the live engine view) instead of a summary.
+// raw: true returns compact per-match results (for the live engine view) instead of a summary;
+// full: true returns the whole match-centre summary (MatchSynth Lab).
 import { simulateMatches, type Pack, type Scenario } from "./sim.ts";
+import { summarizeFull } from "./full.ts";
 import { summarizeLab } from "./summary.ts";
 
-type Req = { id: number; pack: Pack; scenario: Scenario; n: number; seed: number; raw?: boolean };
+type Req = { id: number; pack: Pack; scenario: Scenario; n: number; seed: number; raw?: boolean; full?: boolean };
 
 export type RawBatch = {
   n: number; wins: [number, number]; balls: number;
@@ -12,10 +14,14 @@ export type RawBatch = {
 };
 
 self.onmessage = (e: MessageEvent<Req>) => {
-  const { id, pack, scenario, n, seed, raw } = e.data;
+  const { id, pack, scenario, n, seed, raw, full } = e.data;
   try {
     const t0 = performance.now();
     const sims = simulateMatches(pack, n, scenario, seed);
+    if (full) {
+      (self as unknown as Worker).postMessage({ id, full: summarizeFull(pack, sims), ms: performance.now() - t0 });
+      return;
+    }
     if (!raw) {
       (self as unknown as Worker).postMessage({ id, summary: summarizeLab(pack, sims), ms: performance.now() - t0 });
       return;

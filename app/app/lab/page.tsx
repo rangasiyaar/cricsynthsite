@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { RequireSignIn } from "@/components/Gate";
 import ScenarioLab from "@/components/ScenarioLab";
-import Scoreboard from "@/components/Scoreboard";
 import { loadIndex, loadMatch } from "@/lib/data";
 import type { MatchCard, MatchDoc } from "@/lib/types";
 
@@ -45,10 +44,7 @@ function Lab() {
         </div>
       )}
       {!doc ? <div className="skeleton card" style={{ minHeight: 320 }} /> : (
-        <>
-          <Scoreboard doc={doc} />
-          <div style={{ marginTop: 28 }}><ScenarioLab doc={doc} /></div>
-        </>
+        <ScenarioLab key={doc.match.id} doc={doc} />
       )}
     </>
   );
@@ -60,7 +56,7 @@ export default function LabPage() {
       <p className="cs-eyebrow">MatchSynth Lab <span className="tag pro">Pro</span></p>
       <h1><span>Change the match.</span><span>See what moves.</span></h1>
       <p className="cs-lede">Set the toss, pitch, dew, player form and bowler availability, or start from any score. Every change
-        re-runs thousands of ball-by-ball simulations in your browser.</p>
+        re-runs thousands of ball-by-ball simulations in your browser, and the full match centre is rebuilt from your scenario.</p>
       <div style={{ marginTop: 32 }}>
         <RequireSignIn pro>
           <Suspense fallback={<div className="skeleton card" style={{ minHeight: 320 }} />}><Lab /></Suspense>

@@ -1,11 +1,14 @@
 "use client";
+// MatchSynth Lab: the user's levers re-run the match in the browser, and every match-centre view (overview, scores,
+// wickets, players, match-ups) is rebuilt from those simulations alone.
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Num, OverBars, Pct, WinBar } from "@/components/charts";
+import { Num, Pct, WinBar } from "@/components/charts";
+import { ForecastTabs } from "@/components/MatchCentre";
+import Scoreboard from "@/components/Scoreboard";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
-import type { LabSummary } from "@/lib/engine/summary";
-import { num, pct, signed } from "@/lib/format";
-import type { MatchDoc } from "@/lib/types";
+import { num, signed } from "@/lib/format";
+import type { MatchDoc, PlayerRow, Summary } from "@/lib/types";
 
 const N = 5000;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
@@ -30,16 +33,29 @@ function toScenario(l: Levers, pack: Pack): Scenario {
   return sc;
 }
 
+/** Player profiles and engine details come from the published match; everything else is the user's simulations. */
+function enrich(sum: Summary, doc: MatchDoc): Summary {
+  const prof = new Map<string, PlayerRow["profile"]>();
+  doc.summary.teams.forEach((t) => t.players.forEach((p) => prof.set(p.id, p.profile)));
+  return {
+    ...sum,
+    meta: { ...sum.meta, engine: { ...doc.summary.meta.engine, ...sum.meta.engine } },
+    teams: sum.teams.map((t) => ({ ...t, players: t.players.map((p) => ({ ...p, profile: prof.get(p.id) ?? p.profile })) })) as Summary["teams"],
+  };
+}
+
+const changed = (l: Levers) => JSON.stringify(l) !== JSON.stringify(DEFAULT);
+
 export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const [pack, setPack] = useState<Pack | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [base, setBase] = useState<LabSummary | null>(null);
-  const [res, setRes] = useState<LabSummary | null>(null);
+  const [base, setBase] = useState<Summary | null>(null);
+  const [res, setRes] = useState<Summary | null>(null);
   const [busy, setBusy] = useState(false);
   const [levers, setLevers] = useState<Levers>(DEFAULT);
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
-  const pending = useRef(new Map<number, (s: LabSummary) => void>());
+  const pending = useRef(new Map<number, (s: Summary) => void>());
 
   useEffect(() => {
     loadPack(doc.match.id).then(setPack).catch(() => setErr("Simulation data for this match isn't available."));
@@ -47,19 +63,19 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
     w.onmessage = (e) => {
       const cb = pending.current.get(e.data.id);
       pending.current.delete(e.data.id);
-      if (e.data.error) setErr(e.data.error); else cb?.(e.data.summary);
+      if (e.data.error) setErr(e.data.error); else cb?.(e.data.full);
     };
     worker.current = w;
     return () => w.terminate();
   }, [doc.match.id]);
 
-  const run = (scenario: Scenario) => new Promise<LabSummary>((resolve) => {
+  const run = (scenario: Scenario) => new Promise<Summary>((resolve) => {
     const id = ++reqId.current;
     pending.current.set(id, resolve);
-    worker.current!.postMessage({ id, pack, scenario, n: N, seed: 11 });
+    worker.current!.postMessage({ id, pack, scenario, n: N, seed: 11, full: true });
   });
 
-  useEffect(() => { if (pack) run({}).then(setBase); }, [pack]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (pack) run({}).then((s) => setBase(enrich(s, doc))); }, [pack]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const scenario = useMemo(() => (pack ? toScenario(levers, pack) : null), [levers, pack]);
   useEffect(() => {
@@ -67,33 +83,42 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
     setBusy(true);
     const t = setTimeout(() => {
       const mine = reqId.current + 1;
-      run(scenario).then((s) => { if (reqId.current === mine) { setRes(s); setBusy(false); } });
+      run(scenario).then((s) => { if (reqId.current === mine) { setRes(enrich(s, doc)); setBusy(false); } });
     }, 250);
     return () => clearTimeout(t);
   }, [scenario]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const cur = res ?? base;
+  const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], generated_at: new Date().toISOString() } : null),
+                                            [cur, doc]);
+
   if (err) return <p className="notice">{err}</p>;
-  if (!pack || !base) return <div className="skeleton card" style={{ minHeight: 280 }} />;
+  if (!pack || !base || !cur || !labDoc) return <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />;
   const set = <K extends keyof Levers>(k: K, v: Levers[K]) => setLevers((l) => ({ ...l, [k]: v }));
   const teams = pack.teams.map((t) => t.name);
   const allBowlers = pack.teams.flatMap((t, k) => t.players.map((p) => ({ id: p, team: k })))
     .filter((p) => (pack.batting.find((b) => b.team === 1 - p.team)!.bowlWeights[pack.batting.find((b) => b.team === 1 - p.team)!.bowlers.indexOf(p.id)] ?? []).reduce((x, y) => x + y, 0) > 0.5);
-  const cur = res ?? base;
+  const win = (s: Summary, k: number) => s.result.win[teams[k]] ?? 0;
+  const median = (s: Summary, k: number) => s.teams[k].batting.score.q["50"] ?? 0;
 
   return (
-    <div className="grid g2" style={{ alignItems: "start" }}>
-      <div className="card grid" style={{ gap: 18 }}>
-        <div>
-          <h3>Set the scene</h3>
-          <p className="small muted">Every change re-runs {N.toLocaleString()} simulations in your browser.</p>
-        </div>
-        <div className="lever">
-          <label>Who bats first</label>
-          <select value={levers.battingFirst} onChange={(e) => set("battingFirst", e.target.value as Levers["battingFirst"])}>
-            <option value="">Unknown (toss)</option>{teams.map((t, i) => <option key={t} value={String(i)}>{t}</option>)}
-          </select>
-        </div>
-        <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
+    <>
+      <Scoreboard doc={labDoc} foot={<span className="sb-note">Your scenario · <Num value={cur.meta.simulations} /> simulated matches
+        {busy ? " · updating…" : ""}</span>} />
+      <div className="lab-layout">
+        <aside className="card grid lab-levers" style={{ gap: 18 }}>
+          <div>
+            <h3>Set the scene</h3>
+            <p className="small muted">Every change re-runs {N.toLocaleString()} simulations in your browser, and every view on the
+              right is rebuilt from them.</p>
+          </div>
+          <div className="lever">
+            <label>Who bats first</label>
+            <select value={levers.battingFirst} onChange={(e) => set("battingFirst", e.target.value as Levers["battingFirst"])}>
+              <option value="">Unknown (toss)</option>{teams.map((t, i) => <option key={t} value={String(i)}>{t}</option>)}
+            </select>
+          </div>
+          <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
           <Slider label="Pitch: wickets" lo="Batting paradise" hi="Green top" value={levers.wickets} min={0.75} max={1.35} onChange={(v) => set("wickets", v)} />
           <Slider label="Help for spinners" lo="None" hi="Raging turner" value={levers.spin} min={0.8} max={1.6} onChange={(v) => set("spin", v)} />
           <Slider label="Help for seamers" lo="None" hi="Swing and seam" value={levers.pace} min={0.8} max={1.6} onChange={(v) => set("pace", v)} />
@@ -110,41 +135,30 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
             ))}</div>}
           </div>
           <Situation levers={levers} set={set} teams={teams} pack={pack} />
-        <button className="btn ghost" onClick={() => setLevers(DEFAULT)}>Reset</button>
-      </div>
+          <button className="btn ghost" onClick={() => setLevers(DEFAULT)} disabled={!changed(levers)}>Reset</button>
+        </aside>
 
-      <div className="grid">
-        <div className="card" style={{ opacity: busy ? 0.6 : 1, transition: "opacity .2s" }}>
-          <div className="eyebrow">Win chance{busy ? " · simulating…" : ""}</div>
-          <div className="wins" style={{ fontSize: 30 }}>
-            <span style={{ color: COLORS[0] }}><Pct p={cur.win[0]} /></span><span style={{ color: COLORS[1] }}><Pct p={cur.win[1]} /></span>
+        <div className="grid lab-main" style={{ opacity: busy ? 0.6 : 1, transition: "opacity .2s" }}>
+          <div className="card">
+            <div className="card-head"><h3>Your scenario</h3>
+              <span className="small muted">{changed(levers) ? "Change v the match as published" : "No changes yet: this is the match as published"}</span></div>
+            <div className="lab-compare">
+              {teams.map((t, k) => (
+                <div key={t}>
+                  <div className="cs-k" style={{ color: COLORS[k] }}>{t}</div>
+                  <div className="lab-big"><Pct p={win(cur, k)} /> <Delta d={win(cur, k) - win(base, k)} pctPts /></div>
+                  <div className="small muted">to win · projected <b>{num(median(cur, k))}</b> <Delta d={median(cur, k) - median(base, k)} /></div>
+                </div>
+              ))}
+            </div>
+            <WinBar a={teams[0]} b={teams[1]} pa={win(cur, 0)} pb={win(cur, 1)} big />
+            <Movers now={cur} was={base} />
           </div>
-          <WinBar a={teams[0]} b={teams[1]} pa={cur.win[0]} pb={cur.win[1]} big />
-          <div className="wins small" style={{ marginTop: 6 }}>
-            <Delta d={cur.win[0] - base.win[0]} pctPts /> <span className="muted">change v the published match</span> <Delta d={cur.win[1] - base.win[1]} pctPts />
-          </div>
+          <ForecastTabs doc={labDoc} live={false} />
+          <p className="small muted">Every chart and table above comes from your scenario&apos;s simulations, not the published forecast.</p>
         </div>
-        {cur.teams.map((t, k) => (
-          <div key={t.name} className="card">
-            <h3 style={{ color: COLORS[k] }}>{t.name}</h3>
-            <div className="table-wrap"><table>
-              <thead><tr><th></th><th className="num">Now</th><th className="num">Change</th></tr></thead>
-              <tbody>
-                <tr><td>Projected score</td><td className="num"><Num value={t.score.q50} /></td><td className="num"><Delta d={t.score.q50 - base.teams[k].score.q50} /></td></tr>
-                {t.phases.map((ph, i) => (
-                  <tr key={ph.phase}><td>{ph.phase} runs / wickets</td><td className="num"><Num value={ph.runs} /> / <Num value={ph.wickets} digits={1} /></td>
-                    <td className="num"><Delta d={ph.runs - base.teams[k].phases[i].runs} /></td></tr>
-                ))}
-                <tr><td>First wicket (typical over)</td><td className="num">{num(t.firstWicketOver)}</td>
-                  <td className="num">{t.firstWicketOver !== null && base.teams[k].firstWicketOver !== null ? <Delta d={t.firstWicketOver - base.teams[k].firstWicketOver!} /> : "—"}</td></tr>
-              </tbody>
-            </table></div>
-            <OverBars height={120} series={[{ name: t.name, color: COLORS[k], values: t.pWicketByOver }]} />
-            <Movers now={t.players} was={base.teams[k].players} />
-          </div>
-        ))}
       </div>
-    </div>
+    </>
   );
 }
 
@@ -204,21 +218,26 @@ function Delta({ d, pctPts = false }: { d: number; pctPts?: boolean }) {
   return <span className={v > 0 ? "delta-up" : "delta-down"}>{signed(v, 0, pctPts ? " pts" : "")}</span>;
 }
 
-function Movers({ now, was }: { now: LabSummary["teams"][0]["players"]; was: LabSummary["teams"][0]["players"] }) {
-  const rows = now.map((p) => {
-    const w = was.find((x) => x.id === p.id)!;
-    return { p, dRuns: p.runs - w.runs, dW: (p.wkts ?? 0) - (w.wkts ?? 0) };
-  }).sort((a, b) => Math.abs(b.dRuns) + 10 * Math.abs(b.dW) - (Math.abs(a.dRuns) + 10 * Math.abs(a.dW))).slice(0, 4);
+function Movers({ now, was }: { now: Summary; was: Summary }) {
+  const before = new Map<string, PlayerRow>();
+  was.teams.forEach((t) => t.players.forEach((p) => before.set(p.id, p)));
+  const rows = now.teams.flatMap((t) => t.players).map((p) => {
+    const w = before.get(p.id);
+    const runs = p.batting?.runs.mean ?? 0, wk = p.bowling && p.bowling.p_bowls > 0.25 ? p.bowling.wickets.mean ?? 0 : null;
+    return { p, runs, wk, dRuns: runs - (w?.batting?.runs.mean ?? 0), dW: (wk ?? 0) - (w?.bowling?.wickets.mean ?? 0) };
+  }).sort((a, b) => Math.abs(b.dRuns) + 10 * Math.abs(b.dW) - (Math.abs(a.dRuns) + 10 * Math.abs(a.dW))).slice(0, 6);
   if (!rows.some((r) => Math.abs(r.dRuns) >= 0.5 || Math.abs(r.dW) >= 0.05)) return null;
   return (
-    <div style={{ marginTop: 12 }}>
-      <div className="eyebrow">Biggest movers</div>
-      {rows.map(({ p, dRuns, dW }) => (
-        <div key={p.id} className="small" style={{ display: "flex", justifyContent: "space-between" }}>
-          <span>{p.name}</span>
-          <span>{num(p.runs, 1)} runs <Delta d={dRuns} />{p.wkts !== null && <> · {num(p.wkts, 2)} wkts {Math.abs(dW) >= 0.05 ? <span className={dW > 0 ? "delta-up" : "delta-down"}>{signed(dW, 2)}</span> : null}</>}</span>
-        </div>
-      ))}
+    <div style={{ marginTop: 16 }}>
+      <div className="cs-k">Biggest movers</div>
+      <div className="lab-movers">
+        {rows.map(({ p, runs, wk, dRuns, dW }) => (
+          <div key={p.id} className="small">
+            <span>{p.name}</span>
+            <span>{num(runs, 1)} runs <Delta d={dRuns} />{wk !== null && <> · {num(wk, 2)} wkts {Math.abs(dW) >= 0.05 ? <span className={dW > 0 ? "delta-up" : "delta-down"}>{signed(dW, 2)}</span> : null}</>}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

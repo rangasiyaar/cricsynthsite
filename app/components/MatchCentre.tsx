@@ -24,8 +24,32 @@ const TAB_ICONS: Record<string, React.ReactNode> = {
   Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
 };
 
-export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
+/** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
+ *  live engine, which always runs the published match). */
+export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean }) {
   const [tab, setTab] = useState<Tab>("Overview");
+  return (
+    <>
+      <div className={`tabs mc-tabs${extra ? "" : " five"}`} role="tablist">
+        {TABS.map((t) => (
+          <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{t}</span>
+          </button>
+        ))}
+        {extra}
+      </div>
+      <div key={tab} className="anim-fade">
+        {tab === "Overview" && <Overview doc={doc} live={live} />}
+        {tab === "Scores" && <Scores doc={doc} />}
+        {tab === "Wickets" && <Wickets doc={doc} />}
+        {tab === "Players" && <Players doc={doc} />}
+        {tab === "Matchups" && <Matchups doc={doc} />}
+      </div>
+    </>
+  );
+}
+
+export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
   useEffect(() => { if (initialTab === "lab") window.location.replace(`/lab/?id=${encodeURIComponent(doc.match.id)}`); }, [initialTab, doc.match.id]);
   const { match, summary: s } = doc;
   const [a, b] = s.teams.map((t) => t.name);
@@ -36,26 +60,12 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
       <Scoreboard doc={doc} foot={<span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches
         {s.result.tie > 0.002 ? <>; tie {pct(s.result.tie, 1)}</> : null}.</span>} />
 
-      <div className="tabs mc-tabs" role="tablist">
-        {TABS.map((t) => (
-          <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{t}</span>
-          </button>
-        ))}
+      <ForecastTabs doc={doc} extra={
         <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
           <span className="mc-ico" aria-hidden="true">{TAB_ICONS.Lab}</span>
           <span className="mc-label"><span className="mc-full">MatchSynth Lab</span><span className="mc-short">Lab</span></span>
           <span className="tag pro">Pro</span>
-        </Link>
-      </div>
-
-      <div key={tab} className="anim-fade">
-        {tab === "Overview" && <Overview doc={doc} />}
-        {tab === "Scores" && <Scores doc={doc} />}
-        {tab === "Wickets" && <Wickets doc={doc} />}
-        {tab === "Players" && <Players doc={doc} />}
-        {tab === "Matchups" && <Matchups doc={doc} />}
-      </div>
+        </Link>} />
 
       <p className="small muted" style={{ marginTop: 40 }}>
         Simulated {new Date(doc.generated_at).toLocaleString()}. Probabilities, not predictions.
@@ -102,13 +112,13 @@ function Seg<T extends string>({ value, options, onChange, label }: { value: T; 
   );
 }
 
-function Overview({ doc }: { doc: MatchDoc }) {
+function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
   const s = doc.summary;
   const short = doc.match.teams.map((t) => t.short) as [string, string];
   return (
     <div className="grid">
       <Tiles s={s} short={short} />
-      <LiveEngine doc={doc} />
+      {live && <LiveEngine doc={doc} />}
       <div className="grid g2"><RunFan s={s} /><WinCurve s={s} /></div>
       <div className="grid g2">
         {s.teams.map((t, k) => (
