@@ -7,7 +7,7 @@ import { ChartFrame, type Column } from "@/components/charts";
 import { SHEET } from "@/components/RequestAccess";
 import { auth, usePlan } from "@/lib/firebase";
 import {
-  API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, getProfile, listKeys, listRequests, listUsage,
+  API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
   renameKey, requestUpgrade, revokeKey, saveNotify, saveProfile, SLOTS, VOLUMES,
   type ApiKey, type Notify, type Upgrade, type UpgradeRequest, type UsageDay,
 } from "@/lib/keys";
@@ -86,7 +86,7 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
   useEffect(() => {
     refresh();
     refreshRequests();
-    listUsage(u.uid, 30).then(setUsage).catch(() => setUsage([]));
+    listUsage(u.uid, 30).then(setUsage).catch(() => setUsage(emptyUsage(30)));
     const h = window.location.hash.slice(1);
     const match = SECTIONS.find((s) => s.toLowerCase().replace(/\s+/g, "-") === h);
     if (match) setSection(match);

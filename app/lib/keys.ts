@@ -82,6 +82,10 @@ export const saveNotify = (uid: string, n: Notify) =>
 /** UTC day key, matching the API's daily counter (limits reset at 00:00 UTC). */
 export const dayKey = (d: Date) => d.toISOString().slice(0, 10);
 
+/** `days` empty days ending today (shown while usage can't be read). */
+export const emptyUsage = (days: number): UsageDay[] => Array.from({ length: days }, (_, i) => ({
+  day: dayKey(new Date(Date.now() - (days - 1 - i) * 864e5)), total: 0, keys: {}, cats: {} }));
+
 /** The last `days` days of usage, oldest first, with empty days filled in. */
 export async function listUsage(uid: string, days: number): Promise<UsageDay[]> {
   const start = new Date(Date.now() - (days - 1) * 864e5);
