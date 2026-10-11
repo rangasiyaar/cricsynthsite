@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { loadResult, loadResults } from "@/lib/data";
-import type { ResultDoc, ResultIndex, ResultSummary, TabScore } from "@/lib/types";
+import type { ResultDoc, ResultIndex, TabScore } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
 const pct = (x: number | null | undefined) => (x === null || x === undefined ? "—" : `${Math.round(100 * x)}%`);
@@ -58,11 +58,15 @@ function Results() {
           </div></div>
       </div>
 
-      <div className="card">
-        <h3>Matches</h3>
-        <div className="res-list">
-          {index.matches.map((m) => <MatchRow key={m.id} m={m} active={m.id === id} onClick={() => { setId(m.id); setTab("All"); }} />)}
-        </div>
+      <div className="card res-pick">
+        <label htmlFor="res-match" className="cs-k">Match</label>
+        <select id="res-match" className="form-input" value={id ?? ""} onChange={(e) => { setId(e.target.value); setTab("All"); }}>
+          {index.matches.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.title ?? m.teams.map((t) => t.name).join(" v ")} · {fmtDate(m.date)} · {pct(m.accuracy)} ({m.hits}/{m.checks})
+            </option>
+          ))}
+        </select>
       </div>
 
       {id && !doc && <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />}
@@ -100,18 +104,6 @@ function Results() {
         scorer, best bowler, key duels) come true when what happened was the one, or among the few, we rated most likely. Forecasts are
         frozen at the start of play.</p>
     </div>
-  );
-}
-
-function MatchRow({ m, active, onClick }: { m: ResultSummary; active: boolean; onClick: () => void }) {
-  return (
-    <button type="button" className={`res-row${active ? " active" : ""}`} onClick={onClick} aria-pressed={active}>
-      <span className="res-row-main">
-        <b>{m.title ?? m.teams.map((t) => t.name).join(" v ")}</b>
-        <span className="small muted">{m.result} · {fmtDate(m.date)}</span>
-      </span>
-      <span className="res-row-score"><b>{pct(m.accuracy)}</b><span className="small muted">{m.hits}/{m.checks}</span></span>
-    </button>
   );
 }
 
