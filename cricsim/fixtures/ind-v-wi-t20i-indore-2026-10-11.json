@@ -11,7 +11,7 @@
   "venue_search": "holkar",
   "status": "scheduled",
   "published": true,
-  "note": "Squads announced; likely XIs are the sides from the previous T20I (all in the squads). Update when the playing XIs are announced.",
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "India",
@@ -22,12 +22,12 @@
         "Ishan Kishan",
         "Shreyas Iyer",
         "Tilak Varma",
-        "Shivam Dube",
+        "Nitish Kumar Reddy",
         "Naman Dhir",
         "Axar Patel",
         "Arshdeep Singh",
-        "Kuldeep Yadav",
-        "Mayank Yadav"
+        "Mayank Yadav",
+        "Prince Yadav"
       ],
       "roles": [
         "BAT",
@@ -70,24 +70,24 @@
         "Shimron Hetmyer",
         "Rovman Powell",
         "Sherfane Rutherford",
-        "Romario Shepherd",
-        "Matthew Forde",
-        "Roston Chase",
-        "Akeal Hosein",
+        "Quentin Sampson",
+        "Keemo Paul",
         "Shamar Springer",
+        "Roston Chase",
+        "Gudakesh Motie",
         "Shamar Joseph"
       ],
       "roles": [
         "WK",
-        "WK",
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
         "AR",
         "BOWL",
-        "AR",
-        "BOWL",
-        "AR",
         "BOWL"
       ],
       "squad": [
