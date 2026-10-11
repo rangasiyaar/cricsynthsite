@@ -26,13 +26,20 @@ function Results() {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    loadResults().then((ix) => { setIndex(ix); if (!id && ix.matches.length) setId([...ix.matches].sort((x, y) => (y.date ?? "").localeCompare(x.date ?? ""))[0].id); }).catch(() => setErr(true));
+    loadResults().then(setIndex).catch(() => setErr(true));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!id) return;
     setDoc(null);
-    loadResult(id).then(setDoc).catch(() => setDoc(null));
     const u = new URL(window.location.href);
+    if (!id) {
+      u.searchParams.delete("id");
+      window.history.replaceState(null, "", u.toString());
+      return;
+    }
+    loadResult(id).then((d) => {
+      setDoc(d);
+      requestAnimationFrame(() => document.getElementById("res-detail")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }).catch(() => setDoc(null));
     u.searchParams.set("id", id);
     window.history.replaceState(null, "", u.toString());
   }, [id]);
@@ -66,7 +73,7 @@ function Results() {
       <div className="grid res-cards">
         {shown.map((m) => (
           <button key={m.id} type="button" className={`card res-card${m.id === id ? " active" : ""}`} aria-pressed={m.id === id}
-            onClick={() => { setId(m.id); setTab("All"); }}>
+            onClick={() => { setId(m.id === id ? null : m.id); setTab("All"); }}>
             <span className="cs-k">{fmtDate(m.date)}</span>
             <b className="res-card-title">{m.title ?? m.teams.map((t) => t.name).join(" v ")}</b>
             <span className="small muted">{m.result}</span>
@@ -87,7 +94,7 @@ function Results() {
 
       {id && !doc && <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />}
       {doc && (
-        <div className="card">
+        <div className="card" id="res-detail" style={{ scrollMarginTop: 80 }}>
           <div className="card-head">
             <div>
               <p className="cs-k">{doc.competition}{doc.date ? ` · ${fmtDate(doc.date)}` : ""}</p>
