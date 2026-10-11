@@ -52,8 +52,8 @@ def candidates(con, parquet: Path, team: str | None, gender: str) -> list[dict]:
 
 def _loose(name: str, variant: str) -> bool:
     """Same surname, and the first name agrees: initials ("BKG Mendis") must contain the first initial; a written
-    first name must start with it ("Hassan" for "Hasan"), or every word of the variant appears in the name
-    ("Salman Mirza" for "Mohammad Salman Mirza")."""
+    first name must share its first three letters ("Hassan" for "Hasan", not "Abdul" for "Aqeel"), or every word
+    of the variant appears in the name ("Salman Mirza" for "Mohammad Salman Mirza")."""
     full, sur, ini = _keys(name)
     words = _norm(variant).split()
     if len(words) < 2 or words[-1] != sur:
@@ -61,10 +61,19 @@ def _loose(name: str, variant: str) -> bool:
     raw = variant.split()[0]
     if raw.isalpha() and raw.isupper() and len(raw) <= 4:      # registry initials
         return ini in raw.lower()
-    return words[0][0] == ini or set(words) <= set(full.split())
+    first = full.split()[0]
+    return words[0][:3] == first[:3] or set(words) <= set(full.split())
 
 
-def match_name(name: str, cands: list[dict], taken: set[str] = frozenset()) -> tuple[dict | None, str]:
+def _shorter(name: str, variant: str) -> bool:
+    """The record uses a shorter form of the name: same first name, every word in the full name ("Syed Aziz" for
+    "Syed Aziz Mubarak", "Muhammad Amir" for "Muhammad Amir Azim"). Only within the player's own team."""
+    full = _keys(name)[0].split()
+    words = _norm(variant).split()
+    return len(words) >= 2 and len(words) < len(full) and words[0] == full[0] and set(words) <= set(full)
+
+
+def match_name(name: str, cands: list[dict], taken: set[str] = frozenset(), shorter: bool = False) -> tuple[dict | None, str]:
     """Full name / alias, else surname + first initial. Never surname alone: "Kamil Pooran" is not "N Pooran".
     Players in `taken` (already matched in this XI) are skipped, so two Mendises don't both become Kusal."""
     full, _, _ = _keys(name)
@@ -75,6 +84,9 @@ def match_name(name: str, cands: list[dict], taken: set[str] = frozenset()) -> t
     loose = [c for c in pool if any(_loose(name, x) for x in c["names"])]
     if loose:
         return max(loose, key=lambda c: (c["last"], c["n"])), "surname+initial"
+    short = [c for c in pool if any(_shorter(name, x) for x in c["names"])] if shorter else []
+    if len(short) == 1:
+        return short[0], "shorter name"
     return None, "unresolved"
 
 
@@ -106,7 +118,7 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
         taken = {c["id"] for c, _ in found.values()}
         ids = []
         for name in team["players"]:
-            c, how = found.get(name) or match_name(name, cands, taken)
+            c, how = found.get(name) or match_name(name, cands, taken, shorter=True)
             if c is None:      # not capped for this team yet: their league / domestic record still counts
                 everyone = everyone or candidates(con, parquet, None, fx["gender"])
                 c, how = match_name(name, everyone, taken)

@@ -7,7 +7,9 @@ POOL = [{"id": "np", "name": "N Pooran", "last": "2026-09-01", "n": 120, "names"
         {"id": "kamindu", "name": "PHKD Mendis", "last": "2026-09-20", "n": 90, "names": {"PHKD Mendis"}},
         {"id": "vu", "name": "Vathila Udara", "last": "2026-09-05", "n": 19, "names": {"Vathila Udara"}},
         {"id": "hn", "name": "Hassan Nawaz", "last": "2026-10-03", "n": 28, "names": {"Hassan Nawaz"}},
-        {"id": "sm", "name": "Salman Mirza", "last": "2026-02-24", "n": 16, "names": {"Salman Mirza"}}]
+        {"id": "sm", "name": "Salman Mirza", "last": "2026-02-24", "n": 16, "names": {"Salman Mirza"}},
+        {"id": "aw", "name": "Abdul Wahid", "last": "2025-07-22", "n": 12, "names": {"Abdul Wahid"}},
+        {"id": "sa", "name": "Syed Aziz", "last": "2026-09-24", "n": 150, "names": {"Syed Aziz"}}]
 
 
 def test_full_name_and_initials():
@@ -24,6 +26,13 @@ def test_first_name_must_agree():
     assert match_name("Lahiru Udara", POOL)[0] is None            # "l" is in "Vathila", but that's another player
     assert match_name("Hasan Nawaz", POOL)[0]["id"] == "hn"         # spelling variant, same initial
     assert match_name("Mohammad Salman Mirza", POOL)[0]["id"] == "sm"   # extra given name
+    assert match_name("Aqeel Wahid", POOL)[0] is None               # same initial, different first name
+
+
+def test_shorter_record_name_within_the_team():
+    assert match_name("Syed Aziz Mubarak", POOL)[0] is None
+    assert match_name("Syed Aziz Mubarak", POOL, shorter=True)[0]["id"] == "sa"
+    assert match_name("Syed Mubarak", POOL, shorter=True)[0] is None
 
 
 def test_player_taken_in_the_xi_is_skipped():
