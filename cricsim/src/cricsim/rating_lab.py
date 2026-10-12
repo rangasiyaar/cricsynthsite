@@ -160,7 +160,34 @@ def probability(doc: dict) -> dict[str, dict[str, float]]:
     return out
 
 
-def candidates(doc: dict) -> dict[str, dict[str, dict[str, float]]]:
+def _roles(doc: dict, fx: dict | None) -> dict[str, str]:
+    """Player id → fixture role (WK / BAT / AR / BOWL), by position in the XI."""
+    out = {}
+    for k, t in enumerate(doc["match"]["teams"]):
+        roles = ((fx or {}).get("teams", [{}, {}])[k].get("roles") or []) if fx else []
+        for i, pid in enumerate(t["players"]):
+            out[pid] = roles[i] if i < len(roles) else ""
+    return out
+
+
+def with_fielding(pred: dict[str, dict[str, float]], roles: dict[str, str], wk: float, other: float) -> dict:
+    """Adds expected fielding points to the batting side of the ledger (only the MVP total uses it)."""
+    return {i: {"bat": v["bat"], "bowl": v["bowl"], "field": wk if roles.get(i) == "WK" else other} for i, v in pred.items()}
+
+
+def rank_blend(pred: dict[str, dict[str, float]]) -> dict:
+    """MVP as the sum of a player's batting and bowling percentile within the match (rewards all-rounders)."""
+    ids = list(pred)
+    out = {i: {"bat": 0.0, "bowl": 0.0} for i in ids}
+    for key in ("bat", "bowl"):
+        rk = _ranks([pred[i][key] for i in ids])
+        for i, x in zip(ids, rk):
+            out[i][key] = x / (len(ids) - 1) if pred[i][key] > 0 else 0.0
+    return out
+
+
+def candidates(doc: dict, fx: dict | None = None) -> dict[str, dict[str, dict[str, float]]]:
+    roles = _roles(doc, fx)
     c = {"site now (w=12, sr^0.5, econ 1)": value(doc, 12, 0.5, 1),
          "expected fantasy points": expected_fantasy(doc),
          "top scorer / best bowler chance": probability(doc)}
@@ -170,6 +197,12 @@ def candidates(doc: dict) -> dict[str, dict[str, dict[str, float]]]:
         c[f"w=12, sr^{sr:g}, econ 1"] = value(doc, 12, sr, 1)
     for ew in (0.0, 0.5, 2.0):
         c[f"w=12, sr^0.5, econ {ew:g}"] = value(doc, 12, 0.5, ew)
+    ef = expected_fantasy(doc)
+    for wk, other in ((12, 4), (20, 6)):
+        c[f"fantasy + fielding (wk {wk}, others {other})"] = with_fielding(ef, roles, wk, other)
+        c[f"w=12, econ 0.5 + fielding (wk {wk}, others {other})"] = with_fielding(value(doc, 12, 0.5, 0.5), roles, wk, other)
+    c["rank blend (bat pct + bowl pct)"] = rank_blend(value(doc, 12, 0.5, 0.5))
+    c["rank blend + fielding"] = with_fielding(rank_blend(value(doc, 12, 0.5, 0.5)), roles, 0.25, 0.05)
     return c
 
 
@@ -214,12 +247,12 @@ def evaluate(matches: list[tuple[dict, dict, dict | None]]) -> dict:
         a = {i: act.get(i, {"bat": 0, "bowl": 0, "field": 0, "total": 0}) for i in ids}
         per_match.append({"id": doc["match"]["id"], "matched": sum(1 for i in ids if i in act),
                           "mvp": max(ids, key=lambda i: a[i]["total"])})
-        for name, pred in candidates(doc).items():
+        for name, pred in candidates(doc, fx).items():
             m = agg.setdefault(name, {k: [] for k in ("bat", "bowl", "mvp", "hit_bat", "hit_bowl", "hit_mvp")})
             for key in ("bat", "bowl"):
                 m[key].append(spearman([pred[i][key] for i in ids], [a[i][key] for i in ids]))
                 m["hit_" + key].append(top_hit({i: pred[i][key] for i in ids}, {i: a[i][key] for i in ids}))
-            tot = {i: pred[i]["bat"] + pred[i]["bowl"] for i in ids}
+            tot = {i: pred[i]["bat"] + pred[i]["bowl"] + pred[i].get("field", 0.0) for i in ids}
             m["mvp"].append(spearman([tot[i] for i in ids], [a[i]["total"] for i in ids]))
             m["hit_mvp"].append(top_hit(tot, {i: a[i]["total"] for i in ids}))
     mean = lambda xs: sum(x for x in xs if x == x) / max(1, sum(1 for x in xs if x == x))
