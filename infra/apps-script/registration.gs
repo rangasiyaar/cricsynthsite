@@ -5,7 +5,9 @@
  * 2. Sends a confirmation email through Resend from hello@cricsynthesis.in.
  *
  * Called by the site's "Build with CricSynthesis" form, by API plan upgrade requests from the account page, and when
- * someone creates an account (type "welcome": logged on a "Signups" tab, and each address is welcomed only once).
+ * someone creates an account (type "welcome": recorded in Firestore signups/{email}, each address welcomed only once).
+ * Firestore is written with this script's own Google sign-in (the project owner), so no security-rule change is needed;
+ * the manifest (appsscript.json) must list the datastore scope, see infra/apps-script/appsscript.json.
  * The Resend key lives in Script properties (Project Settings > Script properties > RESEND_API_KEY), not in code.
  * After editing: Deploy > Manage deployments > pencil > Version: New version > Deploy (keeps the same URL).
  */
@@ -14,6 +16,7 @@ const FROM = 'CricSynthesis <hello@cricsynthesis.in>';
 const REPLY_TO = 'hello@cricsynthesis.in';
 const SITE = 'https://cricsynthesis.in';
 const LOGO = SITE + '/email-logo.png';
+const FIRESTORE = 'https://firestore.googleapis.com/v1/projects/cricsynthesis/databases/(default)/documents';
 
 // Values sent by the form's "What are you building?" field
 const INTERESTS = {
@@ -61,24 +64,39 @@ function doPost(e) {
   }
 }
 
-// New account: log it on the "Signups" tab and send the welcome email, once per address.
+// New account: record it in Firestore (signups/{email}) and send the welcome email, once per address.
 function welcomeSignup(book, data) {
   var email = String(data.email || '').trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { success: false, error: 'bad email' };
-  var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
-    var tab = book.getSheetByName('Signups') || book.insertSheet('Signups');
-    if (tab.getLastRow() === 0) tab.appendRow(['Timestamp', 'Name', 'Email', 'Welcome sent']);
-    var seen = tab.getLastRow() > 1 ? tab.getRange(2, 3, tab.getLastRow() - 1, 1).getValues() : [];
-    if (seen.some(function (r) { return String(r[0]).toLowerCase() === email; })) return { success: true, duplicate: true };
-    var mail = welcomeEmail(data);
-    var res = sendViaResend(email, mail.subject, mail.html, mail.text);
-    tab.appendRow([new Date().toISOString(), data.name || '', email, /"id"/.test(res) ? 'yes' : 'failed']);
-    return { success: true };
-  } finally {
-    lock.releaseLock();
+  if (!/^[^\s@\/]+@[^\s@\/]+\.[^\s@\/]+$/.test(email)) return { success: false, error: 'bad email' };
+  var doc = { fields: {
+    email: { stringValue: email },
+    name: { stringValue: String(data.name || '').slice(0, 120) },
+    uid: { stringValue: String(data.uid || '').slice(0, 128) },
+    created: { timestampValue: new Date().toISOString() },
+    welcome: { stringValue: 'pending' }
+  } };
+  // createDocument fails with 409 if the address is already there: that is the "only once" check
+  var made = firestore('post', '/signups?documentId=' + encodeURIComponent(email), doc);
+  if (made.getResponseCode() === 409) return { success: true, duplicate: true };
+  if (made.getResponseCode() >= 300) {
+    console.error('Firestore error', made.getResponseCode(), made.getContentText());
+    return { success: false, error: 'store' };
   }
+  var mail = welcomeEmail(data);
+  var sent = /"id"/.test(sendViaResend(email, mail.subject, mail.html, mail.text));
+  firestore('patch', '/signups/' + encodeURIComponent(email) + '?updateMask.fieldPaths=welcome&updateMask.fieldPaths=welcomedAt',
+            { fields: { welcome: { stringValue: sent ? 'sent' : 'failed' }, welcomedAt: { timestampValue: new Date().toISOString() } } });
+  return { success: true };
+}
+
+function firestore(method, path, body) {
+  return UrlFetchApp.fetch(FIRESTORE + path, {
+    method: method,
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify(body),
+    muteHttpExceptions: true
+  });
 }
 
 function json(o) {
@@ -236,6 +254,11 @@ function esc(s) {
 function testAccessEmail() {
   var m = accessEmail({ name: 'Saurav Kumar', organization: 'Test Org', segment: 'simulation' });
   console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
+}
+
+// Writes a test record to Firestore (signups/<your email>) and sends the welcome email. Delete the record to re-run.
+function testWelcomeSignup() {
+  console.log(JSON.stringify(welcomeSignup(null, { name: 'Saurav Kumar', email: 'ibeingsaurav@gmail.com', uid: 'test' })));
 }
 
 function testWelcomeEmail() {

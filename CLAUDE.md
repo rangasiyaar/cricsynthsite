@@ -111,6 +111,7 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 - BigQuery: never `SELECT *` on `deliveries`; filter on `match_date`; set `maximum_bytes_billed`.
 - Firestore: writes only from server code, except a signed-in user's own `users/{uid}` profile fields and
   `users/{uid}/keys/{k1..k5}` API keys (hash + prefix only, free plan only), email preferences and
-  `users/{uid}/requests/{api-pro|api-business}` upgrade requests (file / cancel only). Rules in `infra/firestore.rules`, tests in
+  `users/{uid}/requests/{api-pro|api-business}` upgrade requests (file / cancel only). New accounts are recorded in
+  `signups/{email}` (server-only) by the sign-ups Apps Script (`infra/apps-script/`), which also sends the welcome email. Rules in `infra/firestore.rules`, tests in
   `infra/rules-tests/` (CI runs them, then releases the rules). Public docs must include `published: true`; keep docs < 1 MB.
 - Cloud Run: sizes come from `infra/limits.env`; scale to zero.
