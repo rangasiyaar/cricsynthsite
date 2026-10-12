@@ -166,6 +166,91 @@
           "source": "/patterns",
           "destination": "/",
           "type": 301
+        },
+        {
+          "source": "/sdk/**",
+          "destination": "/developers/",
+          "type": 301
+        },
+        {
+          "source": "/sdk",
+          "destination": "/developers/",
+          "type": 301
+        },
+        {
+          "source": "/pricing.html",
+          "destination": "/pricing/",
+          "type": 301
+        },
+        {
+          "source": "/api.html",
+          "destination": "/developers/",
+          "type": 301
+        },
+        {
+          "source": "/developers.html",
+          "destination": "/developers/",
+          "type": 301
+        },
+        {
+          "source": "/dashboard.html",
+          "destination": "/account/",
+          "type": 301
+        },
+        {
+          "source": "/account.html",
+          "destination": "/account/",
+          "type": 301
+        },
+        {
+          "source": "/admin.html",
+          "destination": "/admin/",
+          "type": 301
+        },
+        {
+          "source": "/match.html",
+          "destination": "/match/",
+          "type": 301
+        },
+        {
+          "source": "/matches.html",
+          "destination": "/match/",
+          "type": 301
+        },
+        {
+          "source": "/matches/**",
+          "destination": "/match/",
+          "type": 301
+        },
+        {
+          "source": "/lab.html",
+          "destination": "/lab/",
+          "type": 301
+        },
+        {
+          "source": "/results.html",
+          "destination": "/results/",
+          "type": 301
+        },
+        {
+          "source": "/credits.html",
+          "destination": "/credits/",
+          "type": 301
+        },
+        {
+          "source": "/assets/**",
+          "destination": "/",
+          "type": 301
+        },
+        {
+          "source": "/css/**",
+          "destination": "/",
+          "type": 301
+        },
+        {
+          "source": "/js/**",
+          "destination": "/",
+          "type": 301
         }
       ]
     },

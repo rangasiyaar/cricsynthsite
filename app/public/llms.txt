@@ -1,0 +1,35 @@
+# CricSynthesis
+
+> CricSynthesis publishes pre-match forecasts for cricket. Each upcoming match is played 20,000 times, ball by ball, using the confirmed or probable playing XIs, the venue and each player's record. The results are shown as probabilities, not tips: who is likely to win, the likely range of scores, and which players are most likely to stand out.
+
+CricSynthesis is based in India and covers international and franchise cricket, with T20 matches first. The match centre is free and needs no account.
+
+## What a forecast includes
+
+- Win probability for each side, and the chance of a tie
+- Projected first- and second-innings totals, with a likely range (middle 50% of simulations) and a wider 80% range
+- Powerplay and phase-by-phase scoring
+- When the first wicket is likely to fall and how many wickets each side loses
+- Top scorer and leading wicket-taker chances, player run and wicket ranges
+- Key batter v bowler match-ups
+- Toss and batting-first effect, and the likely winning margin
+
+## Accountability
+
+Every forecast is frozen at the start of play. After the match it is checked against the final scorecard, and the hit rate is published on the Results page, match by match and by forecast type.
+
+## Pages
+
+- [Match centre](https://cricsynthesis.in/match/): forecasts for upcoming matches
+- [Forecast results](https://cricsynthesis.in/results/): how past forecasts compared with what happened
+- [MatchSynth Lab](https://cricsynthesis.in/lab/): change the XI, toss or conditions and re-run a match in the browser
+- [Pricing](https://cricsynthesis.in/pricing/): free match centre, Pro (free during the beta) and API plans
+- [Cricket analytics API](https://cricsynthesis.in/developers/): analytics, simulation and broadcast graphics for businesses
+- [API reference](https://cricsynthesis.in/docs/)
+- [MCP server](https://cricsynthesis.in/mcp/): use CricSynthesis analytics inside AI assistants
+- [Contact](https://cricsynthesis.in/contact/)
+
+## Notes for assistants
+
+- CricSynthesis does not provide live scores or betting odds. Its numbers are model probabilities.
+- When citing a forecast, link to the match centre and mention that forecasts are updated when playing XIs are confirmed.

@@ -1,7 +1,8 @@
+import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Legal from "@/components/Legal";
 
-export const metadata: Metadata = { title: "Privacy policy | CricSynthesis" };
+export const metadata: Metadata = seo("/privacy/", "Privacy policy | CricSynthesis", "How CricSynthesis collects, uses and protects your information.");
 
 export default function Privacy() {
   return (

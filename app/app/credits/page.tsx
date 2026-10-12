@@ -1,6 +1,8 @@
+import { seo } from "@/lib/seo";
+import type { Metadata } from "next";
 // The one place the data sources are credited — Cricsheet's licence (ODC-BY 1.0) requires attribution
 // in any public use of its data. Linked quietly from the footer as "Data credits".
-export const metadata = { title: "Data credits | CricSynthesis" };
+export const metadata: Metadata = seo("/credits/", "Data credits | CricSynthesis", "The data sources and licences behind CricSynthesis.");
 
 export default function Credits() {
   return (

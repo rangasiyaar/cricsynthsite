@@ -1,6 +1,10 @@
+import { seo } from "@/lib/seo";
+import type { Metadata } from "next";
 import Link from "next/link";
 import RequestAccess from "@/components/RequestAccess";
 import { CATEGORIES, ENDPOINTS } from "@/lib/apiref";
+
+export const metadata: Metadata = seo("/developers/", "Cricket analytics API | CricSynthesis", "One API for cricket analytics, match simulation and broadcast graphics: win probability, score projections, player and venue insight.");
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 

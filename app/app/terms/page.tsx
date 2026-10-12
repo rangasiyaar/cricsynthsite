@@ -1,7 +1,8 @@
+import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Legal from "@/components/Legal";
 
-export const metadata: Metadata = { title: "Terms of service | CricSynthesis" };
+export const metadata: Metadata = seo("/terms/", "Terms of service | CricSynthesis", "The terms that apply when you use the CricSynthesis website, MatchSynth Lab and API.");
 
 export default function Terms() {
   return (

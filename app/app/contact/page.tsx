@@ -1,8 +1,9 @@
+import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Legal from "@/components/Legal";
 import RequestAccess from "@/components/RequestAccess";
 
-export const metadata: Metadata = { title: "Contact | CricSynthesis" };
+export const metadata: Metadata = seo("/contact/", "Contact | CricSynthesis", "Questions about forecasts, API access or partnerships? Get in touch with the CricSynthesis team.");
 
 export default function Contact() {
   return (

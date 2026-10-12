@@ -1,7 +1,8 @@
+import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "MCP | CricSynthesis" };
+export const metadata: Metadata = seo("/mcp/", "MCP server | CricSynthesis", "Bring CricSynthesis cricket analytics and match simulations into Claude and other AI assistants with our MCP server. Runs on your own machine.");
 
 const INDEX = "https://cricsynthesis.in/pypi/simple/";
 
