@@ -326,7 +326,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
     listed = {c["id"] for c in idx["matches"]}
     for mid in sorted(want):
         doc_p = out / "matches" / f"{mid}.json"
-        if mid in listed or not doc_p.exists() or fx.get(mid, {}).get("date") != today:
+        if mid in listed or mid in cards or not doc_p.exists() or fx.get(mid, {}).get("date") != today:   # finished: Results page
             continue
         doc = json.loads(doc_p.read_text())
         m, sm = doc["match"], doc["summary"]

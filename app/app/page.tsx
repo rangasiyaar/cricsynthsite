@@ -51,6 +51,9 @@ function Featured({ doc }: { doc: MatchDoc }) {
 }
 
 
+// Fixture start times are IST.
+const kickoff = (m: MatchCard) => (m.date ? Date.parse(`${m.date}T${m.start_time ?? "23:59"}:00+05:30`) : Infinity);
+
 export default function Home() {
   const [matches, setMatches] = useState<MatchCard[] | null>(null);
   const [featured, setFeatured] = useState<MatchDoc | null>(null);
@@ -59,7 +62,10 @@ export default function Home() {
     loadIndex().then((i) => {
       const ms = i.matches.filter((m) => m.published);
       setMatches(ms);
-      if (ms[0]) loadMatch(ms[0].id).then(setFeatured).catch(() => {});
+      // feature the next match yet to start; a match under way only if nothing else is coming up
+      const now = Date.now();
+      const next = ms.find((m) => kickoff(m) > now) ?? ms[ms.length - 1];
+      if (next) loadMatch(next.id).then(setFeatured).catch(() => {});
     }).catch(() => setError(true));
   }, []);
 
