@@ -7,7 +7,7 @@ import "./design.css";
 import { Footer, Nav } from "@/components/Shell";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
 
-const HOME_DESC = "Who wins, the likely scores and the players to watch. Pre-match cricket forecasts built by playing each game 20,000 times, ball by ball. Free to follow.";
+const HOME_DESC = "Who wins, the likely scores and the players to watch. Free pre-match forecasts for upcoming cricket matches, checked against every result.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

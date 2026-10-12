@@ -33,8 +33,7 @@ export default function Developers() {
     <div className="page-head">
       <p className="cs-eyebrow">CricSynthesis API</p>
       <h1><span>Cricket intelligence.</span><span>One API.</span></h1>
-      <p className="cs-lede">{ENDPOINTS.length} endpoints for player and venue analytics, match simulation and decision modelling, and
-        broadcast-ready graphics, for fantasy platforms, broadcasters, media and franchise analysts.</p>
+      <p className="cs-lede">{ENDPOINTS.length} endpoints for player and venue analytics, match simulation and broadcast graphics.</p>
       <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
         <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>
         <Link className="cs-btn cs-btn--secondary" href="/playground/">Open the playground</Link>

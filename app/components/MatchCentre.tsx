@@ -57,8 +57,7 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
   return (
     <div className="page-head" style={{ paddingTop: 40, paddingBottom: 80 }}>
       <h1 className="sr-only">{a} v {b}</h1>
-      <Scoreboard doc={doc} foot={<span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches
-        {s.result.tie > 0.002 ? <>; tie {pct(s.result.tie, 1)}</> : null}.</span>} />
+      <Scoreboard doc={doc} foot={s.result.tie > 0.002 ? <span className="sb-note">Tie {pct(s.result.tie, 1)}</span> : undefined} />
 
       <ForecastTabs doc={doc} extra={
         <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
@@ -67,9 +66,7 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
           <span className="tag pro">Pro</span>
         </Link>} />
 
-      <p className="small muted" style={{ marginTop: 40 }}>
-        Simulated {new Date(doc.generated_at).toLocaleString()}. Probabilities, not predictions.
-      </p>
+      <p className="small muted" style={{ marginTop: 40 }}>Updated {new Date(doc.generated_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
     </div>
   );
 }
@@ -126,7 +123,7 @@ function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
           <div key={t.name} className="card">
             <h3>{t.name}: score range</h3>
             <p className="small" style={{ margin: "0 0 10px" }}>Projected <b>{Math.round(t.batting.score.q["50"])}</b>, likely <b>{range(t.batting.score.q, "25", "75")}</b>
-              <span className="muted"> · 80% of simulations {range(t.batting.score.q)}</span></p>
+              <span className="muted"> · 80% range {range(t.batting.score.q)}</span></p>
             <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
                        height={180} xLabel="runs"
                        series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
@@ -152,15 +149,14 @@ function Scores({ doc }: { doc: MatchDoc }) {
             <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
           </div>
         </div>
-        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median; bold band: likely range (middle 50%); faint band: middle 80%
-          {split === "all" ? " of all simulations." : split === "first" ? " when batting first." : " when chasing."}</p>
+        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median · bold band: likely range · faint band: 80% range</p>
         {legend}
         <Histogram W={1100} width={binWidth(s)} xLabel="runs" series={histSeries(s)} markers={markers(s, split)} mode={mode} height={260} />
       </div>
       <div className="grid g2"><RunFan s={s} /><Checkpoints s={s} /></div>
       <div className="card">
         <h3>Runs per over</h3>
-        <p className="small muted" style={{ margin: "0 0 8px" }}>Bars: expected runs in each over. Line: three-over rolling average.</p>
+        <p className="small muted" style={{ margin: "0 0 8px" }}>Line: three-over average</p>
         {legend}
         <OverBars W={1100} height={220} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
@@ -199,7 +195,7 @@ function Wickets({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <h3>Chance of a wicket in each over</h3>
-        <p className="small muted" style={{ margin: "0 0 8px" }}>Dashed line: the average across both innings.</p>
+        <p className="small muted" style={{ margin: "0 0 8px" }}>Dashed line: average of both innings</p>
         <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name} batting</span>)}</div>
         <OverBars W={1100} height={220} phases={s.meta.rules} average
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
@@ -214,7 +210,7 @@ function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string
   return (
     <div className="card">
       <h3 style={{ color }}>When {t.name} lose wickets</h3>
-      <p className="small muted">Each row is a wicket; darker cells are the overs it most often falls in. The outlined, numbered cell is its likeliest over.</p>
+      <p className="small muted">Darker cells: overs each wicket most often falls in</p>
       <ExpectedWickets t={t} rules={rules} />
       <WicketHeatmap color={color} overs={overs} rows={fow.map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
       <div className="table-wrap" style={{ marginTop: 16 }}><table>
@@ -261,7 +257,6 @@ function Players({ doc }: { doc: MatchDoc }) {
           </table></div>
         </div>
       ))}
-      <p className="small muted">Ratings combine every league and format a player has played, adjusted for opposition strength. Hover a name for where a player&apos;s rating comes from.</p>
     </div>
   );
 }
@@ -280,7 +275,6 @@ function Matchups({ doc }: { doc: MatchDoc }) {
   return (
     <div className="card">
       <h3>Key duels</h3>
-      <p className="small muted">How often each bowler dismisses each batter, across all simulations.</p>
       <div className="table-wrap"><table>
         <thead><tr><th>Bowler</th><th>Batter</th><th className="num">Dismissal share</th></tr></thead>
         <tbody>{s.matchups.slice(0, 25).map((m) => (
@@ -296,19 +290,15 @@ export function Spotlight({ doc }: { doc: MatchDoc }) {
   return (
     <>
       <div className="section">
-        <div className="section-head"><div><h2>How the innings unfold</h2>
-          <p>Where each total lands, the scoring and wicket rhythm over by over, and when each side&apos;s wickets fall.</p></div></div>
+        <div className="section-head"><div><h2>How the innings unfold</h2></div></div>
         <SpotlightCharts doc={doc} />
       </div>
       <div className="section">
-        <div className="section-head"><div><h2>Watch the engine</h2>
-          <p>The same simulator, running in your browser on this match. The estimate settles as more matches are played.</p></div></div>
+        <div className="section-head"><div><h2>Watch the engine</h2></div></div>
         <LiveEngine doc={doc} heading={false} />
       </div>
       <div className="section">
-        <div className="section-head"><div><h2>Range of outcomes</h2>
-          <p>Every forecast is a spread, not a single number: team totals over time, what a first-innings score is worth,
-            and each player&apos;s likely range.</p></div></div>
+        <div className="section-head"><div><h2>Range of outcomes</h2></div></div>
         <div className="grid">
           <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
           <PlayerLadder s={doc.summary} />
@@ -326,8 +316,7 @@ function SpotlightCharts({ doc }: { doc: MatchDoc }) {
     <>
     <div className="card anim-rise">
       <h3>When wickets fall</h3>
-      <p className="small muted" style={{ margin: "0 0 4px" }}>Each row is a wicket; darker cells are the overs it most often falls in, and the
-        numbered cell is its likeliest over.</p>
+      <p className="small muted" style={{ margin: "0 0 4px" }}>Darker cells: overs each wicket most often falls in</p>
       <div className="grid g2" style={{ marginTop: 8 }}>
         {s.teams.map((t, k) => (
           <div key={t.name}>

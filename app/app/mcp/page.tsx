@@ -47,9 +47,8 @@ export default function Mcp() {
     <div className="page-head">
       <p className="cs-eyebrow">Model Context Protocol</p>
       <h1><span>CricSynthesis MCP.</span><span>Cricket for AI assistants.</span></h1>
-      <p className="cs-lede">Ask Claude, ChatGPT desktop, Cursor or any MCP client about any player, ground, league or team, or
-        about an upcoming match. Answers come from a ball-by-ball model of every recorded delivery. Free, and it runs on
-        your own machine.</p>
+      <p className="cs-lede">Ask Claude, ChatGPT desktop, Cursor or any MCP client about a player, ground, league or upcoming match.
+        Free, and it runs on your own machine.</p>
 
       <h2 style={{ marginTop: 48 }}>Install</h2>
       <p className="muted" style={{ maxWidth: "62ch" }}>Needs <a href="https://docs.astral.sh/uv/">uv</a>. In Claude Desktop open

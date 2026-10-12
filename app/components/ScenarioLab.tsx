@@ -132,14 +132,11 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
 
   return (
     <>
-      <Scoreboard doc={labDoc} foot={<span className="sb-note">Your scenario · <Num value={cur.meta.simulations} /> simulated matches
-        {busy ? " · updating…" : ""}</span>} />
+      <Scoreboard doc={labDoc} foot={<span className="sb-note">Your scenario{busy ? " · updating…" : ""}</span>} />
       <div className="lab-layout">
         <aside className="card grid lab-levers" style={{ gap: 18 }}>
           <div>
             <h3>Set the scene</h3>
-            <p className="small muted">Every change re-runs {N.toLocaleString()} simulations in your browser, and every view on the
-              right is rebuilt from them.</p>
           </div>
           <div className="lever">
             <label>Who bats first</label>
@@ -184,7 +181,6 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
             <Movers now={cur} was={base} />
           </div>
           <ForecastTabs doc={labDoc} live={false} />
-          <p className="small muted">Every chart and table above comes from your scenario&apos;s simulations, not the published forecast.</p>
         </div>
       </div>
     </>

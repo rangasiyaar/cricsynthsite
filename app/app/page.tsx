@@ -43,7 +43,6 @@ function Featured({ doc }: { doc: MatchDoc }) {
       <Scoreboard doc={doc} mid={<When date={match.date} time={match.start_time} />} foot={<>
         <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
         <Link className="cs-btn cs-btn--secondary" href={`/lab/?id=${encodeURIComponent(match.id)}`}>Open in MatchSynth Lab</Link>
-        <span className="sb-note">From <Num value={s.meta.simulations} /> simulated matches{ci ? <>, accurate to ±{(100 * ci).toFixed(1)} points</> : null}.</span>
       </>} />
       <Tiles s={s} short={short} />
     </section>
@@ -72,7 +71,7 @@ export default function Home() {
   return (
     <>
       <section id="next" style={{ paddingTop: "clamp(32px, 5vw, 56px)" }}>
-        <div className="section-head"><div><h2>Next match</h2><p>Forecast from ball-by-ball simulation of the likely playing XIs.</p></div>
+        <div className="section-head"><div><h2>Next match</h2></div>
           {matches && matches.length > 1 && <a href="#matches" className="row-link">All upcoming matches</a>}</div>
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
         {!featured && !error && matches?.length !== 0 && <div className="skeleton" style={{ minHeight: 320 }} />}

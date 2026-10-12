@@ -76,9 +76,7 @@ export default function LiveEngine({ doc, heading = true }: { doc: MatchDoc; hea
       <div className="le-head">
         {heading ? <div>
           <h3>The engine, live</h3>
-          <p className="small muted" style={{ margin: 0 }}>The ball-by-ball simulator running in your browser on this match&apos;s XIs.
-            Each batch adds {BATCH} matches; the estimate settles as the 95% interval narrows.</p>
-        </div> : <p className="small muted" style={{ margin: 0 }}>Batches of {BATCH} matches, up to {TARGET.toLocaleString("en-IN")}.</p>}
+        </div> : <span />}
         <button className="btn ghost" onClick={() => setRun(run + 1)} disabled={!pack || (n > 0 && n < TARGET)}>
           {n >= TARGET ? "Run again" : n ? "Running…" : "Start"}
         </button>
@@ -125,7 +123,7 @@ function Convergence({ pts, published, name }: { pts: Point[]; published: number
         <g className="grid">{[0, 0.25, 0.5, 0.75, 1].map((f) => <line key={f} x1={pad.l} x2={W - pad.r} y1={sy(f)} y2={sy(f)} />)}</g>
         {[0, 0.5, 1].map((f) => <text key={f} x={pad.l - 6} y={sy(f) + 4} textAnchor="end">{100 * f}%</text>)}
         <line x1={pad.l} x2={W - pad.r} y1={sy(published)} y2={sy(published)} stroke="var(--cs-ink-3)" strokeDasharray="4 4" />
-        <text x={W - pad.r} y={sy(published) - 6} textAnchor="end">published (20,000 sims) {(100 * published).toFixed(0)}%</text>
+        <text x={W - pad.r} y={sy(published) - 6} textAnchor="end">published {(100 * published).toFixed(0)}%</text>
         {band && <polygon points={band} fill="var(--team-a)" fillOpacity=".15" />}
         {line && <polyline points={line} fill="none" stroke="var(--team-a)" strokeWidth="2" vectorEffect="non-scaling-stroke" />}
         {[0, 2500, 5000].map((v) => <text key={v} x={sx(v)} y={H - 8} textAnchor={v === 5000 ? "end" : v ? "middle" : "start"}>{v.toLocaleString("en-IN")}</text>)}

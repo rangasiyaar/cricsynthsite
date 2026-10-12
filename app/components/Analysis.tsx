@@ -21,7 +21,7 @@ export function RunFan({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Projected run fan</h3>
-      <p className="small muted">Cumulative runs by over. Line: median; dark band: middle 50% of simulations; light band: middle 80%.</p>
+      <p className="small muted">Line: median · dark band: likely range · light band: 80% range</p>
       <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="run fan" columns={fans[0].map((r, i): Column => ({
         x0: sx(r.over - 0.5), x1: sx(r.over + 0.5), title: `After ${r.over} overs`,
@@ -65,8 +65,7 @@ export function WinCurve({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>What a first-innings total is worth</h3>
-      <p className="small muted">Chance the side batting first wins, by its total.{even ? <> Break-even around <b>{even.from}</b>.</> : null}
-        {" "}Dots are sized by how many simulations land in each band.</p>
+      {even ? <p className="small muted">Break-even around <b>{even.from}</b></p> : null}
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="win probability by first-innings total" columns={c.map((r): Column => ({
         x0: sx(r.from), x1: sx(r.to), title: `First innings ${r.from}–${r.to - 1}`,
         rows: [{ label: "Batting side wins", value: `${(100 * r.p_win).toFixed(0)}%` },
@@ -100,7 +99,7 @@ export function PlayerLadder({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Player outcome ranges</h3>
-      <p className="small muted">Runs: whisker 10th–90th percentile, box the middle 50%, tick the median. Wickets: chance of 1, 2 and 3+.</p>
+      <p className="small muted">Whisker: 80% range · box: likely range · tick: median</p>
       <div className="grid g2">
         {s.teams.map((t, k) => {
           const bats = t.players.filter((p) => p.batting && (p.batting.p_bats ?? 1) > 0.5);
@@ -168,8 +167,7 @@ export function ChaseCurve({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Chase curve</h3>
-      <p className="small muted">Chance the chasing side gets there, by target, with the required run rate underneath.
-        {even ? <> Below about <b>{even.target}</b> the chase is favoured.</> : null}</p>
+      {even ? <p className="small muted">Chase favoured below about <b>{even.target}</b></p> : null}
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="chase success by target" columns={pts.map((r): Column => ({
         x0: sx(r.from + 1), x1: sx(r.to + 1), title: `Target ${r.from + 1}–${r.to}`,
         rows: [{ label: "Chase succeeds", value: `${(100 * r.p).toFixed(0)}%` },
@@ -204,7 +202,6 @@ export function Checkpoints({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Score checkpoints</h3>
-      <p className="small muted">Expected score and wickets after each stage, with the likely range (middle 50% of simulations).</p>
       <div className="table-wrap"><table className="checkpoints">
         <thead><tr><th>After</th>{s.teams.map((t, k) => <th key={t.name} className="num" style={{ color: COLORS[k] }}>{t.name}</th>)}</tr></thead>
         <tbody>{marks.map((o) => (

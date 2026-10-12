@@ -1,13 +1,13 @@
 # CricSynthesis
 
-> CricSynthesis publishes pre-match forecasts for cricket. Each upcoming match is played 20,000 times, ball by ball, using the confirmed or probable playing XIs, the venue and each player's record. The results are shown as probabilities, not tips: who is likely to win, the likely range of scores, and which players are most likely to stand out.
+> CricSynthesis publishes pre-match forecasts for cricket. Each upcoming match is simulated ball by ball from the confirmed or probable playing XIs, the venue and each player's record. The results are shown as probabilities, not tips: who is likely to win, the likely range of scores, and which players are most likely to stand out.
 
 CricSynthesis is based in India and covers international and franchise cricket, with T20 matches first. The match centre is free and needs no account.
 
 ## What a forecast includes
 
 - Win probability for each side, and the chance of a tie
-- Projected first- and second-innings totals, with a likely range (middle 50% of simulations) and a wider 80% range
+- Projected first- and second-innings totals, with a likely range and a wider 80% range
 - Powerplay and phase-by-phase scoring
 - When the first wicket is likely to fall and how many wickets each side loses
 - Top scorer and leading wicket-taker chances, player run and wicket ranges

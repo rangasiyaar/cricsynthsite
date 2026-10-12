@@ -72,7 +72,6 @@ function Results() {
 
       <div className="res-head">
         <h2>Matches</h2>
-        <p className="small muted">Latest first. Pick a match to see every projection against what happened.</p>
       </div>
       <div className="grid res-cards">
         {shown.map((m) => (
@@ -126,10 +125,8 @@ function Results() {
         </div>
       )}
 
-      <p className="small muted">How we check: a range "comes true" when the actual number lands inside the 80% range we showed (10th–90th
-        percentile), so a well-calibrated forecast lands about 8 in 10 of them; the misses are meant to happen too. Picks (the favourite, top
-        scorer, best bowler, key duels) come true when what happened was the one, or among the few, we rated most likely. Forecasts are
-        frozen at the start of play.</p>
+      <p className="small muted">A range counts when the result lands inside the 80% range we showed, so expect about 8 in 10. A pick counts
+        when the outcome was among our top choices. Forecasts lock at the start of play.</p>
     </div>
   );
 }
