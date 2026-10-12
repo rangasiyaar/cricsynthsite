@@ -3,7 +3,7 @@
 // original website used (Apps Script web app, free).
 import { useState } from "react";
 
-export const SHEET = "https://script.google.com/macros/s/AKfycbxLxYswUwhcZThYQLRCnjBcRLw9EIXmjyXJL5Yz6cN6yFesjvvUu2fScPfXgofVLoDi/exec";
+export const SHEET = "https://script.google.com/macros/s/AKfycbyNR77MweYXr5xv4cNJt5j4uLC5JA2q-RqTHPSs7X2OPG1L9AXKYDlOh4WupLYMk8So/exec";
 
 export default function RequestAccess() {
   const [sent, setSent] = useState(false);
