@@ -1,0 +1,19 @@
+name: Rating lab
+
+# Compares player-rating formulas against the scored matches (frozen forecasts from the site vs scorecards).
+on:
+  workflow_dispatch:
+  push:
+    paths: ["cricsim/src/cricsim/rating_lab.py", ".github/workflows/rating-lab.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run python -m cricsim.rating_lab | tee -a "$GITHUB_STEP_SUMMARY"
