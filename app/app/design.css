@@ -248,8 +248,8 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
    (six equal tabs, icon over a short label, active one underlined, pinned under the site header). */
 .mc-tabs .mc-ico, .mc-tabs .mc-short { display: none; }
 @media (max-width: 860px) {
-  .tabs.mc-tabs { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; padding: 0; margin-left: -12px; margin-right: -12px;
-    overflow: visible; border: 0; border-bottom: 1px solid var(--cs-line); border-radius: 0; background: var(--cs-bg); }
+  .tabs.mc-tabs { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(var(--mc-n, 6), minmax(58px, 1fr)); gap: 0; padding: 0; margin-left: -12px; margin-right: -12px;
+    overflow-x: auto; scrollbar-width: none; border: 0; border-bottom: 1px solid var(--cs-line); border-radius: 0; background: var(--cs-bg); }
   .tabs.mc-tabs button, .tabs.mc-tabs .tab-link { flex-direction: column; justify-content: center; gap: 4px; padding: 10px 0 9px; margin: 0 0 -1px;
     border-radius: 0; border: 0 !important; border-bottom: 2px solid transparent !important; background: none !important; min-width: 0;
     font: 600 10.5px var(--cs-body); letter-spacing: -0.01em; text-transform: none; color: var(--cs-ink-3); position: relative; }
@@ -349,3 +349,15 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .res-head { margin-top: 24px; padding-top: 28px; border-top: 2px solid var(--cs-steel); }
 .res-head h2 { margin: 0 0 4px; }
 .res-head p { margin: 0; }
+/* Top players / MVP ranking tables */
+.rank-table td { vertical-align: middle; }
+.team-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+.rt { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.rt-track { display: block; width: 72px; height: 6px; border-radius: 3px; background: var(--cs-line); overflow: hidden; }
+.rt-track i { display: block; height: 100%; border-radius: 3px; }
+.rt b { min-width: 28px; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 860px) {
+  .rt-track { display: none; }
+  .rank-table th, .rank-table td { padding-left: 8px; padding-right: 8px; }
+  .rank-table .team-dot { margin-right: 6px; }
+}

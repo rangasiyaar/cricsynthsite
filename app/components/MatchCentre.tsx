@@ -7,9 +7,11 @@ import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
 import { KIND, num, pct, range } from "@/lib/format";
+import { rate, type Rated } from "@/lib/ratings";
 import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
-const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
+const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
+const SHORT: Record<string, string> = { "Top players": "Top" };
 type Tab = (typeof TABS)[number];
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 const icon = (d: string) => (
@@ -21,6 +23,8 @@ const TAB_ICONS: Record<string, React.ReactNode> = {
   Wickets: icon("M7 4v16M12 4v16M17 4v16M5 4h14"),
   Players: icon("M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-4-5.6"),
   Matchups: icon("M7 7h11l-3-3M17 17H6l3 3"),
+  "Top players": icon("M4 20h4V10H4zM10 20h4V4h-4zM16 20h4v-7h-4z"),
+  MVP: icon("M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"),
   Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
 };
 
@@ -30,10 +34,10 @@ export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra
   const [tab, setTab] = useState<Tab>("Overview");
   return (
     <>
-      <div className={`tabs mc-tabs${extra ? "" : " five"}`} role="tablist">
+      <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": TABS.length + (extra ? 1 : 0) } as React.CSSProperties}>
         {TABS.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{t}</span>
+            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
           </button>
         ))}
         {extra}
@@ -43,6 +47,8 @@ export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra
         {tab === "Scores" && <Scores doc={doc} />}
         {tab === "Wickets" && <Wickets doc={doc} />}
         {tab === "Players" && <Players doc={doc} />}
+        {tab === "Top players" && <TopPlayers doc={doc} />}
+        {tab === "MVP" && <Mvp doc={doc} />}
         {tab === "Matchups" && <Matchups doc={doc} />}
       </div>
     </>
@@ -220,6 +226,64 @@ function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string
             <td className="num">{num(f.score?.q["50"])}</td><td className="num">{num(f.partnership?.q["50"])}</td>
             <td>{f.bowler?.[0] ? `${f.bowler[0].name} (${pct(f.bowler[0].p)})` : "run out / —"}</td>
             <td>{f.batter?.[0] ? `${f.batter[0].name} (${pct(f.batter[0].p)})` : "—"}</td></tr>
+        ))}</tbody>
+      </table></div>
+    </div>
+  );
+}
+
+function Rating({ v, max, k }: { v: number; max: number; k: number }) {
+  return (
+    <span className="rt"><span className="rt-track"><i style={{ width: `${(100 * v) / max}%`, background: COLORS[k] }} /></span>
+      <b>{max === 10 ? v.toFixed(1) : v}</b></span>
+  );
+}
+
+function Who({ r }: { r: Rated }) {
+  return <PlayerName p={r.p} />;
+}
+
+/** All 22 players twice: ranked by batting rating, and by bowling rating (1–100). */
+function TopPlayers({ doc }: { doc: MatchDoc }) {
+  const rows = rate(doc.summary);
+  const short = doc.match.teams.map((t) => t.short);
+  const list = (key: "bat" | "bowl") => [...rows].sort((a, b) => b[key] - a[key] || b.mvp - a.mvp);
+  return (
+    <div className="grid g2">
+      {(["bat", "bowl"] as const).map((key) => (
+        <div key={key} className="card">
+          <h3>{key === "bat" ? "Top batters" : "Top bowlers"}</h3>
+          <div className="table-wrap"><table className="rank-table">
+            <thead><tr><th>#</th><th>Player</th><th className="num">{key === "bat" ? "Runs · SR" : "Wkts · Econ"}</th><th className="num">Rating</th></tr></thead>
+            <tbody>{list(key).map((r, i) => (
+              <tr key={r.p.id}><td className="mono">{i + 1}</td>
+                <td><span className="team-dot" style={{ background: COLORS[r.team] }} /><Who r={r} /> <span className="small muted">{short[r.team]}</span></td>
+                <td className="num small muted">{key === "bat"
+                  ? (r.runs !== null ? `${num(r.runs, 0)} · ${num(r.sr, 0)}` : "—")
+                  : (r.wkts !== null ? `${num(r.wkts, 1)} · ${num(r.econ, 1)}` : "—")}</td>
+                <td className="num"><Rating v={r[key]} max={100} k={r.team} /></td></tr>
+            ))}</tbody>
+          </table></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** All 22 players on one list: expected contribution with bat and ball, as a 1–10 rating. */
+function Mvp({ doc }: { doc: MatchDoc }) {
+  const rows = [...rate(doc.summary)].sort((a, b) => b.mvp - a.mvp);
+  const short = doc.match.teams.map((t) => t.short);
+  return (
+    <div className="card">
+      <h3>MVP ratings</h3>
+      <div className="table-wrap"><table className="rank-table">
+        <thead><tr><th>#</th><th>Player</th><th className="num">Bat</th><th className="num">Bowl</th><th className="num">MVP</th></tr></thead>
+        <tbody>{rows.map((r, i) => (
+          <tr key={r.p.id}><td className="mono">{i + 1}</td>
+            <td><span className="team-dot" style={{ background: COLORS[r.team] }} /><Who r={r} /> <span className="small muted">{short[r.team]}</span></td>
+            <td className="num">{r.bat}</td><td className="num">{r.bowl}</td>
+            <td className="num"><Rating v={r.mvp} max={10} k={r.team} /></td></tr>
         ))}</tbody>
       </table></div>
     </div>
