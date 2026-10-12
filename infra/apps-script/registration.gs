@@ -4,7 +4,8 @@
  * 1. Saves each request to the sheet.
  * 2. Sends a confirmation email through Resend from hello@cricsynthesis.in.
  *
- * Called by the site's "Build with CricSynthesis" form and by API plan upgrade requests from the account page.
+ * Called by the site's "Build with CricSynthesis" form, by API plan upgrade requests from the account page, and when
+ * someone creates an account (type "welcome": logged on a "Signups" tab, and each address is welcomed only once).
  * The Resend key lives in Script properties (Project Settings > Script properties > RESEND_API_KEY), not in code.
  * After editing: Deploy > Manage deployments > pencil > Version: New version > Deploy (keeps the same URL).
  */
@@ -29,8 +30,12 @@ const VOLUMES = {
 
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var book = SpreadsheetApp.getActiveSpreadsheet();
     var data = JSON.parse(e.postData.contents);
+
+    if (data.type === 'welcome') return json(welcomeSignup(book, data));
+
+    var sheet = book.getSheets()[0];
 
     // Columns: A Timestamp, B Full Name, C Work Email, D Organization, E Interested Product, F Source,
     //          G Plan request, H Volume, I Message (G to I are filled for upgrade requests only)
@@ -53,6 +58,26 @@ function doPost(e) {
     return json({ success: true });
   } catch (error) {
     return json({ success: false, error: error.message });
+  }
+}
+
+// New account: log it on the "Signups" tab and send the welcome email, once per address.
+function welcomeSignup(book, data) {
+  var email = String(data.email || '').trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { success: false, error: 'bad email' };
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var tab = book.getSheetByName('Signups') || book.insertSheet('Signups');
+    if (tab.getLastRow() === 0) tab.appendRow(['Timestamp', 'Name', 'Email', 'Welcome sent']);
+    var seen = tab.getLastRow() > 1 ? tab.getRange(2, 3, tab.getLastRow() - 1, 1).getValues() : [];
+    if (seen.some(function (r) { return String(r[0]).toLowerCase() === email; })) return { success: true, duplicate: true };
+    var mail = welcomeEmail(data);
+    var res = sendViaResend(email, mail.subject, mail.html, mail.text);
+    tab.appendRow([new Date().toISOString(), data.name || '', email, /"id"/.test(res) ? 'yes' : 'failed']);
+    return { success: true };
+  } finally {
+    lock.releaseLock();
   }
 }
 
@@ -100,6 +125,27 @@ function accessEmail(d) {
   };
 }
 
+function welcomeEmail(d) {
+  var first = firstName(d.name);
+  var body =
+    p('Your CricSynthesis account is ready. While we&rsquo;re in beta, every account includes Pro at no cost, so ' +
+      'MatchSynth Lab is open to you as well.') +
+    links('Where to start', [
+      ['Match centre', SITE + '/match/', 'Win chances, likely scores and players to watch for upcoming matches'],
+      ['MatchSynth Lab', SITE + '/lab/', 'Change the XI, toss or conditions and replay the match yourself'],
+      ['Results', SITE + '/results/', 'How our past forecasts compared with what happened'],
+      ['Your account', SITE + '/account/', 'Profile, email preferences and API keys']
+    ]);
+  return {
+    subject: 'Welcome to CricSynthesis',
+    html: layout('Welcome', 'Welcome to CricSynthesis, ' + first + '.', body, 'Open the match centre', SITE + '/match/',
+                 'you created an account on cricsynthesis.in'),
+    text: 'Welcome to CricSynthesis, ' + plain(first) + '.\n\nYour account is ready. While we\'re in beta, every account includes ' +
+      'Pro at no cost, so MatchSynth Lab is open to you as well.\n\nMatch centre: ' + SITE + '/match/\nMatchSynth Lab: ' + SITE +
+      '/lab/\nResults: ' + SITE + '/results/\nYour account: ' + SITE + '/account/\n\nQuestions? Just reply to this email.\n\nCricSynthesis\n' + SITE
+  };
+}
+
 function upgradeEmail(d) {
   var first = firstName(d.name);
   var plan = PLANS[(d.interest || '').replace(/^Upgrade:\s*/, '')] || 'a higher';
@@ -120,7 +166,7 @@ function upgradeEmail(d) {
 
 // ── layout (light theme, site colours: ink #1d1f20, steel #5980a6 / #416180, rust #b5653a) ───────────────────────────
 
-function layout(eyebrow, heading, body, cta, ctaUrl) {
+function layout(eyebrow, heading, body, cta, ctaUrl, why) {
   var font = "'Barlow', 'Segoe UI', Arial, sans-serif";
   return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<meta name="color-scheme" content="light"><title>CricSynthesis</title></head>' +
@@ -153,7 +199,7 @@ function layout(eyebrow, heading, body, cta, ctaUrl) {
     '<a href="' + SITE + '" style="color:#416180;text-decoration:none;">cricsynthesis.in</a></td></tr>' +
     '</table>' +
     '<p style="margin:18px 0 0 0;color:#8a8e93;font-size:11px;font-family:' + font + ';">© ' + new Date().getFullYear() +
-    ' CricSynthesis. You&rsquo;re receiving this because you asked for API access on cricsynthesis.in.</p>' +
+    ' CricSynthesis. You&rsquo;re receiving this because ' + (why || 'you asked for API access on cricsynthesis.in') + '.</p>' +
     '</td></tr></table></body></html>';
 }
 
@@ -189,6 +235,11 @@ function esc(s) {
 
 function testAccessEmail() {
   var m = accessEmail({ name: 'Saurav Kumar', organization: 'Test Org', segment: 'simulation' });
+  console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
+}
+
+function testWelcomeEmail() {
+  var m = welcomeEmail({ name: 'Saurav Kumar' });
   console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
 }
 

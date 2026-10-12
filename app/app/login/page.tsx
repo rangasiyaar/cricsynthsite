@@ -5,6 +5,7 @@ import {
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Shell";
 import { auth, useUser } from "@/lib/firebase";
+import { welcome } from "@/lib/welcome";
 
 const MESSAGES: Record<string, string> = {
   "auth/invalid-credential": "Email or password is wrong.",
@@ -40,17 +41,18 @@ export default function Login() {
   const [info, setInfo] = useState<string | null>(null);
   const [emailOpen, setEmailOpen] = useState(false);
 
-  useEffect(() => { if (user) window.location.replace(next()); }, [user]);
+  // wait while a sign-in is in flight, so a new account's welcome request goes out first
+  useEffect(() => { if (user && !busy) window.location.replace(next()); }, [user, busy]);
 
   const run = async (f: () => Promise<unknown>) => {
     setBusy(true); setErr(null); setInfo(null);
     try { await f(); } catch (e) { setErr(explain(e)); } finally { setBusy(false); }
   };
-  const google = () => run(() => signInWithPopup(auth(), new GoogleAuthProvider()));
+  const google = () => run(async () => welcome(await signInWithPopup(auth(), new GoogleAuthProvider())));
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(() => mode === "in" ? signInWithEmailAndPassword(auth(), email, password)
-                            : createUserWithEmailAndPassword(auth(), email, password));
+    run(async () => welcome(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
+                                          : await createUserWithEmailAndPassword(auth(), email, password)));
   };
   const reset = () => {
     if (!email) { setErr("Enter your email first, then press “Forgot password”."); return; }
