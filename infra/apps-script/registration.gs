@@ -133,7 +133,7 @@ function layout(eyebrow, heading, body, cta, ctaUrl) {
     '<td style="height:6px;background:#b5653a;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>' +
     // logo
     '<tr><td style="padding:32px 40px 8px 40px;"><a href="' + SITE + '" style="text-decoration:none;">' +
-    '<img src="' + LOGO + '" alt="CricSynthesis" width="212" height="30" style="display:block;border:0;outline:none;width:212px;height:auto;"></a></td></tr>' +
+    '<img src="' + LOGO + '" alt="CricSynthesis" width="175" height="34" style="display:block;border:0;outline:none;width:175px;height:auto;"></a></td></tr>' +
     // heading
     '<tr><td style="padding:24px 40px 0 40px;">' +
     '<p style="margin:0 0 10px 0;color:#416180;font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;">' + eyebrow + '</p>' +
