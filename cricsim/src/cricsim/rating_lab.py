@@ -183,12 +183,16 @@ def rank_blend(pred: dict[str, dict[str, float]]) -> dict:
         rk = _ranks([pred[i][key] for i in ids])
         for i, x in zip(ids, rk):
             out[i][key] = x / (len(ids) - 1) if pred[i][key] > 0 else 0.0
+    most = max(pred[i]["bat"] + pred[i]["bowl"] for i in ids) or 1e-9
+    for i in ids:                                    # small value term breaks rank ties (as app/lib/ratings.ts)
+        out[i]["bat"] += 0.15 * (pred[i]["bat"] + pred[i]["bowl"]) / most
     return out
 
 
 def candidates(doc: dict, fx: dict | None = None) -> dict[str, dict[str, dict[str, float]]]:
     roles = _roles(doc, fx)
-    c = {"site now (w=12, sr^0.5, econ 1)": value(doc, 12, 0.5, 1),
+    c = {"site (w=12, econ 0.5, MVP rank blend)": rank_blend(value(doc, 12, 0.5, 0.5)),
+         "previous site (w=12, sr^0.5, econ 1)": value(doc, 12, 0.5, 1),
          "expected fantasy points": expected_fantasy(doc),
          "top scorer / best bowler chance": probability(doc)}
     for wk in (8, 15, 20, 25):

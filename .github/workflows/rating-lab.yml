@@ -4,7 +4,7 @@ name: Rating lab
 on:
   workflow_dispatch:
   push:
-    paths: ["cricsim/src/cricsim/rating_lab.py", ".github/workflows/rating-lab.yml"]
+    paths: ["cricsim/src/cricsim/rating_lab.py", "cricsim/results/**", ".github/workflows/rating-lab.yml"]
 
 permissions:
   contents: read
