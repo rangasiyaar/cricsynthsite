@@ -91,7 +91,7 @@ def _innings(team: str, score: str, L: list[str]) -> dict:
             section = None
             i += 1
         elif section == "Bowler":
-            name = s
+            name = re.sub(r"\s*\((c|wk|c & wk|c and wk)\)\s*$", "", s).strip()
             i += 1
             o, mdn, r, w, nb, wd, _eco = (take_nums(7) + [0] * 7)[:7]
             inn["bowling"].append({"name": name, "overs": str(o), "maidens": int(mdn), "runs": int(r), "wickets": int(w),
