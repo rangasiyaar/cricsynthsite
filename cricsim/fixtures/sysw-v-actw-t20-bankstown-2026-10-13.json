@@ -1,0 +1,109 @@
+{
+  "id": "sysw-v-actw-t20-bankstown-2026-10-13",
+  "title": "Sydney Sixers Women v ACT Women",
+  "date": "2026-10-13",
+  "start_time": "04:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "T20 Spring Challenge 2026 \u00b7 5th Match",
+  "venue": "Bankstown Oval, Sydney",
+  "venue_search": "bankstown",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SYSW",
+      "players": [
+        "Claire Moore",
+        "Hayley Zauch",
+        "Erin Burns",
+        "Maitlan Brown",
+        "Caoimhe Bray",
+        "Elsa Hunter",
+        "Lauren Kua",
+        "Sarah Coyte",
+        "Courtney Sippel",
+        "Lauren Cheatle",
+        "Stella Campbell"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Erin Burns",
+        "Hayley Zauch",
+        "Elsa Hunter",
+        "Claire Moore",
+        "Lauren Kua",
+        "Caoimhe Bray",
+        "Sarah Coyte",
+        "Courtney Sippel",
+        "Frankie Nicklin",
+        "Stella Campbell",
+        "Juliette Morton",
+        "Maddy Darke",
+        "Maitlan Brown",
+        "Lauren Cheatle"
+      ],
+      "captain": "Erin Burns"
+    },
+    {
+      "name": "ACT Women",
+      "short": "ACTW",
+      "players": [
+        "Paris Bowdler",
+        "Rachel Carroll",
+        "Grace Lyons",
+        "Amy Hunter",
+        "Caitlin Mair",
+        "Shivani Mehta",
+        "Angelina Genford",
+        "Amber Smith",
+        "Zoe Cooke",
+        "Anesu Mushangwe",
+        "Brieanna Dillon"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Grace Lyons",
+        "Paris Bowdler",
+        "Shivani Mehta",
+        "Rachel Carroll",
+        "Caitlin Mair",
+        "Amber Smith",
+        "Stella Wilde",
+        "Angelina Genford",
+        "Anesu Mushangwe",
+        "Amy Hunter",
+        "Zoe Cooke",
+        "Brieanna Dillon",
+        "Aanya Siingh"
+      ],
+      "captain": "Grace Lyons"
+    }
+  ]
+}
