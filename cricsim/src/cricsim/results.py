@@ -371,7 +371,7 @@ def main(fixtures: Path, scorecards: Path, out: Path, show_started: bool) -> Non
     if show_started:
         for p in sorted(fixtures.glob("*.json")):
             f = json.loads(p.read_text())
-            if started(f) and not f.get("resimulate"):    # one-off override, removed after the deploy
+            if started(f):
                 click.echo(p.name)
         return
     r = run(fixtures, scorecards, out)

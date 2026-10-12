@@ -10,6 +10,11 @@ on:
   schedule:
     - cron: "30 21 * * *"          # 03:00 IST
   workflow_dispatch:
+    inputs:
+      resimulate:
+        description: "Fixture file to simulate again even though it has started"
+        required: false
+        default: ""
   push:
     branches: [claude/cricsynthesis-platform]
     paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/results/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
@@ -64,7 +69,7 @@ jobs:
           started=$(uv run python -m cricsim.results --started)      # forecasts freeze at the start time
           for f in cricsim/fixtures/*.json; do
             [ -e "$f" ] || continue
-            echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; }
+            [ "$(basename "$f")" != "${{ inputs.resimulate }}" ] && echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; }
             uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" \
               --out "data/coverage/matches/$(basename "$f")"
           done

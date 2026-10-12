@@ -11,7 +11,7 @@
   "venue_search": "bayuemas",
   "status": "scheduled",
   "published": true,
-  "note": "Playing XIs confirmed.",
+  "note": "Probable XIs from the squads; updated when the teams are named.",
   "teams": [
     {
       "name": "Malaysia",
@@ -108,6 +108,5 @@
       ],
       "captain": "Manpreet Singh"
     }
-  ],
-  "resimulate": true
+  ]
 }
