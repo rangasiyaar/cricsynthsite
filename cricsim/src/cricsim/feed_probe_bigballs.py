@@ -108,10 +108,20 @@ def main() -> None:
         if up:
             st, detail = f.get(f"matches/{_id(up)}")
             out += [f"  upcoming match detail: HTTP {st}", "  ```", "  " + _shape(detail)[:1200], "  ```"]
+        if not done:                                   # statuses may never leave "scheduled": take the latest past kickoff
+            from datetime import datetime, timezone
+            now = datetime.now(timezone.utc).isoformat()
+            past = sorted((m for m in rows if str(m.get("kickoff_utc") or "") < now), key=lambda m: str(m.get("kickoff_utc")))
+            done = past[-1] if past else None
+            if done:
+                out.append(f"  latest past match: {done.get('home', {}).get('name')} v {done.get('away', {}).get('name')} · {done.get('kickoff_utc')} · status {done.get('status')}")
+            fut = [m for m in rows if str(m.get("kickoff_utc") or "") >= now]
+            out.append(f"  future fixtures in this series: {len(fut)}" + "".join(f"\n  - {m.get('home', {}).get('name')} v {m.get('away', {}).get('name')} · {m.get('kickoff_utc')}" for m in fut[:5]))
         if done:
             st, sc = f.get(f"matches/{_id(done)}/scorecard")
             out += [f"  scorecard ({_name(done)}): HTTP {st}", "  ```", "  " + _shape(sc)[:1500], "  ```"]
             text = json.dumps(sc).lower()
+            out.append("  sample: `" + json.dumps(sc)[:700] + "`")
             out.append(f"  mentions: fall of wickets {'fall' in text or 'fow' in text} · powerplay {'powerplay' in text} · "
                        f"toss {'toss' in text} · extras {'extras' in text}")
     st, allm = f.get("matches", limit=100)
