@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { seo } from "@/lib/seo";
-import { AUTHOR, POSTS, postPath, prettyDate } from "@/lib/blog";
+import { AUTHOR, BLOG_IMAGE, POSTS, postPath, prettyDate } from "@/lib/blog";
 
 export const metadata: Metadata = seo("/blog/", "Cricket analytics blog | CricSynthesis",
-  "Evidence-based writing on T20 cricket: venues, scoring trends, player form and how our match forecasts are built and checked.");
+  "Evidence-based writing on T20 cricket: venues, scoring trends, player form and how our match forecasts are built and checked.", { image: BLOG_IMAGE });
 
 export default function Blog() {
   return (

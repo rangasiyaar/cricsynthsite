@@ -1,14 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
-import { AUTHOR, POSTS, postPath } from "@/lib/blog";
+import { AUTHOR, BLOG_IMAGE, POSTS, postPath } from "@/lib/blog";
 import { Byline } from "@/components/Byline";
 import { Calibration, Drift, ErrorRemoved, GroundLevel, InningsShape, Persistence } from "@/components/BlogCharts";
 
 const post = POSTS.find((p) => p.slug === "does-the-ground-matter-t20-venue-analysis")!;
 const path = postPath(post.slug);
 const url = `${SITE}${path}`;
-const base = seo(path, "Does the ground matter? T20 venue analysis from 1.7m balls | CricSynthesis", post.description);
+const base = seo(path, "Does the ground matter? T20 venue analysis from 1.7m balls | CricSynthesis", post.description, { image: BLOG_IMAGE });
 
 export const metadata: Metadata = {
   ...base,
@@ -42,7 +42,7 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "BlogPosting", headline: post.title, description: post.description, datePublished: post.date, dateModified: post.date,
-      mainEntityOfPage: url, image: `${SITE}/og.png?v=3`, keywords: post.tags.join(", "), wordCount: 3300,
+      mainEntityOfPage: url, image: `${SITE}${BLOG_IMAGE}`, keywords: post.tags.join(", "), wordCount: 3300,
       author: { "@type": "Person", name: AUTHOR.name, jobTitle: "Founder", description: AUTHOR.bio, worksFor: { "@type": "Organization", name: SITE_NAME, url: SITE } },
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/email-logo.png` } },
     },

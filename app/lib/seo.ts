@@ -4,15 +4,17 @@ import type { Metadata } from "next";
 export const SITE = "https://cricsynthesis.in";
 export const SITE_NAME = "CricSynthesis";
 
-export function seo(path: string, title: string, description: string, opts: { noindex?: boolean } = {}): Metadata {
+export function seo(path: string, title: string, description: string, opts: { noindex?: boolean; image?: string } = {}): Metadata {
   const url = `${SITE}${path}`;
+  const img = opts.image ?? "/og.png?v=3";
+  const alt = opts.image ? "CricSynthesis" : "CricSynthesis cricket match forecasts";
   return {
     title: { absolute: title },
     description,
     alternates: { canonical: url },
     openGraph: { type: "website", siteName: SITE_NAME, locale: "en_IN", url, title, description,
-      images: [{ url: "/og.png?v=3", width: 1200, height: 630, alt: "CricSynthesis cricket match forecasts" }] },
-    twitter: { card: "summary_large_image", title, description, images: ["/og.png?v=3"] },
+      images: [{ url: img, width: 1200, height: 630, alt }] },
+    twitter: { card: "summary_large_image", title, description, images: [img] },
     ...(opts.noindex ? { robots: { index: false, follow: false } } : {}),
   };
 }

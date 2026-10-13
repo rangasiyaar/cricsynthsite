@@ -18,6 +18,8 @@ export const POSTS: Post[] = [
   },
 ];
 
+export const BLOG_IMAGE = "/og-logo.png?v=1";   // link previews for the blog: the logo on its own
+
 export const postPath = (slug: string) => `/blog/${slug}/`;
 
 export function prettyDate(iso: string) {
