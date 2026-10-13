@@ -386,6 +386,9 @@ def main(fixtures: Path, scorecards: Path, out: Path, show_started: bool) -> Non
     for mid in r["scored"]:
         rep = json.loads((out / "results" / f"{mid}.json").read_text())
         tabs = ", ".join(f"{t} {v['hits']}/{v['checks']}" for t, v in rep["tabs"].items())
+        if not rep["checks"]:
+            click.echo(f"- {mid}: not scored ({rep.get('note', 'no checks')})")
+            continue
         click.echo(f"- {mid}: {rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}")
 
 
