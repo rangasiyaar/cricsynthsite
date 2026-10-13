@@ -1,0 +1,23 @@
+name: Feed probe
+
+# One-off check of the fixtures/scorecard feed. Needs the repo secret CRICKETDATA_KEY; never prints it.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Probe
+        env:
+          CRICKETDATA_KEY: ${{ secrets.CRICKETDATA_KEY }}
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.feed_probe | tee -a "$GITHUB_STEP_SUMMARY"
