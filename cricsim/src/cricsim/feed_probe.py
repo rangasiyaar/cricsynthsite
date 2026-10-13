@@ -57,9 +57,13 @@ def series_probe(f: Feed, terms: list[str]) -> list[str]:
             out.append(f"- {sr.get('name')} · {sr.get('startDate')} to {sr.get('endDate')} · t20 {sr.get('t20')} odi {sr.get('odi')}")
         if not found:
             continue
-        info = f.get("series_info", id=found[0]["id"])
-        ml = (info.get("data") or {}).get("matchList") or []
-        out.append(f"  matchList: {len(ml)} matches")
+        ml = []
+        for k, sr in enumerate(found[:2]):                # the feed lists some series twice; one copy can be empty
+            info = f.get("series_info", id=sr["id"])
+            ml = (info.get("data") or {}).get("matchList") or []
+            out.append(f"  copy {k + 1}: {info.get('status')} · matchList {len(ml)} matches")
+            if ml:
+                break
         for m in ml[:12]:
             out.append(f"  - {m.get('dateTimeGMT')} · {m.get('name')} · {m.get('status')} · fantasy {m.get('fantasyEnabled')} · bbb {m.get('bbbEnabled')}")
         done = done or next((m for m in ml if m.get("matchEnded") and m.get("matchType") == "t20"), None)
