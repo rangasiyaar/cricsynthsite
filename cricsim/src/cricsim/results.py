@@ -151,6 +151,8 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
         add(tab, label, f"{_fmt(r)} (median {round(float(dist['q']['50']))})", fmt(actual), r[0] <= actual <= r[1])
 
     inns = card["innings"]
+    # a match cut short (rain) is shown with its result but not scored: the forecast was for the full overs
+    reduced = bool(card.get("overs_per_side")) and card["overs_per_side"] < s["meta"]["rules"]["overs"]
     order = [roster.team(i["team"]) for i in inns]           # forecast team index of each innings
     team_name = roster.team_names
 
@@ -255,11 +257,13 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
                 f"#{shown[(bat, bow)][0] + 1} of our key duels ({_pct(p)})" if hit else (f"{_pct(p)}, not in our top 25" if p else "not in our duels"),
                 "happened", hit)
 
+    if reduced:
+        checks.clear()
     checks.sort(key=lambda c: TABS.index(c["tab"]))           # stable: keeps innings order within each tab
     by_tab = {t: {"hits": sum(c["hit"] for c in checks if c["tab"] == t),
                   "checks": sum(1 for c in checks if c["tab"] == t)} for t in TABS}
     hits = sum(c["hit"] for c in checks)
-    p_w = win.get(team_name[w], 0) if w is not None else None
+    p_w = win.get(team_name[w], 0) if w is not None and not reduced else None
     return {
         "id": doc["match"]["id"], "title": doc["match"].get("title"), "date": doc["match"].get("date"),
         "competition": doc["match"].get("competition"), "venue": doc["match"].get("venue"),
@@ -271,6 +275,8 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
         "hits": hits, "checks": len(checks), "accuracy": round(hits / len(checks), 4) if checks else None,
         "brier": round((1 - p_w) ** 2, 4) if p_w is not None else None,
         "tabs": by_tab, "items": checks,
+        **({"note": f"{card.get('note') or 'Match shortened'}. Not scored: our forecast was for {s['meta']['rules']['overs']} overs a side."}
+           if reduced else {}),
     }
 
 
@@ -347,7 +353,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
         rep = score(json.loads(doc_p.read_text()), card, fx.get(mid))
         (out / "results" / f"{mid}.json").write_text(json.dumps(rep, separators=(",", ":")))
         index.append({k: rep[k] for k in ("id", "title", "date", "competition", "teams", "result", "winner", "scores",
-                                          "hits", "checks", "accuracy", "brier", "tabs")}
+                                          "hits", "checks", "accuracy", "brier", "tabs")} | ({"note": rep["note"]} if rep.get("note") else {})
                      | {"favourite_won": next((c["hit"] for c in rep["items"] if c["check"] == "Favourite wins"), None)})
     index.sort(key=lambda r: (r.get("date") or "", r["id"]), reverse=True)
     hits, checks = sum(r["hits"] for r in index), sum(r["checks"] for r in index)
@@ -356,7 +362,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
     summary = {"matches": index, "hits": hits, "checks": checks,
                "accuracy": round(hits / checks, 4) if checks else None, "tabs": tabs,
                "favourite_won": sum(1 for r in index if r.get("favourite_won")),
-               "brier": round(sum(r["brier"] for r in index if r["brier"] is not None) / max(len(index), 1), 4) if index else None,
+               "brier": round(sum(b) / len(b), 4) if (b := [r["brier"] for r in index if r["brier"] is not None]) else None,
                "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     (out / "results" / "index.json").write_text(json.dumps(summary, separators=(",", ":")))
     return {"archived": [a["id"] for a in archive], "missing": missing, "scored": [r["id"] for r in index]}

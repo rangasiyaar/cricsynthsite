@@ -42,13 +42,17 @@ def parse(text: str) -> dict:
         a, b = innings
         if b["runs"] > a["runs"]:
             card["winner"] = b["team"]
-            card["result"] = f"{b['team']} won by {10 - b['wickets']} wickets"
+            card["result"] = f"{b['team']} won by {_n(10 - b['wickets'], 'wicket')}"
         elif a["runs"] > b["runs"]:
             card["winner"] = a["team"]
-            card["result"] = f"{a['team']} won by {a['runs'] - b['runs']} runs"
+            card["result"] = f"{a['team']} won by {_n(a['runs'] - b['runs'], 'run')}"
         else:
             card["result"] = "Tie"
     return card
+
+
+def _n(k: int, word: str) -> str:
+    return f"{k} {word}{'' if k == 1 else 's'}"
 
 
 def _innings(team: str, score: str, L: list[str]) -> dict:

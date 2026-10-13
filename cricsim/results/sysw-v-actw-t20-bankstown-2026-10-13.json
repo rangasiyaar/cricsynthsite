@@ -1,0 +1,312 @@
+{
+ "id": "sysw-v-actw-t20-bankstown-2026-10-13",
+ "innings": [
+  {
+   "team": "Sydney Sixers Women",
+   "runs": 78,
+   "wickets": 3,
+   "overs": "9",
+   "batting": [
+    {
+     "name": "Lauren Kua",
+     "dismissal": "c Caitlin Mair b Stella Wilde",
+     "runs": 29,
+     "balls": 23,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Claire Moore",
+     "dismissal": "c Angelina Genford b Amber Smith",
+     "runs": 22,
+     "balls": 20,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Erin Burns",
+     "dismissal": "not out",
+     "runs": 18,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Sarah Coyte",
+     "dismissal": "c Caitlin Mair b Anesu Mushangwe",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Courtney Sippel",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Zoe Cooke",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amy Hunter",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anesu Mushangwe",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Stella Wilde",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Shivani Mehta",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amber Smith",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Claire Moore",
+     "score": 54,
+     "over": "6.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lauren Kua",
+     "score": 60,
+     "over": "7.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sarah Coyte",
+     "score": 65,
+     "over": "8.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 0,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 50
+  },
+  {
+   "team": "ACT Women",
+   "runs": 77,
+   "wickets": 7,
+   "overs": "9",
+   "batting": [
+    {
+     "name": "Paris Bowdler",
+     "dismissal": "c Courtney Sippel b Maitlan Brown",
+     "runs": 4,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Caitlin Mair",
+     "dismissal": "c Maitlan Brown b Frankie Nicklin",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shivani Mehta",
+     "dismissal": "b Frankie Nicklin",
+     "runs": 23,
+     "balls": 17,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Grace Lyons",
+     "dismissal": "b Frankie Nicklin",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rachel Carroll",
+     "dismissal": "c Lauren Kua b Courtney Sippel",
+     "runs": 16,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Zoe Cooke",
+     "dismissal": "c Hayley Zauch b Maitlan Brown",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Angelina Genford",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 10,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Amber Smith",
+     "dismissal": "b Sarah Coyte",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Maitlan Brown",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Courtney Sippel",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Frankie Nicklin",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Erin Burns",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Paris Bowdler",
+     "score": 5,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Shivani Mehta",
+     "score": 32,
+     "over": "4.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Caitlin Mair",
+     "score": 33,
+     "over": "4.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Grace Lyons",
+     "score": 34,
+     "over": "4.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rachel Carroll",
+     "score": 49,
+     "over": "6.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Zoe Cooke",
+     "score": 66,
+     "over": "7.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Amber Smith",
+     "score": 77,
+     "over": "8.6"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 1,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  }
+ ],
+ "winner": "Sydney Sixers Women",
+ "result": "Sydney Sixers Women won by 1 run (9 overs a side, rain)",
+ "overs_per_side": 9,
+ "note": "Reduced to 9 overs a side by rain"
+}

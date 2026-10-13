@@ -53,14 +53,15 @@ function Results() {
   const shown = matches.slice(page * PER_PAGE, (page + 1) * PER_PAGE);
   const items = doc ? doc.items.filter((c) => tab === "All" || c.tab === tab) : [];
 
+  const scored = index.matches.filter((m) => m.checks).length;      // rain-shortened matches are listed, not scored
   return (
     <div className="grid">
       <div className="grid res-stats">
         <div className="card"><div className="cs-k">Projections that came true</div>
           <div className="stat dash-stat">{pct(index.accuracy)}</div>
-          <p className="small muted">{index.hits} of {index.checks} checks across {index.matches.length} match{index.matches.length === 1 ? "" : "es"}.</p></div>
+          <p className="small muted">{index.hits} of {index.checks} checks across {scored} match{scored === 1 ? "" : "es"}.</p></div>
         <div className="card"><div className="cs-k">Favourite won</div>
-          <div className="stat dash-stat">{index.favourite_won}<span className="dash-of"> / {index.matches.length}</span></div>
+          <div className="stat dash-stat">{index.favourite_won}<span className="dash-of"> / {scored}</span></div>
           <p className="small muted">The side we made more likely to win.</p></div>
         <div className="card"><div className="cs-k">By tab</div>
           <div className="res-tabs">
@@ -80,8 +81,9 @@ function Results() {
             <span className="cs-k">{fmtDate(m.date)}</span>
             <b className="res-card-title">{m.title ?? m.teams.map((t) => t.name).join(" v ")}</b>
             <span className="small muted">{m.result}</span>
-            <span className="res-card-score"><span className="stat dash-stat">{pct(m.accuracy)}</span>
+            {m.checks ? <span className="res-card-score"><span className="stat dash-stat">{pct(m.accuracy)}</span>
               <span className="small muted">{m.hits} of {m.checks} came true</span></span>
+              : <span className="res-card-score"><span className="small muted">{m.note ?? "Not scored"}</span></span>}
           </button>
         ))}
       </div>
@@ -104,8 +106,10 @@ function Results() {
               <h3 style={{ margin: "4px 0" }}>{doc.title ?? doc.teams.map((t) => t.name).join(" v ")}</h3>
               <p className="small" style={{ margin: 0 }}><b>{doc.result}</b> · {doc.scores.map((s) => `${s.team} ${s.runs}/${s.wickets}`).join(", ")}</p>
             </div>
-            <div className="res-big"><div className="stat dash-stat">{pct(doc.accuracy)}</div><span className="small muted">{doc.hits} of {doc.checks} came true</span></div>
+            {doc.checks ? <div className="res-big"><div className="stat dash-stat">{pct(doc.accuracy)}</div><span className="small muted">{doc.hits} of {doc.checks} came true</span></div>
+              : <div className="res-big"><span className="small muted">Not scored</span></div>}
           </div>
+          {doc.note && <p className="small"><b>{doc.note}</b></p>}
           <p className="small muted">Our forecast before the start: {doc.teams.map((t, k) => `${t.name} ${pct(doc.forecast.win[t.name])} to win, projected ${doc.forecast.projected[k] !== null ? Math.round(doc.forecast.projected[k]!) : "—"}`).join(" · ")}.{" "}
             <Link href={`/match/?id=${encodeURIComponent(doc.id)}`}>See the forecast</Link></p>
           <div className="seg res-seg" role="group" aria-label="Tab">

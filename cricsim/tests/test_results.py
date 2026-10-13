@@ -109,3 +109,10 @@ def test_run_freezes_started_matches_and_scores(tmp_path):
     assert json.loads((out / "matches" / "m.pack.json").read_text()) == {"pack": 1}
     idx = json.loads((out / "results" / "index.json").read_text())
     assert idx["matches"][0]["id"] == "m" and idx["checks"] > 10 and idx["favourite_won"] == 1
+
+
+def test_rain_shortened_match_is_shown_not_scored():
+    card = {**parse((DATA / "scorecard_pak_sl.txt").read_text()), "overs_per_side": 9, "note": "Reduced to 9 overs a side by rain"}
+    rep = score(doc(), card, FIXTURE)
+    assert rep["checks"] == 0 and rep["accuracy"] is None and rep["brier"] is None
+    assert rep["winner"] and "Not scored" in rep["note"]
