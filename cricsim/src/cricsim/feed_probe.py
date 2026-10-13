@@ -45,11 +45,50 @@ def _shape(x, depth=0) -> str:
     return type(x).__name__
 
 
+def series_probe(f: Feed, terms: list[str]) -> list[str]:
+    """Find our competitions by name, list their matches, and pull one finished scorecard in full detail."""
+    out = ["### Feed probe: our competitions", ""]
+    done = None
+    for term in terms:
+        d = f.get("series", offset=0, search=term)
+        found = d.get("data") or []
+        out.append(f"**{term}**: {d.get('status')} · {len(found)} series" + (f" ({d.get('reason')})" if d.get("reason") else ""))
+        for sr in found[:3]:
+            out.append(f"- {sr.get('name')} · {sr.get('startDate')} to {sr.get('endDate')} · t20 {sr.get('t20')} odi {sr.get('odi')}")
+        if not found:
+            continue
+        info = f.get("series_info", id=found[0]["id"])
+        ml = (info.get("data") or {}).get("matchList") or []
+        out.append(f"  matchList: {len(ml)} matches")
+        for m in ml[:12]:
+            out.append(f"  - {m.get('dateTimeGMT')} · {m.get('name')} · {m.get('status')} · fantasy {m.get('fantasyEnabled')} · bbb {m.get('bbbEnabled')}")
+        done = done or next((m for m in ml if m.get("matchEnded") and m.get("matchType") == "t20"), None)
+    if done:
+        sc = f.get("match_scorecard", id=done["id"])
+        data = sc.get("data") or {}
+        out += ["", f"#### Scorecard: {done.get('name')}", "",
+                f"status: {sc.get('status')} {sc.get('reason', '')}", "```", _shape(data), "```"]
+        inns = data.get("scorecard") or []
+        if inns:
+            inn = inns[0]
+            out.append("Innings fields: `" + ", ".join(inn.keys()) + "`")
+            for part in ("batting", "bowling", "catching"):
+                if inn.get(part):
+                    out.append(f"{part} row: `" + json.dumps(inn[part][0])[:400] + "`")
+            out.append("extras/totals: `" + json.dumps({k: inn.get(k) for k in ("extras", "totals", "inning")})[:300] + "`")
+        out.append("Top-level: `" + json.dumps({k: data.get(k) for k in ("tossWinner", "tossChoice", "matchWinner", "status", "score")})[:500] + "`")
+    out += ["", f"Calls used: {f.calls} · quota: {json.dumps({k: f.info.get(k) for k in ('hitsToday', 'hitsUsed', 'hitsLimit')})}"]
+    return out
+
+
 def main() -> None:
     key = os.environ.get("CRICKETDATA_KEY")
     if not key:
         sys.exit("CRICKETDATA_KEY is not set")
     f = Feed(key)
+    if len(sys.argv) > 1:
+        print("\n".join(series_probe(f, sys.argv[1:])))
+        return
     out = ["### Feed probe", ""]
     matches, offset = [], 0
     for _ in range(6):                                # up to 6 pages of 25

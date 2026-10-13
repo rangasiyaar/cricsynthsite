@@ -3,6 +3,10 @@ name: Feed probe
 # One-off check of the fixtures/scorecard feed. Needs the repo secret CRICKETDATA_KEY; never prints it.
 on:
   workflow_dispatch:
+    inputs:
+      series:
+        description: "Comma-separated series names to search (blank = list upcoming matches)"
+        default: ""
 
 permissions:
   contents: read
@@ -20,4 +24,5 @@ jobs:
           CRICKETDATA_KEY: ${{ secrets.CRICKETDATA_KEY }}
         run: |
           set -o pipefail
-          uv run python -m cricsim.feed_probe | tee -a "$GITHUB_STEP_SUMMARY"
+          IFS=',' read -ra TERMS <<< "${{ inputs.series }}"
+          uv run python -m cricsim.feed_probe "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
