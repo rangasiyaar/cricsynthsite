@@ -1,0 +1,110 @@
+{
+  "id": "sytw-v-brhw-t20-bankstown-2026-10-13",
+  "title": "Sydney Thunder Women v Brisbane Heat Women",
+  "date": "2026-10-13",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "T20 Spring Challenge 2026 \u00b7 7th Match",
+  "venue": "Bankstown Oval, Sydney",
+  "venue_search": "bankstown",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Thunder Women",
+      "short": "SYTW",
+      "players": [
+        "Tahlia Wilson",
+        "Heather Knight",
+        "Anika Learoyd",
+        "Laura Harris",
+        "Hannah Darlington",
+        "Lucy Finn",
+        "Jemma Barsby",
+        "Hasrat Gill",
+        "Samantha Bates",
+        "Nicola Hancock",
+        "Tara French"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Tahlia Wilson",
+        "Anika Learoyd",
+        "Emily Powell",
+        "Laura Harris",
+        "Lucy Finn",
+        "Hannah Darlington",
+        "Jemma Barsby",
+        "Hasrat Gill",
+        "Tara French",
+        "Nicola Hancock",
+        "Samantha Bates",
+        "Eva Ragg",
+        "Alexandra Mavros",
+        "Kate McTaggart",
+        "Heather Knight"
+      ],
+      "captain": "Tahlia Wilson"
+    },
+    {
+      "name": "Brisbane Heat Women",
+      "short": "BRHW",
+      "players": [
+        "Georgia Redmayne",
+        "Grace Harris",
+        "Charli Knott",
+        "Mikayla Wrigley",
+        "Lucinda Bourke",
+        "Sianna Ginger",
+        "Annie O'Neil",
+        "Lily Bassingthwaighte",
+        "Sarah Glenn",
+        "Clodagh Ryall",
+        "Bonnie Berry"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Georgia Redmayne",
+        "Grace Harris",
+        "Lucinda Bourke",
+        "Charli Knott",
+        "Annie O'Neil",
+        "Sianna Ginger",
+        "Mikayla Wrigley",
+        "Lily Bassingthwaighte",
+        "Filippa Suesee",
+        "Bonnie Berry",
+        "Clodagh Ryall",
+        "Catherine White",
+        "Sarah Glenn"
+      ],
+      "captain": "Georgia Redmayne"
+    }
+  ]
+}
