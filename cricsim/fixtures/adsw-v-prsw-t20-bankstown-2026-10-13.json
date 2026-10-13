@@ -1,0 +1,108 @@
+{
+  "id": "adsw-v-prsw-t20-bankstown-2026-10-13",
+  "title": "Adelaide Strikers Women v Perth Scorchers Women",
+  "date": "2026-10-13",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "female",
+  "competition": "T20 Spring Challenge 2026 \u00b7 6th Match",
+  "venue": "Bankstown Oval, Sydney",
+  "venue_search": "bankstown",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Adelaide Strikers Women",
+      "short": "ADSW",
+      "players": [
+        "Emma de Broughe",
+        "Madeline Penna",
+        "Bridget Patterson",
+        "Courtney Neale",
+        "Ellie Johnston",
+        "Kate Peterson",
+        "Amanda-Jade Wellington",
+        "Maggie Clark",
+        "Ella Wilson",
+        "Eleanor Larosa",
+        "Emerson Filsell"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Bridget Patterson",
+        "Amanda-Jade Wellington",
+        "Courtney Neale",
+        "Madeline Penna",
+        "Kate Peterson",
+        "Ellie Johnston",
+        "Ella Wilson",
+        "Maggie Clark",
+        "Eleanor Larosa",
+        "Emma de Broughe",
+        "Emerson Filsell",
+        "Isabella Malgioglio",
+        "Elizabeth Worthley"
+      ],
+      "captain": "Amanda-Jade Wellington"
+    },
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PRSW",
+      "players": [
+        "Chloe Piparo",
+        "Katie Mack",
+        "Alyssa Dermody",
+        "Mikayla Hinkley",
+        "Ines McKeon",
+        "Chloe Ainsworth",
+        "Amy Edgar",
+        "Lilly Mills",
+        "Ebony Hoskin",
+        "Taneale Peschel",
+        "Ruby Strange"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Chloe Piparo",
+        "Alyssa Dermody",
+        "Katie Mack",
+        "Ines McKeon",
+        "Mikayla Hinkley",
+        "Chloe Ainsworth",
+        "Ruby Strange",
+        "Lilly Mills",
+        "Amy Edgar",
+        "Shay Manolini",
+        "Ebony Hoskin",
+        "Rebecca McGrath",
+        "Taneale Peschel"
+      ],
+      "captain": "Chloe Piparo"
+    }
+  ]
+}
