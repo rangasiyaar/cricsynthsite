@@ -104,7 +104,7 @@ function Results() {
             <div>
               <p className="cs-k">{doc.competition}{doc.date ? ` · ${fmtDate(doc.date)}` : ""}</p>
               <h3 style={{ margin: "4px 0" }}>{doc.title ?? doc.teams.map((t) => t.name).join(" v ")}</h3>
-              <p className="small" style={{ margin: 0 }}><b>{doc.result}</b> · {doc.scores.map((s) => `${s.team} ${s.runs}/${s.wickets}`).join(", ")}</p>
+              <p className="small" style={{ margin: 0 }}><b>{doc.result}</b>{doc.scores.length ? ` · ${doc.scores.map((s) => `${s.team} ${s.runs}/${s.wickets}`).join(", ")}` : ""}</p>
             </div>
             {doc.checks ? <div className="res-big"><div className="stat dash-stat">{pct(doc.accuracy)}</div><span className="small muted">{doc.hits} of {doc.checks} came true</span></div>
               : <div className="res-big"><span className="small muted">Not scored</span></div>}

@@ -152,7 +152,7 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
 
     inns = card["innings"]
     # a match cut short (rain) is shown with its result but not scored: the forecast was for the full overs
-    reduced = bool(card.get("overs_per_side")) and card["overs_per_side"] < s["meta"]["rules"]["overs"]
+    reduced = bool(card.get("abandoned")) or (bool(card.get("overs_per_side")) and card["overs_per_side"] < s["meta"]["rules"]["overs"])
     order = [roster.team(i["team"]) for i in inns]           # forecast team index of each innings
     team_name = roster.team_names
 
@@ -275,7 +275,8 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
         "hits": hits, "checks": len(checks), "accuracy": round(hits / len(checks), 4) if checks else None,
         "brier": round((1 - p_w) ** 2, 4) if p_w is not None else None,
         "tabs": by_tab, "items": checks,
-        **({"note": f"{card.get('note') or 'Match shortened'}. Not scored: our forecast was for {s['meta']['rules']['overs']} overs a side."}
+        **({"note": f"{card.get('note') or 'Abandoned'}. No result, so nothing to score."} if card.get("abandoned") else
+           {"note": f"{card.get('note') or 'Match shortened'}. Not scored: our forecast was for {s['meta']['rules']['overs']} overs a side."}
            if reduced else {}),
     }
 

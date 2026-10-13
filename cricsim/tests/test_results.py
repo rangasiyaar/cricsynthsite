@@ -116,3 +116,9 @@ def test_rain_shortened_match_is_shown_not_scored():
     rep = score(doc(), card, FIXTURE)
     assert rep["checks"] == 0 and rep["accuracy"] is None and rep["brier"] is None
     assert rep["winner"] and "Not scored" in rep["note"]
+
+
+def test_abandoned_match_is_listed_with_no_score():
+    rep = score(doc(), {"innings": [], "abandoned": True, "result": "Match abandoned due to rain", "note": "Abandoned due to rain"}, FIXTURE)
+    assert rep["checks"] == 0 and rep["winner"] is None and rep["brier"] is None and rep["scores"] == []
+    assert rep["note"].startswith("Abandoned due to rain")
