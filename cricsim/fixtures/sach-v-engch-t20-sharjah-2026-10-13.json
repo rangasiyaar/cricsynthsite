@@ -1,0 +1,105 @@
+{
+  "id": "sach-v-engch-t20-sharjah-2026-10-13",
+  "title": "South Africa Champions v England Champions",
+  "date": "2026-10-13",
+  "start_time": "17:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "World Championship of Legends 2026 \u00b7 14th Match",
+  "venue": "Sharjah Cricket Stadium, Sharjah",
+  "venue_search": "sharjah",
+  "status": "scheduled",
+  "published": true,
+  "batting_first": 0,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "South Africa Champions",
+      "short": "SACH",
+      "players": [
+        "Sarel Erwee",
+        "Morne van Wyk",
+        "AB de Villiers",
+        "Jean-Paul Duminy",
+        "Colin Ingram",
+        "Wayne Parnell",
+        "Robbie Frylinck",
+        "Shaun von Berg",
+        "Hardus Viljoen",
+        "Aaron Phangiso",
+        "Imran Tahir"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Sarel Erwee",
+        "Morne van Wyk",
+        "AB de Villiers",
+        "Jean-Paul Duminy",
+        "Colin Ingram",
+        "Wayne Parnell",
+        "Robbie Frylinck",
+        "Shaun von Berg",
+        "Hardus Viljoen",
+        "Aaron Phangiso",
+        "Imran Tahir"
+      ],
+      "captain": "AB de Villiers"
+    },
+    {
+      "name": "England Champions",
+      "short": "ENGCH",
+      "players": [
+        "Jason Roy",
+        "Phil Mustard",
+        "Dawid Malan",
+        "Ravi Bopara",
+        "Owais Shah",
+        "Moeen Ali",
+        "Samit Patel",
+        "Liam Plunkett",
+        "Ajmal Shahzad",
+        "Tymal Mills",
+        "Ryan Sidebottom"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Jason Roy",
+        "Phil Mustard",
+        "Dawid Malan",
+        "Ravi Bopara",
+        "Owais Shah",
+        "Moeen Ali",
+        "Samit Patel",
+        "Liam Plunkett",
+        "Ajmal Shahzad",
+        "Tymal Mills",
+        "Ryan Sidebottom"
+      ],
+      "captain": "Ravi Bopara"
+    }
+  ]
+}
