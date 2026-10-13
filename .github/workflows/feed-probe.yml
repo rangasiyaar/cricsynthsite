@@ -11,6 +11,11 @@ on:
         description: "Show squads for the upcoming matches of those series"
         type: boolean
         default: false
+      provider:
+        description: "Which feed to probe"
+        type: choice
+        options: [cricketdata, bigballs]
+        default: cricketdata
 
 permissions:
   contents: read
@@ -26,7 +31,12 @@ jobs:
       - name: Probe
         env:
           CRICKETDATA_KEY: ${{ secrets.CRICKETDATA_KEY }}
+          BIGBALLS_KEY: ${{ secrets.BIGBALLS_KEY }}
         run: |
           set -o pipefail
           IFS=',' read -ra TERMS <<< "${{ inputs.series }}"
-          uv run python -m cricsim.feed_probe ${{ inputs.squads && '--squads' || '' }} "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          if [ "${{ inputs.provider }}" = "bigballs" ]; then
+            uv run python -m cricsim.feed_probe_bigballs "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            uv run python -m cricsim.feed_probe ${{ inputs.squads && '--squads' || '' }} "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
