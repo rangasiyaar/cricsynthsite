@@ -192,3 +192,10 @@ def test_sample_a_simulated_match(world, tmp_path):
     assert first["runs"] == max(b.get("runs", 0) for inn in card["innings"] for b in inn["batting"])
     xi = card["fantasy_xi"]["players"]
     assert len(xi) == 11 and {p["role"] for p in xi} == {"WK", "BAT", "AR", "BOWL"}
+
+
+def test_venue_diagnostic_runs(world):
+    from cricsim.engine.venue_diag import run as venue_diag
+    text = venue_diag(world["parquet"], date(2024, 1, 1), years=3.0, min_balls=200, memory="2GB")
+    for part in ("Ground level", "Within-ground splits", "| phase | runs |", "Busiest grounds"):
+        assert part in text

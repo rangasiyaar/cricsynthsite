@@ -1,0 +1,44 @@
+name: Venue diagnostic
+
+# What the one-number-per-ground venue factor misses (phase, innings, pace/spin, gender, city), out of sample.
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: "Fit before this date; score the T20s after it"
+        default: "2025-01-01"
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/src/cricsim/engine/venue_diag.py", ".github/workflows/venue-diag.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Venue diagnostic
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.engine.venue_diag --parquet data/parquet --cutoff ${{ inputs.cutoff || '2025-01-01' }} --memory 4GB | tee -a "$GITHUB_STEP_SUMMARY"
