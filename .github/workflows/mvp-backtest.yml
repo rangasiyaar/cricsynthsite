@@ -39,4 +39,6 @@ jobs:
           uv run cricdata attributes --out data/parquet
           rm -rf data/raw
       - name: MVP backtest
-        run: uv run python -m cricsim.engine.mvp_backtest --parquet data/parquet --matches ${{ inputs.matches || 100 }} --memory 3GB | tee -a "$GITHUB_STEP_SUMMARY"
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.engine.mvp_backtest --parquet data/parquet --matches ${{ inputs.matches || 100 }} --memory 3GB | tee -a "$GITHUB_STEP_SUMMARY"

@@ -85,7 +85,7 @@ def last_t20s(con, parquet: Path, n: int) -> list[dict]:
                coalesce(m.competition_id, 'intl-' || coalesce(m.team_type, '') || '-' || m.format) AS comp,
                m.team1, m.team2, m.match_date
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
-        WHERE m.format = 'T20' AND m.gender IN ('male', 'female') AND m.method IS NULL AND m.result IS NULL
+        WHERE m.format = 'T20' AND m.gender IN ('male', 'female') AND m.method IS NULL AND m.winner IS NOT NULL
         ORDER BY m.match_date DESC, m.match_id DESC LIMIT {int(n * 1.5)}""").fetchall()
     out = []
     for mid, fmt, gender, venue, team_type, comp, t1, t2, day in rows:
