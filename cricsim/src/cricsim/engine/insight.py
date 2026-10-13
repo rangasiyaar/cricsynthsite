@@ -91,7 +91,8 @@ class Ctx:
         return (base + (era_vector(m, self.fam) if era is None else era)
                 + sit["set"][S.set_bucket(balls_faced)] + sit["streak"][2] + sit["dots"][0]
                 + sit["mile"][S.milestone_bucket(15)] + sit["spell"][0] + sit["freehit"][0] + sit["chase"][chase]
-                + m.venue_factor(venue, GENDERS.index(gender)) + f["comp"][m.comp(comp)])
+                + m.venue_factor(venue, GENDERS.index(gender)) + m.venue_phase(venue, self.fmt)[over]
+                + self.kind_share @ m.venue_kind(venue, np.arange(len(self.kind_share))) + f["comp"][m.comp(comp)])
 
     def batter(self, pid: str | None):
         if pid is None or not self.model.knows(pid):

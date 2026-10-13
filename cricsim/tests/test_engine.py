@@ -208,3 +208,11 @@ def test_city_prior_leans_on_neighbours():
     balls = np.array([0.0, 50000, 100, 100])
     p = city_prior(f, balls, np.array([-1, 0, 0, 1]))     # ground 2 shares ground 1's city; ground 3 is alone
     assert 0.25 < p[2, S.SIX] < 0.3 and p[1, S.SIX] == 0 and not p[3].any() and not p[0].any()
+
+
+def test_venue_split_factors_move_runs_not_wickets(world):
+    f = world["model"].factors
+    for name in ("venue_g", "venue_ph", "venue_kind"):
+        assert not f[name][:, S.WKT].any() and np.abs(f[name]).max() > 0
+    vp = world["model"].venue_phase("premier-oval", "T20")
+    assert vp.shape == (50, S.K) and (vp[0] == vp[5]).all() and (vp[16] == vp[19]).all()

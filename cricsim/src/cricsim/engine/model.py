@@ -7,7 +7,9 @@ Factor layout (levels × K, natural-log multipliers):
     era        season × format family                             (scoring levels drift; simulate at the latest)
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
     venue comp                                                       (ground and competition environment)
-    venue_g                                                          (ground × men's / women's; venue prior = same-city grounds)
+    venue_g venue_ph venue_kind                                      (ground × men's/women's, × stage of innings, × pace/spin;
+                                                                      runs only — wickets column fixed at 0)
+    The venue factor's prior is the other grounds in the same city.
     bat bowl                                                         (player, all formats and leagues together)
     bat_fmt bowl_fmt                                                 (player × format family, shrunk to the above)
     bat_kind bowl_hand                                               (player v bowling kind / batting hand)
@@ -124,6 +126,22 @@ class Model:
         f = self.factors["venue"][i]
         g = self.factors.get("venue_g")
         return f if g is None else f + g[i * 2 + gender]
+
+    def venue_phase(self, venue_id: str | None, fmt: str) -> np.ndarray:
+        """(MAX_OVERS, K) ground × stage-of-innings adjustment for each over."""
+        f = self.factors.get("venue_ph")
+        if f is None:
+            return np.zeros((MAX_OVERS, S.K), dtype=np.float32)
+        ph = S.venue_phase_bucket(np.arange(MAX_OVERS), S.FORMAT_RULES[fmt]["overs"])
+        return f[self.venue(venue_id) * S.N_VENUE_PHASE + np.minimum(ph, S.N_VENUE_PHASE - 1)]
+
+    def venue_kind(self, venue_id: str | None, kinds) -> np.ndarray:
+        """(len(kinds), K) ground × pace/spin adjustment for each bowler type."""
+        f = self.factors.get("venue_kind")
+        kinds = np.asarray(kinds)
+        if f is None:
+            return np.zeros((len(kinds), S.K), dtype=np.float32)
+        return f[self.venue(venue_id) * S.N_KIND_GROUP + S.kind_group(kinds)]
 
     def comp(self, comp_key: str | None) -> int:
         return self._cidx.get(comp_key or "", 0)

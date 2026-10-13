@@ -82,7 +82,8 @@ class _Tables:
         fmt = FORMAT_LIST.index(spec.format)
         g = GENDERS.index(spec.gender)
         fam = 1 if spec.format == "OD" else 0
-        self.base = f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam)
+        self.base = (f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam)
+                     + model.venue_phase(spec.venue_id, spec.format)[:, None, :])
         self.sit = {name: f[name].reshape(2, n, K)[fam] for name, n in SITUATION.items()}
         nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
         pb = np.array([model.pid(p) for p in order])
@@ -104,7 +105,8 @@ class _Tables:
                 + f["bat_kind"][pb[:, None] * nk + kind[None]]
                 + f["bowl_hand"][pw[None] * nh + hand[:, None]]
                 + self.sit["hand_kind"][hand[:, None] * nk + kind[None]]
-                + model.venue_factor(spec.venue_id, g) + f["comp"][model.comp(spec.comp_key)])
+                + model.venue_factor(spec.venue_id, g) + model.venue_kind(spec.venue_id, kind)[None]
+                + f["comp"][model.comp(spec.comp_key)])
         pair = pair.astype(np.float64)
         # scenario levers (log-multipliers on outcome classes)
         bnd = [S.FOUR, S.SIX]

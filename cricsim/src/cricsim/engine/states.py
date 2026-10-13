@@ -36,6 +36,20 @@ BOWLING_KINDS = ("unknown", "pace_right", "pace_left", "off_spin", "leg_spin", "
                  "left_arm_wrist", "slow")
 HANDS = ("unknown", "right", "left")
 
+# ground × stage of the innings and ground × pace/spin (venue factors that move runs, never wickets)
+VENUE_PHASE_EDGES = np.array([0.3, 0.6, 0.8])               # share of the innings → 0..3 (T20: overs 1-6/7-12/13-16/17-20)
+N_VENUE_PHASE = len(VENUE_PHASE_EDGES) + 1
+N_KIND_GROUP = 3                                            # unknown, pace, spin
+
+
+def venue_phase_bucket(over, overs):
+    return np.searchsorted(VENUE_PHASE_EDGES, np.asarray(over) / np.asarray(overs), side="right")
+
+
+def kind_group(kind):
+    kind = np.asarray(kind)
+    return np.where(kind == 0, 0, np.where(kind <= 2, 1, 2))
+
 
 def bowling_kind_index(arm: str | None, kind: str | None) -> int:
     if kind == "pace":
