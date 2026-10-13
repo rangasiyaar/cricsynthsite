@@ -85,11 +85,44 @@ def series_probe(f: Feed, terms: list[str]) -> list[str]:
     return out
 
 
+def squad_probe(f: Feed, terms: list[str]) -> list[str]:
+    """For each series: which upcoming matches have squads, and what a squad entry holds."""
+    out = ["### Feed probe: squads for upcoming matches", ""]
+    shown = 0
+    for term in terms:
+        found = f.get("series", offset=0, search=term).get("data") or []
+        ml = []
+        for sr in found[:2]:
+            ml = (f.get("series_info", id=sr["id"]).get("data") or {}).get("matchList") or []
+            if ml:
+                break
+        up = sorted((m for m in ml if not m.get("matchStarted")), key=lambda m: m.get("dateTimeGMT") or "")
+        out += [f"**{term}**: {len(up)} upcoming", ""]
+        for m in up[:2]:
+            sq = f.get("match_squad", id=m["id"])
+            teams = sq.get("data") or []
+            out.append(f"- {m.get('dateTimeGMT')} · {m.get('name')} · squad call: {sq.get('status')} {sq.get('reason', '')}")
+            for t in teams:
+                ps = t.get("players") or []
+                out.append(f"  - {t.get('teamName')}: {len(ps)} players · " + ", ".join(p.get("name", "?") for p in ps))
+            if teams and teams[0].get("players") and shown < 1:
+                p0 = dict(teams[0]["players"][0])
+                p0.pop("id", None)
+                out.append("  - player fields: `" + json.dumps(p0)[:400] + "`")
+                shown += 1
+        out.append("")
+    out += [f"Calls used: {f.calls} · quota: {json.dumps({k: f.info.get(k) for k in ('hitsToday', 'hitsUsed', 'hitsLimit')})}"]
+    return out
+
+
 def main() -> None:
     key = os.environ.get("CRICKETDATA_KEY")
     if not key:
         sys.exit("CRICKETDATA_KEY is not set")
     f = Feed(key)
+    if len(sys.argv) > 2 and sys.argv[1] == "--squads":
+        print("\n".join(squad_probe(f, sys.argv[2:])))
+        return
     if len(sys.argv) > 1:
         print("\n".join(series_probe(f, sys.argv[1:])))
         return

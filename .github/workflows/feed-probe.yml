@@ -7,6 +7,10 @@ on:
       series:
         description: "Comma-separated series names to search (blank = list upcoming matches)"
         default: ""
+      squads:
+        description: "Show squads for the upcoming matches of those series"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,4 +29,4 @@ jobs:
         run: |
           set -o pipefail
           IFS=',' read -ra TERMS <<< "${{ inputs.series }}"
-          uv run python -m cricsim.feed_probe "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+          uv run python -m cricsim.feed_probe ${{ inputs.squads && '--squads' || '' }} "${TERMS[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
