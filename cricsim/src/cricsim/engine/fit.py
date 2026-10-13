@@ -33,10 +33,10 @@ log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "comp": 6000, "era": 20000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "comp": 6000, "era": 20000,
     "bat": 300, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
-ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "comp",
+ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "comp",
          "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
 
 
@@ -133,6 +133,7 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "hand_kind": per_family(d["hand"].astype(np.int32) * nk + d["kind"], SITUATION["hand_kind"]),
         "era": (fam * N_ERA + era_index(d["day"]), 2 * N_ERA),
         "venue": (d["venue"], n_venues), "comp": (d["comp"], n_comps),
+        "venue_g": (d["venue"] * 2 + d["gender"].astype(np.int32), n_venues * 2),   # men's v women's at a ground
         "bat": (d["bat"], n_players), "bowl": (d["bowl"], n_players),
         "bat_fmt": (d["bat"] * 2 + fam, n_players * 2), "bowl_fmt": (d["bowl"] * 2 + fam, n_players * 2),
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
@@ -176,10 +177,13 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     observed = {name: np.bincount(idx * K + d["y"], weights=w, minlength=nl * K).reshape(nl, K)
                 for name, (idx, nl) in levels.items()}
     stats = {"balls": n, "passes": []}
+    city = np.asarray(ids.get("venue_city") or [-1] * len(ids["venues"]), dtype=np.int64)
     for it in range(cfg.passes):
         t0 = time.time()
         for name in ORDER:
             idx, nl = levels[name]
+            if name == "venue":
+                priors["venue"] = city_prior(logf["venue"], np.bincount(idx, weights=w, minlength=nl), city)
             _softmax(L, P)
             P *= w[:, None]
             E = _bincount2(idx, P, nl)
@@ -217,9 +221,28 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     # player 0 / venue 0 / comp 0 are "unknown": exactly average
     for name in ("bat", "bowl", "venue", "comp"):
         logf[name][0] = 0
-    for name, width in (("bat_fmt", 2), ("bowl_fmt", 2), ("bat_kind", len(S.BOWLING_KINDS)), ("bowl_hand", len(S.HANDS))):
+    for name, width in (("venue_g", 2), ("bat_fmt", 2), ("bowl_fmt", 2), ("bat_kind", len(S.BOWLING_KINDS)), ("bowl_hand", len(S.HANDS))):
         logf[name][:width] = 0
     return logf, stats
+
+
+CITY_SHRINK = 6000.0      # balls: how much other grounds in the same city count before the global average takes over
+
+
+def city_prior(f: np.ndarray, balls: np.ndarray, city: np.ndarray) -> np.ndarray:
+    """Each ground's prior = the ball-weighted venue factor of the other grounds in its city (itself left out),
+    shrunk to the global average. A ground with little history then leans on its neighbours, not on the world."""
+    ok = (city >= 0) & (np.arange(len(city)) > 0)
+    if not ok.any():
+        return np.zeros_like(f)
+    nc = int(city[ok].max()) + 1
+    c = np.where(ok, city, nc)
+    wf = balls[:, None] * f.astype(np.float64)
+    S_ = np.stack([np.bincount(c, weights=wf[:, k], minlength=nc + 1) for k in range(f.shape[1])], axis=1)
+    N_ = np.bincount(c, weights=balls, minlength=nc + 1)
+    prior = (S_[c] - wf) / (N_[c] - balls + CITY_SHRINK)[:, None]
+    prior[~ok] = 0
+    return prior.astype(np.float32)
 
 
 def match_conditions_sd(d: dict[str, np.ndarray], P: np.ndarray) -> dict[str, float]:
@@ -397,6 +420,18 @@ def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> d
     return {"venues": venues, "comps": comps, "teams": teams, "player_gender": "".join(gender)}
 
 
+def venue_cities(parquet: Path, venues: list[str], con) -> list[int]:
+    """City index per ground (-1 = unknown), for the same-city venue prior."""
+    m = (parquet / "matches" / "*.parquet").as_posix()
+    try:
+        rows = dict(con.execute(f"SELECT venue_id, lower(trim(any_value(city))) FROM read_parquet('{m}') "
+                                "WHERE venue_id IS NOT NULL AND city IS NOT NULL GROUP BY 1").fetchall())
+    except duckdb.Error:
+        return [-1] * len(venues)
+    names: dict[str, int] = {}
+    return [names.setdefault(rows[v], len(names)) if rows.get(v) else -1 for v in venues]
+
+
 def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=None) -> Model:
     cfg = cfg or FitConfig()
     con = con or duckdb.connect()
@@ -406,6 +441,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
         attrs = parquet / "attributes" / "attributes.parquet"
         build_balls(con, parquet, attrs if attrs.exists() else None)
     d, ids = load_training(con, cfg)
+    ids["venue_city"] = venue_cities(parquet, ids["venues"], con)
     log.info("training on %d balls, %d players", len(d["y"]), len(ids["players"]))
     factors, stats = fit_factors(d, ids, cfg)
     tables = _tables(con, cfg, ids, parquet)

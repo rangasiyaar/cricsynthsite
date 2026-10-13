@@ -7,6 +7,7 @@ Factor layout (levels × K, natural-log multipliers):
     era        season × format family                             (scoring levels drift; simulate at the latest)
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
     venue comp                                                       (ground and competition environment)
+    venue_g                                                          (ground × men's / women's; venue prior = same-city grounds)
     bat bowl                                                         (player, all formats and leagues together)
     bat_fmt bowl_fmt                                                 (player × format family, shrunk to the above)
     bat_kind bowl_hand                                               (player v bowling kind / batting hand)
@@ -116,6 +117,13 @@ class Model:
 
     def venue(self, venue_id: str | None) -> int:
         return self._vidx.get(venue_id or "", 0)
+
+    def venue_factor(self, venue_id: str | None, gender: int) -> np.ndarray:
+        """Ground environment: the venue factor plus its men's / women's adjustment."""
+        i = self.venue(venue_id)
+        f = self.factors["venue"][i]
+        g = self.factors.get("venue_g")
+        return f if g is None else f + g[i * 2 + gender]
 
     def comp(self, comp_key: str | None) -> int:
         return self._cidx.get(comp_key or "", 0)

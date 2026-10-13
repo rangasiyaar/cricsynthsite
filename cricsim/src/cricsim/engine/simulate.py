@@ -104,7 +104,7 @@ class _Tables:
                 + f["bat_kind"][pb[:, None] * nk + kind[None]]
                 + f["bowl_hand"][pw[None] * nh + hand[:, None]]
                 + self.sit["hand_kind"][hand[:, None] * nk + kind[None]]
-                + f["venue"][model.venue(spec.venue_id)] + f["comp"][model.comp(spec.comp_key)])
+                + model.venue_factor(spec.venue_id, g) + f["comp"][model.comp(spec.comp_key)])
         pair = pair.astype(np.float64)
         # scenario levers (log-multipliers on outcome classes)
         bnd = [S.FOUR, S.SIX]

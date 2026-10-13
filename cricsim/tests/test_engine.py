@@ -199,3 +199,12 @@ def test_venue_diagnostic_runs(world):
     text = venue_diag(world["parquet"], date(2024, 1, 1), years=3.0, min_balls=200, memory="2GB")
     for part in ("Ground level", "Within-ground splits", "| phase | runs |", "Busiest grounds"):
         assert part in text
+
+
+def test_city_prior_leans_on_neighbours():
+    from cricsim.engine.fit import city_prior
+    f = np.zeros((4, S.K), dtype=np.float32)
+    f[1, S.SIX] = 0.3                                     # a big-hitting ground with lots of history
+    balls = np.array([0.0, 50000, 100, 100])
+    p = city_prior(f, balls, np.array([-1, 0, 0, 1]))     # ground 2 shares ground 1's city; ground 3 is alone
+    assert 0.25 < p[2, S.SIX] < 0.3 and p[1, S.SIX] == 0 and not p[3].any() and not p[0].any()
