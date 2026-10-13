@@ -10,27 +10,27 @@
   "venue_search": "bankstown",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "Sydney Thunder Women",
       "short": "SYTW",
       "players": [
         "Tahlia Wilson",
-        "Heather Knight",
-        "Anika Learoyd",
+        "Emily Powell",
         "Laura Harris",
+        "Olivia Callaghan",
         "Hannah Darlington",
-        "Lucy Finn",
+        "Alexandra Mavros",
         "Jemma Barsby",
         "Hasrat Gill",
-        "Samantha Bates",
         "Nicola Hancock",
-        "Tara French"
+        "Tara French",
+        "Samantha Bates"
       ],
       "roles": [
         "WK",
-        "AR",
+        "BAT",
         "BAT",
         "BAT",
         "AR",
@@ -56,7 +56,8 @@
         "Eva Ragg",
         "Alexandra Mavros",
         "Kate McTaggart",
-        "Heather Knight"
+        "Heather Knight",
+        "Olivia Callaghan"
       ],
       "captain": "Tahlia Wilson"
     },
@@ -64,25 +65,25 @@
       "name": "Brisbane Heat Women",
       "short": "BRHW",
       "players": [
-        "Georgia Redmayne",
         "Grace Harris",
+        "Annie O'Neil",
         "Charli Knott",
+        "Georgia Redmayne",
+        "Sianna Ginger",
         "Mikayla Wrigley",
         "Lucinda Bourke",
-        "Sianna Ginger",
-        "Annie O'Neil",
+        "Filippa Suesee",
         "Lily Bassingthwaighte",
-        "Sarah Glenn",
-        "Clodagh Ryall",
-        "Bonnie Berry"
+        "Bonnie Berry",
+        "Catherine White"
       ],
       "roles": [
+        "AR",
+        "AR",
+        "AR",
         "WK",
         "AR",
-        "AR",
         "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
         "BOWL",
