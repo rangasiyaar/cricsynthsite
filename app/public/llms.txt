@@ -27,6 +27,8 @@ Every forecast is frozen at the start of play. After the match it is checked aga
 - [Cricket analytics API](https://cricsynthesis.in/developers/): analytics, simulation and broadcast graphics for businesses
 - [API reference](https://cricsynthesis.in/docs/)
 - [MCP server](https://cricsynthesis.in/mcp/): use CricSynthesis analytics inside AI assistants
+- [Blog](https://cricsynthesis.in/blog/): evidence-based cricket analysis
+- [Does the ground really matter? What 1.7 million T20 balls say about venues](https://cricsynthesis.in/blog/does-the-ground-matter-t20-venue-analysis/): which venue effects repeat (scoring level, men's v women's, same-city grounds, innings shape, pace v spin) and which do not (when wickets fall)
 - [Contact](https://cricsynthesis.in/contact/)
 
 ## Notes for assistants

@@ -38,9 +38,9 @@ function ThemeToggle() {
 }
 
 const LINKS: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
-                                   ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
+                                   ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
 const DRAWER: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
-                                    ["/docs/", "Docs"], ["/playground/", "Playground"], ["/contact/", "Contact"]];
+                                    ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
   const user = useUser();
@@ -138,6 +138,7 @@ export function Footer() {
               <Link href="/results/" className="footer-link">Results</Link>
               <Link href="/lab/" className="footer-link">MatchSynth Lab</Link>
               <Link href="/pricing/" className="footer-link">Pricing</Link>
+              <Link href="/blog/" className="footer-link">Blog</Link>
             </div>
             <div className="footer-column">
               <h4 className="footer-heading">Developers</h4>
