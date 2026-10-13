@@ -88,9 +88,14 @@ def main() -> None:
         out += ["", f"**{term}**: {len(hit)} series"] + [f"- {_name(s)} · {json.dumps({k: s.get(k) for k in ('start_date', 'end_date', 'startDate', 'endDate', 'season', 'format')})}" for s in hit[:3]]
         if not hit:
             continue
-        st, ms = f.get("matches", series=_id(hit[0]), limit=50)
-        rows = _items(ms)
-        out.append(f"  `/matches?series=`: HTTP {st} · {len(rows)} matches")
+        out.append("  first entry: `" + json.dumps(hit[0])[:300] + "`")
+        rows = []
+        for params in ({"series": _id(hit[0])}, {"series_id": _id(hit[0])}, {"series": _name(hit[0])}):
+            st, ms = f.get("matches", **params, limit=50)
+            rows = _items(ms)
+            out.append(f"  `/matches?{list(params)[0]}=`: HTTP {st} · {len(rows)} matches")
+            if rows:
+                break
         if rows:
             out += ["  ```", "  " + _shape(rows[0])[:900], "  ```"]
         for m in rows[:8]:
@@ -109,6 +114,18 @@ def main() -> None:
             text = json.dumps(sc).lower()
             out.append(f"  mentions: fall of wickets {'fall' in text or 'fow' in text} · powerplay {'powerplay' in text} · "
                        f"toss {'toss' in text} · extras {'extras' in text}")
+    st, allm = f.get("matches", limit=100)
+    rows = _items(allm)
+    out += ["", f"`/matches?limit=100` (no filter): HTTP {st} · {len(rows)} matches", "```", _shape(allm)[:1200], "```"]
+    if rows:
+        keys = [k for k in ("date", "start_time", "start", "match_date", "dateTimeGMT") if k in rows[0]]
+        dates = sorted(str(r.get(keys[0])) for r in rows if keys and r.get(keys[0]))
+        out.append(f"date field {keys[:1]}: earliest {dates[0] if dates else None} · latest {dates[-1] if dates else None}")
+        out.append("statuses: " + json.dumps(sorted({str(r.get('status')) for r in rows})))
+        for r in rows[:5]:
+            out.append("- `" + json.dumps(r)[:300] + "`")
+    big = sorted(items, key=lambda s: str(s.get("latest_match") or ""), reverse=True)[:12]
+    out += ["", "Series with the most recent matches:"] + [f"- {s.get('name')} · {s.get('match_count')} matches · {s.get('first_match')} to {s.get('latest_match')}" for s in big]
     out += ["", f"Calls used: {f.calls} · rate-limit headers: {json.dumps(f.limits)}"]
     print("\n".join(out))
 
