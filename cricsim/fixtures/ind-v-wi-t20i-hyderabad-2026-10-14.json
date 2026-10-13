@@ -1,0 +1,113 @@
+{
+  "id": "ind-v-wi-t20i-hyderabad-2026-10-14",
+  "title": "India v West Indies",
+  "date": "2026-10-14",
+  "start_time": "19:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "West Indies tour of India 2026/27 \u00b7 4th T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Rajiv Gandhi International Stadium, Hyderabad",
+  "venue_search": "rajiv gandhi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Abhishek Sharma",
+        "Sanju Samson",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Nitish Kumar Reddy",
+        "Naman Dhir",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Mayank Yadav",
+        "Prince Yadav"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Sanju Samson",
+        "Shreyas Iyer",
+        "Abhishek Sharma",
+        "Ishan Kishan",
+        "Tilak Varma",
+        "Naman Dhir",
+        "Nitish Kumar Reddy",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Prince Yadav",
+        "Mayank Yadav",
+        "Shivam Dube",
+        "Ravi Bishnoi",
+        "Vaibhav Sooryavanshi",
+        "Kuldeep Yadav"
+      ],
+      "captain": "Shreyas Iyer"
+    },
+    {
+      "name": "West Indies",
+      "short": "WI",
+      "players": [
+        "Shai Hope",
+        "Kamil Pooran",
+        "Shimron Hetmyer",
+        "Rovman Powell",
+        "Sherfane Rutherford",
+        "Quentin Sampson",
+        "Keemo Paul",
+        "Shamar Springer",
+        "Roston Chase",
+        "Gudakesh Motie",
+        "Shamar Joseph"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Shai Hope",
+        "Kamil Pooran",
+        "Shimron Hetmyer",
+        "Rovman Powell",
+        "Sherfane Rutherford",
+        "Quentin Sampson",
+        "Keemo Paul",
+        "Shamar Springer",
+        "Roston Chase",
+        "Gudakesh Motie",
+        "Shamar Joseph",
+        "Akeal Hosein",
+        "Amir Jangoo",
+        "Romario Shepherd",
+        "Matthew Forde"
+      ],
+      "captain": "Shai Hope"
+    }
+  ]
+}
