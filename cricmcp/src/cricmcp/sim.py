@@ -14,6 +14,7 @@ DOT, ONE, TWO, THREE, FOUR, SIX, WKT, WIDE, NOBALL, BYE = range(10)
 SPIN = {"off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow"}
 PACE = {"pace_right", "pace_left"}
 PLAN_WEIGHT = 0.01
+PLAN_EPS = 0.05
 M32 = 0xFFFFFFFF
 
 
@@ -90,6 +91,7 @@ class Prepared:
     kinds: list
     order: list
     bowlers: list
+    overs: list | None = None   # usual overs per bowler, when the pack carries an overs plan (bowlOvers)
 
 
 def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
@@ -126,9 +128,35 @@ def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
         order = list(new)
     excluded = set(sc.get("excludeBowlers") or [])
     weights = [[0] * len(row) if b["bowlers"][j] in excluded else row for j, row in enumerate(b["bowlWeights"])]
+    overs = None
     if all(v == 0 for row in weights for v in row):
         weights = b["bowlWeights"]
-    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], order, b["bowlers"])
+    elif b.get("bowlOvers"):
+        overs = [0 if b["bowlers"][j] in excluded else e for j, e in enumerate(b["bowlOvers"])]
+    if b.get("bowlOvers") and not overs:
+        overs = b["bowlOvers"]
+    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], order, b["bowlers"], overs)
+
+
+def plan_overs(r, expected: list, used: list, overs: int, quota: int) -> list:
+    """Overs per bowler for one innings, drawn up front (planOvers in sim.ts)."""
+    tot = 0.0
+    for j in range(11):
+        tot += expected[j]
+    ex = [(e * overs) / tot if tot > 0 else 1 for e in expected]
+    t = list(used)
+    left = overs - sum(used)
+    c = [0.0] * 11
+    for _ in range(left):
+        anyc = 0.0
+        for j in range(11):
+            c[j] = max(ex[j] - t[j], 0) + (PLAN_EPS if ex[j] > 0 else 0) if t[j] < quota else 0
+            anyc += c[j]
+        if anyc == 0:
+            for j in range(11):
+                c[j] = (1 if t[j] < quota else 0) + 1e-9
+        t[_choose(r, c, 11)] += 1
+    return t
 
 
 def simulate_innings(pack: dict, P: Prepared, inn0: int, target: int | None, r, cond: list, start: dict | None = None
@@ -155,7 +183,8 @@ def simulate_innings(pack: dict, P: Prepared, inn0: int, target: int | None, r, 
         non = idx.get(start.get("nonStriker") or "", next(i for i in remaining if i != striker))
         queue = [i for i in remaining if i != striker and i != non]
         res.runs, res.wkts, res.legal = start["runs"], start["wickets"], start["balls"]
-    plan = [r() < min(1, sum(row) / len(row) / PLAN_WEIGHT) for row in P.weights]
+    planned = plan_overs(r, P.overs, used, overs, quota) if P.overs else None
+    plan = [] if planned else [r() < min(1, sum(row) / len(row) / PLAN_WEIGHT) for row in P.weights]
     in_over, bowler, spell, free_hit, dots = res.legal % bpo, -1, 0, 0, 0
     max_balls = overs * bpo
     w = [0.0] * 11
@@ -168,8 +197,12 @@ def simulate_innings(pack: dict, P: Prepared, inn0: int, target: int | None, r, 
                 if anyw:
                     break
                 for j in range(11):
-                    w[j] = (P.weights[j][dec] if used[j] < quota and (consecutive_ok or j != bowler)
-                            and (pass_ == 1 or plan[j]) else 0)
+                    if planned:     # bowlers with planned overs left, by when they usually bowl
+                        w[j] = ((P.weights[j][dec] if pass_ == 0 else 1)
+                                if used[j] < planned[j] and (consecutive_ok or j != bowler) else 0)
+                    else:
+                        w[j] = (P.weights[j][dec] if used[j] < quota and (consecutive_ok or j != bowler)
+                                and (pass_ == 1 or plan[j]) else 0)
                     anyw += w[j]
             if anyw == 0:
                 for j in range(11):

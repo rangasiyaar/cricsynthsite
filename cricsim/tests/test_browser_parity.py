@@ -21,12 +21,22 @@ APP = Path(__file__).resolve().parents[2] / "app"
 
 @pytest.mark.skipif(shutil.which("node") is None or not (APP / "lib" / "engine" / "sim.ts").exists(),
                     reason="node / app not available")
-@pytest.mark.parametrize("scenario", [{}, {"boundaryMult": 1.25, "dew": 0.6, "battingFirst": 0}])
+@pytest.mark.parametrize("scenario", [{}, {"boundaryMult": 1.25, "dew": 0.6, "battingFirst": 0}, {"oversPlan": True}])
 def test_browser_engine_matches_python(world, tmp_path, scenario):  # noqa: F811
     m = world["model"]
     spec = _spec(world["world"])
     pack = tmp_path / "pack.json"
-    pack.write_text(json.dumps(engine_pack(m, spec)))
+    m.meta["sim"] = {"overs_plan": bool(scenario.pop("oversPlan", False))}
+    try:
+        pk = engine_pack(m, spec)
+        assert ("bowlOvers" in pk["batting"][0]) == m.meta["sim"]["overs_plan"]
+        pack.write_text(json.dumps(pk))
+        _check(m, spec, pack, scenario, tmp_path)
+    finally:
+        m.meta.pop("sim")
+
+
+def _check(m, spec, pack, scenario, tmp_path):
     sc_file = tmp_path / "sc.json"
     sc_file.write_text(json.dumps(scenario))
     out = subprocess.run(["node", "--experimental-strip-types", "--no-warnings", str(APP / "tests" / "parity_cli.ts"),

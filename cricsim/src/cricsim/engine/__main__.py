@@ -69,6 +69,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--home/--no-home", default=None, help="Variant: home advantage")
 @click.option("--order", type=click.Choice(["history", "sheet"]), default="history",
               help="Batting order: usual positions (history) or the team sheet, as live forecasts use it")
+@click.option("--overs-plan/--no-overs-plan", default=None, help="Variant: draw each innings' overs per bowler up front")
 @click.option("--listed-bonus", type=float, default=None, help="Variant: weight added for a listed bowler")
 @click.option("--roles", is_flag=True, help="Mark who may bowl (here: who did), as fixture roles do live")
 @click.option("--recent-role", type=float, default=None, help="Variant: weight of the last 5 matches in role (0..1)")
@@ -77,7 +78,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--memory", default="4GB")
 def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: float | None, fantasy_bowlers: bool,
              comp_groups: str | None, shrink: str, slot_usage: bool | None, bowl_focus: float | None,
-             experience: bool | None, home: bool | None, recent_role: float | None, order: str, roles: bool, listed_bonus: float | None, sims: int,
+             experience: bool | None, home: bool | None, recent_role: float | None, order: str, roles: bool, listed_bonus: float | None, overs_plan: bool | None, sims: int,
              out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
@@ -91,7 +92,8 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
     rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample,
                        half_life=half_life, fantasy_bowlers=fantasy_bowlers, fit_overrides=over,
                        sim_overrides={k: v for k, v in (("slot_usage", slot_usage), ("bowl_focus", bowl_focus),
-                                                         ("recent_role", recent_role), ("listed_bonus", listed_bonus))
+                                                         ("recent_role", recent_role), ("listed_bonus", listed_bonus),
+                                                         ("overs_plan", overs_plan))
                                       if v is not None},
                        order=order, roles=roles)
     write_report(rep, out)

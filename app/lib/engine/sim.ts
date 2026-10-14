@@ -9,7 +9,7 @@ export type Pack = {
   base: number[][][][];                      // [innings0][over][wickets][K]
   situation: Record<"set" | "chase" | "mile" | "streak" | "dots" | "spell" | "freehit", number[][]>;
   batting: { team: number; order: string[]; bowlers: string[]; pair: number[][][]; bowlWeights: number[][];
-             dismissal: number[][]; bowlerKinds: string[] }[];
+             bowlOvers?: number[]; dismissal: number[][]; bowlerKinds: string[] }[];
   wideRuns: number[]; byeRuns: number[]; runoutNonStriker: number;
   dismissals: string[]; bowlerDismissals: boolean[]; runOut: number;
   conditionsSd: { boundary?: number; wicket?: number };
@@ -33,6 +33,28 @@ const [DOT, ONE, TWO, THREE, FOUR, SIX, WKT, WIDE, NOBALL, BYE] = [0, 1, 2, 3, 4
 const SPIN = new Set(["off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow"]);
 const PACE = new Set(["pace_right", "pace_left"]);
 const PLAN_WEIGHT = 0.01;   // simulate.py PLAN_WEIGHT
+const PLAN_EPS = 0.05;      // simulate.py PLAN_EPS
+
+/** Overs per bowler for one innings, drawn up front — mirrors plan_overs in simulate.py. */
+function planOvers(r: () => number, expected: number[], used: Int16Array, overs: number, quota: number): Int16Array {
+  let tot = 0;
+  for (let j = 0; j < 11; j++) tot += expected[j];
+  const ex = expected.map((e) => (tot > 0 ? (e * overs) / tot : 1));
+  const t = Int16Array.from(used);
+  let left = overs;
+  for (let j = 0; j < 11; j++) left -= used[j];
+  const c = new Float64Array(11);
+  for (let k = 0; k < left; k++) {
+    let any = 0;
+    for (let j = 0; j < 11; j++) {
+      c[j] = t[j] < quota ? Math.max(ex[j] - t[j], 0) + (ex[j] > 0 ? PLAN_EPS : 0) : 0;
+      any += c[j];
+    }
+    if (any === 0) for (let j = 0; j < 11; j++) c[j] = (t[j] < quota ? 1 : 0) + 1e-9;
+    t[choose(r, c, 11)]++;
+  }
+  return t;
+}
 
 export function rng(seed: number) {                       // mulberry32
   let a = seed >>> 0;
@@ -69,7 +91,7 @@ export type InningsResult = {
 };
 
 type Prepared = { pair: Float64Array; weights: number[][]; dismissal: number[][]; kinds: string[];
-                  order: string[]; bowlers: string[] };
+                  order: string[]; bowlers: string[]; overs: number[] | null };
 
 /** Apply scenario levers to the neutral pair table — mirrors _Tables in simulate.py. */
 export function prepare(pack: Pack, battingTeam: number, inn0: number, sc: Scenario): Prepared {
@@ -93,8 +115,11 @@ export function prepare(pack: Pack, battingTeam: number, inn0: number, sc: Scena
   }
   const excluded = new Set(sc.excludeBowlers ?? []);
   let weights = b.bowlWeights.map((row, j) => (excluded.has(b.bowlers[j]) ? row.map(() => 0) : row));
+  let overs: number[] | null = null;
   if (weights.every((row) => row.every((v) => v === 0))) weights = b.bowlWeights;
-  return { pair, weights, dismissal: b.dismissal, kinds: b.bowlerKinds, order: b.order, bowlers: b.bowlers };
+  else if (b.bowlOvers) overs = b.bowlOvers.map((e, j) => (excluded.has(b.bowlers[j]) ? 0 : e));
+  if (b.bowlOvers && !overs) overs = b.bowlOvers;
+  return { pair, weights, dismissal: b.dismissal, kinds: b.bowlerKinds, order: b.order, bowlers: b.bowlers, overs };
 }
 
 export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: number | null, r: () => number,
@@ -124,7 +149,8 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     res.runs = start.runs; res.wkts = start.wickets; res.legal = start.balls;
   }
   // bowling plan for this innings (mirrors PLAN_WEIGHT in simulate.py)
-  const plan = P.weights.map((row) => r() < Math.min(1, row.reduce((a, v) => a + v, 0) / row.length / PLAN_WEIGHT));
+  const plannedOvers = P.overs ? planOvers(r, P.overs, used, overs, quota) : null;
+  const plan = plannedOvers ? [] : P.weights.map((row) => r() < Math.min(1, row.reduce((a, v) => a + v, 0) / row.length / PLAN_WEIGHT));
   let inOver = res.legal % bpo, bowler = -1, spell = 0, freeHit = 0, dots = 0;
   const L = new Float64Array(K), w = new Float64Array(11);
   const maxBalls = overs * bpo;
@@ -133,10 +159,19 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     if (bowler < 0 || (inOver === 0 && lastOver[bowler] !== ov)) {
       const dec = Math.min(Math.floor((ov * 10) / overs), 9);
       let any = 0;
-      for (let pass = 0; pass < 2 && any === 0; pass++) {     // plan exhausted → anyone else who may bowl
-        for (let j = 0; j < 11; j++) {
-          w[j] = used[j] < quota && (consecutiveOk || j !== bowler) && (pass === 1 || plan[j]) ? P.weights[j][dec] : 0;
-          any += w[j];
+      if (plannedOvers) {      // bowlers with planned overs left, by when they usually bowl
+        for (let pass = 0; pass < 2 && any === 0; pass++) {
+          for (let j = 0; j < 11; j++) {
+            w[j] = used[j] < plannedOvers[j] && (consecutiveOk || j !== bowler) ? (pass === 0 ? P.weights[j][dec] : 1) : 0;
+            any += w[j];
+          }
+        }
+      } else {
+        for (let pass = 0; pass < 2 && any === 0; pass++) {     // plan exhausted → anyone else who may bowl
+          for (let j = 0; j < 11; j++) {
+            w[j] = used[j] < quota && (consecutiveOk || j !== bowler) && (pass === 1 || plan[j]) ? P.weights[j][dec] : 0;
+            any += w[j];
+          }
         }
       }
       if (any === 0) for (let j = 0; j < 11; j++) w[j] = (used[j] < quota ? 1 : 0) + 1e-9;

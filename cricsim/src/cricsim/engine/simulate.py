@@ -26,6 +26,8 @@ RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowli
 LISTED_BONUS = 0.03      # extra weight for a bowler the fixture lists as a bowler; small keeps the usual shares apart
                          # (backtest, 3 cutoffs: 2+ wickets Brier -0.0014, runs-conceded corr 0.55 -> 0.60 v 0.3)
 SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
+OVERS_PLAN = False       # draw each innings' overs per bowler up front from their usual overs per match (variant)
+PLAN_EPS = 0.05          # overs-plan draw: small chance for a listed bowler beyond his usual share
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
 
@@ -169,10 +171,31 @@ class _Tables:
         if not allowed.any():
             allowed[:] = True
         self.bowl_weights = weights * allowed[:, None]
+        # usual overs per match (expected), for the per-innings overs plan
+        self.bowl_overs = np.clip(share * per_decile, 0, None).sum(1) * allowed
+        self.overs_plan = bool(sim.get("overs_plan", OVERS_PLAN))
         self.dismissal = model.dismissal[fam][kind].astype(np.float64)        # (11, kinds)
         self.wide_runs = model.wide_runs[fam].astype(np.float64)
         self.bye_runs = model.bye_runs[fam].astype(np.float64)
         self.runout_ns = model.runout_non_striker
+
+
+def plan_overs(rng, expected: np.ndarray, used: np.ndarray, overs: int, quota: int) -> np.ndarray:
+    """Each simulated innings' overs per bowler, drawn up front: overs go one at a time to the bowler furthest
+    below his usual overs per match (scaled to the innings), within the quota. Frontliners then bowl their
+    full spells and part-timers a couple of overs, as captains do (sim.ts / cricmcp plan_overs mirror this)."""
+    tot = expected.sum()
+    ex = expected * overs / tot if tot > 0 else np.ones_like(expected)
+    target = used.copy()
+    left = overs - used.sum(1)
+    for k in range(int(left.max(initial=0))):
+        rows = np.flatnonzero(left > k)
+        t = target[rows]
+        c = np.where(t < quota, np.maximum(ex - t, 0) + PLAN_EPS * (ex > 0), 0.0)
+        none = c.sum(1) == 0
+        c[none] = (t[none] < quota) + 1e-9
+        target[rows, _choose(rng, c)] += 1
+    return target
 
 
 def _choose(rng, probs: np.ndarray) -> np.ndarray:
@@ -239,8 +262,11 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
     else:
         queue = np.array(list(range(2, 11)) + [11] * 11)
     qpos = np.zeros(n, dtype=np.int64)
-    plan = rng.random((n, used.shape[1])) < np.minimum(1.0, T.bowl_weights.mean(1) / PLAN_WEIGHT)
-    plan |= used > 0
+    if T.overs_plan:
+        planned = plan_overs(rng, T.bowl_overs, used, overs, quota)
+    else:
+        plan = rng.random((n, used.shape[1])) < np.minimum(1.0, T.bowl_weights.mean(1) / PLAN_WEIGHT)
+        plan |= used > 0
 
     def over_of(lg):
         return np.minimum(lg // bpo, overs - 1)
@@ -258,14 +284,25 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
             sel = a[need]
             o = over_of(legal[sel])
             dec = np.minimum(o * N_DECILES // overs, N_DECILES - 1)
-            w = T.bowl_weights[:, dec].T * (used[sel] < quota)
-            if not consecutive_ok:
-                prev = bowler[sel]
-                has = prev >= 0
-                w[np.flatnonzero(has), prev[has]] = 0
-            planned = w * plan[sel]
-            keep = planned.sum(1) > 0            # plan exhausted → anyone else who may bowl
-            w[keep] = planned[keep]
+            if T.overs_plan:                     # bowlers with planned overs left, by when they usually bowl
+                left = used[sel] < planned[sel]
+                w = T.bowl_weights[:, dec].T * left
+                if not consecutive_ok:
+                    prev = bowler[sel]
+                    has = prev >= 0
+                    w[np.flatnonzero(has), prev[has]] = 0
+                    left[np.flatnonzero(has), prev[has]] = False
+                none = w.sum(1) == 0
+                w[none] = left[none]
+            else:
+                w = T.bowl_weights[:, dec].T * (used[sel] < quota)
+                if not consecutive_ok:
+                    prev = bowler[sel]
+                    has = prev >= 0
+                    w[np.flatnonzero(has), prev[has]] = 0
+                planned = w * plan[sel]
+                keep = planned.sum(1) > 0            # plan exhausted → anyone else who may bowl
+                w[keep] = planned[keep]
             empty = w.sum(1) == 0
             if empty.any():
                 w[empty] = (quota - used[sel[empty]] > 0).astype(float) + 1e-9
