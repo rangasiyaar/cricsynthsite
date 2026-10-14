@@ -22,8 +22,8 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: history-order, args: "" }
           - { name: sheet-order, args: "--order sheet" }
+          - { name: sheet-order+roles, args: "--order sheet --roles" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

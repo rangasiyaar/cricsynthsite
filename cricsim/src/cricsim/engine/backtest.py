@@ -92,7 +92,7 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
-                 sim_overrides: dict | None = None, order: str = "history") -> dict:
+                 sim_overrides: dict | None = None, order: str = "history", roles: bool = False) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}."""
     con = duckdb.connect()
@@ -104,9 +104,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"order": order, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home, "sim": sim_overrides or {},
+    rep["variant"] = {"order": order, "roles": roles, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
@@ -118,7 +118,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
-         fantasy_bowlers: bool = False, order: str = "history") -> dict:
+         fantasy_bowlers: bool = False, order: str = "history", roles: bool = False) -> dict:
     matches = holdout_matches(con, parquet, cutoff, limit, end=end)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
@@ -136,7 +136,12 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         bf = 0 if first_team == t1 else 1
         xi = ((lambda t: list(mt["xi"][t])) if order == "sheet"     # the team sheet, as live forecasts use it
               else (lambda t: _xi_order(model, mt["xi"][t], mt["format"])))
-        spec = MatchSpec(mt["format"], mt["gender"], (TeamSpec(t1, xi(t1)), TeamSpec(t2, xi(t2))),
+        bowl = {}
+        if roles:           # who bowls, as a fixture's roles tell live forecasts (here: who did bowl)
+            did = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
+                                             [mt["match_id"]]).fetchall()}
+            bowl = {t: [p for p in mt["xi"][t] if p in did] or None for t in (t1, t2)}
+        spec = MatchSpec(mt["format"], mt["gender"], (TeamSpec(t1, xi(t1), bowl.get(t1)), TeamSpec(t2, xi(t2), bowl.get(t2))),
                          venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=bf, team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         part = sims.parts[0]
