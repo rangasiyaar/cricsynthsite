@@ -1,0 +1,373 @@
+{
+ "id": "sach-v-engch-t20-sharjah-2026-10-13",
+ "innings": [
+  {
+   "team": "South Africa Champions",
+   "runs": 204,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sarel Erwee",
+     "dismissal": "c Malan b RJ Sidebottom",
+     "runs": 7,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "AB de Villiers",
+     "dismissal": "c Jason Roy b Plunkett",
+     "runs": 56,
+     "balls": 31,
+     "fours": 4,
+     "sixes": 4
+    },
+    {
+     "name": "Jean-Paul Duminy",
+     "dismissal": "c Malan b Plunkett",
+     "runs": 76,
+     "balls": 43,
+     "fours": 6,
+     "sixes": 5
+    },
+    {
+     "name": "Morne van Wyk",
+     "dismissal": "b Plunkett",
+     "runs": 11,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Colin Ingram",
+     "dismissal": "c P Mustard b Bopara",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Wayne Parnell",
+     "dismissal": "not out",
+     "runs": 35,
+     "balls": 18,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Robbie Frylinck",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Samit Patel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ryan Sidebottom",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tymal Mills",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ajmal Shahzad",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Liam Plunkett",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ravi Bopara",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Moeen Ali",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sarel Erwee",
+     "score": 15,
+     "over": "1.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "AB de Villiers",
+     "score": 109,
+     "over": "11.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Morne van Wyk",
+     "score": 139,
+     "over": "13.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Colin Ingram",
+     "score": 144,
+     "over": "14.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jean-Paul Duminy",
+     "score": 171,
+     "over": "16.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 59
+  },
+  {
+   "team": "England Champions",
+   "runs": 195,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ravi Bopara",
+     "dismissal": "c Duminy b Hardus Viljoen",
+     "runs": 27,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Dawid Malan",
+     "dismissal": "c von Berg b Parnell",
+     "runs": 88,
+     "balls": 51,
+     "fours": 8,
+     "sixes": 5
+    },
+    {
+     "name": "Jason Roy",
+     "dismissal": "c and b Phangiso",
+     "runs": 18,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Samit Patel",
+     "dismissal": "c Duminy b von Berg",
+     "runs": 5,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Moeen Ali",
+     "dismissal": "c Phangiso b Parnell",
+     "runs": 37,
+     "balls": 26,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Phil Mustard",
+     "dismissal": "c Parnell b Imran Tahir",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Owais Shah",
+     "dismissal": "c Duminy b Parnell",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Plunkett",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tymal Mills",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Wayne Parnell",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 3
+    },
+    {
+     "name": "Robbie Frylinck",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Imran Tahir",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shaun von Berg",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aaron Phangiso",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jean-Paul Duminy",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ravi Bopara",
+     "score": 40,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jason Roy",
+     "score": 78,
+     "over": "7.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Samit Patel",
+     "score": 85,
+     "over": "8.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Moeen Ali",
+     "score": 174,
+     "over": "16.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Phil Mustard",
+     "score": 177,
+     "over": "17.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Dawid Malan",
+     "score": 186,
+     "over": "18.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Owais Shah",
+     "score": 187,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 5,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 68
+  }
+ ],
+ "winner": "South Africa Champions",
+ "result": "South Africa Champions won by 9 runs"
+}
