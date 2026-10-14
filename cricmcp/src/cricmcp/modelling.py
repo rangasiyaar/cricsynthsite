@@ -174,6 +174,22 @@ def bowling_plan(kit, pack: dict, players: dict, bowling_team: int, gender: str,
         w = min(opts, key=lambda x: value[(ph_of[o], x)]["net"])
         assigned[o] = w
         quota[w] -= 1
+    # the greedy pass can be cornered into back-to-back overs: swap with an over where both fit
+    n = rules["overs"]
+
+    def clash(o, w):
+        return assigned.get(o - 1) == w or assigned.get(o + 1) == w
+    for o in range(1, n):
+        if assigned[o] != assigned[o - 1]:
+            continue
+        for k in sorted(range(n), key=lambda k: value[(ph_of[o], assigned[k])]["net"]):
+            a, b = assigned[o], assigned[k]
+            if a == b:
+                continue
+            assigned[o], assigned[k] = b, a
+            if not clash(o, b) and not clash(k, a):
+                break
+            assigned[o], assigned[k] = a, b
     plan = [{"over": o + 1, "phase": ph_of[o], "bowler": players[assigned[o]]["name"],
              "expected_economy": value[(ph_of[o], assigned[o])]["economy"]} for o in range(rules["overs"])]
     summary = [{"bowler": players[w]["name"], "bowling_kind": players[w]["bowling_kind"],

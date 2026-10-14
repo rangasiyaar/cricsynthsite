@@ -23,10 +23,9 @@ jobs:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
           - { name: current, args: "" }
-          - { name: experience, args: "--experience" }
-          - { name: recent-role-0.5, args: "--recent-role 0.5" }
-          - { name: recent-role-1.0, args: "--recent-role 1.0" }
-          - { name: experience+recent-0.5, args: "--experience --recent-role 0.5" }
+          - { name: home, args: "--home" }
+          - { name: home+bat300, args: "--home --shrink bat=300" }
+          - { name: exp-shrink1000, args: "--shrink bat_exp=1000,bowl_exp=1000" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

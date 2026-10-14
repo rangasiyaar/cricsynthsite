@@ -258,6 +258,22 @@ def bowling_plan(model: Model, spec: MatchSpec, bowling_team: int, bowlers: list
         w = min(opts, key=lambda x: value[(ph_of[o], x)]["net"])
         assigned[o] = w
         quota[w] -= 1
+    # the greedy pass can be cornered into back-to-back overs: swap with an over where both fit
+    n = rules["overs"]
+
+    def clash(o, w):
+        return assigned.get(o - 1) == w or assigned.get(o + 1) == w
+    for o in range(1, n):
+        if assigned[o] != assigned[o - 1]:
+            continue
+        for k in sorted(range(n), key=lambda k: value[(ph_of[o], assigned[k])]["net"]):
+            a, b = assigned[o], assigned[k]
+            if a == b:
+                continue
+            assigned[o], assigned[k] = b, a
+            if not clash(o, b) and not clash(k, a):
+                break
+            assigned[o], assigned[k] = a, b
     for o in range(rules["overs"]):
         w = assigned[o]
         v = value[(ph_of[o], w)]
