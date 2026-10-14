@@ -63,18 +63,23 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--comp-groups", type=click.Choice(["off", "club", "all"]), default=None,
               help="Variant: competitions lean on similar competitions")
 @click.option("--shrink", "shrink", default="", help="Variant: prior strengths, e.g. bat=150,bowl=150")
+@click.option("--slot-usage/--no-slot-usage", default=None, help="Variant: newcomers bowl like their team-sheet slot")
+@click.option("--bowl-focus", type=float, default=None, help="Variant: how strongly captains favour frontline bowlers")
 @click.option("--sims", default=1000)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
 def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: float | None, fantasy_bowlers: bool,
-             comp_groups: str | None, shrink: str, sims: int, out: Path, memory: str) -> None:
+             comp_groups: str | None, shrink: str, slot_usage: bool | None, bowl_focus: float | None, sims: int,
+             out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
     over: dict = {"comp_groups": comp_groups} if comp_groups else {}
     if shrink:
         over["shrink"] = {k.strip(): float(v) for k, v in (kv.split("=") for kv in shrink.split(","))}
     rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample,
-                       half_life=half_life, fantasy_bowlers=fantasy_bowlers, fit_overrides=over)
+                       half_life=half_life, fantasy_bowlers=fantasy_bowlers, fit_overrides=over,
+                       sim_overrides={k: v for k, v in (("slot_usage", slot_usage), ("bowl_focus", bowl_focus))
+                                      if v is not None})
     write_report(rep, out)
     click.echo(out.with_suffix(".md").read_text())
 

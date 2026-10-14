@@ -87,8 +87,10 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
-                 half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None) -> dict:
-    """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}}."""
+                 half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
+                 sim_overrides: dict | None = None) -> dict:
+    """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
+    sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     over = dict(fit_overrides or {})
@@ -96,9 +98,11 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
         over["shrink"] = {**FitConfig().shrink, **over["shrink"]}
     cfg = FitConfig(cutoff=cutoff, **({"half_life_years": half_life} if half_life else {}), **over)
     model = model or fit(parquet, cfg, memory=memory, con=con)
+    if sim_overrides:
+        model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"comp_groups": cfg.comp_groups,
+    rep["variant"] = {"comp_groups": cfg.comp_groups, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)

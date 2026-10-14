@@ -235,3 +235,21 @@ def test_competition_groups(world):
     spec = _spec(world["world"], team_type="club")
     spec.comp_key = "a-brand-new-league"
     assert simulate(m, spec, n=200, seed=1).n == 200
+
+
+def test_newcomers_bowl_like_their_team_sheet_slot(world):
+    from cricsim.engine.simulate import _Tables
+    m = world["model"]
+    assert m.usage_slot.shape == (2, 11, 10) and (m.usage_slot >= 0).all()
+    late, early = m.usage_slot[0, 7:].sum(), m.usage_slot[0, :3].sum()
+    assert late > early                                            # the tail bowls more than the top order
+    spec = _spec(world["world"])
+    bowlers = list(spec.teams[1].players)
+    bowlers[9] = "never-seen-before"
+    off = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)
+    m.meta["sim"] = {"slot_usage": True}
+    try:
+        on = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)
+    finally:
+        m.meta.pop("sim")
+    assert on.bowl_weights[9].sum() > 10 * off.bowl_weights[9].sum()

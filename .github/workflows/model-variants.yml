@@ -20,13 +20,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cutoff: ["2025-01-01", "2026-01-01"]
+        cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
           - { name: current, args: "" }
-          - { name: shrink150, args: "--shrink bat=150,bowl=150" }
-          - { name: shrink100, args: "--shrink bat=100,bowl=100" }
-          - { name: club-groups, args: "--comp-groups club" }
-          - { name: club-groups+shrink150, args: "--comp-groups club --shrink bat=150,bowl=150" }
+          - { name: bat150, args: "--shrink bat=150" }
+          - { name: slot-usage, args: "--slot-usage" }
+          - { name: slot-usage+focus3, args: "--slot-usage --bowl-focus 3" }
+          - { name: slot+bat150+club-groups, args: "--slot-usage --shrink bat=150 --comp-groups club" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

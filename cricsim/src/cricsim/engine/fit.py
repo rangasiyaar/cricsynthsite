@@ -340,6 +340,26 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
             appearances[pidx[pid], fam] = wsum
     usage /= np.maximum(appearances, 1)[:, :, None]
 
+    # the same by team-sheet slot (1..11): how much a player listed there usually bowls — the prior for players
+    # the model has barely seen (a newcomer listed at 9 is very likely a frontline bowler)
+    usage_slot = np.zeros((2, 11, N_DECILES), dtype=np.float32)
+    slot_apps = np.zeros((2, 11), dtype=np.float64)
+    for fam, pos, wsum in con.execute(f"""
+        SELECT {fam_sql.replace('format', 'm.format')}, least(p.list_order, 11), sum({wexpr.replace('match_date', 'm.match_date')})
+        FROM read_parquet('{mp}') p JOIN read_parquet('{mt}') m USING (match_id)
+        WHERE m.format IN ('T20', 'T10', 'HUNDRED', 'OD') AND p.list_order >= 1 {cut.replace('match_date', 'm.match_date')}
+        GROUP BY ALL""").fetchall():
+        slot_apps[fam, pos - 1] = wsum
+    for fam, pos, dec, ov in con.execute(f"""
+        SELECT {fam_sql}, least(p.list_order, 11), least(CAST(floor(10.0 * o."over" / o.total_overs) AS INT), 9), sum({wexpr})
+        FROM (SELECT DISTINCT match_id, innings_no, "over", bowler_id, format, total_overs, match_date FROM balls
+              WHERE innings_no IN (1, 2) AND bowler_id IS NOT NULL {cut}) o
+        JOIN read_parquet('{mp}') p ON p.match_id = o.match_id AND p.player_id = o.bowler_id
+        WHERE p.list_order >= 1
+        GROUP BY ALL""").fetchall():
+        usage_slot[fam, pos - 1, dec] = ov
+    usage_slot /= np.maximum(slot_apps, 1)[:, :, None]
+
     bat_pos = np.zeros((P, 2), dtype=np.float32)
     for pid, fam, pos in con.execute(f"""
         WITH ent AS (
@@ -409,7 +429,7 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
                 hand[pidx[pid]] = S.hand_index(h)
                 kind[pidx[pid]] = S.bowling_kind_index(a, k)
     names[0] = "Newcomer"
-    return {"usage": usage, "appearances": appearances, "bat_pos": bat_pos, "dismissal": dismissal.astype(np.float32),
+    return {"usage": usage, "usage_slot": usage_slot, "appearances": appearances, "bat_pos": bat_pos, "dismissal": dismissal.astype(np.float32),
             "runout_non_striker": ro_ns / ro_all if ro_all else 0.4,
             "wide_runs": wide_runs.astype(np.float32), "bye_runs": bye_runs.astype(np.float32),
             "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "names": names,

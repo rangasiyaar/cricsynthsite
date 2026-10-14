@@ -20,6 +20,8 @@ SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_ort
 PACE = {S.BOWLING_KINDS.index(k) for k in ("pace_right", "pace_left")}
 BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
+SLOT_USAGE = False       # newcomers' bowling share from their team-sheet slot (variant until the backtest decides)
+SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
 
@@ -136,8 +138,14 @@ class _Tables:
         # share of a decile's overs this bowler usually bowls (sums to ~1 across a settled attack)
         per_decile = rules["overs"] / N_DECILES if fam else 2.0
         share = model.usage[pw, fam].astype(np.float64) / per_decile
+        sim = model.meta.get("sim") or {}
+        if model.usage_slot is not None and sim.get("slot_usage", SLOT_USAGE):
+            # players with little record lean on what their slot in the XI usually bowls
+            app = model.appearances[pw, fam].astype(np.float64)[:, None]
+            prior = model.usage_slot[fam, np.minimum(np.arange(len(pw)), 10)].astype(np.float64) / per_decile
+            share = (app * share + SLOT_PRIOR * prior) / (app + SLOT_PRIOR)
         # captains lean on their frontline bowlers: sharpen the usage shares (backtest: wickets were spread too thin)
-        weights = share ** BOWL_FOCUS + PART_TIMER
+        weights = share ** sim.get("bowl_focus", BOWL_FOCUS) + PART_TIMER
         allowed = np.array([p not in sc.exclude_bowlers for p in bowlers])
         if allowed_bowlers:
             listed = np.array([p in allowed_bowlers for p in bowlers])

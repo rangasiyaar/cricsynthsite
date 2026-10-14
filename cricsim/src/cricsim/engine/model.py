@@ -102,6 +102,7 @@ class Model:
     balls_bowled: np.ndarray | None = None
     last_played: np.ndarray | None = None             # (P,) days since epoch
     usage: np.ndarray | None = None                   # (P, 2, deciles) overs per match by innings decile
+    usage_slot: np.ndarray | None = None              # (2, 11, deciles) the same by team-sheet slot (newcomers' prior)
     appearances: np.ndarray | None = None             # (P, 2) recency-weighted matches
     bat_pos: np.ndarray | None = None                 # (P, 2) mean batting position (0 = unknown)
     wide_runs: np.ndarray | None = None               # (2, 5) P(1..5 runs | wide)
@@ -165,7 +166,7 @@ class Model:
         return player_id in self._pidx and self._pidx[player_id] != 0
 
     # ── persistence ──
-    ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "appearances", "bat_pos",
+    ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "usage_slot", "appearances", "bat_pos",
               "wide_runs", "bye_runs", "dismissal")
 
     def save(self, path: Path) -> None:
