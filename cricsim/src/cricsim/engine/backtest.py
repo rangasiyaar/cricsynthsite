@@ -165,7 +165,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                      "in80": bool(np.percentile(sim, 10) <= actual <= np.percentile(sim, 90)),
                                      "abs_err": float(abs(np.median(sim) - actual)), "format": mt["format"]})
         # players
-        runs_by, balls_by, wk_by = _actual_player_stats(con, mt["match_id"])
+        runs_by, balls_by, wk_by, bowled_by = _actual_player_stats(con, mt["match_id"])
         for inn0, lg in enumerate(part.innings):
             for s, p in enumerate(lg.order):
                 if (inn0 + 1, p) not in actual_order:
@@ -187,8 +187,14 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                 if not bowled.any():
                     continue
                 sim_w = lg.bowl_wkts[bowled, j]
+                quota = spec.rules["quota"] * spec.rules["bpo"]
+                act_b = bowled_by.get(p, 0)
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
-                                       "pred_mean": float(sim_w.mean()), "actual": wk_by[p]})
+                                       "pred_mean": float(sim_w.mean()), "actual": wk_by[p],
+                                       "known": model.knows(p), "p_bowls": float(bowled.mean()),
+                                       "pred_balls": float(lg.bowl_balls[bowled, j].mean()), "act_balls": act_b,
+                                       "share": "full quota" if act_b >= quota else
+                                                "half+ quota" if act_b >= quota / 2 else "under half"})
     rep = score(res, cutoff, len(matches))
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
     return rep
@@ -311,7 +317,9 @@ def _actual_player_stats(con, match_id: str):
                               'caught and bowled','hit wicket') THEN 1 ELSE 0 END)
                               FROM hold WHERE match_id = ? GROUP BY 1""",
                            [match_id]).fetchall())
-    return runs, balls, wk
+    bowled = dict(con.execute("""SELECT bowler_id, count(*) FILTER (WHERE wides = 0 AND noballs = 0) FROM hold
+                                 WHERE match_id = ? GROUP BY 1""", [match_id]).fetchall())
+    return runs, balls, wk, bowled
 
 
 def _sharpen(p: np.ndarray, y: np.ndarray) -> dict:
@@ -427,6 +435,22 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                  "mean_predicted": round(float(np.mean([r["pred_mean"] for r in b])), 3),
                                  "mean_actual": round(float(np.mean([r["actual"] for r in b])), 3),
                                  "calibration_2plus": _calibration([(r["p2"], float(r["hit2"])) for r in b], 5)}
+        if "known" in b[0]:
+            def part(rows):
+                return {"n": len(rows), "brier_2plus": round(float(np.mean([(r["p2"] - r["hit2"]) ** 2 for r in rows])), 4),
+                        "brier_2plus_base_rate": round(float(np.var([r["hit2"] for r in rows])), 4),
+                        "p2_predicted": round(float(np.mean([r["p2"] for r in rows])), 3),
+                        "p2_actual": round(float(np.mean([r["hit2"] for r in rows])), 3),
+                        "balls_predicted": round(float(np.mean([r["pred_balls"] for r in rows])), 1),
+                        "balls_actual": round(float(np.mean([r["act_balls"] for r in rows])), 1),
+                        "p_bowls": round(float(np.mean([r["p_bowls"] for r in rows])), 3)}
+            splits = {}
+            for r in b:
+                splits.setdefault(f"bowler: {'known' if r['known'] else 'unknown'}", []).append(r)
+                splits.setdefault(f"actual overs: {r['share']}", []).append(r)
+            out["bowler_wickets"]["by_split"] = {k: part(v) for k, v in sorted(splits.items())}
+            out["bowler_wickets"]["corr_balls"] = round(float(np.corrcoef([r["pred_balls"] for r in b],
+                                                                           [r["act_balls"] for r in b])[0, 1]), 3)
     return out
 
 
@@ -489,6 +513,18 @@ def write_report(rep: dict, path: Path) -> None:
         b = rep["bowler_wickets"]
         L += ["## Bowler wickets", "", f"Brier for 2+ wickets **{b['brier_2plus']}** (base rate {b['brier_2plus_base_rate']}) · "
               f"mean predicted {b['mean_predicted']} v actual {b['mean_actual']}", ""]
+        L += ["| Predicted P(2+) | Bowlers | Predicted % | Actual % |", "|---|---|---|---|"]
+        L += [f"| {c['bin']} | {c['n']} | {100 * c['predicted']:.1f} | {100 * c['observed']:.1f} |"
+              for c in b.get("calibration_2plus", [])]
+        if b.get("by_split"):
+            L += ["", f"Overs: predicted v actual balls bowled correlate at {b.get('corr_balls')} "
+                      "(predicted = simulations where the bowler bowled)", "",
+                  "| Split | Bowlers | Brier 2+ (base rate) | P(2+) predicted / actual | Balls predicted / actual | Bowls in sims |",
+                  "|---|---|---|---|---|---|"]
+            L += [f"| {k} | {v['n']} | {v['brier_2plus']} ({v['brier_2plus_base_rate']}) | "
+                  f"{v['p2_predicted']} / {v['p2_actual']} | {v['balls_predicted']} / {v['balls_actual']} | {v['p_bowls']} |"
+                  for k, v in b["by_split"].items()]
+        L.append("")
     if rep.get("fantasy"):
         fz = rep["fantasy"]
         L += [f"## Fantasy XI (picked from simulations, scored on the real match; {fz['n']} T20-type matches, "
