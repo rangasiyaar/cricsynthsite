@@ -92,7 +92,7 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
-                 sim_overrides: dict | None = None) -> dict:
+                 sim_overrides: dict | None = None, order: str = "history") -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}."""
     con = duckdb.connect()
@@ -104,9 +104,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home, "sim": sim_overrides or {},
+    rep["variant"] = {"order": order, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
@@ -118,7 +118,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
-         fantasy_bowlers: bool = False) -> dict:
+         fantasy_bowlers: bool = False, order: str = "history") -> dict:
     matches = holdout_matches(con, parquet, cutoff, limit, end=end)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
@@ -134,9 +134,9 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         t1, t2 = mt["teams"]
         first_team = mt["innings"][0][1]
         bf = 0 if first_team == t1 else 1
-        spec = MatchSpec(mt["format"], mt["gender"],
-                         (TeamSpec(t1, _xi_order(model, mt["xi"][t1], mt["format"])),
-                          TeamSpec(t2, _xi_order(model, mt["xi"][t2], mt["format"]))),
+        xi = ((lambda t: list(mt["xi"][t])) if order == "sheet"     # the team sheet, as live forecasts use it
+              else (lambda t: _xi_order(model, mt["xi"][t], mt["format"])))
+        spec = MatchSpec(mt["format"], mt["gender"], (TeamSpec(t1, xi(t1)), TeamSpec(t2, xi(t2))),
                          venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=bf, team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         part = sims.parts[0]
@@ -173,7 +173,9 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                      "in80": bool(np.percentile(sim, 10) <= actual <= np.percentile(sim, 90)),
                                      "abs_err": float(abs(np.median(sim) - actual)), "format": mt["format"]})
         # players
-        runs_by, balls_by, wk_by, bowled_by = _actual_player_stats(con, mt["match_id"])
+        runs_by, balls_by, wk_by, bowled_by, conceded_by = _actual_player_stats(con, mt["match_id"])
+        draw = np.random.default_rng(zlib.crc32(mt["match_id"].encode()) + 7)   # one simulated outcome per player:
+                                                                                 # what a perfect model would face
         for inn0, lg in enumerate(part.innings):
             for s, p in enumerate(lg.order):
                 if (inn0 + 1, p) not in actual_order:
@@ -187,7 +189,10 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                          "cross-league debutant" if model.knows(p) else "unknown")
                 res["players"].append({"group": group, "pred_mean": float(sim_r.mean()), "actual": act,
                                        "in80": bool(np.percentile(sim_r, 10) <= act <= np.percentile(sim_r, 90)),
-                                       "p30": float((sim_r >= 30).mean()), "hit30": act >= 30})
+                                       "p30": float((sim_r >= 30).mean()), "hit30": act >= 30,
+                                       "draw": float(sim_r[draw.integers(len(sim_r))]),
+                                       "pred_balls": float(lg.bat_balls[batted, s].mean()),
+                                       "act_balls": balls_by.get(p, 0)})
             for j, p in enumerate(lg.bowlers):
                 if p not in wk_by:
                     continue
@@ -197,7 +202,14 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                 sim_w = lg.bowl_wkts[bowled, j]
                 quota = spec.rules["quota"] * spec.rules["bpo"]
                 act_b = bowled_by.get(p, 0)
+                sim_c = lg.bowl_runs[bowled, j]
+                act_c = conceded_by.get(p, 0)
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
+                                       "pred_conceded": float(sim_c.mean()), "act_conceded": act_c,
+                                       "conceded_in80": bool(np.percentile(sim_c, 10) <= act_c <= np.percentile(sim_c, 90)),
+                                       "draw_conceded": float(sim_c[draw.integers(len(sim_c))]),
+                                       "pred_econ": float(6 * sim_c.sum() / max(lg.bowl_balls[bowled, j].sum(), 1)),
+                                       "act_econ": 6 * act_c / act_b if act_b else None,
                                        "pred_mean": float(sim_w.mean()), "actual": wk_by[p],
                                        "known": model.knows(p), "p_bowls": float(bowled.mean()),
                                        "pred_balls": float(lg.bowl_balls[bowled, j].mean()), "act_balls": act_b,
@@ -327,7 +339,9 @@ def _actual_player_stats(con, match_id: str):
                            [match_id]).fetchall())
     bowled = dict(con.execute("""SELECT bowler_id, count(*) FILTER (WHERE wides = 0 AND noballs = 0) FROM hold
                                  WHERE match_id = ? GROUP BY 1""", [match_id]).fetchall())
-    return runs, balls, wk, bowled
+    conceded = dict(con.execute("""SELECT bowler_id, sum(runs_batter + wides + noballs) FROM hold
+                                   WHERE match_id = ? GROUP BY 1""", [match_id]).fetchall())
+    return runs, balls, wk, bowled, conceded
 
 
 def _sharpen(p: np.ndarray, y: np.ndarray) -> dict:
@@ -420,7 +434,15 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
             "brier_30plus": round(float(np.mean([(r["p30"] - r["hit30"]) ** 2 for r in rows])), 4),
             "brier_30plus_base_rate": round(float(np.var([r["hit30"] for r in rows])), 4),
             "corr_pred_actual": round(float(np.corrcoef([r["pred_mean"] for r in rows],
-                                                        [r["actual"] for r in rows])[0, 1]), 3) if len(rows) > 2 else None}
+                                                        [r["actual"] for r in rows])[0, 1]), 3) if len(rows) > 2 else None,
+            **({"brier_30plus_ceiling": round(float(np.mean([r["p30"] * (1 - r["p30"]) for r in rows])), 4),
+                "corr_ceiling": round(float(np.corrcoef([r["pred_mean"] for r in rows],
+                                                        [r["draw"] for r in rows])[0, 1]), 3),
+                "balls_predicted": round(float(np.mean([r["pred_balls"] for r in rows])), 1),
+                "balls_actual": round(float(np.mean([r["act_balls"] for r in rows])), 1),
+                "corr_balls": round(float(np.corrcoef([r["pred_balls"] for r in rows],
+                                                      [r["act_balls"] for r in rows])[0, 1]), 3)}
+               if "draw" in rows[0] and len(rows) > 2 else {})}
     if res.get("fantasy"):
         f = res["fantasy"]
         best = np.mean([r["best"] for r in f])
@@ -443,6 +465,19 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                  "mean_predicted": round(float(np.mean([r["pred_mean"] for r in b])), 3),
                                  "mean_actual": round(float(np.mean([r["actual"] for r in b])), 3),
                                  "calibration_2plus": _calibration([(r["p2"], float(r["hit2"])) for r in b], 5)}
+        if "draw_conceded" in b[0]:
+            ec = [r for r in b if r["act_econ"] is not None and r["act_balls"] >= 12]     # 2+ overs bowled
+            out["bowler_wickets"].update({
+                "brier_2plus_ceiling": round(float(np.mean([r["p2"] * (1 - r["p2"]) for r in b])), 4),
+                "conceded_predicted": round(float(np.mean([r["pred_conceded"] for r in b])), 1),
+                "conceded_actual": round(float(np.mean([r["act_conceded"] for r in b])), 1),
+                "conceded_in80": round(float(np.mean([r["conceded_in80"] for r in b])), 3),
+                "conceded_corr": round(float(np.corrcoef([r["pred_conceded"] for r in b],
+                                                         [r["act_conceded"] for r in b])[0, 1]), 3),
+                "conceded_corr_ceiling": round(float(np.corrcoef([r["pred_conceded"] for r in b],
+                                                                 [r["draw_conceded"] for r in b])[0, 1]), 3),
+                "economy_corr": round(float(np.corrcoef([r["pred_econ"] for r in ec],
+                                                        [r["act_econ"] for r in ec])[0, 1]), 3) if len(ec) > 2 else None})
         if "known" in b[0]:
             def part(rows):
                 return {"n": len(rows), "brier_2plus": round(float(np.mean([(r["p2"] - r["hit2"]) ** 2 for r in rows])), 4),
@@ -516,11 +551,23 @@ def write_report(rep: dict, path: Path) -> None:
         for g, r in rep["player_runs"].items():
             L.append(f"| {g} | {r['n']} | {r['mean_predicted']} | {r['mean_actual']} | {100 * r['in_80pct_band']:.1f}% | "
                      f"{r['brier_30plus']} ({r['brier_30plus_base_rate']}) | {r['corr_pred_actual']} |")
+        if any("corr_ceiling" in r for r in rep["player_runs"].values()):
+            L += ["", "Against a perfect model (one simulated outcome per player stands in for the real one: the best "
+                      "any model could do, given cricket's luck):", "",
+                  "| Group | Brier 30+: ours / perfect / base rate | Corr: ours / perfect | Balls faced: predicted / actual (corr) |",
+                  "|---|---|---|---|"]
+            L += [f"| {g} | {r['brier_30plus']} / {r['brier_30plus_ceiling']} / {r['brier_30plus_base_rate']} | "
+                  f"{r['corr_pred_actual']} / {r['corr_ceiling']} | {r['balls_predicted']} / {r['balls_actual']} ({r['corr_balls']}) |"
+                  for g, r in rep["player_runs"].items() if "corr_ceiling" in r]
         L.append("")
     if "bowler_wickets" in rep:
         b = rep["bowler_wickets"]
         L += ["## Bowler wickets", "", f"Brier for 2+ wickets **{b['brier_2plus']}** (base rate {b['brier_2plus_base_rate']}) · "
               f"mean predicted {b['mean_predicted']} v actual {b['mean_actual']}", ""]
+        if "brier_2plus_ceiling" in b:
+            L += [f"Perfect-model Brier for 2+ wickets: {b['brier_2plus_ceiling']} · runs conceded predicted "
+                  f"{b['conceded_predicted']} v actual {b['conceded_actual']}, in 80% band {100 * b['conceded_in80']:.1f}%, "
+                  f"corr {b['conceded_corr']} (perfect {b['conceded_corr_ceiling']}) · economy corr (2+ overs) {b['economy_corr']}", ""]
         L += ["| Predicted P(2+) | Bowlers | Predicted % | Actual % |", "|---|---|---|---|"]
         L += [f"| {c['bin']} | {c['n']} | {100 * c['predicted']:.1f} | {100 * c['observed']:.1f} |"
               for c in b.get("calibration_2plus", [])]
