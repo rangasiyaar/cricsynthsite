@@ -34,7 +34,8 @@ log = logging.getLogger(__name__)
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
     "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
-    "bat": 300, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
+    # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
+    "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
 ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
          "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")

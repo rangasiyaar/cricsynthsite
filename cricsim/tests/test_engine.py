@@ -246,10 +246,10 @@ def test_newcomers_bowl_like_their_team_sheet_slot(world):
     spec = _spec(world["world"])
     bowlers = list(spec.teams[1].players)
     bowlers[9] = "never-seen-before"
-    off = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)
-    m.meta["sim"] = {"slot_usage": True}
+    on = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)      # the default
+    m.meta["sim"] = {"slot_usage": False}
     try:
-        on = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)
+        off = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), bowlers)
     finally:
         m.meta.pop("sim")
     assert on.bowl_weights[9].sum() > 10 * off.bowl_weights[9].sum()
