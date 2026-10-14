@@ -49,7 +49,8 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
-    home: bool = False                         # home advantage: batting at home / away / neutral ground
+    home: bool = True                          # home advantage: batting at home / away / neutral ground
+                                               # (backtest, 3 cutoffs: win Brier -0.0003, -0.0021, -0.0012)
     experience: bool = True                    # players with little history: a factor by career balls so far
                                                # (backtest, 3 cutoffs: win Brier -0.005 to -0.011)
     comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
