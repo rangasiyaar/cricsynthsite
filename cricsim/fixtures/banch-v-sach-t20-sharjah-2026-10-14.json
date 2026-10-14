@@ -1,0 +1,105 @@
+{
+  "id": "banch-v-sach-t20-sharjah-2026-10-14",
+  "title": "Bangladesh Champions v South Africa Champions",
+  "date": "2026-10-14",
+  "start_time": "21:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "World Championship of Legends 2026 \u00b7 17th Match",
+  "venue": "Sharjah Cricket Stadium, Sharjah",
+  "venue_search": "sharjah",
+  "status": "scheduled",
+  "published": true,
+  "batting_first": 1,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "Bangladesh Champions",
+      "short": "BANCH",
+      "players": [
+        "Imrul Kayes",
+        "Rony Talukdar",
+        "Fazle Mahmud",
+        "Mahmudullah",
+        "Nasir Hossain",
+        "Jahurul Islam",
+        "Arafat Sunny",
+        "Kamrul Islam",
+        "Rubel Hossain",
+        "Abu Jayed",
+        "Enamul Haque jnr"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Imrul Kayes",
+        "Rony Talukdar",
+        "Fazle Mahmud",
+        "Mahmudullah",
+        "Nasir Hossain",
+        "Jahurul Islam",
+        "Arafat Sunny",
+        "Kamrul Islam",
+        "Rubel Hossain",
+        "Abu Jayed",
+        "Enamul Haque jnr"
+      ],
+      "captain": "Mahmudullah"
+    },
+    {
+      "name": "South Africa Champions",
+      "short": "SACH",
+      "players": [
+        "Faf du Plessis",
+        "Sarel Erwee",
+        "Jean-Paul Duminy",
+        "Morne van Wyk",
+        "Colin Ingram",
+        "Wayne Parnell",
+        "Robbie Frylinck",
+        "Shaun von Berg",
+        "Hardus Viljoen",
+        "Aaron Phangiso",
+        "Marchant de Lange"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Faf du Plessis",
+        "Sarel Erwee",
+        "Jean-Paul Duminy",
+        "Morne van Wyk",
+        "Colin Ingram",
+        "Wayne Parnell",
+        "Robbie Frylinck",
+        "Shaun von Berg",
+        "Hardus Viljoen",
+        "Aaron Phangiso",
+        "Marchant de Lange"
+      ],
+      "captain": "Faf du Plessis"
+    }
+  ]
+}
