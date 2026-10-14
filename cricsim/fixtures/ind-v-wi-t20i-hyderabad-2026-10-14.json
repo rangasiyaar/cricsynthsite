@@ -11,28 +11,29 @@
   "venue_search": "rajiv gandhi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "batting_first": 1,
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "India",
       "short": "IND",
       "players": [
-        "Abhishek Sharma",
         "Sanju Samson",
+        "Abhishek Sharma",
         "Ishan Kishan",
         "Shreyas Iyer",
         "Tilak Varma",
-        "Nitish Kumar Reddy",
         "Naman Dhir",
+        "Nitish Kumar Reddy",
         "Axar Patel",
         "Arshdeep Singh",
-        "Mayank Yadav",
-        "Prince Yadav"
+        "Prince Yadav",
+        "Mayank Yadav"
       ],
       "roles": [
+        "WK",
         "BAT",
-        "WK",
-        "WK",
+        "BAT",
         "BAT",
         "BAT",
         "AR",
@@ -66,14 +67,14 @@
       "short": "WI",
       "players": [
         "Shai Hope",
-        "Kamil Pooran",
+        "Jewel Andrew",
         "Shimron Hetmyer",
         "Rovman Powell",
         "Sherfane Rutherford",
-        "Quentin Sampson",
+        "Romario Shepherd",
+        "Roston Chase",
         "Keemo Paul",
         "Shamar Springer",
-        "Roston Chase",
         "Gudakesh Motie",
         "Shamar Joseph"
       ],
@@ -83,7 +84,7 @@
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
@@ -105,7 +106,8 @@
         "Akeal Hosein",
         "Amir Jangoo",
         "Romario Shepherd",
-        "Matthew Forde"
+        "Matthew Forde",
+        "Jewel Andrew"
       ],
       "captain": "Shai Hope"
     }
