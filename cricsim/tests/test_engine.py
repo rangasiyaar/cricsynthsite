@@ -253,3 +253,24 @@ def test_newcomers_bowl_like_their_team_sheet_slot(world):
     finally:
         m.meta.pop("sim")
     assert on.bowl_weights[9].sum() > 10 * off.bowl_weights[9].sum()
+
+
+def test_experience_factor_and_recent_role(world):
+    from cricsim.engine.model import N_EXP, exp_bucket
+    from cricsim.engine.simulate import _Tables
+    m = fit(world["parquet"], FitConfig(experience=True))
+    f = m.factors
+    assert f["bat_exp"].shape == (2 * N_EXP, S.K) and f["bowl_exp"].shape == (2 * N_EXP, S.K)
+    assert np.abs(f["bat_exp"]).max() > 0 and m.meta["experience"]
+    assert (m.career_balls >= 0).all() and m.career_balls[1:].sum() > 0 and list(exp_bucket([0, 60, 1000])) == [0, 1, 3]
+    assert m.recent_n.max() == 5 and (m.usage_recent >= 0).all() and m.bat_pos_recent.max() > 0
+    spec = _spec(world["world"])
+    assert simulate(m, spec, n=200, seed=1).n == 200
+    # recent role moves the bowling shares towards the last five matches
+    base = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), list(spec.teams[1].players))
+    m.meta["sim"] = {"recent_role": 1.0}
+    try:
+        recent = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), list(spec.teams[1].players))
+    finally:
+        m.meta.pop("sim")
+    assert recent.bowl_weights.shape == base.bowl_weights.shape and not np.allclose(recent.bowl_weights, base.bowl_weights)

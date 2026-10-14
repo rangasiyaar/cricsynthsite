@@ -13,6 +13,8 @@ Factor layout (levels × K, natural-log multipliers):
     venue_g venue_ph venue_kind                                      (ground × men's/women's, × stage of innings, × pace/spin;
                                                                       runs only — wickets column fixed at 0)
     The venue factor's prior is the other grounds in the same city.
+    bat_exp bowl_exp                                                 (career balls so far: how players with little
+                                                                      history do — a newcomer's starting point)
     bat bowl                                                         (player, all formats and leagues together)
     bat_fmt bowl_fmt                                                 (player × format family, shrunk to the above)
     bat_kind bowl_hand                                               (player v bowling kind / batting hand)
@@ -40,6 +42,13 @@ DISMISSALS = ("caught", "bowled", "lbw", "stumped", "run out", "caught and bowle
 BOWLER_DISMISSALS = np.array([True, True, True, True, False, True, True, False])
 RUN_OUT = DISMISSALS.index("run out")
 N_DECILES = 10
+EXP_EDGES = np.array([60, 240, 960])  # career balls faced / bowled: debutant, few games, some, established
+N_EXP = len(EXP_EDGES) + 1
+RECENT = 5                           # matches that make up a player's current role (batting slot, overs)
+
+
+def exp_bucket(balls) -> np.ndarray:
+    return np.searchsorted(EXP_EDGES, np.asarray(balls), side="right")
 
 
 def base_index(fmt, gender, innings0, over, wkts):
@@ -103,6 +112,10 @@ class Model:
     last_played: np.ndarray | None = None             # (P,) days since epoch
     usage: np.ndarray | None = None                   # (P, 2, deciles) overs per match by innings decile
     usage_slot: np.ndarray | None = None              # (2, 11, deciles) the same by team-sheet slot (newcomers' prior)
+    usage_recent: np.ndarray | None = None            # (P, 2, deciles) the same over the last RECENT matches
+    recent_n: np.ndarray | None = None                # (P, 2) how many recent matches that is (0..RECENT)
+    bat_pos_recent: np.ndarray | None = None          # (P, 2) batting position over the last RECENT innings
+    career_balls: np.ndarray | None = None            # (P, 2) balls faced / bowled so far (experience buckets)
     appearances: np.ndarray | None = None             # (P, 2) recency-weighted matches
     bat_pos: np.ndarray | None = None                 # (P, 2) mean batting position (0 = unknown)
     wide_runs: np.ndarray | None = None               # (2, 5) P(1..5 runs | wide)
@@ -166,7 +179,8 @@ class Model:
         return player_id in self._pidx and self._pidx[player_id] != 0
 
     # ── persistence ──
-    ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "usage_slot", "appearances", "bat_pos",
+    ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "usage_slot", "usage_recent", "recent_n",
+              "bat_pos_recent", "career_balls", "appearances", "bat_pos",
               "wide_runs", "bye_runs", "dismissal")
 
     def save(self, path: Path) -> None:

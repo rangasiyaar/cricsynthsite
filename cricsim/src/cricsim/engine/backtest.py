@@ -23,8 +23,8 @@ import duckdb
 import numpy as np
 
 from cricsim.engine.fit import FitConfig, fit
-from cricsim.engine.model import Model
-from cricsim.engine.simulate import simulate
+from cricsim.engine.model import RECENT, Model
+from cricsim.engine.simulate import RECENT_ROLE, simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
 from cricsim.fantasy import actual_points, pick_xi, portfolio, sim_points, team_points
 
@@ -81,6 +81,10 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
     keyed = []
     for i, p in enumerate(xi):
         pos = float(model.bat_pos[model.pid(p), fam]) if model.knows(p) else 0.0
+        rr = (model.meta.get("sim") or {}).get("recent_role", RECENT_ROLE)
+        if rr and pos > 0 and model.bat_pos_recent is not None and model.bat_pos_recent[model.pid(p), fam] > 0:
+            w = rr * float(model.recent_n[model.pid(p), fam]) / RECENT        # current role counts extra
+            pos = (1 - w) * pos + w * float(model.bat_pos_recent[model.pid(p), fam])
         keyed.append((pos if pos > 0 else i + 1 + 0.5, i, p))
     return [p for _, _, p in sorted(keyed)]
 
@@ -102,7 +106,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
         model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"comp_groups": cfg.comp_groups, "sim": sim_overrides or {},
+    rep["variant"] = {"comp_groups": cfg.comp_groups, "experience": cfg.experience, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)

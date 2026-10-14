@@ -12,8 +12,8 @@ from dataclasses import dataclass
 import numpy as np
 
 from cricsim.engine import states as S
-from cricsim.engine.model import (BOWLER_DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_DECILES, RUN_OUT,
-                                  SITUATION, Model, era_vector)
+from cricsim.engine.model import (BOWLER_DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_DECILES, N_EXP, RECENT,
+                                  RUN_OUT, SITUATION, Model, era_vector, exp_bucket)
 from cricsim.engine.spec import MatchSpec, Scenario
 
 SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow")}
@@ -22,6 +22,7 @@ BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
+RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
 SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
@@ -110,6 +111,9 @@ class _Tables:
                 + self.sit["hand_kind"][hand[:, None] * nk + kind[None]]
                 + model.venue_factor(spec.venue_id, g) + model.venue_kind(spec.venue_id, kind)[None]
                 + model.comp_factor(spec.comp_key, spec.format, spec.gender, spec.team_type))
+        if "bat_exp" in f and model.career_balls is not None:   # how far into their careers these players are
+            pair += (f["bat_exp"][fam * N_EXP + exp_bucket(model.career_balls[pb, 0])][:, None]
+                     + f["bowl_exp"][fam * N_EXP + exp_bucket(model.career_balls[pw, 1])][None])
         pair = pair.astype(np.float64)
         # scenario levers (log-multipliers on outcome classes)
         bnd = [S.FOUR, S.SIX]
@@ -140,6 +144,10 @@ class _Tables:
         per_decile = rules["overs"] / N_DECILES if fam else 2.0
         share = model.usage[pw, fam].astype(np.float64) / per_decile
         sim = model.meta.get("sim") or {}
+        rr = sim.get("recent_role", RECENT_ROLE)
+        if rr and model.usage_recent is not None:     # current role: the last few matches count extra
+            wr = rr * (model.recent_n[pw, fam].astype(np.float64) / RECENT)[:, None]
+            share = (1 - wr) * share + wr * model.usage_recent[pw, fam].astype(np.float64) / per_decile
         if model.usage_slot is not None and sim.get("slot_usage", SLOT_USAGE):
             # players with little record lean on what their slot in the XI usually bowls
             app = model.appearances[pw, fam].astype(np.float64)[:, None]

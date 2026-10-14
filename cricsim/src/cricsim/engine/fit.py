@@ -26,7 +26,8 @@ import pyarrow.compute as pc
 
 from cricsim.engine import states as S
 from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, ERA_START, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE,
-                                  N_DECILES, N_ERA, SITUATION, Model, base_index, era_index)
+                                  N_DECILES, N_ERA, N_EXP, RECENT, SITUATION, Model, base_index, era_index,
+                                  exp_bucket)
 from cricsim.patterns.features import build_balls
 
 log = logging.getLogger(__name__)
@@ -35,10 +36,11 @@ SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
     "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
+    "bat_exp": 3000, "bowl_exp": 3000,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
 ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
-         "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
+         "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
 
 
 @dataclass
@@ -47,6 +49,7 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
+    experience: bool = False                   # players with little history: a factor by career balls so far
     comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
                                                # "club" (leagues only), "all" (internationals too) or "off"
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
@@ -72,8 +75,25 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
     where = [f"match_date >= DATE '{cfg.min_date}'"]
     if cfg.cutoff:
         where.append(f"match_date < DATE '{cfg.cutoff}'")
+    xp_cols, xp_join = "0 AS bat_xp, 0 AS bowl_xp", ""
+    if cfg.experience:      # balls faced / bowled in limited-overs matches before this one (any competition)
+        con.execute("""
+            CREATE OR REPLACE TEMP TABLE exp_hist AS
+            WITH bm AS (
+              SELECT batter_id AS pid, match_id, min(match_date) AS d, count(*) FILTER (WHERE wides = 0) AS nb, 0 AS nw
+              FROM balls WHERE innings_no IN (1, 2) AND batter_id IS NOT NULL GROUP BY 1, 2
+              UNION ALL
+              SELECT bowler_id, match_id, min(match_date), 0, count(*) FILTER (WHERE wides = 0 AND noballs = 0)
+              FROM balls WHERE innings_no IN (1, 2) AND bowler_id IS NOT NULL GROUP BY 1, 2
+            ), pm AS (SELECT pid, match_id, min(d) AS d, sum(nb) AS nb, sum(nw) AS nw FROM bm GROUP BY 1, 2)
+            SELECT pid AS xp_pid, match_id AS xp_mid,
+                   coalesce(sum(nb) OVER w, 0) AS faced_before, coalesce(sum(nw) OVER w, 0) AS bowled_before
+            FROM pm WINDOW w AS (PARTITION BY pid ORDER BY d, match_id ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)""")
+        xp_cols = "coalesce(xb.faced_before, 0) AS bat_xp, coalesce(xw.bowled_before, 0) AS bowl_xp"
+        xp_join = ("LEFT JOIN exp_hist xb ON xb.xp_pid = batter_id AND xb.xp_mid = match_id "
+                   "LEFT JOIN exp_hist xw ON xw.xp_pid = bowler_id AND xw.xp_mid = match_id")
     t = con.execute(f"""
-        SELECT format, gender, innings_no, "over", team_wickets_before AS wkts,
+        SELECT format, gender, innings_no, "over", team_wickets_before AS wkts, {xp_cols},
                batter_balls_before AS bf, batter_runs_before AS br,
                coalesce(target_runs - team_runs_before, 0) AS need,
                total_overs * balls_per_over - legal_balls_before AS balls_left,
@@ -84,7 +104,7 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
                coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format) AS comp,
                coalesce(team_type, '') AS team_type, batter_id, bowler_id, date_diff('day', DATE '1970-01-01', match_date) AS day, match_id,
                {OUTCOME_SQL} AS y, runs_total, byes + legbyes AS byes
-        FROM balls
+        FROM balls {xp_join}
         WHERE innings_no IN (1, 2) AND batter_id IS NOT NULL AND bowler_id IS NOT NULL
           AND gender IN ('male', 'female') AND {' AND '.join(where)}
     """).to_arrow_table()
@@ -111,6 +131,7 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
         "venue": _encode(t["venue"], venues, -1) + 1, "comp": _encode(t["comp"], comps, -1) + 1,
         "bat": _encode(t["batter_id"], players) + 1, "bowl": _encode(t["bowler_id"], players) + 1,
         "day": np_("day"), "y": np_("y").astype(np.int8),
+        "bat_xp": np_("bat_xp"), "bowl_xp": np_("bowl_xp"),
         "match": pc.dictionary_encode(t["match_id"]).combine_chunks().indices.to_numpy().astype(np.int32), "runs_total": np_("runs_total"), "byes": np_("byes"),
     }
     # competition group: club / international × format × gender (the commonest among the competition's balls)
@@ -141,7 +162,7 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
     def per_family(bucket, n):
         return fam * n + bucket, 2 * n
 
-    return {
+    levels = {
         "base": (base_index(d["fmt"], d["gender"], d["inn0"], d["over"], d["wkts"]).astype(np.int32), N_BASE),
         "set": per_family(S.set_bucket(d["bf"]), SITUATION["set"]),
         "chase": per_family(S.chase_bucket(d["inn0"] + 1, d["need"], d["balls_left"]), SITUATION["chase"]),
@@ -162,6 +183,10 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
         "bowl_hand": (d["bowl"] * nh + d["hand"], n_players * nh),
     }
+    if np.any(d["bat_xp"]) or np.any(d["bowl_xp"]):     # experience factors (FitConfig.experience)
+        levels["bat_exp"] = (fam * N_EXP + exp_bucket(d["bat_xp"]), 2 * N_EXP)
+        levels["bowl_exp"] = (fam * N_EXP + exp_bucket(d["bowl_xp"]), 2 * N_EXP)
+    return levels
 
 
 def _softmax(L: np.ndarray, out: np.ndarray) -> np.ndarray:
@@ -207,6 +232,8 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     for it in range(cfg.passes):
         t0 = time.time()
         for name in ORDER:
+            if name not in levels:
+                continue
             idx, nl = levels[name]
             if name == "venue":
                 priors["venue"] = city_prior(logf["venue"], np.bincount(idx, weights=w, minlength=nl), city)
@@ -377,6 +404,48 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
         if pid in pidx:
             bat_pos[pidx[pid], fam] = pos
 
+    # the same over each player's last RECENT innings / matches: their current role (promoted to open, new frontliner)
+    bat_pos_recent = np.zeros((P, 2), dtype=np.float32)
+    for pid, fam, pos in con.execute(f"""
+        WITH ent AS (
+          SELECT match_id, innings_no, format, match_date, pid, min(seq * 2 + ns) AS first
+          FROM (SELECT match_id, innings_no, format, match_date, batter_id AS pid, seq, 0 AS ns FROM balls
+                UNION ALL
+                SELECT match_id, innings_no, format, match_date, non_striker_id, seq, 1 FROM balls)
+          WHERE pid IS NOT NULL AND innings_no IN (1, 2) {cut}
+          GROUP BY ALL
+        ), r AS (
+          SELECT *, row_number() OVER (PARTITION BY match_id, innings_no ORDER BY first) AS pos FROM ent
+        ), k AS (
+          SELECT *, {fam_sql} AS fam, row_number() OVER (PARTITION BY pid, {fam_sql} ORDER BY match_date DESC, match_id DESC) AS rk
+          FROM r
+        )
+        SELECT pid, fam, avg(pos) FROM k WHERE rk <= {RECENT} GROUP BY ALL""").fetchall():
+        if pid in pidx:
+            bat_pos_recent[pidx[pid], fam] = pos
+    usage_recent = np.zeros((P, 2, N_DECILES), dtype=np.float32)
+    recent_n = np.zeros((P, 2), dtype=np.float32)
+    rq = f"""
+        WITH r AS (
+          SELECT p.player_id AS pid, {fam_sql.replace('format', 'm.format')} AS fam, m.match_id,
+                 row_number() OVER (PARTITION BY p.player_id, {fam_sql.replace('format', 'm.format')}
+                                    ORDER BY m.match_date DESC, m.match_id DESC) AS rk
+          FROM read_parquet('{mp}') p JOIN read_parquet('{mt}') m USING (match_id)
+          WHERE m.format IN ('T20', 'T10', 'HUNDRED', 'OD') AND p.player_id IS NOT NULL {cut.replace('match_date', 'm.match_date')}
+        ) SELECT * FROM r WHERE rk <= {RECENT}"""
+    for pid, fam, c in con.execute(f"SELECT pid, fam, count(*) FROM ({rq}) GROUP BY ALL").fetchall():
+        if pid in pidx:
+            recent_n[pidx[pid], fam] = c
+    for pid, fam, dec, ov in con.execute(f"""
+        SELECT o.bowler_id, rr.fam, least(CAST(floor(10.0 * o."over" / o.total_overs) AS INT), 9), count(*)
+        FROM (SELECT DISTINCT match_id, innings_no, "over", bowler_id, total_overs FROM balls
+              WHERE innings_no IN (1, 2) AND bowler_id IS NOT NULL {cut}) o
+        JOIN ({rq}) rr ON rr.pid = o.bowler_id AND rr.match_id = o.match_id
+        GROUP BY ALL""").fetchall():
+        if pid in pidx:
+            usage_recent[pidx[pid], fam, dec] = ov
+    usage_recent /= np.maximum(recent_n, 1)[:, :, None]
+
     dismissal = np.ones((2, len(S.BOWLING_KINDS), len(DISMISSALS)), dtype=np.float64) * 0.5
     kinds = {k: i for i, k in enumerate(DISMISSALS)}
     ro_ns = ro_all = 0.0
@@ -402,6 +471,12 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
     wide_runs /= wide_runs.sum(1, keepdims=True)
     bye_runs /= bye_runs.sum(1, keepdims=True)
 
+    career = np.zeros((P, 2), dtype=np.float32)            # balls faced / bowled so far (unweighted, any competition)
+    for col, k, legal in (("batter_id", 0, "wides = 0"), ("bowler_id", 1, "wides = 0 AND noballs = 0")):
+        for pid, n in con.execute(f"""SELECT {col}, count(*) FILTER (WHERE {legal}) FROM balls
+                                       WHERE innings_no IN (1, 2) AND {col} IS NOT NULL {cut} GROUP BY 1""").fetchall():
+            if pid in pidx:
+                career[pidx[pid], k] = n
     faced = np.zeros((P, 2), dtype=np.float32)
     bowled = np.zeros((P, 2), dtype=np.float32)
     last = np.zeros(P, dtype=np.int32)
@@ -430,7 +505,8 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
                 hand[pidx[pid]] = S.hand_index(h)
                 kind[pidx[pid]] = S.bowling_kind_index(a, k)
     names[0] = "Newcomer"
-    return {"usage": usage, "usage_slot": usage_slot, "appearances": appearances, "bat_pos": bat_pos, "dismissal": dismissal.astype(np.float32),
+    return {"usage": usage, "usage_slot": usage_slot, "usage_recent": usage_recent, "recent_n": recent_n,
+            "bat_pos_recent": bat_pos_recent, "career_balls": career, "appearances": appearances, "bat_pos": bat_pos, "dismissal": dismissal.astype(np.float32),
             "runout_non_striker": ro_ns / ro_all if ro_all else 0.4,
             "wide_runs": wide_runs.astype(np.float32), "bye_runs": bye_runs.astype(np.float32),
             "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "names": names,
@@ -516,7 +592,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
     return Model(factors=factors, players=ids["players"], venues=ids["venues"], comps=ids["comps"], names=names,
                  runout_non_striker=ro,
                  meta={"cutoff": str(cfg.cutoff) if cfg.cutoff else None, "half_life_years": cfg.half_life_years,
-                       "comp_groups": GROUP_KEYS if cfg.comp_groups != "off" else None,
+                       "comp_groups": GROUP_KEYS if cfg.comp_groups != "off" else None, "experience": cfg.experience,
                        "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist(),
                        "catalog": _catalog(con, cfg, ids, parquet)},
                  **tables)

@@ -23,10 +23,10 @@ jobs:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
           - { name: current, args: "" }
-          - { name: bat150, args: "--shrink bat=150" }
-          - { name: slot-usage, args: "--slot-usage" }
-          - { name: slot-usage+focus3, args: "--slot-usage --bowl-focus 3" }
-          - { name: slot+bat150+club-groups, args: "--slot-usage --shrink bat=150 --comp-groups club" }
+          - { name: experience, args: "--experience" }
+          - { name: recent-role-0.5, args: "--recent-role 0.5" }
+          - { name: recent-role-1.0, args: "--recent-role 1.0" }
+          - { name: experience+recent-0.5, args: "--experience --recent-role 0.5" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
