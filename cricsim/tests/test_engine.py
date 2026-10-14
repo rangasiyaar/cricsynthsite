@@ -216,3 +216,35 @@ def test_venue_split_factors_move_runs_not_wickets(world):
         assert not f[name][:, S.WKT].any() and np.abs(f[name]).max() > 0
     vp = world["model"].venue_phase("premier-oval", "T20")
     assert vp.shape == (50, S.K) and (vp[0] == vp[5]).all() and (vp[16] == vp[19]).all()
+
+
+def test_competition_groups_and_current_season(world):
+    from cricsim.engine.fit import GROUP_KEYS
+    m = fit(world["parquet"], FitConfig(comp_groups=True, comp_season=True))
+    f = m.factors
+    assert "comp_season" not in f and f["comp_group"].shape == (len(GROUP_KEYS), S.K)
+    assert m.meta["comp_groups"] == GROUP_KEYS and m.meta["fit"]["comp_season_folded"] >= 1
+    known = m.comp_factor("premier-league", "T20", "male")
+    assert (known == f["comp"][m.comp("premier-league")]).all()
+    # a league the model has never seen gets the club T20 men's level: between its leagues and the global average
+    new = m.comp_factor("a-brand-new-league", "T20", "male")
+    two = f["comp"][[m.comp("premier-league"), m.comp("shield-league")]]
+    assert np.abs(new).max() > 0
+    assert (new >= np.minimum(two.min(0), 0) - 1e-6).all() and (new <= np.maximum(two.max(0), 0) + 1e-6).all()
+    assert not m.comp_factor("a-brand-new-league", "OD", "female").any()     # no such group in this world: average
+    spec = _spec(world["world"], team_type="club")
+    spec.comp_key = "a-brand-new-league"
+    sims = simulate(m, spec, n=200, seed=1)
+    assert sims.n == 200
+
+
+def test_fold_comp_season_only_uses_recent_seasons():
+    from cricsim.engine.fit import fold_comp_season
+    from cricsim.engine.model import N_ERA, era_index
+    day = lambda s: int((np.datetime64(s) - np.datetime64("1970-01-01")).astype(int))  # noqa: E731
+    logf = {"comp": np.zeros((3, S.K), dtype=np.float32), "comp_season": np.zeros((3 * N_ERA, S.K), dtype=np.float32)}
+    d = {"comp": np.array([1, 1, 2]), "day": np.array([day("2026-05-01"), day("2026-05-20"), day("2021-06-01")])}
+    for c, when in ((1, "2026-05-20"), (2, "2021-06-01")):
+        logf["comp_season"][c * N_ERA + int(era_index(np.array([day(when)]))[0]), S.SIX] = 0.2
+    assert fold_comp_season(logf, d, day("2026-10-14")) == 1
+    assert logf["comp"][1, S.SIX] == np.float32(0.2) and logf["comp"][2, S.SIX] == 0 and "comp_season" not in logf

@@ -24,6 +24,7 @@ class MatchSpec:
     batting_first: int | None = None            # 0 / 1; None = unknown (toss): half the simulations each way
     overs: int | None = None                    # reduced-overs match
     attributes: dict[str, dict] = field(default_factory=dict)   # pid → {"hand": .., "kind": ..} for unknowns
+    team_type: str | None = None                # club | international: picks the level for a competition never seen
 
     @property
     def rules(self) -> dict:

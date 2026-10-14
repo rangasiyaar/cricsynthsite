@@ -127,7 +127,8 @@ def run(parquet: Path, n: int, n_sims: int, memory: str) -> dict:
         spec = MatchSpec(mt["format"], mt["gender"],
                          (TeamSpec(t1, _xi_order(model, mt["xi"][t1], mt["format"])),
                           TeamSpec(t2, _xi_order(model, mt["xi"][t2], mt["format"]))),
-                         venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=0 if mt["first"] == t1 else 1)
+                         venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=0 if mt["first"] == t1 else 1,
+                         team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         s = summarize(sims, model)
         real = actual_points(con, mt["match_id"])

@@ -166,7 +166,7 @@ def _replace(spec: MatchSpec, out_pid: str, in_pid: str) -> tuple[MatchSpec, int
             teams = list(spec.teams)
             teams[k] = TeamSpec(t.name, players, bowl, t.team_id)
             return MatchSpec(spec.format, spec.gender, tuple(teams), spec.venue_id, spec.comp_key,
-                             spec.batting_first, spec.overs, spec.attributes), k
+                             spec.batting_first, spec.overs, spec.attributes, spec.team_type), k
     raise ValueError(f"{out_pid} is not in either XI")
 
 

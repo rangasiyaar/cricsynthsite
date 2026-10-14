@@ -87,13 +87,19 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
-                 half_life: float | None = None, fantasy_bowlers: bool = False) -> dict:
+                 half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None) -> dict:
+    """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": True, "shrink": {"bat": 150}}."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
-    cfg = FitConfig(cutoff=cutoff, **({"half_life_years": half_life} if half_life else {}))
+    over = dict(fit_overrides or {})
+    if "shrink" in over:
+        over["shrink"] = {**FitConfig().shrink, **over["shrink"]}
+    cfg = FitConfig(cutoff=cutoff, **({"half_life_years": half_life} if half_life else {}), **over)
     model = model or fit(parquet, cfg, memory=memory, con=con)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
     rep["half_life_years"] = cfg.half_life_years
+    rep["variant"] = {"comp_groups": cfg.comp_groups, "comp_season": cfg.comp_season,
+                      "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
         log.info("in-sample check from %s", start)
@@ -123,7 +129,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         spec = MatchSpec(mt["format"], mt["gender"],
                          (TeamSpec(t1, _xi_order(model, mt["xi"][t1], mt["format"])),
                           TeamSpec(t2, _xi_order(model, mt["xi"][t2], mt["format"]))),
-                         venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=bf)
+                         venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=bf, team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         part = sims.parts[0]
         p1 = float((part.winner == 0).mean())
@@ -264,13 +270,15 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
                                           [mt["match_id"]]).fetchall()}
         spec2 = MatchSpec(spec.format, spec.gender, tuple(TeamSpec(t.name, t.players, [p for p in t.players if p in used])
                                                           for t in spec.teams),
-                          venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first)
+                          venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first,
+                          team_type=spec.team_type)
         sims2 = simulate(model, spec2, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         pids2, pts2 = sim_points(sims2)
         xi, c, vc = pick_xi(dict(zip(pids2, pts2.mean(0))), team_of)
         out["bowlers_known"] = team_points(xi, c, vc, real)
         # toss unknown: half the simulations each way (the backtest otherwise knows who batted first)
-        spec_u = MatchSpec(spec.format, spec.gender, spec.teams, venue_id=spec.venue_id, comp_key=spec.comp_key)
+        spec_u = MatchSpec(spec.format, spec.gender, spec.teams, venue_id=spec.venue_id, comp_key=spec.comp_key,
+                           team_type=spec.team_type)
         pids_u, pts_u = sim_points(simulate(model, spec_u, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()) + 1))
         out["toss_unknown"] = team_points(*pick_xi(dict(zip(pids_u, pts_u.mean(0))), team_of), real)
         # full team news: real batting order and who bowls; then also captain by top-scorer chance
@@ -280,7 +288,8 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
                 return sorted(t.players, key=lambda p: (k.get(p, 10 ** 6), t.players.index(p)))
             spec3 = MatchSpec(spec.format, spec.gender,
                               tuple(TeamSpec(t.name, order(t), [p for p in t.players if p in used]) for t in spec.teams),
-                              venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first)
+                              venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first,
+                              team_type=spec.team_type)
             pids3, pts3 = sim_points(simulate(model, spec3, n=n_sims, seed=zlib.crc32(mt["match_id"].encode())))
             m3 = dict(zip(pids3, pts3.mean(0)))
             xi3, c3, vc3 = pick_xi(m3, team_of)
@@ -303,6 +312,17 @@ def _actual_player_stats(con, match_id: str):
                               FROM hold WHERE match_id = ? GROUP BY 1""",
                            [match_id]).fetchall())
     return runs, balls, wk
+
+
+def _sharpen(p: np.ndarray, y: np.ndarray) -> dict:
+    """How far win chances sit from where they should: the stretch a (on the log-odds scale) that would minimise the
+    Brier score on these matches. a > 1: the forecasts are too cautious; a < 1: too bold. Fitted on the same
+    matches, so the Brier it reaches is an optimistic ceiling for a calibration step."""
+    lo = np.log(np.clip(p, 0.005, 0.995) / (1 - np.clip(p, 0.005, 0.995)))
+    grid = np.round(np.arange(0.5, 3.01, 0.05), 2)
+    briers = [float(((1 / (1 + np.exp(-a * lo)) - y) ** 2).mean()) for a in grid]
+    k = int(np.argmin(briers))
+    return {"sharpen": float(grid[k]), "brier_sharpened": round(briers[k], 4)}
 
 
 def _calibration(pairs: list[tuple[float, float]], bins: int = 10) -> list[dict]:
@@ -330,7 +350,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                          "log_loss": round(float(-(y * np.log(pc) + (1 - y) * np.log(1 - pc)).mean()), 4),
                          "log_loss_coin_flip": round(float(np.log(2)), 4),
                          "accuracy": round(float(((p > 0.5) == (y == 1)).mean()), 3),
-                         "calibration": _calibration([(a, b) for a, b, _ in res["win"]], 5)}
+                         "calibration": _calibration([(a, b) for a, b, _ in res["win"]], 5),
+                         **_sharpen(p, y)}
     if res.get("team"):
         out["team_innings"] = {}
         for inn in (1, 2):
@@ -413,11 +434,15 @@ def write_report(rep: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.with_suffix(".json").write_text(json.dumps(rep, indent=2))
     L = [f"# Backtest — trained before {rep['cutoff']}, tested on {rep['matches']} later matches", ""]
+    if rep.get("variant"):
+        L += [f"Model variant: `{json.dumps(rep['variant'])}`", ""]
     if "result" in rep:
         r = rep["result"]
         L += ["## Match result", "",
               f"Brier **{r['brier']}** (coin flip 0.25) · log-loss **{r['log_loss']}** (coin flip {r['log_loss_coin_flip']}) · "
               f"favourite won **{100 * r['accuracy']:.1f}%** of {r['n']} matches", "",
+              f"Spread: the best stretch of every win chance (log-odds ×{r.get('sharpen')}) would give Brier "
+              f"{r.get('brier_sharpened')} (fitted on these same matches, so a ceiling; ×1.0 = already right)", "",
               "| Predicted | Matches | Predicted win % | Actual win % |", "|---|---|---|---|"]
         L += [f"| {c['bin']} | {c['n']} | {100 * c['predicted']:.1f} | {100 * c['observed']:.1f} |" for c in r["calibration"]]
         L.append("")

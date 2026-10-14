@@ -6,7 +6,11 @@ Factor layout (levels × K, natural-log multipliers):
     base       format × gender × innings × over × wickets-down     (the match situation)
     era        season × format family                             (scoring levels drift; simulate at the latest)
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
-    venue comp                                                       (ground and competition environment)
+    venue comp                                                       (ground and competition environment; a competition
+                                                                      leans on its group — club/international × format ×
+                                                                      gender — and carries its current season's level)
+    comp_group                                                       (each group's level: the competition factor for a
+                                                                      competition the model has never seen)
     venue_g venue_ph venue_kind                                      (ground × men's/women's, × stage of innings, × pace/spin;
                                                                       runs only — wickets column fixed at 0)
     The venue factor's prior is the other grounds in the same city.
@@ -145,6 +149,18 @@ class Model:
 
     def comp(self, comp_key: str | None) -> int:
         return self._cidx.get(comp_key or "", 0)
+
+    def comp_factor(self, comp_key: str | None, fmt: str, gender: str, team_type: str | None = None) -> np.ndarray:
+        """Competition environment. A competition the model has never seen gets its group's level (club or
+        international × format × gender); team_type defaults to international for "intl-international-…" keys,
+        club otherwise."""
+        i = self.comp(comp_key)
+        groups, keys = self.factors.get("comp_group"), self.meta.get("comp_groups")
+        if i or groups is None or not keys:
+            return self.factors["comp"][i]
+        tt = team_type or ("international" if (comp_key or "").startswith("intl-international") else "club")
+        key = f"{tt}|{fmt}|{gender}"
+        return groups[keys.index(key)] if key in keys else self.factors["comp"][0]
 
     def knows(self, player_id: str) -> bool:
         return player_id in self._pidx and self._pidx[player_id] != 0
