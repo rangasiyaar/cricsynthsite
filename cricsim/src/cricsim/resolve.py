@@ -98,6 +98,9 @@ def find_venue(con, parquet: Path, text: str) -> tuple[str | None, str | None]:
     return (row[0], row[1]) if row else (None, None)
 
 
+BOWLING_ROLES = {"BOWL", "AR"}   # backtest: telling the engine who bowls, 2+ wickets Brier -0.002 to -0.003
+
+
 @click.command()
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--fixture", type=click.Path(exists=True, path_type=Path), required=True)
@@ -131,9 +134,13 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
             taken.add(c["id"])
             ids.append(c["id"])
             click.echo(f"  {team['name']:12} {name:28} → {c['id']} {c['name']:24} ({how}; {c['n']} matches, last {c['last']})")
+        by_name = dict(zip(team["players"], ids))
         if team.get("bowlers"):      # bowling plan, written as names from the XI
-            by_name = dict(zip(team["players"], ids))
             team["bowlers"] = [by_name[b] for b in team["bowlers"]]
+        elif team.get("roles"):      # otherwise who may bowl comes from the roles: bowlers and all-rounders
+            listed = [by_name[n] for n, r in zip(team["players"], team["roles"]) if str(r).upper() in BOWLING_ROLES]
+            if len(listed) >= 5:     # a full attack, else leave it to the players' records
+                team["bowlers"] = listed
         team["players"] = ids
     if fx.get("venue_search"):
         vid, vname = find_venue(con, parquet, fx.pop("venue_search"))
