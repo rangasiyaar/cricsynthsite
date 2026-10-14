@@ -23,6 +23,7 @@ PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
+LISTED_BONUS = 0.3       # extra weight for a bowler the fixture lists as a bowler (keeps the usual shares apart if small)
 SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
@@ -162,7 +163,7 @@ class _Tables:
         allowed = np.array([p not in sc.exclude_bowlers for p in bowlers])
         if allowed_bowlers:
             listed = np.array([p in allowed_bowlers for p in bowlers])
-            weights[listed] += 0.3
+            weights[listed] += sim.get("listed_bonus", LISTED_BONUS)
             allowed &= listed
         if not allowed.any():
             allowed[:] = True
