@@ -34,6 +34,7 @@ const SPIN = new Set(["off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wri
 const PACE = new Set(["pace_right", "pace_left"]);
 const PLAN_WEIGHT = 0.01;   // simulate.py PLAN_WEIGHT
 const PLAN_EPS = 0.05;      // simulate.py PLAN_EPS
+const PLAN_POWER = 2;       // simulate.py PLAN_POWER
 
 /** Overs per bowler for one innings, drawn up front — mirrors plan_overs in simulate.py. */
 function planOvers(r: () => number, expected: number[], used: Int16Array, overs: number, quota: number): Int16Array {
@@ -47,7 +48,7 @@ function planOvers(r: () => number, expected: number[], used: Int16Array, overs:
   for (let k = 0; k < left; k++) {
     let any = 0;
     for (let j = 0; j < 11; j++) {
-      c[j] = t[j] < quota ? Math.max(ex[j] - t[j], 0) + (ex[j] > 0 ? PLAN_EPS : 0) : 0;
+      c[j] = t[j] < quota ? Math.max(ex[j] - t[j], 0) ** PLAN_POWER + PLAN_EPS * ex[j] ** PLAN_POWER : 0;
       any += c[j];
     }
     if (any === 0) for (let j = 0; j < 11; j++) c[j] = (t[j] < quota ? 1 : 0) + 1e-9;

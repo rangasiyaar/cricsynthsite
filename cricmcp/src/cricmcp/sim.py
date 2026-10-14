@@ -15,6 +15,7 @@ SPIN = {"off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow"}
 PACE = {"pace_right", "pace_left"}
 PLAN_WEIGHT = 0.01
 PLAN_EPS = 0.05
+PLAN_POWER = 2
 M32 = 0xFFFFFFFF
 
 
@@ -150,7 +151,7 @@ def plan_overs(r, expected: list, used: list, overs: int, quota: int) -> list:
     for _ in range(left):
         anyc = 0.0
         for j in range(11):
-            c[j] = max(ex[j] - t[j], 0) + (PLAN_EPS if ex[j] > 0 else 0) if t[j] < quota else 0
+            c[j] = max(ex[j] - t[j], 0) ** PLAN_POWER + PLAN_EPS * ex[j] ** PLAN_POWER if t[j] < quota else 0
             anyc += c[j]
         if anyc == 0:
             for j in range(11):

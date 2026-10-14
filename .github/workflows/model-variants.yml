@@ -23,9 +23,10 @@ jobs:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
           - { name: roles, args: "--order sheet --roles" }
-          - { name: roles+overs-plan, args: "--order sheet --roles --overs-plan" }
+          - { name: roles+plan, args: "--order sheet --roles --overs-plan" }
+          - { name: roles+plan-power3, args: "--order sheet --roles --overs-plan --plan-power 3" }
           - { name: no-roles, args: "--order sheet" }
-          - { name: no-roles+overs-plan, args: "--order sheet --overs-plan" }
+          - { name: no-roles+plan, args: "--order sheet --overs-plan" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

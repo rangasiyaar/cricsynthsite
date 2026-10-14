@@ -27,7 +27,10 @@ LISTED_BONUS = 0.03      # extra weight for a bowler the fixture lists as a bowl
                          # (backtest, 3 cutoffs: 2+ wickets Brier -0.0014, runs-conceded corr 0.55 -> 0.60 v 0.3)
 SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
 OVERS_PLAN = False       # draw each innings' overs per bowler up front from their usual overs per match (variant)
-PLAN_EPS = 0.05          # overs-plan draw: small chance for a listed bowler beyond his usual share
+PLAN_EPS = 0.05          # overs-plan draw: extra chance beyond a bowler's usual share, in proportion to that share
+                         # (a flat chance spread the last overs over batters who bowl once a season: 8.7 bowlers)
+PLAN_POWER = 2.0         # the next planned over goes to the bowler furthest below his usual overs, squared: captains
+                         # finish their frontliners' spells before turning to part-timers (6.2 bowlers on a typical attack)
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
 
@@ -174,13 +177,16 @@ class _Tables:
         # usual overs per match (expected), for the per-innings overs plan
         self.bowl_overs = np.clip(share * per_decile, 0, None).sum(1) * allowed
         self.overs_plan = bool(sim.get("overs_plan", OVERS_PLAN))
+        self.plan_eps = float(sim.get("plan_eps", PLAN_EPS))
+        self.plan_power = float(sim.get("plan_power", PLAN_POWER))
         self.dismissal = model.dismissal[fam][kind].astype(np.float64)        # (11, kinds)
         self.wide_runs = model.wide_runs[fam].astype(np.float64)
         self.bye_runs = model.bye_runs[fam].astype(np.float64)
         self.runout_ns = model.runout_non_striker
 
 
-def plan_overs(rng, expected: np.ndarray, used: np.ndarray, overs: int, quota: int) -> np.ndarray:
+def plan_overs(rng, expected: np.ndarray, used: np.ndarray, overs: int, quota: int, eps: float = PLAN_EPS,
+               power: float = PLAN_POWER) -> np.ndarray:
     """Each simulated innings' overs per bowler, drawn up front: overs go one at a time to the bowler furthest
     below his usual overs per match (scaled to the innings), within the quota. Frontliners then bowl their
     full spells and part-timers a couple of overs, as captains do (sim.ts / cricmcp plan_overs mirror this)."""
@@ -191,7 +197,7 @@ def plan_overs(rng, expected: np.ndarray, used: np.ndarray, overs: int, quota: i
     for k in range(int(left.max(initial=0))):
         rows = np.flatnonzero(left > k)
         t = target[rows]
-        c = np.where(t < quota, np.maximum(ex - t, 0) + PLAN_EPS * (ex > 0), 0.0)
+        c = np.where(t < quota, np.maximum(ex - t, 0) ** power + eps * ex ** power, 0.0)
         none = c.sum(1) == 0
         c[none] = (t[none] < quota) + 1e-9
         target[rows, _choose(rng, c)] += 1
@@ -263,7 +269,7 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
         queue = np.array(list(range(2, 11)) + [11] * 11)
     qpos = np.zeros(n, dtype=np.int64)
     if T.overs_plan:
-        planned = plan_overs(rng, T.bowl_overs, used, overs, quota)
+        planned = plan_overs(rng, T.bowl_overs, used, overs, quota, T.plan_eps, T.plan_power)
     else:
         plan = rng.random((n, used.shape[1])) < np.minimum(1.0, T.bowl_weights.mean(1) / PLAN_WEIGHT)
         plan |= used > 0
