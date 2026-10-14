@@ -8,6 +8,7 @@ Factor layout (levels × K, natural-log multipliers):
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
     venue comp                                                       (ground and competition environment; a league
                                                                       leans on similar leagues — format × gender)
+    home                                                             (batting at home / away / on a neutral ground)
     comp_group                                                       (each group's level: the competition factor for a
                                                                       competition the model has never seen)
     venue_g venue_ph venue_kind                                      (ground × men's/women's, × stage of innings, × pace/spin;
@@ -174,6 +175,16 @@ class Model:
         tt = team_type or ("international" if (comp_key or "").startswith("intl-international") else "club")
         key = f"{tt}|{fmt}|{gender}"
         return groups[keys.index(key)] if key in keys else self.factors["comp"][0]
+
+    def home_team(self, venue_id: str | None, team_names) -> int | None:
+        """Index of the team at home on this ground (played there 3+ times and at least twice as often as the
+        other side), or None for a neutral ground or when the model has no home data."""
+        counts = (self.meta.get("home_counts") or {}).get(venue_id or "")
+        if not counts:
+            return None
+        n = [counts.get(t, 0) for t in team_names]
+        top = int(np.argmax(n))
+        return top if n[top] >= 3 and n[top] >= 2 * n[1 - top] else None
 
     def knows(self, player_id: str) -> bool:
         return player_id in self._pidx and self._pidx[player_id] != 0

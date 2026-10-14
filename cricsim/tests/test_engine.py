@@ -274,3 +274,13 @@ def test_experience_factor_and_recent_role(world):
     finally:
         m.meta.pop("sim")
     assert recent.bowl_weights.shape == base.bowl_weights.shape and not np.allclose(recent.bowl_weights, base.bowl_weights)
+
+
+def test_home_team_rule_and_home_fit_runs(world):
+    m = fit(world["parquet"], FitConfig(home=True))
+    assert isinstance(m.meta["home_counts"], dict)
+    m.meta["home_counts"] = {"ground": {"Hosts": 9, "Visitors": 2, "Regulars": 6}}
+    assert m.home_team("ground", ["Visitors", "Hosts"]) == 1
+    assert m.home_team("ground", ["Hosts", "Regulars"]) is None          # 9 v 6: both at home here, neutral
+    assert m.home_team("elsewhere", ["Hosts", "Visitors"]) is None
+    assert simulate(m, _spec(world["world"]), n=100, seed=1).n == 100

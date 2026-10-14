@@ -31,7 +31,7 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
     batting = []
     for t in (0, 1):
         order, bowlers = list(spec.teams[t].players), list(spec.teams[1 - t].players)
-        T = _Tables(model, spec, neutral, 0, order, bowlers, spec.teams[1 - t].bowlers)
+        T = _Tables(model, spec, neutral, 0, order, bowlers, spec.teams[1 - t].bowlers, t)
         batting.append({"team": t, "order": order, "bowlers": bowlers, "pair": _round(T.pair),
                         "bowlWeights": _round(T.bowl_weights, 5), "dismissal": _round(T.dismissal),
                         "bowlerKinds": [S.BOWLING_KINDS[k] for k in T.kind]})

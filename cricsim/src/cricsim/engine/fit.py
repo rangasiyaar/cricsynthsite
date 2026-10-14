@@ -36,11 +36,11 @@ SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
     "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
-    "bat_exp": 3000, "bowl_exp": 3000,
+    "bat_exp": 3000, "bowl_exp": 3000, "home": 2000,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
 ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
-         "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
+         "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
 
 
 @dataclass
@@ -49,6 +49,7 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
+    home: bool = False                         # home advantage: batting at home / away / neutral ground
     experience: bool = False                   # players with little history: a factor by career balls so far
     comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
                                                # "club" (leagues only), "all" (internationals too) or "off"
@@ -92,8 +93,23 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
         xp_cols = "coalesce(xb.faced_before, 0) AS bat_xp, coalesce(xw.bowled_before, 0) AS bowl_xp"
         xp_join = ("LEFT JOIN exp_hist xb ON xb.xp_pid = batter_id AND xb.xp_mid = match_id "
                    "LEFT JOIN exp_hist xw ON xw.xp_pid = bowler_id AND xw.xp_mid = match_id")
+    home_col, home_join = "2 AS home_state", ""
+    if cfg.home:            # a team is at home where it has played at least 3 times and twice as often as its opponent
+        cutw = f"AND match_date < DATE '{cfg.cutoff}'" if cfg.cutoff else ""
+        con.execute(f"""
+            CREATE OR REPLACE TEMP TABLE home_of AS
+            WITH tm AS (SELECT DISTINCT match_id, venue_id, batting_team_id AS tid FROM balls
+                        WHERE venue_id IS NOT NULL AND batting_team_id IS NOT NULL AND innings_no IN (1, 2) {cutw}),
+                 cnt AS (SELECT venue_id, tid, count(*) AS n FROM tm GROUP BY 1, 2),
+                 pm AS (SELECT tm.match_id, tm.tid, cnt.n - 1 AS n FROM tm JOIN cnt USING (venue_id, tid)),
+                 r AS (SELECT match_id, arg_max(tid, n) AS top, max(n) AS n1, sum(n) - max(n) AS n2, count(*) AS k
+                       FROM pm GROUP BY 1)
+            SELECT match_id AS h_mid, top AS home_tid FROM r WHERE k = 2 AND n1 >= {HOME_MIN} AND n1 >= 2 * n2""")
+        home_col = ("CASE WHEN h.home_tid IS NULL THEN 2 WHEN batting_team_id = h.home_tid THEN 0 ELSE 1 END "
+                    "AS home_state")
+        home_join = "LEFT JOIN home_of h ON h.h_mid = match_id"
     t = con.execute(f"""
-        SELECT format, gender, innings_no, "over", team_wickets_before AS wkts, {xp_cols},
+        SELECT format, gender, innings_no, "over", team_wickets_before AS wkts, {xp_cols}, {home_col},
                batter_balls_before AS bf, batter_runs_before AS br,
                coalesce(target_runs - team_runs_before, 0) AS need,
                total_overs * balls_per_over - legal_balls_before AS balls_left,
@@ -104,7 +120,7 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
                coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format) AS comp,
                coalesce(team_type, '') AS team_type, batter_id, bowler_id, date_diff('day', DATE '1970-01-01', match_date) AS day, match_id,
                {OUTCOME_SQL} AS y, runs_total, byes + legbyes AS byes
-        FROM balls {xp_join}
+        FROM balls {xp_join} {home_join}
         WHERE innings_no IN (1, 2) AND batter_id IS NOT NULL AND bowler_id IS NOT NULL
           AND gender IN ('male', 'female') AND {' AND '.join(where)}
     """).to_arrow_table()
@@ -131,7 +147,7 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
         "venue": _encode(t["venue"], venues, -1) + 1, "comp": _encode(t["comp"], comps, -1) + 1,
         "bat": _encode(t["batter_id"], players) + 1, "bowl": _encode(t["bowler_id"], players) + 1,
         "day": np_("day"), "y": np_("y").astype(np.int8),
-        "bat_xp": np_("bat_xp"), "bowl_xp": np_("bowl_xp"),
+        "bat_xp": np_("bat_xp"), "bowl_xp": np_("bowl_xp"), "home_state": np_("home_state").astype(np.int8),
         "match": pc.dictionary_encode(t["match_id"]).combine_chunks().indices.to_numpy().astype(np.int32), "runs_total": np_("runs_total"), "byes": np_("byes"),
     }
     # competition group: club / international × format × gender (the commonest among the competition's balls)
@@ -183,6 +199,8 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
         "bowl_hand": (d["bowl"] * nh + d["hand"], n_players * nh),
     }
+    if (d["home_state"] != 2).any():                     # home advantage (FitConfig.home)
+        levels["home"] = (fam * 3 + d["home_state"].astype(np.int32), 6)
     if np.any(d["bat_xp"]) or np.any(d["bowl_xp"]):     # experience factors (FitConfig.experience)
         levels["bat_exp"] = (fam * N_EXP + exp_bucket(d["bat_xp"]), 2 * N_EXP)
         levels["bowl_exp"] = (fam * N_EXP + exp_bucket(d["bowl_xp"]), 2 * N_EXP)
@@ -562,6 +580,25 @@ def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> d
     return {"venues": venues, "comps": comps, "teams": teams, "player_gender": "".join(gender)}
 
 
+HOME_MIN = 3              # matches at a ground before it counts as a team's home
+
+
+def _home_counts(con, cfg: FitConfig, parquet: Path) -> dict[str, dict[str, int]]:
+    """Ground → {team name: matches there} (teams with HOME_MIN+), so a fixture can tell who is at home."""
+    mt = parquet / "matches"
+    if not any(mt.glob("*.parquet")):
+        return {}
+    cut = f"AND match_date < DATE '{cfg.cutoff}'" if cfg.cutoff else ""
+    out: dict[str, dict[str, int]] = {}
+    for v, team, n in con.execute(f"""
+        SELECT venue_id, team, count(*) FROM (
+          SELECT venue_id, team1 AS team, match_date FROM read_parquet('{(mt / '*.parquet').as_posix()}')
+          UNION ALL SELECT venue_id, team2, match_date FROM read_parquet('{(mt / '*.parquet').as_posix()}'))
+        WHERE venue_id IS NOT NULL AND team IS NOT NULL {cut} GROUP BY 1, 2 HAVING count(*) >= {HOME_MIN}""").fetchall():
+        out.setdefault(v, {})[team] = int(n)
+    return out
+
+
 def venue_cities(parquet: Path, venues: list[str], con) -> list[int]:
     """City index per ground (-1 = unknown), for the same-city venue prior."""
     m = (parquet / "matches" / "*.parquet").as_posix()
@@ -585,6 +622,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
     d, ids = load_training(con, cfg)
     ids["venue_city"] = venue_cities(parquet, ids["venues"], con)
     log.info("training on %d balls, %d players", len(d["y"]), len(ids["players"]))
+    home_counts = _home_counts(con, cfg, parquet) if cfg.home else {}
     factors, stats = fit_factors(d, ids, cfg)
     tables = _tables(con, cfg, ids, parquet)
     ro = tables.pop("runout_non_striker")
@@ -593,6 +631,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
                  runout_non_striker=ro,
                  meta={"cutoff": str(cfg.cutoff) if cfg.cutoff else None, "half_life_years": cfg.half_life_years,
                        "comp_groups": GROUP_KEYS if cfg.comp_groups != "off" else None, "experience": cfg.experience,
+                       "home_counts": home_counts,
                        "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist(),
                        "catalog": _catalog(con, cfg, ids, parquet)},
                  **tables)

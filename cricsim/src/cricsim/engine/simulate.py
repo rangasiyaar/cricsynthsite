@@ -80,7 +80,7 @@ class _Tables:
     """Everything a ball needs, gathered once per innings: situation slices + an 11×11×K player-pair table."""
 
     def __init__(self, model: Model, spec: MatchSpec, sc: Scenario, inn0: int, order: list[str], bowlers: list[str],
-                 allowed_bowlers: list[str] | None = None):
+                 allowed_bowlers: list[str] | None = None, bat_team: int | None = None):
         f = model.factors
         K = S.K
         fmt = FORMAT_LIST.index(spec.format)
@@ -111,6 +111,10 @@ class _Tables:
                 + self.sit["hand_kind"][hand[:, None] * nk + kind[None]]
                 + model.venue_factor(spec.venue_id, g) + model.venue_kind(spec.venue_id, kind)[None]
                 + model.comp_factor(spec.comp_key, spec.format, spec.gender, spec.team_type))
+        if "home" in f:                               # home advantage: is the batting side at home?
+            t = bat_team if bat_team is not None else (0 if order and order[0] in spec.teams[0].players else 1)
+            home = model.home_team(spec.venue_id, [tm.name for tm in spec.teams])
+            pair += f["home"][fam * 3 + (2 if home is None else 0 if home == t else 1)]
         if "bat_exp" in f and model.career_balls is not None:   # how far into their careers these players are
             pair += (f["bat_exp"][fam * N_EXP + exp_bucket(model.career_balls[pb, 0])][:, None]
                      + f["bowl_exp"][fam * N_EXP + exp_bucket(model.career_balls[pw, 1])][None])
@@ -397,7 +401,7 @@ def simulate(model: Model, spec: MatchSpec, n: int = 10_000, scenario: Scenario 
         first_total = None
         for inn0, bat in enumerate(teams):
             order, bowlers = _order(spec, sc, bat), list(spec.teams[1 - bat].players)
-            T = _Tables(model, spec, sc, inn0, order, bowlers, spec.teams[1 - bat].bowlers)
+            T = _Tables(model, spec, sc, inn0, order, bowlers, spec.teams[1 - bat].bowlers, bat)
             st = start if (start is not None and start.innings == inn0 + 1) else None
             if inn0 == 0 and start is not None and start.innings == 2:
                 total = np.full(m, start.first_innings_total or 0)
