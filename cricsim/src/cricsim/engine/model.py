@@ -6,9 +6,8 @@ Factor layout (levels × K, natural-log multipliers):
     base       format × gender × innings × over × wickets-down     (the match situation)
     era        season × format family                             (scoring levels drift; simulate at the latest)
     set chase mile streak dots spell freehit hand_kind              (Pattern Lab situation effects, per family)
-    venue comp                                                       (ground and competition environment; a competition
-                                                                      leans on its group — club/international × format ×
-                                                                      gender — and carries its current season's level)
+    venue comp                                                       (ground and competition environment; a league
+                                                                      leans on similar leagues — format × gender)
     comp_group                                                       (each group's level: the competition factor for a
                                                                       competition the model has never seen)
     venue_g venue_ph venue_kind                                      (ground × men's/women's, × stage of innings, × pace/spin;

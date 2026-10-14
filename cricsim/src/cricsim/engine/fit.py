@@ -33,11 +33,11 @@ log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "comp_season": 3000, "era": 20000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
     "bat": 300, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
 ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
-         "comp_season", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
+         "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
 
 
 @dataclass
@@ -46,8 +46,8 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
-    comp_groups: bool = False                  # a competition's prior = similar competitions (club/intl × format × gender)
-    comp_season: bool = False                  # + this season's level per competition (scoring jumps show up in weeks)
+    comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
+                                               # "club" (leagues only), "all" (internationals too) or "off"
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
 
 
@@ -117,8 +117,9 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
     g = (tt.astype(np.int64) * len(FORMAT_LIST) + fmt) * 2 + d["gender"]
     nc = len(ids["comps"])
     counts = np.bincount(d["comp"].astype(np.int64) * N_GROUPS + g, minlength=nc * N_GROUPS).reshape(nc, N_GROUPS)
-    ids["comp_group"] = np.where(counts.sum(1) > 0, counts.argmax(1), -1).tolist()
-    ids["comp_group"][0] = -1
+    group = np.where(counts.sum(1) > 0, counts.argmax(1), -1)
+    group[0] = -1
+    ids["comp_group"] = group.tolist()
     return d, ids
 
 
@@ -126,14 +127,12 @@ TEAM_TYPES = ("international", "club")
 N_GROUPS = (len(TEAM_TYPES) + 1) * len(FORMAT_LIST) * 2
 GROUP_KEYS = [f"{tt}|{f}|{g}" for tt in (*TEAM_TYPES, "unknown") for f in FORMAT_LIST for g in GENDERS]
 GROUP_SHRINK = 20000.0    # balls: how much a competition's group counts before the global average takes over
-SEASON_RECENT_DAYS = 550  # a competition's latest season counts as "current" if it ended within this many days
 
 OVERS = np.array([S.FORMAT_RULES[f]["overs"] for f in FORMAT_LIST])
 RUNS_ONLY = ("venue_g", "venue_ph", "venue_kind")   # the venue diagnostic: these never carry over for wickets
 
 
-def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int,
-                  comp_season: bool = False) -> dict[str, tuple[np.ndarray, int]]:
+def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int) -> dict[str, tuple[np.ndarray, int]]:
     """Factor name → (level index per ball, number of levels). Mirrors simulate.py's state encoding."""
     fam = d["fam"].astype(np.int32)
     nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
@@ -141,7 +140,7 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
     def per_family(bucket, n):
         return fam * n + bucket, 2 * n
 
-    levels = {
+    return {
         "base": (base_index(d["fmt"], d["gender"], d["inn0"], d["over"], d["wkts"]).astype(np.int32), N_BASE),
         "set": per_family(S.set_bucket(d["bf"]), SITUATION["set"]),
         "chase": per_family(S.chase_bucket(d["inn0"] + 1, d["need"], d["balls_left"]), SITUATION["chase"]),
@@ -162,9 +161,6 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
         "bowl_hand": (d["bowl"] * nh + d["hand"], n_players * nh),
     }
-    if comp_season:     # competition × season; folded into the competition factor after the fit
-        levels["comp_season"] = (d["comp"].astype(np.int32) * N_ERA + era_index(d["day"]).astype(np.int32), n_comps * N_ERA)
-    return levels
 
 
 def _softmax(L: np.ndarray, out: np.ndarray) -> np.ndarray:
@@ -195,7 +191,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     n, K = len(d["y"]), S.K
     ref_day = (np.datetime64(cfg.cutoff) - np.datetime64("1970-01-01")).astype(int) if cfg.cutoff else d["day"].max()
     w = (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.half_life_years))).astype(np.float64)
-    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.comp_season)
+    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]))
     priors = {"base": base_prior(levels["base"][0], d["y"], w)}
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)
@@ -205,15 +201,15 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     stats = {"balls": n, "passes": []}
     city = np.asarray(ids.get("venue_city") or [-1] * len(ids["venues"]), dtype=np.int64)
     group = np.asarray(ids.get("comp_group") or [-1] * len(ids["comps"]), dtype=np.int64)
+    if cfg.comp_groups == "club":       # internationals keep the neutral prior: player ratings already say who is weak
+        group = np.where(group // (len(FORMAT_LIST) * 2) == TEAM_TYPES.index("club"), group, -1)
     for it in range(cfg.passes):
         t0 = time.time()
         for name in ORDER:
-            if name not in levels:
-                continue
             idx, nl = levels[name]
             if name == "venue":
                 priors["venue"] = city_prior(logf["venue"], np.bincount(idx, weights=w, minlength=nl), city)
-            if name == "comp" and cfg.comp_groups:
+            if name == "comp" and cfg.comp_groups != "off":
                 priors["comp"] = city_prior(logf["comp"], np.bincount(idx, weights=w, minlength=nl), group, GROUP_SHRINK)
             _softmax(L, P)
             P *= w[:, None]
@@ -251,9 +247,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
                                       for y in range(max(0, stats["era_index"] - 7), stats["era_index"] + 1)}
                            for f, fam_name in enumerate(S.FAMILY_LIST)}
     log.info("match-to-match conditions sd: %s", stats["conditions_sd"])
-    if cfg.comp_season:
-        stats["comp_season_folded"] = fold_comp_season(logf, d, ref_day)
-    if cfg.comp_groups:
+    if cfg.comp_groups != "off":
         logf["comp_group"] = group_levels(logf["comp"], np.bincount(d["comp"], weights=w, minlength=len(group)), group)
     # player 0 / venue 0 / comp 0 are "unknown": exactly average
     for name in ("bat", "bowl", "venue", "comp"):
@@ -265,19 +259,6 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
 
 
 CITY_SHRINK = 6000.0      # balls: how much other grounds in the same city count before the global average takes over
-
-
-def fold_comp_season(logf: dict, d: dict[str, np.ndarray], ref_day: int) -> int:
-    """Add each competition's latest-season level to its long-run factor, when that season is recent, and drop the
-    season factor. A league whose scoring jumped this season is then forecast at this season's level."""
-    cs = logf.pop("comp_season")
-    nc = len(logf["comp"])
-    last = np.zeros(nc, dtype=np.int64)
-    np.maximum.at(last, d["comp"], d["day"])
-    recent = np.flatnonzero((last > 0) & (ref_day - last <= SEASON_RECENT_DAYS))
-    recent = recent[recent > 0]
-    logf["comp"][recent] += cs[recent * N_ERA + era_index(last[recent])]
-    return int(len(recent))
 
 
 def group_levels(f: np.ndarray, balls: np.ndarray, group: np.ndarray) -> np.ndarray:
@@ -514,7 +495,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
     return Model(factors=factors, players=ids["players"], venues=ids["venues"], comps=ids["comps"], names=names,
                  runout_non_striker=ro,
                  meta={"cutoff": str(cfg.cutoff) if cfg.cutoff else None, "half_life_years": cfg.half_life_years,
-                       "comp_groups": GROUP_KEYS if cfg.comp_groups else None, "comp_season": cfg.comp_season,
+                       "comp_groups": GROUP_KEYS if cfg.comp_groups != "off" else None,
                        "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist(),
                        "catalog": _catalog(con, cfg, ids, parquet)},
                  **tables)

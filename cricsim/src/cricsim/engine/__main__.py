@@ -60,17 +60,17 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--insample", default=0, help="Also re-run the model on this many matches from its last six months")
 @click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
 @click.option("--fantasy-bowlers", is_flag=True, help="Also score fantasy XIs picked with the real bowling plan")
-@click.option("--comp-groups/--no-comp-groups", default=None, help="Variant: competitions lean on their group")
-@click.option("--comp-season/--no-comp-season", default=None, help="Variant: current-season level per competition")
+@click.option("--comp-groups", type=click.Choice(["off", "club", "all"]), default=None,
+              help="Variant: competitions lean on similar competitions")
 @click.option("--shrink", "shrink", default="", help="Variant: prior strengths, e.g. bat=150,bowl=150")
 @click.option("--sims", default=1000)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
 def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: float | None, fantasy_bowlers: bool,
-             comp_groups: bool | None, comp_season: bool | None, shrink: str, sims: int, out: Path, memory: str) -> None:
+             comp_groups: str | None, shrink: str, sims: int, out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
-    over: dict = {k: v for k, v in (("comp_groups", comp_groups), ("comp_season", comp_season)) if v is not None}
+    over: dict = {"comp_groups": comp_groups} if comp_groups else {}
     if shrink:
         over["shrink"] = {k.strip(): float(v) for k, v in (kv.split("=") for kv in shrink.split(","))}
     rep = run_backtest(parquet, cutoff.date(), limit=matches, n_sims=sims, memory=memory, insample=insample,

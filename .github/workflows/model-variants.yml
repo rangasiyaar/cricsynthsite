@@ -22,11 +22,11 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2026-01-01"]
         variant:
-          - { name: current, args: "--no-comp-groups --no-comp-season" }
-          - { name: comp-groups, args: "--comp-groups --no-comp-season" }
-          - { name: comp-groups+season, args: "--comp-groups --comp-season" }
-          - { name: groups+season+shrink150, args: "--comp-groups --comp-season --shrink bat=150,bowl=150" }
-          - { name: groups+season+shrink600, args: "--comp-groups --comp-season --shrink bat=600,bowl=600" }
+          - { name: current, args: "" }
+          - { name: shrink150, args: "--shrink bat=150,bowl=150" }
+          - { name: shrink100, args: "--shrink bat=100,bowl=100" }
+          - { name: club-groups, args: "--comp-groups club" }
+          - { name: club-groups+shrink150, args: "--comp-groups club --shrink bat=150,bowl=150" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

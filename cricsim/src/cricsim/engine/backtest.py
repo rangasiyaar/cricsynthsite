@@ -88,7 +88,7 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None) -> dict:
-    """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": True, "shrink": {"bat": 150}}."""
+    """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}}."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     over = dict(fit_overrides or {})
@@ -98,7 +98,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"comp_groups": cfg.comp_groups, "comp_season": cfg.comp_season,
+    rep["variant"] = {"comp_groups": cfg.comp_groups,
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
