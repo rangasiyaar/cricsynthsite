@@ -23,7 +23,8 @@ PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
-LISTED_BONUS = 0.3       # extra weight for a bowler the fixture lists as a bowler (keeps the usual shares apart if small)
+LISTED_BONUS = 0.03      # extra weight for a bowler the fixture lists as a bowler; small keeps the usual shares apart
+                         # (backtest, 3 cutoffs: 2+ wickets Brier -0.0014, runs-conceded corr 0.55 -> 0.60 v 0.3)
 SLOT_PRIOR = 2.0         # matches: how much the slot prior counts against a player's own bowling record
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
