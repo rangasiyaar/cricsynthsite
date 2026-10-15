@@ -17,6 +17,9 @@ Factor layout (levels × K, natural-log multipliers):
     bat_exp bowl_exp                                                 (career balls so far: how players with little
                                                                       history do — a newcomer's starting point)
     bat bowl                                                         (player, all formats and leagues together)
+    bat_phase bowl_phase                                             (player × powerplay / middle / death, optional)
+    form_bat form_bowl                                               ((P, 2) log observed/expected boundaries, dismissals
+                                                                      over the last RECENT matches, shrunk; optional use)
     bat_fmt bowl_fmt                                                 (player × format family, shrunk to the above)
     bat_kind bowl_hand                                               (player v bowling kind / batting hand)
 
@@ -46,6 +49,16 @@ N_DECILES = 10
 EXP_EDGES = np.array([60, 240, 960])  # career balls faced / bowled: debutant, few games, some, established
 N_EXP = len(EXP_EDGES) + 1
 RECENT = 5                           # matches that make up a player's current role (batting slot, overs)
+
+
+PHASE3_EDGES = (0.3, 0.8)            # share of the innings' overs: powerplay-ish / middle / death
+N_PHASE3 = 3
+
+
+def phase3(over, total_overs) -> np.ndarray:
+    """0 powerplay, 1 middle, 2 death, from the over (0-based) and the innings length."""
+    frac = np.asarray(over) / np.asarray(total_overs)
+    return (frac >= PHASE3_EDGES[0]).astype(np.int32) + (frac >= PHASE3_EDGES[1]).astype(np.int32)
 
 
 def exp_bucket(balls) -> np.ndarray:

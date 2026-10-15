@@ -93,6 +93,8 @@ class Prepared:
     order: list
     bowlers: list
     overs: list | None = None   # usual overs per bowler, when the pack carries an overs plan (bowlOvers)
+    bat_phase: list | None = None   # [slot][phase][K] player × stage of the innings (batPhase / bowlPhase)
+    bowl_phase: list | None = None
 
 
 def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
@@ -126,6 +128,8 @@ def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
     if new:                                     # MCP-only lever (batting-order optimiser); not in sim.ts
         perm = [order.index(p) for p in new]
         pair = [pair[perm[i] * 11 + j] for i in range(11) for j in range(11)]
+        if b.get("batPhase"):
+            b = {**b, "batPhase": [b["batPhase"][perm[i]] for i in range(11)]}
         order = list(new)
     excluded = set(sc.get("excludeBowlers") or [])
     weights = [[0] * len(row) if b["bowlers"][j] in excluded else row for j, row in enumerate(b["bowlWeights"])]
@@ -136,7 +140,8 @@ def prepare(pack: dict, team: int, inn0: int, sc: dict) -> Prepared:
         overs = [0 if b["bowlers"][j] in excluded else e for j, e in enumerate(b["bowlOvers"])]
     if b.get("bowlOvers") and not overs:
         overs = b["bowlOvers"]
-    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], order, b["bowlers"], overs)
+    return Prepared(pair, weights, b["dismissal"], b["bowlerKinds"], order, b["bowlers"], overs,
+                    b.get("batPhase"), b.get("bowlPhase"))
 
 
 def plan_overs(r, expected: list, used: list, overs: int, quota: int) -> list:
@@ -222,6 +227,9 @@ def simulate_innings(pack: dict, P: Prepared, inn0: int, target: int | None, r, 
         L = [a + b_ + c + d + e + f + g + h + i_ + j_ for a, b_, c, d, e, f, g, h, i_, j_ in
              zip(base[ov][min(res.wkts, 9)], s_set[sb], s_chase[cb], s_mile[mb], s_streak[stb], s_dots[db],
                  s_spell[spell], s_fh[free_hit], P.pair[st * 11 + bw], cond)]
+        if P.bat_phase and P.bowl_phase and pack.get("overPhase"):    # player × stage of the innings
+            ph = pack["overPhase"][ov]
+            L = [x + bp + wp for x, bp, wp in zip(L, P.bat_phase[st][ph], P.bowl_phase[bw][ph])]
         mx = max(L)
         L = [math.exp(x - mx) for x in L]
         y = _choose(r, L, K)

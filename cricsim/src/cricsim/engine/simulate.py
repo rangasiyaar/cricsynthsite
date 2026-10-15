@@ -12,8 +12,8 @@ from dataclasses import dataclass
 import numpy as np
 
 from cricsim.engine import states as S
-from cricsim.engine.model import (BOWLER_DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_DECILES, N_EXP, RECENT,
-                                  RUN_OUT, SITUATION, Model, era_vector, exp_bucket)
+from cricsim.engine.model import (BOWLER_DISMISSALS, FORMAT_LIST, GENDERS, MAX_OVERS, N_DECILES, N_EXP, N_PHASE3,
+                                  RECENT, RUN_OUT, SITUATION, Model, era_vector, exp_bucket, phase3)
 from cricsim.engine.spec import MatchSpec, Scenario
 
 SPIN = {S.BOWLING_KINDS.index(k) for k in ("off_spin", "leg_spin", "left_arm_orthodox", "left_arm_wrist", "slow")}
@@ -22,6 +22,7 @@ BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
+FORM = 0.0               # weight of recent form (last RECENT matches v expectation) on boundaries / dismissals (variant)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
 LISTED_BONUS = 0.03      # extra weight for a bowler the fixture lists as a bowler; small keeps the usual shares apart
                          # (backtest, 3 cutoffs: 2+ wickets Brier -0.0014, runs-conceded corr 0.55 -> 0.60 v 0.3)
@@ -126,6 +127,19 @@ class _Tables:
             pair += (f["bat_exp"][fam * N_EXP + exp_bucket(model.career_balls[pb, 0])][:, None]
                      + f["bowl_exp"][fam * N_EXP + exp_bucket(model.career_balls[pw, 1])][None])
         pair = pair.astype(np.float64)
+        sim0 = model.meta.get("sim") or {}
+        wf = sim0.get("form", FORM)
+        if wf and "form_bat" in f:                      # recent form: last few matches against expectation
+            fb, fw = f["form_bat"][pb].astype(np.float64), f["form_bowl"][pw].astype(np.float64)
+            pair[..., S.FOUR] += wf * (fb[:, None, 0] + fw[None, :, 0])
+            pair[..., S.SIX] += wf * (fb[:, None, 0] + fw[None, :, 0])
+            pair[..., S.WKT] += wf * (fb[:, None, 1] + fw[None, :, 1])
+        # player × stage of the innings, added ball by ball (None when the model has no phase factors)
+        self.bat_phase = self.bowl_phase = self.over_phase = None
+        if "bat_phase" in f:
+            self.bat_phase = f["bat_phase"].reshape(-1, N_PHASE3, K)[pb].astype(np.float64)
+            self.bowl_phase = f["bowl_phase"].reshape(-1, N_PHASE3, K)[pw].astype(np.float64)
+            self.over_phase = phase3(np.arange(spec.rules["overs"]), spec.rules["overs"])
         # scenario levers (log-multipliers on outcome classes)
         bnd = [S.FOUR, S.SIX]
         pair[..., bnd] += np.log(sc.boundary_mult)
@@ -329,6 +343,9 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
              + sit["dots"][S.dots_bucket(dots[a])]
              + sit["spell"][spell[a]] + sit["freehit"][free_hit[a]]
              + T.pair[st, bw])
+        if T.bat_phase is not None:
+            ph = T.over_phase[ov]
+            L = L + T.bat_phase[st, ph] + T.bowl_phase[bw, ph]
         if conditions is not None:
             L += conditions[a]
         L -= L.max(1, keepdims=True)

@@ -26,8 +26,8 @@ import pyarrow.compute as pc
 
 from cricsim.engine import states as S
 from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, ERA_START, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE,
-                                  N_DECILES, N_ERA, N_EXP, RECENT, SITUATION, Model, base_index, era_index,
-                                  exp_bucket)
+                                  N_DECILES, N_ERA, N_EXP, N_PHASE3, RECENT, SITUATION, Model, base_index, era_index,
+                                  exp_bucket, phase3)
 from cricsim.patterns.features import build_balls
 
 log = logging.getLogger(__name__)
@@ -36,11 +36,12 @@ SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
     "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
-    "bat_exp": 3000, "bowl_exp": 3000, "home": 2000,
+    "bat_exp": 3000, "bowl_exp": 3000, "home": 2000, "bat_phase": 1500, "bowl_phase": 1500,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
 ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
-         "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand")
+         "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand",
+         "bat_phase", "bowl_phase")
 
 
 @dataclass
@@ -49,6 +50,7 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
+    phase_skill: bool = False                  # player × stage of innings (powerplay / middle / death), shrunk to the player
     home: bool = True                          # home advantage: batting at home / away / neutral ground
                                                # (backtest, 3 cutoffs: win Brier -0.0003, -0.0021, -0.0012)
     experience: bool = True                    # players with little history: a factor by career balls so far
@@ -172,7 +174,8 @@ OVERS = np.array([S.FORMAT_RULES[f]["overs"] for f in FORMAT_LIST])
 RUNS_ONLY = ("venue_g", "venue_ph", "venue_kind")   # the venue diagnostic: these never carry over for wickets
 
 
-def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int) -> dict[str, tuple[np.ndarray, int]]:
+def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int,
+                  phase_skill: bool = False) -> dict[str, tuple[np.ndarray, int]]:
     """Factor name → (level index per ball, number of levels). Mirrors simulate.py's state encoding."""
     fam = d["fam"].astype(np.int32)
     nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
@@ -201,6 +204,10 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
         "bowl_hand": (d["bowl"] * nh + d["hand"], n_players * nh),
     }
+    if phase_skill:      # player × powerplay / middle / death (FitConfig.phase_skill)
+        ph = phase3(d["over"], OVERS[d["fmt"]])
+        levels["bat_phase"] = (d["bat"] * N_PHASE3 + ph, n_players * N_PHASE3)
+        levels["bowl_phase"] = (d["bowl"] * N_PHASE3 + ph, n_players * N_PHASE3)
     if (d["home_state"] != 2).any():                     # home advantage (FitConfig.home)
         levels["home"] = (fam * 3 + d["home_state"].astype(np.int32), 6)
     if np.any(d["bat_xp"]) or np.any(d["bowl_xp"]):     # experience factors (FitConfig.experience)
@@ -237,7 +244,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     n, K = len(d["y"]), S.K
     ref_day = (np.datetime64(cfg.cutoff) - np.datetime64("1970-01-01")).astype(int) if cfg.cutoff else d["day"].max()
     w = (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.half_life_years))).astype(np.float64)
-    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]))
+    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.phase_skill)
     priors = {"base": base_prior(levels["base"][0], d["y"], w)}
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)
@@ -301,9 +308,47 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     for name in ("bat", "bowl", "venue", "comp"):
         logf[name][0] = 0
     logf["venue_kind"].reshape(-1, S.N_KIND_GROUP, K)[:, 0] = 0          # bowler type unknown: no adjustment
+    logf.update(recent_form(d, L))
+    for name in ("bat_phase", "bowl_phase"):
+        if name in logf:
+            logf[name][:N_PHASE3] = 0
     for name, width in (("venue_g", 2), ("venue_ph", S.N_VENUE_PHASE), ("venue_kind", S.N_KIND_GROUP), ("bat_fmt", 2), ("bowl_fmt", 2), ("bat_kind", len(S.BOWLING_KINDS)), ("bowl_hand", len(S.HANDS))):
         logf[name][:width] = 0
     return logf, stats
+
+
+FORM_PRIOR = 4.0          # expected boundaries / dismissals: how much evidence recent form needs before it counts
+
+
+def recent_form(d: dict[str, np.ndarray], L: np.ndarray) -> dict[str, np.ndarray]:
+    """Each player's last RECENT matches against what the fitted model expected of him: log(observed / expected)
+    boundaries and dismissals, shrunk towards 0 by FORM_PRIOR expected events. (P, 2) for batters and bowlers."""
+    P = np.empty_like(L)
+    _softmax(L, P)
+    bnd = np.isin(d["y"], [S.FOUR, S.SIX]).astype(np.float64)
+    wkt = (d["y"] == S.WKT).astype(np.float64)
+    e_bnd = P[:, [S.FOUR, S.SIX]].sum(1).astype(np.float64)
+    e_wkt = P[:, S.WKT].astype(np.float64)
+    out = {}
+    for role in ("bat", "bowl"):
+        who = d[role].astype(np.int64)
+        n = int(who.max()) + 1
+        key = who * (int(d["match"].max()) + 1) + d["match"]
+        uk, first = np.unique(key, return_index=True)          # one row per (player, match)
+        p_of, day = who[first], d["day"][first]
+        order = np.lexsort((-day, p_of))                       # each player's matches, newest first
+        rank = np.empty(len(order), dtype=np.int64)
+        start = np.r_[0, np.flatnonzero(np.diff(p_of[order])) + 1]
+        rank[order] = np.arange(len(order)) - np.repeat(start, np.diff(np.r_[start, len(order)]))
+        recent = np.isin(key, uk[rank < RECENT])
+        f = np.zeros((n, 2), dtype=np.float32)
+        for k, (o, e) in enumerate(((bnd, e_bnd), (wkt, e_wkt))):
+            O = np.bincount(who[recent], weights=o[recent], minlength=n)
+            E = np.bincount(who[recent], weights=e[recent], minlength=n)
+            f[:, k] = np.log((O + FORM_PRIOR) / (E + FORM_PRIOR))
+        f[0] = 0
+        out[f"form_{role}"] = f
+    return out
 
 
 CITY_SHRINK = 6000.0      # balls: how much other grounds in the same city count before the global average takes over

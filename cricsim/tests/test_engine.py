@@ -284,3 +284,23 @@ def test_home_team_rule_and_home_fit_runs(world):
     assert m.home_team("ground", ["Hosts", "Regulars"]) is None          # 9 v 6: both at home here, neutral
     assert m.home_team("elsewhere", ["Hosts", "Visitors"]) is None
     assert simulate(m, _spec(world["world"]), n=100, seed=1).n == 100
+
+
+def test_phase_skill_and_recent_form(world):
+    from cricsim.engine.model import N_PHASE3, phase3
+    from cricsim.engine.simulate import _Tables
+    assert list(phase3([0, 5, 6, 15, 16, 19], 20)) == [0, 0, 1, 1, 2, 2]
+    m = fit(world["parquet"], FitConfig(phase_skill=True))
+    f = m.factors
+    assert f["bat_phase"].shape == (len(m.players) * N_PHASE3, S.K) and np.abs(f["bat_phase"]).max() > 0
+    assert f["form_bat"].shape == (len(m.players), 2) and np.abs(f["form_bat"]).max() > 0 and not f["form_bat"][0].any()
+    spec = _spec(world["world"])
+    T = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), list(spec.teams[1].players))
+    assert T.bat_phase.shape == (11, N_PHASE3, S.K) and len(T.over_phase) == 20
+    m.meta["sim"] = {"form": 1.0}
+    try:
+        Tf = _Tables(m, spec, Scenario(), 0, list(spec.teams[0].players), list(spec.teams[1].players))
+    finally:
+        m.meta.pop("sim")
+    assert not np.allclose(Tf.pair, T.pair)
+    assert simulate(m, spec, n=200, seed=1).n == 200

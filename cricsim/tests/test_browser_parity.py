@@ -21,12 +21,17 @@ APP = Path(__file__).resolve().parents[2] / "app"
 
 @pytest.mark.skipif(shutil.which("node") is None or not (APP / "lib" / "engine" / "sim.ts").exists(),
                     reason="node / app not available")
-@pytest.mark.parametrize("scenario", [{}, {"boundaryMult": 1.25, "dew": 0.6, "battingFirst": 0}, {"oversPlan": True}])
+@pytest.mark.parametrize("scenario", [{}, {"boundaryMult": 1.25, "dew": 0.6, "battingFirst": 0}, {"oversPlan": True},
+                                      {"phase": True}])
 def test_browser_engine_matches_python(world, tmp_path, scenario):  # noqa: F811
     m = world["model"]
     spec = _spec(world["world"])
     pack = tmp_path / "pack.json"
     m.meta["sim"] = {"overs_plan": bool(scenario.pop("oversPlan", False))}
+    if scenario.pop("phase", False):        # player × stage factors: death hitters, powerplay bowlers
+        g = np.random.default_rng(0)
+        for name in ("bat_phase", "bowl_phase"):
+            m.factors[name] = (g.normal(0, 0.25, (len(m.players) * 3, m.factors["bat"].shape[1]))).astype(np.float32)
     try:
         pk = engine_pack(m, spec)
         assert ("bowlOvers" in pk["batting"][0]) == m.meta["sim"]["overs_plan"]
@@ -34,6 +39,8 @@ def test_browser_engine_matches_python(world, tmp_path, scenario):  # noqa: F811
         _check(m, spec, pack, scenario, tmp_path)
     finally:
         m.meta.pop("sim")
+        m.factors.pop("bat_phase", None)
+        m.factors.pop("bowl_phase", None)
 
 
 def _check(m, spec, pack, scenario, tmp_path):

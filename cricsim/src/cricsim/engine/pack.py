@@ -35,6 +35,8 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
         batting.append({"team": t, "order": order, "bowlers": bowlers, "pair": _round(T.pair),
                         "bowlWeights": _round(T.bowl_weights, 5), "dismissal": _round(T.dismissal),
                         **({"bowlOvers": _round(T.bowl_overs, 4)} if T.overs_plan else {}),
+                        **({"batPhase": _round(T.bat_phase), "bowlPhase": _round(T.bowl_phase)}
+                           if T.bat_phase is not None else {}),
                         "bowlerKinds": [S.BOWLING_KINDS[k] for k in T.kind]})
     T0 = _Tables(model, spec, neutral, 0, list(spec.teams[0].players), list(spec.teams[1].players))
     players = {}
@@ -54,5 +56,6 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
         "runoutNonStriker": round(float(T0.runout_ns), 4), "dismissals": list(DISMISSALS),
         "bowlerDismissals": BOWLER_DISMISSALS.tolist(), "runOut": RUN_OUT,
         "conditionsSd": model.meta.get("fit", {}).get("conditions_sd", {}),
+        **({"overPhase": T0.over_phase.tolist()} if T0.over_phase is not None else {}),
         "teams": [{"name": t.name, "players": t.players} for t in spec.teams], "players": players,
     }

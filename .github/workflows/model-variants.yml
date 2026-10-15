@@ -22,11 +22,11 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: roles, args: "--order sheet --roles" }
-          - { name: roles+plan, args: "--order sheet --roles --overs-plan" }
-          - { name: roles+plan-power3, args: "--order sheet --roles --overs-plan --plan-power 3" }
-          - { name: no-roles, args: "--order sheet" }
-          - { name: no-roles+plan, args: "--order sheet --overs-plan" }
+          - { name: current, args: "--order sheet --roles" }
+          - { name: phase-skill, args: "--order sheet --roles --phase-skill" }
+          - { name: form-0.5, args: "--order sheet --roles --form 0.5" }
+          - { name: form-1.0, args: "--order sheet --roles --form 1.0" }
+          - { name: phase+form-0.5, args: "--order sheet --roles --phase-skill --form 0.5" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

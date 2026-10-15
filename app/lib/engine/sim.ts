@@ -9,7 +9,9 @@ export type Pack = {
   base: number[][][][];                      // [innings0][over][wickets][K]
   situation: Record<"set" | "chase" | "mile" | "streak" | "dots" | "spell" | "freehit", number[][]>;
   batting: { team: number; order: string[]; bowlers: string[]; pair: number[][][]; bowlWeights: number[][];
-             bowlOvers?: number[]; dismissal: number[][]; bowlerKinds: string[] }[];
+             bowlOvers?: number[]; batPhase?: number[][][]; bowlPhase?: number[][][];
+             dismissal: number[][]; bowlerKinds: string[] }[];
+  overPhase?: number[];                      // stage of the innings for each over (player × phase factors)
   wideRuns: number[]; byeRuns: number[]; runoutNonStriker: number;
   dismissals: string[]; bowlerDismissals: boolean[]; runOut: number;
   conditionsSd: { boundary?: number; wicket?: number };
@@ -92,7 +94,8 @@ export type InningsResult = {
 };
 
 type Prepared = { pair: Float64Array; weights: number[][]; dismissal: number[][]; kinds: string[];
-                  order: string[]; bowlers: string[]; overs: number[] | null };
+                  order: string[]; bowlers: string[]; overs: number[] | null;
+                  batPhase: number[][][] | null; bowlPhase: number[][][] | null };
 
 /** Apply scenario levers to the neutral pair table — mirrors _Tables in simulate.py. */
 export function prepare(pack: Pack, battingTeam: number, inn0: number, sc: Scenario): Prepared {
@@ -120,7 +123,8 @@ export function prepare(pack: Pack, battingTeam: number, inn0: number, sc: Scena
   if (weights.every((row) => row.every((v) => v === 0))) weights = b.bowlWeights;
   else if (b.bowlOvers) overs = b.bowlOvers.map((e, j) => (excluded.has(b.bowlers[j]) ? 0 : e));
   if (b.bowlOvers && !overs) overs = b.bowlOvers;
-  return { pair, weights, dismissal: b.dismissal, kinds: b.bowlerKinds, order: b.order, bowlers: b.bowlers, overs };
+  return { pair, weights, dismissal: b.dismissal, kinds: b.bowlerKinds, order: b.order, bowlers: b.bowlers, overs,
+           batPhase: b.batPhase ?? null, bowlPhase: b.bowlPhase ?? null };
 }
 
 export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: number | null, r: () => number,
@@ -189,10 +193,13 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     const stb = pr < 0 ? 0 : prevBnd[st] && pr === 4 ? 3 : prevBnd[st] && pr === 6 ? 4 : pr === 0 ? 1 : 2;
     const db = bucket(pack.edges.dots, dots);
     const bs = base[ov][Math.min(res.wkts, 9)], po = (st * 11 + bw) * K;
+    const bp = P.batPhase && pack.overPhase ? P.batPhase[st][pack.overPhase[ov]] : null;
+    const wp = P.bowlPhase && pack.overPhase ? P.bowlPhase[bw][pack.overPhase[ov]] : null;
     let mx = -Infinity;
     for (let k = 0; k < K; k++) {
       L[k] = bs[k] + sit.set[sb][k] + sit.chase[cb][k] + sit.mile[mb][k] + sit.streak[stb][k] + sit.dots[db][k]
         + sit.spell[spell][k] + sit.freehit[freeHit][k] + P.pair[po + k] + cond[k];
+      if (bp && wp) L[k] = L[k] + bp[k] + wp[k];          // player × stage of the innings
       if (L[k] > mx) mx = L[k];
     }
     for (let k = 0; k < K; k++) L[k] = Math.exp(L[k] - mx);

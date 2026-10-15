@@ -70,3 +70,26 @@ def test_plan_overs_follows_usual_overs():
     assert all(sum(t) == 20 and max(t) <= 4 for t in plans)
     mean = [sum(t[j] for t in plans) / len(plans) for j in range(11)]
     assert mean[0] > 3.5 and mean[6] < 1.5 and mean[10] < 0.2
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
+def test_phase_terms_match_browser_engine(tmp_path):
+    """Packs with player × stage-of-innings terms (batPhase / bowlPhase / overPhase) give the same matches."""
+    import random
+    g = random.Random(3)
+    pack = json.loads(PACK.read_text())
+    K = len(pack["outcomes"])
+    for b in pack["batting"]:
+        b["batPhase"] = [[[round(g.gauss(0, 0.3), 4) for _ in range(K)] for _ in range(3)] for _ in range(11)]
+        b["bowlPhase"] = [[[round(g.gauss(0, 0.3), 4) for _ in range(K)] for _ in range(3)] for _ in range(11)]
+    overs = pack["rules"]["overs"]
+    pack["overPhase"] = [0 if o / overs < 0.3 else 1 if o / overs < 0.8 else 2 for o in range(overs)]
+    path = tmp_path / "pack.json"
+    path.write_text(json.dumps(pack))
+    js = tmp_path / "run.ts"
+    js.write_text(SCRIPT % (ROOT / "app" / "lib" / "engine" / "sim.ts", json.dumps(str(path)), json.dumps(json.dumps({}))))
+    out = subprocess.run(["node", "--experimental-strip-types", "--no-warnings", str(js)], capture_output=True, text=True,
+                         check=True).stdout
+    py = [[m.batting_first, m.winner, *([i.runs, i.wkts, i.legal, *i.bat_runs] for i in m.innings)]
+          for m in sim.simulate_matches(pack, 40, {}, 11)]
+    assert py == json.loads(out)
