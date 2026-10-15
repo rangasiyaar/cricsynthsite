@@ -34,6 +34,7 @@ log = logging.getLogger(__name__)
 FAMILIES = ("short", "one-day")
 SHRINKS = (100, 300, 900, 2700, 8100, None)        # None = no format deviation at all
 BETAS = (0.1, 0.25, 0.5)
+SOON = 45                                          # days scored in the production-like form check
 
 
 def score(con, model: Model, start: date, end: date | None, future: bool) -> dict:
@@ -89,10 +90,10 @@ def family_balls(con, model: Model, cutoff: date, half_life: float) -> tuple[np.
 
 # ── 2. rolling form ───────────────────────────────────────────────────────────────────────────────────────────────
 
-def rolling_form(b: dict, P: np.ndarray, role: str) -> dict:
+def rolling_form(b: dict, P: np.ndarray, role: str, freeze: int | None = None) -> dict:
     """Per (player, match) in `role`: log observed ÷ expected boundaries and dismissals over the player's previous
     RECENT matches in the same family, the other family and any family; plus the family of the previous match and
-    days since the previous same-family match."""
+    days since the previous same-family match. Matches on or after day `freeze` don't enter anyone's history."""
     who = b[role]
     bnd = np.isin(b["y"], [S.FOUR, S.SIX]).astype(np.float64)
     wkt = (b["y"] == S.WKT).astype(np.float64)
@@ -121,6 +122,8 @@ def rolling_form(b: dict, P: np.ndarray, role: str) -> dict:
         prev_fam[i] = -1 if prev is None else prev
         if hist["last"][fi] >= 0:
             gap[i] = day[i] - hist["last"][fi]
+        if freeze is not None and day[i] >= freeze:
+            continue
         hist[fi].append(sums[i])
         hist["any"].append(sums[i])
         hist["last"][fi] = day[i]
@@ -214,6 +217,24 @@ def run(parquet: Path, cutoff: date, window: int, memory: str) -> str:
         out.append(f"| same + ½ other | {beta} | " + " | ".join(
             f"{1000 * (_logloss(L[k], yh[k]) - ref[g]):+.3f}" if k.sum() >= 500 else "–" for g, k in groups) + " |")
 
+    # production-like: the model has seen the form matches (nightly refit), and only the next few weeks are scored
+    fb_, fw_ = rolling_form(both, P, "bat", cut_day), rolling_form(both, P, "bowl", cut_day)
+    soon = (both["day"] >= cut_day) & (both["day"] < cut_day + SOON)
+    sb, sw = fb_["inv"][soon], fw_["inv"][soon]
+    Ls, ys, fs = (both["L"] + both["db"] + both["dw"])[soon], both["y"][soon], both["fam"][soon]
+    sw_ = (fb_["prev_fam"][sb] == 1 - fs) | (fw_["prev_fam"][sw] == 1 - fs)
+    g2 = [("all", np.ones(len(ys), bool))] + [(FAMILIES[k], fs == k) for k in (0, 1)] + \
+         [("coming from the other family", sw_)]
+    ref2 = {g: _logloss(Ls[k], ys[k]) for g, k in g2}
+    out += ["", f"Production-like: form only from matches before the cutoff (which the model was fitted on, as after a "
+            f"nightly refit), scored on the next {SOON} days ({soon.sum():,} balls).", "",
+            "| Form from | Weight | " + " | ".join(g for g, _ in g2) + " |", "|---|---|" + "---|" * len(g2)]
+    for src in ("same", "other", "any"):
+        for beta in BETAS:
+            L = _with_form(Ls, fb_[src][sb], fw_[src][sw], beta)
+            out.append(f"| {src} family | {beta} | " + " | ".join(
+                f"{1000 * (_logloss(L[k], ys[k]) - ref2[g]):+.3f}" if k.sum() >= 500 else "–" for g, k in g2) + " |")
+
     # ── 3. switchers ──
     Ph = _probs(Lh)
     run_mean = np.bincount(yh, weights=both["runs"][held], minlength=S.K) / np.maximum(np.bincount(yh, minlength=S.K), 1)
@@ -222,7 +243,12 @@ def run(parquet: Path, cutoff: date, window: int, memory: str) -> str:
     out += ["", "#### 3. Batters coming into a format", "",
             "Held-out balls by how long since the batter's previous match in this format family, and whether the "
             "previous match was in the other family. Observed ÷ model.", "",
-            "| Group | Family | Balls | Runs O/E | Boundaries O/E | Dismissals O/E |", "|---|---|---|---|---|---|"]
+            "| Group | Family | Balls | Runs O/E | Boundaries O/E | Dismissals O/E | Runs O/E, prior 8100 |",
+            "|---|---|---|---|---|---|---|"]
+    nbh, nwh = n_bat[both["bat"][held], famh], n_bowl[both["bowl"][held], famh]
+    L8 = (both["L"][held] + both["db"][held] * ((nbh + s_bat) / (nbh + 8100))[:, None]
+          + both["dw"][held] * ((nwh + s_bowl) / (nwh + 8100))[:, None])
+    er8 = _probs(L8) @ run_mean
     for k_f in (0, 1):
         for label, k in (("previous match same family, ≤ 90 days", (gap <= 90) & ~switch),
                          ("previous match other family, ≤ 90 days since this family", (gap <= 90) & switch),
@@ -234,7 +260,7 @@ def run(parquet: Path, cutoff: date, window: int, memory: str) -> str:
             ob = np.isin(yh[k], [S.FOUR, S.SIX]).sum() / (Ph[k][:, S.FOUR] + Ph[k][:, S.SIX]).sum()
             ow = (yh[k] == S.WKT).sum() / Ph[k][:, S.WKT].sum()
             out.append(f"| {label} | {FAMILIES[k_f]} | {k.sum():,} | {both['runs'][held][k].sum() / er[k].sum():.3f} | "
-                       f"{ob:.3f} | {ow:.3f} |")
+                       f"{ob:.3f} | {ow:.3f} | {both['runs'][held][k].sum() / er8[k].sum():.3f} |")
     return "\n".join(out)
 
 

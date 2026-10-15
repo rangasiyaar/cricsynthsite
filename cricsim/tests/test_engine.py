@@ -329,5 +329,5 @@ def test_format_audit_runs(world):
     from cricsim.engine.format_audit import run as format_audit
     text = format_audit(world["parquet"], date(2024, 1, 1), window=365, memory="2GB")
     for part in ("1. How much should format-specific evidence count", "**Batting**", "2. Does recent form carry",
-                 "| same family | 0.25 |", "3. Batters coming into a format"):
+                 "| same family | 0.25 |", "Production-like", "prior 8100", "3. Batters coming into a format"):
         assert part in text

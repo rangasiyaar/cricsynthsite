@@ -22,11 +22,10 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: old-ground-ids, rules: legacy, args: "--order sheet --roles" }
           - { name: current, rules: new, args: "--order sheet --roles" }
-          - { name: new-ground, rules: new, args: "--order sheet --roles --new-ground" }
-          - { name: venue-hl-1.5, rules: new, args: "--order sheet --roles --venue-half-life 1.5" }
-          - { name: new-ground+hl-1.5, rules: new, args: "--order sheet --roles --new-ground --venue-half-life 1.5" }
+          - { name: fmt-2700, rules: new, args: "--order sheet --roles --shrink bat_fmt=2700,bowl_fmt=2700" }
+          - { name: fmt-8100, rules: new, args: "--order sheet --roles --shrink bat_fmt=8100,bowl_fmt=8100" }
+          - { name: fmt-one-rating, rules: new, args: "--order sheet --roles --shrink bat_fmt=10000000,bowl_fmt=10000000" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
     steps:
