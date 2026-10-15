@@ -323,3 +323,11 @@ def test_new_ground_level_and_venue_half_life(world):
     base = fit(world["parquet"], FitConfig())
     assert not base.factors["venue"][0].any()                       # default: unseen ground = global average
     assert not np.allclose(m.factors["venue"][1:], base.factors["venue"][1:])   # shorter memory moves ground factors
+
+
+def test_format_audit_runs(world):
+    from cricsim.engine.format_audit import run as format_audit
+    text = format_audit(world["parquet"], date(2024, 1, 1), window=365, memory="2GB")
+    for part in ("1. How much should format-specific evidence count", "**Batting**", "2. Does recent form carry",
+                 "| same family | 0.25 |", "3. Batters coming into a format"):
+        assert part in text
