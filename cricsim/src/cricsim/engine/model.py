@@ -75,6 +75,8 @@ N_BASE = len(FORMAT_LIST) * 2 * 2 * MAX_OVERS * 10
 ERA_START, N_ERA = 2000, 40          # one scoring-level factor per season and format family
 ERA_SEASONS = 4                      # seasons the scoring-trend line is fitted on
 ERA_AHEAD = 0.5                      # years past the last training ball the forecast is aimed at
+ERA_WICKETS = "trend"                # "latest": dismissals at the latest season's level, not the trend line (variant;
+                                     # the level audit found the wicket trend over-projected out of sample)
 
 
 def era_index(days_since_epoch):
@@ -103,7 +105,11 @@ def era_vector(model: "Model", fam: int) -> np.ndarray:
     ym = (w[:, None] * y).sum(0) / w.sum()
     slope = (w[:, None] * (x - xm)[:, None] * (y - ym)).sum(0) / (w * (x - xm) ** 2).sum()
     target = fit.get("era_asof", i + 1.0) + ERA_AHEAD
-    return (ym + slope * (target - xm)).astype(np.float32)
+    out = ym + slope * (target - xm)
+    if (model.meta.get("sim") or {}).get("era_wickets", ERA_WICKETS) == "latest":
+        frac = min(max(fit.get("era_asof", i + 1.0) - i, 0.0), 1.0)      # share of the latest season played
+        out[S.WKT] = frac * f[fam * N_ERA + i, S.WKT] + (1 - frac) * f[fam * N_ERA + i - 1, S.WKT]
+    return out.astype(np.float32)
 
 # situation factors: name → levels per family
 SITUATION = {

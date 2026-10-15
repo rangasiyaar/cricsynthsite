@@ -73,6 +73,8 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--phase-skill/--no-phase-skill", default=None, help="Variant: player × powerplay / middle / death")
 @click.option("--new-ground/--no-new-ground", default=None, help="Variant: unseen grounds get the new-ground level")
 @click.option("--venue-half-life", type=float, default=None, help="Variant: recency half-life for ground factors (years)")
+@click.option("--era-wickets", type=click.Choice(["trend", "latest"]), default=None,
+              help="Variant: project dismissals with the season trend or hold them at the latest season's level")
 @click.option("--form", type=float, default=None, help="Variant: weight of recent form (last 5 matches)")
 @click.option("--plan-power", type=float, default=None, help="Variant: overs plan concentration")
 @click.option("--plan-eps", type=float, default=None, help="Variant: overs plan, extra chance per usual over")
@@ -86,7 +88,7 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
              comp_groups: str | None, shrink: str, slot_usage: bool | None, bowl_focus: float | None,
              experience: bool | None, home: bool | None, recent_role: float | None, order: str, roles: bool, listed_bonus: float | None, overs_plan: bool | None, plan_eps: float | None, plan_power: float | None,
              phase_skill: bool | None, form: float | None, sims: int, new_ground: bool | None,
-             venue_half_life: float | None,
+             venue_half_life: float | None, era_wickets: str | None,
              out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
@@ -108,7 +110,8 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
                        sim_overrides={k: v for k, v in (("slot_usage", slot_usage), ("bowl_focus", bowl_focus),
                                                          ("recent_role", recent_role), ("listed_bonus", listed_bonus),
                                                          ("overs_plan", overs_plan), ("plan_eps", plan_eps),
-                                                         ("plan_power", plan_power), ("form", form))
+                                                         ("plan_power", plan_power), ("form", form),
+                                                         ("era_wickets", era_wickets))
                                       if v is not None},
                        order=order, roles=roles)
     write_report(rep, out)

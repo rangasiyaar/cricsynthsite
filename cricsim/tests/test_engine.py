@@ -338,3 +338,16 @@ def test_level_audit_runs(world):
     text = level_audit(world["parquet"], date(2024, 1, 1), memory="2GB")
     for part in ("Level audit", "Projecting the season level", "trend, 4 seasons (today) | +0.000", "Where the one-day gap"):
         assert part in text
+
+
+def test_era_wickets_latest_only_moves_dismissals(world):
+    from cricsim.engine.model import era_vector
+    m = world["model"]
+    a = era_vector(m, 0)
+    m.meta["sim"] = {"era_wickets": "latest"}
+    try:
+        b = era_vector(m, 0)
+    finally:
+        m.meta.pop("sim")
+    keep = np.arange(S.K) != S.WKT
+    assert np.allclose(a[keep], b[keep])
