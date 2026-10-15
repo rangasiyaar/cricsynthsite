@@ -331,3 +331,10 @@ def test_format_audit_runs(world):
     for part in ("1. How much should format-specific evidence count", "**Batting**", "2. Does recent form carry",
                  "| same family | 0.25 |", "Production-like", "prior 8100", "3. Batters coming into a format"):
         assert part in text
+
+
+def test_level_audit_runs(world):
+    from cricsim.engine.level_audit import run as level_audit
+    text = level_audit(world["parquet"], date(2024, 1, 1), memory="2GB")
+    for part in ("Level audit", "Projecting the season level", "trend, 4 seasons (today) | +0.000", "Where the one-day gap"):
+        assert part in text

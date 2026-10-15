@@ -22,10 +22,7 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: current, rules: new, args: "--order sheet --roles" }
-          - { name: fmt-2700, rules: new, args: "--order sheet --roles --shrink bat_fmt=2700,bowl_fmt=2700" }
-          - { name: fmt-8100, rules: new, args: "--order sheet --roles --shrink bat_fmt=8100,bowl_fmt=8100" }
-          - { name: fmt-one-rating, rules: new, args: "--order sheet --roles --shrink bat_fmt=10000000,bowl_fmt=10000000" }
+          - { name: current+in-sample, rules: new, args: "--order sheet --roles --insample 500" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
     steps:
