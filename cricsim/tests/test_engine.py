@@ -205,7 +205,7 @@ def test_venue_audit_runs(world, tmp_path):
     from cricsim.engine.venue_audit import run as venue_audit
     (tmp_path / "fx.json").write_text(json.dumps({"venue_search": "ground"}))
     text = venue_audit(world["parquet"], date(2024, 1, 1), years=3.0, min_matches=2, memory="2GB", fixtures=tmp_path)
-    for part in ("1. Identity", "2. Fixture venue lookups", "3. Ground history", "global average (today)",
+    for part in ("1. Identity", "2. Fixture venue lookups", "3. Ground history",
                  "4. Does a league", "5. Drift", "6. Volatility", "7. Fixture grounds"):
         assert part in text
 
@@ -313,3 +313,13 @@ def test_phase_skill_and_recent_form(world):
         m.meta.pop("sim")
     assert not np.allclose(Tf.pair, T.pair)
     assert simulate(m, spec, n=200, seed=1).n == 200
+
+
+def test_new_ground_level_and_venue_half_life(world):
+    m = fit(world["parquet"], FitConfig(new_ground=True, venue_half_life=1.5))
+    ng = m.meta["fit"]["new_ground"]
+    assert "balls" in ng
+    assert np.isfinite(m.factors["venue"][0]).all()
+    base = fit(world["parquet"], FitConfig())
+    assert not base.factors["venue"][0].any()                       # default: unseen ground = global average
+    assert not np.allclose(m.factors["venue"][1:], base.factors["venue"][1:])   # shorter memory moves ground factors

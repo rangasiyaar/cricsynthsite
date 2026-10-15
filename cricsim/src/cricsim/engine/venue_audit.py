@@ -184,8 +184,8 @@ def run_effect(f: np.ndarray, p_bar: np.ndarray, run_mean: np.ndarray) -> np.nda
     return np.log(q @ run_mean) - np.log(p_bar @ run_mean)
 
 
-def _ratio(O, E) -> str:
-    return f"{O.sum() / E.sum():.3f}" if E.sum() else "–"
+def _ratio(obs, exp) -> str:
+    return f"{obs.sum() / exp.sum():.3f}" if exp.sum() else "–"
 
 
 def _rms(x: np.ndarray) -> float:

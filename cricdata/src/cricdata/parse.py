@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from cricdata.names import canonical_team, canonical_venue, team_id, venue_id
+from cricdata.names import _legacy, canonical_city, canonical_team, canonical_venue, team_id, venue_id
 
 # Dismissals credited to the bowler.
 BOWLER_WICKETS = {"bowled", "caught", "lbw", "stumped", "caught and bowled", "hit wicket"}
@@ -67,7 +67,7 @@ def parse_match(data: dict, match_id: str) -> dict[str, list[dict]]:
     event = info.get("event") or {}
     toss = info.get("toss") or {}
     venue_raw = info.get("venue") or ""
-    city = info.get("city")
+    city = info.get("city") if _legacy() else canonical_city(info.get("city"))
     bpo = int(info.get("balls_per_over") or 6)
 
     match = {

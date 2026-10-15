@@ -22,18 +22,20 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: current, args: "--order sheet --roles" }
-          - { name: phase-skill, args: "--order sheet --roles --phase-skill" }
-          - { name: form-0.5, args: "--order sheet --roles --form 0.5" }
-          - { name: form-1.0, args: "--order sheet --roles --form 1.0" }
-          - { name: phase+form-0.5, args: "--order sheet --roles --phase-skill --form 0.5" }
+          - { name: old-ground-ids, rules: legacy, args: "--order sheet --roles" }
+          - { name: current, rules: new, args: "--order sheet --roles" }
+          - { name: new-ground, rules: new, args: "--order sheet --roles --new-ground" }
+          - { name: venue-hl-1.5, rules: new, args: "--order sheet --roles --venue-half-life 1.5" }
+          - { name: new-ground+hl-1.5, rules: new, args: "--order sheet --roles --new-ground --venue-half-life 1.5" }
+    env:
+      CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
       - name: Day key
         id: day
-        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+        run: echo "key=parquet-${{ matrix.variant.rules }}-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
         id: cache
         with:

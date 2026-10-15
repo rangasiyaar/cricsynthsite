@@ -55,6 +55,10 @@ class FitConfig:
                                                # (backtest, 3 cutoffs: win Brier -0.0003, -0.0021, -0.0012)
     experience: bool = True                    # players with little history: a factor by career balls so far
                                                # (backtest, 3 cutoffs: win Brier -0.005 to -0.011)
+    new_ground: bool = False                   # a ground the model has never seen gets the level of grounds in their
+                                               # first matches, not the global average (venue audit: new grounds
+                                               # scored 2-7% under the model at three cutoffs)
+    venue_half_life: float | None = None       # recency half-life (years) for the ground factors only (None = half_life_years)
     comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
                                                # "club" (leagues only), "all" (internationals too) or "off"
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
@@ -249,7 +253,10 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)
     P = np.empty_like(L)
-    observed = {name: np.bincount(idx * K + d["y"], weights=w, minlength=nl * K).reshape(nl, K)
+    wv = w if not cfg.venue_half_life else \
+        (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.venue_half_life))).astype(np.float64)
+    wt = lambda name: wv if name in VENUE_FACTORS else w  # noqa: E731
+    observed = {name: np.bincount(idx * K + d["y"], weights=wt(name), minlength=nl * K).reshape(nl, K)
                 for name, (idx, nl) in levels.items()}
     stats = {"balls": n, "passes": []}
     city = np.asarray(ids.get("venue_city") or [-1] * len(ids["venues"]), dtype=np.int64)
@@ -262,15 +269,16 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
             if name not in levels:
                 continue
             idx, nl = levels[name]
+            ww = wt(name)
             if name == "venue":
-                priors["venue"] = city_prior(logf["venue"], np.bincount(idx, weights=w, minlength=nl), city)
+                priors["venue"] = city_prior(logf["venue"], np.bincount(idx, weights=ww, minlength=nl), city)
             if name == "comp" and cfg.comp_groups != "off":
                 priors["comp"] = city_prior(logf["comp"], np.bincount(idx, weights=w, minlength=nl), group, GROUP_SHRINK)
             _softmax(L, P)
-            P *= w[:, None]
+            P *= ww[:, None]
             E = _bincount2(idx, P, nl)
             O = observed[name]
-            nb = np.bincount(idx, weights=w, minlength=nl)[:, None]
+            nb = np.bincount(idx, weights=ww, minlength=nl)[:, None]
             f_old = np.exp(logf[name].astype(np.float64))
             B = E / f_old
             m = np.divide(B, nb, out=np.zeros_like(B), where=nb > 0)
@@ -307,6 +315,8 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     # player 0 / venue 0 / comp 0 are "unknown": exactly average
     for name in ("bat", "bowl", "venue", "comp"):
         logf[name][0] = 0
+    if cfg.new_ground:
+        logf["venue"][0], stats["new_ground"] = new_ground_level(d, L, logf, levels, w, cfg.min_date)
     logf["venue_kind"].reshape(-1, S.N_KIND_GROUP, K)[:, 0] = 0          # bowler type unknown: no adjustment
     logf.update(recent_form(d, L))
     for name in ("bat_phase", "bowl_phase"):
@@ -315,6 +325,50 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     for name, width in (("venue_g", 2), ("venue_ph", S.N_VENUE_PHASE), ("venue_kind", S.N_KIND_GROUP), ("bat_fmt", 2), ("bowl_fmt", 2), ("bat_kind", len(S.BOWLING_KINDS)), ("bowl_hand", len(S.HANDS))):
         logf[name][:width] = 0
     return logf, stats
+
+
+VENUE_FACTORS = ("venue", "venue_g", "venue_ph", "venue_kind")
+NEW_GROUND_MATCHES = 10   # a ground's first matches stand in for a ground the model has never seen
+NEW_GROUND_SHRINK = 5000.0
+
+
+def new_ground_level(d: dict[str, np.ndarray], L: np.ndarray, logf: dict, levels: dict, w: np.ndarray,
+                     min_date) -> tuple[np.ndarray, dict]:
+    """Observed ÷ expected outcomes in grounds' first NEW_GROUND_MATCHES matches, with every ground factor taken out
+    (what the model predicts for a ground it has never seen), shrunk to 1. Grounds already in use when the data
+    starts are left out: their first matches here are not their first matches."""
+    K = S.K
+    v, m, day = d["venue"].astype(np.int64), d["match"].astype(np.int64), d["day"]
+    start = (np.datetime64(min_date) - np.datetime64("1970-01-01")).astype(int) + 730
+    key = v * (int(m.max()) + 1) + m
+    uk, first = np.unique(key, return_index=True)
+    gv, gd = v[first], day[first]
+    order = np.lexsort((gd, gv))
+    rank = np.empty(len(order), dtype=np.int64)
+    bounds = np.r_[0, np.flatnonzero(np.diff(gv[order])) + 1]
+    rank[order] = np.arange(len(order)) - np.repeat(bounds, np.diff(np.r_[bounds, len(order)]))
+    debut = np.full(int(v.max()) + 1, np.iinfo(np.int64).max)
+    np.minimum.at(debut, gv, gd)
+    early = uk[(rank < NEW_GROUND_MATCHES) & (gv > 0) & (debut[gv] >= start)]
+    sel = np.flatnonzero(np.isin(key, early))
+    if not len(sel):
+        return np.zeros(K, dtype=np.float32), {"balls": 0}
+    Lx = L[sel].copy()
+    for name in VENUE_FACTORS:
+        if name in levels:
+            Lx -= logf[name][levels[name][0][sel]]
+    P = np.empty_like(Lx)
+    _softmax(Lx, P)
+    ws = w[sel]
+    O = np.bincount(d["y"][sel], weights=ws, minlength=K)
+    E = (P * ws[:, None]).sum(0)
+    pbar = E / E.sum()
+    ok = (E > 0) & (O > 0)
+    lvl = np.zeros(K, dtype=np.float32)
+    lvl[ok] = np.log((O[ok] + NEW_GROUND_SHRINK * pbar[ok]) / (E[ok] + NEW_GROUND_SHRINK * pbar[ok]))
+    return lvl, {"balls": int(len(sel)), "grounds": int(len(np.unique(v[sel]))),
+                 "four": round(float(lvl[S.FOUR]), 4), "six": round(float(lvl[S.SIX]), 4),
+                 "wicket": round(float(lvl[S.WKT]), 4)}
 
 
 FORM_PRIOR = 4.0          # expected boundaries / dismissals: how much evidence recent form needs before it counts

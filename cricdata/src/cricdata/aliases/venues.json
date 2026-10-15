@@ -1,5 +1,5 @@
 {
-  "_comment": "Venue spellings → canonical name (applied after the trailing ', City' is stripped).",
+  "_comment": "Venue spellings and renames → canonical name (looked up on the raw name, then again after the city and any trailing suburb are stripped).",
   "M Chinnaswamy Stadium": "M Chinnaswamy Stadium",
   "M.Chinnaswamy Stadium": "M Chinnaswamy Stadium",
   "Punjab Cricket Association Stadium": "Punjab Cricket Association IS Bindra Stadium",
@@ -21,5 +21,20 @@
   "Sydney Cricket Ground": "Sydney Cricket Ground",
   "Lord's": "Lord's",
   "Kennington Oval": "Kennington Oval",
-  "The Oval": "Kennington Oval"
+  "The Oval": "Kennington Oval",
+  "The County Ground": "County Ground",
+  "Sheikh Zayed Stadium": "Zayed Cricket Stadium",
+  "New Wanderers Stadium": "The Wanderers Stadium",
+  "UKM-YSD Cricket Oval": "YSD-UKM Cricket Oval",
+  "De Beers Diamond Oval": "Diamond Oval",
+  "Boland Bank Park": "Boland Park",
+  "The Kent County Cricket Ground": "Kent County Cricket Ground",
+  "Malahide": "The Village, Malahide",
+  "ICC Global Cricket Academy": "ICC Academy",
+  "Old Hararians Sports Club": "Old Hararians",
+  "Sharjah Cricket Association Stadium": "Sharjah Cricket Stadium",
+  "Holkar Stadium": "Holkar Cricket Stadium",
+  "Bharat Ratna Shri Atal Bihari Vajpai Ekana Cricket Stadium": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium",
+  "Grainville, St Saviour, Jersey": "Grainville",
+  "Harrup Park": "Ray Mitchell Oval"
 }

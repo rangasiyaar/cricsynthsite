@@ -97,3 +97,27 @@ def test_names():
     assert canonical_venue("Sharjah Cricket Stadium, Sharjah") == "Sharjah Cricket Stadium"
     assert venue_id("M.Chinnaswamy Stadium") == "m-chinnaswamy-stadium"
     assert team_id("Delhi Daredevils") == team_id("Delhi Capitals") == "delhi-capitals"
+
+
+def test_ground_identity(monkeypatch):
+    # generic names keep their city; city spellings are merged
+    assert venue_id("County Ground", "Chelmsford") == "county-ground-chelmsford"
+    assert venue_id("County Ground, Hove", "Hove") == venue_id("The County Ground", "Brighton") == "county-ground-brighton"
+    assert venue_id("County Ground", "Chelmsford") != venue_id("County Ground", "Bristol")
+    # a suburb left after the city is stripped
+    assert venue_id("Brisbane Cricket Ground, Woolloongabba, Brisbane", "Brisbane") == venue_id("Brisbane Cricket Ground")
+    assert canonical_venue("Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh", "Chandigarh") \
+        == "Punjab Cricket Association IS Bindra Stadium"
+    # but never a second ground at the same place
+    assert canonical_venue("Willowmoore Park, B Field") == "Willowmoore Park, B Field"
+    assert canonical_venue("ICC Academy, Ground 2", "Dubai") == "ICC Academy, Ground 2"
+    # renames and spellings
+    assert venue_id("Sheikh Zayed Stadium", "Abu Dhabi") == venue_id("Zayed Cricket Stadium, Abu Dhabi", "Abu Dhabi")
+    assert venue_id("Holkar Stadium") == venue_id("Holkar Cricket Stadium, Indore", "Indore")
+    assert venue_id("Gahanga International Cricket Stadium. Rwanda", "Kigali City") \
+        == venue_id("Gahanga International Cricket Stadium", "Kigali City")
+    assert canonical_venue("Rajiv Gandhi International Stadium, Uppal, Hyderabad", "Hyderabad") \
+        == "Rajiv Gandhi International Stadium"
+    # the old rules stay available for before/after backtests
+    monkeypatch.setenv("CRICDATA_VENUE_RULES", "legacy")
+    assert venue_id("County Ground", "Chelmsford") == "county-ground"

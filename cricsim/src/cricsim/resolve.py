@@ -19,6 +19,12 @@ from pathlib import Path
 import click
 import duckdb
 
+try:                                    # same city spellings as the data build
+    from cricdata.names import canonical_city
+except ImportError:                     # pragma: no cover
+    def canonical_city(city):
+        return city
+
 
 def _norm(s: str) -> str:
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
@@ -90,12 +96,26 @@ def match_name(name: str, cands: list[dict], taken: set[str] = frozenset(), shor
     return None, "unresolved"
 
 
-def find_venue(con, parquet: Path, text: str) -> tuple[str | None, str | None]:
+def find_venue(con, parquet: Path, text: str, city: str | None = None) -> tuple[str | None, str | None]:
+    """The ground whose name contains `text`, most matches first. With a city (the fixture's own, or the part of its
+    venue after the last comma) only grounds in that city count, so a name several cities share can't pick the wrong
+    one; without a usable city, a search matching grounds in several cities is reported."""
     m = (parquet / "matches" / "*.parquet").as_posix()
-    row = con.execute(f"""SELECT venue_id, any_value(venue), count(*) n FROM read_parquet('{m}')
-                          WHERE lower(venue) LIKE ? OR lower(venue_raw) LIKE ? GROUP BY 1 ORDER BY n DESC LIMIT 1""",
-                      [f"%{text.lower()}%"] * 2).fetchone()
-    return (row[0], row[1]) if row else (None, None)
+    rows = con.execute(f"""SELECT venue_id, any_value(venue), lower(any_value(city)), count(*) n FROM read_parquet('{m}')
+                           WHERE lower(venue) LIKE ? OR lower(venue_raw) LIKE ? GROUP BY 1 ORDER BY n DESC LIMIT 20""",
+                       [f"%{text.lower()}%"] * 2).fetchall()
+    if not rows:
+        return None, None
+    if city:
+        c = (canonical_city(city.strip()) or "").lower()
+        local = [r for r in rows if r[2] == c or c in r[1].lower()]
+        if local:
+            return local[0][0], local[0][1]
+    cities = {r[2] for r in rows if r[2] and r[3] >= max(3, rows[0][3] // 4)}
+    if len(cities) > 1:
+        click.echo(f"  warning: venue search {text!r} matches grounds in {', '.join(sorted(cities))}; "
+                   "add the city to the fixture's venue")
+    return rows[0][0], rows[0][1]
 
 
 BOWLING_ROLES = {"BOWL", "AR"}   # backtest: telling the engine who bowls, 2+ wickets Brier -0.002 to -0.003
@@ -142,11 +162,13 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
             if len(listed) >= 5:     # a full attack, else leave it to the players' records
                 team["bowlers"] = listed
         team["players"] = ids
-    if fx.get("venue_search"):
-        vid, vname = find_venue(con, parquet, fx.pop("venue_search"))
+    if fx.get("venue_search") and not fx.get("venue_id"):        # a pinned ground ID wins over the search
+        city = fx.get("city") or (fx["venue"].rsplit(",", 1)[1] if "," in (fx.get("venue") or "") else None)
+        vid, vname = find_venue(con, parquet, fx["venue_search"], city)
         click.echo(f"  venue → {vid} ({vname})")
         if vid:
             fx["venue_id"], fx["venue"] = vid, fx.get("venue") or vname
+    fx.pop("venue_search", None)
     if missing:
         click.echo("  newcomers: " + "; ".join(missing))
     out.parent.mkdir(parents=True, exist_ok=True)
