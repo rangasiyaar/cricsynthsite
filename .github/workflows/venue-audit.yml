@@ -1,0 +1,47 @@
+name: Venue audit
+
+# How grounds are identified (collisions, splits, fixture lookups) and where the venue factor costs accuracy,
+# out of sample at three cutoffs: new-ground priors, league v ground level, drift, volatility.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/src/cricsim/engine/venue_audit.py", ".github/workflows/venue-audit.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Venue audit · ${{ matrix.cutoff }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Venue audit
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.engine.venue_audit --parquet data/parquet --cutoff ${{ matrix.cutoff }} \
+            --memory 4GB | tee -a "$GITHUB_STEP_SUMMARY"

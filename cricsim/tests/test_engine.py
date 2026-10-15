@@ -201,6 +201,15 @@ def test_venue_diagnostic_runs(world):
         assert part in text
 
 
+def test_venue_audit_runs(world, tmp_path):
+    from cricsim.engine.venue_audit import run as venue_audit
+    (tmp_path / "fx.json").write_text(json.dumps({"venue_search": "ground"}))
+    text = venue_audit(world["parquet"], date(2024, 1, 1), years=3.0, min_matches=2, memory="2GB", fixtures=tmp_path)
+    for part in ("1. Identity", "2. Fixture venue lookups", "3. Ground history", "global average (today)",
+                 "4. Does a league", "5. Drift", "6. Volatility", "7. Fixture grounds"):
+        assert part in text
+
+
 def test_city_prior_leans_on_neighbours():
     from cricsim.engine.fit import city_prior
     f = np.zeros((4, S.K), dtype=np.float32)
