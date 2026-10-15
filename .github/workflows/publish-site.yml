@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       resimulate:
-        description: "Fixture file to simulate again even though it has started"
+        description: "Fixture file(s) to simulate again even though started: one name, a comma-separated list, or all"
         required: false
         default: ""
   push:
@@ -69,7 +69,10 @@ jobs:
           started=$(uv run python -m cricsim.results --started)      # forecasts freeze at the start time
           for f in cricsim/fixtures/*.json; do
             [ -e "$f" ] || continue
-            [ "$(basename "$f")" != "${{ inputs.resimulate }}" ] && echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; }
+            case ",${{ inputs.resimulate }}," in
+              *",all,"*|*",$(basename "$f"),"*) ;;
+              *) echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; } ;;
+            esac
             uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" \
               --out "data/coverage/matches/$(basename "$f")"
           done

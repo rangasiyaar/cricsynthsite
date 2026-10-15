@@ -330,6 +330,9 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
     # a match under way stays on the home page for the rest of its day, with its frozen pre-match forecast
     idx_p = out / "index.json"
     idx = json.loads(idx_p.read_text()) if idx_p.exists() else {"matches": []}
+    # a past match simulated again (resimulate) belongs on the Results page, not with today's fixtures
+    idx["matches"] = [c for c in idx["matches"]
+                      if c["id"] not in cards and (fx.get(c["id"], {}).get("date") or today) >= today]
     listed = {c["id"] for c in idx["matches"]}
     for mid in sorted(want):
         doc_p = out / "matches" / f"{mid}.json"
