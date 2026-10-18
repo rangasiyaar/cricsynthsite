@@ -73,7 +73,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--phase-skill/--no-phase-skill", default=None, help="Variant: player × powerplay / middle / death")
 @click.option("--new-ground/--no-new-ground", default=None, help="Variant: unseen grounds get the new-ground level")
 @click.option("--venue-half-life", type=float, default=None, help="Variant: recency half-life for ground factors (years)")
-@click.option("--era-wickets", type=click.Choice(["trend", "latest"]), default=None,
+@click.option("--era-wickets", type=click.Choice(["trend", "latest", "latest-od"]), default=None,
               help="Variant: project dismissals with the season trend or hold them at the latest season's level")
 @click.option("--era-gender/--no-era-gender", default=None, help="Variant: own season trend for men's and women's cricket")
 @click.option("--team-day/--no-team-day", default=None, help="Variant: per-innings conditions draw on top of the shared one")

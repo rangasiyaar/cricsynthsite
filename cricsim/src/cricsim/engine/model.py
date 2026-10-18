@@ -89,7 +89,7 @@ N_BASE = len(FORMAT_LIST) * 2 * 2 * MAX_OVERS * 10
 ERA_START, N_ERA = 2000, 40          # one scoring-level factor per season and format family
 ERA_SEASONS = 4                      # seasons the scoring-trend line is fitted on
 ERA_AHEAD = 0.5                      # years past the last training ball the forecast is aimed at
-ERA_WICKETS = "trend"                # "latest": dismissals at the latest season's level, not the trend line (variant;
+ERA_WICKETS = "trend"                # "latest" ("latest-od": one-day only): dismissals at the latest season's level, not the trend line (variant;
                                      # the level audit found the wicket trend over-projected out of sample)
 
 
@@ -128,7 +128,8 @@ def era_vector(model: "Model", fam: int, gender: int | None = None) -> np.ndarra
     asof = fit.get("era_asof", i + 1.0)
     balls = fit.get("era_balls", [[1.0] * N_ERA] * 2)[fam]
     out = _era_line(f[fam * N_ERA:(fam + 1) * N_ERA], balls, i, asof)
-    if (model.meta.get("sim") or {}).get("era_wickets", ERA_WICKETS) == "latest":
+    mode = (model.meta.get("sim") or {}).get("era_wickets", ERA_WICKETS)
+    if mode == "latest" or (mode == "latest-od" and fam == 1):
         frac = min(max(asof - i, 0.0), 1.0)                          # share of the latest season played
         out[S.WKT] = frac * f[fam * N_ERA + i, S.WKT] + (1 - frac) * f[fam * N_ERA + i - 1, S.WKT]
     g = model.factors.get("era_g")
