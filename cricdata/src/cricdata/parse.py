@@ -11,6 +11,8 @@ Tables produced (one dict per row):
 """
 from __future__ import annotations
 
+import os
+
 from datetime import date
 
 from cricdata.names import _legacy, canonical_city, canonical_team, canonical_venue, team_id, venue_id
@@ -114,6 +116,10 @@ def parse_match(data: dict, match_id: str) -> dict[str, list[dict]]:
         bowling = (match["team2"] if batting == match["team1"] else match["team1"])
         is_super = bool(inn.get("super_over"))
         target = inn.get("target") or {}
+        if (not target and inn_no == 2 and not is_super and fmt in FORMAT_LIMITED and innings_rows
+                and os.environ.get("CRICDATA_TARGETS") != "raw"):        # "raw": as published, for before/after tests
+            # older files carry no target: in an unshortened chase it is the first innings total + 1
+            target = {"runs": innings_rows[0]["runs"] + 1, "derived": True}
         runs = wkts = legal = 0
         faced: dict[str, int] = {}        # batter name → legal balls faced so far (wides excluded)
         scored: dict[str, int] = {}

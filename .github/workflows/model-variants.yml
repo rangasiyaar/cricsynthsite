@@ -22,17 +22,18 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: current, rules: new, args: "--order sheet --roles" }
-          - { name: era-gender, rules: new, args: "--order sheet --roles --era-gender --insample 400" }
+          - { name: targets-as-published, rules: new, targets: raw, args: "--order sheet --roles --insample 400" }
+          - { name: targets-derived, rules: new, targets: derived, args: "--order sheet --roles --insample 400" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
+      CRICDATA_TARGETS: ${{ matrix.variant.targets }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
       - name: Day key
         id: day
-        run: echo "key=parquet-${{ matrix.variant.rules }}-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+        run: echo "key=parquet-${{ matrix.variant.rules }}-${{ matrix.variant.targets }}-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
         id: cache
         with:

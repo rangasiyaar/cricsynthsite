@@ -121,3 +121,12 @@ def test_ground_identity(monkeypatch):
     # the old rules stay available for before/after backtests
     monkeypatch.setenv("CRICDATA_VENUE_RULES", "legacy")
     assert venue_id("County Ground", "Chelmsford") == "county-ground"
+
+
+def test_missing_chase_target_is_first_innings_plus_one():
+    data = fx.t20_ipl()
+    data["innings"][1].pop("target")
+    out = parse_match(data, "1001")
+    assert out["innings"][1]["target_runs"] == 18
+    assert {r["target_runs"] for r in out["deliveries"] if r["innings_no"] == 2} == {18}
+    assert {r["target_runs"] for r in out["deliveries"] if r["innings_no"] == 1} == {None}
