@@ -33,6 +33,7 @@ def score(con, model: Model, start: date, end: date | None) -> dict:
     """Balls in [start, end): logits without the season level, the season index, and the split keys."""
     d, ids = load_training(con, FitConfig(min_date=start, cutoff=end))
     tt = np.asarray(ids["comp_group"])[d["comp"]] // (len(FORMAT_LIST) * 2)
+    comp = np.array(ids["comps"], dtype=object)[d["comp"]]
     _remap(d, ids, model)
     f = model.factors
     levels = level_indices(d, len(model.players), len(model.venues), len(model.comps))
@@ -44,7 +45,7 @@ def score(con, model: Model, start: date, end: date | None) -> dict:
             "gender": d["gender"].astype(np.int64), "tt": np.clip(tt, 0, 2), "y": d["y"].astype(np.int64),
             "runs": d["runs_total"].astype(np.float64), "day": d["day"], "over": d["over"].astype(np.int64),
             "wkts": d["wkts"].astype(np.int64), "fmt": d["fmt"], "inn0": d["inn0"].astype(np.int64),
-            "chase": S.chase_bucket(d["inn0"] + 1, d["need"], d["balls_left"]), "need": d["need"]}
+            "chase": S.chase_bucket(d["inn0"] + 1, d["need"], d["balls_left"]), "need": d["need"], "comp": comp}
 
 
 def projections(model: Model, fam: int) -> dict[str, np.ndarray]:
@@ -167,6 +168,17 @@ def run(parquet: Path, cutoff: date, memory: str) -> str:
             nt = k2 & (b["need"] == 0)
             out.append(f"| {FAMILIES[fam]} | 2 | no target ({nm}) | {nt.sum():,} of {k2.sum():,} " + _oe(b, P_, nt, run_mean)
                        + " | | | |")
+
+    sel_pre = (pre["fam"] == 1) & (pre["gender"] == 0) & (pre["tt"] == 1)
+    sel_post = (post["fam"] == 1) & (post["gender"] == 0) & (post["tt"] == 1)
+    comps = sorted(set(post["comp"][sel_post]), key=lambda c: -int((post["comp"][sel_post] == c).sum()))[:12]
+    out += ["", "#### Men's domestic one-day, by competition", "",
+            "| Competition | Known to model | In-sample balls | runs | boundaries | dismissals | Held-out balls | runs | boundaries | dismissals |",
+            "|---|---|---|---|---|---|---|---|---|---|"]
+    for c in comps:
+        kp, kq = sel_pre & (pre["comp"] == c), sel_post & (post["comp"] == c)
+        out.append(f"| {c} | {'yes' if model.comp(c) else 'no'} | {kp.sum():,} " + _oe(pre, Ppre, kp, run_mean)[:-1]
+                   + f"| {kq.sum():,} " + _oe(post, Ppost, kq, run_mean))
 
     od = post["fam"] == 1
     out += ["", "#### Where the one-day gap sits (held out)", "",
