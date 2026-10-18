@@ -162,6 +162,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
             bat_xi = mt["xi"][spec.teams[(bf + inn0) % 2].name]
             n_new = sum(not model.knows(p) for p in bat_xi)
             res.setdefault("team", []).append({"inn": inn0 + 1, "pred_runs": float(sim.mean()), "act_runs": actual,
+                                               "finished": mt["result"] != "no result",
                                                "split": {"competition": "seen" if model.comp(mt["comp"]) else "new",
                                                          "venue": "seen" if model.venue(mt["venue_id"]) else "new",
                                                          "unknown batters": "0" if n_new == 0 else
@@ -389,8 +390,9 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                          **_sharpen(p, y)}
     if res.get("team"):
         out["team_innings"] = {}
-        for inn in (1, 2):
-            rows = [r for r in res["team"] if r["inn"] == inn]
+        for inn in (1, 2, "2, finished matches"):
+            rows = [r for r in res["team"] if r["inn"] == inn
+                    or (inn == "2, finished matches" and r["inn"] == 2 and r.get("finished", True))]
             if rows:
                 out["team_innings"][str(inn)] = {
                     "n": len(rows),
