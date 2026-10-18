@@ -112,7 +112,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
         log.info("in-sample check from %s", start)
         ins = _run(con, parquet, model, start, cutoff, insample, n_sims, False)
-        rep["insample"] = {"from": str(start), "team_innings": ins.get("team_innings"),
+        rep["insample"] = {"from": str(start), "team_innings": ins.get("team_innings"), "chase": ins.get("chase"),
                            "first_innings_by_group": ins.get("first_innings_by_group")}
     return rep
 
@@ -148,6 +148,14 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         p1 = float((part.winner == 0).mean())
         if mt["winner"] in (t1, t2):
             res["win"].append((p1, 1.0 if mt["winner"] == t1 else 0.0, mt["format"]))
+            # the chase: how often it succeeds, and how far short failed chases fall (sims v actual)
+            r1, r2 = part.innings[0].runs, part.innings[1].runs
+            fail = r2 <= r1
+            act_won = mt["winner"] != first_team
+            res.setdefault("chase", []).append({
+                "p": float((part.winner == 1 - bf).mean()), "won": act_won,
+                "short_sim": float((r1 - r2)[fail].mean()) if fail.any() else None,
+                "short_act": None if act_won else float(mt["innings"][0][2] - mt["innings"][1][2])})
         actual_order = batting_order(con, mt["match_id"])
         if mt["format"] != "OD":
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
@@ -388,6 +396,14 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                          "accuracy": round(float(((p > 0.5) == (y == 1)).mean()), 3),
                          "calibration": _calibration([(a, b) for a, b, _ in res["win"]], 5),
                          **_sharpen(p, y)}
+    if res.get("chase"):
+        c = res["chase"]
+        ss = [r["short_sim"] for r in c if r["short_sim"] is not None]
+        sa = [r["short_act"] for r in c if r["short_act"] is not None]
+        out["chase"] = {"n": len(c), "win_predicted": round(float(np.mean([r["p"] for r in c])), 3),
+                        "win_actual": round(float(np.mean([r["won"] for r in c])), 3),
+                        "failed_short_by_predicted": round(float(np.mean(ss)), 1) if ss else None,
+                        "failed_short_by_actual": round(float(np.mean(sa)), 1) if sa else None}
     if res.get("team"):
         out["team_innings"] = {}
         for inn in (1, 2, "2, finished matches"):
@@ -535,6 +551,10 @@ def write_report(rep: dict, path: Path) -> None:
                      f"{r['wickets_actual']} | {r['bowlers_used_predicted']} / {r['bowlers_used_actual']} | "
                      f"{r['top_bowler_balls_predicted']} / {r['top_bowler_balls_actual']} |")
         L.append("")
+    if rep.get("chase"):
+        c = rep["chase"]
+        L += [f"Chases (predicted / actual): won {c['win_predicted']} / {c['win_actual']} of {c['n']}; failed chases "
+              f"fell short by {c['failed_short_by_predicted']} / {c['failed_short_by_actual']} runs on average.", ""]
     if rep.get("first_innings_by_group"):
         L += ["## First-innings runs by group (predicted / actual)", "", "| Group | Matches | Runs |", "|---|---|---|"]
         L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |" for g, r in rep["first_innings_by_group"].items()]
@@ -549,6 +569,10 @@ def write_report(rep: dict, path: Path) -> None:
               "| Innings / group | Matches | Runs |", "|---|---|---|"]
         L += [f"| innings {k} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |"
               for k, r in (ins.get("team_innings") or {}).items()]
+        if ins.get("chase"):
+            c = ins["chase"]
+            L.append(f"| chases won (share) | {c['n']} | {c['win_predicted']} / {c['win_actual']} |")
+            L.append(f"| failed chases, short by (runs) | {c['n']} | {c['failed_short_by_predicted']} / {c['failed_short_by_actual']} |")
         L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |"
               for g, r in (ins.get("first_innings_by_group") or {}).items()]
         L.append("")
