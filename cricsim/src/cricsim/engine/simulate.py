@@ -22,6 +22,7 @@ BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
+TEAM_DAY = False         # split match conditions into a shared pitch draw and one per innings (each side's day; variant)
 FORM = 0.0               # weight of recent form (last RECENT matches v expectation) on boundaries / dismissals (variant)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
 LISTED_BONUS = 0.03      # extra weight for a bowler the fixture lists as a bowler; small keeps the usual shares apart
@@ -454,9 +455,12 @@ def simulate(model: Model, spec: MatchSpec, n: int = 10_000, scenario: Scenario 
         # one draw of match conditions per simulation, shared by both innings (same pitch, same day)
         sd = model.meta.get("fit", {}).get("conditions_sd", {}) if sc.conditions else {}
         cond = np.zeros((m, S.K))
+        team_day = (model.meta.get("sim") or {}).get("team_day", TEAM_DAY) and "boundary_innings" in sd
         if sd:
-            zb = rng.normal(-0.5 * sd.get("boundary", 0) ** 2, sd.get("boundary", 0), m)
-            zw = rng.normal(-0.5 * sd.get("wicket", 0) ** 2, sd.get("wicket", 0), m)
+            sb = sd.get("boundary_shared", 0) if team_day else sd.get("boundary", 0)
+            sw = sd.get("wicket_shared", 0) if team_day else sd.get("wicket", 0)
+            zb = rng.normal(-0.5 * sb ** 2, sb, m)
+            zw = rng.normal(-0.5 * sw ** 2, sw, m)
             cond[:, [S.FOUR, S.SIX]] = zb[:, None]
             cond[:, S.WKT] = zw
         start = sc.start
@@ -472,7 +476,13 @@ def simulate(model: Model, spec: MatchSpec, n: int = 10_000, scenario: Scenario 
                 target = None
                 if inn0 == 1:
                     target = np.full(m, sc.target) if sc.target else first_total + 1
-                res = simulate_innings(rng, T, m, rules, inn0, target, st, order, bowlers, cond)
+                c_inn = cond
+                if team_day:            # each side's own day on top of the shared pitch (variant)
+                    ib, iw = sd["boundary_innings"], sd.get("wicket_innings", 0)
+                    c_inn = cond.copy()
+                    c_inn[:, [S.FOUR, S.SIX]] += rng.normal(-0.5 * ib ** 2, ib, m)[:, None]
+                    c_inn[:, S.WKT] += rng.normal(-0.5 * iw ** 2, iw, m)
+                res = simulate_innings(rng, T, m, rules, inn0, target, st, order, bowlers, c_inn)
             logs.append(InningsLog(batting=bat, order=order, bowlers=bowlers, **res))
             first_total = logs[0].runs
         r1 = np.full(m, sc.target - 1) if sc.target else logs[0].runs

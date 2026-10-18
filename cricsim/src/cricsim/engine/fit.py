@@ -454,13 +454,27 @@ def match_conditions_sd(d: dict[str, np.ndarray], P: np.ndarray) -> dict[str, fl
     out = {}
     m = d["match"]
     nm = int(m.max()) + 1
+    mi = m.astype(np.int64) * 2 + d["inn0"].astype(np.int64)            # one cell per innings
     for name, classes in (("boundary", [S.FOUR, S.SIX]), ("wicket", [S.WKT])):
-        O = np.bincount(m, weights=np.isin(d["y"], classes).astype(np.float64), minlength=nm)
-        E = np.bincount(m, weights=P[:, classes].sum(1).astype(np.float64), minlength=nm)
+        hit = np.isin(d["y"], classes).astype(np.float64)
+        ex = P[:, classes].sum(1).astype(np.float64)
+        O = np.bincount(m, weights=hit, minlength=nm)
+        E = np.bincount(m, weights=ex, minlength=nm)
         ok = E > 5
         r = O[ok] / E[ok]
         extra = r.var() - np.mean(1.0 / E[ok])
         out[name] = round(float(np.sqrt(max(extra, 0.0))), 4)
+        # split by innings: the part both innings share (pitch, weather) is the covariance between a match's two
+        # innings; what's left of each innings' spread beyond chance is that side's day
+        Oi = np.bincount(mi, weights=hit, minlength=2 * nm).reshape(nm, 2)
+        Ei = np.bincount(mi, weights=ex, minlength=2 * nm).reshape(nm, 2)
+        both = (Ei > 3).all(1)
+        if both.sum() > 50:
+            ri = Oi[both] / Ei[both]
+            shared = float(np.cov(ri[:, 0], ri[:, 1])[0, 1])
+            own = float(ri.var(0).mean() - np.mean(1.0 / Ei[both]) - shared)
+            out[f"{name}_shared"] = round(float(np.sqrt(max(shared, 0.0))), 4)
+            out[f"{name}_innings"] = round(float(np.sqrt(max(own, 0.0))), 4)
     return out
 
 

@@ -361,3 +361,15 @@ def test_era_gender_gives_each_gender_its_own_trend(world):
     assert era_vector(m, 0, 0).shape == (S.K,)
     s = simulate(m, _spec(world["world"]), n=200, seed=1)
     assert s is not None
+
+
+def test_team_day_splits_conditions(world):
+    sd = world["model"].meta["fit"]["conditions_sd"]
+    assert {"boundary_shared", "boundary_innings", "wicket_shared", "wicket_innings"} <= set(sd)
+    m = world["model"]
+    m.meta["sim"] = {"team_day": True}
+    try:
+        s = simulate(m, _spec(world["world"]), n=300, seed=3)
+    finally:
+        m.meta.pop("sim")
+    assert np.isfinite(s.parts[0].innings[1].runs).all()
