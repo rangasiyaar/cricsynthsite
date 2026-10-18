@@ -27,19 +27,19 @@ import pyarrow.compute as pc
 from cricsim.engine import states as S
 from cricsim.engine.model import (BOWLER_DISMISSALS, DISMISSALS, ERA_START, FORMAT_LIST, GENDERS, MAX_OVERS, N_BASE,
                                   N_DECILES, N_ERA, N_EXP, N_PHASE3, RECENT, SITUATION, Model, base_index, era_index,
-                                  exp_bucket, phase3)
+                                  N_CHASE_W, chase_w_bucket, exp_bucket, phase3)
 from cricsim.patterns.features import build_balls
 
 log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000, "era_g": 20000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000, "era_g": 20000, "chase_w": 3000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
     "bat_exp": 3000, "bowl_exp": 3000, "home": 2000, "bat_phase": 1500, "bowl_phase": 1500,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
-ORDER = ("base", "era", "era_g", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
+ORDER = ("base", "era", "era_g", "set", "chase", "chase_w", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
          "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand",
          "bat_phase", "bowl_phase")
 
@@ -50,6 +50,7 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
+    chase_wickets: bool = False                # chase pressure × wickets in hand (a slipping chase with few wickets left)
     phase_skill: bool = False                  # player × stage of innings (powerplay / middle / death), shrunk to the player
     home: bool = True                          # home advantage: batting at home / away / neutral ground
                                                # (backtest, 3 cutoffs: win Brier -0.0003, -0.0021, -0.0012)
@@ -181,7 +182,8 @@ RUNS_ONLY = ("venue_g", "venue_ph", "venue_kind")   # the venue diagnostic: thes
 
 
 def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int,
-                  phase_skill: bool = False, era_gender: bool = False) -> dict[str, tuple[np.ndarray, int]]:
+                  phase_skill: bool = False, era_gender: bool = False,
+                  chase_wickets: bool = False) -> dict[str, tuple[np.ndarray, int]]:
     """Factor name → (level index per ball, number of levels). Mirrors simulate.py's state encoding."""
     fam = d["fam"].astype(np.int32)
     nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
@@ -212,6 +214,9 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
     }
     if era_gender:       # season level × men's / women's (FitConfig.era_gender)
         levels["era_g"] = ((fam * 2 + d["gender"].astype(np.int32)) * N_ERA + era_index(d["day"]), 4 * N_ERA)
+    if chase_wickets:    # required rate × wickets down in the chase (FitConfig.chase_wickets)
+        levels["chase_w"] = (fam * N_CHASE_W + chase_w_bucket(d["inn0"] + 1, d["need"], d["balls_left"], d["wkts"]),
+                             2 * N_CHASE_W)
     if phase_skill:      # player × powerplay / middle / death (FitConfig.phase_skill)
         ph = phase3(d["over"], OVERS[d["fmt"]])
         levels["bat_phase"] = (d["bat"] * N_PHASE3 + ph, n_players * N_PHASE3)
@@ -253,7 +258,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     ref_day = (np.datetime64(cfg.cutoff) - np.datetime64("1970-01-01")).astype(int) if cfg.cutoff else d["day"].max()
     w = (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.half_life_years))).astype(np.float64)
     levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.phase_skill,
-                           cfg.era_gender)
+                           cfg.era_gender, cfg.chase_wickets)
     priors = {"base": base_prior(levels["base"][0], d["y"], w)}
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)

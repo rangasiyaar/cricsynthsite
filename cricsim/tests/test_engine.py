@@ -373,3 +373,13 @@ def test_team_day_splits_conditions(world):
     finally:
         m.meta.pop("sim")
     assert np.isfinite(s.parts[0].innings[1].runs).all()
+
+
+def test_chase_wickets_factor(world):
+    from cricsim.engine.model import N_CHASE_W, chase_w_bucket
+    assert chase_w_bucket(1, 50, 60, 3) == 0
+    assert chase_w_bucket(2, 10, 60, 2) == 1 and chase_w_bucket(2, 300, 6, 9) == N_CHASE_W - 1
+    m = fit(world["parquet"], FitConfig(chase_wickets=True))
+    assert m.factors["chase_w"].shape == (2 * N_CHASE_W, S.K)
+    s = simulate(m, _spec(world["world"]), n=300, seed=2)
+    assert np.isfinite(s.parts[0].innings[1].runs).all()

@@ -61,6 +61,20 @@ def phase3(over, total_overs) -> np.ndarray:
     return (frac >= PHASE3_EDGES[0]).astype(np.int32) + (frac >= PHASE3_EDGES[1]).astype(np.int32)
 
 
+CHASE_W_EDGES = np.array([8.0, 12.0, 16.0, 24.0])   # required runs per over (finer at the hopeless end)
+WKT_EDGES = np.array([4, 7])                        # wickets down: 0-3, 4-6, 7-9
+N_CHASE_W = 1 + (len(CHASE_W_EDGES) + 1) * (len(WKT_EDGES) + 1)
+
+
+def chase_w_bucket(innings_no, runs_needed, balls_left, wkts) -> np.ndarray:
+    """Required rate × wickets down in a chase (0 = first innings): a chase that is slipping with few wickets
+    left goes differently from one with wickets in hand."""
+    rrr = 6.0 * np.asarray(runs_needed) / np.maximum(np.asarray(balls_left), 1)
+    r = np.searchsorted(CHASE_W_EDGES, rrr, side="right")
+    w = np.searchsorted(WKT_EDGES, np.asarray(wkts), side="right")
+    return np.where(np.asarray(innings_no) == 2, 1 + r * (len(WKT_EDGES) + 1) + w, 0).astype(np.int64)
+
+
 def exp_bucket(balls) -> np.ndarray:
     return np.searchsorted(EXP_EDGES, np.asarray(balls), side="right")
 
