@@ -27,7 +27,7 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
     g = GENDERS.index(spec.gender)
     fam = 1 if spec.format == "OD" else 0
     base = (model.factors["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g][:, :rules["overs"]]
-            + era_vector(model, fam) + model.venue_phase(spec.venue_id, spec.format)[None, :rules["overs"], None, :])
+            + era_vector(model, fam, g) + model.venue_phase(spec.venue_id, spec.format)[None, :rules["overs"], None, :])
     batting = []
     for t in (0, 1):
         order, bowlers = list(spec.teams[t].players), list(spec.teams[1 - t].players)

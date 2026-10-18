@@ -34,12 +34,12 @@ log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000, "era_g": 20000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
     "bat_exp": 3000, "bowl_exp": 3000, "home": 2000, "bat_phase": 1500, "bowl_phase": 1500,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
-ORDER = ("base", "era", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
+ORDER = ("base", "era", "era_g", "set", "chase", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
          "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand",
          "bat_phase", "bowl_phase")
 
@@ -59,6 +59,8 @@ class FitConfig:
                                                # first matches, not the global average (venue audit: new grounds
                                                # scored 2-7% under the model at three cutoffs)
     venue_half_life: float | None = None       # recency half-life (years) for the ground factors only (None = half_life_years)
+    era_gender: bool = False                   # men's and women's cricket each get their own season trend (a deviation
+                                               # from the shared one, shrunk to it)
     comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
                                                # "club" (leagues only), "all" (internationals too) or "off"
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
@@ -179,7 +181,7 @@ RUNS_ONLY = ("venue_g", "venue_ph", "venue_kind")   # the venue diagnostic: thes
 
 
 def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int,
-                  phase_skill: bool = False) -> dict[str, tuple[np.ndarray, int]]:
+                  phase_skill: bool = False, era_gender: bool = False) -> dict[str, tuple[np.ndarray, int]]:
     """Factor name → (level index per ball, number of levels). Mirrors simulate.py's state encoding."""
     fam = d["fam"].astype(np.int32)
     nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
@@ -208,6 +210,8 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
         "bat_kind": (d["bat"] * nk + d["kind"], n_players * nk),
         "bowl_hand": (d["bowl"] * nh + d["hand"], n_players * nh),
     }
+    if era_gender:       # season level × men's / women's (FitConfig.era_gender)
+        levels["era_g"] = ((fam * 2 + d["gender"].astype(np.int32)) * N_ERA + era_index(d["day"]), 4 * N_ERA)
     if phase_skill:      # player × powerplay / middle / death (FitConfig.phase_skill)
         ph = phase3(d["over"], OVERS[d["fmt"]])
         levels["bat_phase"] = (d["bat"] * N_PHASE3 + ph, n_players * N_PHASE3)
@@ -248,7 +252,8 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     n, K = len(d["y"]), S.K
     ref_day = (np.datetime64(cfg.cutoff) - np.datetime64("1970-01-01")).astype(int) if cfg.cutoff else d["day"].max()
     w = (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.half_life_years))).astype(np.float64)
-    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.phase_skill)
+    levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.phase_skill,
+                           cfg.era_gender)
     priors = {"base": base_prior(levels["base"][0], d["y"], w)}
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)
@@ -303,6 +308,8 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     stats["era_asof"] = round(float((last - np.datetime64(f"{ERA_START}-01-01")).astype(int)[0]) / 365.25, 3)
     stats["era_balls"] = np.bincount(d["fam"].astype(np.int64) * N_ERA + era_index(d["day"]),
                                      minlength=2 * N_ERA).reshape(2, N_ERA).tolist()
+    stats["era_balls_g"] = np.bincount((d["fam"].astype(np.int64) * 2 + d["gender"]) * N_ERA + era_index(d["day"]),
+                                       minlength=4 * N_ERA).reshape(4, N_ERA).tolist()
     era = logf["era"].reshape(2, N_ERA, K)
     stats["era_recent"] = {fam_name: {str(2000 + y): {"four": round(float(era[f, y, S.FOUR]), 3),
                                                        "six": round(float(era[f, y, S.SIX]), 3),

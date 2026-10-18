@@ -84,32 +84,46 @@ def era_index(days_since_epoch):
     return np.clip(years - ERA_START, 0, N_ERA - 1)
 
 
-def era_vector(model: "Model", fam: int) -> np.ndarray:
+def _era_line(f: np.ndarray, balls: np.ndarray, i: int, asof: float) -> np.ndarray:
+    """A straight line through the last ERA_SEASONS season levels of one block (weighted by balls), read off
+    ERA_AHEAD past the last training ball."""
+    seasons = np.arange(max(0, i - ERA_SEASONS + 1), i + 1)
+    if len(seasons) < 3:
+        return f[i].astype(np.float64)
+    y = f[seasons].astype(np.float64)
+    b = np.asarray(balls, dtype=np.float64)[seasons]
+    w = b / max(b.max(), 1.0) + 1e-6
+    x = seasons + 0.5                                   # a season's level sits mid-year
+    xm = (w * x).sum() / w.sum()
+    ym = (w[:, None] * y).sum(0) / w.sum()
+    slope = (w[:, None] * (x - xm)[:, None] * (y - ym)).sum(0) / (w * (x - xm) ** 2).sum()
+    return ym + slope * (asof + ERA_AHEAD - xm)
+
+
+def era_vector(model: "Model", fam: int, gender: int | None = None) -> np.ndarray:
     """Log-multipliers for the coming months — scoring levels drift (T20 run rates rose sharply after 2022).
 
     A straight line through the last few seasons' levels (weighted by how many balls each season has, so a
-    half-played season counts less), read off half a year past the last training ball."""
+    half-played season counts less), read off half a year past the last training ball. With an era_g factor
+    (FitConfig.era_gender) men's and women's cricket add their own trend on top."""
     f = model.factors.get("era")
     if f is None:                                       # models fitted before the era factor existed
         return np.zeros(10, dtype=np.float32)
     fit = model.meta.get("fit", {})
     i = int(fit.get("era_index", N_ERA - 1))
-    seasons = np.arange(max(0, i - ERA_SEASONS + 1), i + 1)
-    if len(seasons) < 3:
-        return f[fam * N_ERA + i]
-    y = f[fam * N_ERA + seasons].astype(np.float64)
-    balls = np.asarray(fit.get("era_balls", [[1.0] * N_ERA] * 2)[fam], dtype=np.float64)[seasons]
-    w = balls / max(balls.max(), 1.0) + 1e-6
-    x = seasons + 0.5                                   # a season's level sits mid-year
-    xm = (w * x).sum() / w.sum()
-    ym = (w[:, None] * y).sum(0) / w.sum()
-    slope = (w[:, None] * (x - xm)[:, None] * (y - ym)).sum(0) / (w * (x - xm) ** 2).sum()
-    target = fit.get("era_asof", i + 1.0) + ERA_AHEAD
-    out = ym + slope * (target - xm)
+    asof = fit.get("era_asof", i + 1.0)
+    balls = fit.get("era_balls", [[1.0] * N_ERA] * 2)[fam]
+    out = _era_line(f[fam * N_ERA:(fam + 1) * N_ERA], balls, i, asof)
     if (model.meta.get("sim") or {}).get("era_wickets", ERA_WICKETS) == "latest":
-        frac = min(max(fit.get("era_asof", i + 1.0) - i, 0.0), 1.0)      # share of the latest season played
+        frac = min(max(asof - i, 0.0), 1.0)                          # share of the latest season played
         out[S.WKT] = frac * f[fam * N_ERA + i, S.WKT] + (1 - frac) * f[fam * N_ERA + i - 1, S.WKT]
+    g = model.factors.get("era_g")
+    if g is not None and gender is not None:
+        blk = fam * 2 + gender
+        bg = fit.get("era_balls_g", [[1.0] * N_ERA] * 4)[blk]
+        out = out + _era_line(g[blk * N_ERA:(blk + 1) * N_ERA], bg, i, asof)
     return out.astype(np.float32)
+
 
 # situation factors: name → levels per family
 SITUATION = {

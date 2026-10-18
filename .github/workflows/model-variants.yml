@@ -23,7 +23,7 @@ jobs:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
           - { name: current, rules: new, args: "--order sheet --roles" }
-          - { name: era-wickets-latest, rules: new, args: "--order sheet --roles --era-wickets latest" }
+          - { name: era-gender, rules: new, args: "--order sheet --roles --era-gender --insample 400" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
     steps:

@@ -336,7 +336,7 @@ def test_format_audit_runs(world):
 def test_level_audit_runs(world):
     from cricsim.engine.level_audit import run as level_audit
     text = level_audit(world["parquet"], date(2024, 1, 1), memory="2GB")
-    for part in ("Level audit", "Projecting the season level", "trend, 4 seasons (today) | +0.000", "Where the one-day gap"):
+    for part in ("Level audit", "Projecting the season level", "trend, 4 seasons (today) | +0.000", "Where the one-day gap", "By innings and chase pressure"):
         assert part in text
 
 
@@ -351,3 +351,13 @@ def test_era_wickets_latest_only_moves_dismissals(world):
         m.meta.pop("sim")
     keep = np.arange(S.K) != S.WKT
     assert np.allclose(a[keep], b[keep])
+
+
+def test_era_gender_gives_each_gender_its_own_trend(world):
+    from cricsim.engine.model import era_vector
+    m = fit(world["parquet"], FitConfig(era_gender=True))
+    assert "era_g" in m.factors and len(m.meta["fit"]["era_balls_g"]) == 4
+    assert np.allclose(era_vector(m, 0), era_vector(world["model"], 0), atol=0.05)   # shared trend still there
+    assert era_vector(m, 0, 0).shape == (S.K,)
+    s = simulate(m, _spec(world["world"]), n=200, seed=1)
+    assert s is not None

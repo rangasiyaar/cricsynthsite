@@ -43,7 +43,8 @@ def score(con, model: Model, start: date, end: date | None) -> dict:
     return {"L": L, "era_idx": np.minimum(levels["era"][0], 2 * N_ERA - 1), "fam": d["fam"].astype(np.int64),
             "gender": d["gender"].astype(np.int64), "tt": np.clip(tt, 0, 2), "y": d["y"].astype(np.int64),
             "runs": d["runs_total"].astype(np.float64), "day": d["day"], "over": d["over"].astype(np.int64),
-            "wkts": d["wkts"].astype(np.int64), "fmt": d["fmt"]}
+            "wkts": d["wkts"].astype(np.int64), "fmt": d["fmt"], "inn0": d["inn0"].astype(np.int64),
+            "chase": S.chase_bucket(d["inn0"] + 1, d["need"], d["balls_left"]), "need": d["need"]}
 
 
 def projections(model: Model, fam: int) -> dict[str, np.ndarray]:
@@ -148,6 +149,24 @@ def run(parquet: Path, cutoff: date, memory: str) -> str:
         v = proj[fam][today]
         out.append(f"| projected {FAMILIES[fam]} | " + ("– | – | – | " if fam else "")
                    + f"{v[S.WKT]:+.3f} | {v[S.FOUR]:+.3f} | {v[S.SIX]:+.3f} |" + (" – | – | – |" if not fam else ""))
+
+    out += ["", "#### By innings and chase pressure", "",
+            "Required runs per over buckets as the ball model sees them (1 = under 6 … 6 = over 15). 'No target' = "
+            "second-innings balls whose data has no target, which the model files as an easy chase.", "",
+            "| Family | Innings | Chase | In-sample balls | runs | boundaries | dismissals | Held-out balls | runs | boundaries | dismissals |",
+            "|---|---|---|---|---|---|---|---|---|---|---|"]
+    labels = {0: "first innings", 1: "< 6", 2: "6-8", 3: "8-10", 4: "10-12", 5: "12-15", 6: "15+"}
+    for fam in (0, 1):
+        for c in range(7):
+            kp = (pre["fam"] == fam) & (pre["chase"] == c)
+            kq = (post["fam"] == fam) & (post["chase"] == c)
+            out.append(f"| {FAMILIES[fam]} | {1 if c == 0 else 2} | {labels[c]} | {kp.sum():,} "
+                       + _oe(pre, Ppre, kp, run_mean)[:-1] + f"| {kq.sum():,} " + _oe(post, Ppost, kq, run_mean))
+        for b, P_, nm in ((pre, Ppre, "in sample"), (post, Ppost, "held out")):
+            k2 = (b["fam"] == fam) & (b["inn0"] == 1)
+            nt = k2 & (b["need"] == 0)
+            out.append(f"| {FAMILIES[fam]} | 2 | no target ({nm}) | {nt.sum():,} of {k2.sum():,} " + _oe(b, P_, nt, run_mean)
+                       + " | | | |")
 
     od = post["fam"] == 1
     out += ["", "#### Where the one-day gap sits (held out)", "",

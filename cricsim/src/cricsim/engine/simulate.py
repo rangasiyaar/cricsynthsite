@@ -94,7 +94,7 @@ class _Tables:
         fmt = FORMAT_LIST.index(spec.format)
         g = GENDERS.index(spec.gender)
         fam = 1 if spec.format == "OD" else 0
-        self.base = (f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam)
+        self.base = (f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam, g)
                      + model.venue_phase(spec.venue_id, spec.format)[:, None, :])
         self.sit = {name: f[name].reshape(2, n, K)[fam] for name, n in SITUATION.items()}
         nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)

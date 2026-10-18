@@ -88,7 +88,7 @@ class Ctx:
         base = f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, S.K)[
             FORMAT_LIST.index(self.fmt), GENDERS.index(gender), inn0, over, min(w, 9)].astype(np.float64)
         sit = {name: f[name].reshape(2, n, S.K)[self.fam] for name, n in SITUATION.items()}
-        return (base + (era_vector(m, self.fam) if era is None else era)
+        return (base + (era_vector(m, self.fam, GENDERS.index(gender)) if era is None else era)
                 + sit["set"][S.set_bucket(balls_faced)] + sit["streak"][2] + sit["dots"][0]
                 + sit["mile"][S.milestone_bucket(15)] + sit["spell"][0] + sit["freehit"][0] + sit["chase"][chase]
                 + m.venue_factor(venue, GENDERS.index(gender)) + m.venue_phase(venue, self.fmt)[over]
