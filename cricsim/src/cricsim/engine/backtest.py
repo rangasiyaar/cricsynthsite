@@ -152,10 +152,14 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
             r1, r2 = part.innings[0].runs, part.innings[1].runs
             fail = r2 <= r1
             act_won = mt["winner"] != first_team
+            won_sim = part.winner == 1 - bf
             res.setdefault("chase", []).append({
-                "p": float((part.winner == 1 - bf).mean()), "won": act_won,
+                "p": float(won_sim.mean()), "won": act_won,
                 "short_sim": float((r1 - r2)[fail].mean()) if fail.any() else None,
-                "short_act": None if act_won else float(mt["innings"][0][2] - mt["innings"][1][2])})
+                "short_act": None if act_won else float(mt["innings"][0][2] - mt["innings"][1][2]),
+                "r2_won_sim": float(r2[won_sim].mean()) if won_sim.any() else None,
+                "r2_lost_sim": float(r2[~won_sim].mean()) if (~won_sim).any() else None,
+                "r2_act": float(mt["innings"][1][2])})
         actual_order = batting_order(con, mt["match_id"])
         if mt["format"] != "OD":
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
@@ -400,10 +404,23 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
         c = res["chase"]
         ss = [r["short_sim"] for r in c if r["short_sim"] is not None]
         sa = [r["short_act"] for r in c if r["short_act"] is not None]
+        # weighted by each match's chance of the outcome, so predicted and actual describe the same matches
+        def wmean(key, wkey):
+            v = [(r[key], r[wkey]) for r in c if r[key] is not None]
+            w = sum(x for _, x in v)
+            return round(float(sum(a * x for a, x in v) / w), 1) if w else None
+        for r in c:
+            r["q"] = 1 - r["p"]
+        lost = [r["r2_act"] for r in c if not r["won"]]
+        won = [r["r2_act"] for r in c if r["won"]]
         out["chase"] = {"n": len(c), "win_predicted": round(float(np.mean([r["p"] for r in c])), 3),
                         "win_actual": round(float(np.mean([r["won"] for r in c])), 3),
-                        "failed_short_by_predicted": round(float(np.mean(ss)), 1) if ss else None,
-                        "failed_short_by_actual": round(float(np.mean(sa)), 1) if sa else None}
+                        "failed_short_by_predicted": wmean("short_sim", "q"),
+                        "failed_short_by_actual": round(float(np.mean(sa)), 1) if sa else None,
+                        "won_runs_predicted": wmean("r2_won_sim", "p"),
+                        "won_runs_actual": round(float(np.mean(won)), 1) if won else None,
+                        "lost_runs_predicted": wmean("r2_lost_sim", "q"),
+                        "lost_runs_actual": round(float(np.mean(lost)), 1) if lost else None}
     if res.get("team"):
         out["team_innings"] = {}
         for inn in (1, 2, "2, finished matches"):
@@ -554,7 +571,9 @@ def write_report(rep: dict, path: Path) -> None:
     if rep.get("chase"):
         c = rep["chase"]
         L += [f"Chases (predicted / actual): won {c['win_predicted']} / {c['win_actual']} of {c['n']}; failed chases "
-              f"fell short by {c['failed_short_by_predicted']} / {c['failed_short_by_actual']} runs on average.", ""]
+              f"fell short by {c['failed_short_by_predicted']} / {c['failed_short_by_actual']} runs on average "
+              f"(weighted by each match's chance of failing). Runs in won chases {c.get('won_runs_predicted')} / "
+              f"{c.get('won_runs_actual')}; in lost chases {c.get('lost_runs_predicted')} / {c.get('lost_runs_actual')}.", ""]
     if rep.get("first_innings_by_group"):
         L += ["## First-innings runs by group (predicted / actual)", "", "| Group | Matches | Runs |", "|---|---|---|"]
         L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |" for g, r in rep["first_innings_by_group"].items()]
@@ -573,6 +592,8 @@ def write_report(rep: dict, path: Path) -> None:
             c = ins["chase"]
             L.append(f"| chases won (share) | {c['n']} | {c['win_predicted']} / {c['win_actual']} |")
             L.append(f"| failed chases, short by (runs) | {c['n']} | {c['failed_short_by_predicted']} / {c['failed_short_by_actual']} |")
+            L.append(f"| runs in won chases | {c['n']} | {c.get('won_runs_predicted')} / {c.get('won_runs_actual')} |")
+            L.append(f"| runs in lost chases | {c['n']} | {c.get('lost_runs_predicted')} / {c.get('lost_runs_actual')} |")
         L += [f"| {g} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} |"
               for g, r in (ins.get("first_innings_by_group") or {}).items()]
         L.append("")
