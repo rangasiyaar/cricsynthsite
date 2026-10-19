@@ -51,7 +51,8 @@ class FitConfig:
     half_life_years: float = 3.0
     passes: int = 4
     collapse: bool = False                     # wickets in the last 12 deliveries (collapses come in bunches)
-    bat_switch: bool = False                   # batter's previous match was in the other format family
+    bat_switch: bool = True                    # batter's previous match was in the other format family
+                                               # (backtest, 3 cutoffs: match Brier -0.0002, -0.0010, -0.0015)
     era_team_type: bool = False                # international and domestic cricket each get their own season trend
     chase_wickets: bool = False                # chase pressure × wickets in hand (a slipping chase with few wickets left)
     phase_skill: bool = False                  # player × stage of innings (powerplay / middle / death), shrunk to the player

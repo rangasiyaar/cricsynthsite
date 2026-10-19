@@ -22,11 +22,7 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: current, rules: new, targets: derived, args: "--order sheet --roles --insample 400" }
-          - { name: collapse, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --collapse" }
-          - { name: era-team-type, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --era-team-type" }
-          - { name: era-ahead-1.0, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --era-ahead 1.0" }
-          - { name: bat-switch, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --bat-switch" }
+          - { name: current, rules: new, targets: derived, args: "--order sheet --roles" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
       CRICDATA_TARGETS: ${{ matrix.variant.targets }}

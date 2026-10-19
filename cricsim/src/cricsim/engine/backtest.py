@@ -106,7 +106,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
         model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles)
     rep["half_life_years"] = cfg.half_life_years
-    rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home, "sim": sim_overrides or {},
+    rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
+                      "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
+                      "chase_wickets": cfg.chase_wickets, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
