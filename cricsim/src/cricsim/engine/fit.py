@@ -34,12 +34,12 @@ log = logging.getLogger(__name__)
 
 SHRINK = {  # prior strength, in balls
     "base": 300, "set": 3000, "chase": 3000, "mile": 3000, "streak": 3000, "dots": 3000, "spell": 3000,
-    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000, "era_g": 20000, "chase_w": 3000,
+    "freehit": 1000, "hand_kind": 3000, "venue": 6000, "venue_g": 1000, "venue_ph": 2000, "venue_kind": 2000, "comp": 6000, "era": 20000, "era_g": 20000, "chase_w": 3000, "collapse": 3000, "bat_switch": 3000, "era_tt": 20000,
     # bat 150 (was 300): backtest at 3 cutoffs, win log-loss better at 2 of 3, Brier -0.0003 on average
     "bat_exp": 3000, "bowl_exp": 3000, "home": 2000, "bat_phase": 1500, "bowl_phase": 1500,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
-ORDER = ("base", "era", "era_g", "set", "chase", "chase_w", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
+ORDER = ("base", "era", "era_g", "era_tt", "set", "chase", "chase_w", "collapse", "bat_switch", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
          "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand",
          "bat_phase", "bowl_phase")
 
@@ -50,6 +50,9 @@ class FitConfig:
     min_date: date = date(2004, 1, 1)
     half_life_years: float = 3.0
     passes: int = 4
+    collapse: bool = False                     # wickets in the last 12 deliveries (collapses come in bunches)
+    bat_switch: bool = False                   # batter's previous match was in the other format family
+    era_team_type: bool = False                # international and domestic cricket each get their own season trend
     chase_wickets: bool = False                # chase pressure × wickets in hand (a slipping chase with few wickets left)
     phase_skill: bool = False                  # player × stage of innings (powerplay / middle / death), shrunk to the player
     home: bool = True                          # home advantage: batting at home / away / neutral ground
@@ -119,6 +122,19 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
         home_col = ("CASE WHEN h.home_tid IS NULL THEN 2 WHEN batting_team_id = h.home_tid THEN 0 ELSE 1 END "
                     "AS home_state")
         home_join = "LEFT JOIN home_of h ON h.h_mid = match_id"
+    sw_col, sw_join = "0 AS switch", ""
+    if cfg.bat_switch:      # the batter's previous match (any limited-overs format) was in the other family
+        con.execute("""
+            CREATE OR REPLACE TEMP TABLE bat_prev AS
+            WITH pm AS (SELECT batter_id AS pid, match_id, min(match_date) AS d,
+                               any_value(CASE WHEN format = 'OD' THEN 1 ELSE 0 END) AS fam
+                        FROM balls WHERE innings_no IN (1, 2) AND batter_id IS NOT NULL GROUP BY 1, 2)
+            SELECT pid AS sw_pid, match_id AS sw_mid,
+                   CASE WHEN lag(fam) OVER (PARTITION BY pid ORDER BY d, match_id) IS NULL THEN 0
+                        WHEN lag(fam) OVER (PARTITION BY pid ORDER BY d, match_id) <> fam THEN 1 ELSE 0 END AS switched
+            FROM pm""")
+        sw_col = "coalesce(sw.switched, 0) AS switch"
+        sw_join = "LEFT JOIN bat_prev sw ON sw.sw_pid = batter_id AND sw.sw_mid = match_id"
     t = con.execute(f"""
         SELECT format, gender, innings_no, "over", team_wickets_before AS wkts, {xp_cols}, {home_col},
                batter_balls_before AS bf, batter_runs_before AS br,
@@ -130,8 +146,9 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
                coalesce(venue_id, '') AS venue,
                coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format) AS comp,
                coalesce(team_type, '') AS team_type, batter_id, bowler_id, date_diff('day', DATE '1970-01-01', match_date) AS day, match_id,
-               {OUTCOME_SQL} AS y, runs_total, byes + legbyes AS byes
-        FROM balls {xp_join} {home_join}
+               {OUTCOME_SQL} AS y, runs_total, byes + legbyes AS byes,
+               coalesce(wkts_last12, 0) AS wl12, {sw_col}
+        FROM balls {xp_join} {home_join} {sw_join}
         WHERE innings_no IN (1, 2) AND batter_id IS NOT NULL AND bowler_id IS NOT NULL
           AND gender IN ('male', 'female') AND {' AND '.join(where)}
     """).to_arrow_table()
@@ -160,6 +177,8 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
         "day": np_("day"), "y": np_("y").astype(np.int8),
         "bat_xp": np_("bat_xp"), "bowl_xp": np_("bowl_xp"), "home_state": np_("home_state").astype(np.int8),
         "match": pc.dictionary_encode(t["match_id"]).combine_chunks().indices.to_numpy().astype(np.int32), "runs_total": np_("runs_total"), "byes": np_("byes"),
+        "wl12": np.minimum(np_("wl12"), 3).astype(np.int8), "switch": np_("switch").astype(np.int8),
+        "club": (t["team_type"].to_numpy(zero_copy_only=False) == "club").astype(np.int8),
     }
     # competition group: club / international × format × gender (the commonest among the competition's balls)
     tt = _encode(t["team_type"], pa.array(TEAM_TYPES), missing=len(TEAM_TYPES))
@@ -183,7 +202,8 @@ RUNS_ONLY = ("venue_g", "venue_ph", "venue_kind")   # the venue diagnostic: thes
 
 def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_comps: int,
                   phase_skill: bool = False, era_gender: bool = False,
-                  chase_wickets: bool = False) -> dict[str, tuple[np.ndarray, int]]:
+                  chase_wickets: bool = False, collapse: bool = False, bat_switch: bool = False,
+                  era_team_type: bool = False) -> dict[str, tuple[np.ndarray, int]]:
     """Factor name → (level index per ball, number of levels). Mirrors simulate.py's state encoding."""
     fam = d["fam"].astype(np.int32)
     nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
@@ -214,6 +234,12 @@ def level_indices(d: dict[str, np.ndarray], n_players: int, n_venues: int, n_com
     }
     if era_gender:       # season level × men's / women's (FitConfig.era_gender)
         levels["era_g"] = ((fam * 2 + d["gender"].astype(np.int32)) * N_ERA + era_index(d["day"]), 4 * N_ERA)
+    if collapse:         # wickets in the last 12 deliveries, 0-3+ (FitConfig.collapse)
+        levels["collapse"] = (fam * 4 + d["wl12"].astype(np.int32), 8)
+    if bat_switch:       # batter coming from the other format family (FitConfig.bat_switch)
+        levels["bat_switch"] = (fam * 2 + d["switch"].astype(np.int32), 4)
+    if era_team_type:    # season level × international / domestic (FitConfig.era_team_type)
+        levels["era_tt"] = ((fam * 2 + d["club"].astype(np.int32)) * N_ERA + era_index(d["day"]), 4 * N_ERA)
     if chase_wickets:    # required rate × wickets down in the chase (FitConfig.chase_wickets)
         levels["chase_w"] = (fam * N_CHASE_W + chase_w_bucket(d["inn0"] + 1, d["need"], d["balls_left"], d["wkts"]),
                              2 * N_CHASE_W)
@@ -258,7 +284,7 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
     ref_day = (np.datetime64(cfg.cutoff) - np.datetime64("1970-01-01")).astype(int) if cfg.cutoff else d["day"].max()
     w = (0.5 ** ((ref_day - d["day"]) / (365.25 * cfg.half_life_years))).astype(np.float64)
     levels = level_indices(d, len(ids["players"]), len(ids["venues"]), len(ids["comps"]), cfg.phase_skill,
-                           cfg.era_gender, cfg.chase_wickets)
+                           cfg.era_gender, cfg.chase_wickets, cfg.collapse, cfg.bat_switch, cfg.era_team_type)
     priors = {"base": base_prior(levels["base"][0], d["y"], w)}
     logf = {name: priors.get(name, np.zeros((nl, K), dtype=np.float32)).copy() for name, (_, nl) in levels.items()}
     L = logf["base"][levels["base"][0]].astype(np.float32)
@@ -315,6 +341,8 @@ def fit_factors(d: dict[str, np.ndarray], ids: dict[str, list[str]], cfg: FitCon
                                      minlength=2 * N_ERA).reshape(2, N_ERA).tolist()
     stats["era_balls_g"] = np.bincount((d["fam"].astype(np.int64) * 2 + d["gender"]) * N_ERA + era_index(d["day"]),
                                        minlength=4 * N_ERA).reshape(4, N_ERA).tolist()
+    stats["era_balls_tt"] = np.bincount((d["fam"].astype(np.int64) * 2 + d["club"]) * N_ERA + era_index(d["day"]),
+                                        minlength=4 * N_ERA).reshape(4, N_ERA).tolist()
     era = logf["era"].reshape(2, N_ERA, K)
     stats["era_recent"] = {fam_name: {str(2000 + y): {"four": round(float(era[f, y, S.FOUR]), 3),
                                                        "six": round(float(era[f, y, S.SIX]), 3),
@@ -625,14 +653,19 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
     faced = np.zeros((P, 2), dtype=np.float32)
     bowled = np.zeros((P, 2), dtype=np.float32)
     last = np.zeros(P, dtype=np.int32)
+    last_fam = np.full(P, -1, dtype=np.int8)
+    last_bat = np.zeros(P, dtype=np.int32)
     for role, arr in (("batter_id", faced), ("bowler_id", bowled)):
         for pid, fam, n, lastday in con.execute(f"""
             SELECT {role}, {fam_sql}, sum(CASE WHEN wides = 0 THEN {wexpr} ELSE 0 END),
                    max(date_diff('day', DATE '1970-01-01', match_date))
             FROM balls WHERE innings_no IN (1, 2) AND {role} IS NOT NULL {cut} GROUP BY ALL""").fetchall():
             if pid in pidx:
-                arr[pidx[pid], fam] = n
-                last[pidx[pid]] = max(last[pidx[pid]], lastday)
+                i = pidx[pid]
+                arr[i, fam] = n
+                last[i] = max(last[i], lastday)
+                if role == "batter_id" and lastday >= last_bat[i]:
+                    last_bat[i], last_fam[i] = lastday, fam
 
     names = list(ids["players"])
     hand = np.zeros(P, dtype=np.int8)
@@ -654,7 +687,7 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
             "bat_pos_recent": bat_pos_recent, "career_balls": career, "appearances": appearances, "bat_pos": bat_pos, "dismissal": dismissal.astype(np.float32),
             "runout_non_striker": ro_ns / ro_all if ro_all else 0.4,
             "wide_runs": wide_runs.astype(np.float32), "bye_runs": bye_runs.astype(np.float32),
-            "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "names": names,
+            "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "last_fam": last_fam, "names": names,
             "hand": hand, "kind": kind}
 
 

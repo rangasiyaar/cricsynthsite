@@ -370,7 +370,8 @@ def _sharpen(p: np.ndarray, y: np.ndarray) -> dict:
     grid = np.round(np.arange(0.5, 3.01, 0.05), 2)
     briers = [float(((1 / (1 + np.exp(-a * lo)) - y) ** 2).mean()) for a in grid]
     k = int(np.argmin(briers))
-    return {"sharpen": float(grid[k]), "brier_sharpened": round(briers[k], 4)}
+    fixed = {str(a): round(float(((1 / (1 + np.exp(-a * lo)) - y) ** 2).mean()), 4) for a in (1.1, 1.2, 1.3)}
+    return {"sharpen": float(grid[k]), "brier_sharpened": round(briers[k], 4), "brier_fixed_stretch": fixed}
 
 
 def _calibration(pairs: list[tuple[float, float]], bins: int = 10) -> list[dict]:
@@ -549,7 +550,8 @@ def write_report(rep: dict, path: Path) -> None:
               f"Brier **{r['brier']}** (coin flip 0.25) · log-loss **{r['log_loss']}** (coin flip {r['log_loss_coin_flip']}) · "
               f"favourite won **{100 * r['accuracy']:.1f}%** of {r['n']} matches", "",
               f"Spread: the best stretch of every win chance (log-odds ×{r.get('sharpen')}) would give Brier "
-              f"{r.get('brier_sharpened')} (fitted on these same matches, so a ceiling; ×1.0 = already right)", "",
+              f"{r.get('brier_sharpened')} (fitted on these same matches, so a ceiling; ×1.0 = already right). "
+              f"Fixed stretches: " + ", ".join(f"×{k} → {v}" for k, v in (r.get("brier_fixed_stretch") or {}).items()), "",
               "| Predicted | Matches | Predicted win % | Actual win % |", "|---|---|---|---|"]
         L += [f"| {c['bin']} | {c['n']} | {100 * c['predicted']:.1f} | {100 * c['observed']:.1f} |" for c in r["calibration"]]
         L.append("")

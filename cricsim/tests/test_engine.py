@@ -383,3 +383,13 @@ def test_chase_wickets_factor(world):
     assert m.factors["chase_w"].shape == (2 * N_CHASE_W, S.K)
     s = simulate(m, _spec(world["world"]), n=300, seed=2)
     assert np.isfinite(s.parts[0].innings[1].runs).all()
+
+
+def test_gap_variants_fit_and_simulate(world):
+    m = fit(world["parquet"], FitConfig(collapse=True, bat_switch=True, era_team_type=True))
+    for name in ("collapse", "bat_switch", "era_tt"):
+        assert name in m.factors
+    assert m.last_fam is not None and len(m.meta["fit"]["era_balls_tt"]) == 4
+    m.meta["sim"] = {"era_ahead": 1.0}
+    s = simulate(m, _spec(world["world"]), n=300, seed=4)
+    assert np.isfinite(s.parts[0].innings[0].runs).all()

@@ -23,6 +23,12 @@ BOWL_FOCUS = 2.0
 PART_TIMER = 0.0003      # base weight for players who rarely bowl (backtest: 8.0 bowlers used v 6.2 real)
 SLOT_USAGE = True        # newcomers' bowling share from their team-sheet slot (backtest, 3 cutoffs: P(2+ wickets)
                          # went from no skill to beating the base rate; newcomers' overs 8 → 20 v 20 real)
+def _club(spec) -> int:
+    """1 for domestic / franchise cricket, 0 for internationals (as the competition factor decides it)."""
+    tt = spec.team_type or ("international" if (spec.comp_key or "").startswith("intl-international") else "club")
+    return int(tt == "club")
+
+
 TEAM_DAY = False         # split match conditions into a shared pitch draw and one per innings (each side's day; variant)
 FORM = 0.0               # weight of recent form (last RECENT matches v expectation) on boundaries / dismissals (variant)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
@@ -96,10 +102,11 @@ class _Tables:
         fmt = FORMAT_LIST.index(spec.format)
         g = GENDERS.index(spec.gender)
         fam = 1 if spec.format == "OD" else 0
-        self.base = (f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam, g)
+        self.base = (f["base"].reshape(len(FORMAT_LIST), 2, 2, MAX_OVERS, 10, K)[fmt, g, inn0] + era_vector(model, fam, g, _club(spec))
                      + model.venue_phase(spec.venue_id, spec.format)[:, None, :])
         self.sit = {name: f[name].reshape(2, n, K)[fam] for name, n in SITUATION.items()}
         self.chase_w = f["chase_w"].reshape(2, N_CHASE_W, K)[fam] if "chase_w" in f else None
+        self.collapse = f["collapse"].reshape(2, 4, K)[fam] if "collapse" in f else None
         nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
         pb = np.array([model.pid(p) for p in order])
         pw = np.array([model.pid(p) for p in bowlers])
@@ -126,6 +133,9 @@ class _Tables:
             t = bat_team if bat_team is not None else (0 if order and order[0] in spec.teams[0].players else 1)
             home = model.home_team(spec.venue_id, [tm.name for tm in spec.teams])
             pair += f["home"][fam * 3 + (2 if home is None else 0 if home == t else 1)]
+        if "bat_switch" in f and model.last_fam is not None:   # batter coming from the other format family
+            sw = (model.last_fam[pb] == 1 - fam).astype(np.int64)
+            pair += f["bat_switch"][fam * 2 + sw][:, None]
         if "bat_exp" in f and model.career_balls is not None:   # how far into their careers these players are
             pair += (f["bat_exp"][fam * N_EXP + exp_bucket(model.career_balls[pb, 0])][:, None]
                      + f["bowl_exp"][fam * N_EXP + exp_bucket(model.career_balls[pw, 1])][None])
@@ -285,6 +295,8 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
     else:
         queue = np.array(list(range(2, 11)) + [11] * 11)
     qpos = np.zeros(n, dtype=np.int64)
+    recent_w = np.zeros((n, 12), dtype=np.int8)       # wickets in the last 12 deliveries (collapse factor)
+    rpos = np.zeros(n, dtype=np.int64)
     if T.overs_plan:
         planned = plan_overs(rng, T.bowl_overs, used, overs, quota, T.plan_eps, T.plan_power)
     else:
@@ -346,6 +358,8 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
              + sit["dots"][S.dots_bucket(dots[a])]
              + sit["spell"][spell[a]] + sit["freehit"][free_hit[a]]
              + T.pair[st, bw])
+        if T.collapse is not None:         # wickets in the last 12 deliveries (FitConfig.collapse)
+            L = L + T.collapse[np.minimum(recent_w[a].sum(1), 3)]
         if T.chase_w is not None:          # chase pressure × wickets down (FitConfig.chase_wickets)
             L = L + T.chase_w[chase_w_bucket(np.full(len(a), inn0 + 1),
                                              (target[a] - runs[a]) if target is not None else 0,
@@ -362,6 +376,8 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
         free_hit[a] = 0
 
         is_wide, is_nb, is_bye, is_w = y == S.WIDE, y == S.NOBALL, y == S.BYE, y == S.WKT
+        recent_w[a, rpos[a]] = is_w
+        rpos[a] = (rpos[a] + 1) % 12
         bat_r = S.BAT_RUNS[y].astype(np.int64)
         if is_nb.any():                                   # runs off the bat from a no-ball
             nbp = P[is_nb][:, S.BATTING_CLASSES]

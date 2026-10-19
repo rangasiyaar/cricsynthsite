@@ -114,7 +114,7 @@ def _era_line(f: np.ndarray, balls: np.ndarray, i: int, asof: float) -> np.ndarr
     return ym + slope * (asof + ERA_AHEAD - xm)
 
 
-def era_vector(model: "Model", fam: int, gender: int | None = None) -> np.ndarray:
+def era_vector(model: "Model", fam: int, gender: int | None = None, club: int | None = None) -> np.ndarray:
     """Log-multipliers for the coming months — scoring levels drift (T20 run rates rose sharply after 2022).
 
     A straight line through the last few seasons' levels (weighted by how many balls each season has, so a
@@ -128,6 +128,11 @@ def era_vector(model: "Model", fam: int, gender: int | None = None) -> np.ndarra
     asof = fit.get("era_asof", i + 1.0)
     balls = fit.get("era_balls", [[1.0] * N_ERA] * 2)[fam]
     out = _era_line(f[fam * N_ERA:(fam + 1) * N_ERA], balls, i, asof)
+    ahead = (model.meta.get("sim") or {}).get("era_ahead")
+    if ahead is not None:            # aim the scoring trend further ahead (dismissals keep the usual aim; variant)
+        far = _era_line(f[fam * N_ERA:(fam + 1) * N_ERA], balls, i, asof + ahead - ERA_AHEAD)
+        keep = np.arange(len(out)) != S.WKT
+        out[keep] = far[keep]
     mode = (model.meta.get("sim") or {}).get("era_wickets", ERA_WICKETS)
     if mode == "latest" or (mode == "latest-od" and fam == 1):
         frac = min(max(asof - i, 0.0), 1.0)                          # share of the latest season played
@@ -137,6 +142,11 @@ def era_vector(model: "Model", fam: int, gender: int | None = None) -> np.ndarra
         blk = fam * 2 + gender
         bg = fit.get("era_balls_g", [[1.0] * N_ERA] * 4)[blk]
         out = out + _era_line(g[blk * N_ERA:(blk + 1) * N_ERA], bg, i, asof)
+    t = model.factors.get("era_tt")
+    if t is not None and club is not None:
+        blk = fam * 2 + club
+        bt = fit.get("era_balls_tt", [[1.0] * N_ERA] * 4)[blk]
+        out = out + _era_line(t[blk * N_ERA:(blk + 1) * N_ERA], bt, i, asof)
     return out.astype(np.float32)
 
 
@@ -164,6 +174,7 @@ class Model:
     usage_recent: np.ndarray | None = None            # (P, 2, deciles) the same over the last RECENT matches
     recent_n: np.ndarray | None = None                # (P, 2) how many recent matches that is (0..RECENT)
     bat_pos_recent: np.ndarray | None = None          # (P, 2) batting position over the last RECENT innings
+    last_fam: np.ndarray | None = None                # (P,) format family of the player's latest match (-1 unknown)
     career_balls: np.ndarray | None = None            # (P, 2) balls faced / bowled so far (experience buckets)
     appearances: np.ndarray | None = None             # (P, 2) recency-weighted matches
     bat_pos: np.ndarray | None = None                 # (P, 2) mean batting position (0 = unknown)
@@ -239,7 +250,7 @@ class Model:
 
     # ── persistence ──
     ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "usage_slot", "usage_recent", "recent_n",
-              "bat_pos_recent", "career_balls", "appearances", "bat_pos",
+              "bat_pos_recent", "career_balls", "appearances", "bat_pos", "last_fam",
               "wide_runs", "bye_runs", "dismissal")
 
     def save(self, path: Path) -> None:
