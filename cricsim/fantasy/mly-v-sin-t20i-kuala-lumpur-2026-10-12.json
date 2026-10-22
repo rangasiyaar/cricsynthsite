@@ -1,0 +1,248 @@
+{
+ "players": {
+  "6667067e": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 61.7,
+   "name": "Syed Aziz Mubarak"
+  },
+  "415d30b6": {
+   "team": 0,
+   "role": "AR",
+   "expected": 108.6,
+   "name": "Virandeep Singh"
+  },
+  "60bec5c3": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 36.4,
+   "name": "Muhammad Amir Azim"
+  },
+  "53967e23": {
+   "team": 0,
+   "role": "WK",
+   "expected": 32.2,
+   "name": "Nazmus Sakib"
+  },
+  "5efa8af3": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 27.8,
+   "name": "Muhamad Syahadat"
+  },
+  "new:Aqeel Wahid": {
+   "team": 0,
+   "role": "AR",
+   "expected": 43.7,
+   "name": "Aqeel Wahid"
+  },
+  "57fcfd3b": {
+   "team": 0,
+   "role": "AR",
+   "expected": 47.4,
+   "name": "Sharvin Muniandy"
+  },
+  "78fcc740": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 57.1,
+   "name": "Pavandeep Singh"
+  },
+  "591cf573": {
+   "team": 0,
+   "role": "AR",
+   "expected": 49.6,
+   "name": "Prashant Madhukar"
+  },
+  "new:Vijay Unni": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 43.1,
+   "name": "Vijay Unni"
+  },
+  "31080a88": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 32.9,
+   "name": "Aslam Khan Malik"
+  },
+  "2a6ccc1c": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 47.5,
+   "name": "Surendran Chandramohan"
+  },
+  "f456ad17": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 32.4,
+   "name": "Riaan Naik"
+  },
+  "e9d6a2ce": {
+   "team": 1,
+   "role": "WK",
+   "expected": 43.7,
+   "name": "Manpreet Singh"
+  },
+  "d5f96736": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 24.7,
+   "name": "Daksh Pratap Singh Tyagi"
+  },
+  "b70ec03e": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 23.0,
+   "name": "Suryansh Gulecha"
+  },
+  "ee3265bb": {
+   "team": 1,
+   "role": "AR",
+   "expected": 42.3,
+   "name": "Kabir Zandani"
+  },
+  "e61cee7b": {
+   "team": 1,
+   "role": "AR",
+   "expected": 56.0,
+   "name": "Harsh Venkataram"
+  },
+  "1f490b28": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 42.5,
+   "name": "Akshay Puri"
+  },
+  "5491a9ff": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 38.4,
+   "name": "Girin Gune"
+  },
+  "4f1d3f68": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 45.6,
+   "name": "Jeevan Santhanam"
+  },
+  "3a44a4e4": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 40.5,
+   "name": "Pranav Sudarshan"
+  }
+ },
+ "single": {
+  "players": [
+   "415d30b6",
+   "6667067e",
+   "78fcc740",
+   "e61cee7b",
+   "591cf573",
+   "2a6ccc1c",
+   "57fcfd3b",
+   "4f1d3f68",
+   "new:Aqeel Wahid",
+   "e9d6a2ce",
+   "new:Vijay Unni"
+  ],
+  "captain": "415d30b6",
+  "vice_captain": "6667067e",
+  "expected": 743.5
+ },
+ "teams": [
+  {
+   "players": [
+    "415d30b6",
+    "6667067e",
+    "78fcc740",
+    "e61cee7b",
+    "591cf573",
+    "2a6ccc1c",
+    "57fcfd3b",
+    "4f1d3f68",
+    "new:Aqeel Wahid",
+    "e9d6a2ce",
+    "1f490b28"
+   ],
+   "captain": "415d30b6",
+   "vice_captain": "6667067e",
+   "expected": 742.9
+  },
+  {
+   "players": [
+    "415d30b6",
+    "78fcc740",
+    "e61cee7b",
+    "2a6ccc1c",
+    "57fcfd3b",
+    "4f1d3f68",
+    "new:Vijay Unni",
+    "1f490b28",
+    "ee3265bb",
+    "3a44a4e4",
+    "53967e23"
+   ],
+   "captain": "415d30b6",
+   "vice_captain": "78fcc740",
+   "expected": 700.1
+  },
+  {
+   "players": [
+    "415d30b6",
+    "6667067e",
+    "78fcc740",
+    "e61cee7b",
+    "591cf573",
+    "2a6ccc1c",
+    "new:Aqeel Wahid",
+    "e9d6a2ce",
+    "60bec5c3",
+    "f456ad17",
+    "d5f96736"
+   ],
+   "captain": "415d30b6",
+   "vice_captain": "6667067e",
+   "expected": 700.8
+  },
+  {
+   "players": [
+    "415d30b6",
+    "6667067e",
+    "78fcc740",
+    "591cf573",
+    "4f1d3f68",
+    "new:Aqeel Wahid",
+    "e9d6a2ce",
+    "new:Vijay Unni",
+    "1f490b28",
+    "ee3265bb",
+    "3a44a4e4"
+   ],
+   "captain": "415d30b6",
+   "vice_captain": "591cf573",
+   "expected": 711.9
+  },
+  {
+   "players": [
+    "415d30b6",
+    "6667067e",
+    "78fcc740",
+    "e61cee7b",
+    "57fcfd3b",
+    "4f1d3f68",
+    "e9d6a2ce",
+    "new:Vijay Unni",
+    "5491a9ff",
+    "31080a88",
+    "f456ad17"
+   ],
+   "captain": "415d30b6",
+   "vice_captain": "6667067e",
+   "expected": 706.4
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

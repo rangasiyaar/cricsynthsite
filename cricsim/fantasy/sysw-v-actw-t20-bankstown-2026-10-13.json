@@ -1,0 +1,248 @@
+{
+ "players": {
+  "c6dfc16b": {
+   "team": 0,
+   "role": "AR",
+   "expected": 55.6,
+   "name": "Lauren Kua"
+  },
+  "d0ff93a9": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 37.4,
+   "name": "Claire Moore"
+  },
+  "2e0b6638": {
+   "team": 0,
+   "role": "AR",
+   "expected": 85.7,
+   "name": "Erin Burns"
+  },
+  "a5f488bc": {
+   "team": 0,
+   "role": "AR",
+   "expected": 76.8,
+   "name": "Sarah Coyte"
+  },
+  "c2ac0db5": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 60.5,
+   "name": "Courtney Sippel"
+  },
+  "78bec461": {
+   "team": 0,
+   "role": "AR",
+   "expected": 64.3,
+   "name": "Maitlan Brown"
+  },
+  "new:Elsa Hunter": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 15.2,
+   "name": "Elsa Hunter"
+  },
+  "30058fe5": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 12.1,
+   "name": "Frankie Nicklin"
+  },
+  "new:Hayley Zauch": {
+   "team": 0,
+   "role": "WK",
+   "expected": 11.2,
+   "name": "Hayley Zauch"
+  },
+  "c6b09326": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 41.1,
+   "name": "Stella Campbell"
+  },
+  "new:Juliette Morton": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 44.4,
+   "name": "Juliette Morton"
+  },
+  "ebdbb0d5": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 28.4,
+   "name": "Paris Bowdler"
+  },
+  "new:Shivani Mehta": {
+   "team": 1,
+   "role": "AR",
+   "expected": 53.5,
+   "name": "Shivani Mehta"
+  },
+  "new:Grace Lyons": {
+   "team": 1,
+   "role": "WK",
+   "expected": 24.0,
+   "name": "Grace Lyons"
+  },
+  "new:Rachel Carroll": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 22.2,
+   "name": "Rachel Carroll"
+  },
+  "new:Caitlin Mair": {
+   "team": 1,
+   "role": "AR",
+   "expected": 48.6,
+   "name": "Caitlin Mair"
+  },
+  "10221023": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 49.9,
+   "name": "Zoe Cooke"
+  },
+  "fcb4448f": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 17.8,
+   "name": "Amber Smith"
+  },
+  "new:Stella Wilde": {
+   "team": 1,
+   "role": "AR",
+   "expected": 44.8,
+   "name": "Stella Wilde"
+  },
+  "52b45daa": {
+   "team": 1,
+   "role": "AR",
+   "expected": 37.9,
+   "name": "Angelina Genford"
+  },
+  "db873292": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 55.5,
+   "name": "Anesu Mushangwe"
+  },
+  "e8fa03ed": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 12.4,
+   "name": "Amy Hunter"
+  }
+ },
+ "single": {
+  "players": [
+   "2e0b6638",
+   "a5f488bc",
+   "78bec461",
+   "c2ac0db5",
+   "c6dfc16b",
+   "db873292",
+   "new:Shivani Mehta",
+   "10221023",
+   "new:Caitlin Mair",
+   "d0ff93a9",
+   "new:Grace Lyons"
+  ],
+  "captain": "2e0b6638",
+  "vice_captain": "a5f488bc",
+  "expected": 736.0
+ },
+ "teams": [
+  {
+   "players": [
+    "2e0b6638",
+    "a5f488bc",
+    "78bec461",
+    "c2ac0db5",
+    "c6dfc16b",
+    "db873292",
+    "new:Shivani Mehta",
+    "10221023",
+    "new:Caitlin Mair",
+    "d0ff93a9",
+    "new:Grace Lyons"
+   ],
+   "captain": "2e0b6638",
+   "vice_captain": "a5f488bc",
+   "expected": 736.0
+  },
+  {
+   "players": [
+    "2e0b6638",
+    "a5f488bc",
+    "78bec461",
+    "c2ac0db5",
+    "db873292",
+    "10221023",
+    "new:Caitlin Mair",
+    "new:Stella Wilde",
+    "new:Juliette Morton",
+    "ebdbb0d5",
+    "new:Grace Lyons"
+   ],
+   "captain": "78bec461",
+   "vice_captain": "a5f488bc",
+   "expected": 685.7
+  },
+  {
+   "players": [
+    "2e0b6638",
+    "a5f488bc",
+    "c2ac0db5",
+    "c6dfc16b",
+    "new:Shivani Mehta",
+    "10221023",
+    "new:Juliette Morton",
+    "c6b09326",
+    "52b45daa",
+    "d0ff93a9",
+    "new:Grace Lyons"
+   ],
+   "captain": "c6dfc16b",
+   "vice_captain": "2e0b6638",
+   "expected": 665.5
+  },
+  {
+   "players": [
+    "a5f488bc",
+    "78bec461",
+    "c2ac0db5",
+    "db873292",
+    "new:Shivani Mehta",
+    "new:Caitlin Mair",
+    "new:Stella Wilde",
+    "c6b09326",
+    "52b45daa",
+    "d0ff93a9",
+    "new:Grace Lyons"
+   ],
+   "captain": "new:Shivani Mehta",
+   "vice_captain": "db873292",
+   "expected": 625.8
+  },
+  {
+   "players": [
+    "2e0b6638",
+    "a5f488bc",
+    "78bec461",
+    "c2ac0db5",
+    "db873292",
+    "new:Caitlin Mair",
+    "new:Juliette Morton",
+    "c6b09326",
+    "52b45daa",
+    "d0ff93a9",
+    "new:Grace Lyons"
+   ],
+   "captain": "2e0b6638",
+   "vice_captain": "a5f488bc",
+   "expected": 700.4
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

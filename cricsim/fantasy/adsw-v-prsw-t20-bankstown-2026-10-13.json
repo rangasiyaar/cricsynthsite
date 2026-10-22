@@ -1,0 +1,248 @@
+{
+ "players": {
+  "5b8826e0": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 38.8,
+   "name": "Emma de Broughe"
+  },
+  "36453b99": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 63.8,
+   "name": "Madeline Penna"
+  },
+  "3785e30d": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 42.9,
+   "name": "Ellie Johnston"
+  },
+  "5f377534": {
+   "team": 0,
+   "role": "WK",
+   "expected": 27.2,
+   "name": "Kate Peterson"
+  },
+  "9b3bcca4": {
+   "team": 0,
+   "role": "AR",
+   "expected": 80.5,
+   "name": "Amanda-Jade Wellington"
+  },
+  "new:Elizabeth Worthley": {
+   "team": 0,
+   "role": "AR",
+   "expected": 37.3,
+   "name": "Elizabeth Worthley"
+  },
+  "new:Isabella Malgioglio": {
+   "team": 0,
+   "role": "AR",
+   "expected": 37.1,
+   "name": "Isabella Malgioglio"
+  },
+  "new:Maggie Clark": {
+   "team": 0,
+   "role": "AR",
+   "expected": 37.1,
+   "name": "Maggie Clark"
+  },
+  "new:Ella Wilson": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 36.7,
+   "name": "Ella Wilson"
+  },
+  "2433382a": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 47.6,
+   "name": "Eleanor Larosa"
+  },
+  "new:Emerson Filsell": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 35.7,
+   "name": "Emerson Filsell"
+  },
+  "ef13bd20": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 49.7,
+   "name": "Katie Mack"
+  },
+  "276f3dde": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 48.2,
+   "name": "Chloe Piparo"
+  },
+  "3812165d": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 33.5,
+   "name": "Mikayla Hinkley"
+  },
+  "59ff3c57": {
+   "team": 1,
+   "role": "AR",
+   "expected": 54.7,
+   "name": "Ines McKeon"
+  },
+  "new:Alyssa Dermody": {
+   "team": 1,
+   "role": "WK",
+   "expected": 19.0,
+   "name": "Alyssa Dermody"
+  },
+  "new:Rebecca McGrath": {
+   "team": 1,
+   "role": "AR",
+   "expected": 38.7,
+   "name": "Rebecca McGrath"
+  },
+  "795ff893": {
+   "team": 1,
+   "role": "AR",
+   "expected": 49.4,
+   "name": "Amy Edgar"
+  },
+  "c35a0b8a": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 51.7,
+   "name": "Lilly Mills"
+  },
+  "3a3bd526": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 34.9,
+   "name": "Ruby Strange"
+  },
+  "923402d8": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 38.6,
+   "name": "Taneale Peschel"
+  },
+  "cd2ad878": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 34.9,
+   "name": "Ebony Hoskin"
+  }
+ },
+ "single": {
+  "players": [
+   "9b3bcca4",
+   "36453b99",
+   "59ff3c57",
+   "c35a0b8a",
+   "ef13bd20",
+   "795ff893",
+   "276f3dde",
+   "2433382a",
+   "3785e30d",
+   "5b8826e0",
+   "5f377534"
+  ],
+  "captain": "9b3bcca4",
+  "vice_captain": "36453b99",
+  "expected": 667.1
+ },
+ "teams": [
+  {
+   "players": [
+    "9b3bcca4",
+    "36453b99",
+    "59ff3c57",
+    "c35a0b8a",
+    "ef13bd20",
+    "795ff893",
+    "276f3dde",
+    "2433382a",
+    "3785e30d",
+    "new:Rebecca McGrath",
+    "5f377534"
+   ],
+   "captain": "9b3bcca4",
+   "vice_captain": "36453b99",
+   "expected": 667.1
+  },
+  {
+   "players": [
+    "9b3bcca4",
+    "c35a0b8a",
+    "ef13bd20",
+    "795ff893",
+    "2433382a",
+    "923402d8",
+    "new:Elizabeth Worthley",
+    "new:Maggie Clark",
+    "new:Ella Wilson",
+    "cd2ad878",
+    "5f377534"
+   ],
+   "captain": "9b3bcca4",
+   "vice_captain": "c35a0b8a",
+   "expected": 597.1
+  },
+  {
+   "players": [
+    "9b3bcca4",
+    "36453b99",
+    "59ff3c57",
+    "ef13bd20",
+    "276f3dde",
+    "2433382a",
+    "3785e30d",
+    "5b8826e0",
+    "923402d8",
+    "3812165d",
+    "5f377534"
+   ],
+   "captain": "36453b99",
+   "vice_captain": "59ff3c57",
+   "expected": 616.9
+  },
+  {
+   "players": [
+    "9b3bcca4",
+    "36453b99",
+    "59ff3c57",
+    "795ff893",
+    "2433382a",
+    "3785e30d",
+    "new:Rebecca McGrath",
+    "new:Isabella Malgioglio",
+    "new:Maggie Clark",
+    "new:Emerson Filsell",
+    "5f377534"
+   ],
+   "captain": "9b3bcca4",
+   "vice_captain": "2433382a",
+   "expected": 619.2
+  },
+  {
+   "players": [
+    "9b3bcca4",
+    "59ff3c57",
+    "c35a0b8a",
+    "ef13bd20",
+    "795ff893",
+    "276f3dde",
+    "new:Elizabeth Worthley",
+    "new:Emerson Filsell",
+    "3a3bd526",
+    "cd2ad878",
+    "5f377534"
+   ],
+   "captain": "59ff3c57",
+   "vice_captain": "c35a0b8a",
+   "expected": 585.1
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

@@ -1,0 +1,248 @@
+{
+ "players": {
+  "32100b2d": {
+   "team": 0,
+   "role": "WK",
+   "expected": 58.3,
+   "name": "Tahlia Wilson"
+  },
+  "new:Emily Powell": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 30.2,
+   "name": "Emily Powell"
+  },
+  "36e2dc83": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 62.2,
+   "name": "Laura Harris"
+  },
+  "new:Olivia Callaghan": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 25.3,
+   "name": "Olivia Callaghan"
+  },
+  "50b558d2": {
+   "team": 0,
+   "role": "AR",
+   "expected": 66.3,
+   "name": "Hannah Darlington"
+  },
+  "new:Alexandra Mavros": {
+   "team": 0,
+   "role": "AR",
+   "expected": 38.2,
+   "name": "Alexandra Mavros"
+  },
+  "47bcaf7a": {
+   "team": 0,
+   "role": "AR",
+   "expected": 47.3,
+   "name": "Jemma Barsby"
+  },
+  "95a055e0": {
+   "team": 0,
+   "role": "AR",
+   "expected": 31.7,
+   "name": "Hasrat Gill"
+  },
+  "af8c3a85": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 47.2,
+   "name": "Nicola Hancock"
+  },
+  "new:Tara French": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 33.9,
+   "name": "Tara French"
+  },
+  "0816fb1e": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 42.7,
+   "name": "Samantha Bates"
+  },
+  "72166006": {
+   "team": 1,
+   "role": "AR",
+   "expected": 84.0,
+   "name": "Grace Harris"
+  },
+  "4f2cf3ed": {
+   "team": 1,
+   "role": "AR",
+   "expected": 57.3,
+   "name": "Annie O'Neil"
+  },
+  "d7ff1adc": {
+   "team": 1,
+   "role": "AR",
+   "expected": 77.1,
+   "name": "Charli Knott"
+  },
+  "324b9eee": {
+   "team": 1,
+   "role": "WK",
+   "expected": 34.8,
+   "name": "Georgia Redmayne"
+  },
+  "803af9e0": {
+   "team": 1,
+   "role": "AR",
+   "expected": 41.8,
+   "name": "Sianna Ginger"
+  },
+  "0b71685d": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 17.6,
+   "name": "Mikayla Wrigley"
+  },
+  "e28011d6": {
+   "team": 1,
+   "role": "AR",
+   "expected": 31.7,
+   "name": "Lucinda Bourke"
+  },
+  "new:Filippa Suesee": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 36.5,
+   "name": "Filippa Suesee"
+  },
+  "b7d7164e": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 33.5,
+   "name": "Lily Bassingthwaighte"
+  },
+  "new:Bonnie Berry": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 36.1,
+   "name": "Bonnie Berry"
+  },
+  "new:Catherine White": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 35.4,
+   "name": "Catherine White"
+  }
+ },
+ "single": {
+  "players": [
+   "72166006",
+   "d7ff1adc",
+   "50b558d2",
+   "36e2dc83",
+   "32100b2d",
+   "4f2cf3ed",
+   "47bcaf7a",
+   "af8c3a85",
+   "0816fb1e",
+   "803af9e0",
+   "new:Alexandra Mavros"
+  ],
+  "captain": "72166006",
+  "vice_captain": "d7ff1adc",
+  "expected": 744.9
+ },
+ "teams": [
+  {
+   "players": [
+    "72166006",
+    "d7ff1adc",
+    "50b558d2",
+    "36e2dc83",
+    "32100b2d",
+    "4f2cf3ed",
+    "47bcaf7a",
+    "af8c3a85",
+    "0816fb1e",
+    "803af9e0",
+    "new:Alexandra Mavros"
+   ],
+   "captain": "72166006",
+   "vice_captain": "d7ff1adc",
+   "expected": 744.9
+  },
+  {
+   "players": [
+    "72166006",
+    "d7ff1adc",
+    "50b558d2",
+    "36e2dc83",
+    "32100b2d",
+    "4f2cf3ed",
+    "47bcaf7a",
+    "af8c3a85",
+    "0816fb1e",
+    "324b9eee",
+    "95a055e0"
+   ],
+   "captain": "36e2dc83",
+   "vice_captain": "50b558d2",
+   "expected": 704.2
+  },
+  {
+   "players": [
+    "72166006",
+    "d7ff1adc",
+    "50b558d2",
+    "32100b2d",
+    "4f2cf3ed",
+    "47bcaf7a",
+    "af8c3a85",
+    "803af9e0",
+    "new:Filippa Suesee",
+    "new:Catherine White",
+    "new:Emily Powell"
+   ],
+   "captain": "d7ff1adc",
+   "vice_captain": "72166006",
+   "expected": 700.4
+  },
+  {
+   "players": [
+    "72166006",
+    "d7ff1adc",
+    "50b558d2",
+    "36e2dc83",
+    "32100b2d",
+    "af8c3a85",
+    "0816fb1e",
+    "803af9e0",
+    "new:Alexandra Mavros",
+    "new:Bonnie Berry",
+    "new:Tara French"
+   ],
+   "captain": "50b558d2",
+   "vice_captain": "d7ff1adc",
+   "expected": 692.7
+  },
+  {
+   "players": [
+    "72166006",
+    "d7ff1adc",
+    "50b558d2",
+    "36e2dc83",
+    "32100b2d",
+    "4f2cf3ed",
+    "0816fb1e",
+    "new:Filippa Suesee",
+    "new:Bonnie Berry",
+    "324b9eee",
+    "b7d7164e"
+   ],
+   "captain": "72166006",
+   "vice_captain": "d7ff1adc",
+   "expected": 711.4
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

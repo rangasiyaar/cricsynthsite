@@ -1,0 +1,248 @@
+{
+ "players": {
+  "f29185a1": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 87.2,
+   "name": "Abhishek Sharma"
+  },
+  "a4cc73aa": {
+   "team": 0,
+   "role": "WK",
+   "expected": 79.2,
+   "name": "Sanju Samson"
+  },
+  "752f7486": {
+   "team": 0,
+   "role": "WK",
+   "expected": 77.2,
+   "name": "Ishan Kishan"
+  },
+  "85ec8e33": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 61.0,
+   "name": "Shreyas Iyer"
+  },
+  "b0482a1d": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 53.3,
+   "name": "Tilak Varma"
+  },
+  "aad0c365": {
+   "team": 0,
+   "role": "AR",
+   "expected": 54.8,
+   "name": "Nitish Kumar Reddy"
+  },
+  "fffa744b": {
+   "team": 0,
+   "role": "AR",
+   "expected": 49.5,
+   "name": "Naman Dhir"
+  },
+  "2e171977": {
+   "team": 0,
+   "role": "AR",
+   "expected": 50.2,
+   "name": "Axar Patel"
+  },
+  "244048f6": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 47.9,
+   "name": "Arshdeep Singh"
+  },
+  "b1ad996b": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 40.3,
+   "name": "Mayank Yadav"
+  },
+  "80b2fb19": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 45.8,
+   "name": "Prince Yadav"
+  },
+  "1fc6ef83": {
+   "team": 1,
+   "role": "WK",
+   "expected": 71.3,
+   "name": "Shai Hope"
+  },
+  "d83c2dbe": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 61.0,
+   "name": "Kamil Pooran"
+  },
+  "48a1d7b7": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 71.5,
+   "name": "Shimron Hetmyer"
+  },
+  "650d5e49": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 55.6,
+   "name": "Rovman Powell"
+  },
+  "d014d5ac": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 49.8,
+   "name": "Sherfane Rutherford"
+  },
+  "238ce998": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 37.1,
+   "name": "Quentin Sampson"
+  },
+  "75224f22": {
+   "team": 1,
+   "role": "AR",
+   "expected": 48.8,
+   "name": "Keemo Paul"
+  },
+  "4175d211": {
+   "team": 1,
+   "role": "AR",
+   "expected": 47.1,
+   "name": "Shamar Springer"
+  },
+  "3feda4fa": {
+   "team": 1,
+   "role": "AR",
+   "expected": 45.6,
+   "name": "Roston Chase"
+  },
+  "97bdec3d": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 41.2,
+   "name": "Gudakesh Motie"
+  },
+  "97290faf": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 39.5,
+   "name": "Shamar Joseph"
+  }
+ },
+ "single": {
+  "players": [
+   "f29185a1",
+   "a4cc73aa",
+   "752f7486",
+   "48a1d7b7",
+   "1fc6ef83",
+   "d83c2dbe",
+   "85ec8e33",
+   "650d5e49",
+   "aad0c365",
+   "b0482a1d",
+   "244048f6"
+  ],
+  "captain": "f29185a1",
+  "vice_captain": "a4cc73aa",
+  "expected": 846.6
+ },
+ "teams": [
+  {
+   "players": [
+    "f29185a1",
+    "a4cc73aa",
+    "752f7486",
+    "48a1d7b7",
+    "1fc6ef83",
+    "d83c2dbe",
+    "85ec8e33",
+    "650d5e49",
+    "aad0c365",
+    "b0482a1d",
+    "244048f6"
+   ],
+   "captain": "f29185a1",
+   "vice_captain": "a4cc73aa",
+   "expected": 846.6
+  },
+  {
+   "players": [
+    "752f7486",
+    "48a1d7b7",
+    "85ec8e33",
+    "aad0c365",
+    "2e171977",
+    "fffa744b",
+    "75224f22",
+    "244048f6",
+    "4175d211",
+    "80b2fb19",
+    "3feda4fa"
+   ],
+   "captain": "752f7486",
+   "vice_captain": "48a1d7b7",
+   "expected": 712.2
+  },
+  {
+   "players": [
+    "a4cc73aa",
+    "752f7486",
+    "48a1d7b7",
+    "1fc6ef83",
+    "d83c2dbe",
+    "85ec8e33",
+    "b0482a1d",
+    "d014d5ac",
+    "4175d211",
+    "80b2fb19",
+    "97bdec3d"
+   ],
+   "captain": "1fc6ef83",
+   "vice_captain": "a4cc73aa",
+   "expected": 769.1
+  },
+  {
+   "players": [
+    "f29185a1",
+    "a4cc73aa",
+    "752f7486",
+    "1fc6ef83",
+    "2e171977",
+    "d014d5ac",
+    "fffa744b",
+    "75224f22",
+    "4175d211",
+    "b1ad996b",
+    "238ce998"
+   ],
+   "captain": "f29185a1",
+   "vice_captain": "a4cc73aa",
+   "expected": 764.4
+  },
+  {
+   "players": [
+    "f29185a1",
+    "a4cc73aa",
+    "48a1d7b7",
+    "1fc6ef83",
+    "d83c2dbe",
+    "85ec8e33",
+    "650d5e49",
+    "aad0c365",
+    "b0482a1d",
+    "d014d5ac",
+    "97290faf"
+   ],
+   "captain": "48a1d7b7",
+   "vice_captain": "d83c2dbe",
+   "expected": 786.0
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

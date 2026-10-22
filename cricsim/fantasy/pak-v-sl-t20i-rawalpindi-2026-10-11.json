@@ -1,0 +1,248 @@
+{
+ "players": {
+  "1aba45cd": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 74.2,
+   "name": "Sahibzada Farhan"
+  },
+  "1777c020": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 63.1,
+   "name": "Fakhar Zaman"
+  },
+  "6d9560f3": {
+   "team": 0,
+   "role": "AR",
+   "expected": 88.3,
+   "name": "Maaz Sadaqat"
+  },
+  "26a8b2fe": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 55.9,
+   "name": "Hasan Nawaz"
+  },
+  "33609a8c": {
+   "team": 0,
+   "role": "AR",
+   "expected": 63.9,
+   "name": "Saim Ayub"
+  },
+  "9de62878": {
+   "team": 0,
+   "role": "AR",
+   "expected": 69.7,
+   "name": "Shadab Khan"
+  },
+  "3cf54e77": {
+   "team": 0,
+   "role": "WK",
+   "expected": 20.4,
+   "name": "Khawaja Nafay"
+  },
+  "new:Muhammad Imran Randhawa": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 13.1,
+   "name": "Muhammad Imran Randhawa"
+  },
+  "9c9af282": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 46.0,
+   "name": "Naseem Shah"
+  },
+  "7ab1eab7": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 48.3,
+   "name": "Mohammad Salman Mirza"
+  },
+  "abb7c76c": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 47.6,
+   "name": "Abrar Ahmed"
+  },
+  "new:Lahiru Udara": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 33.2,
+   "name": "Lahiru Udara"
+  },
+  "e4bf3570": {
+   "team": 1,
+   "role": "AR",
+   "expected": 78.1,
+   "name": "Sineth Jayawardena"
+  },
+  "5d1e7582": {
+   "team": 1,
+   "role": "WK",
+   "expected": 59.6,
+   "name": "Kusal Mendis"
+  },
+  "08548b13": {
+   "team": 1,
+   "role": "AR",
+   "expected": 59.4,
+   "name": "Kamindu Mendis"
+  },
+  "c05f9d20": {
+   "team": 1,
+   "role": "AR",
+   "expected": 56.7,
+   "name": "Sahan Arachchige"
+  },
+  "3ff033bb": {
+   "team": 1,
+   "role": "AR",
+   "expected": 50.4,
+   "name": "Dasun Shanaka"
+  },
+  "a5c48ed1": {
+   "team": 1,
+   "role": "AR",
+   "expected": 37.0,
+   "name": "Chamindu Wickramasinghe"
+  },
+  "f24c6701": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 34.0,
+   "name": "Maheesh Theekshana"
+  },
+  "5750bcb4": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 38.4,
+   "name": "Eshan Malinga"
+  },
+  "dabbd0ae": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 31.9,
+   "name": "Binura Fernando"
+  },
+  "ee1b6c27": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 29.9,
+   "name": "Nuwan Thushara"
+  }
+ },
+ "single": {
+  "players": [
+   "6d9560f3",
+   "e4bf3570",
+   "1aba45cd",
+   "9de62878",
+   "33609a8c",
+   "1777c020",
+   "5d1e7582",
+   "08548b13",
+   "c05f9d20",
+   "26a8b2fe",
+   "7ab1eab7"
+  ],
+  "captain": "6d9560f3",
+  "vice_captain": "e4bf3570",
+  "expected": 844.6
+ },
+ "teams": [
+  {
+   "players": [
+    "6d9560f3",
+    "e4bf3570",
+    "1aba45cd",
+    "9de62878",
+    "33609a8c",
+    "1777c020",
+    "5d1e7582",
+    "08548b13",
+    "c05f9d20",
+    "26a8b2fe",
+    "7ab1eab7"
+   ],
+   "captain": "6d9560f3",
+   "vice_captain": "e4bf3570",
+   "expected": 844.6
+  },
+  {
+   "players": [
+    "6d9560f3",
+    "e4bf3570",
+    "1aba45cd",
+    "9de62878",
+    "33609a8c",
+    "1777c020",
+    "5d1e7582",
+    "c05f9d20",
+    "26a8b2fe",
+    "3ff033bb",
+    "abb7c76c"
+   ],
+   "captain": "1aba45cd",
+   "vice_captain": "e4bf3570",
+   "expected": 820.9
+  },
+  {
+   "players": [
+    "6d9560f3",
+    "e4bf3570",
+    "9de62878",
+    "33609a8c",
+    "1777c020",
+    "5d1e7582",
+    "3ff033bb",
+    "7ab1eab7",
+    "abb7c76c",
+    "9c9af282",
+    "f24c6701"
+   ],
+   "captain": "9de62878",
+   "vice_captain": "33609a8c",
+   "expected": 750.6
+  },
+  {
+   "players": [
+    "6d9560f3",
+    "e4bf3570",
+    "9de62878",
+    "33609a8c",
+    "5d1e7582",
+    "08548b13",
+    "c05f9d20",
+    "26a8b2fe",
+    "9c9af282",
+    "5750bcb4",
+    "ee1b6c27"
+   ],
+   "captain": "e4bf3570",
+   "vice_captain": "5d1e7582",
+   "expected": 753.8
+  },
+  {
+   "players": [
+    "6d9560f3",
+    "e4bf3570",
+    "1aba45cd",
+    "1777c020",
+    "5d1e7582",
+    "08548b13",
+    "3ff033bb",
+    "7ab1eab7",
+    "abb7c76c",
+    "9c9af282",
+    "new:Lahiru Udara"
+   ],
+   "captain": "1aba45cd",
+   "vice_captain": "1777c020",
+   "expected": 754.1
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}

@@ -1,0 +1,248 @@
+{
+ "players": {
+  "bf74b130": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 64.5,
+   "name": "Finn Allen"
+  },
+  "4663bd23": {
+   "team": 0,
+   "role": "WK",
+   "expected": 68.0,
+   "name": "Tim Seifert"
+  },
+  "eade4650": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 56.8,
+   "name": "Daryl Mitchell"
+  },
+  "9a46c4e5": {
+   "team": 0,
+   "role": "AR",
+   "expected": 62.9,
+   "name": "Glenn Phillips"
+  },
+  "972f217b": {
+   "team": 0,
+   "role": "BAT",
+   "expected": 42.2,
+   "name": "Bevon Jacobs"
+  },
+  "e38bce7a": {
+   "team": 0,
+   "role": "AR",
+   "expected": 54.2,
+   "name": "Michael Bracewell"
+  },
+  "e4a0deae": {
+   "team": 0,
+   "role": "AR",
+   "expected": 48.7,
+   "name": "Mitchell Santner"
+  },
+  "05b1aef8": {
+   "team": 0,
+   "role": "AR",
+   "expected": 36.1,
+   "name": "Nathan Smith"
+  },
+  "350bb1b1": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 38.0,
+   "name": "Adam Milne"
+  },
+  "e84ac20c": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 40.0,
+   "name": "Matt Henry"
+  },
+  "2f9d0389": {
+   "team": 0,
+   "role": "BOWL",
+   "expected": 36.7,
+   "name": "Lockie Ferguson"
+  },
+  "a4cc73aa": {
+   "team": 1,
+   "role": "WK",
+   "expected": 59.9,
+   "name": "Sanju Samson"
+  },
+  "f29185a1": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 59.2,
+   "name": "Abhishek Sharma"
+  },
+  "752f7486": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 55.8,
+   "name": "Ishan Kishan"
+  },
+  "85ec8e33": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 49.8,
+   "name": "Shreyas Iyer"
+  },
+  "b0482a1d": {
+   "team": 1,
+   "role": "BAT",
+   "expected": 42.3,
+   "name": "Tilak Varma"
+  },
+  "aad0c365": {
+   "team": 1,
+   "role": "AR",
+   "expected": 49.8,
+   "name": "Nitish Kumar Reddy"
+  },
+  "fffa744b": {
+   "team": 1,
+   "role": "AR",
+   "expected": 48.3,
+   "name": "Naman Dhir"
+  },
+  "2e171977": {
+   "team": 1,
+   "role": "AR",
+   "expected": 47.4,
+   "name": "Axar Patel"
+  },
+  "2e81a32d": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 43.7,
+   "name": "Bhuvneshwar Kumar"
+  },
+  "244048f6": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 42.5,
+   "name": "Arshdeep Singh"
+  },
+  "b1ad996b": {
+   "team": 1,
+   "role": "BOWL",
+   "expected": 37.6,
+   "name": "Mayank Yadav"
+  }
+ },
+ "single": {
+  "players": [
+   "4663bd23",
+   "bf74b130",
+   "9a46c4e5",
+   "a4cc73aa",
+   "f29185a1",
+   "eade4650",
+   "752f7486",
+   "e38bce7a",
+   "aad0c365",
+   "85ec8e33",
+   "2e81a32d"
+  ],
+  "captain": "4663bd23",
+  "vice_captain": "bf74b130",
+  "expected": 724.7
+ },
+ "teams": [
+  {
+   "players": [
+    "4663bd23",
+    "bf74b130",
+    "9a46c4e5",
+    "a4cc73aa",
+    "f29185a1",
+    "eade4650",
+    "752f7486",
+    "e38bce7a",
+    "aad0c365",
+    "85ec8e33",
+    "2e81a32d"
+   ],
+   "captain": "4663bd23",
+   "vice_captain": "bf74b130",
+   "expected": 724.7
+  },
+  {
+   "players": [
+    "4663bd23",
+    "9a46c4e5",
+    "e38bce7a",
+    "aad0c365",
+    "e4a0deae",
+    "fffa744b",
+    "2e171977",
+    "2e81a32d",
+    "b0482a1d",
+    "e84ac20c",
+    "350bb1b1"
+   ],
+   "captain": "e4a0deae",
+   "vice_captain": "e38bce7a",
+   "expected": 618.9
+  },
+  {
+   "players": [
+    "4663bd23",
+    "bf74b130",
+    "9a46c4e5",
+    "a4cc73aa",
+    "f29185a1",
+    "eade4650",
+    "752f7486",
+    "fffa744b",
+    "2e171977",
+    "972f217b",
+    "b1ad996b"
+   ],
+   "captain": "f29185a1",
+   "vice_captain": "a4cc73aa",
+   "expected": 691.8
+  },
+  {
+   "players": [
+    "4663bd23",
+    "bf74b130",
+    "9a46c4e5",
+    "eade4650",
+    "752f7486",
+    "e38bce7a",
+    "aad0c365",
+    "85ec8e33",
+    "244048f6",
+    "b0482a1d",
+    "972f217b"
+   ],
+   "captain": "9a46c4e5",
+   "vice_captain": "eade4650",
+   "expected": 680.0
+  },
+  {
+   "players": [
+    "9a46c4e5",
+    "a4cc73aa",
+    "752f7486",
+    "e38bce7a",
+    "aad0c365",
+    "85ec8e33",
+    "e4a0deae",
+    "2e171977",
+    "2e81a32d",
+    "244048f6",
+    "b1ad996b"
+   ],
+   "captain": "a4cc73aa",
+   "vice_captain": "752f7486",
+   "expected": 640.1
+  }
+ ],
+ "fielding": true,
+ "simulations": 20000
+}
