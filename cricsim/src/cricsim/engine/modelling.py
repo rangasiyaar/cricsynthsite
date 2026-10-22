@@ -310,7 +310,8 @@ def fantasy_projections(model: Model, spec: MatchSpec, roles: dict[str, str] | N
     from cricsim.fantasy import sim_points
     sims = simulate(model, spec, n=n, scenario=sc or Scenario(), seed=SEED)
     roles = infer_roles(model, spec, roles)
-    pids, pts = sim_points(sims, roles)
+    fielding = model.fielding is not None
+    pids, pts = sim_points(sims, roles, model=model, fielding=fielding)
     team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
     best = pts.argmax(1)
     rows = []
@@ -321,7 +322,9 @@ def fantasy_projections(model: Model, spec: MatchSpec, roles: dict[str, str] | N
                      "p90": _r(np.percentile(x, 90), 1), "p_top_scorer": _r((best == j).mean(), 4)})
     rows.sort(key=lambda r: -r["mean"])
     return {"players": rows, "simulations": n,
-            "scoring": "Dream11-style T20 points without catches, run-outs and maidens (not simulated per fielder)"}, \
+            "scoring": "Dream11-style T20 points" + (", with catches, stumpings and run-outs shared by each player's "
+                                                     "usual fielding share; no maidens" if fielding else
+                                                     " without catches, run-outs and maidens")}, \
         (pids, pts, roles, team_of)
 
 
@@ -344,7 +347,7 @@ def fantasy_portfolio(model: Model, spec: MatchSpec, k: int = 5, roles=None, n: 
     from cricsim.fantasy import portfolio
     proj, (pids, pts, roles, team_of) = fantasy_projections(model, spec, roles, n)
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
-    teams = portfolio(pids, pts, team_of, k, use_roles)
+    teams = portfolio(pids, pts, team_of, k, use_roles, captains=5)
     name = {p: who(model, p)["name"] for p in pids}
     col = {p: i for i, p in enumerate(pids)}
     best = None
