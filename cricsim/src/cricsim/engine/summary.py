@@ -120,7 +120,7 @@ def _players(sims: MatchSims, model: Model, team: int, mask) -> list[dict]:
     marks = (25, 50, 75, 100, 150) if fmt_od else (10, 20, 30, 50, 100)
     bat_logs = _batting_logs(sims, team, mask)
     bowl_logs = _batting_logs(sims, 1 - team, mask)
-    players = spec.teams[team].players
+    players = spec.teams[team].everyone
     rows = []
     # batting
     br = {p: [] for p in players}

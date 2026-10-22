@@ -41,7 +41,7 @@ def bowling_points(balls, runs, wkts, bowled_lbw):
 def sim_points(sims, roles: dict[str, str] | None = None) -> tuple[list[str], np.ndarray]:
     """(player ids, (n_sims, 22) points per simulation)."""
     roles = roles or {}
-    pids = list(dict.fromkeys(p for t in sims.spec.teams for p in [*t.players, *(t.bowling_xi or [])]))
+    pids = [p for t in sims.spec.teams for p in t.everyone]
     col = {p: i for i, p in enumerate(pids)}
     out = []
     for part in sims.parts:
@@ -183,7 +183,7 @@ def main() -> None:
         spec, scenario = spec_from_dict(cov)
         sims = simulate(model, spec, n=n, scenario=scenario, seed=seed)
         roles = {p: r for t in cov["teams"] for p, r in zip(t["players"], t.get("roles") or [])}
-        team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
+        team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
         name = {p: model.names[model.pid(p)] if model.knows(p) else p for p in team_of}
         pids, pts = sim_points(sims, roles)
         mean = dict(zip(pids, pts.mean(0)))

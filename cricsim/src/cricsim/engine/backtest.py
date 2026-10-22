@@ -303,7 +303,7 @@ def _xi_score(pids, pts, team) -> np.ndarray:
 def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool,
              actual_order: dict | None = None) -> dict:
     """Pick fantasy XIs from the simulations, score them on the real match (no fielding points either side)."""
-    team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
+    team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
     real = actual_points(con, mt["match_id"])
     real = {p: real.get(p, 4.0) for p in team_of}            # in the XI but did nothing: playing points only
     pids, pts = sim_points(sims)
@@ -356,7 +356,7 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     if bowlers_known:   # upper bound for entering the bowling plan: who actually bowled
         used = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
                                           [mt["match_id"]]).fetchall()}
-        spec2 = MatchSpec(spec.format, spec.gender, tuple(TeamSpec(t.name, t.players, [p for p in t.players if p in used])
+        spec2 = MatchSpec(spec.format, spec.gender, tuple(TeamSpec(t.name, t.players, [p for p in t.everyone if p in used], bowling_xi=t.bowling_xi)
                                                           for t in spec.teams),
                           venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first,
                           team_type=spec.team_type)
@@ -375,7 +375,7 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
                 k = {p: v for (_, p), v in actual_order.items() if p in t.players}
                 return sorted(t.players, key=lambda p: (k.get(p, 10 ** 6), t.players.index(p)))
             spec3 = MatchSpec(spec.format, spec.gender,
-                              tuple(TeamSpec(t.name, order(t), [p for p in t.players if p in used]) for t in spec.teams),
+                              tuple(TeamSpec(t.name, order(t), [p for p in t.everyone if p in used], bowling_xi=t.bowling_xi) for t in spec.teams),
                               venue_id=spec.venue_id, comp_key=spec.comp_key, batting_first=spec.batting_first,
                               team_type=spec.team_type)
             pids3, pts3 = sim_points(simulate(model, spec3, n=n_sims, seed=zlib.crc32(mt["match_id"].encode())))

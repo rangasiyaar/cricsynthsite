@@ -59,8 +59,8 @@ def scorecard(model: Model, sims, i: int, roles: dict[str, str]) -> dict:
         off += part.n
     j = i - off
     name = {p: model.names[model.pid(p)] if model.knows(p) else p.replace("new:", "") for t in sims.spec.teams
-            for p in t.players}
-    pts = {p: 4 for t in sims.spec.teams for p in t.players}
+            for p in t.everyone}
+    pts = {p: 4 for t in sims.spec.teams for p in t.everyone}
     innings = []
     for lg in part.innings:
         bat = []
@@ -133,7 +133,7 @@ def main(model_dir: Path, coverage: Path, top_scorer: str | None, n: int, seed: 
     spec, scenario = spec_from_dict(cov)
     sims = simulate(model, spec, n=n, scenario=scenario, seed=seed)
     roles = {p: r for t in cov["teams"] for p, r in zip(t["players"], t.get("roles") or [])}
-    team_of = {p: k for k, t in enumerate(spec.teams) for p in t.players}
+    team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
 
     runs, totals, top = [], [], []
     for part in sims.parts:

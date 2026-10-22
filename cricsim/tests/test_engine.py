@@ -423,3 +423,18 @@ def test_impact_xis_bat_and_field_eleven(world):
     pids, pts = sim_points(s)
     assert set(t.bowling_xi) <= set(pids) and np.isfinite(pts).all()
     summarize(s, m)
+
+
+def test_backtest_paths_with_a_fielding_only_player(world):
+    from cricsim.engine.backtest import impact_xis
+    from cricsim.fantasy import pick_xi, sim_points
+    m = world["model"]
+    spec = _spec(world["world"])
+    squad = list(spec.teams[0].players) + [spec.teams[1].players[-1]]
+    t = impact_xis(m, spec.teams[0], squad, "T20")
+    sp = MatchSpec("T20", "male", (t, spec.teams[1]), venue_id="premier-oval", comp_key="premier-league")
+    s = simulate(m, sp, n=200, seed=7)
+    pids, pts = sim_points(s)
+    team_of = {p: k for k, tm in enumerate(sp.teams) for p in tm.everyone}
+    pick_xi(dict(zip(pids, pts.mean(0))), team_of)
+    summarize(s, m)

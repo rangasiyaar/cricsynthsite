@@ -15,6 +15,11 @@ class TeamSpec:
     bowling_xi: list[str] | None = None         # the 11 in the field when it differs from the batting 11
                                                 # (an Impact Player substitute); default: players
 
+    @property
+    def everyone(self) -> list[str]:
+        """Everyone who takes part: the batting 11 plus anyone who only fields."""
+        return list(dict.fromkeys([*self.players, *(self.bowling_xi or [])]))
+
 
 @dataclass
 class MatchSpec:
