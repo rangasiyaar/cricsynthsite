@@ -1,0 +1,51 @@
+name: Fantasy check
+
+# After a match: how much of the best possible fantasy XI our pre-match picks captured (one XI, and sets of
+# 5 / 10 / 20 teams), scored on the result file in cricsim/results with the same points table.
+on:
+  workflow_dispatch:
+    inputs:
+      match:
+        description: "Fixture id (cricsim/fixtures/<id>.json, with cricsim/results/<id>.json)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      # the publish workflow's daily cache: same data and model as the forecasts
+      - name: Day key
+        id: day
+        run: echo "key=engine-$(date -u +%Y-%m-%d)-${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Fit (all data)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - name: Check
+        env: { MATCH: "${{ inputs.match }}" }
+        run: |
+          uv run python -m cricsim.resolve --parquet data/parquet --fixture "cricsim/fixtures/$MATCH.json" \
+            --out "data/coverage/$MATCH.json"
+          uv run python -m cricsim.fantasy_check --model data/models/latest --coverage "data/coverage/$MATCH.json" \
+            --fixture "cricsim/fixtures/$MATCH.json" --result "cricsim/results/$MATCH.json" | tee -a "$GITHUB_STEP_SUMMARY"

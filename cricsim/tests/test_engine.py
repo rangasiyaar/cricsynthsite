@@ -494,3 +494,24 @@ def test_decisive_mean_leans_to_the_favourite():
     m = decisive_mean(pts, win, 1.2)
     assert m[0] > 70 and m[1] < 30 and abs(m.sum() - 100) < 1e-6
     assert np.allclose(decisive_mean(pts, win, 1.0), pts.mean(0))
+
+
+def test_fantasy_check_scores_a_result_file(world):
+    from cricsim.fantasy_check import check
+    spec = _spec(world["world"])
+    a, b = spec.teams
+    cov = {"format": "T20", "gender": "male", "venue_id": spec.venue_id, "comp_key": spec.comp_key,
+           "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
+    fixture = {"teams": [{"name": t.name, "players": [f"Player {p}" for p in t.players],
+                          "roles": ["WK"] + ["BAT"] * 4 + ["AR"] * 2 + ["BOWL"] * 4} for t in spec.teams]}
+    card = {"innings": [{"batting": [
+        {"name": f"Player {a.players[0]}", "dismissal": f"c Player {b.players[0]} b Player {b.players[-1]}",
+         "runs": 60, "balls": 30, "fours": 6, "sixes": 3},
+        {"name": f"Player {a.players[1]}", "dismissal": f"run out (Player {b.players[2]})", "runs": 5, "balls": 6,
+         "fours": 0, "sixes": 0}],
+        "bowling": [{"name": f"Player {b.players[-1]}", "overs": "4", "runs": 20, "wickets": 1}]}]}
+    r = check(world["model"], cov, fixture, card, n=300)
+    real = r["real"]
+    assert real[a.players[0]] == 4 + 60 + 24 + 18 + 8 + 6 and real[b.players[0]] == 4 + 8
+    assert real[b.players[2]] == 16 and real[b.players[-1]] == 4 + 30 + 4
+    assert r["best"]["points"] >= r["ours"]["points"] > 0 and r["sets"][20] >= r["sets"][5]
