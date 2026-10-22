@@ -98,6 +98,8 @@ def check(model: Model, cov: dict, fixture: dict, card: dict, n: int = 20000) ->
     teams = portfolio(pids, pts, team_of, k=20, roles=use_roles, captains=5)
     got = [team_points(*t, real) for t in teams]
     out["sets"] = {k: max(got[:k]) for k in (5, 10, 20)}
+    out["teams"] = [{"xi": sorted(t[0], key=lambda p: -exp[p]), "c": t[1], "vc": t[2], "points": g}
+                    for t, g in zip(teams, got)]
     return out
 
 
@@ -125,6 +127,12 @@ def main(model_dir: Path, coverage: Path, fixture: Path, result: Path, n: int) -
         for p in side["xi"]:
             tag = " (C)" if p == side["c"] else " (VC)" if p == side["vc"] else ""
             L.append(f"| {lab[p]}{tag} | {teams[tm[p]]} | {r['roles'].get(p, '')} | {exp[p]:.0f} | {real[p]:.0f} |")
+    L += ["", "### Team set (in the order the set adds them: the first 5 are the 5-team set, the first 10 the 10-team set)",
+          "", "| # | Captain | Vice-captain | Other players | Points | Share of best XI |", "|---|---|---|---|---|---|"]
+    for i, t in enumerate(r["teams"], 1):
+        rest = ", ".join(lab[p] for p in t["xi"] if p not in (t["c"], t["vc"]))
+        L.append(f"| {i} | {lab[t['c']]} | {lab[t['vc']]} | {rest} | {t['points']:.0f} | "
+                 f"{100 * t['points'] / best:.1f}% |")
     L += ["", "### Everyone (real points)", "", "| Player | Team | Expected | Real |", "|---|---|---|---|"]
     L += [f"| {lab[p]} | {teams[tm[p]]} | {exp[p]:.0f} | {real[p]:.0f} |" for p in sorted(real, key=lambda q: -real[q])]
     click.echo("\n".join(L))
