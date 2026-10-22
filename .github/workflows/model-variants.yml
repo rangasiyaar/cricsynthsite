@@ -21,10 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         # cutoff "latest": test on the most recent matches (--latest N in args), trained up to the first of them
-        cutoff: ["latest"]
+        cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: fantasy-last-5, rules: new, targets: derived, args: "--latest 5 --order sheet --roles --twelve --fielding both" }
-          - { name: fantasy-last-20, rules: new, targets: derived, args: "--latest 20 --order sheet --roles --twelve --fielding both" }
+          - { name: captain-fixes, rules: new, targets: derived, args: "--order sheet --roles --twelve --fielding both" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
       CRICDATA_TARGETS: ${{ matrix.variant.targets }}

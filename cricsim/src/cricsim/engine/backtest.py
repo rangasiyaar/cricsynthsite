@@ -366,6 +366,20 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     out["cap_all_rounder"] = by_rule(lambda p: is_ar[p])
     out["cap_favoured_side"] = by_rule(lambda p: team_of[p] == fav_side)
     out["cap_floor"] = by_rule(lambda p: True, p25)
+    # winner's-curse correction: the highest of several noisy estimates is too high, more so the noisier it is
+    for k in (0.1, 0.2, 0.3):
+        out[f"cap_shrink_{k}"] = by_rule(lambda p: True, {p: mean[p] - k * sd[p] for p in pids})
+    # more decisive matches: reweight simulations so the favourite wins more often (log-odds × s)
+    p0 = float((win == 0).mean())
+    for st in (1.2, 1.4):
+        if 0 < p0 < 1:
+            q0 = 1 / (1 + np.exp(-st * np.log(p0 / (1 - p0))))
+            w = np.where(win == 0, q0 / p0, (1 - q0) / (1 - p0))
+            wmean = dict(zip(pids, (pts * w[:, None]).sum(0) / w.sum()))
+        else:
+            wmean = mean
+        out[f"cap_stretch_{st}"] = by_rule(lambda p: True, wmean)
+        out[f"xi_stretch_{st}"] = team_points(*pick_xi(wmean, team_of), real)
     # where the points go: our XI with hindsight captain / vice-captain
     rc = sorted(xi, key=lambda p: -real[p])
     out["oracle_captain"] = team_points(xi, rc[0], rc[1], real)
@@ -612,6 +626,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
                                                    "cap_top_order", "cap_all_rounder", "cap_favoured_side", "cap_floor",
+                                                   "cap_shrink_0.1", "cap_shrink_0.2", "cap_shrink_0.3",
+                                                   "cap_stretch_1.2", "cap_stretch_1.4", "xi_stretch_1.2", "xi_stretch_1.4",
                                                    "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
                                                    "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
