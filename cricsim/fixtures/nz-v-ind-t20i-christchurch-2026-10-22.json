@@ -1,0 +1,43 @@
+{
+  "id": "nz-v-ind-t20i-christchurch-2026-10-22",
+  "title": "New Zealand v India",
+  "date": "2026-10-22",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "India tour of New Zealand 2026 · 1st T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Hagley Oval, Christchurch",
+  "venue_search": "hagley",
+  "status": "scheduled",
+  "published": true,
+  "batting_first": 0,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": ["Finn Allen", "Tim Seifert", "Daryl Mitchell", "Glenn Phillips", "Bevon Jacobs",
+                  "Michael Bracewell", "Mitchell Santner", "Nathan Smith", "Adam Milne", "Matt Henry",
+                  "Lockie Ferguson"],
+      "roles": ["BAT", "WK", "BAT", "AR", "BAT", "AR", "AR", "AR", "BOWL", "BOWL", "BOWL"],
+      "squad": ["Finn Allen", "Tim Seifert", "Daryl Mitchell", "Glenn Phillips", "Bevon Jacobs",
+                "Michael Bracewell", "Mitchell Santner", "Nathan Smith", "Adam Milne", "Matt Henry",
+                "Lockie Ferguson", "Devon Conway", "Kyle Jamieson", "Josh Clarkson", "Jacob Duffy", "Blair Tickner"],
+      "captain": "Mitchell Santner"
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": ["Sanju Samson", "Abhishek Sharma", "Ishan Kishan", "Shreyas Iyer", "Tilak Varma",
+                  "Nitish Kumar Reddy", "Naman Dhir", "Axar Patel", "Bhuvneshwar Kumar", "Arshdeep Singh",
+                  "Mayank Yadav"],
+      "roles": ["WK", "BAT", "BAT", "BAT", "BAT", "AR", "AR", "AR", "BOWL", "BOWL", "BOWL"],
+      "squad": ["Sanju Samson", "Abhishek Sharma", "Ishan Kishan", "Shreyas Iyer", "Tilak Varma",
+                "Nitish Kumar Reddy", "Naman Dhir", "Axar Patel", "Bhuvneshwar Kumar", "Arshdeep Singh",
+                "Mayank Yadav", "Prince Yadav", "Kuldeep Yadav", "Shivam Dube", "Varun Chakaravarthy",
+                "Vaibhav Sooryavanshi"],
+      "captain": "Shreyas Iyer"
+    }
+  ]
+}
