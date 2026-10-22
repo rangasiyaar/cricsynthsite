@@ -1,0 +1,318 @@
+{
+ "id": "nz-v-ind-t20i-christchurch-2026-10-22",
+ "innings": [
+  {
+   "team": "New Zealand",
+   "runs": 225,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Tim Seifert",
+     "dismissal": "c Sanju Samson b Mayank Yadav",
+     "runs": 24,
+     "balls": 17,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Finn Allen",
+     "dismissal": "c Tilak Varma b Axar Patel",
+     "runs": 45,
+     "balls": 24,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Daryl Mitchell",
+     "dismissal": "c Bhuvneshwar Kumar b Arshdeep Singh",
+     "runs": 28,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Glenn Phillips",
+     "dismissal": "not out",
+     "runs": 82,
+     "balls": 40,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Bevon Jacobs",
+     "dismissal": "run out (Arshdeep Singh)",
+     "runs": 31,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Michael Bracewell",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Bhuvneshwar Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 0,
+     "no_balls": 2,
+     "wides": 2
+    },
+    {
+     "name": "Arshdeep Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mayank Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Axar Patel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nitish Kumar Reddy",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Seifert",
+     "score": 49,
+     "over": "4.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Finn Allen",
+     "score": 80,
+     "over": "7.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Daryl Mitchell",
+     "score": 122,
+     "over": "12.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bevon Jacobs",
+     "score": 195,
+     "over": "17.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 65
+  },
+  {
+   "team": "India",
+   "runs": 230,
+   "wickets": 6,
+   "overs": "19.4",
+   "batting": [
+    {
+     "name": "Sanju Samson",
+     "dismissal": "b Mitchell Santner",
+     "runs": 67,
+     "balls": 33,
+     "fours": 8,
+     "sixes": 4
+    },
+    {
+     "name": "Abhishek Sharma",
+     "dismissal": "c Adam Milne b Michael Bracewell",
+     "runs": 29,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Tilak Varma",
+     "dismissal": "c Lockie Ferguson b Michael Bracewell",
+     "runs": 6,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shreyas Iyer",
+     "dismissal": "c Mitchell Santner b Adam Milne",
+     "runs": 42,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Ishan Kishan",
+     "dismissal": "c Finn Allen b Mitchell Santner",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Axar Patel",
+     "dismissal": "c (sub)Devon Conway b Lockie Ferguson",
+     "runs": 24,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Naman Dhir",
+     "dismissal": "not out",
+     "runs": 42,
+     "balls": 15,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Nitish Kumar Reddy",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Matt Henry",
+     "overs": "3.4",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Adam Milne",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Lockie Ferguson",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 8
+    },
+    {
+     "name": "Michael Bracewell",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mitchell Santner",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nathan Smith",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Abhishek Sharma",
+     "score": 93,
+     "over": "5.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sanju Samson",
+     "score": 115,
+     "over": "8.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Tilak Varma",
+     "score": 117,
+     "over": "9.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ishan Kishan",
+     "score": 122,
+     "over": "10.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Axar Patel",
+     "score": 167,
+     "over": "14.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Shreyas Iyer",
+     "score": 210,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 16,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 94
+  }
+ ],
+ "winner": "India",
+ "result": "India won by 4 wickets"
+}
