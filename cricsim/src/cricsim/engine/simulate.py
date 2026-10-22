@@ -29,6 +29,9 @@ def _club(spec) -> int:
     return int(tt == "club")
 
 
+DYN_ORDER = 0.0          # >0: next batter in by usual entry point v how far the innings has gone, with this
+                         # spread (share of the innings); 0 = team-sheet order (variant)
+DYN_LAMBDA = 0.5         # pull back towards team-sheet order, per place skipped
 TEAM_DAY = False         # split match conditions into a shared pitch draw and one per innings (each side's day; variant)
 FORM = 0.0               # weight of recent form (last RECENT matches v expectation) on boundaries / dismissals (variant)
 RECENT_ROLE = 0.0        # weight of the last RECENT matches in a player's bowling share (variant until tested)
@@ -109,6 +112,13 @@ class _Tables:
         self.collapse = f["collapse"].reshape(2, 4, K)[fam] if "collapse" in f else None
         nk, nh = len(S.BOWLING_KINDS), len(S.HANDS)
         pb = np.array([model.pid(p) for p in order])
+        # who walks in next: each batter's usual entry point (variant; see simulate_innings)
+        self.dyn_order = float((model.meta.get("sim") or {}).get("dyn_order", DYN_ORDER) or 0)
+        self.entry = None
+        if self.dyn_order and model.entry_frac is not None and model.pos_entry is not None:
+            ef = model.entry_frac[pb, fam]
+            pe = model.pos_entry[fam, np.minimum(np.arange(len(pb)), 10)]
+            self.entry = np.where(ef >= 0, ef, pe).astype(np.float64)
         pw = np.array([model.pid(p) for p in bowlers])
 
         def attr(pids, ids, arr, key, conv):
@@ -295,6 +305,10 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
     else:
         queue = np.array(list(range(2, 11)) + [11] * 11)
     qpos = np.zeros(n, dtype=np.int64)
+    dyn = T.entry is not None and start is None and len(order or []) == 11
+    if dyn:
+        waiting = np.zeros((n, 11), dtype=bool)
+        waiting[:, 2:] = True
     recent_w = np.zeros((n, 12), dtype=np.int8)       # wickets in the last 12 deliveries (collapse factor)
     rpos = np.zeros(n, dtype=np.int64)
     if T.overs_plan:
@@ -432,8 +446,19 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
             wkts[wa] += 1
             over_wkts[wa, ov[is_w]] += 1
             # next batter in
-            nb_slot = queue[np.minimum(qpos[wa], len(queue) - 1)]
-            qpos[wa] += 1
+            if dyn:             # the batter whose usual entry point fits this stage of the innings best
+                W = waiting[wa]
+                frac = legal[wa] / (overs * bpo)
+                rank = np.cumsum(W, axis=1) - 1
+                score = -np.abs(T.entry[None, :] - frac[:, None]) / T.dyn_order - DYN_LAMBDA * rank
+                score = np.where(W, score + rng.gumbel(size=score.shape), -np.inf)
+                pick = score.argmax(1)
+                has = W.any(1)
+                nb_slot = np.where(has, pick, 11)
+                waiting[wa[has], pick[has]] = False
+            else:
+                nb_slot = queue[np.minimum(qpos[wa], len(queue) - 1)]
+                qpos[wa] += 1
             striker[wa] = np.where(out_slot == striker[wa], nb_slot, striker[wa])
             non[wa] = np.where(out_slot == non[wa], nb_slot, non[wa])
         # strike rotation on odd runs (completed runs; boundaries are even except 5s, ignored)

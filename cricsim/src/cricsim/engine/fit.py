@@ -578,6 +578,34 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
         if pid in pidx:
             bat_pos[pidx[pid], fam] = pos
 
+    # when in the innings each player usually walks in (share of the innings' balls gone), from number 3 down:
+    # finishers held back, pinch-hitters sent up, the tail protected. Also the same per batting position.
+    entry_frac = np.full((P, 2), -1.0, dtype=np.float32)
+    pos_entry = np.zeros((2, 11), dtype=np.float32)
+    ent_sql = f"""
+        WITH ent AS (
+          SELECT match_id, innings_no, format, match_date, pid, min(seq * 2 + ns) AS first,
+                 arg_min(lb, seq * 2 + ns) AS lb, any_value(tot) AS tot
+          FROM (SELECT match_id, innings_no, format, match_date, batter_id AS pid, seq, 0 AS ns,
+                       legal_balls_before AS lb, total_overs * balls_per_over AS tot FROM balls
+                UNION ALL
+                SELECT match_id, innings_no, format, match_date, non_striker_id, seq, 1,
+                       legal_balls_before, total_overs * balls_per_over FROM balls)
+          WHERE pid IS NOT NULL AND innings_no IN (1, 2) {cut}
+          GROUP BY ALL
+        ), r AS (
+          SELECT *, row_number() OVER (PARTITION BY match_id, innings_no ORDER BY first) AS pos,
+                 least(lb / tot, 1.0) AS frac FROM ent
+        )"""
+    for pid, fam, fr, n in con.execute(ent_sql + f"""
+        SELECT pid, {fam_sql}, sum(frac * {wexpr}) / sum({wexpr}), count(*) FROM r WHERE pos >= 3
+        GROUP BY ALL""").fetchall():
+        if pid in pidx and n >= ENTRY_MIN:
+            entry_frac[pidx[pid], fam] = fr
+    for fam, pos, fr in con.execute(ent_sql + f"""
+        SELECT {fam_sql}, pos, avg(frac) FROM r WHERE pos <= 11 GROUP BY ALL""").fetchall():
+        pos_entry[fam, pos - 1] = fr
+
     # the same over each player's last RECENT innings / matches: their current role (promoted to open, new frontliner)
     bat_pos_recent = np.zeros((P, 2), dtype=np.float32)
     for pid, fam, pos in con.execute(f"""
@@ -689,6 +717,7 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
             "runout_non_striker": ro_ns / ro_all if ro_all else 0.4,
             "wide_runs": wide_runs.astype(np.float32), "bye_runs": bye_runs.astype(np.float32),
             "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "last_fam": last_fam, "names": names,
+            "entry_frac": entry_frac, "pos_entry": pos_entry,
             "hand": hand, "kind": kind}
 
 
@@ -741,6 +770,7 @@ def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> d
     return {"venues": venues, "comps": comps, "teams": teams, "player_gender": "".join(gender)}
 
 
+ENTRY_MIN = 3             # innings at number 3 or lower before a player's usual entry point counts
 HOME_MIN = 3              # matches at a ground before it counts as a team's home
 
 

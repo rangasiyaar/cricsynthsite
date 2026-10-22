@@ -393,3 +393,12 @@ def test_gap_variants_fit_and_simulate(world):
     m.meta["sim"] = {"era_ahead": 1.0}
     s = simulate(m, _spec(world["world"]), n=300, seed=4)
     assert np.isfinite(s.parts[0].innings[0].runs).all()
+
+
+def test_dynamic_batting_order(world):
+    m = fit(world["parquet"], FitConfig())
+    assert m.entry_frac is not None and m.pos_entry.shape == (2, 11)
+    assert (np.diff(m.pos_entry[0][2:]) >= -0.05).all()            # later positions walk in later
+    m.meta["sim"] = {"dyn_order": 0.1}
+    s = simulate(m, _spec(world["world"]), n=400, seed=5)
+    assert np.isfinite(s.parts[0].innings[0].runs).all()
