@@ -1,8 +1,8 @@
 name: Fantasy backfill
 
 # Fantasy picks for finished matches published before the match centre had a Fantasy tab: each match gets the
-# picks the model would have made before it (trained only on earlier matches). The picks are printed in the log
-# between PICKS markers, to be saved as cricsim/fantasy/<id>.json for the Results page.
+# picks the model would have made before it (trained only on earlier matches), saved as cricsim/fantasy/<id>.json
+# on the branch for the Results page (the next publish picks them up).
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ on:
         default: "all"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   list:
@@ -76,6 +76,21 @@ jobs:
           uv run python -m cricsim.fantasy_check --model data/models/before --coverage "data/coverage/$MATCH.json" \
             --fixture "cricsim/fixtures/$MATCH.json" --result "cricsim/results/$MATCH.json" \
             --picks-out "data/picks/$MATCH.json" >> "$GITHUB_STEP_SUMMARY"
-          echo "PICKS_BEGIN $MATCH"
-          python3 -c "import json,sys; print(json.dumps(json.load(open(sys.argv[1])), separators=(',', ':')))" "data/picks/$MATCH.json"
-          echo "PICKS_END $MATCH"
+      - uses: actions/upload-artifact@v4
+        with: { name: "picks-${{ matrix.match }}", path: "data/picks/${{ matrix.match }}.json", retention-days: 3 }
+  save:
+    needs: picks
+    if: always() && needs.picks.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { pattern: "picks-*", path: data/picks, merge-multiple: true }
+      - name: Commit
+        run: |
+          mkdir -p cricsim/fantasy
+          cp data/picks/*.json cricsim/fantasy/ 2>/dev/null || { echo "no picks"; exit 0; }
+          git add cricsim/fantasy
+          git diff --cached --quiet && exit 0
+          git -c user.name="Saurav Kumar" -c user.email="ibeingsaurav@gmail.com" commit -m "Fantasy picks for finished matches (model trained before each match)"
+          git push
