@@ -8,6 +8,10 @@ on:
       match:
         description: "Fixture id (cricsim/fixtures/<id>.json, with cricsim/results/<id>.json)"
         required: true
+      cutoff:
+        description: "Train only on matches before this date (YYYY-MM-DD), for a match already in the database"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -42,10 +46,15 @@ jobs:
       - name: Fit (all data)
         if: steps.cache.outputs.cache-hit != 'true'
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - name: Fit before the match
+        if: inputs.cutoff != ''
+        run: |
+          uv run python -m cricsim.engine fit --parquet data/parquet --cutoff "${{ inputs.cutoff }}" \
+            --out data/models/before --memory 3GB > /dev/null
       - name: Check
-        env: { MATCH: "${{ inputs.match }}" }
+        env: { MATCH: "${{ inputs.match }}", MODEL: "${{ inputs.cutoff != '' && 'data/models/before' || 'data/models/latest' }}" }
         run: |
           uv run python -m cricsim.resolve --parquet data/parquet --fixture "cricsim/fixtures/$MATCH.json" \
             --out "data/coverage/$MATCH.json"
-          uv run python -m cricsim.fantasy_check --model data/models/latest --coverage "data/coverage/$MATCH.json" \
+          uv run python -m cricsim.fantasy_check --model "$MODEL" --coverage "data/coverage/$MATCH.json" \
             --fixture "cricsim/fixtures/$MATCH.json" --result "cricsim/results/$MATCH.json" | tee -a "$GITHUB_STEP_SUMMARY"
