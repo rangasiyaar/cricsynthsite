@@ -30,7 +30,8 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
             + era_vector(model, fam, g) + model.venue_phase(spec.venue_id, spec.format)[None, :rules["overs"], None, :])
     batting = []
     for t in (0, 1):
-        order, bowlers = list(spec.teams[t].players), list(spec.teams[1 - t].players)
+        field = spec.teams[1 - t]
+        order, bowlers = list(spec.teams[t].players), list(field.bowling_xi or field.players)
         T = _Tables(model, spec, neutral, 0, order, bowlers, spec.teams[1 - t].bowlers, t)
         batting.append({"team": t, "order": order, "bowlers": bowlers, "pair": _round(T.pair),
                         "bowlWeights": _round(T.bowl_weights, 5), "dismissal": _round(T.dismissal),

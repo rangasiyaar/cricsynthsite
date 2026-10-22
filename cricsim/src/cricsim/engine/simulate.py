@@ -513,7 +513,8 @@ def simulate(model: Model, spec: MatchSpec, n: int = 10_000, scenario: Scenario 
         start = sc.start
         first_total = None
         for inn0, bat in enumerate(teams):
-            order, bowlers = _order(spec, sc, bat), list(spec.teams[1 - bat].players)
+            field = spec.teams[1 - bat]
+            order, bowlers = _order(spec, sc, bat), list(field.bowling_xi or field.players)
             T = _Tables(model, spec, sc, inn0, order, bowlers, spec.teams[1 - bat].bowlers, bat)
             st = start if (start is not None and start.innings == inn0 + 1) else None
             if inn0 == 0 and start is not None and start.innings == 2:

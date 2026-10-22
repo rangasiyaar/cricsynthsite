@@ -60,11 +60,13 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
         if any(None in v for v in xi.values()):
             continue
         listed = max(len(v) for v in xi.values())
+        full = None
         if listed > 11 and min(len(v) for v in xi.values()) >= 11:
             if skipped is not None:
                 skipped[comp] = skipped.get(comp, 0) + 1
             if not twelve:
                 continue
+            full = {t: list(v) for t, v in xi.items()}
             xi = {t: v[:11] for t, v in xi.items()}
         elif any(len(v) != 11 for v in xi.values()):
             continue
@@ -72,8 +74,23 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
                                   WHERE match_id = ? AND innings_no <= 2 ORDER BY innings_no""", [mid]).fetchall()
         out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp, "team_type": team_type,
                     "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings,
-                    "date": day, "listed": listed, "toss_winner": toss_w, "toss_decision": toss_d})
+                    "date": day, "listed": listed, "toss_winner": toss_w, "toss_decision": toss_d, "full": full})
     return out
+
+
+def impact_xis(model: Model, team: TeamSpec, squad: list[str], fmt: str) -> TeamSpec:
+    """A 12-player side under a substitute rule: it bats its 11 best batters (the 12 minus the player who usually
+    bats lowest) and fields its 11 best bowlers (the 12 minus the one who bowls least)."""
+    fam = 1 if fmt == "OD" else 0
+    idx = [model.pid(p) for p in squad]
+    pos = [model.bat_pos[i, fam] if i and model.bat_pos is not None and model.bat_pos[i, fam] > 0 else 8.0 for i in idx]
+    balls = [model.balls_bowled[i, fam] if i and model.balls_bowled is not None else 0.0 for i in idx]
+    tail = int(np.argmax(pos))
+    bat = [p for j, p in enumerate(squad) if j != tail][:11]
+    nonbowler = int(np.argmin(balls))
+    field = [p for j, p in enumerate(squad) if j != nonbowler][:11]
+    bowlers = [p for p in (team.bowlers or []) if p in field] or None
+    return TeamSpec(team.name, bat, bowlers, bowling_xi=field)
 
 
 def batting_order(con, match_id: str) -> dict[tuple[int, str], int]:
@@ -157,9 +174,12 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         if roles:           # who bowls, as a fixture's roles tell live forecasts (here: who did bowl)
             did = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
                                              [mt["match_id"]]).fetchall()}
-            bowl = {t: [p for p in mt["xi"][t] if p in did] or None for t in (t1, t2)}
+            bowl = {t: [p for p in (mt.get("full") or mt["xi"])[t] if p in did] or None for t in (t1, t2)}
         comp_key = mt["comp"] + ("|ip" if mt.get("listed", 11) > 11 and model.meta.get("rule_split") else "")
-        spec = MatchSpec(mt["format"], mt["gender"], (TeamSpec(t1, xi(t1), bowl.get(t1)), TeamSpec(t2, xi(t2), bowl.get(t2))),
+        teams = [TeamSpec(t1, xi(t1), bowl.get(t1)), TeamSpec(t2, xi(t2), bowl.get(t2))]
+        if mt.get("full") and (model.meta.get("sim") or {}).get("impact12"):
+            teams = [impact_xis(model, tm, mt["full"][tm.name], mt["format"]) for tm in teams]
+        spec = MatchSpec(mt["format"], mt["gender"], tuple(teams),
                          venue_id=mt["venue_id"], comp_key=comp_key, batting_first=bf, team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         part = sims.parts[0]

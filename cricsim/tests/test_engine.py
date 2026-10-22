@@ -407,3 +407,15 @@ def test_dynamic_batting_order(world):
 def test_rule_split_runs(world):
     m = fit(world["parquet"], FitConfig(rule_split=True))
     assert m.meta["rule_split"] is True
+
+
+def test_impact_xis_bat_and_field_eleven(world):
+    from cricsim.engine.backtest import impact_xis
+    m = world["model"]
+    spec = _spec(world["world"])
+    squad = list(spec.teams[0].players) + [spec.teams[1].players[-1]]
+    t = impact_xis(m, spec.teams[0], squad, "T20")
+    assert len(t.players) == 11 and len(t.bowling_xi) == 11
+    s = simulate(m, MatchSpec("T20", "male", (t, spec.teams[1]), venue_id="premier-oval",
+                              comp_key="premier-league"), n=200, seed=6)
+    assert np.isfinite(s.parts[0].innings[0].runs).all()

@@ -12,6 +12,8 @@ class TeamSpec:
     players: list[str]                          # Cricsheet ids, batting order (11)
     bowlers: list[str] | None = None            # who may bowl; default: anyone, weighted by history
     team_id: str | None = None
+    bowling_xi: list[str] | None = None         # the 11 in the field when it differs from the batting 11
+                                                # (an Impact Player substitute); default: players
 
 
 @dataclass
