@@ -163,6 +163,9 @@ def test_backtest_runs_and_reports(world, tmp_path):
     assert fz["best_possible"] >= fz["strategies"]["mean"]["points"] > 0
     assert fz["strategies"]["mean"]["points"] > fz["strategies"]["random"]["points"] * 0.8
     assert fz["strategies"]["portfolio_5"]["points"] >= fz["strategies"]["mean"]["points"]
+    st = fz["strategies"]
+    assert st["portfolio_20"]["points"] >= st["portfolio_10"]["points"] >= st["portfolio_5"]["points"]
+    assert st["portfolio_cap_20"]["points"] >= st["portfolio_cap_5"]["points"] >= st["mean"]["points"]
     assert rep["matches"] > 0 and "result" in rep and "first_innings_total" in rep
     assert "established" in rep["player_runs"]
     assert "competition: seen" in rep["first_innings_by_split"]

@@ -166,10 +166,13 @@ def _roles_ok(xi, roles) -> bool:
 
 def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int = 5,
               roles: dict[str, str] | None = None, n_candidates: int = 300,
-              seed: int = 0) -> list[tuple[list[str], str, str]]:
+              seed: int = 0, captains: int = 0) -> list[tuple[list[str], str, str]]:
     """k teams that together cover the likely matches: start from the expected-points XI, then greedily add
     the candidate that most raises the average (over simulations) of the portfolio's best team.
-    Candidates are the best XI of individual simulations, so each is the right team for some plausible game."""
+    Candidates are the best XI of individual simulations, so each is the right team for some plausible game;
+    with `captains`, also every captain / vice-captain pair among each XI's top `captains` by expected points
+    (the expected-points XI included), so the set can spread its captaincy as well as its players.
+    Greedy, so the first j teams of a k-team set are the j-team set."""
     col = {p: i for i, p in enumerate(pids)}
     half = len(pts) // 2
     ev = pts[half:]                                     # candidates come from one half, are judged on the other
@@ -189,6 +192,14 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
         if key not in seen and _roles_ok(t[0], roles):
             seen.add(key)
             cands.append(t)
+    if captains:
+        for xi, _, _ in [teams[0], *cands]:
+            top = sorted(xi, key=lambda p: -mean[p])[:captains]
+            for c, vc in itertools.permutations(top, 2):
+                key = (frozenset(xi), c, vc)
+                if key not in seen:
+                    seen.add(key)
+                    cands.append((xi, c, vc))
     best = scores(teams[0])
     cand_scores = [scores(t) for t in cands]
     while len(teams) < k and cands:

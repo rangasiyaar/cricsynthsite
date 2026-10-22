@@ -351,9 +351,14 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     out["upside_captain"] = team_points(xi, c, vc, real)
     xi, c, vc = pick_xi(real, team_of)
     out["best"] = team_points(xi, c, vc, real)
-    teams = portfolio(pids, pts, team_of, k=5)
+    teams = portfolio(pids, pts, team_of, k=20)
     got = [team_points(*t, real) for t in teams]
-    out["portfolio_3"], out["portfolio_5"] = max(got[:3]), max(got)
+    for j in (3, 5, 10, 20):
+        out[f"portfolio_{j}"] = max(got[:j])
+    teams = portfolio(pids, pts, team_of, k=20, captains=5)
+    got = [team_points(*t, real) for t in teams]
+    for j in (5, 10, 20):
+        out[f"portfolio_cap_{j}"] = max(got[:j])
     xi, _, _ = pick_xi(mean, team_of)                   # baseline: same XI, five different captains
     caps = sorted(xi, key=lambda p: -mean[p])[:6]
     out["captains_5"] = max(team_points(xi, caps[i], caps[i + 1], real) for i in range(5))
@@ -570,7 +575,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "favourite_wins", "upside_captain", "ptop_captain",
                                                    "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
-                                                   "random_5", "portfolio_3", "portfolio_5")
+                                                   "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
+                                                   "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
                           "ceiling_perfect_model": round(float(np.mean([r["ceil_team"] for r in f])
                                                                / np.mean([r["ceil_best"] for r in f])), 3)}
