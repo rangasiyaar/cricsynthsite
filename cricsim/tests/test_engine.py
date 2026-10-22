@@ -515,3 +515,18 @@ def test_fantasy_check_scores_a_result_file(world):
     assert real[a.players[0]] == 4 + 60 + 24 + 18 + 8 + 6 and real[b.players[0]] == 4 + 8
     assert real[b.players[2]] == 16 and real[b.players[-1]] == 4 + 30 + 4
     assert r["best"]["points"] >= r["ours"]["points"] > 0 and r["sets"][20] >= r["sets"][5]
+
+
+def test_publish_adds_fantasy_picks(world, tmp_path):
+    from cricsim.publish import publish_match
+    spec = _spec(world["world"])
+    roles = ["WK"] + ["BAT"] * 4 + ["AR"] * 2 + ["BOWL"] * 4
+    cov = {"id": "fx", "format": "T20", "gender": "male", "venue_id": spec.venue_id, "comp_key": spec.comp_key,
+           "teams": [{"name": t.name, "players": list(t.players), "roles": roles} for t in spec.teams]}
+    publish_match(world["model"], cov, tmp_path, n=400)
+    f = json.loads((tmp_path / "matches" / "fx.json").read_text())["fantasy"]
+    assert len(f["players"]) == 22 and len(f["teams"]) == 5 and f["fielding"]
+    one = f["single"]
+    assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
+    assert all(f["players"][p]["name"] for p in one["players"])
+    assert sum(f["players"][p]["role"] == "WK" for p in one["players"]) >= 1

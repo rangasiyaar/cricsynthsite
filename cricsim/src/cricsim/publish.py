@@ -9,7 +9,7 @@ Coverage (written by the admin): one JSON per match in <coverage>/matches/<id>.j
 
 Output:
     <out>/index.json                 match cards for the home page
-    <out>/matches/<id>.json          full match centre (summary + insights)
+    <out>/matches/<id>.json          full match centre (summary + insights + fantasy picks)
     <out>/matches/<id>.pack.json     engine pack for the browser Scenario Lab
 Later these go to Firestore / Hosting; the shapes stay the same.
 """
@@ -27,6 +27,7 @@ from cricsim.engine.model import Model
 from cricsim.engine.pack import engine_pack
 from cricsim.engine.simulate import simulate
 from cricsim.engine.summary import summarize
+from cricsim.fantasy import fantasy_picks
 from cricsim.insights import insights
 
 log = logging.getLogger(__name__)
@@ -43,7 +44,8 @@ def load_coverage(coverage: Path) -> list[dict]:
 
 def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int = 0) -> dict:
     spec, scenario = spec_from_dict(cov)
-    summary = summarize(simulate(model, spec, n=n, scenario=scenario, seed=seed), model)
+    sims = simulate(model, spec, n=n, scenario=scenario, seed=seed)
+    summary = summarize(sims, model)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     match = {k: cov.get(k) for k in ("id", "title", "date", "start_time", "format", "gender", "competition",
                                      "comp_key", "venue", "venue_id", "status")}
@@ -51,6 +53,9 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
                       for t in cov["teams"]]
     doc = {"match": match, "summary": summary, "insights": insights(summary, model), "generated_at": now,
            "model": model.meta.get("cutoff") or "latest", "published": bool(cov.get("published", True))}
+    fantasy = _fantasy(model, sims, cov, summary)
+    if fantasy:
+        doc["fantasy"] = fantasy
     (out / "matches").mkdir(parents=True, exist_ok=True)
     (out / "matches" / f"{cov['id']}.json").write_text(json.dumps(doc, separators=(",", ":")))
     (out / "matches" / f"{cov['id']}.pack.json").write_text(json.dumps(engine_pack(model, spec), separators=(",", ":")))
@@ -61,6 +66,21 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
             "projected": [x["batting"]["score"]["q"].get("50") for x in t],
             "headline": doc["insights"][0]["text"] if doc["insights"] else None,
             "published": doc["published"], "generated_at": now}
+
+
+FANTASY_FORMATS = ("T20", "T10", "HUNDRED")           # the points table is the T20 one
+
+
+def _fantasy(model: Model, sims, cov: dict, summary: dict) -> dict | None:
+    """Fantasy picks from the same simulations (pre-match forecasts in T20-type formats only)."""
+    if cov.get("format") not in FANTASY_FORMATS or sims.scenario.start is not None:
+        return None
+    roles = {p: str(r).upper() for t in cov["teams"] for p, r in zip(t["players"], t.get("roles") or []) if r}
+    f = fantasy_picks(model, sims, roles or None)
+    names = {p["id"]: p["name"] for t in summary["teams"] for p in t["players"]}
+    for pid, row in f["players"].items():
+        row["name"] = names.get(pid, pid.removeprefix("new:"))
+    return f
 
 
 def publish_all(model: Model, coverage: Path, out: Path, n: int = 20_000) -> list[dict]:

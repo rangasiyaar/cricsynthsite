@@ -11,6 +11,8 @@ fielding is left out on both sides. Maidens are left out on both sides.
 from __future__ import annotations
 
 import itertools
+import re
+from typing import Callable
 
 import numpy as np
 
@@ -138,6 +140,61 @@ def decisive_mean(pts: np.ndarray, winner: np.ndarray, stretch: float = DECISIVE
     return (pts * w[:, None]).sum(0) / w.sum()
 
 
+RETIRED = ("retired hurt", "retired not out")
+
+
+def _balls(overs) -> int:
+    o, _, b = str(overs).partition(".")
+    return int(o) * 6 + int(b or 0)
+
+
+def scorecard_points(card: dict, resolve: Callable[[str], str | None], roles: dict[str, str],
+                     players: list[str]) -> dict[str, float]:
+    """Real points per player from a results file (cricsim/scorecard.py layout), fielding included: catches from
+    "c X b Y" / "c and b Y", stumpings from "st X b Y", run-outs from "run out (X)" / "(X/Y)". `resolve` turns a
+    scorecard name into a player id (None: not one of ours, e.g. a substitute fielder). Everyone listed in
+    `players` gets the 4 playing points."""
+    def pid(name: str | None) -> str | None:
+        return resolve(re.sub(r"^\(sub\)", "", name.strip())) if name and name.strip() else None
+
+    pts = {p: 4.0 for p in players}
+    catches: dict[str, int] = {}
+
+    def add(p, v):
+        if p is not None:
+            pts[p] = pts.get(p, 4.0) + v
+    for inn in card["innings"]:
+        bl_lbw: dict[str, int] = {}
+        for b in inn.get("batting") or []:
+            p, d = pid(b["name"]), (b.get("dismissal") or "").strip()
+            out = d not in ("", "not out") and d not in RETIRED
+            add(p, float(batting_points(b["runs"], b["balls"], b["fours"], b["sixes"], out, roles.get(p) == "BOWL")))
+            if m := re.match(r"^(?:b|lbw b) (.+)$", d):
+                k = pid(m.group(1))
+                bl_lbw[k] = bl_lbw.get(k, 0) + 1
+            if m := re.match(r"^c (?:and|&) b (.+)$", d):
+                who = pid(m.group(1))
+            elif m := re.match(r"^c (.+?) b .+$", d):
+                who = pid(m.group(1))
+            else:
+                who = None
+            if who:
+                catches[who] = catches.get(who, 0) + 1
+            if m := re.match(r"^st (.+?) b .+$", d):
+                add(pid(m.group(1)), 12)
+            if m := re.match(r"^run out \((.+)\)$", d):
+                fs = [pid(x) for x in m.group(1).split("/")]
+                for f in fs:
+                    add(f, 12 if len(fs) == 1 else 6)
+        for b in inn.get("bowling") or []:
+            p = pid(b["name"])
+            if p is not None:
+                add(p, float(bowling_points(_balls(b["overs"]), b["runs"], b["wickets"], bl_lbw.get(p, 0))))
+    for who, n in catches.items():
+        add(who, 8 * n + (4 if n >= 3 else 0))
+    return pts
+
+
 def pick_xi(score: dict[str, float], team_of: dict[str, int], roles: dict[str, str] | None = None,
             captain_score: dict[str, float] | None = None) -> tuple[list[str], str, str]:
     """Best 11 by `score` with 1-10 per team (and 1-8 per role when roles are given). Captain and vice-captain
@@ -222,6 +279,28 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
         teams.append(cands.pop(j))
         best = np.maximum(best, cand_scores.pop(j))
     return teams
+
+
+def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5) -> dict:
+    """What the match centre's Fantasy tab shows: one XI with captain and vice-captain, and a set of k teams that
+    together cover the likely matches, all as player ids, with each player's expected points and role."""
+    from cricsim.engine.modelling import infer_roles
+    spec = sims.spec
+    roles = infer_roles(model, spec, roles)
+    fielding = model.fielding is not None
+    pids, pts = sim_points(sims, roles, model=model, fielding=fielding)
+    team_of = {p: t for t, tm in enumerate(spec.teams) for p in tm.everyone}
+    exp = dict(zip(pids, decisive_mean(pts, np.concatenate([part.winner for part in sims.parts]))))
+    use_roles = roles if any(r == "WK" for r in roles.values()) else None
+
+    def team(t):
+        xi, c, vc = t
+        return {"players": sorted(xi, key=lambda p: -exp[p]), "captain": c, "vice_captain": vc,
+                "expected": round(sum(exp[p] for p in xi) + exp[c] + 0.5 * exp[vc], 1)}
+    return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1)} for p in pids},
+            "single": team(pick_xi(exp, team_of, use_roles)),
+            "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5)],
+            "fielding": fielding, "simulations": int(sims.n)}
 
 
 def main() -> None:

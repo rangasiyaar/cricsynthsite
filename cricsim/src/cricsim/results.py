@@ -8,6 +8,10 @@
    <out>/archive.json, so the match centre and the results page keep showing what we said beforehand.
 2. Score. Every scorecard in <scorecards>/<id>.json is checked against that frozen forecast, tab by tab
    (Overview, Scores, Wickets, Players, Matchups) → <out>/results/<id>.json and <out>/results/index.json.
+3. Fantasy. The forecast's fantasy picks (one XI and a set of five teams) are scored on the scorecard with the
+   same points table, as a share of the best XI anyone could have picked afterwards. Matches published before
+   the Fantasy tab existed use picks made afterwards by a model trained only on earlier matches
+   (<picks>/<id>.json, written by `python -m cricsim.fantasy_check --picks-out`), and say so.
 
 A range check "hits" when the actual value lands inside the forecast's 80% range (10th–90th percentile), so a
 well-calibrated forecast hits about 80% of them; pick checks (favourite, top scorer, duels) hit when the actual
@@ -24,6 +28,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import click
+
+from cricsim.fantasy import pick_xi, scorecard_points, team_points
 
 IST = timezone(timedelta(hours=5, minutes=30))
 TABS = ("Overview", "Scores", "Wickets", "Players", "Matchups")
@@ -281,6 +287,30 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
     }
 
 
+def score_fantasy(fantasy: dict, card: dict, roster: Roster) -> dict:
+    """The fantasy picks against the scorecard: everyone's real points, the best XI in hindsight, and our XI and
+    each team of the set as a share of it."""
+    players = list(fantasy["players"])
+    roles = {p: r.get("role") for p, r in fantasy["players"].items()}
+    team_of = {p: r["team"] for p, r in fantasy["players"].items()}
+    got = scorecard_points(card, roster.player, roles, players)
+    real = {p: got.get(p, 4.0) for p in players}
+    use_roles = roles if any(r == "WK" for r in roles.values()) else None
+    xi, c, vc = pick_xi(real, team_of, use_roles)
+    best = team_points(xi, c, vc, real)
+
+    def scored(t):
+        pts = team_points(t["players"], t["captain"], t["vice_captain"], real)
+        return {**t, "points": round(pts, 1), "share": round(pts / best, 4) if best > 0 else None}
+    single, teams = scored(fantasy["single"]), [scored(t) for t in fantasy["teams"]]
+    return {"real": {p: round(v, 1) for p, v in real.items()},
+            "best": {"players": sorted(xi, key=lambda p: -real[p]), "captain": c, "vice_captain": vc,
+                     "points": round(best, 1)},
+            "single": single, "teams": teams,
+            "best_of_teams": max((t["share"] for t in teams if t["share"] is not None), default=None),
+            **({"after": True} if fantasy.get("after") else {})}
+
+
 # ── freezing forecasts and writing everything ─────────────────────────────────────────────────────────────────────
 
 def _fetch(path: str, sites=SITES) -> dict | None:
@@ -297,7 +327,8 @@ def _fetch(path: str, sites=SITES) -> dict | None:
     return None
 
 
-def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime | None = None, fetch=_fetch) -> dict:
+def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime | None = None, fetch=_fetch,
+        picks: Path | None = None) -> dict:
     fx = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(fixtures.glob("*.json"))}
     cards = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(scorecards.glob("*.json"))} \
         if scorecards.exists() else {}
@@ -354,11 +385,19 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
         doc_p = out / "matches" / f"{mid}.json"
         if not doc_p.exists():
             continue
-        rep = score(json.loads(doc_p.read_text()), card, fx.get(mid))
+        doc = json.loads(doc_p.read_text())
+        rep = score(doc, card, fx.get(mid))
+        fp = picks / f"{mid}.json" if picks else None
+        fantasy = doc.get("fantasy") or ({**json.loads(fp.read_text()), "after": True} if fp and fp.exists() else None)
+        if fantasy and rep["checks"]:                     # rain-shortened / abandoned: not scored, fantasy included
+            rep["fantasy"] = {**score_fantasy(fantasy, card, Roster(doc, fx.get(mid))),
+                              "names": {p: r.get("name", p) for p, r in fantasy["players"].items()}}
         (out / "results" / f"{mid}.json").write_text(json.dumps(rep, separators=(",", ":")))
         index.append({k: rep[k] for k in ("id", "title", "date", "competition", "teams", "result", "winner", "scores",
                                           "hits", "checks", "accuracy", "brier", "tabs")} | ({"note": rep["note"]} if rep.get("note") else {})
-                     | {"favourite_won": next((c["hit"] for c in rep["items"] if c["check"] == "Favourite wins"), None)})
+                     | {"favourite_won": next((c["hit"] for c in rep["items"] if c["check"] == "Favourite wins"), None)}
+                     | ({"fantasy": {"single": rep["fantasy"]["single"]["share"],
+                                     "best_of_teams": rep["fantasy"]["best_of_teams"]}} if rep.get("fantasy") else {}))
     index.sort(key=lambda r: (r.get("date") or "", r["id"]), reverse=True)
     hits, checks = sum(r["hits"] for r in index), sum(r["checks"] for r in index)
     tabs = {t: {"hits": sum(r["tabs"][t]["hits"] for r in index), "checks": sum(r["tabs"][t]["checks"] for r in index)}
@@ -367,6 +406,9 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
                "accuracy": round(hits / checks, 4) if checks else None, "tabs": tabs,
                "favourite_won": sum(1 for r in index if r.get("favourite_won")),
                "brier": round(sum(b) / len(b), 4) if (b := [r["brier"] for r in index if r["brier"] is not None]) else None,
+               **({"fantasy": {"matches": len(f), "single": round(sum(x["single"] for x in f) / len(f), 4),
+                               "best_of_teams": round(sum(x["best_of_teams"] for x in f) / len(f), 4)}}
+                  if (f := [r["fantasy"] for r in index if r.get("fantasy") and r["fantasy"]["single"] is not None]) else {}),
                "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     (out / "results" / "index.json").write_text(json.dumps(summary, separators=(",", ":")))
     return {"archived": [a["id"] for a in archive], "missing": missing, "scored": [r["id"] for r in index]}
@@ -376,15 +418,17 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
 @click.option("--fixtures", type=click.Path(exists=True, path_type=Path), default=Path("cricsim/fixtures"))
 @click.option("--scorecards", type=click.Path(path_type=Path), default=Path("cricsim/results"))
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/publish"))
+@click.option("--picks", type=click.Path(path_type=Path), default=Path("cricsim/fantasy"),
+              help="Fantasy picks made afterwards for matches published before the Fantasy tab")
 @click.option("--started", "show_started", is_flag=True, help="Print the ids of fixtures that have started, and exit")
-def main(fixtures: Path, scorecards: Path, out: Path, show_started: bool) -> None:
+def main(fixtures: Path, scorecards: Path, out: Path, picks: Path, show_started: bool) -> None:
     if show_started:
         for p in sorted(fixtures.glob("*.json")):
             f = json.loads(p.read_text())
             if started(f):
                 click.echo(p.name)
         return
-    r = run(fixtures, scorecards, out)
+    r = run(fixtures, scorecards, out, picks=picks)
     click.echo(f"archived {len(r['archived'])}, scored {len(r['scored'])}"
                + (f", forecast missing for {', '.join(r['missing'])}" if r["missing"] else ""))
     for mid in r["scored"]:
@@ -393,7 +437,10 @@ def main(fixtures: Path, scorecards: Path, out: Path, show_started: bool) -> Non
         if not rep["checks"]:
             click.echo(f"- {mid}: not scored ({rep.get('note', 'no checks')})")
             continue
-        click.echo(f"- {mid}: {rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}")
+        fz = rep.get("fantasy")
+        click.echo(f"- {mid}: {rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}"
+                   + (f"; fantasy XI {fz['single']['share']:.0%} of the best, best of 5 teams {fz['best_of_teams']:.0%}"
+                      if fz and fz["single"]["share"] is not None else ""))
 
 
 if __name__ == "__main__":

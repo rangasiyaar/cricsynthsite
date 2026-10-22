@@ -247,6 +247,8 @@ html body .le-stats { border-radius: 10px; overflow: hidden; }
 /* Match-centre tabs: text tabs on desktop; on phones the same full-width tab bar as the dashboard
    (six equal tabs, icon over a short label, active one underlined, pinned under the site header). */
 .mc-tabs .mc-ico, .mc-tabs .mc-short { display: none; }
+@media (min-width: 861px) { .tabs.mc-tabs button, .tabs.mc-tabs .tab-link { padding-left: 13px; padding-right: 13px; } }
+@media (max-width: 560px) { .fz-role { display: none; } }
 @media (max-width: 860px) {
   .tabs.mc-tabs { position: sticky; top: 64px; z-index: 20; display: grid; grid-template-columns: repeat(var(--mc-n, 6), minmax(58px, 1fr)); gap: 0; padding: 0; margin-left: -12px; margin-right: -12px;
     overflow-x: auto; scrollbar-width: none; border: 0; border-bottom: 1px solid var(--cs-line); border-radius: 0; background: var(--cs-bg); }
@@ -322,6 +324,7 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 /* Results page */
 .res-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.res-stats.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .res-tabs { display: grid; gap: 8px; margin-top: 10px; }
 .res-tabs > div { display: grid; grid-template-columns: 90px 1fr 42px; gap: 10px; align-items: center; font-size: 13.5px; }
 .res-tabs b { text-align: right; }
@@ -331,7 +334,7 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .res-mark { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
 .res-mark.hit { background: rgba(46, 125, 80, .15); color: #2e7d50; }
 .res-mark.miss { background: rgba(180, 81, 58, .14); color: #b4513a; }
-@media (max-width: 860px) { .res-stats { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .res-stats, .res-stats.four { grid-template-columns: minmax(0, 1fr); } }
 .res-table td, .res-table th { white-space: normal; }
 .res-table td:nth-last-child(2), .res-table td:nth-last-child(3) { min-width: 110px; }
 @media (max-width: 860px) { .res-big { text-align: left; } }

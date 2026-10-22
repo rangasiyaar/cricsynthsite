@@ -17,7 +17,7 @@ on:
         default: ""
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/results/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read

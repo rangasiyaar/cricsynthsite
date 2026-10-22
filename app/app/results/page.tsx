@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { loadResult, loadResults } from "@/lib/data";
-import type { ResultDoc, ResultIndex, TabScore } from "@/lib/types";
+import type { FantasyResult, ResultDoc, ResultIndex, TabScore } from "@/lib/types";
 
 const PER_PAGE = 3;
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
@@ -14,6 +14,47 @@ const fmtDate = (d?: string) => (d ? new Date(`${d}T00:00:00`).toLocaleDateStrin
 
 function Bar({ value }: { value: number | null }) {
   return <div className="meter res-meter"><i style={{ width: `${100 * (value ?? 0)}%` }} /></div>;
+}
+
+/** Fantasy picks against the scorecard: real points, the best XI in hindsight, and our teams as a share of it. */
+function FantasyResultView({ f }: { f: FantasyResult }) {
+  const name = (p: string) => f.names[p] ?? p;
+  const team = (players: string[], c: string, vc: string, total: number, title: string) => (
+    <div>
+      <p className="cs-k" style={{ margin: "0 0 6px" }}>{title}</p>
+      <div className="table-wrap"><table className="res-table">
+        <thead><tr><th>Player</th><th className="num">Points</th></tr></thead>
+        <tbody>{players.map((p) => {
+          const mult = p === c ? 2 : p === vc ? 1.5 : 1;
+          return <tr key={p}><td>{name(p)}{mult === 2 && <span className="tag pro" style={{ marginLeft: 6 }}>C</span>}
+            {mult === 1.5 && <span className="tag" style={{ marginLeft: 6 }}>VC</span>}</td>
+            <td className="num">{Math.round(f.real[p] * mult)}{mult > 1 && <span className="small muted"> ({Math.round(f.real[p])} × {mult})</span>}</td></tr>;
+        })}</tbody>
+        <tfoot><tr><td><b>Total</b></td><td className="num"><b>{Math.round(total)}</b></td></tr></tfoot>
+      </table></div>
+    </div>
+  );
+  return (
+    <div style={{ marginTop: 32 }}>
+      <h3>Fantasy picks</h3>
+      <p className="small" style={{ margin: "4px 0 10px" }}>Our single team scored <b>{Math.round(f.single.points ?? 0)}</b> points, <b>{pct(f.single.share)}</b> of
+        the best XI anyone could have picked afterwards ({Math.round(f.best.points)}). Best of our five teams: <b>{pct(f.best_of_teams)}</b>.</p>
+      {f.after && <p className="small muted">This match went up before the Fantasy tab existed. These picks were made afterwards by the same
+        model trained only on matches played before it, so it never saw this result.</p>}
+      <div className="grid g2">
+        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our single team")}
+        {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Best possible XI (in hindsight)")}
+      </div>
+      <p className="cs-k" style={{ margin: "20px 0 6px" }}>Our five-team combo</p>
+      <div className="table-wrap"><table className="res-table">
+        <thead><tr><th>Team</th><th>Captain</th><th>Vice-captain</th><th className="num">Points</th><th className="num">Share of best</th></tr></thead>
+        <tbody>{f.teams.map((t, i) => (
+          <tr key={i}><td>{i + 1}</td><td>{name(t.captain)}</td><td>{name(t.vice_captain)}</td>
+            <td className="num">{Math.round(t.points ?? 0)}</td><td className="num">{pct(t.share)}</td></tr>
+        ))}</tbody>
+      </table></div>
+    </div>
+  );
 }
 
 function Results() {
@@ -56,7 +97,7 @@ function Results() {
   const scored = index.matches.filter((m) => m.checks).length;      // rain-shortened matches are listed, not scored
   return (
     <div className="grid">
-      <div className="grid res-stats">
+      <div className={`grid res-stats${index.fantasy ? " four" : ""}`}>
         <div className="card"><div className="cs-k">Projections that came true</div>
           <div className="stat dash-stat">{pct(index.accuracy)}</div>
           <p className="small muted">{index.hits} of {index.checks} checks across {scored} match{scored === 1 ? "" : "es"}.</p></div>
@@ -69,6 +110,12 @@ function Results() {
               <div key={t}><span>{t}</span><Bar value={share(index.tabs[t])} /><b>{pct(share(index.tabs[t]))}</b></div>
             ))}
           </div></div>
+        {index.fantasy && (
+          <div className="card"><div className="cs-k">Fantasy picks</div>
+            <div className="stat dash-stat">{pct(index.fantasy.single)}</div>
+            <p className="small muted">Of the best possible XI, for our single team on average across {index.fantasy.matches} match
+              {index.fantasy.matches === 1 ? "" : "es"}. Best of our five teams: {pct(index.fantasy.best_of_teams)}.</p></div>
+        )}
       </div>
 
       <div className="res-head">
@@ -126,6 +173,7 @@ function Results() {
                 <td className="num"><span className={`res-mark ${c.hit ? "hit" : "miss"}`} aria-label={c.hit ? "came true" : "missed"}>{c.hit ? "✓" : "✕"}</span></td></tr>
             ))}</tbody>
           </table></div>
+          {doc.fantasy && <FantasyResultView f={doc.fantasy} />}
         </div>
       )}
 

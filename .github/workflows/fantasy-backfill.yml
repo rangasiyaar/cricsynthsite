@@ -1,0 +1,81 @@
+name: Fantasy backfill
+
+# Fantasy picks for finished matches published before the match centre had a Fantasy tab: each match gets the
+# picks the model would have made before it (trained only on earlier matches). The picks are printed in the log
+# between PICKS markers, to be saved as cricsim/fantasy/<id>.json for the Results page.
+on:
+  workflow_dispatch:
+    inputs:
+      matches:
+        description: "Comma-separated fixture ids, or 'all' (every result with a fixture and no saved picks)"
+        required: false
+        default: "all"
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      matches: ${{ steps.m.outputs.matches }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        env: { WANT: "${{ inputs.matches }}" }
+        run: |
+          python3 - >> "$GITHUB_OUTPUT" <<'PY'
+          import json, os
+          from pathlib import Path
+          want = os.environ["WANT"].strip()
+          ids = [p.stem for p in sorted(Path("cricsim/results").glob("*.json"))
+                 if Path(f"cricsim/fixtures/{p.stem}.json").exists() and not Path(f"cricsim/fantasy/{p.stem}.json").exists()]
+          if want and want != "all":
+              ids = [m.strip() for m in want.split(",") if m.strip()]
+          print("matches=" + json.dumps(ids))
+          PY
+  picks:
+    needs: list
+    if: needs.list.outputs.matches != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        match: ${{ fromJSON(needs.list.outputs.matches) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=engine-$(date -u +%Y-%m-%d)-${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Picks
+        env: { MATCH: "${{ matrix.match }}" }
+        run: |
+          DAY=$(python3 -c "import json; print(json.load(open('cricsim/fixtures/$MATCH.json'))['date'])")
+          uv run python -m cricsim.engine fit --parquet data/parquet --cutoff "$DAY" --out data/models/before \
+            --memory 3GB > /dev/null
+          uv run python -m cricsim.resolve --parquet data/parquet --fixture "cricsim/fixtures/$MATCH.json" \
+            --out "data/coverage/$MATCH.json" > /dev/null
+          uv run python -m cricsim.fantasy_check --model data/models/before --coverage "data/coverage/$MATCH.json" \
+            --fixture "cricsim/fixtures/$MATCH.json" --result "cricsim/results/$MATCH.json" \
+            --picks-out "data/picks/$MATCH.json" >> "$GITHUB_STEP_SUMMARY"
+          echo "PICKS_BEGIN $MATCH"
+          python3 -c "import json,sys; print(json.dumps(json.load(open(sys.argv[1])), separators=(',', ':')))" "data/picks/$MATCH.json"
+          echo "PICKS_END $MATCH"

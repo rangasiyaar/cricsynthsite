@@ -66,10 +66,19 @@ export type Summary = {
   matchups: { batter: string; bowler: string; p: number }[];
 };
 
+// Fantasy picks (cricsim/fantasy.py fantasy_picks): one XI and a set of five teams, as player ids.
+export type FantasyTeam = { players: string[]; captain: string; vice_captain: string; expected: number;
+                            points?: number; share?: number | null };
+export type FantasyPicks = {
+  players: Record<string, { team: number; role?: string | null; expected: number; name?: string }>;
+  single: FantasyTeam; teams: FantasyTeam[]; fielding?: boolean; simulations?: number;
+};
+
 export type MatchDoc = {
   match: { id: string; title?: string; date?: string; start_time?: string; format: string; competition?: string;
            venue?: string; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
+  fantasy?: FantasyPicks;
 };
 
 // Results (cricsim/results.py): how the published forecast compared with the match.
@@ -79,9 +88,15 @@ export type ResultSummary = {
   id: string; title?: string; date?: string; competition?: string; teams: { name: string; short?: string }[];
   result?: string; winner?: string | null; scores: { team: string; runs: number; wickets: number; overs: string }[];
   hits: number; checks: number; accuracy: number | null; brier: number | null; tabs: Record<string, TabScore>;
-  favourite_won?: boolean | null; note?: string;
+  favourite_won?: boolean | null; note?: string; fantasy?: { single: number | null; best_of_teams: number | null };
+};
+export type FantasyResult = {
+  real: Record<string, number>; names: Record<string, string>;
+  best: { players: string[]; captain: string; vice_captain: string; points: number };
+  single: FantasyTeam; teams: FantasyTeam[]; best_of_teams: number | null; after?: boolean;
 };
 export type ResultDoc = ResultSummary & { forecast: { win: Record<string, number>; projected: (number | null)[]; generated_at?: string };
-                                         items: ResultItem[]; venue?: string };
+                                         items: ResultItem[]; venue?: string; fantasy?: FantasyResult };
 export type ResultIndex = { matches: ResultSummary[]; hits: number; checks: number; accuracy: number | null;
-                            tabs: Record<string, TabScore>; favourite_won: number; brier: number | null; generated_at?: string };
+                            tabs: Record<string, TabScore>; favourite_won: number; brier: number | null; generated_at?: string;
+                            fantasy?: { matches: number; single: number; best_of_teams: number } };

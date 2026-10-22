@@ -10,96 +10,54 @@ fielding included.
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 
 import click
-import numpy as np
 
 from cricsim.engine.io import spec_from_dict
 from cricsim.engine.model import Model
-from cricsim.engine import modelling as M
-from cricsim.fantasy import batting_points, bowling_points, decisive_mean, pick_xi, portfolio, team_points
-
-RETIRED = ("retired hurt", "retired not out")
-
-
-def _balls(overs: str) -> int:
-    o, _, b = str(overs).partition(".")
-    return int(o) * 6 + int(b or 0)
-
+from cricsim.engine.simulate import simulate
+from cricsim.fantasy import fantasy_picks, pick_xi, scorecard_points, team_points
 
 def card_points(card: dict, names: dict[str, str], roles: dict[str, str]) -> dict[str, float]:
-    """Real points per player id from a results file (names as on the scorecard; `names` maps them to ids)."""
-    def pid(name: str | None) -> str | None:
-        if not name:
-            return None
-        name = re.sub(r"^\(sub\)", "", name.strip())
+    """Real points per player id; `names` maps scorecard names to ids (exact, else a unique surname)."""
+    def pid(name: str) -> str | None:
         if name in names:
             return names[name]
         last = [n for n in names if n.split()[-1] == name.split()[-1]]
         return names[last[0]] if len(last) == 1 else None
-
-    pts = {p: 4.0 for p in names.values()}
-    catches: dict[str, int] = {}
-    for inn in card["innings"]:
-        bl_lbw: dict[str, int] = {}
-        for b in inn["batting"]:
-            p, d = pid(b["name"]), b["dismissal"].strip()
-            out = d not in ("", "not out") and d not in RETIRED
-            if p:
-                pts[p] += float(batting_points(b["runs"], b["balls"], b["fours"], b["sixes"], out,
-                                               roles.get(p) == "BOWL"))
-            if m := re.match(r"^(?:b|lbw b) (.+)$", d):
-                bl_lbw[m.group(1)] = bl_lbw.get(m.group(1), 0) + 1
-            if m := re.match(r"^c (?:and|&) b (.+)$", d):
-                who = pid(m.group(1))
-            elif m := re.match(r"^c (.+?) b .+$", d):
-                who = pid(m.group(1))
-            else:
-                who = None
-            if who:
-                catches[who] = catches.get(who, 0) + 1
-            if (m := re.match(r"^st (.+?) b .+$", d)) and pid(m.group(1)):
-                pts[pid(m.group(1))] += 12
-            if m := re.match(r"^run out \((.+)\)$", d):
-                fs = [pid(x) for x in m.group(1).split("/")]
-                for f in fs:
-                    if f:
-                        pts[f] += 12 if len(fs) == 1 else 6
-        for b in inn["bowling"]:
-            p = pid(b["name"])
-            if p:
-                pts[p] += float(bowling_points(_balls(b["overs"]), b["runs"], b["wickets"], bl_lbw.get(b["name"], 0)))
-    for who, n in catches.items():
-        pts[who] += 8 * n + (4 if n >= 3 else 0)
-    return pts
+    return scorecard_points(card, pid, roles, list(names.values()))
 
 
 def check(model: Model, cov: dict, fixture: dict, card: dict, n: int = 20000) -> dict:
-    spec, _ = spec_from_dict(cov)
+    """Picks made as the match centre makes them (same simulations as publish), scored on the scorecard."""
+    spec, scenario = spec_from_dict(cov)
     names = {nm: pid for ft, ct in zip(fixture["teams"], cov["teams"]) for nm, pid in zip(ft["players"], ct["players"])}
     label = {pid: nm for nm, pid in names.items()}
-    roles = {pid: r for ft, ct in zip(fixture["teams"], cov["teams"])
-             for pid, r in zip(ct["players"], ft.get("roles") or [])}
-    _, (pids, pts, roles, team_of, win) = M.fantasy_projections(model, spec, roles, n)
+    roles = {pid: str(r).upper() for ft, ct in zip(fixture["teams"], cov["teams"])
+             for pid, r in zip(ct["players"], ft.get("roles") or []) if r}
+    f = fantasy_picks(model, simulate(model, spec, n=n, scenario=scenario, seed=0), roles or None, k=20)
+    for pid, row in f["players"].items():
+        row["name"] = label.get(pid, pid)
+    roles = {p: r["role"] for p, r in f["players"].items()}
+    team_of = {p: r["team"] for p, r in f["players"].items()}
+    exp = {p: r["expected"] for p, r in f["players"].items()}
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
     real = card_points(card, names, roles)
     best = pick_xi(real, team_of, use_roles)
-    best_pts = team_points(*best, real)
-    exp = dict(zip(pids, decisive_mean(pts, win)))
-    xi, c, vc = pick_xi(exp, team_of, use_roles)
-    out = {"best": {"xi": sorted(best[0], key=lambda p: -real[p]), "c": best[1], "vc": best[2], "points": best_pts},
-           "ours": {"xi": sorted(xi, key=lambda p: -exp[p]), "c": c, "vc": vc,
-                    "points": team_points(xi, c, vc, real)},
-           "expected": exp, "real": real, "label": label, "team_of": team_of, "roles": roles}
+    one = f["single"]
+    xi, c, vc = one["players"], one["captain"], one["vice_captain"]
+    out = {"best": {"xi": sorted(best[0], key=lambda p: -real[p]), "c": best[1], "vc": best[2],
+                    "points": team_points(*best, real)},
+           "ours": {"xi": xi, "c": c, "vc": vc, "points": team_points(xi, c, vc, real)},
+           "expected": exp, "real": real, "label": label, "team_of": team_of, "roles": roles,
+           "picks": {**f, "teams": f["teams"][:5]}}            # what the match centre would have shown
     rc = sorted(xi, key=lambda p: -real[p])
     out["ours_hindsight_captain"] = team_points(xi, rc[0], rc[1], real)
-    teams = portfolio(pids, pts, team_of, k=20, roles=use_roles, captains=5)
-    got = [team_points(*t, real) for t in teams]
+    got = [team_points(t["players"], t["captain"], t["vice_captain"], real) for t in f["teams"]]
     out["sets"] = {k: max(got[:k]) for k in (5, 10, 20)}
-    out["teams"] = [{"xi": sorted(t[0], key=lambda p: -exp[p]), "c": t[1], "vc": t[2], "points": g}
-                    for t, g in zip(teams, got)]
+    out["teams"] = [{"xi": t["players"], "c": t["captain"], "vc": t["vice_captain"], "points": g}
+                    for t, g in zip(f["teams"], got)]
     return out
 
 
@@ -109,9 +67,14 @@ def check(model: Model, cov: dict, fixture: dict, card: dict, n: int = 20000) ->
 @click.option("--fixture", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--result", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--n", default=20000)
-def main(model_dir: Path, coverage: Path, fixture: Path, result: Path, n: int) -> None:
+@click.option("--picks-out", type=click.Path(path_type=Path), default=None,
+              help="Also write the picks (one XI + five teams) for the Results page, e.g. cricsim/fantasy/<id>.json")
+def main(model_dir: Path, coverage: Path, fixture: Path, result: Path, n: int, picks_out: Path | None) -> None:
     fx, card = json.loads(fixture.read_text()), json.loads(result.read_text())
     r = check(Model.load(model_dir), json.loads(coverage.read_text()), fx, card, n)
+    if picks_out:
+        picks_out.parent.mkdir(parents=True, exist_ok=True)
+        picks_out.write_text(json.dumps(r["picks"], indent=1) + "\n")
     lab, real, exp, tm = r["label"], r["real"], r["expected"], r["team_of"]
     teams = [t["short"] if t.get("short") else t["name"] for t in fx["teams"]]
     best = r["best"]["points"]

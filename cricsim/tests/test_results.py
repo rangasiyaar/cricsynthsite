@@ -122,3 +122,39 @@ def test_abandoned_match_is_listed_with_no_score():
     rep = score(doc(), {"innings": [], "abandoned": True, "result": "Match abandoned due to rain", "note": "Abandoned due to rain"}, FIXTURE)
     assert rep["checks"] == 0 and rep["winner"] is None and rep["brier"] is None and rep["scores"] == []
     assert rep["note"].startswith("Abandoned due to rain")
+
+
+def picks():
+    d = doc()
+    pak, sl = (t["players"] for t in d["match"]["teams"])
+
+    def role(i):
+        return "WK" if i == 6 else "BOWL" if i >= 8 else "AR" if i in (4, 5) else "BAT"
+    players = {p: {"team": k, "role": role(i), "expected": 60.0 - i, "name": p}
+               for k, ids in enumerate((pak, sl)) for i, p in enumerate(ids)}
+    one = {"players": pak[:6] + [pak[6], pak[8]] + sl[:2] + [sl[2]], "captain": "p_maaz", "vice_captain": "p_far",
+           "expected": 700.0}
+    two = {**one, "captain": "s_sin", "vice_captain": "p_maaz"}
+    return {"players": players, "single": one, "teams": [one, two]}
+
+
+def test_fantasy_picks_are_scored_on_the_scorecard(tmp_path):
+    fx_dir, sc_dir, out, pk = tmp_path / "fx", tmp_path / "sc", tmp_path / "out", tmp_path / "picks"
+    for d in (fx_dir, sc_dir, pk):
+        d.mkdir()
+    (fx_dir / "m.json").write_text(json.dumps({"id": "m", "date": "2026-10-11", "start_time": "18:30", **FIXTURE}))
+    (fx_dir / "n.json").write_text(json.dumps({"id": "n", "date": "2026-10-11", "start_time": "18:30", **FIXTURE}))
+    card = parse((DATA / "scorecard_pak_sl.txt").read_text())
+    (sc_dir / "m.json").write_text(json.dumps({"id": "m", **card}))
+    (sc_dir / "n.json").write_text(json.dumps({"id": "n", **card}))
+    (pk / "n.json").write_text(json.dumps(picks()))                     # published before the Fantasy tab
+    live = {"matches/m.json": {**doc(), "fantasy": picks()}, "matches/n.json": doc()}
+    now = datetime(2026, 10, 11, 14, 0, tzinfo=timezone.utc)
+    run(fx_dir, sc_dir, out, now=now, fetch=lambda path, sites=None: live.get(path), picks=pk)
+    rep = json.loads((out / "results" / "m.json").read_text())["fantasy"]
+    assert rep["real"]["p_maaz"] > 4 and rep["best"]["points"] >= rep["single"]["points"] > 0
+    assert 0 < rep["single"]["share"] <= 1 and rep["best_of_teams"] >= rep["single"]["share"]
+    assert len(rep["teams"]) == 2 and "after" not in rep
+    assert json.loads((out / "results" / "n.json").read_text())["fantasy"]["after"] is True
+    idx = json.loads((out / "results" / "index.json").read_text())
+    assert idx["fantasy"]["matches"] == 2 and 0 < idx["fantasy"]["single"] <= idx["fantasy"]["best_of_teams"] <= 1

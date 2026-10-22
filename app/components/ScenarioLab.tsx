@@ -118,7 +118,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   }, [scenario, restored]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = res ?? base;
-  const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], generated_at: new Date().toISOString() } : null),
+  const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], fantasy: undefined, generated_at: new Date().toISOString() } : null),
                                             [cur, doc]);
 
   if (err) return <p className="notice">{err}</p>;

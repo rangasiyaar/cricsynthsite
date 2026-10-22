@@ -8,11 +8,11 @@ import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/compo
 import { Tiles } from "@/components/Tiles";
 import { KIND, num, pct, range } from "@/lib/format";
 import { rate, type Rated } from "@/lib/ratings";
-import type { MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
+import type { FantasyTeam, MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
 const SHORT: Record<string, string> = { "Top players": "Top" };
-type Tab = (typeof TABS)[number];
+type Tab = (typeof TABS)[number] | "Fantasy";
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 const icon = (d: string) => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
@@ -25,6 +25,7 @@ const TAB_ICONS: Record<string, React.ReactNode> = {
   Matchups: icon("M7 7h11l-3-3M17 17H6l3 3"),
   "Top players": icon("M4 20h4V10H4zM10 20h4V4h-4zM16 20h4v-7h-4z"),
   MVP: icon("M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"),
+  Fantasy: icon("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"),
   Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
 };
 
@@ -32,10 +33,11 @@ const TAB_ICONS: Record<string, React.ReactNode> = {
  *  live engine, which always runs the published match). */
 export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean }) {
   const [tab, setTab] = useState<Tab>("Overview");
+  const tabs: Tab[] = doc.fantasy ? [...TABS, "Fantasy"] : [...TABS];
   return (
     <>
-      <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": TABS.length + (extra ? 1 : 0) } as React.CSSProperties}>
-        {TABS.map((t) => (
+      <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
+        {tabs.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
             <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
           </button>
@@ -50,6 +52,7 @@ export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra
         {tab === "Top players" && <TopPlayers doc={doc} />}
         {tab === "MVP" && <Mvp doc={doc} />}
         {tab === "Matchups" && <Matchups doc={doc} />}
+        {tab === "Fantasy" && doc.fantasy && <Fantasy doc={doc} />}
       </div>
     </>
   );
@@ -345,6 +348,67 @@ function Matchups({ doc }: { doc: MatchDoc }) {
           <tr key={`${m.bowler}-${m.batter}`}><td>{names.get(m.bowler) ?? m.bowler}</td><td>{names.get(m.batter) ?? m.batter}</td><td className="num"><P p={m.p} width={120} /></td></tr>
         ))}</tbody>
       </table></div>
+    </div>
+  );
+}
+
+const ROLE: Record<string, string> = { WK: "Keeper", BAT: "Batter", AR: "All-rounder", BOWL: "Bowler" };
+
+/** One fantasy team: each player's expected points (doubled for the captain, 1.5× for the vice-captain). */
+function FantasyTable({ doc, t }: { doc: MatchDoc; t: FantasyTeam }) {
+  const f = doc.fantasy!;
+  const short = doc.match.teams.map((x) => x.short);
+  return (
+    <div className="table-wrap"><table className="rank-table">
+      <thead><tr><th>Player</th><th className="fz-role">Role</th><th className="num">Expected</th></tr></thead>
+      <tbody>{t.players.map((p) => {
+        const r = f.players[p];
+        const mult = p === t.captain ? 2 : p === t.vice_captain ? 1.5 : 1;
+        return (
+          <tr key={p}>
+            <td><span className="team-dot" style={{ background: COLORS[r.team] }} />{r.name ?? p} <span className="small muted">{short[r.team]}</span>
+              {mult === 2 && <span className="tag pro" style={{ marginLeft: 6 }}>C</span>}
+              {mult === 1.5 && <span className="tag" style={{ marginLeft: 6 }}>VC</span>}</td>
+            <td className="small muted fz-role">{ROLE[r.role ?? ""] ?? "—"}</td>
+            <td className="num">{num(r.expected * mult)}{mult > 1 && <span className="small muted"> ({mult}×)</span>}</td>
+          </tr>
+        );
+      })}</tbody>
+      <tfoot><tr><td><b>Team total</b></td><td className="fz-role" /><td className="num"><b>{num(t.expected)}</b></td></tr></tfoot>
+    </table></div>
+  );
+}
+
+/** Fantasy picks from the published simulations: the single best team, and five teams that cover the likely matches. */
+function Fantasy({ doc }: { doc: MatchDoc }) {
+  const f = doc.fantasy!;
+  const name = (p: string) => f.players[p]?.name ?? p;
+  const split = doc.match.teams.map((t, k) => `${f.single.players.filter((p) => f.players[p].team === k).length} ${t.short}`).join(" · ");
+  return (
+    <div className="grid">
+      <div className="card">
+        <div className="card-head"><h3>Best single team</h3><span className="small muted">{split}</span></div>
+        <p className="small muted" style={{ margin: "0 0 10px" }}>The eleven with the most expected fantasy points across our simulations of the match.
+          The captain scores double and the vice-captain one and a half times.</p>
+        <FantasyTable doc={doc} t={f.single} />
+      </div>
+      <div className="card">
+        <h3>Five-team combo</h3>
+        <p className="small muted" style={{ margin: 0 }}>Five teams built to cover different ways the match can go, with different captains.
+          Each one is weaker on average than the single team, but together they usually catch more of the big performances.</p>
+      </div>
+      <div className="grid g2">
+        {f.teams.map((t, i) => (
+          <div key={i} className="card">
+            <h3>Team {i + 1}</h3>
+            <p className="small" style={{ margin: "0 0 10px" }}>Captain <b>{name(t.captain)}</b> · vice-captain <b>{name(t.vice_captain)}</b></p>
+            <FantasyTable doc={doc} t={t} />
+          </div>
+        ))}
+      </div>
+      <p className="small muted">Points follow the usual T20 fantasy table: runs, boundaries, milestones, wickets, economy and strike-rate
+        bands{f.fielding ? ", plus catches, stumpings and run-outs shared by each player's usual fielding record" : ""}.
+        Picks are locked with the rest of the forecast at the start of play. <Link href="/results/">See how past picks scored</Link>.</p>
     </div>
   );
 }
