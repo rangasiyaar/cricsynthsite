@@ -176,6 +176,7 @@ class Model:
     bat_pos_recent: np.ndarray | None = None          # (P, 2) batting position over the last RECENT innings
     entry_frac: np.ndarray | None = None              # (P, 2) usual entry point from number 3 down (share of the innings gone; -1 unknown)
     pos_entry: np.ndarray | None = None               # (2, 11) the same by batting position
+    fielding: np.ndarray | None = None                # (P, 3) share of the side's catches / stumpings / run-outs
     last_fam: np.ndarray | None = None                # (P,) format family of the player's latest match (-1 unknown)
     career_balls: np.ndarray | None = None            # (P, 2) balls faced / bowled so far (experience buckets)
     appearances: np.ndarray | None = None             # (P, 2) recency-weighted matches
@@ -252,7 +253,7 @@ class Model:
 
     # ── persistence ──
     ARRAYS = ("hand", "kind", "balls_faced", "balls_bowled", "last_played", "usage", "usage_slot", "usage_recent", "recent_n",
-              "bat_pos_recent", "career_balls", "appearances", "bat_pos", "last_fam", "entry_frac", "pos_entry",
+              "bat_pos_recent", "career_balls", "appearances", "bat_pos", "last_fam", "entry_frac", "pos_entry", "fielding",
               "wide_runs", "bye_runs", "dismissal")
 
     def save(self, path: Path) -> None:

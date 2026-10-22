@@ -170,6 +170,8 @@ def test_backtest_runs_and_reports(world, tmp_path):
     write_report(rep, tmp_path / "bt")
     text = (tmp_path / "bt.md").read_text()
     assert "Backtest" in text and "In-sample check" in text
+    rep_f = run_backtest(world["parquet"], date(2024, 1, 1), limit=6, n_sims=100, sim_overrides={"fielding": True})
+    assert rep_f["fantasy"]["best_possible"] > 0
 
 
 def test_sample_a_simulated_match(world, tmp_path):
@@ -451,3 +453,28 @@ def test_backtest_paths_with_a_fielding_only_player(world):
     team_of = {p: k for k, tm in enumerate(sp.teams) for p in tm.everyone}
     pick_xi(dict(zip(pids, pts.mean(0))), team_of)
     summarize(s, m)
+
+
+def test_fielding_points_from_dismissals():
+    from cricsim.fantasy import fielding_points
+    ev = [("caught", ["a"], "b"), ("caught", ["a"], "b"), ("caught", ["a"], "c"), ("caught and bowled", [], "b"),
+          ("stumped", ["k"], "c"), ("run out", ["a", "k"], None), ("run out", ["d"], None), ("bowled", [], "b")]
+    assert fielding_points(ev) == {"a": 3 * 8 + 4 + 6, "b": 8, "k": 12 + 6, "d": 12}
+
+
+def test_sim_fielding_points_add_up(world):
+    from cricsim.fantasy import CAUGHT, CAUGHT_BOWLED, RUN_OUT, STUMPED, sim_points
+    m = world["model"]
+    assert m.fielding is not None and m.fielding.shape == (len(m.players), 3)
+    assert np.all((m.fielding > 0) & (m.fielding < 1))
+    s = simulate(m, _spec(world["world"]), n=100, seed=9)
+    _, base = sim_points(s)
+    _, withf = sim_points(s, model=m, fielding=True)
+    want = []
+    for part in s.parts:
+        w = 0
+        for lg in part.innings:
+            k, out = lg.bat_kind, lg.bat_out
+            w = w + 8 * (out & np.isin(k, (CAUGHT, CAUGHT_BOWLED))).sum(1) + 12 * (out & np.isin(k, (STUMPED, RUN_OUT))).sum(1)
+        want.append(w)
+    assert np.allclose((withf - base).sum(1), np.concatenate(want), atol=1e-3)

@@ -26,7 +26,8 @@ from cricsim.engine.fit import FitConfig, fit
 from cricsim.engine.model import RECENT, Model
 from cricsim.engine.simulate import RECENT_ROLE, simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
-from cricsim.fantasy import actual_points, pick_xi, portfolio, sim_points, team_points
+from cricsim.fantasy import actual_points, pick_xi, portfolio, team_points
+from cricsim.fantasy import sim_points as _sim_points
 
 log = logging.getLogger(__name__)
 
@@ -163,6 +164,10 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     con.execute(f"""CREATE OR REPLACE TABLE hold AS SELECT * FROM read_parquet('{d}')
                     WHERE match_date >= DATE '{cutoff}' {f"AND match_date < DATE '{end}'" if end else ""}
                     AND NOT is_super_over""")
+    if any((parquet / "wickets").glob("*.parquet")):
+        con.execute(f"""CREATE OR REPLACE VIEW hold_wickets AS SELECT match_id, kind, fielder_ids, bowler_id, is_super_over
+                        FROM read_parquet('{(parquet / "wickets" / "*.parquet").as_posix()}')
+                        WHERE match_date >= DATE '{cutoff}'""")
 
     res = {"win": [], "score": [], "players": [], "bowlers": []}
     for mt in matches:
@@ -303,10 +308,16 @@ def _xi_score(pids, pts, team) -> np.ndarray:
 
 def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool,
              actual_order: dict | None = None) -> dict:
-    """Pick fantasy XIs from the simulations, score them on the real match (no fielding points either side)."""
+    """Pick fantasy XIs from the simulations, score them on the real match (fielding on both sides or neither)."""
     team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
-    real = actual_points(con, mt["match_id"])
-    real = {p: real.get(p, 4.0) for p in team_of}            # in the XI but did nothing: playing points only
+    mode = (model.meta.get("sim") or {}).get("fielding")     # "real": fielding scored, not used in picks; "both"
+    events = _fielding_events(con, mt["match_id"]) if mode else None
+    real = actual_points(con, mt["match_id"], fielding=events)
+    real = {p: 4.0 + real.get(p, 0.0) for p in team_of}      # playing points for everyone in the XI
+    in_picks = mode in ("both", True) and model.fielding is not None
+
+    def sim_points(s):
+        return _sim_points(s, model=model, fielding=in_picks)
     pids, pts = sim_points(sims)
     mean = dict(zip(pids, pts.mean(0)))
     upside = dict(zip(pids, np.percentile(pts, 90, axis=0)))
@@ -389,6 +400,14 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
             rc3 = sorted(xi3, key=lambda p: -real[p])
             out["team_news_oracle_captain"] = team_points(xi3, rc3[0], rc3[1], real)
     return out
+
+
+def _fielding_events(con, match_id: str) -> list:
+    """(kind, fielder ids, bowler id) per dismissal of the held-out match (from the wickets table)."""
+    if not con.execute("SELECT count(*) FROM duckdb_views() WHERE view_name = 'hold_wickets'").fetchone()[0]:
+        return []
+    return con.execute("""SELECT kind, fielder_ids, bowler_id FROM hold_wickets
+                          WHERE match_id = ? AND NOT is_super_over""", [match_id]).fetchall()
 
 
 def _actual_player_stats(con, match_id: str):

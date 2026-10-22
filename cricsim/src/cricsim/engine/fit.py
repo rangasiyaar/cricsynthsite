@@ -700,6 +700,9 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
                 if role == "batter_id" and lastday >= last_bat[i]:
                     last_bat[i], last_fam[i] = lastday, fam
 
+    fielding = _fielding_shares(con, parquet, pidx, cut.replace("match_date", "m.match_date"),
+                                wexpr.replace("match_date", "m.match_date"))
+
     names = list(ids["players"])
     hand = np.zeros(P, dtype=np.int8)
     kind = np.zeros(P, dtype=np.int8)
@@ -721,8 +724,46 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
             "runout_non_striker": ro_ns / ro_all if ro_all else 0.4,
             "wide_runs": wide_runs.astype(np.float32), "bye_runs": bye_runs.astype(np.float32),
             "balls_faced": faced, "balls_bowled": bowled, "last_played": last, "last_fam": last_fam, "names": names,
-            "entry_frac": entry_frac, "pos_entry": pos_entry,
+            "entry_frac": entry_frac, "pos_entry": pos_entry, "fielding": fielding,
             "hand": hand, "kind": kind}
+
+
+FIELD_EVENTS = ("caught", "stumped", "run out")
+FIELD_PRIOR = 15.0                                     # team events of pseudo-data at an even 1/11 share
+
+
+def _fielding_shares(con, parquet: Path, pidx: dict[str, int], cut: str, wexpr: str) -> np.ndarray | None:
+    """(P, 3) each player's share of his side's catches, stumpings and run-out involvements while on the field
+    (recency-weighted, shrunk to 1/11). Caught-and-bowled counts as a catch by the bowler. For fantasy fielding
+    points: the simulation knows how many catches its bowlers earn, not who held them."""
+    wk, inn = parquet / "wickets", parquet / "innings"
+    if not any(wk.glob("*.parquet")) or not any(inn.glob("*.parquet")):
+        return None
+    mp = (parquet / "match_players" / "*.parquet").as_posix()
+    mt = (parquet / "matches" / "*.parquet").as_posix()
+    rows = con.execute(f"""
+        WITH ev AS (
+          SELECT w.match_id, i.team AS bat_team,
+                 CASE WHEN w.kind IN ('caught', 'caught and bowled') THEN 0 WHEN w.kind = 'stumped' THEN 1 ELSE 2 END AS k,
+                 CASE WHEN w.kind = 'caught and bowled' THEN [w.bowler_id] ELSE w.fielder_ids END AS f
+          FROM read_parquet('{(wk / "*.parquet").as_posix()}') w
+          JOIN read_parquet('{(inn / "*.parquet").as_posix()}') i USING (match_id, innings_no)
+          WHERE w.kind IN ('caught', 'caught and bowled', 'stumped', 'run out') AND NOT w.is_super_over),
+        tot AS (SELECT match_id, bat_team, k, count(*) AS n FROM ev GROUP BY ALL),
+        mine AS (SELECT match_id, k, pid, count(*) AS n FROM (SELECT match_id, k, unnest(f) AS pid FROM ev) GROUP BY ALL),
+        pm AS (SELECT p.match_id, p.team, p.player_id, {wexpr} AS w
+               FROM read_parquet('{mp}') p JOIN read_parquet('{mt}') m USING (match_id)
+               WHERE m.format IN ('T20', 'T10', 'HUNDRED', 'OD') {cut})
+        SELECT pm.player_id, t.k, sum(pm.w * coalesce(mi.n, 0)), sum(pm.w * t.n)
+        FROM pm JOIN tot t ON t.match_id = pm.match_id AND t.bat_team <> pm.team
+        LEFT JOIN mine mi ON mi.match_id = pm.match_id AND mi.k = t.k AND mi.pid = pm.player_id
+        GROUP BY ALL""").fetchall()
+    num = np.zeros((len(pidx), 3), dtype=np.float64)
+    den = np.zeros((len(pidx), 3), dtype=np.float64)
+    for pid, k, a, b in rows:
+        if pid in pidx:
+            num[pidx[pid], k], den[pidx[pid], k] = a, b
+    return ((num + FIELD_PRIOR / 11) / (den + FIELD_PRIOR)).astype(np.float32)
 
 
 def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> dict:

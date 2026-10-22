@@ -3,8 +3,10 @@
 Batting: run 1, four +4, six +6, 25/50/75/100 bonus 4/8/12/16 (highest only), duck -2 (not bowlers),
 strike-rate bands (10+ balls, not bowlers). Bowling: wicket 30, bowled/LBW +8, 3/4/5-wicket bonus 4/8/12,
 economy bands (2+ overs). Playing +4. Stumping +12 to the keeper when roles are known.
-Catches, run-outs and maidens are left out on both sides: the simulation does not track fielders, so a
-like-for-like comparison drops them from real scorecards too.
+Fielding (`fielding=True`, needs a model with fielding shares): catch 8 (+4 for 3 or more), stumping 12,
+run-out 12 (6 each when two fielders share it). The simulation knows how many catches, stumpings and run-outs
+happen, not who made them, so each is split over the fielding XI by the players' usual share. Without it,
+fielding is left out on both sides. Maidens are left out on both sides.
 """
 from __future__ import annotations
 
@@ -16,6 +18,8 @@ from cricsim.engine.model import DISMISSALS
 
 BOWLED_LBW = (DISMISSALS.index("bowled"), DISMISSALS.index("lbw"))
 STUMPED = DISMISSALS.index("stumped")
+CAUGHT, CAUGHT_BOWLED, RUN_OUT = DISMISSALS.index("caught"), DISMISSALS.index("caught and bowled"), DISMISSALS.index("run out")
+FIELD_POINTS = (8, 12, 12)                 # catch, stumping, run-out
 
 
 def batting_points(r, b, f4, f6, out, bowler_role=False):
@@ -38,9 +42,11 @@ def bowling_points(balls, runs, wkts, bowled_lbw):
     return p + np.where(balls >= 12, band, 0)
 
 
-def sim_points(sims, roles: dict[str, str] | None = None) -> tuple[list[str], np.ndarray]:
+def sim_points(sims, roles: dict[str, str] | None = None, model=None,
+               fielding: bool = False) -> tuple[list[str], np.ndarray]:
     """(player ids, (n_sims, 22) points per simulation)."""
     roles = roles or {}
+    share = model.fielding if fielding and model is not None else None
     pids = [p for t in sims.spec.teams for p in t.everyone]
     col = {p: i for i, p in enumerate(pids)}
     out = []
@@ -56,14 +62,44 @@ def sim_points(sims, roles: dict[str, str] | None = None) -> tuple[list[str], np
                 mine = dismissed & (by == k)
                 bl = (mine & np.isin(kind, BOWLED_LBW)).sum(1)
                 pts[:, col[p]] += bowling_points(lg.bowl_balls[:, k], lg.bowl_runs[:, k], lg.bowl_wkts[:, k], bl)
-                if keeper is not None:
+                if share is not None:
+                    pts[:, col[p]] += 8 * (mine & (kind == CAUGHT_BOWLED)).sum(1)
+                elif keeper is not None:
                     pts[:, col[keeper]] += 12 * (mine & (kind == STUMPED)).sum(1)
+            if share is not None:
+                sh = share[[model.pid(q) for q in lg.bowlers]]
+                sh = sh / np.maximum(sh.sum(0), 1e-9)
+                for j, (k, pts_k) in enumerate(zip((CAUGHT, STUMPED, RUN_OUT), FIELD_POINTS)):
+                    n_ev = (dismissed & (kind == k)).sum(1)
+                    for q, p in enumerate(lg.bowlers):
+                        pts[:, col[p]] += pts_k * sh[q, j] * n_ev
         out.append(pts)
     return pids, np.concatenate(out)
 
 
-def actual_points(con, match_id: str, table: str = "hold") -> dict[str, float]:
-    """Real points per player (same table, no fielding), from a deliveries table with one match in it."""
+def fielding_points(events) -> dict[str, float]:
+    """Real fielding points from (kind, fielder ids, bowler id) per dismissal."""
+    pts: dict[str, float] = {}
+    catches: dict[str, int] = {}
+    for kind, fielders, bowler in events:
+        fielders = [f for f in (fielders or []) if f]
+        if kind in ("caught", "caught and bowled"):
+            who = bowler if kind == "caught and bowled" or not fielders else fielders[0]
+            if who:
+                catches[who] = catches.get(who, 0) + 1
+        elif kind == "stumped" and fielders:
+            pts[fielders[0]] = pts.get(fielders[0], 0) + 12
+        elif kind == "run out" and fielders:
+            for f in fielders[:2]:
+                pts[f] = pts.get(f, 0) + (12 if len(fielders) == 1 else 6)
+    for who, n in catches.items():
+        pts[who] = pts.get(who, 0) + 8 * n + (4 if n >= 3 else 0)
+    return pts
+
+
+def actual_points(con, match_id: str, table: str = "hold", fielding: list | None = None) -> dict[str, float]:
+    """Real points per player from a deliveries table with one match in it; fielding from `fielding`
+    ((kind, fielder ids, bowler id) per dismissal) when given."""
     bat = con.execute(f"""
         SELECT batter_id, sum(runs_batter), count(*) FILTER (WHERE wides = 0),
                count(*) FILTER (WHERE runs_batter = 4 AND NOT coalesce(non_boundary, FALSE)),
@@ -83,6 +119,8 @@ def actual_points(con, match_id: str, table: str = "hold") -> dict[str, float]:
         pts[pid] = pts.get(pid, 0) + float(batting_points(r, b, f4, f6, pid in outs))
     for pid, balls, runs, w, bl in bowl:
         pts[pid] = pts.get(pid, 0) + float(bowling_points(balls, runs, w, bl))
+    for pid, v in fielding_points(fielding or []).items():
+        pts[pid] = pts.get(pid, 0) + v
     return pts
 
 
