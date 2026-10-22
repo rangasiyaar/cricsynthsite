@@ -31,7 +31,11 @@ from cricsim.fantasy import actual_points, pick_xi, portfolio, sim_points, team_
 log = logging.getLogger(__name__)
 
 
-def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None) -> list[dict]:
+def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None,
+                    twelve: bool = False, skipped: dict | None = None) -> list[dict]:
+    """Held-out matches with both XIs. Matches listing 12 players a side (an Impact Player or other substitute
+    rule) are skipped and counted in `skipped`, or with twelve=True kept with the first 11 listed as the XI (what a
+    forecast from the announced XI sees)."""
     m = (parquet / "matches" / "*.parquet").as_posix()
     mp = (parquet / "match_players" / "*.parquet").as_posix()
     inn = (parquet / "innings" / "*.parquet").as_posix()
@@ -41,25 +45,34 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
           GROUP BY 1 HAVING count(*) = 2)
         SELECT m.match_id, m.format, m.gender, m.venue_id, m.team_type,
                coalesce(m.competition_id, 'intl-' || coalesce(m.team_type, '') || '-' || m.format) AS comp,
-               m.team1, m.team2, m.winner, m.result, m.overs, m.method, m.match_date
+               m.team1, m.team2, m.winner, m.result, m.overs, m.method, m.match_date, m.toss_winner, m.toss_decision
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
         WHERE m.match_date >= DATE '{cutoff}' {f"AND m.match_date < DATE '{end}'" if end else ""} AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
           AND m.gender IN ('male', 'female') AND m.method IS NULL
         ORDER BY hash(m.match_id || '{seed}') LIMIT {limit}""").fetchall()
     out = []
-    for mid, fmt, gender, venue, team_type, comp, t1, t2, winner, result, overs, method, day in rows:
+    for mid, fmt, gender, venue, team_type, comp, t1, t2, winner, result, overs, method, day, toss_w, toss_d in rows:
         xi = {}
         for team in (t1, t2):
             xi[team] = [r[0] for r in con.execute(
                 f"SELECT player_id FROM read_parquet('{mp}') WHERE match_id = ? AND team = ? ORDER BY list_order",
                 [mid, team]).fetchall()]
-        if any(len(v) != 11 or None in v for v in xi.values()):
+        if any(None in v for v in xi.values()):
+            continue
+        listed = max(len(v) for v in xi.values())
+        if listed > 11 and min(len(v) for v in xi.values()) >= 11:
+            if skipped is not None:
+                skipped[comp] = skipped.get(comp, 0) + 1
+            if not twelve:
+                continue
+            xi = {t: v[:11] for t, v in xi.items()}
+        elif any(len(v) != 11 for v in xi.values()):
             continue
         innings = con.execute(f"""SELECT innings_no, team, runs, wickets FROM read_parquet('{inn}')
                                   WHERE match_id = ? AND innings_no <= 2 ORDER BY innings_no""", [mid]).fetchall()
         out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp, "team_type": team_type,
                     "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings,
-                    "date": day})
+                    "date": day, "listed": listed, "toss_winner": toss_w, "toss_decision": toss_d})
     return out
 
 
@@ -92,7 +105,8 @@ def _xi_order(model: Model, xi: list[str], fmt: str) -> list[str]:
 def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 1000,
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
-                 sim_overrides: dict | None = None, order: str = "history", roles: bool = False) -> dict:
+                 sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
+                 twelve: bool = False) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}."""
     con = duckdb.connect()
@@ -104,7 +118,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -120,8 +134,9 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
-         fantasy_bowlers: bool = False, order: str = "history", roles: bool = False) -> dict:
-    matches = holdout_matches(con, parquet, cutoff, limit, end=end)
+         fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False) -> dict:
+    skipped: dict = {}
+    matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -161,7 +176,10 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                 "short_act": None if act_won else float(mt["innings"][0][2] - mt["innings"][1][2]),
                 "r2_won_sim": float(r2[won_sim].mean()) if won_sim.any() else None,
                 "r2_lost_sim": float(r2[~won_sim].mean()) if (~won_sim).any() else None,
-                "r2_act": float(mt["innings"][1][2])})
+                "r2_act": float(mt["innings"][1][2]),
+                "toss": ("chose to chase" if mt.get("toss_decision") == "field" else "chose to bat first")
+                        if mt.get("toss_winner") else None,
+                "listed": mt.get("listed", 11)})
         actual_order = batting_order(con, mt["match_id"])
         if mt["format"] != "OD":
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
@@ -181,7 +199,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                                          "venue": "seen" if model.venue(mt["venue_id"]) else "new",
                                                          "unknown batters": "0" if n_new == 0 else
                                                          "1-2" if n_new <= 2 else "3+",
-                                                         "months after cutoff": _horizon(mt["date"], cutoff)},
+                                                         "months after cutoff": _horizon(mt["date"], cutoff),
+                                                         "players listed": "12 (substitute rule)" if mt.get("listed", 11) > 11 else "11"},
                                                "group": f"{mt['format']} {mt['gender']} {mt['team_type']}",
                                                "pred_wkts": float(lg.wkts.mean()), "act_wkts": act_wk,
                                                "pred_bowlers": float((lg.bowl_balls > 0).sum(1).mean()),
@@ -236,6 +255,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                        "share": "full quota" if act_b >= quota else
                                                 "half+ quota" if act_b >= quota / 2 else "under half"})
     rep = score(res, cutoff, len(matches))
+    rep["listed_12"] = dict(sorted(skipped.items(), key=lambda kv: -kv[1]))
+    rep["listed_12_included"] = twelve
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
     return rep
 
@@ -424,6 +445,17 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                         "won_runs_actual": round(float(np.mean(won)), 1) if won else None,
                         "lost_runs_predicted": wmean("r2_lost_sim", "q"),
                         "lost_runs_actual": round(float(np.mean(lost)), 1) if lost else None}
+        # the toss as information: a captain who chose to chase expects something (dew, a flat second-innings
+        # pitch); a side made to chase was sent in. Chasing side's win chance, predicted v actual, by toss call.
+        by = {}
+        for r in c:
+            if r.get("toss"):
+                by.setdefault(r["toss"], []).append(r)
+            by.setdefault(f"{r.get('listed', 11)} listed", []).append(r)
+        out["chase_by"] = {k: {"n": len(v), "win_predicted": round(float(np.mean([r["p"] for r in v])), 3),
+                               "win_actual": round(float(np.mean([r["won"] for r in v])), 3),
+                               "brier": round(float(np.mean([(r["p"] - r["won"]) ** 2 for r in v])), 4)}
+                           for k, v in by.items()}
     if res.get("team"):
         out["team_innings"] = {}
         for inn in (1, 2, "2, finished matches"):
@@ -571,6 +603,15 @@ def write_report(rep: dict, path: Path) -> None:
             L.append(f"| {k} | {r['n']} | {r['runs_predicted']} / {r['runs_actual']} | {r['wickets_predicted']} / "
                      f"{r['wickets_actual']} | {r['bowlers_used_predicted']} / {r['bowlers_used_actual']} | "
                      f"{r['top_bowler_balls_predicted']} / {r['top_bowler_balls_actual']} |")
+        L.append("")
+    if rep.get("listed_12"):
+        n12 = sum(rep["listed_12"].values())
+        L += [f"Matches listing 12 players a side (substitute rules): {n12}, "
+              + ("included with the first 11 listed as the XI" if rep.get("listed_12_included") else "skipped")
+              + ". By competition: " + ", ".join(f"{k} {v}" for k, v in list(rep["listed_12"].items())[:8]), ""]
+    if rep.get("chase_by"):
+        L += ["| Chases by | Matches | Chaser wins, predicted | Actual | Brier |", "|---|---|---|---|---|"]
+        L += [f"| {k} | {r['n']} | {r['win_predicted']} | {r['win_actual']} | {r['brier']} |" for k, r in rep["chase_by"].items()]
         L.append("")
     if rep.get("chase"):
         c = rep["chase"]

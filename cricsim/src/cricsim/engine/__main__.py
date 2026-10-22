@@ -82,6 +82,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--bat-switch/--no-bat-switch", default=None, help="Variant: batter coming from the other format family")
 @click.option("--era-team-type/--no-era-team-type", default=None, help="Variant: own season trend for internationals and domestic")
 @click.option("--era-ahead", type=float, default=None, help="Variant: years ahead the scoring trend is aimed (default 0.5)")
+@click.option("--twelve", is_flag=True, help="Include matches listing 12 players a side (first 11 as the XI)")
 @click.option("--form", type=float, default=None, help="Variant: weight of recent form (last 5 matches)")
 @click.option("--plan-power", type=float, default=None, help="Variant: overs plan concentration")
 @click.option("--plan-eps", type=float, default=None, help="Variant: overs plan, extra chance per usual over")
@@ -97,7 +98,7 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
              phase_skill: bool | None, form: float | None, sims: int, new_ground: bool | None,
              venue_half_life: float | None, era_wickets: str | None, era_gender: bool | None,
              team_day: bool | None, chase_wickets: bool | None, collapse: bool | None, bat_switch: bool | None,
-             era_team_type: bool | None, era_ahead: float | None,
+             era_team_type: bool | None, era_ahead: float | None, twelve: bool,
              out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
@@ -130,7 +131,7 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
                                                          ("era_wickets", era_wickets), ("team_day", team_day),
                                                          ("era_ahead", era_ahead))
                                       if v is not None},
-                       order=order, roles=roles)
+                       order=order, roles=roles, twelve=twelve)
     write_report(rep, out)
     click.echo(out.with_suffix(".md").read_text())
 
