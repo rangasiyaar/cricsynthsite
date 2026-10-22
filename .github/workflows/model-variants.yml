@@ -22,8 +22,7 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: fantasy-field-real, rules: new, targets: derived, args: "--order sheet --roles --twelve --fielding real --fantasy-bowlers" }
-          - { name: fantasy-field-both, rules: new, targets: derived, args: "--order sheet --roles --twelve --fielding both --fantasy-bowlers" }
+          - { name: captain-diag, rules: new, targets: derived, args: "--order sheet --roles --twelve --fielding both" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
       CRICDATA_TARGETS: ${{ matrix.variant.targets }}

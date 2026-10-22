@@ -172,7 +172,7 @@ def test_backtest_runs_and_reports(world, tmp_path):
     assert rep["insample"]["team_innings"]["1"]["n"] > 0
     write_report(rep, tmp_path / "bt")
     text = (tmp_path / "bt.md").read_text()
-    assert "Backtest" in text and "In-sample check" in text
+    assert "Backtest" in text and "In-sample check" in text and "Captain candidates" in text
     rep_f = run_backtest(world["parquet"], date(2024, 1, 1), limit=6, n_sims=100, sim_overrides={"fielding": True})
     assert rep_f["fantasy"]["best_possible"] > 0
 

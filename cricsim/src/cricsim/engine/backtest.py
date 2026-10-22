@@ -330,6 +330,35 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     srt = -np.sort(-pts, axis=1)
     out["ceil_team"] = float(_xi_score(pids, pts, (xi, c, vc)).mean())
     out["ceil_best"] = float((srt[:, :11].sum(1) + srt[:, 0] + 0.5 * srt[:, 1]).mean())
+    # captain diagnostics: how the top candidates' predicted points compare with what they scored, by role
+    win = np.concatenate([p.winner for p in sims.parts])
+    slot, bowl = {}, {}
+    for part in sims.parts:
+        for lg in part.innings:
+            for k, p in enumerate(lg.order):
+                slot[p] = k + 1
+            for k, p in enumerate(lg.bowlers):
+                bowl[p] = bowl.get(p, 0.0) + float(lg.bowl_balls[:, k].sum()) / sims.n
+    sd = dict(zip(pids, pts.std(0)))
+    top = sorted(xi, key=lambda p: -mean[p])[:6]
+    out["cap_rows"] = [{"rank": i + 1, "pred": float(mean[p]), "real": float(real[p]), "sd": float(sd[p]),
+                        "slot": slot.get(p, 11), "bowl": bowl.get(p, 0.0),
+                        "win": float((win == team_of[p]).mean()), "best": p == max(xi, key=lambda q: real[q])}
+                       for i, p in enumerate(top)]
+    # captain rules a fantasy expert might use (vice-captain: the best of the rest by expected points)
+    p25 = dict(zip(pids, np.percentile(pts, 25, axis=0)))
+    is_ar = {p: bowl.get(p, 0.0) >= 12 and slot.get(p, 11) <= 7 for p in xi}
+    fav_side = int((win == 1).mean() > 0.5)
+
+    def by_rule(ok, key=mean):
+        pool = [p for p in xi if ok(p)] or xi
+        cap = max(pool, key=lambda p: key[p])
+        vc_ = max((p for p in xi if p != cap), key=lambda p: mean[p])
+        return team_points(xi, cap, vc_, real)
+    out["cap_top_order"] = by_rule(lambda p: slot.get(p, 11) <= 3 and bowl.get(p, 0.0) < 12)
+    out["cap_all_rounder"] = by_rule(lambda p: is_ar[p])
+    out["cap_favoured_side"] = by_rule(lambda p: team_of[p] == fav_side)
+    out["cap_floor"] = by_rule(lambda p: True, p25)
     # where the points go: our XI with hindsight captain / vice-captain
     rc = sorted(xi, key=lambda p: -real[p])
     out["oracle_captain"] = team_points(xi, rc[0], rc[1], real)
@@ -575,11 +604,31 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "favourite_wins", "upside_captain", "ptop_captain",
                                                    "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
+                                                   "cap_top_order", "cap_all_rounder", "cap_favoured_side", "cap_floor",
                                                    "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
                                                    "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
                           "ceiling_perfect_model": round(float(np.mean([r["ceil_team"] for r in f])
                                                                / np.mean([r["ceil_best"] for r in f])), 3)}
+        rows = [c for r in f for c in r.get("cap_rows", [])]
+        if rows:
+            def role(c):
+                if c["bowl"] >= 12 and c["slot"] <= 7:
+                    return "all-rounder (bats 1-7, bowls 2+ overs)"
+                if c["bowl"] >= 12:
+                    return "bowler"
+                return "top order (1-3)" if c["slot"] <= 3 else "middle order (4-7)" if c["slot"] <= 7 else "tail"
+            groups: dict[str, list] = {}
+            for c in rows:
+                for g in (f"rank {c['rank']} by expected points", role(c),
+                          "side favoured to win" if c["win"] >= 0.5 else "side not favoured",
+                          "steady (sd below 0.8 × mean)" if c["sd"] < 0.8 * c["pred"] else "volatile"):
+                    groups.setdefault(g, []).append(c)
+            out["fantasy"]["captain_candidates"] = {
+                g: {"n": len(v), "pred": round(float(np.mean([c["pred"] for c in v])), 1),
+                    "real": round(float(np.mean([c["real"] for c in v])), 1),
+                    "top_of_xi": round(float(np.mean([c["best"] for c in v])), 3)}
+                for g, v in sorted(groups.items())}
     if res["bowlers"]:
         b = res["bowlers"]
         out["bowler_wickets"] = {"n": len(b), "brier_2plus": round(float(np.mean([(r["p2"] - r["hit2"]) ** 2 for r in b])), 4),
@@ -734,6 +783,13 @@ def write_report(rep: dict, path: Path) -> None:
               "| Strategy | Avg points | Share of best |", "|---|---|---|"]
         L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
         L.append("")
+        if fz.get("captain_candidates"):
+            L += ["Captain candidates (top 6 of the picked XI by expected points): predicted v real points, and how "
+                  "often the player was the XI's top scorer", "",
+                  "| Group | Players | Predicted | Real | Top of XI |", "|---|---|---|---|---|"]
+            L += [f"| {g} | {v['n']} | {v['pred']} | {v['real']} | {100 * v['top_of_xi']:.1f}% |"
+                  for g, v in fz["captain_candidates"].items()]
+            L.append("")
     if rep.get("era_recent"):
         L += ["## Season scoring levels learned (log-multipliers; T20-type family)", "",
               " · ".join(f"{y}: 4s {v['four']:+.3f} 6s {v['six']:+.3f} W {v['wicket']:+.3f}"
