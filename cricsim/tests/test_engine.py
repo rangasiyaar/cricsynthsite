@@ -419,3 +419,7 @@ def test_impact_xis_bat_and_field_eleven(world):
     s = simulate(m, MatchSpec("T20", "male", (t, spec.teams[1]), venue_id="premier-oval",
                               comp_key="premier-league"), n=200, seed=6)
     assert np.isfinite(s.parts[0].innings[0].runs).all()
+    from cricsim.fantasy import sim_points
+    pids, pts = sim_points(s)
+    assert set(t.bowling_xi) <= set(pids) and np.isfinite(pts).all()
+    summarize(s, m)

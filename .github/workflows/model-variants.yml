@@ -22,7 +22,6 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: with-12-listed, rules: new, targets: derived, args: "--order sheet --roles --twelve" }
           - { name: impact-12, rules: new, targets: derived, args: "--order sheet --roles --twelve --impact12" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}

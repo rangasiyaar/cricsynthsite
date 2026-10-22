@@ -41,7 +41,7 @@ def bowling_points(balls, runs, wkts, bowled_lbw):
 def sim_points(sims, roles: dict[str, str] | None = None) -> tuple[list[str], np.ndarray]:
     """(player ids, (n_sims, 22) points per simulation)."""
     roles = roles or {}
-    pids = [p for t in sims.spec.teams for p in t.players]
+    pids = list(dict.fromkeys(p for t in sims.spec.teams for p in [*t.players, *(t.bowling_xi or [])]))
     col = {p: i for i, p in enumerate(pids)}
     out = []
     for part in sims.parts:
