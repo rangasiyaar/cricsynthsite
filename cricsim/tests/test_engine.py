@@ -485,3 +485,12 @@ def test_sim_fielding_points_add_up(world):
             w = w + 8 * (out & np.isin(k, (CAUGHT, CAUGHT_BOWLED))).sum(1) + 12 * (out & np.isin(k, (STUMPED, RUN_OUT))).sum(1)
         want.append(w)
     assert np.allclose((withf - base).sum(1), np.concatenate(want), atol=1e-3)
+
+
+def test_decisive_mean_leans_to_the_favourite():
+    from cricsim.fantasy import decisive_mean
+    win = np.array([0] * 70 + [1] * 30)
+    pts = np.stack([np.where(win == 0, 100.0, 0.0), np.where(win == 1, 100.0, 0.0)], 1)
+    m = decisive_mean(pts, win, 1.2)
+    assert m[0] > 70 and m[1] < 30 and abs(m.sum() - 100) < 1e-6
+    assert np.allclose(decisive_mean(pts, win, 1.0), pts.mean(0))

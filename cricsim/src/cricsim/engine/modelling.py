@@ -325,13 +325,13 @@ def fantasy_projections(model: Model, spec: MatchSpec, roles: dict[str, str] | N
             "scoring": "Dream11-style T20 points" + (", with catches, stumpings and run-outs shared by each player's "
                                                      "usual fielding share; no maidens" if fielding else
                                                      " without catches, run-outs and maidens")}, \
-        (pids, pts, roles, team_of)
+        (pids, pts, roles, team_of, np.concatenate([part.winner for part in sims.parts]))
 
 
 def fantasy_team(model: Model, spec: MatchSpec, roles=None, n: int = 4000, captain: str = "mean") -> dict:
-    from cricsim.fantasy import pick_xi
-    proj, (pids, pts, roles, team_of) = fantasy_projections(model, spec, roles, n)
-    mean = dict(zip(pids, pts.mean(0)))
+    from cricsim.fantasy import decisive_mean, pick_xi
+    _, (pids, pts, roles, team_of, win) = fantasy_projections(model, spec, roles, n)
+    mean = dict(zip(pids, decisive_mean(pts, win)))
     cap = dict(zip(pids, np.percentile(pts, 90, axis=0))) if captain == "upside" else None
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
     xi, c, vc = pick_xi(mean, team_of, use_roles, captain_score=cap)
@@ -345,7 +345,7 @@ def fantasy_team(model: Model, spec: MatchSpec, roles=None, n: int = 4000, capta
 
 def fantasy_portfolio(model: Model, spec: MatchSpec, k: int = 5, roles=None, n: int = 4000) -> dict:
     from cricsim.fantasy import portfolio
-    proj, (pids, pts, roles, team_of) = fantasy_projections(model, spec, roles, n)
+    proj, (pids, pts, roles, team_of, _) = fantasy_projections(model, spec, roles, n)
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
     teams = portfolio(pids, pts, team_of, k, use_roles, captains=5)
     name = {p: who(model, p)["name"] for p in pids}

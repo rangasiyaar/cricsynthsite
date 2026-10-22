@@ -26,7 +26,7 @@ from cricsim.engine.fit import FitConfig, fit
 from cricsim.engine.model import RECENT, Model
 from cricsim.engine.simulate import RECENT_ROLE, simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
-from cricsim.fantasy import actual_points, pick_xi, portfolio, team_points
+from cricsim.fantasy import actual_points, decisive_mean, pick_xi, portfolio, team_points
 from cricsim.fantasy import sim_points as _sim_points
 
 log = logging.getLogger(__name__)
@@ -370,14 +370,8 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     for k in (0.1, 0.2, 0.3):
         out[f"cap_shrink_{k}"] = by_rule(lambda p: True, {p: mean[p] - k * sd[p] for p in pids})
     # more decisive matches: reweight simulations so the favourite wins more often (log-odds × s)
-    p0 = float((win == 0).mean())
     for st in (1.2, 1.4):
-        if 0 < p0 < 1:
-            q0 = 1 / (1 + np.exp(-st * np.log(p0 / (1 - p0))))
-            w = np.where(win == 0, q0 / p0, (1 - q0) / (1 - p0))
-            wmean = dict(zip(pids, (pts * w[:, None]).sum(0) / w.sum()))
-        else:
-            wmean = mean
+        wmean = dict(zip(pids, decisive_mean(pts, win, st)))
         out[f"cap_stretch_{st}"] = by_rule(lambda p: True, wmean)
         out[f"xi_stretch_{st}"] = team_points(*pick_xi(wmean, team_of), real)
     # where the points go: our XI with hindsight captain / vice-captain

@@ -124,6 +124,20 @@ def actual_points(con, match_id: str, table: str = "hold", fielding: list | None
     return pts
 
 
+DECISIVE = 1.2      # picks lean towards the favourite winning: log-odds × this (won at all three backtest cutoffs)
+
+
+def decisive_mean(pts: np.ndarray, winner: np.ndarray, stretch: float = DECISIVE) -> np.ndarray:
+    """Expected points with the simulations reweighted so the favourite wins a little more often (win chance's
+    log-odds × stretch): real matches are more one-sided than the simulations, and picks follow the winners."""
+    p0 = float((winner == 0).mean())
+    if not 0 < p0 < 1 or stretch == 1:
+        return pts.mean(0)
+    q0 = 1 / (1 + np.exp(-stretch * np.log(p0 / (1 - p0))))
+    w = np.where(winner == 0, q0 / p0, (1 - q0) / (1 - p0))
+    return (pts * w[:, None]).sum(0) / w.sum()
+
+
 def pick_xi(score: dict[str, float], team_of: dict[str, int], roles: dict[str, str] | None = None,
             captain_score: dict[str, float] | None = None) -> tuple[list[str], str, str]:
     """Best 11 by `score` with 1-10 per team (and 1-8 per role when roles are given). Captain and vice-captain
