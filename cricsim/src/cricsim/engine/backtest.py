@@ -122,7 +122,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
-                      "chase_wickets": cfg.chase_wickets, "sim": sim_overrides or {},
+                      "chase_wickets": cfg.chase_wickets, "rule_split": cfg.rule_split, "sim": sim_overrides or {},
                       "shrink": {k: v for k, v in cfg.shrink.items() if FitConfig().shrink.get(k) != v}}
     if insample:      # same model on its own last six months: tells model bias apart from drift after the cutoff
         start = date(cutoff.year - (cutoff.month <= 6), (cutoff.month - 7) % 12 + 1, 1)
@@ -158,8 +158,9 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
             did = {r[0] for r in con.execute("SELECT DISTINCT bowler_id FROM hold WHERE match_id = ?",
                                              [mt["match_id"]]).fetchall()}
             bowl = {t: [p for p in mt["xi"][t] if p in did] or None for t in (t1, t2)}
+        comp_key = mt["comp"] + ("|ip" if mt.get("listed", 11) > 11 and model.meta.get("rule_split") else "")
         spec = MatchSpec(mt["format"], mt["gender"], (TeamSpec(t1, xi(t1), bowl.get(t1)), TeamSpec(t2, xi(t2), bowl.get(t2))),
-                         venue_id=mt["venue_id"], comp_key=mt["comp"], batting_first=bf, team_type=mt["team_type"])
+                         venue_id=mt["venue_id"], comp_key=comp_key, batting_first=bf, team_type=mt["team_type"])
         sims = simulate(model, spec, n=n_sims, seed=zlib.crc32(mt["match_id"].encode()))
         part = sims.parts[0]
         p1 = float((part.winner == 0).mean())

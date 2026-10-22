@@ -22,8 +22,8 @@ jobs:
       matrix:
         cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
         variant:
-          - { name: dyn-order-0.1, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --dyn-order 0.1" }
-          - { name: dyn-order-0.2, rules: new, targets: derived, args: "--order sheet --roles --insample 400 --dyn-order 0.2" }
+          - { name: with-12-listed, rules: new, targets: derived, args: "--order sheet --roles --twelve" }
+          - { name: with-12+rule-split, rules: new, targets: derived, args: "--order sheet --roles --twelve --rule-split" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
       CRICDATA_TARGETS: ${{ matrix.variant.targets }}

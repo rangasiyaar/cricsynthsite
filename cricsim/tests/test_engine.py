@@ -402,3 +402,8 @@ def test_dynamic_batting_order(world):
     m.meta["sim"] = {"dyn_order": 0.1}
     s = simulate(m, _spec(world["world"]), n=400, seed=5)
     assert np.isfinite(s.parts[0].innings[0].runs).all()
+
+
+def test_rule_split_runs(world):
+    m = fit(world["parquet"], FitConfig(rule_split=True))
+    assert m.meta["rule_split"] is True

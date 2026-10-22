@@ -53,6 +53,8 @@ class FitConfig:
     collapse: bool = False                     # wickets in the last 12 deliveries (collapses come in bunches)
     bat_switch: bool = True                    # batter's previous match was in the other format family
                                                # (backtest, 3 cutoffs: match Brier -0.0002, -0.0010, -0.0015)
+    rule_split: bool = False                   # seasons a competition ran with 12 players a side (Impact Player and
+                                               # similar) get their own competition level: '<comp>|ip'
     era_team_type: bool = False                # international and domestic cricket each get their own season trend
     chase_wickets: bool = False                # chase pressure × wickets in hand (a slipping chase with few wickets left)
     phase_skill: bool = False                  # player × stage of innings (powerplay / middle / death), shrunk to the player
@@ -136,6 +138,7 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
             FROM pm""")
         sw_col = "coalesce(sw.switched, 0) AS switch"
         sw_join = "LEFT JOIN bat_prev sw ON sw.sw_pid = batter_id AND sw.sw_mid = match_id"
+    ip_on = "TRUE" if cfg.rule_split and _has_table(con, "ip_matches") else "FALSE"
     t = con.execute(f"""
         SELECT format, gender, innings_no, "over", team_wickets_before AS wkts, {xp_cols}, {home_col},
                batter_balls_before AS bf, batter_runs_before AS br,
@@ -145,7 +148,8 @@ def load_training(con, cfg: FitConfig) -> tuple[dict[str, np.ndarray], dict[str,
                dots_before, coalesce(spell_start, FALSE) AS spell, coalesce(free_hit, FALSE) AS fh,
                batting_hand, {KIND_SQL} AS kind,
                coalesce(venue_id, '') AS venue,
-               coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format) AS comp,
+               coalesce(competition_id, 'intl-' || coalesce(team_type, '') || '-' || format)
+                 || CASE WHEN {ip_on} AND match_id IN (SELECT match_id FROM ip_matches) THEN '|ip' ELSE '' END AS comp,
                coalesce(team_type, '') AS team_type, batter_id, bowler_id, date_diff('day', DATE '1970-01-01', match_date) AS day, match_id,
                {OUTCOME_SQL} AS y, runs_total, byes + legbyes AS byes,
                coalesce(wkts_last12, 0) AS wl12, {sw_col}
@@ -771,6 +775,21 @@ def _catalog(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> d
 
 
 ENTRY_MIN = 3             # innings at number 3 or lower before a player's usual entry point counts
+def _has_table(con, name: str) -> bool:
+    return bool(con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name = ?", [name]).fetchone()[0])
+
+
+def ip_matches(con, parquet: Path) -> None:
+    """Matches where both sides list more than 11 players (an Impact Player or other substitute rule)."""
+    mp = parquet / "match_players"
+    if not any(mp.glob("*.parquet")):
+        con.execute("CREATE OR REPLACE TEMP TABLE ip_matches (match_id VARCHAR)")
+        return
+    con.execute(f"""CREATE OR REPLACE TEMP TABLE ip_matches AS
+        SELECT match_id FROM (SELECT match_id, team, count(*) AS n FROM read_parquet('{(mp / '*.parquet').as_posix()}')
+                              GROUP BY 1, 2) GROUP BY 1 HAVING min(n) > 11""")
+
+
 HOME_MIN = 3              # matches at a ground before it counts as a team's home
 
 
@@ -810,6 +829,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
     if not con.execute("SELECT count(*) FROM information_schema.tables WHERE table_name = 'balls'").fetchone()[0]:
         attrs = parquet / "attributes" / "attributes.parquet"
         build_balls(con, parquet, attrs if attrs.exists() else None)
+    ip_matches(con, parquet)
     d, ids = load_training(con, cfg)
     ids["venue_city"] = venue_cities(parquet, ids["venues"], con)
     log.info("training on %d balls, %d players", len(d["y"]), len(ids["players"]))
@@ -822,6 +842,7 @@ def fit(parquet: Path, cfg: FitConfig | None = None, memory: str = "4GB", con=No
                  runout_non_striker=ro,
                  meta={"cutoff": str(cfg.cutoff) if cfg.cutoff else None, "half_life_years": cfg.half_life_years,
                        "comp_groups": GROUP_KEYS if cfg.comp_groups != "off" else None, "experience": cfg.experience,
+                       "rule_split": cfg.rule_split,
                        "home_counts": home_counts,
                        "fit": stats, "bowler_dismissals": BOWLER_DISMISSALS.tolist(),
                        "catalog": _catalog(con, cfg, ids, parquet)},

@@ -83,6 +83,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--era-team-type/--no-era-team-type", default=None, help="Variant: own season trend for internationals and domestic")
 @click.option("--era-ahead", type=float, default=None, help="Variant: years ahead the scoring trend is aimed (default 0.5)")
 @click.option("--dyn-order", type=float, default=None, help="Variant: next batter by usual entry point (spread, e.g. 0.1)")
+@click.option("--rule-split/--no-rule-split", default=None, help="Variant: own competition level for 12-player-rule seasons")
 @click.option("--twelve", is_flag=True, help="Include matches listing 12 players a side (first 11 as the XI)")
 @click.option("--form", type=float, default=None, help="Variant: weight of recent form (last 5 matches)")
 @click.option("--plan-power", type=float, default=None, help="Variant: overs plan concentration")
@@ -100,7 +101,7 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
              venue_half_life: float | None, era_wickets: str | None, era_gender: bool | None,
              team_day: bool | None, chase_wickets: bool | None, collapse: bool | None, bat_switch: bool | None,
              era_team_type: bool | None, era_ahead: float | None, twelve: bool,
-             dyn_order: float | None,
+             dyn_order: float | None, rule_split: bool | None,
              out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
@@ -111,7 +112,7 @@ def backtest(parquet: Path, cutoff, matches: int, insample: int, half_life: floa
         over["home"] = home
     if phase_skill is not None:
         over["phase_skill"] = phase_skill
-    for k, v in (("collapse", collapse), ("bat_switch", bat_switch), ("era_team_type", era_team_type)):
+    for k, v in (("rule_split", rule_split), ("collapse", collapse), ("bat_switch", bat_switch), ("era_team_type", era_team_type)):
         if v is not None:
             over[k] = v
     if chase_wickets is not None:
