@@ -175,6 +175,10 @@ def test_backtest_runs_and_reports(world, tmp_path):
     assert "Backtest" in text and "In-sample check" in text and "Captain candidates" in text
     rep_f = run_backtest(world["parquet"], date(2024, 1, 1), limit=6, n_sims=100, sim_overrides={"fielding": True})
     assert rep_f["fantasy"]["best_possible"] > 0
+    rep_l = run_backtest(world["parquet"], None, latest=3, n_sims=100, sim_overrides={"fielding": True})
+    assert len(rep_l["fantasy"]["per_match"]) == 3
+    write_report(rep_l, tmp_path / "latest")
+    assert "Per match" in (tmp_path / "latest.md").read_text()
 
 
 def test_sample_a_simulated_match(world, tmp_path):

@@ -33,10 +33,10 @@ log = logging.getLogger(__name__)
 
 
 def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None,
-                    twelve: bool = False, skipped: dict | None = None) -> list[dict]:
+                    twelve: bool = False, skipped: dict | None = None, latest: bool = False) -> list[dict]:
     """Held-out matches with both XIs. Matches listing 12 players a side (an Impact Player or other substitute
     rule) are skipped and counted in `skipped`, or with twelve=True kept with the first 11 listed as the XI (what a
-    forecast from the announced XI sees)."""
+    forecast from the announced XI sees). latest=True: the most recent T20-type matches instead of a random draw."""
     m = (parquet / "matches" / "*.parquet").as_posix()
     mp = (parquet / "match_players" / "*.parquet").as_posix()
     inn = (parquet / "innings" / "*.parquet").as_posix()
@@ -50,7 +50,9 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
         WHERE m.match_date >= DATE '{cutoff}' {f"AND m.match_date < DATE '{end}'" if end else ""} AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
           AND m.gender IN ('male', 'female') AND m.method IS NULL
-        ORDER BY hash(m.match_id || '{seed}') LIMIT {limit}""").fetchall()
+          {"AND m.format IN ('T20', 'HUNDRED', 'T10')" if latest else ""}
+        ORDER BY {"m.match_date DESC, m.match_id DESC" if latest else f"hash(m.match_id || '{seed}')"}
+        LIMIT {4 * limit if latest else limit}""").fetchall()
     out = []
     for mid, fmt, gender, venue, team_type, comp, t1, t2, winner, result, overs, method, day, toss_w, toss_d in rows:
         xi = {}
@@ -76,7 +78,7 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
         out.append({"match_id": mid, "format": fmt, "gender": gender, "venue_id": venue, "comp": comp, "team_type": team_type,
                     "teams": [t1, t2], "xi": xi, "winner": winner, "result": result, "innings": innings,
                     "date": day, "listed": listed, "toss_winner": toss_w, "toss_decision": toss_d, "full": full})
-    return out
+    return out[:limit]
 
 
 def impact_xis(model: Model, team: TeamSpec, squad: list[str], fmt: str) -> TeamSpec:
@@ -125,11 +127,15 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
-                 twelve: bool = False) -> dict:
+                 twelve: bool = False, latest: int = 0) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
-    sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}."""
+    sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
+    latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
+    if latest:
+        recent = holdout_matches(con, parquet, date(1990, 1, 1), latest, twelve=twelve, latest=True)
+        cutoff, limit = min(m["date"] for m in recent), latest
     over = dict(fit_overrides or {})
     if "shrink" in over:
         over["shrink"] = {**FitConfig().shrink, **over["shrink"]}
@@ -137,7 +143,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve)
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest))
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -153,9 +159,10 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
-         fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False) -> dict:
+         fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False,
+         latest: bool = False) -> dict:
     skipped: dict = {}
-    matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped)
+    matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -321,7 +328,7 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     pids, pts = sim_points(sims)
     mean = dict(zip(pids, pts.mean(0)))
     upside = dict(zip(pids, np.percentile(pts, 90, axis=0)))
-    out = {}
+    out = {"label": f"{mt['date']} · {mt['teams'][0]} v {mt['teams'][1]} ({mt['comp']})"}
     xi, c, vc = pick_xi(mean, team_of)
     out["mean"] = team_points(xi, c, vc, real)
     out["overlap"] = len(set(xi) & set(pick_xi(real, team_of)[0]))
@@ -610,6 +617,12 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                          if all(k in r for r in f)},
                           "ceiling_perfect_model": round(float(np.mean([r["ceil_team"] for r in f])
                                                                / np.mean([r["ceil_best"] for r in f])), 3)}
+        if len(f) <= 30:
+            out["fantasy"]["per_match"] = [
+                {"match": r["label"], "best": round(r["best"], 1),
+                 **{k: round(r[k] / r["best"], 3) for k in ("mean", "oracle_captain", "portfolio_cap_5",
+                                                             "portfolio_cap_10", "portfolio_cap_20") if k in r}}
+                for r in f]
         rows = [c for r in f for c in r.get("cap_rows", [])]
         if rows:
             def role(c):
@@ -783,6 +796,15 @@ def write_report(rep: dict, path: Path) -> None:
               "| Strategy | Avg points | Share of best |", "|---|---|---|"]
         L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
         L.append("")
+        if fz.get("per_match"):
+            L += ["Per match (share of the best possible XI)", "",
+                  "| Match | Best XI points | Our XI | Hindsight captain | 5 teams | 10 teams | 20 teams |",
+                  "|---|---|---|---|---|---|---|"]
+            L += [f"| {r['match']} | {r['best']} | " + " | ".join(
+                f"{100 * r[k]:.1f}%" if k in r else "–" for k in ("mean", "oracle_captain", "portfolio_cap_5",
+                                                                  "portfolio_cap_10", "portfolio_cap_20")) + " |"
+                  for r in fz["per_match"]]
+            L.append("")
         if fz.get("captain_candidates"):
             L += ["Captain candidates (top 6 of the picked XI by expected points): predicted v real points, and how "
                   "often the player was the XI's top scorer", "",

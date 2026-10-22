@@ -20,9 +20,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cutoff: ["2025-01-01", "2025-07-01", "2026-01-01"]
+        # cutoff "latest": test on the most recent matches (--latest N in args), trained up to the first of them
+        cutoff: ["latest"]
         variant:
-          - { name: captain-diag, rules: new, targets: derived, args: "--order sheet --roles --twelve --fielding both" }
+          - { name: fantasy-last-5, rules: new, targets: derived, args: "--latest 5 --order sheet --roles --twelve --fielding both" }
+          - { name: fantasy-last-20, rules: new, targets: derived, args: "--latest 20 --order sheet --roles --twelve --fielding both" }
     env:
       CRICDATA_VENUE_RULES: ${{ matrix.variant.rules }}
       CRICDATA_TARGETS: ${{ matrix.variant.targets }}
@@ -48,6 +50,7 @@ jobs:
           rm -rf data/raw
       - name: Backtest
         run: |
-          uv run python -m cricsim.engine backtest --parquet data/parquet --cutoff ${{ matrix.cutoff }} --matches 800 \
+          CUT="--cutoff ${{ matrix.cutoff }}"; [ "${{ matrix.cutoff }}" = latest ] && CUT=""
+          uv run python -m cricsim.engine backtest --parquet data/parquet $CUT --matches 800 \
             --sims 1000 ${{ matrix.variant.args }} --out data/backtest/report --memory 3GB
           cat data/backtest/report.md >> "$GITHUB_STEP_SUMMARY"
