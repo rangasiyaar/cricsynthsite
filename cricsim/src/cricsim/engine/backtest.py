@@ -81,14 +81,15 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
 def impact_xis(model: Model, team: TeamSpec, squad: list[str], fmt: str) -> TeamSpec:
     """A 12-player side under a substitute rule: it bats its 11 best batters (the 12 minus the player who usually
     bats lowest) and fields its 11 best bowlers (the 12 minus the one who bowls least)."""
+    if len(squad) <= 11:
+        return team
     fam = 1 if fmt == "OD" else 0
     idx = [model.pid(p) for p in squad]
     pos = [model.bat_pos[i, fam] if i and model.bat_pos is not None and model.bat_pos[i, fam] > 0 else 8.0 for i in idx]
     balls = [model.balls_bowled[i, fam] if i and model.balls_bowled is not None else 0.0 for i in idx]
-    tail = int(np.argmax(pos))
-    bat = [p for j, p in enumerate(squad) if j != tail][:11]
-    nonbowler = int(np.argmin(balls))
-    field = [p for j, p in enumerate(squad) if j != nonbowler][:11]
+    keep = len(squad) - 11
+    bat = [squad[j] for j in sorted(np.argsort(pos, kind="stable")[:11])]
+    field = [squad[j] for j in sorted(np.argsort(balls, kind="stable")[keep:])]
     bowlers = [p for p in (team.bowlers or []) if p in field] or None
     return TeamSpec(team.name, bat, bowlers, bowling_xi=field)
 

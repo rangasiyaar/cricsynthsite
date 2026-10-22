@@ -425,6 +425,19 @@ def test_impact_xis_bat_and_field_eleven(world):
     summarize(s, m)
 
 
+def test_impact_xis_leaves_an_eleven_alone(world):
+    from cricsim.engine.backtest import impact_xis
+    m = world["model"]
+    spec = _spec(world["world"])
+    other = spec.teams[1]
+    t = impact_xis(m, other, list(other.players), "T20")
+    assert t is other and len(t.players) == 11
+    twelve = impact_xis(m, spec.teams[0], list(spec.teams[0].players) + [other.players[-1]], "T20")
+    s = simulate(m, MatchSpec("T20", "male", (twelve, t), venue_id="premier-oval",
+                              comp_key="premier-league"), n=100, seed=8)
+    assert np.isfinite(s.parts[0].innings[1].runs).all()
+
+
 def test_backtest_paths_with_a_fielding_only_player(world):
     from cricsim.engine.backtest import impact_xis
     from cricsim.fantasy import pick_xi, sim_points
