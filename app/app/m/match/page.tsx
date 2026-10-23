@@ -2,18 +2,15 @@
 // App match centre: the match at a glance and a menu of sections; each section opens on a screen of its own
 // (?s=<section>), so the phone's back button returns to the menu.
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview } from "@/components/App";
+import { Suspense, useState } from "react";
+import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, TopBar, fromSlug, preview, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionsFor, type Section } from "@/components/MatchCentre";
-import { loadMatch } from "@/lib/data";
+import { loadMatch, peekMatch } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { share } from "@/lib/native";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
 import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
-
-// The doc stays in memory while moving between the menu and its sections.
-const cache = new Map<string, MatchDoc>();
 
 function Menu({ doc }: { doc: MatchDoc }) {
   const id = encodeURIComponent(doc.match.id);
@@ -61,15 +58,10 @@ function Match() {
   const params = useSearchParams();
   const router = useRouter();
   const id = params.get("id") || "";
-  const [doc, setDoc] = useState<MatchDoc | null>(cache.get(id) ?? null);
-  const [error, setError] = useState<string | null>(null);
+  const fresh = useFresh(id || null, () => peekMatch(id), () => loadMatch(id));
+  const doc = fresh.data;
+  const error = !id ? "No match selected." : fresh.error ? "This match's forecast isn't available in the app." : null;
   const [note, setNote] = useState<string | null>(null);
-  useEffect(() => {
-    if (!id) { setError("No match selected."); return; }
-    if (cache.has(id)) { setDoc(cache.get(id)!); return; }
-    loadMatch(id).then((d) => { cache.set(id, d); setDoc(d); }).catch(() => setError("This match's forecast isn't available in the app."));
-  }, [id]);
-  useEffect(() => { window.scrollTo(0, 0); }, [params]);
 
   const section = doc ? fromSlug(params.get("s"), sectionsFor(doc)) : null;
   const short = doc ? doc.match.teams.map((t) => t.short).join(" v ") : "Match";
@@ -83,6 +75,7 @@ function Match() {
       <TopBar back={section ? menu : "/m/matches/"} title={section ? `${section} · ${short}` : short}
               right={doc && <button type="button" className="a-icon" aria-label="Share this match" onClick={onShare}>{Icon.share}</button>} />
       {note && <div className="a-toast" role="status">{note}</div>}
+      <OfflineBar show={fresh.offline} onRetry={fresh.refresh} />
       {error && (
         <Empty title="Not available" action={<button type="button" className="a-pill" onClick={() => router.replace("/m/matches/")}>Back to matches</button>}>
           {error} <a href={`${SITE}/results/?id=${encodeURIComponent(id)}`}>See the result on the website</a>.

@@ -25,8 +25,12 @@ if (!existsSync(join(out, "m", "index.html"))) throw new Error("app/out has no /
 
 rmSync(www, { recursive: true, force: true });
 cpSync(out, www, { recursive: true });
-// Published data and the Python package index are fetched from the site, not shipped in the app.
-for (const d of ["data", "pypi"]) rmSync(join(www, d), { recursive: true, force: true });
+// Published data and the Python package index are fetched from the site, and website-only pages (docs, blog, API,
+// playground, site match centre and Lab, sign-in, admin) aren't part of the app. Kept: the app (m/), the shared
+// scripts (_next/), and pages the app links to (results, credits, terms, privacy).
+const SITE_ONLY = ["data", "pypi", "docs", "blog", "playground", "developers", "mcp", "careers", "pricing", "contact", "admin",
+                   "account", "login", "lab", "match", "sitemap.xml", "robots.txt", "llms.txt", "og.png", "og-logo.png", "email-logo.png"];
+for (const d of SITE_ONLY) rmSync(join(www, d), { recursive: true, force: true });
 writeFileSync(join(www, "index.html"), `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>CricSynthesis</title>
 <style>html{background:#f2f2f3}@media (prefers-color-scheme:dark){html{background:#111315}}</style>

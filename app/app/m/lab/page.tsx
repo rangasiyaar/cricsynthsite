@@ -4,10 +4,10 @@
 // across them, and the levers are saved per match on the phone.
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview } from "@/components/App";
+import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionsFor } from "@/components/MatchCentre";
 import { LabLevers, LabResult, useLab, type Lab } from "@/components/ScenarioLab";
-import { loadMatch } from "@/lib/data";
+import { loadMatch, peekMatch } from "@/lib/data";
 import type { MatchDoc } from "@/lib/types";
 
 function Busy({ lab }: { lab: Lab }) {
@@ -65,7 +65,6 @@ function LabScreens({ doc }: { doc: MatchDoc }) {
   const params = useSearchParams();
   const lab = useLab(doc);
   const slug = params.get("s");
-  useEffect(() => { window.scrollTo(0, 0); }, [slug]);
   if (lab.err) return <Empty title="Lab unavailable">{lab.err}</Empty>;
   if (!lab.ready || !lab.labDoc) return <Loading rows={3} />;
   if (slug === "scene") return <Scene lab={lab} id={doc.match.id} />;
@@ -88,12 +87,11 @@ function Page() {
   const params = useSearchParams();
   const id = params.get("id") || "";
   const slug = params.get("s");
+  // the Lab keeps the first copy it gets: a refreshed doc would restart the simulations mid-scenario
+  const fresh = useFresh(id || null, () => peekMatch(id), () => loadMatch(id));
   const [doc, setDoc] = useState<MatchDoc | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  useEffect(() => {
-    if (!id) { setErr("No match selected."); return; }
-    loadMatch(id).then(setDoc).catch(() => setErr("This match isn't available in the lab."));
-  }, [id]);
+  useEffect(() => { if (fresh.data && !doc) setDoc(fresh.data); }, [fresh.data, doc]);
+  const err = !id ? "No match selected." : fresh.error ? "This match isn't available in the lab." : null;
   const menu = `/m/lab/?id=${encodeURIComponent(id)}`;
   const title = slug === "scene" ? "Set the scene" : slug ? "Your scenario" : "MatchSynth Lab";
   return (

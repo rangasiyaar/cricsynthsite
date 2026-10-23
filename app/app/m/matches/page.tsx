@@ -2,9 +2,9 @@
 // App home: every published match with its status, a countdown to the start and a way into MatchSynth Lab;
 // finished matches show how the forecast and the fantasy picks did.
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { AccountButton, Badge, Empty, Icon, Loading, TEAM, Title, TopBar, WinPill, pct0, useNow } from "@/components/App";
-import { loadIndex, loadResults } from "@/lib/data";
+import { useMemo, useState } from "react";
+import { AccountButton, Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, pct0, useFresh, useNow } from "@/components/App";
+import { loadIndex, loadResults, peekIndex, peekResults } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { countdown, kickoffMs, startLabel, status, type Status } from "@/lib/schedule";
 import type { MatchCard, ResultSummary } from "@/lib/types";
@@ -87,17 +87,13 @@ function Result({ r }: { r: ResultSummary }) {
 
 export default function Matches() {
   const now = useNow(1000);
-  const [cards, setCards] = useState<MatchCard[] | null>(null);
-  const [results, setResults] = useState<ResultSummary[]>([]);
-  const [error, setError] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
-
-  const load = () => {
-    setError(false);
-    loadIndex().then((ix) => setCards(ix.matches.filter((m) => m.published))).catch(() => setError(true));
-    loadResults().then((rs) => setResults(rs.matches)).catch(() => {});
-  };
-  useEffect(load, []);
+  const ix = useFresh("index", peekIndex, loadIndex);
+  const rs = useFresh("results", peekResults, loadResults);
+  const cards = useMemo(() => ix.data?.matches.filter((m) => m.published) ?? null, [ix.data]);
+  const results = useMemo<ResultSummary[]>(() => rs.data?.matches ?? [], [rs.data]);
+  const error = ix.error;
+  const load = () => { ix.refresh(); rs.refresh(); };
 
   const items = useMemo<Item[]>(() => {
     if (!cards) return [];
@@ -117,6 +113,7 @@ export default function Matches() {
   return (
     <>
       <TopBar title="Matches" right={<AccountButton />} />
+      <PullToRefresh onRefresh={load} refreshing={ix.refreshing && !!cards} />
       <Title eyebrow="Match centre" sub="Every forecast comes from 20,000 simulations of the match.">Matches</Title>
       <div className="a-chips" role="tablist" aria-label="Show matches">
         {FILTERS.map(([f, l]) => (
@@ -125,6 +122,7 @@ export default function Matches() {
           </button>
         ))}
       </div>
+      <OfflineBar show={ix.offline} onRetry={load} />
       {error && <Empty title="Couldn't load matches" action={<button type="button" className="a-pill" onClick={load}>Try again</button>}>Check your connection.</Empty>}
       {!cards && !error && <Loading />}
       {cards && (

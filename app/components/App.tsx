@@ -3,8 +3,8 @@
 // phone app — a top bar with a real back action, large titles, grouped menus that open one screen per section.
 // Section content (charts, tables) comes from the match centre and Lab components.
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
@@ -30,6 +30,31 @@ export function AppRuntime() {
     }).then((f) => { off = f; });
     return () => { seen.disconnect(); off(); };
   }, []);
+  return null;
+}
+
+/** Screen changes slide in from the right, and from the left when going back (the phone's back button or ours). */
+export function ScreenMotion() {
+  const path = usePathname();
+  const query = useSearchParams().toString();
+  const back = useRef(false);
+  const first = useRef(true);
+  useEffect(() => {
+    const on = () => { back.current = true; };
+    window.addEventListener("popstate", on);
+    return () => window.removeEventListener("popstate", on);
+  }, []);
+  useEffect(() => {
+    if (first.current) { first.current = false; return; }
+    const wasBack = back.current;
+    back.current = false;
+    if (!wasBack) window.scrollTo(0, 0);
+    const dx = wasBack ? -28 : 28;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelector("main.app-wrap")?.animate(
+      [{ opacity: 0, transform: `translateX(${dx}px)` }, { opacity: 1, transform: "none" }],
+      { duration: 240, easing: "cubic-bezier(.2, .7, .2, 1)" });
+  }, [path, query]);
   return null;
 }
 
@@ -199,6 +224,71 @@ export function MenuRow({ icon, title, sub, value, href, onClick, tone }: {
     </>
   );
   return href ? <Link href={href} className="a-row">{body}</Link> : <button type="button" className="a-row" onClick={onClick}>{body}</button>;
+}
+
+// ── data ──
+/** Shows the copy kept on the phone straight away, then the network copy; `offline` when only the kept copy loaded. */
+export function useFresh<T>(key: string | null, peek: () => Promise<T | null>, load: () => Promise<T>) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState(false);
+  const [offline, setOffline] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const got = useRef(false);
+  const loadRef = useRef(load);
+  loadRef.current = load;
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    try { setData(await loadRef.current()); got.current = true; setError(false); setOffline(false); }
+    catch { if (got.current) setOffline(true); else setError(true); }
+    finally { setRefreshing(false); }
+  }, []);
+  useEffect(() => {
+    if (!key) return;
+    let live = true;
+    got.current = false; setData(null); setError(false); setOffline(false);
+    peek().then((d) => { if (live && d && !got.current) { got.current = true; setData(d); } });
+    refresh();
+    return () => { live = false; };
+  }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
+  // a failed network load after a kept copy showed up means offline, not an error
+  useEffect(() => { if (error && data) { setError(false); setOffline(true); } }, [error, data]);
+  return { data, error: error && !data, offline, refreshing, refresh };
+}
+
+export function OfflineBar({ show, onRetry }: { show: boolean; onRetry?: () => void }) {
+  if (!show) return null;
+  return (
+    <div className="a-offline" role="status">
+      <span>You&apos;re offline. Showing what was saved on this phone.</span>
+      {onRetry && <button type="button" onClick={onRetry}>Retry</button>}
+    </div>
+  );
+}
+
+/** Pull down at the top of the screen to load the latest. */
+export function PullToRefresh({ onRefresh, refreshing }: { onRefresh: () => void; refreshing: boolean }) {
+  const [pull, setPull] = useState(0);
+  const cb = useRef(onRefresh);
+  cb.current = onRefresh;
+  useEffect(() => {
+    let y0: number | null = null, d = 0;
+    const start = (e: TouchEvent) => { y0 = window.scrollY <= 0 ? e.touches[0].clientY : null; d = 0; };
+    const move = (e: TouchEvent) => { if (y0 === null) return; d = Math.max(0, e.touches[0].clientY - y0); setPull(Math.min(96, d * 0.5)); };
+    const end = () => { if (y0 !== null && d * 0.5 > 64) cb.current(); y0 = null; setPull(0); };
+    window.addEventListener("touchstart", start, { passive: true });
+    window.addEventListener("touchmove", move, { passive: true });
+    window.addEventListener("touchend", end);
+    return () => {
+      window.removeEventListener("touchstart", start); window.removeEventListener("touchmove", move); window.removeEventListener("touchend", end);
+    };
+  }, []);
+  const h = refreshing ? 52 : pull;
+  return (
+    <div className="a-ptr" style={{ height: h, transition: pull ? "none" : "height .25s" }} aria-hidden={!refreshing}>
+      {h > 8 && <span className={`a-ptr-spin${refreshing ? " on" : ""}`} style={{ transform: `rotate(${pull * 4}deg)`, opacity: Math.min(1, h / 48) }} />}
+      {refreshing && <span className="sr-only" role="status">Refreshing</span>}
+    </div>
+  );
 }
 
 // ── time and access ───────────────────────────────────────────────────────────────────────────────────────────────
