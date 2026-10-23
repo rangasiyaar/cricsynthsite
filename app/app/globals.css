@@ -221,7 +221,7 @@ select:focus, textarea:focus, input:focus { border-color: var(--cs-steel); outli
 .ref-endpoint h2 { font-size: clamp(18px, 2.4vw, 22px); word-break: break-all; text-transform: none; }
 .ref-endpoint h3 { font-size: 15px; margin: 18px 0 6px; }
 .ref-method { display: inline-block; font-size: 13px; padding: 2px 8px; margin-right: 6px; border: 1px solid var(--cs-line); vertical-align: middle; }
-.ref-method.post { background: var(--cs-steel); color: var(--cs-paper); border-color: var(--cs-steel); }
+.ref-method.is-post { background: var(--cs-steel); color: var(--cs-paper); border-color: var(--cs-steel); }
 .ref-table { border-top: 1px solid var(--cs-line); }
 .ref-row { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(110px, 1fr) 2fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--tick, var(--cs-line)); word-break: break-word; }
 .ref-req { color: var(--cs-steel-700); margin-left: 2px; }
@@ -237,7 +237,7 @@ select:focus, textarea:focus, input:focus { border-color: var(--cs-steel); outli
 /* ── Docs and playground (previous site's layout, full width under the nav) ── */
 .bleed { width: 100vw; margin-left: calc(50% - 50vw); }
 .method-post { font-family: 'JetBrains Mono', monospace; font-size: .7rem; font-weight: 700; letter-spacing: .06em; padding: 3px 8px; border-radius: 4px; background: var(--cs-steel); color: var(--cs-paper); flex-shrink: 0; }
-.method-badge.post { background: var(--cs-steel); color: var(--cs-paper); }
+.method-badge.is-post { background: var(--cs-steel); color: var(--cs-paper); }
 .docs-main .code-panel { max-height: 420px; overflow: auto; }
 .docs-main .code-panel img, .pg-response-body img { display: block; max-width: 100%; height: auto; border: 1px solid var(--cs-line); }
 .param-enum code { font-size: 11px; margin-right: 4px; }

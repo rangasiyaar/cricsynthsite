@@ -107,7 +107,7 @@ export default function Docs() {
                 </summary>
                 <ul className="sidebar-nav">
                   {eps.map((e) => (
-                    <li key={e.id}><a href={`#${e.id}`}><span className={`method-badge${e.method === "POST" ? " post" : ""}`}>{e.method}</span> {e.path.replace("/v1", "")}</a></li>
+                    <li key={e.id}><a href={`#${e.id}`}><span className={`method-badge${e.method === "POST" ? " is-post" : ""}`}>{e.method}</span> {e.path.replace("/v1", "")}</a></li>
                   ))}
                 </ul>
               </details>
