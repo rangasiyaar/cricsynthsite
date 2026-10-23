@@ -9,8 +9,14 @@ name: Android app
 #   GOOGLE_SERVICES_JSON   contents of google-services.json for the Android app in.cricsynthesis.app
 #   ANDROID_KEYSTORE_B64   the release keystore, base64
 #   ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
+# Run it by hand with "release" ticked to also publish the APK as a GitHub release (a pre-release while in beta).
 on:
   workflow_dispatch:
+    inputs:
+      release:
+        description: "Publish the APK as a GitHub release"
+        type: boolean
+        default: false
   push:
     branches: [claude/cricsynthesis-platform]
     paths: ["mobile/**", "app/**", ".github/workflows/android.yml"]
@@ -92,3 +98,30 @@ jobs:
             mobile/android/app/build/outputs/apk/**/*.apk
             mobile/android/app/build/outputs/bundle/**/*.aab
           retention-days: 14
+
+  release:
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && inputs.release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: cricsynthesis-android-${{ github.run_number }}
+          path: out
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./mobile/package.json').version")
+          tag="android-v${version}-build${GITHUB_RUN_NUMBER}"
+          # the signed release APK when there is one, otherwise the debug APK
+          apk=$(ls out/apk/release/*.apk 2>/dev/null | head -1); kind=release
+          [ -n "$apk" ] || { apk=$(ls out/apk/debug/*.apk | head -1); kind=debug; }
+          cp "$apk" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk"
+          gh release create "$tag" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk" \
+            --target "$GITHUB_SHA" --prerelease \
+            --title "CricSynthesis for Android ${version} (build ${GITHUB_RUN_NUMBER})" \
+            --notes "Android app, ${kind} build ${GITHUB_RUN_NUMBER}. Install the APK on an Android phone (allow installs from this source when asked)."
