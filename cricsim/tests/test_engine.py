@@ -540,3 +540,33 @@ def test_one_day_points_table():
     assert batting_points(0, 5, 0, 0, True, od=True) == -3
     assert bowling_points(60, 40, 4, 1, od=True) == 100 + 8 + 4 + 2                    # economy 4.0
     assert bowling_points(24, 40, 1, 0, od=True) == 25                                 # under 5 overs: no band
+
+
+def test_publish_keeps_a_live_forecast_with_the_same_inputs(world, tmp_path, monkeypatch):
+    from cricsim import publish as P
+    spec = _spec(world["world"])
+    cov = {"id": "fx", "format": "T20", "gender": "male", "venue_id": spec.venue_id, "comp_key": spec.comp_key,
+           "title": "A v B", "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
+    (tmp_path / "cov" / "matches").mkdir(parents=True)
+    (tmp_path / "cov" / "matches" / "fx.json").write_text(json.dumps(cov))
+    P.publish_all(world["model"], tmp_path / "cov", tmp_path / "live", n=300, model_id="m1")
+    live = {p.relative_to(tmp_path / "live").as_posix(): json.loads(p.read_text())
+            for p in (tmp_path / "live").rglob("*.json")}
+    fetch = lambda path, sites=None: json.loads(json.dumps(live[path])) if path in live else None  # noqa: E731
+
+    calls = []
+    real = P.simulate
+    monkeypatch.setattr(P, "simulate", lambda *a, **k: calls.append(1) or real(*a, **k))
+    cov["title"] = "A v B (XIs confirmed)"                              # details only: keep the simulations
+    (tmp_path / "cov" / "matches" / "fx.json").write_text(json.dumps(cov))
+    cards = P.publish_all(world["model"], tmp_path / "cov", tmp_path / "out", n=300, fetch=fetch, model_id="m1")
+    doc = json.loads((tmp_path / "out" / "matches" / "fx.json").read_text())
+    assert not calls and doc["summary"] == live["matches/fx.json"]["summary"] and doc["match"]["title"].endswith("confirmed)")
+    assert cards[0]["win"] == live["matches/fx.json"]["summary"]["result"]["win"]
+
+    cov["teams"][0]["players"] = cov["teams"][0]["players"][::-1]      # a different XI: simulate again
+    (tmp_path / "cov" / "matches" / "fx.json").write_text(json.dumps(cov))
+    P.publish_all(world["model"], tmp_path / "cov", tmp_path / "out", n=300, fetch=fetch, model_id="m1")
+    assert calls == [1]
+    P.publish_all(world["model"], tmp_path / "cov", tmp_path / "out", n=300, fetch=fetch, model_id="m2")  # new model
+    assert calls == [1, 1]
