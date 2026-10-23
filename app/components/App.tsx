@@ -9,6 +9,8 @@ import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
 import { hideSplash, onAlertTap, onBackButton, reportError, themeStatusBar } from "@/lib/native";
+import { TIERS } from "@/lib/plans";
+import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
 
 // Screens where the back button closes the app instead of going back.
@@ -332,21 +334,69 @@ export function Empty({ title, children, action }: { title: string; children?: R
   return <div className="a-empty"><h2>{title}</h2>{children && <p>{children}</p>}{action}</div>;
 }
 
-/** Sends guests to sign-in (and back here afterwards); shows Pro's pitch to accounts without it. */
+const CHECK = svg("M5 12l5 5L20 7", 18);
+
+/** What Pro adds and the plans, before anything else: guests then sign in (and come straight back here); accounts
+ *  without Pro see how to get it. */
+export function ProPaywall({ signedIn }: { signedIn: boolean }) {
+  const router = useRouter();
+  const here = typeof window === "undefined" ? "/m/matches/" : window.location.pathname + window.location.search;
+  const free = TIERS.find((t) => t.id === "free")!, pro = TIERS.find((t) => t.id === "pro")!;
+  return (
+    <div className="a-paywall">
+      <div className="a-paywall-hero">
+        <span className="a-paywall-icon">{Icon.lab}</span>
+        <div className="a-eyebrow" style={{ justifyContent: "center" }}>For subscribers <span className="a-pro">Pro</span></div>
+        <h1>MatchSynth Lab</h1>
+        <p>Change the toss, the pitch, the dew, a player&apos;s form or who can bowl, or start from any score. The match is
+          re-run on your phone and every section of the match centre is rebuilt from your scenario.</p>
+      </div>
+      <ul className="a-paywall-list">
+        {pro.lines.filter((l) => !l.startsWith("Everything")).map((l) => <li key={l}><span>{CHECK}</span>{l}</li>)}
+        <li><span>{CHECK}</span>Fantasy picks rebuilt for your scenario</li>
+      </ul>
+      <div className="a-group-label">Plans</div>
+      <div className="a-plans">
+        {[free, pro].map((t) => (
+          <div key={t.id} className={`a-plan${t.id === "pro" ? " is-pro" : ""}`}>
+            <div className="a-plan-head">
+              <span className="a-plan-name">{t.name}</span>
+              {t.tag && <span className="a-pro">{t.tag}</span>}
+            </div>
+            <div className="a-plan-price">{t.price}<span>{t.id === "pro" ? " / month" : ""}</span></div>
+            <div className="a-plan-note">{t.note}</div>
+            <ul>{t.lines.slice(0, 3).map((l) => <li key={l}>{l}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <div className="a-paywall-cta">
+        {!signedIn ? (
+          <>
+            <Link href={`/m/login/?next=${encodeURIComponent(here)}`} className="a-btn">Sign in to get Pro</Link>
+            <p>Pro is free while we&apos;re in beta: sign in or create an account and the Lab opens straight away.</p>
+          </>
+        ) : (
+          <>
+            <a href={`${SITE}/pricing/`} className="a-btn">See how to get Pro</a>
+            <p>Your account is on the Free plan.</p>
+          </>
+        )}
+        <button type="button" className="a-btn plain" onClick={() => (window.history.length > 2 ? router.back() : router.replace("/m/matches/"))}>Not now</button>
+      </div>
+    </div>
+  );
+}
+
+/** Pages for signed-in accounts send guests to sign-in (and back afterwards). Pro pages show what Pro adds and the
+ *  plans first (ProPaywall), to guests and to accounts without Pro alike. */
 export function AppGate({ children, pro = false }: { children: React.ReactNode; pro?: boolean }) {
   const { user, plan } = usePlan();
   const router = useRouter();
   useEffect(() => {
-    if (user === null) router.replace(`/m/login/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
-  }, [user, router]);
-  if (plan === undefined || user === null) return <Loading rows={2} />;
-  if (pro && plan !== "pro") {
-    return (
-      <Empty title="MatchSynth Lab is part of Pro">
-        Pro adds the full what-if engine: pitch and conditions, dew, player form, bowler availability and any match
-        situation, re-simulated on your phone.
-      </Empty>
-    );
-  }
+    if (user === null && !pro) router.replace(`/m/login/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+  }, [user, router, pro]);
+  if (plan === undefined) return <Loading rows={2} />;
+  if (pro && plan !== "pro") return <ProPaywall signedIn={!!user} />;
+  if (user === null) return <Loading rows={2} />;
   return <>{children}</>;
 }

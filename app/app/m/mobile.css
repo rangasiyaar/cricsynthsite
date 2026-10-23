@@ -243,3 +243,26 @@ html body .a-field input:focus { box-shadow: 0 0 0 2px var(--cs-steel); }
 .a-prompt p { margin: 0; font-size: 14px; color: var(--cs-ink-2); line-height: 1.45; }
 .a-prompt-actions { display: flex; gap: 8px; }
 .a-prompt-actions .a-btn { min-height: 44px; font-size: 15px; }
+
+/* ── Pro paywall ── */
+.a-paywall { padding-top: 4px; }
+.a-paywall-hero { text-align: center; padding: 8px 8px 22px; display: grid; justify-items: center; }
+.a-paywall-icon { width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center; background: var(--cs-steel); color: var(--cs-paper); margin-bottom: 16px; }
+.a-paywall-icon svg { width: 30px; height: 30px; }
+.a-paywall-hero h1 { font-family: var(--cs-head); font-weight: 600; font-size: 36px; line-height: 1; text-transform: uppercase; margin: 0; color: var(--cs-ink); }
+.a-paywall-hero p { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: var(--cs-ink-2); max-width: 38ch; }
+.a-paywall-list { list-style: none; margin: 0 0 22px; padding: 6px 16px; background: var(--a-surface); border-radius: var(--a-r); }
+.a-paywall-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--cs-ink); }
+.a-paywall-list li + li { border-top: 1px solid var(--cs-line); }
+.a-paywall-list li span { flex: none; color: var(--cs-steel-700); display: grid; margin-top: 1px; }
+.a-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.a-plan { background: var(--a-surface); border-radius: var(--a-r); padding: 14px; display: grid; gap: 4px; align-content: start; border: 2px solid transparent; }
+.a-plan.is-pro { border-color: var(--cs-steel); background: var(--a-tint); }
+.a-plan-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.a-plan-name { font-family: var(--cs-head); font-weight: 600; font-size: 20px; text-transform: uppercase; color: var(--cs-ink); }
+.a-plan-price { font-family: var(--cs-head); font-weight: 600; font-size: 30px; line-height: 1.1; color: var(--cs-ink); font-variant-numeric: tabular-nums; }
+.a-plan-price span { font-size: 14px; color: var(--cs-ink-3); font-weight: 500; }
+.a-plan-note { font-size: 12.5px; color: var(--cs-steel-700); font-weight: 600; }
+.a-plan ul { margin: 8px 0 0; padding-left: 16px; display: grid; gap: 4px; font-size: 12.5px; line-height: 1.4; color: var(--cs-ink-2); }
+.a-paywall-cta { display: grid; gap: 10px; text-align: center; }
+.a-paywall-cta p { margin: 0; font-size: 13px; color: var(--cs-ink-3); line-height: 1.5; }
