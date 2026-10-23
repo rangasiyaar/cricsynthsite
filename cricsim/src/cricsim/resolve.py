@@ -131,20 +131,29 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
     missing = []
     everyone = None
     for team in fx["teams"]:
-        cands = candidates(con, parquet, team["name"], fx["gender"])
+        # records name women's sides like men's ("India", not "India Women")
+        cands = candidates(con, parquet, team.get("record_name") or re.sub(r"\s+Women$", "", team["name"]), fx["gender"])
+        aka = team.get("aka") or {}            # other spellings to try, e.g. {"Kranti Gaud": ["Kranti Goud"]}
+
+        def match(name, pool, taken=frozenset(), shorter=False):
+            for variant in [name, *aka.get(name, [])]:
+                c, how = match_name(variant, pool, taken, shorter)
+                if c is not None:
+                    return c, how if variant == name else f"{how} as {variant}"
+            return None, "unresolved"
         # exact names first, so a loose match can't take a player who is named in full elsewhere in the XI
         found: dict[str, tuple[dict | None, str]] = {}
         for name in team["players"]:
-            c, how = match_name(name, cands)
-            if how == "exact":
+            c, how = match(name, cands)
+            if how.startswith("exact"):
                 found[name] = (c, how)
         taken = {c["id"] for c, _ in found.values()}
         ids = []
         for name in team["players"]:
-            c, how = found.get(name) or match_name(name, cands, taken, shorter=True)
+            c, how = found.get(name) or match(name, cands, taken, shorter=True)
             if c is None:      # not capped for this team yet: their league / domestic record still counts
                 everyone = everyone or candidates(con, parquet, None, fx["gender"])
-                c, how = match_name(name, everyone, taken)
+                c, how = match(name, everyone, taken)
                 how = f"{how}, other teams"
             if c is None:
                 missing.append(f"{team['name']}: {name}")

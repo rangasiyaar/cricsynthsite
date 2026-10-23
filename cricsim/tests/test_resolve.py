@@ -38,3 +38,24 @@ def test_shorter_record_name_within_the_team():
 def test_player_taken_in_the_xi_is_skipped():
     assert match_name("Kusal Mendis", POOL)[0]["id"] == "kusal"
     assert match_name("Kamindu Mendis", POOL, {"kusal"})[0]["id"] == "kamindu"
+
+
+def test_fixture_alternate_spellings_are_tried(tmp_path, monkeypatch):
+    import json
+
+    from cricsim import resolve
+    cands = {"India": [{"id": "kg", "name": "K Goud", "last": "2026-09-01", "n": 20, "names": {"K Goud"}},
+                       {"id": "sm", "name": "S Mandhana", "last": "2026-09-01", "n": 400, "names": {"S Mandhana"}}]}
+    seen = []
+
+    def fake(con, parquet, team, gender):
+        seen.append(team)
+        return cands.get(team, []) if team else [c for v in cands.values() for c in v]
+    monkeypatch.setattr(resolve, "candidates", fake)
+    fx = {"id": "x", "gender": "female", "teams": [
+        {"name": "India Women", "players": ["Smriti Mandhana", "Kranti Gaud"], "aka": {"Kranti Gaud": ["Kranti Goud"]}},
+        {"name": "Zimbabwe Women", "players": []}]}
+    (tmp_path / "fx.json").write_text(json.dumps(fx))
+    resolve.main.callback(tmp_path, tmp_path / "fx.json", tmp_path / "out.json")
+    out = json.loads((tmp_path / "out.json").read_text())
+    assert out["teams"][0]["players"] == ["sm", "kg"] and "India" in seen

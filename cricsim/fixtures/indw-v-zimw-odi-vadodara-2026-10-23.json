@@ -5,7 +5,7 @@
   "start_time": "14:00",
   "format": "OD",
   "gender": "female",
-  "competition": "Zimbabwe Women tour of India 2026 · 1st ODI",
+  "competition": "Zimbabwe Women tour of India 2026 \u00b7 1st ODI",
   "comp_key": "intl-international-OD",
   "venue": "BCA Stadium, Kotambi, Vadodara",
   "venue_search": "kotambi",
@@ -17,27 +17,120 @@
     {
       "name": "India Women",
       "short": "INDW",
-      "players": ["Smriti Mandhana", "Pratika Rawal", "Shafali Verma", "Harleen Deol", "Harmanpreet Kaur",
-                  "Richa Ghosh", "Deepti Sharma", "Sayali Satghare", "Kranti Gaud", "Shree Charani",
-                  "Vaishnavi Sharma"],
-      "roles": ["BAT", "BAT", "BAT", "BAT", "BAT", "WK", "AR", "AR", "BOWL", "BOWL", "BOWL"],
-      "squad": ["Smriti Mandhana", "Richa Ghosh", "Pratika Rawal", "Shafali Verma", "Harmanpreet Kaur",
-                "Harleen Deol", "Deepti Sharma", "Sayali Satghare", "Kranti Gaud", "Shree Charani",
-                "Yastika Bhatia", "Vaishnavi Sharma", "Nandani Sharma", "Tejal Hasabnis", "Jintimani Kalita"],
-      "captain": "Smriti Mandhana"
+      "players": [
+        "Smriti Mandhana",
+        "Pratika Rawal",
+        "Shafali Verma",
+        "Harleen Deol",
+        "Harmanpreet Kaur",
+        "Richa Ghosh",
+        "Deepti Sharma",
+        "Sayali Satghare",
+        "Kranti Gaud",
+        "Shree Charani",
+        "Vaishnavi Sharma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Smriti Mandhana",
+        "Richa Ghosh",
+        "Pratika Rawal",
+        "Shafali Verma",
+        "Harmanpreet Kaur",
+        "Harleen Deol",
+        "Deepti Sharma",
+        "Sayali Satghare",
+        "Kranti Gaud",
+        "Shree Charani",
+        "Yastika Bhatia",
+        "Vaishnavi Sharma",
+        "Nandani Sharma",
+        "Tejal Hasabnis",
+        "Jintimani Kalita"
+      ],
+      "captain": "Smriti Mandhana",
+      "aka": {
+        "Kranti Gaud": [
+          "Kranti Goud",
+          "K Goud"
+        ],
+        "Shree Charani": [
+          "Nallapureddy Shree Charani",
+          "N Charani",
+          "Sree Charani"
+        ]
+      }
     },
     {
       "name": "Zimbabwe Women",
       "short": "ZIMW",
-      "players": ["Kelis Ndhlovu", "Chipo Mugeri-Tiripano", "Modester Mupachikwa", "Josephine Nkomo",
-                  "Beloved Biza", "Sharne Mayers", "Nyasha Gwanzura", "Michelle Mavunga", "Francisca Chipare",
-                  "Loryn Phiri", "Kudzai Chigora"],
-      "roles": ["AR", "AR", "WK", "AR", "BAT", "BAT", "AR", "BAT", "BOWL", "BOWL", "BOWL"],
-      "squad": ["Modester Mupachikwa", "Josephine Nkomo", "Kelis Ndhlovu", "Chipo Mugeri-Tiripano",
-                "Beloved Biza", "Sharne Mayers", "Nyasha Gwanzura", "Michelle Mavunga", "Nomvelo Sibanda",
-                "Francisca Chipare", "Olinder Chare", "Kudzai Chigora", "Tendai Makusha", "Loryn Phiri",
-                "Chiedza Dhururu"],
-      "captain": "Josephine Nkomo"
+      "players": [
+        "Kelis Ndhlovu",
+        "Chipo Mugeri-Tiripano",
+        "Modester Mupachikwa",
+        "Josephine Nkomo",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Nyasha Gwanzura",
+        "Michelle Mavunga",
+        "Francisca Chipare",
+        "Loryn Phiri",
+        "Kudzai Chigora"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Modester Mupachikwa",
+        "Josephine Nkomo",
+        "Kelis Ndhlovu",
+        "Chipo Mugeri-Tiripano",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Nyasha Gwanzura",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare",
+        "Kudzai Chigora",
+        "Tendai Makusha",
+        "Loryn Phiri",
+        "Chiedza Dhururu"
+      ],
+      "captain": "Josephine Nkomo",
+      "aka": {
+        "Kelis Ndhlovu": [
+          "Kelis Ndlovu",
+          "K Ndlovu"
+        ],
+        "Chipo Mugeri-Tiripano": [
+          "Chipo Mugeri",
+          "Chipo Tiripano",
+          "C Mugeri"
+        ]
+      }
     }
   ]
 }
