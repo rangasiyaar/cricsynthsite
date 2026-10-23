@@ -4,7 +4,7 @@ import "./legacy-playground.css";
 import "./site.css";
 import "./globals.css";
 import "./design.css";
-import { Footer, Nav } from "@/components/Shell";
+import { SiteFrame } from "@/components/Shell";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
 
 const HOME_DESC = "Who wins, the likely scores and the players to watch. Free pre-match forecasts for upcoming cricket matches, checked against every result.";
@@ -48,9 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
       </head>
       <body>
-        <Nav />
-        <main className="cs-wrap">{children}</main>
-        <Footer />
+        <SiteFrame>{children}</SiteFrame>
       </body>
     </html>
   );

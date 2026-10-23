@@ -9,6 +9,11 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts"
   },
   "dependencies": {
+    "@capacitor-firebase/authentication": "8.5.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/splash-screen": "8.0.2",
+    "@capacitor/status-bar": "8.0.4",
     "firebase": "12.19.0",
     "next": "^16.4.0",
     "react": "^19.3.0",

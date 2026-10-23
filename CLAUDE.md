@@ -20,6 +20,8 @@ cricsynthsite/
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
 ├── cricmcp/                   ← MCP server (41 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
+│                                 (app/app/m/ = the Android app's screens: splash, sign-in, matches, match, Lab, account)
+├── mobile/                    ← Android app: Capacitor shell around app/app/m (see mobile/README.md; APK built in CI)
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
 └── .github/workflows/         ← test + deploy (keyless auth to Google Cloud)
@@ -37,6 +39,7 @@ cricsynthsite/
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |
+| Android app | Capacitor (`mobile/`), APK from `android.yml` | Screens are `app/app/m/`; data from the site's `/data/` (CORS on); Google sign-in via the native Firebase plugin when `GOOGLE_SERVICES_JSON` is set |
 | Scenario Lab (MatchSynth Lab) | Runs in the browser (Web Worker) | Zero server cost; `lib/engine/full.ts` (browser port of `summary.py`) rebuilds every match-centre tab from the user's scenario |
 
 ## Data: Cricsheet only

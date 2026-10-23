@@ -122,6 +122,13 @@ export function Nav() {
   );
 }
 
+/** The site's nav and footer around a page. App screens (/m/…, the Android app) draw their own top bar instead. */
+export function SiteFrame({ children }: { children: React.ReactNode }) {
+  const path = usePathname() || "/";
+  if (path === "/m" || path.startsWith("/m/")) return <main className="app-wrap">{children}</main>;
+  return <><Nav /><main className="cs-wrap">{children}</main><Footer /></>;
+}
+
 export function Footer() {
   return (
     <footer className="footer">

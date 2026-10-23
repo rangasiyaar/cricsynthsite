@@ -1,0 +1,94 @@
+name: Android app
+
+# The Android app (mobile/): the app screens of app/ (app/app/m) in a Capacitor shell.
+# Every run makes a debug APK. With the signing secrets it also makes a signed release APK and an App Bundle for the
+# Play Store. Google sign-in needs the Firebase Android config (secret GOOGLE_SERVICES_JSON); without it the app is
+# built without the native Google plugin and offers email sign-in only.
+#
+# Secrets (all optional):
+#   GOOGLE_SERVICES_JSON   contents of google-services.json for the Android app in.cricsynthesis.app
+#   ANDROID_KEYSTORE_B64   the release keystore, base64
+#   ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["mobile/**", "app/**", ".github/workflows/android.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CS_VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            app/package-lock.json
+            mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Install
+        run: |
+          (cd app && npm ci)
+          (cd mobile && npm ci)
+      - name: Firebase Android config
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON" > mobile/android/app/google-services.json
+          else
+            echo "::notice::No GOOGLE_SERVICES_JSON secret: building without Google sign-in (email sign-in only)"
+            (cd mobile && npm rm --no-audit --no-fund @capacitor-firebase/authentication)
+          fi
+      - name: App screens
+        run: cd mobile && node scripts/build-web.mjs
+      - name: Capacitor sync
+        run: cd mobile && npx cap sync android
+      - name: Version
+        run: echo "CS_VERSION_NAME=$(node -p "require('./mobile/package.json').version")" >> "$GITHUB_ENV"
+      - name: Debug APK
+        run: cd mobile/android && ./gradlew --no-daemon assembleDebug
+      - name: Release APK and bundle
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          CS_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          CS_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          CS_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then echo "::notice::No signing secrets: debug APK only"; exit 0; fi
+          printf '%s' "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          export CS_KEYSTORE="$RUNNER_TEMP/release.jks"
+          cd mobile/android && ./gradlew --no-daemon assembleRelease bundleRelease
+      - name: Summary
+        run: |
+          {
+            echo "### CricSynthesis for Android ${CS_VERSION_NAME} (build ${CS_VERSION_CODE})"
+            echo ""
+            for f in mobile/android/app/build/outputs/apk/*/*.apk mobile/android/app/build/outputs/bundle/*/*.aab; do
+              [ -f "$f" ] && echo "- $(basename "$f"): $(du -h "$f" | cut -f1)"
+            done
+            [ -f mobile/android/app/google-services.json ] && echo "- Google sign-in: on" || echo "- Google sign-in: off (no GOOGLE_SERVICES_JSON secret)"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cricsynthesis-android-${{ github.run_number }}
+          path: |
+            mobile/android/app/build/outputs/apk/**/*.apk
+            mobile/android/app/build/outputs/bundle/**/*.aab
+          retention-days: 14

@@ -1,0 +1,86 @@
+/* The Android app's frame (screens under /m/). Cards, tabs, tables, the scoreboard and the Lab come from the website's
+   stylesheets unchanged; this file adds only the top bar, the splash and the match list layout. */
+
+.app-wrap { min-height: 100vh; min-height: 100dvh; max-width: 640px; margin: 0 auto; box-sizing: border-box;
+  padding: 0 16px calc(32px + env(safe-area-inset-bottom)); }
+
+/* Top bar */
+.app-bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 12px; margin: 0 -16px;
+  padding: env(safe-area-inset-top) 16px 0; height: calc(60px + env(safe-area-inset-top)); background: var(--cs-bg);
+  border-bottom: 1px solid transparent; }
+.app-brand { flex: none; }
+.app-brand svg { width: 28px; height: 28px; }
+.app-brand span { font-size: 20px; }
+.app-bar-title { flex: 1; min-width: 0; }
+.app-bar-name { font-family: var(--cs-head); font-weight: 600; font-size: 20px; letter-spacing: .02em; text-transform: uppercase; line-height: 1.1;
+  color: var(--cs-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-bar-eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--cs-steel-700);
+  display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+.app-bar-eyebrow .tag.pro { font-size: 9px; padding: 0 6px; letter-spacing: .02em; }
+.app-bar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.app-ib { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border: 1px solid var(--cs-line); border-radius: 8px;
+  background: none; color: var(--cs-ink); padding: 0; cursor: pointer; text-decoration: none !important; }
+.app-avatar { border-radius: 50%; background: var(--team-a); border-color: var(--team-a); color: var(--cs-bg);
+  font-family: var(--cs-head); font-weight: 600; font-size: 16px; letter-spacing: .02em; }
+.app-avatar.big { width: 56px; height: 56px; display: grid; place-items: center; font-size: 22px; flex: none; }
+.app-signin { font-weight: 600; font-size: 14px; color: var(--cs-steel-700); padding: 8px 4px; }
+.app-toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 60;
+  background: var(--cs-ink); color: var(--cs-bg); padding: 8px 14px; border-radius: 8px; font-size: 14px; }
+
+/* Splash */
+.app-splash { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+.app-splash-mark { width: 96px; height: 96px; color: var(--cs-steel-700); }
+.app-splash-mark svg { width: 100%; height: 100%; }
+.app-splash-name { font-family: var(--cs-head); font-weight: 600; font-size: 34px; letter-spacing: .04em; text-transform: uppercase; line-height: 1;
+  margin-top: 22px; color: var(--cs-ink); }
+.app-splash-name b { font-weight: 600; color: var(--cs-steel-700); }
+.app-splash-sub { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--cs-ink-3); margin-top: 14px; }
+.app-splash-bar { position: fixed; left: 32px; right: 32px; bottom: calc(72px + env(safe-area-inset-bottom)); height: 2px; border-radius: 1px;
+  background: var(--cs-line); overflow: hidden; }
+.app-splash-bar i { display: block; height: 100%; width: 40%; background: var(--cs-steel); border-radius: 1px; animation: app-load 1.2s ease-in-out infinite; }
+@keyframes app-load { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+@media (prefers-reduced-motion: reduce) { .app-splash-bar i { animation: none; width: 60%; } }
+
+/* Sign-in: the website's login card, full width */
+.app-login { min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; padding: calc(24px + env(safe-area-inset-top)) 0 24px; }
+.app-login .login-card { max-width: none; }
+
+/* Page heads */
+.app-head { padding: 20px 0 18px; }
+.app-head h1 { font-size: 36px; margin: 0 0 6px; }
+.app-head .eyebrow { margin-bottom: 10px; }
+.app-head p { margin: 0; }
+.app-filters { margin-top: 16px; }
+.app-filters button { padding: 7px 12px; font-size: 13px; }
+.app-lede { margin: 8px 0 20px; }
+
+/* Match list */
+.app-list { display: grid; gap: 16px; }
+html body .card.app-match { padding: 0; overflow: hidden; }
+.app-match .fixture { padding: 18px 20px 14px; }
+.app-match-tagline { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.app-match .tag { text-transform: none; letter-spacing: 0; font-size: 12px; padding: 1px 8px; }
+.app-tag-up { background: var(--cs-accent-bg); border-color: transparent !important; color: var(--cs-steel-700) !important; }
+.app-tag-done { color: var(--cs-ink-3) !important; }
+.app-match .tag .cs-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cs-steel); }
+.app-countdown { font-size: 13px; letter-spacing: 0; color: var(--cs-ink); font-weight: 500; }
+.app-match-note { margin: 10px 0 0; font-size: 13px; color: var(--cs-ink-2); }
+.app-match-act { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 48px; padding: 0 20px; border-top: 1px solid var(--cs-line); }
+.app-match-act a { font-weight: 600; font-size: 14px; color: var(--cs-steel-700); }
+.app-result-teams { font-family: var(--cs-head); font-weight: 600; font-size: 24px; text-transform: uppercase; margin: 12px 0 4px; color: var(--cs-ink); }
+.app-result-line { font-size: 14px; font-weight: 600; color: var(--cs-ink); }
+
+/* Match centre and Lab: the tab bar sticks under the top bar */
+.app-centre { padding-top: 4px; }
+@media (max-width: 860px) {
+  .app-wrap .tabs.mc-tabs { top: calc(60px + env(safe-area-inset-top)); margin-left: -16px; margin-right: -16px; }
+}
+.app-wrap .page-head { padding-top: 0; }
+
+/* Account */
+.app-account { display: grid; gap: 16px; padding-top: 8px; }
+.app-who { display: flex; align-items: center; gap: 14px; }
+.app-who h1 { font-size: 32px; margin: 0; }
+.app-who p { margin: 2px 0 0; }
+.app-logout { width: 100%; }
+.app-version { text-align: center; }

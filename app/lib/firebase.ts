@@ -2,7 +2,7 @@
 // Firebase Auth for the site. The web config is public by design (it identifies the project; access is
 // enforced by Auth and the Firestore rules), so it lives in the code rather than in secrets.
 import { getApps, initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, type Auth, type User } from "firebase/auth";
+import { getAuth, indexedDBLocalPersistence, initializeAuth, onAuthStateChanged, type Auth, type User } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
@@ -19,7 +19,16 @@ function app() {
   return getApps()[0] ?? initializeApp(CONFIG);
 }
 
+/** True inside the Android app (Capacitor), false on the website. */
+export const isNative = () =>
+  typeof window !== "undefined" && !!(window as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.();
+
+let nativeAuth: Auth | null = null;
+
 export function auth(): Auth {
+  // In the app's web view there are no pop-ups or redirects: keep the session in IndexedDB and skip loading
+  // the pop-up helper (Google sign-in goes through the native plugin, see lib/native.ts).
+  if (isNative()) return (nativeAuth ??= initializeAuth(app(), { persistence: indexedDBLocalPersistence }));
   return getAuth(app());
 }
 

@@ -1,0 +1,20 @@
+{
+  "appId": "in.cricsynthesis.app",
+  "appName": "CricSynthesis",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#f2f2f3"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2500,
+      "launchAutoHide": true,
+      "backgroundColor": "#f2f2f3",
+      "showSpinner": false
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": ["google.com"]
+    }
+  }
+}
