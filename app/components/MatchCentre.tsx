@@ -17,7 +17,7 @@ const COLORS = ["var(--team-a)", "var(--team-b)"];
 const icon = (d: string) => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
 );
-const TAB_ICONS: Record<string, React.ReactNode> = {
+export const TAB_ICONS: Record<string, React.ReactNode> = {
   Overview: icon("M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z"),
   Scores: icon("M4 20V10M10 20V4M16 20v-7M22 20H2"),
   Wickets: icon("M7 4v16M12 4v16M17 4v16M5 4h14"),
@@ -29,11 +29,29 @@ const TAB_ICONS: Record<string, React.ReactNode> = {
   Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
 };
 
+/** The sections of the match centre for one summary (Fantasy only when the match has picks). */
+export type Section = Tab;
+export const sectionsFor = (doc: MatchDoc): Section[] => (doc.fantasy ? [...TABS, "Fantasy"] : [...TABS]);
+
+/** One section's content: the website shows it under a tab, the app on a screen of its own. */
+export function SectionView({ doc, section, live = true }: { doc: MatchDoc; section: Section; live?: boolean }) {
+  switch (section) {
+    case "Overview": return <Overview doc={doc} live={live} />;
+    case "Scores": return <Scores doc={doc} />;
+    case "Wickets": return <Wickets doc={doc} />;
+    case "Players": return <Players doc={doc} />;
+    case "Top players": return <TopPlayers doc={doc} />;
+    case "MVP": return <Mvp doc={doc} />;
+    case "Matchups": return <Matchups doc={doc} />;
+    case "Fantasy": return doc.fantasy ? <Fantasy doc={doc} /> : null;
+  }
+}
+
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
  *  live engine, which always runs the published match). */
 export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean }) {
   const [tab, setTab] = useState<Tab>("Overview");
-  const tabs: Tab[] = doc.fantasy ? [...TABS, "Fantasy"] : [...TABS];
+  const tabs = sectionsFor(doc);
   return (
     <>
       <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
@@ -44,16 +62,7 @@ export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra
         ))}
         {extra}
       </div>
-      <div key={tab} className="anim-fade">
-        {tab === "Overview" && <Overview doc={doc} live={live} />}
-        {tab === "Scores" && <Scores doc={doc} />}
-        {tab === "Wickets" && <Wickets doc={doc} />}
-        {tab === "Players" && <Players doc={doc} />}
-        {tab === "Top players" && <TopPlayers doc={doc} />}
-        {tab === "MVP" && <Mvp doc={doc} />}
-        {tab === "Matchups" && <Matchups doc={doc} />}
-        {tab === "Fantasy" && doc.fantasy && <Fantasy doc={doc} />}
-      </div>
+      <div key={tab} className="anim-fade"><SectionView doc={doc} section={tab} live={live} /></div>
     </>
   );
 }

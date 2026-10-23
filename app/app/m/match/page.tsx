@@ -1,63 +1,99 @@
 "use client";
-// App match centre: the website's scoreboard and tabs, with MatchSynth Lab as the last tab.
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+// App match centre: the match at a glance and a menu of sections; each section opens on a screen of its own
+// (?s=<section>), so the phone's back button returns to the menu.
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { AppBar } from "@/components/App";
-import { ForecastTabs } from "@/components/MatchCentre";
-import Scoreboard from "@/components/Scoreboard";
+import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview } from "@/components/App";
+import { SectionView, TAB_ICONS, sectionsFor, type Section } from "@/components/MatchCentre";
 import { loadMatch } from "@/lib/data";
+import { FORMAT } from "@/lib/format";
 import { share } from "@/lib/native";
+import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
 import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
 
-const LabIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3" /></svg>
-);
-const ShareIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v7h14v-7" /></svg>
-);
+// The doc stays in memory while moving between the menu and its sections.
+const cache = new Map<string, MatchDoc>();
+
+function Menu({ doc }: { doc: MatchDoc }) {
+  const id = encodeURIComponent(doc.match.id);
+  const sections = sectionsFor(doc);
+  const left = countdown(kickoffMs(doc.match.date, doc.match.start_time), Date.now());
+  return (
+    <>
+      <div className="a-title" style={{ paddingBottom: 14 }}>
+        <div className="a-eyebrow">{doc.match.competition ?? FORMAT[doc.match.format] ?? doc.match.format}</div>
+        <h1>{doc.match.teams.map((t) => t.short).join(" v ")}</h1>
+      </div>
+      <MatchHero doc={doc} />
+      <div className="a-facts">
+        {doc.match.venue && <span className="a-fact">{doc.match.venue}</span>}
+        {doc.match.date && <span className="a-fact">{startLabel(doc.match.date, doc.match.start_time)}</span>}
+        {left && <span className="a-fact ok">Starts in {left}</span>}
+      </div>
+      <MenuGroup label="Match centre">
+        {sections.map((s) => (
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s)} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
+        ))}
+      </MenuGroup>
+      <MenuGroup label="What if">
+        <MenuRow icon={Icon.lab} tone="accent" title={<>MatchSynth Lab <span className="a-pro">Pro</span></>}
+                 sub="Change the toss, pitch, dew or form and re-run the match" href={`/m/lab/?id=${id}`} />
+      </MenuGroup>
+      <p className="a-version">Updated {new Date(doc.generated_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
+    </>
+  );
+}
+
+function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
+  return (
+    <>
+      <div className="a-section-head">
+        <span className="a-row-icon">{TAB_ICONS[section]}</span>
+        <div><h1>{section}</h1><p>{doc.match.teams.map((t) => t.short).join(" v ")} · {preview(doc, section)}</p></div>
+      </div>
+      <div className="a-content" key={section}><SectionView doc={doc} section={section} /></div>
+    </>
+  );
+}
 
 function Match() {
-  const id = useSearchParams().get("id") || "";
-  const [doc, setDoc] = useState<MatchDoc | null>(null);
+  const params = useSearchParams();
+  const router = useRouter();
+  const id = params.get("id") || "";
+  const [doc, setDoc] = useState<MatchDoc | null>(cache.get(id) ?? null);
   const [error, setError] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
   useEffect(() => {
     if (!id) { setError("No match selected."); return; }
-    loadMatch(id).then(setDoc).catch(() => setError("This match's forecast isn't available in the app."));
+    if (cache.has(id)) { setDoc(cache.get(id)!); return; }
+    loadMatch(id).then((d) => { cache.set(id, d); setDoc(d); }).catch(() => setError("This match's forecast isn't available in the app."));
   }, [id]);
+  useEffect(() => { window.scrollTo(0, 0); }, [params]);
 
-  const short = doc ? doc.match.teams.map((t) => t.short).join(" v ") : "";
-  const url = `${SITE}/match/?id=${encodeURIComponent(id)}`;
+  const section = doc ? fromSlug(params.get("s"), sectionsFor(doc)) : null;
+  const short = doc ? doc.match.teams.map((t) => t.short).join(" v ") : "Match";
   const onShare = async () => {
-    const r = await share(doc?.match.title ?? short, url);
+    const r = await share(doc?.match.title ?? short, `${SITE}/match/?id=${encodeURIComponent(id)}`);
     if (r === "copied") { setNote("Link copied"); setTimeout(() => setNote(null), 2000); }
   };
+  const menu = `/m/match/?id=${encodeURIComponent(id)}`;
   return (
     <>
-      <AppBar back="/m/matches/" title={short || "Match centre"} right={doc && (
-        <button type="button" className="app-ib" aria-label="Share this match" onClick={onShare}><ShareIcon /></button>
-      )} />
-      {note && <div className="app-toast" role="status">{note}</div>}
-      {error && <div className="notice">{error} <a href={`${SITE}/results/?id=${encodeURIComponent(id)}`}>See the result on the website</a></div>}
-      {!doc && !error && <div className="skeleton card" style={{ minHeight: 320 }} />}
-      {doc && (
-        <div className="app-centre">
-          <Scoreboard doc={doc} />
-          <ForecastTabs doc={doc} extra={
-            <Link role="tab" className="tab-link" href={`/m/lab/?id=${encodeURIComponent(doc.match.id)}`}>
-              <span className="mc-ico" aria-hidden="true"><LabIcon /></span>
-              <span className="mc-label"><span className="mc-full">MatchSynth Lab</span><span className="mc-short">Lab</span></span>
-              <span className="tag pro">Pro</span>
-            </Link>} />
-          <p className="small muted" style={{ marginTop: 32 }}>Updated {new Date(doc.generated_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
-        </div>
+      <TopBar back={section ? menu : "/m/matches/"} title={section ? `${section} · ${short}` : short}
+              right={doc && <button type="button" className="a-icon" aria-label="Share this match" onClick={onShare}>{Icon.share}</button>} />
+      {note && <div className="a-toast" role="status">{note}</div>}
+      {error && (
+        <Empty title="Not available" action={<button type="button" className="a-pill" onClick={() => router.replace("/m/matches/")}>Back to matches</button>}>
+          {error} <a href={`${SITE}/results/?id=${encodeURIComponent(id)}`}>See the result on the website</a>.
+        </Empty>
       )}
+      {!doc && !error && <Loading rows={3} />}
+      {doc && (section ? <SectionScreen doc={doc} section={section} /> : <Menu doc={doc} />)}
     </>
   );
 }
 
 export default function MatchPage() {
-  return <Suspense fallback={<div className="skeleton card" style={{ minHeight: 320 }} />}><Match /></Suspense>;
+  return <Suspense fallback={<Loading rows={3} />}><Match /></Suspense>;
 }

@@ -67,7 +67,9 @@ function saveLevers(id: string, l: Levers) {
   } catch { /* private mode: settings just aren't kept */ }
 }
 
-export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
+/** The Lab's state for one match: the published baseline, the user's levers and the scenario re-simulated from them.
+ *  The website lays it out on one page (ScenarioLab); the app spreads it over screens. */
+export function useLab(doc: MatchDoc) {
   const [pack, setPack] = useState<Pack | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [base, setBase] = useState<Summary | null>(null);
@@ -126,67 +128,101 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], fantasy: fantasy ? { ...fantasy, scenario: true } : undefined,
                                                           generated_at: new Date().toISOString() } : null),
                                             [cur, doc, fantasy]);
-
-  if (err) return <p className="notice">{err}</p>;
-  if (!pack || !base || !cur || !labDoc) return <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />;
   const set = <K extends keyof Levers>(k: K, v: Levers[K]) => setLevers((l) => ({ ...l, [k]: v }));
-  const teams = pack.teams.map((t) => t.name);
+  const ready = !!(pack && base && cur && labDoc);
+  return { err, ready, pack, base, cur, labDoc, busy, levers, set, reset: () => setLevers(DEFAULT), changed: changed(levers),
+           changes: countChanges(levers), teams: pack ? pack.teams.map((t) => t.name) : [] };
+}
+export type Lab = ReturnType<typeof useLab>;
+
+/** How many levers differ from the published match (for "3 changes"). */
+function countChanges(l: Levers): number {
+  return (Object.keys(DEFAULT) as (keyof Levers)[]).filter((k) => k !== "innings" && k !== "runs" && k !== "wkts" && k !== "overs" && k !== "firstTotal"
+    && JSON.stringify(l[k]) !== JSON.stringify(DEFAULT[k])).length;
+}
+
+const winOf = (lab: Lab, s: Summary, k: number) => s.result.win[lab.teams[k]] ?? 0;
+const medianOf = (s: Summary, k: number) => s.teams[k].batting.score.q["50"] ?? 0;
+
+/** The levers: conditions, form, availability and an optional match situation. */
+export function LabLevers({ lab }: { lab: Lab }) {
+  const { pack, levers, set, teams } = lab;
+  if (!pack) return null;
   const allBowlers = pack.teams.flatMap((t, k) => t.players.map((p) => ({ id: p, team: k })))
     .filter((p) => (pack.batting.find((b) => b.team === 1 - p.team)!.bowlWeights[pack.batting.find((b) => b.team === 1 - p.team)!.bowlers.indexOf(p.id)] ?? []).reduce((x, y) => x + y, 0) > 0.5);
-  const win = (s: Summary, k: number) => s.result.win[teams[k]] ?? 0;
-  const median = (s: Summary, k: number) => s.teams[k].batting.score.q["50"] ?? 0;
-
   return (
     <>
-      <Scoreboard doc={labDoc} foot={<span className="sb-note">Your scenario{busy ? " · updating…" : ""}</span>} />
+      <div className="lever">
+        <label>Who bats first</label>
+        <select value={levers.battingFirst} onChange={(e) => set("battingFirst", e.target.value as Levers["battingFirst"])}>
+          <option value="">Unknown (toss)</option>{teams.map((t, i) => <option key={t} value={String(i)}>{t}</option>)}
+        </select>
+      </div>
+      <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
+      <Slider label="Pitch: wickets" lo="Batting paradise" hi="Green top" value={levers.wickets} min={0.75} max={1.35} onChange={(v) => set("wickets", v)} />
+      <Slider label="Help for spinners" lo="None" hi="Raging turner" value={levers.spin} min={0.8} max={1.6} onChange={(v) => set("spin", v)} />
+      <Slider label="Help for seamers" lo="None" hi="Swing and seam" value={levers.pace} min={0.8} max={1.6} onChange={(v) => set("pace", v)} />
+      <Slider label="Dew in the 2nd innings" lo="None" hi="Heavy" value={levers.dew} min={0} max={1} onChange={(v) => set("dew", v)} />
+      <FormEditor pack={pack} form={levers.form} onChange={(f) => set("form", f)} />
+      <div className="lever">
+        <label>Rule a bowler out</label>
+        <select value="" onChange={(e) => e.target.value && set("exclude", [...levers.exclude, e.target.value])}>
+          <option value="">Choose a bowler…</option>
+          {allBowlers.filter((b) => !levers.exclude.includes(b.id)).map((b) => <option key={b.id} value={b.id}>{pack.players[b.id]?.name} ({teams[b.team]})</option>)}
+        </select>
+        {levers.exclude.length > 0 && <div className="small">{levers.exclude.map((p) => (
+          <button key={p} className="tag" style={{ marginRight: 6, cursor: "pointer", background: "none" }} onClick={() => set("exclude", levers.exclude.filter((x) => x !== p))}>{pack.players[p]?.name} ✕</button>
+        ))}</div>}
+      </div>
+      <Situation levers={levers} set={set} teams={teams} pack={pack} />
+    </>
+  );
+}
+
+/** Win chances and projected totals under the scenario, against the match as published. */
+export function LabResult({ lab, movers = true }: { lab: Lab; movers?: boolean }) {
+  const { cur, base, teams } = lab;
+  if (!cur || !base) return null;
+  return (
+    <>
+      <div className="lab-compare">
+        {teams.map((t, k) => (
+          <div key={t}>
+            <div className="cs-k" style={{ color: COLORS[k] }}>{t}</div>
+            <div className="lab-big"><Pct p={winOf(lab, cur, k)} /> <Delta d={winOf(lab, cur, k) - winOf(lab, base, k)} pctPts /></div>
+            <div className="small muted">to win · projected <b>{num(medianOf(cur, k))}</b> <Delta d={medianOf(cur, k) - medianOf(base, k)} /></div>
+          </div>
+        ))}
+      </div>
+      <WinBar a={teams[0]} b={teams[1]} pa={winOf(lab, cur, 0)} pb={winOf(lab, cur, 1)} big />
+      {movers && <Movers now={cur} was={base} />}
+    </>
+  );
+}
+
+export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
+  const lab = useLab(doc);
+  if (lab.err) return <p className="notice">{lab.err}</p>;
+  if (!lab.ready || !lab.labDoc) return <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />;
+  return (
+    <>
+      <Scoreboard doc={lab.labDoc} foot={<span className="sb-note">Your scenario{lab.busy ? " · updating…" : ""}</span>} />
       <div className="lab-layout">
         <aside className="card grid lab-levers" style={{ gap: 18 }}>
           <div>
             <h3>Set the scene</h3>
           </div>
-          <div className="lever">
-            <label>Who bats first</label>
-            <select value={levers.battingFirst} onChange={(e) => set("battingFirst", e.target.value as Levers["battingFirst"])}>
-              <option value="">Unknown (toss)</option>{teams.map((t, i) => <option key={t} value={String(i)}>{t}</option>)}
-            </select>
-          </div>
-          <Slider label="Pitch: runs" lo="Slow, big ground" hi="Flat, short boundaries" value={levers.boundary} min={0.75} max={1.35} onChange={(v) => set("boundary", v)} />
-          <Slider label="Pitch: wickets" lo="Batting paradise" hi="Green top" value={levers.wickets} min={0.75} max={1.35} onChange={(v) => set("wickets", v)} />
-          <Slider label="Help for spinners" lo="None" hi="Raging turner" value={levers.spin} min={0.8} max={1.6} onChange={(v) => set("spin", v)} />
-          <Slider label="Help for seamers" lo="None" hi="Swing and seam" value={levers.pace} min={0.8} max={1.6} onChange={(v) => set("pace", v)} />
-          <Slider label="Dew in the 2nd innings" lo="None" hi="Heavy" value={levers.dew} min={0} max={1} onChange={(v) => set("dew", v)} />
-          <FormEditor pack={pack} form={levers.form} onChange={(f) => set("form", f)} />
-          <div className="lever">
-            <label>Rule a bowler out</label>
-            <select value="" onChange={(e) => e.target.value && set("exclude", [...levers.exclude, e.target.value])}>
-              <option value="">Choose a bowler…</option>
-              {allBowlers.filter((b) => !levers.exclude.includes(b.id)).map((b) => <option key={b.id} value={b.id}>{pack.players[b.id]?.name} ({teams[b.team]})</option>)}
-            </select>
-            {levers.exclude.length > 0 && <div className="small">{levers.exclude.map((p) => (
-              <button key={p} className="tag" style={{ marginRight: 6, cursor: "pointer", background: "none" }} onClick={() => set("exclude", levers.exclude.filter((x) => x !== p))}>{pack.players[p]?.name} ✕</button>
-            ))}</div>}
-          </div>
-          <Situation levers={levers} set={set} teams={teams} pack={pack} />
-          <button className="btn ghost" onClick={() => setLevers(DEFAULT)} disabled={!changed(levers)}>Reset</button>
+          <LabLevers lab={lab} />
+          <button className="btn ghost" onClick={lab.reset} disabled={!lab.changed}>Reset</button>
         </aside>
 
-        <div className="grid lab-main" style={{ opacity: busy ? 0.6 : 1, transition: "opacity .2s" }}>
+        <div className="grid lab-main" style={{ opacity: lab.busy ? 0.6 : 1, transition: "opacity .2s" }}>
           <div className="card">
             <div className="card-head"><h3>Your scenario</h3>
-              <span className="small muted">{changed(levers) ? "Change v the match as published · your settings are saved for this match" : "No changes yet: this is the match as published"}</span></div>
-            <div className="lab-compare">
-              {teams.map((t, k) => (
-                <div key={t}>
-                  <div className="cs-k" style={{ color: COLORS[k] }}>{t}</div>
-                  <div className="lab-big"><Pct p={win(cur, k)} /> <Delta d={win(cur, k) - win(base, k)} pctPts /></div>
-                  <div className="small muted">to win · projected <b>{num(median(cur, k))}</b> <Delta d={median(cur, k) - median(base, k)} /></div>
-                </div>
-              ))}
-            </div>
-            <WinBar a={teams[0]} b={teams[1]} pa={win(cur, 0)} pb={win(cur, 1)} big />
-            <Movers now={cur} was={base} />
+              <span className="small muted">{lab.changed ? "Change v the match as published · your settings are saved for this match" : "No changes yet: this is the match as published"}</span></div>
+            <LabResult lab={lab} />
           </div>
-          <ForecastTabs doc={labDoc} live={false} />
+          <ForecastTabs doc={lab.labDoc} live={false} />
         </div>
       </div>
     </>
