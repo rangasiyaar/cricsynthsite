@@ -293,7 +293,7 @@ def score_fantasy(fantasy: dict, card: dict, roster: Roster) -> dict:
     players = list(fantasy["players"])
     roles = {p: r.get("role") for p, r in fantasy["players"].items()}
     team_of = {p: r["team"] for p, r in fantasy["players"].items()}
-    got = scorecard_points(card, roster.player, roles, players)
+    got = scorecard_points(card, roster.player, roles, players, od=fantasy.get("format") == "OD")
     real = {p: got.get(p, 4.0) for p in players}
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
     xi, c, vc = pick_xi(real, team_of, use_roles)
@@ -352,6 +352,10 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
             if pack is not None:
                 (out / "matches" / f"{mid}.pack.json").write_text(json.dumps(pack, separators=(",", ":")))
         doc = json.loads(doc_p.read_text())
+        fp = picks / f"{mid}.json" if picks else None
+        if not doc.get("fantasy") and fp and fp.exists():      # published before the Fantasy tab: picks made afterwards
+            doc["fantasy"] = {**json.loads(fp.read_text()), "after": True}
+            doc_p.write_text(json.dumps(doc, separators=(",", ":")))
         m, sm = doc["match"], doc["summary"]
         archive.append({"id": mid, "title": m.get("title"), "date": m.get("date"), "competition": m.get("competition"),
                         "teams": [{"name": t["name"], "short": t.get("short")} for t in m["teams"]],
@@ -387,8 +391,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
             continue
         doc = json.loads(doc_p.read_text())
         rep = score(doc, card, fx.get(mid))
-        fp = picks / f"{mid}.json" if picks else None
-        fantasy = doc.get("fantasy") or ({**json.loads(fp.read_text()), "after": True} if fp and fp.exists() else None)
+        fantasy = doc.get("fantasy")
         if fantasy and rep["checks"]:                     # rain-shortened / abandoned: not scored, fantasy included
             rep["fantasy"] = {**score_fantasy(fantasy, card, Roster(doc, fx.get(mid))),
                               "names": {p: r.get("name", p) for p, r in fantasy["players"].items()}}

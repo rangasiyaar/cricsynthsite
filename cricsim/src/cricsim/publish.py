@@ -68,11 +68,11 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
             "published": doc["published"], "generated_at": now}
 
 
-FANTASY_FORMATS = ("T20", "T10", "HUNDRED")           # the points table is the T20 one
+FANTASY_FORMATS = ("T20", "T10", "HUNDRED", "OD")     # T20 points table, or the one-day one for OD
 
 
 def _fantasy(model: Model, sims, cov: dict, summary: dict) -> dict | None:
-    """Fantasy picks from the same simulations (pre-match forecasts in T20-type formats only)."""
+    """Fantasy picks from the same simulations (pre-match forecasts only)."""
     if cov.get("format") not in FANTASY_FORMATS or sims.scenario.start is not None:
         return None
     roles = {p: str(r).upper() for t in cov["teams"] for p, r in zip(t["players"], t.get("roles") or []) if r}

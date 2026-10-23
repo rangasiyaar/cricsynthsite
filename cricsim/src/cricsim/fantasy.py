@@ -1,4 +1,4 @@
-"""Fantasy points (Dream11-style T20 table) from simulations and from real scorecards, and XI selection.
+"""Fantasy points (Dream11-style T20 and one-day tables) from simulations and from real scorecards, and XI selection.
 
 Batting: run 1, four +4, six +6, 25/50/75/100 bonus 4/8/12/16 (highest only), duck -2 (not bowlers),
 strike-rate bands (10+ balls, not bowlers). Bowling: wicket 30, bowled/LBW +8, 3/4/5-wicket bonus 4/8/12,
@@ -7,6 +7,8 @@ Fielding (`fielding=True`, needs a model with fielding shares): catch 8 (+4 for 
 run-out 12 (6 each when two fielders share it). The simulation knows how many catches, stumpings and run-outs
 happen, not who made them, so each is split over the fielding XI by the players' usual share. Without it,
 fielding is left out on both sides. Maidens are left out on both sides.
+One-day (`od=True`): 25/50/75/100/125/150 bonus 4–24, duck -3, strike-rate bands from 20 balls; wicket 25,
+4/5/6-wicket bonus 4/8/12, economy bands from 5 overs.
 """
 from __future__ import annotations
 
@@ -24,22 +26,33 @@ CAUGHT, CAUGHT_BOWLED, RUN_OUT = DISMISSALS.index("caught"), DISMISSALS.index("c
 FIELD_POINTS = (8, 12, 12)                 # catch, stumping, run-out
 
 
-def batting_points(r, b, f4, f6, out, bowler_role=False):
+def batting_points(r, b, f4, f6, out, bowler_role=False, od=False):
     r, b, f4, f6, out = (np.asarray(x) for x in (r, b, f4, f6, out))
     p = r + 4 * f4 + 6 * f6
-    p = p + np.select([r >= 100, r >= 75, r >= 50, r >= 25], [16, 12, 8, 4], 0)
+    if od:
+        p = p + np.select([r >= 150, r >= 125, r >= 100, r >= 75, r >= 50, r >= 25], [24, 20, 16, 12, 8, 4], 0)
+    else:
+        p = p + np.select([r >= 100, r >= 75, r >= 50, r >= 25], [16, 12, 8, 4], 0)
     if not bowler_role:
-        p = p - 2 * ((r == 0) & out)
+        p = p - (3 if od else 2) * ((r == 0) & out)
         sr = np.where(b > 0, 100 * r / np.maximum(b, 1), 0)
-        band = np.select([sr > 170, sr > 150, sr >= 130, sr < 50, sr < 60, sr <= 70], [6, 4, 2, -6, -4, -2], 0)
-        p = p + np.where(b >= 10, band, 0)
+        if od:
+            band = np.select([sr > 140, sr > 120, sr >= 100, sr < 30, sr < 40, sr <= 50], [6, 4, 2, -6, -4, -2], 0)
+            p = p + np.where(b >= 20, band, 0)
+        else:
+            band = np.select([sr > 170, sr > 150, sr >= 130, sr < 50, sr < 60, sr <= 70], [6, 4, 2, -6, -4, -2], 0)
+            p = p + np.where(b >= 10, band, 0)
     return p
 
 
-def bowling_points(balls, runs, wkts, bowled_lbw):
+def bowling_points(balls, runs, wkts, bowled_lbw, od=False):
     balls, runs, wkts, bowled_lbw = (np.asarray(x) for x in (balls, runs, wkts, bowled_lbw))
-    p = 30 * wkts + 8 * bowled_lbw + np.select([wkts >= 5, wkts == 4, wkts == 3], [12, 8, 4], 0)
     econ = np.where(balls > 0, 6 * runs / np.maximum(balls, 1), 0)
+    if od:
+        p = 25 * wkts + 8 * bowled_lbw + np.select([wkts >= 6, wkts == 5, wkts == 4], [12, 8, 4], 0)
+        band = np.select([econ < 2.5, econ < 3.5, econ <= 4.5, econ > 9, econ > 8, econ >= 7], [6, 4, 2, -6, -4, -2], 0)
+        return p + np.where(balls >= 30, band, 0)
+    p = 30 * wkts + 8 * bowled_lbw + np.select([wkts >= 5, wkts == 4, wkts == 3], [12, 8, 4], 0)
     band = np.select([econ < 5, econ < 6, econ <= 7, econ > 12, econ > 11, econ >= 10], [6, 4, 2, -6, -4, -2], 0)
     return p + np.where(balls >= 12, band, 0)
 
@@ -49,6 +62,7 @@ def sim_points(sims, roles: dict[str, str] | None = None, model=None,
     """(player ids, (n_sims, 22) points per simulation)."""
     roles = roles or {}
     share = model.fielding if fielding and model is not None else None
+    od = sims.spec.format == "OD"
     pids = [p for t in sims.spec.teams for p in t.everyone]
     col = {p: i for i, p in enumerate(pids)}
     out = []
@@ -57,13 +71,13 @@ def sim_points(sims, roles: dict[str, str] | None = None, model=None,
         for lg in part.innings:
             for s, p in enumerate(lg.order):
                 pts[:, col[p]] += batting_points(lg.bat_runs[:, s], lg.bat_balls[:, s], lg.bat_4s[:, s],
-                                                 lg.bat_6s[:, s], lg.bat_out[:, s], roles.get(p) == "BOWL")
+                                                 lg.bat_6s[:, s], lg.bat_out[:, s], roles.get(p) == "BOWL", od)
             kind, by, dismissed = lg.bat_kind, lg.bat_by, lg.bat_out
             keeper = next((q for q in lg.bowlers if roles.get(q) == "WK"), None)
             for k, p in enumerate(lg.bowlers):
                 mine = dismissed & (by == k)
                 bl = (mine & np.isin(kind, BOWLED_LBW)).sum(1)
-                pts[:, col[p]] += bowling_points(lg.bowl_balls[:, k], lg.bowl_runs[:, k], lg.bowl_wkts[:, k], bl)
+                pts[:, col[p]] += bowling_points(lg.bowl_balls[:, k], lg.bowl_runs[:, k], lg.bowl_wkts[:, k], bl, od)
                 if share is not None:
                     pts[:, col[p]] += 8 * (mine & (kind == CAUGHT_BOWLED)).sum(1)
                 elif keeper is not None:
@@ -149,7 +163,7 @@ def _balls(overs) -> int:
 
 
 def scorecard_points(card: dict, resolve: Callable[[str], str | None], roles: dict[str, str],
-                     players: list[str]) -> dict[str, float]:
+                     players: list[str], od: bool = False) -> dict[str, float]:
     """Real points per player from a results file (cricsim/scorecard.py layout), fielding included: catches from
     "c X b Y" / "c and b Y", stumpings from "st X b Y", run-outs from "run out (X)" / "(X/Y)". `resolve` turns a
     scorecard name into a player id (None: not one of ours, e.g. a substitute fielder). Everyone listed in
@@ -168,7 +182,7 @@ def scorecard_points(card: dict, resolve: Callable[[str], str | None], roles: di
         for b in inn.get("batting") or []:
             p, d = pid(b["name"]), (b.get("dismissal") or "").strip()
             out = d not in ("", "not out") and d not in RETIRED
-            add(p, float(batting_points(b["runs"], b["balls"], b["fours"], b["sixes"], out, roles.get(p) == "BOWL")))
+            add(p, float(batting_points(b["runs"], b["balls"], b["fours"], b["sixes"], out, roles.get(p) == "BOWL", od)))
             if m := re.match(r"^(?:b|lbw b) (.+)$", d):
                 k = pid(m.group(1))
                 bl_lbw[k] = bl_lbw.get(k, 0) + 1
@@ -189,7 +203,7 @@ def scorecard_points(card: dict, resolve: Callable[[str], str | None], roles: di
         for b in inn.get("bowling") or []:
             p = pid(b["name"])
             if p is not None:
-                add(p, float(bowling_points(_balls(b["overs"]), b["runs"], b["wickets"], bl_lbw.get(p, 0))))
+                add(p, float(bowling_points(_balls(b["overs"]), b["runs"], b["wickets"], bl_lbw.get(p, 0), od)))
     for who, n in catches.items():
         add(who, 8 * n + (4 if n >= 3 else 0))
     return pts
@@ -300,7 +314,7 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5) 
     return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1)} for p in pids},
             "single": team(pick_xi(exp, team_of, use_roles)),
             "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5)],
-            "fielding": fielding, "simulations": int(sims.n)}
+            "fielding": fielding, "simulations": int(sims.n), "format": spec.format}
 
 
 def main() -> None:

@@ -19,14 +19,14 @@ from cricsim.engine.model import Model
 from cricsim.engine.simulate import simulate
 from cricsim.fantasy import fantasy_picks, pick_xi, scorecard_points, team_points
 
-def card_points(card: dict, names: dict[str, str], roles: dict[str, str]) -> dict[str, float]:
+def card_points(card: dict, names: dict[str, str], roles: dict[str, str], od: bool = False) -> dict[str, float]:
     """Real points per player id; `names` maps scorecard names to ids (exact, else a unique surname)."""
     def pid(name: str) -> str | None:
         if name in names:
             return names[name]
         last = [n for n in names if n.split()[-1] == name.split()[-1]]
         return names[last[0]] if len(last) == 1 else None
-    return scorecard_points(card, pid, roles, list(names.values()))
+    return scorecard_points(card, pid, roles, list(names.values()), od=od)
 
 
 def check(model: Model, cov: dict, fixture: dict, card: dict, n: int = 20000) -> dict:
@@ -43,7 +43,7 @@ def check(model: Model, cov: dict, fixture: dict, card: dict, n: int = 20000) ->
     team_of = {p: r["team"] for p, r in f["players"].items()}
     exp = {p: r["expected"] for p, r in f["players"].items()}
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
-    real = card_points(card, names, roles)
+    real = card_points(card, names, roles, od=spec.format == "OD")
     best = pick_xi(real, team_of, use_roles)
     one = f["single"]
     xi, c, vc = one["players"], one["captain"], one["vice_captain"]

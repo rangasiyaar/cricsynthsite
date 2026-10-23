@@ -530,3 +530,11 @@ def test_publish_adds_fantasy_picks(world, tmp_path):
     assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
     assert all(f["players"][p]["name"] for p in one["players"])
     assert sum(f["players"][p]["role"] == "WK" for p in one["players"]) >= 1
+
+
+def test_one_day_points_table():
+    from cricsim.fantasy import batting_points, bowling_points
+    assert batting_points(130, 100, 10, 2, True, od=True) == 130 + 40 + 12 + 20 + 4     # 125 bonus, strike rate 130
+    assert batting_points(0, 5, 0, 0, True, od=True) == -3
+    assert bowling_points(60, 40, 4, 1, od=True) == 100 + 8 + 4 + 2                    # economy 4.0
+    assert bowling_points(24, 40, 1, 0, od=True) == 25                                 # under 5 overs: no band
