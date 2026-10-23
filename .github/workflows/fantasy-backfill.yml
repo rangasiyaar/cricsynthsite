@@ -92,5 +92,5 @@ jobs:
           cp data/picks/*.json cricsim/fantasy/ 2>/dev/null || { echo "no picks"; exit 0; }
           git add cricsim/fantasy
           git diff --cached --quiet && exit 0
-          git -c user.name="Saurav Kumar" -c user.email="ibeingsaurav@gmail.com" commit -m "Fantasy picks for finished matches (model trained before each match)"
+          git -c user.name="Saurav Kumar" -c user.email="rangasiyaar@protonmail.com" commit -m "Fantasy picks for finished matches (model trained before each match)"
           git push
