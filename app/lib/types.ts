@@ -72,6 +72,7 @@ export type FantasyTeam = { players: string[]; captain: string; vice_captain: st
 export type FantasyPicks = {
   players: Record<string, { team: number; role?: string | null; expected: number; name?: string }>;
   single: FantasyTeam; teams: FantasyTeam[]; fielding?: boolean; simulations?: number; format?: string; after?: boolean;
+  scenario?: boolean;                        // rebuilt in MatchSynth Lab from the user's scenario
 };
 
 export type MatchDoc = {

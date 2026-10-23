@@ -530,6 +530,8 @@ def test_publish_adds_fantasy_picks(world, tmp_path):
     assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
     assert all(f["players"][p]["name"] for p in one["players"])
     assert sum(f["players"][p]["role"] == "WK" for p in one["players"]) >= 1
+    pack = json.loads((tmp_path / "matches" / "fx.pack.json").read_text())
+    assert all(len(r["fielding"]) == 3 and r["role"] for r in pack["players"].values())
 
 
 def test_one_day_points_table():

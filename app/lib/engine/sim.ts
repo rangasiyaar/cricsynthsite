@@ -16,7 +16,7 @@ export type Pack = {
   dismissals: string[]; bowlerDismissals: boolean[]; runOut: number;
   conditionsSd: { boundary?: number; wicket?: number };
   teams: { name: string; players: string[] }[];
-  players: Record<string, { name: string; known: boolean; hand: string }>;
+  players: Record<string, { name: string; known: boolean; hand: string; role?: string; fielding?: number[] }>;
 };
 
 export type StartState = {
@@ -89,6 +89,7 @@ export type InningsResult = {
   runs: number; wkts: number; legal: number; extras: [number, number, number];
   overRuns: Int16Array; overWkts: Int8Array;
   batRuns: Int16Array; batBalls: Int16Array; batOut: Uint8Array; batKind: Int8Array; batBy: Int8Array;
+  batFours: Int16Array; batSixes: Int16Array;
   bowlBalls: Int16Array; bowlRuns: Int16Array; bowlWkts: Int8Array;
   fowBall: Int16Array; fowBowler: Int8Array; fowSlot: Int8Array; fowRuns: Int16Array;
 };
@@ -136,6 +137,7 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     runs: 0, wkts: 0, legal: 0, extras: [0, 0, 0], overRuns: new Int16Array(overs), overWkts: new Int8Array(overs),
     batRuns: new Int16Array(11), batBalls: new Int16Array(11), batOut: new Uint8Array(11),
     batKind: new Int8Array(11).fill(-1), batBy: new Int8Array(11).fill(-1),
+    batFours: new Int16Array(11), batSixes: new Int16Array(11),
     bowlBalls: new Int16Array(11), bowlRuns: new Int16Array(11), bowlWkts: new Int8Array(11),
     fowBall: new Int16Array(10).fill(-1), fowBowler: new Int8Array(10).fill(-1), fowSlot: new Int8Array(10).fill(-1),
     fowRuns: new Int16Array(10).fill(-1),
@@ -220,6 +222,7 @@ export function simulateInnings(pack: Pack, P: Prepared, inn0: number, target: n
     const total = batR + ext, legal = y !== WIDE && y !== NOBALL, faced = y !== WIDE;
     res.runs += total; res.overRuns[ov] += total;
     res.batRuns[st] += batR;
+    if (batR === 4) res.batFours[st] += 1; else if (batR === 6) res.batSixes[st] += 1;
     if (faced) { res.batBalls[st] += 1; prevRuns[st] = batR; prevBnd[st] = batR >= 4 ? 1 : 0; }
     res.bowlRuns[bw] += batR + (y === WIDE || y === NOBALL ? ext : 0);
     if (legal) res.bowlBalls[bw] += 1;
@@ -289,7 +292,8 @@ function emptyInnings(pack: Pack, total: number): InningsResult {
   const o = pack.rules.overs;
   return { runs: total, wkts: 0, legal: 0, extras: [0, 0, 0], overRuns: new Int16Array(o), overWkts: new Int8Array(o),
     batRuns: new Int16Array(11), batBalls: new Int16Array(11), batOut: new Uint8Array(11),
-    batKind: new Int8Array(11).fill(-1), batBy: new Int8Array(11).fill(-1), bowlBalls: new Int16Array(11),
+    batKind: new Int8Array(11).fill(-1), batBy: new Int8Array(11).fill(-1), batFours: new Int16Array(11),
+    batSixes: new Int16Array(11), bowlBalls: new Int16Array(11),
     bowlRuns: new Int16Array(11), bowlWkts: new Int8Array(11), fowBall: new Int16Array(10).fill(-1),
     fowBowler: new Int8Array(10).fill(-1), fowSlot: new Int8Array(10).fill(-1), fowRuns: new Int16Array(10).fill(-1) };
 }

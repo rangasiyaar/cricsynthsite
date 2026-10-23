@@ -408,7 +408,8 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
       </div>
       <p className="small muted">Points follow the usual {f.format === "OD" ? "one-day" : "T20"} fantasy table: runs, boundaries, milestones,
         wickets, economy and strike-rate bands{f.fielding ? ", plus catches, stumpings and run-outs shared by each player's usual fielding record" : ""}.
-        {f.after ? " This match went up before the Fantasy tab existed: these picks were made afterwards by the model trained only on matches before it."
+        {f.scenario ? " These picks come from your scenario's simulations and change with your settings."
+          : f.after ? " This match went up before the Fantasy tab existed: these picks were made afterwards by the model trained only on matches before it."
           : " Picks are locked with the rest of the forecast at the start of play."} <Link href="/results/">See how past picks scored</Link>.</p>
     </div>
   );

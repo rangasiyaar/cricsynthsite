@@ -58,7 +58,13 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
         doc["fantasy"] = fantasy
     (out / "matches").mkdir(parents=True, exist_ok=True)
     (out / "matches" / f"{cov['id']}.json").write_text(json.dumps(doc, separators=(",", ":")))
-    (out / "matches" / f"{cov['id']}.pack.json").write_text(json.dumps(engine_pack(model, spec), separators=(",", ":")))
+    pack = engine_pack(model, spec)
+    if fantasy:      # MatchSynth Lab rebuilds the picks from the user's scenario: it needs roles and fielding shares
+        for pid, row in pack["players"].items():
+            row["role"] = fantasy["players"].get(pid, {}).get("role")
+            if model.fielding is not None:
+                row["fielding"] = [round(float(x), 4) for x in model.fielding[model.pid(pid)]]
+    (out / "matches" / f"{cov['id']}.pack.json").write_text(json.dumps(pack, separators=(",", ":")))
     t = summary["teams"]
     return {**{k: match[k] for k in ("id", "title", "date", "start_time", "format", "competition", "venue")},
             "teams": [{"name": x["name"], "short": x["short"]} for x in match["teams"]],

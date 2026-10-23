@@ -4,6 +4,7 @@
 import { simulateMatches, type Pack, type Scenario } from "./sim.ts";
 import { summarizeFull } from "./full.ts";
 import { summarizeLab } from "./summary.ts";
+import { fantasyPicks } from "./fantasy.ts";
 
 type Req = { id: number; pack: Pack; scenario: Scenario; n: number; seed: number; raw?: boolean; full?: boolean };
 
@@ -19,7 +20,9 @@ self.onmessage = (e: MessageEvent<Req>) => {
     const t0 = performance.now();
     const sims = simulateMatches(pack, n, scenario, seed);
     if (full) {
-      (self as unknown as Worker).postMessage({ id, full: summarizeFull(pack, sims), ms: performance.now() - t0 });
+      let fantasy = null;
+      try { fantasy = scenario.start ? null : fantasyPicks(pack, sims); } catch { fantasy = null; }   // picks are pre-match only
+      (self as unknown as Worker).postMessage({ id, full: summarizeFull(pack, sims), fantasy, ms: performance.now() - t0 });
       return;
     }
     if (!raw) {

@@ -8,7 +8,7 @@ import Scoreboard from "@/components/Scoreboard";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
 import { num, signed } from "@/lib/format";
-import type { MatchDoc, PlayerRow, Summary } from "@/lib/types";
+import type { FantasyPicks, MatchDoc, PlayerRow, Summary } from "@/lib/types";
 
 const N = 5000;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
@@ -78,6 +78,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   const worker = useRef<Worker | null>(null);
   const reqId = useRef(0);
   const pending = useRef(new Map<number, (s: Summary) => void>());
+  const [fantasy, setFantasy] = useState<FantasyPicks | null>(null);
 
   useEffect(() => {
     loadPack(doc.match.id).then(setPack).catch(() => setErr("Simulation data for this match isn't available."));
@@ -85,7 +86,11 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
     w.onmessage = (e) => {
       const cb = pending.current.get(e.data.id);
       pending.current.delete(e.data.id);
-      if (e.data.error) setErr(e.data.error); else cb?.(e.data.full);
+      if (e.data.error) setErr(e.data.error);
+      else {
+        if (e.data.id === reqId.current) setFantasy(e.data.fantasy ?? null);      // only the latest scenario's picks
+        cb?.(e.data.full);
+      }
     };
     worker.current = w;
     return () => w.terminate();
@@ -118,8 +123,9 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
   }, [scenario, restored]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = res ?? base;
-  const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], fantasy: undefined, generated_at: new Date().toISOString() } : null),
-                                            [cur, doc]);
+  const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], fantasy: fantasy ? { ...fantasy, scenario: true } : undefined,
+                                                          generated_at: new Date().toISOString() } : null),
+                                            [cur, doc, fantasy]);
 
   if (err) return <p className="notice">{err}</p>;
   if (!pack || !base || !cur || !labDoc) return <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />;
