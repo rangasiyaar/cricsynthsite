@@ -33,10 +33,12 @@ log = logging.getLogger(__name__)
 
 
 def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None,
-                    twelve: bool = False, skipped: dict | None = None, latest: bool = False) -> list[dict]:
+                    twelve: bool = False, skipped: dict | None = None, latest: bool = False,
+                    latest_format: str = "T20", teams: list[str] | None = None) -> list[dict]:
     """Held-out matches with both XIs. Matches listing 12 players a side (an Impact Player or other substitute
     rule) are skipped and counted in `skipped`, or with twelve=True kept with the first 11 listed as the XI (what a
-    forecast from the announced XI sees). latest=True: the most recent T20-type matches instead of a random draw."""
+    forecast from the announced XI sees). latest=True: the most recent matches of `latest_format` (T20 = any
+    T20-type format), between two of `teams` when given, instead of a random draw."""
     m = (parquet / "matches" / "*.parquet").as_posix()
     mp = (parquet / "match_players" / "*.parquet").as_posix()
     inn = (parquet / "innings" / "*.parquet").as_posix()
@@ -50,7 +52,10 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
         FROM read_parquet('{m}') m JOIN ok USING (match_id)
         WHERE m.match_date >= DATE '{cutoff}' {f"AND m.match_date < DATE '{end}'" if end else ""} AND m.format IN ('T20', 'HUNDRED', 'OD', 'T10')
           AND m.gender IN ('male', 'female') AND m.method IS NULL
-          {"AND m.format IN ('T20', 'HUNDRED', 'T10')" if latest else ""}
+          {(("AND m.format = 'OD'" if latest_format == "OD" else "AND m.format IN ('T20', 'HUNDRED', 'T10')")
+            + (" AND m.team1 IN (" + ",".join("'" + t.replace("'", "''") + "'" for t in teams) + ")"
+               " AND m.team2 IN (" + ",".join("'" + t.replace("'", "''") + "'" for t in teams) + ")" if teams else ""))
+           if latest else ""}
         ORDER BY {"m.match_date DESC, m.match_id DESC" if latest else f"hash(m.match_id || '{seed}')"}
         LIMIT {4 * limit if latest else limit}""").fetchall()
     out = []
@@ -127,14 +132,16 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  model: Model | None = None, memory: str = "4GB", insample: int = 0,
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
-                 twelve: bool = False, latest: int = 0) -> dict:
+                 twelve: bool = False, latest: int = 0, latest_format: str = "T20",
+                 latest_teams: list[str] | None = None) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
     latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     if latest:
-        recent = holdout_matches(con, parquet, date(1990, 1, 1), latest, twelve=twelve, latest=True)
+        recent = holdout_matches(con, parquet, date(1990, 1, 1), latest, twelve=twelve, latest=True,
+                                 latest_format=latest_format, teams=latest_teams)
         cutoff, limit = min(m["date"] for m in recent), latest
     over = dict(fit_overrides or {})
     if "shrink" in over:
@@ -143,7 +150,8 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest))
+    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
+               latest_format, latest_teams)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -160,9 +168,11 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
          fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False,
-         latest: bool = False) -> dict:
+         latest: bool = False, latest_format: str = "T20", latest_teams: list[str] | None = None) -> dict:
     skipped: dict = {}
-    matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest)
+    matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest,
+                              latest_format=latest_format, teams=latest_teams)
+    od_fantasy = latest and latest_format == "OD"          # one-day fantasy only when asked for (separate benchmark)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -215,7 +225,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                         if mt.get("toss_winner") else None,
                 "listed": mt.get("listed", 11)})
         actual_order = batting_order(con, mt["match_id"])
-        if mt["format"] != "OD":
+        if mt["format"] != "OD" or od_fantasy:
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
                                                           actual_order))
         for inn0, lg in enumerate(part.innings):
@@ -319,7 +329,7 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
     mode = (model.meta.get("sim") or {}).get("fielding")     # "real": fielding scored, not used in picks; "both"
     events = _fielding_events(con, mt["match_id"]) if mode else None
-    real = actual_points(con, mt["match_id"], fielding=events)
+    real = actual_points(con, mt["match_id"], fielding=events, od=mt["format"] == "OD")
     real = {p: 4.0 + real.get(p, 0.0) for p in team_of}      # playing points for everyone in the XI
     in_picks = mode in ("both", True) and model.fielding is not None
 
@@ -798,7 +808,7 @@ def write_report(rep: dict, path: Path) -> None:
         L.append("")
     if rep.get("fantasy"):
         fz = rep["fantasy"]
-        L += [f"## Fantasy XI (picked from simulations, scored on the real match; {fz['n']} T20-type matches, "
+        L += [f"## Fantasy XI (picked from simulations, scored on the real match; {fz['n']} matches, "
               f"half-life {rep.get('half_life_years')} y)", "",
               f"Best possible XI averages **{fz['best_possible']}** points · picked XI shares "
               f"**{fz['overlap_with_best_xi']}** of 11 players with it · ceiling if the model were perfect "

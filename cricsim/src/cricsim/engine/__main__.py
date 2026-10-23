@@ -57,7 +57,9 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), default=None)
 @click.option("--matches", default=600)
-@click.option("--latest", default=0, help="Test on the most recent N T20-type matches (trained up to the first)")
+@click.option("--latest", default=0, help="Test on the most recent N matches (trained up to the first)")
+@click.option("--latest-format", type=click.Choice(["T20", "OD"]), default="T20", help="With --latest: T20-type or one-day")
+@click.option("--latest-teams", default="", help="With --latest: only matches between these teams, comma-separated")
 @click.option("--insample", default=0, help="Also re-run the model on this many matches from its last six months")
 @click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
 @click.option("--fantasy-bowlers", is_flag=True, help="Also score fantasy XIs picked with the real bowling plan")
@@ -98,7 +100,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--sims", default=1000)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
-def backtest(parquet: Path, cutoff, matches: int, latest: int, insample: int, half_life: float | None, fantasy_bowlers: bool,
+def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: str, latest_teams: str, insample: int, half_life: float | None, fantasy_bowlers: bool,
              comp_groups: str | None, shrink: str, slot_usage: bool | None, bowl_focus: float | None,
              experience: bool | None, home: bool | None, recent_role: float | None, order: str, roles: bool, listed_bonus: float | None, overs_plan: bool | None, plan_eps: float | None, plan_power: float | None,
              phase_skill: bool | None, form: float | None, sims: int, new_ground: bool | None,
@@ -131,7 +133,8 @@ def backtest(parquet: Path, cutoff, matches: int, latest: int, insample: int, ha
         over["shrink"] = {k.strip(): float(v) for k, v in (kv.split("=") for kv in shrink.split(","))}
     if cutoff is None and not latest:
         raise click.UsageError("give --cutoff or --latest")
-    rep = run_backtest(parquet, cutoff.date() if cutoff else None, limit=matches, latest=latest, n_sims=sims, memory=memory, insample=insample,
+    rep = run_backtest(parquet, cutoff.date() if cutoff else None, limit=matches, latest=latest, latest_format=latest_format,
+                       latest_teams=[t.strip() for t in latest_teams.split(",") if t.strip()] or None, n_sims=sims, memory=memory, insample=insample,
                        half_life=half_life, fantasy_bowlers=fantasy_bowlers, fit_overrides=over,
                        sim_overrides={k: v for k, v in (("slot_usage", slot_usage), ("bowl_focus", bowl_focus),
                                                          ("recent_role", recent_role), ("listed_bonus", listed_bonus),

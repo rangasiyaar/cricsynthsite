@@ -179,6 +179,9 @@ def test_backtest_runs_and_reports(world, tmp_path):
     assert len(rep_l["fantasy"]["per_match"]) == 3
     write_report(rep_l, tmp_path / "latest")
     assert "Per match" in (tmp_path / "latest.md").read_text()
+    rep_t = run_backtest(world["parquet"], None, latest=2, n_sims=100, latest_teams=["Premier 0", "Premier 1"])
+    assert all("Premier 0 v Premier 1" in r["match"] or "Premier 1 v Premier 0" in r["match"]
+               for r in rep_t["fantasy"]["per_match"])
 
 
 def test_sample_a_simulated_match(world, tmp_path):

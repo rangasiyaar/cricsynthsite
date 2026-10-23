@@ -113,7 +113,8 @@ def fielding_points(events) -> dict[str, float]:
     return pts
 
 
-def actual_points(con, match_id: str, table: str = "hold", fielding: list | None = None) -> dict[str, float]:
+def actual_points(con, match_id: str, table: str = "hold", fielding: list | None = None,
+                  od: bool = False) -> dict[str, float]:
     """Real points per player from a deliveries table with one match in it; fielding from `fielding`
     ((kind, fielder ids, bowler id) per dismissal) when given."""
     bat = con.execute(f"""
@@ -132,9 +133,9 @@ def actual_points(con, match_id: str, table: str = "hold", fielding: list | None
         FROM {table} WHERE match_id = ? GROUP BY 1""", [match_id]).fetchall()
     pts: dict[str, float] = {}
     for pid, r, b, f4, f6 in bat:
-        pts[pid] = pts.get(pid, 0) + float(batting_points(r, b, f4, f6, pid in outs))
+        pts[pid] = pts.get(pid, 0) + float(batting_points(r, b, f4, f6, pid in outs, od=od))
     for pid, balls, runs, w, bl in bowl:
-        pts[pid] = pts.get(pid, 0) + float(bowling_points(balls, runs, w, bl))
+        pts[pid] = pts.get(pid, 0) + float(bowling_points(balls, runs, w, bl, od))
     for pid, v in fielding_points(fielding or []).items():
         pts[pid] = pts.get(pid, 0) + v
     return pts
