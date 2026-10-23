@@ -30,14 +30,13 @@ function Menu({ doc }: { doc: MatchDoc }) {
       </div>
       <MenuGroup label="Match centre">
         {sections.map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s)} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s) || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>
       <MenuGroup label="What if">
         <MenuRow icon={Icon.lab} tone="accent" title={<>MatchSynth Lab <span className="a-pro">Pro</span></>}
-                 sub="Change the toss, pitch, dew or form and re-run the match" href={`/m/lab/?id=${id}`} />
+                 href={`/m/lab/?id=${id}`} />
       </MenuGroup>
-      <p className="a-version">Updated {new Date(doc.generated_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
     </>
   );
 }
@@ -47,7 +46,7 @@ function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon">{TAB_ICONS[section]}</span>
-        <div><h1>{section}</h1><p>{doc.match.teams.map((t) => t.short).join(" v ")} · {preview(doc, section)}</p></div>
+        <div><h1>{section}</h1>{preview(doc, section) && <p>{preview(doc, section)}</p>}</div>
       </div>
       <div className="a-content" key={section}><SectionView doc={doc} section={section} /></div>
     </>

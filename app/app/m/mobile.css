@@ -266,3 +266,29 @@ html body .a-field input:focus { box-shadow: 0 0 0 2px var(--cs-steel); }
 .a-plan ul { margin: 8px 0 0; padding-left: 16px; display: grid; gap: 4px; font-size: 12.5px; line-height: 1.4; color: var(--cs-ink-2); }
 .a-paywall-cta { display: grid; gap: 10px; text-align: center; }
 .a-paywall-cta p { margin: 0; font-size: 13px; color: var(--cs-ink-3); line-height: 1.5; }
+
+/* ── screen transitions (ScreenMotion) ── */
+main.app-wrap { position: relative; z-index: 2; background: var(--cs-bg); }
+main.app-wrap.is-entering { box-shadow: -12px 0 32px rgba(0, 0, 0, .12); }
+.a-ghost { position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; background: var(--cs-bg); }
+.a-ghost.is-leaving { z-index: 50; box-shadow: -12px 0 32px rgba(0, 0, 0, .12); }
+.a-ghost > .app-wrap { will-change: transform; }
+
+/* ── entrances and touch feedback ── */
+.a-list > *, .a-menu > .a-row, .a-group, .a-hero, .a-paywall-list, .a-plans { animation: a-in .42s cubic-bezier(.2, .7, .2, 1) both; }
+.a-list > :nth-child(2), .a-menu > .a-row:nth-child(2) { animation-delay: 40ms; }
+.a-list > :nth-child(3), .a-menu > .a-row:nth-child(3) { animation-delay: 80ms; }
+.a-list > :nth-child(4), .a-menu > .a-row:nth-child(4) { animation-delay: 120ms; }
+.a-list > :nth-child(5), .a-menu > .a-row:nth-child(5) { animation-delay: 160ms; }
+.a-list > :nth-child(6), .a-menu > .a-row:nth-child(6) { animation-delay: 200ms; }
+.a-list > :nth-child(n+7), .a-menu > .a-row:nth-child(n+7) { animation-delay: 240ms; }
+.a-mcard, .a-btn, .a-pill, .a-chip, .a-plan { transition: transform .14s ease, background-color .15s; }
+.a-mcard:has(.a-mcard-main:active) { transform: scale(.985); }
+.a-btn:active, .a-pill:active, .a-chip:active { transform: scale(.97); }
+.a-row:active .a-row-icon { transform: scale(.94); }
+.a-row-icon { transition: transform .14s ease; }
+.a-chip[aria-pressed="true"] { transition: background-color .2s, color .2s; }
+.a-hero-pct { animation: a-pop .5s .1s cubic-bezier(.2, .7, .2, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .a-list > *, .a-menu > .a-row, .a-group, .a-hero, .a-paywall-list, .a-plans, .a-hero-pct { animation: none; }
+}

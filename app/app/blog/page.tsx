@@ -11,7 +11,6 @@ export default function Blog() {
     <div className="page-head blog" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">Blog</p>
       <h1 className="cs-h2">Notes from the data</h1>
-      <p className="cs-lede">What the numbers say about cricket, how we test it, and where our forecasts still go wrong.</p>
       <div className="blog-list">
         {POSTS.map((p) => (
           <Link key={p.slug} href={postPath(p.slug)} className="blog-card">

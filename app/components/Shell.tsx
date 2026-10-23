@@ -10,8 +10,7 @@ export function Logo() {
   return (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="4" aria-hidden="true">
       <path d="M4 15L13 24L4 33" strokeLinecap="square" />
-      <path d="M22 15V40M30 15V40M20 11H29M31 11H40" />
-      <path className="cs-cursor" d="M38 15V40" />
+      <path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40" />
     </svg>
   );
 }

@@ -17,7 +17,6 @@ export default function Splash() {
     <div className="app-splash" aria-busy="true">
       <div className="app-splash-mark"><Logo /></div>
       <div className="app-splash-name">Cric<b>Synthesis</b></div>
-      <div className="app-splash-sub mono">Simulating 20,000 matches<span className="cs-cursor">_</span></div>
       <div className="app-splash-bar"><i /></div>
     </div>
   );

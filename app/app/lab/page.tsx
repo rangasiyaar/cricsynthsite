@@ -55,7 +55,6 @@ export default function LabPage() {
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">MatchSynth Lab <span className="tag pro">Pro</span></p>
       <h1><span>Change the match.</span><span>See what moves.</span></h1>
-      <p className="cs-lede">Set the toss, pitch, dew, player form and who&apos;s available, or start from any score. The whole match centre updates with you.</p>
       <div style={{ marginTop: 32 }}>
         <RequireSignIn pro>
           <Suspense fallback={<div className="skeleton card" style={{ minHeight: 320 }} />}><Lab /></Suspense>

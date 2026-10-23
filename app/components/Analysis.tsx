@@ -21,7 +21,6 @@ export function RunFan({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Projected run fan</h3>
-      <p className="small muted">Line: median · dark band: likely range · light band: 80% range</p>
       <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="run fan" columns={fans[0].map((r, i): Column => ({
         x0: sx(r.over - 0.5), x1: sx(r.over + 0.5), title: `After ${r.over} overs`,
@@ -99,7 +98,6 @@ export function PlayerLadder({ s }: { s: Summary }) {
   return (
     <div className="card anim-rise">
       <h3>Player outcome ranges</h3>
-      <p className="small muted">Whisker: 80% range · box: likely range · tick: median</p>
       <div className="grid g2">
         {s.teams.map((t, k) => {
           const bats = t.players.filter((p) => p.batting && (p.batting.p_bats ?? 1) > 0.5);

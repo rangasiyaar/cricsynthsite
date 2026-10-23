@@ -24,8 +24,7 @@
 const LOGO_MARK = `
 <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true">
     <path d="M4 15L13 24L4 33" stroke-linecap="square"/>
-    <path d="M22 15V40M30 15V40M20 11H29M31 11H40"/>
-    <path class="cs-cursor" d="M38 15V40"/>
+    <path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/>
 </svg>`;
 
 const BRAND = `<a href="index.html" class="cs-brand" aria-label="CricSynthesis home">${LOGO_MARK}<span>Cric<b>Synthesis</b></span></a>`;

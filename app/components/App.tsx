@@ -38,6 +38,7 @@ export function AppRuntime() {
     let off = () => {};
     onBackButton(() => {
       if (TOP.has(window.location.pathname) && !window.location.search.includes("s=")) return false;
+      snapScreen(true);
       window.history.back();
       return true;
     }).then((f) => { off = f; });
@@ -46,27 +47,74 @@ export function AppRuntime() {
   return null;
 }
 
-/** Screen changes slide in from the right, and from the left when going back (the phone's back button or ours). */
+/** Screen changes like the phone's own: going forward, the new screen slides in from the right over the old one, which
+ *  drifts left and dims; going back, the current screen slides away to the right and uncovers the one underneath.
+ *  The old screen is a frozen copy taken just before the change (a tapped link, or the back button). */
+// Module state: the component remounts when the route changes (its Suspense boundary re-suspends), so the copy taken
+// before the change and the last route seen live outside it.
+const motion: { ghost: { el: HTMLElement; back: boolean } | null; route: string | null } = { ghost: null, route: null };
+
+/** Freeze the current screen before a change: `back` when going back (our back button, the phone's back button). */
+export function snapScreen(back: boolean) {
+  if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const main = document.querySelector<HTMLElement>("main.app-wrap");
+  if (!main) return;
+  motion.ghost?.el.remove();
+  const shell = document.createElement("div");
+  shell.className = "a-ghost";
+  shell.setAttribute("aria-hidden", "true");
+  shell.inert = true;
+  const copy = main.cloneNode(true) as HTMLElement;
+  const y = window.scrollY;
+  copy.style.transform = `translateY(${-y}px)`;
+  const bar = copy.querySelector<HTMLElement>(".a-top");
+  if (bar) bar.style.transform = `translateY(${y}px)`;          // keep the copy's top bar where it was on screen
+  shell.appendChild(copy);
+  document.body.appendChild(shell);
+  motion.ghost = { el: shell, back };
+  setTimeout(() => { if (!shell.dataset.used) { shell.remove(); if (motion.ghost?.el === shell) motion.ghost = null; } }, 1500);
+}
+
 export function ScreenMotion() {
   const path = usePathname();
   const query = useSearchParams().toString();
-  const back = useRef(false);
-  const first = useRef(true);
   useEffect(() => {
-    const on = () => { back.current = true; };
-    window.addEventListener("popstate", on);
-    return () => window.removeEventListener("popstate", on);
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || a.target) return;
+      const u = new URL(a.href, window.location.href);
+      if (u.origin !== window.location.origin || !u.pathname.startsWith("/m/") || u.href === window.location.href) return;
+      snapScreen(false);
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
   useEffect(() => {
-    if (first.current) { first.current = false; return; }
-    const wasBack = back.current;
-    back.current = false;
-    if (!wasBack) window.scrollTo(0, 0);
-    const dx = wasBack ? -28 : 28;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.querySelector("main.app-wrap")?.animate(
-      [{ opacity: 0, transform: `translateX(${dx}px)` }, { opacity: 1, transform: "none" }],
-      { duration: 240, easing: "cubic-bezier(.2, .7, .2, 1)" });
+    const route = `${path}?${query}`;
+    if (motion.route === null || motion.route === route) { motion.route = route; return; }
+    motion.route = route;
+    const g = motion.ghost;
+    motion.ghost = null;
+    const main = document.querySelector<HTMLElement>("main.app-wrap");
+    if (!main) return;
+    if (!g) {                                                     // a change without a tap (sign-in, splash): just fade
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) main.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220 });
+      return;
+    }
+    g.el.dataset.used = "1";
+    if (!g.back) window.scrollTo(0, 0);
+    const timing = { duration: 360, easing: "cubic-bezier(.32, .72, 0, 1)" };
+    if (!g.back) {
+      main.classList.add("is-entering");
+      main.animate([{ transform: "translateX(100%)" }, { transform: "none" }], timing).onfinish = () => main.classList.remove("is-entering");
+      g.el.animate([{ transform: "none", opacity: 1 }, { transform: "translateX(-28%)", opacity: 0.6 }], { ...timing, fill: "forwards" })
+        .onfinish = () => g.el.remove();
+    } else {
+      g.el.classList.add("is-leaving");
+      main.animate([{ transform: "translateX(-28%)", opacity: 0.6 }, { transform: "none", opacity: 1 }], timing);
+      g.el.animate([{ transform: "none" }, { transform: "translateX(100%)" }], { ...timing, fill: "forwards" }).onfinish = () => g.el.remove();
+    }
   }, [path, query]);
   return null;
 }
@@ -90,7 +138,7 @@ export const Icon = {
 export function BackButton({ fallback }: { fallback: string }) {
   const router = useRouter();
   const back = () => {
-    if (window.history.length > 2) router.back();
+    if (window.history.length > 2) { snapScreen(true); router.back(); }
     else router.replace(fallback);
   };
   return <button type="button" className="a-icon" aria-label="Back" onClick={back}>{Icon.back}</button>;
@@ -173,7 +221,7 @@ export function MatchHero({ doc, note }: { doc: MatchDoc; note?: React.ReactNode
         ))}
       </div>
       <WinPill pa={p[0]} pb={p[1]} height={8} />
-      <div className="a-hero-meta">{note ?? <>Win chances from {s.meta.simulations.toLocaleString("en-IN")} simulations</>}</div>
+      {note && <div className="a-hero-meta">{note}</div>}
     </section>
   );
 }
@@ -183,17 +231,6 @@ export const SLUG: Record<Section, string> = {
   Overview: "overview", Scores: "scores", Wickets: "wickets", Players: "players", "Top players": "top", MVP: "mvp", Matchups: "matchups", Fantasy: "fantasy",
 };
 export const fromSlug = (slug: string | null, list: Section[]) => list.find((x) => SLUG[x] === slug) ?? null;
-
-const ABOUT: Record<Section, string> = {
-  Overview: "Who wins and the numbers that decide it",
-  Scores: "Totals, phases and how the innings unfold",
-  Wickets: "When wickets fall and how they go",
-  Players: "Every player's runs, wickets and strike rate",
-  "Top players": "Top run-scorer and wicket-taker chances",
-  MVP: "Who has the biggest say in the result",
-  Matchups: "Batter against bowler, ball by ball",
-  Fantasy: "Best team and a five-team combo",
-};
 
 /** A one-line read of each section for its menu row. */
 export function preview(doc: MatchDoc, section: Section): string {
@@ -212,8 +249,8 @@ export function preview(doc: MatchDoc, section: Section): string {
       const c = doc.fantasy.single.captain;
       return `Captain ${doc.fantasy.players[c]?.name ?? c}`;
     }
-  } catch { /* a summary without that part: fall back to the description */ }
-  return ABOUT[section];
+  } catch { /* a summary without that part: no read */ }
+  return "";
 }
 
 export function MenuGroup({ label, children }: { label?: string; children: React.ReactNode }) {

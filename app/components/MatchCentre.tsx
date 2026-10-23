@@ -84,7 +84,6 @@ export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initia
           <span className="tag pro">Pro</span>
         </Link>} />
 
-      <p className="small muted" style={{ marginTop: 40 }}>Updated {new Date(doc.generated_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
     </div>
   );
 }
@@ -167,14 +166,12 @@ function Scores({ doc }: { doc: MatchDoc }) {
             <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
           </div>
         </div>
-        <p className="small muted" style={{ margin: "4px 0 8px" }}>Dashed line: median · bold band: likely range · faint band: 80% range</p>
         {legend}
         <Histogram W={1100} width={binWidth(s)} xLabel="runs" series={histSeries(s)} markers={markers(s, split)} mode={mode} height={260} />
       </div>
       <div className="grid g2"><RunFan s={s} /><Checkpoints s={s} /></div>
       <div className="card">
         <h3>Runs per over</h3>
-        <p className="small muted" style={{ margin: "0 0 8px" }}>Line: three-over average</p>
         {legend}
         <OverBars W={1100} height={220} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
@@ -213,7 +210,6 @@ function Wickets({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <h3>Chance of a wicket in each over</h3>
-        <p className="small muted" style={{ margin: "0 0 8px" }}>Dashed line: average of both innings</p>
         <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name} batting</span>)}</div>
         <OverBars W={1100} height={220} phases={s.meta.rules} average
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
@@ -228,7 +224,6 @@ function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string
   return (
     <div className="card">
       <h3 style={{ color }}>When {t.name} lose wickets</h3>
-      <p className="small muted">Darker cells: overs each wicket most often falls in</p>
       <ExpectedWickets t={t} rules={rules} />
       <WicketHeatmap color={color} overs={overs} rows={fow.map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
       <div className="table-wrap" style={{ marginTop: 16 }}><table>
@@ -397,15 +392,9 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <div className="card-head"><h3>Best single team</h3><span className="small muted">{split}</span></div>
-        <p className="small muted" style={{ margin: "0 0 10px" }}>The eleven with the most expected fantasy points across our simulations of the match.
-          The captain scores double and the vice-captain one and a half times.</p>
         <FantasyTable doc={doc} t={f.single} />
       </div>
-      <div className="card">
-        <h3>Five-team combo</h3>
-        <p className="small muted" style={{ margin: 0 }}>Five teams built to cover different ways the match can go, with different captains.
-          Each one is weaker on average than the single team, but together they usually catch more of the big performances.</p>
-      </div>
+      <h3 style={{ margin: "12px 0 0" }}>Five-team combo</h3>
       <div className="grid g2">
         {f.teams.map((t, i) => (
           <div key={i} className="card">
@@ -415,11 +404,7 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
           </div>
         ))}
       </div>
-      <p className="small muted">Points follow the usual {f.format === "OD" ? "one-day" : "T20"} fantasy table: runs, boundaries, milestones,
-        wickets, economy and strike-rate bands{f.fielding ? ", plus catches, stumpings and run-outs shared by each player's usual fielding record" : ""}.
-        {f.scenario ? " These picks come from your scenario's simulations and change with your settings."
-          : f.after ? " This match went up before the Fantasy tab existed: these picks were made afterwards by the model trained only on matches before it."
-          : " Picks are locked with the rest of the forecast at the start of play."} <Link href="/results/">See how past picks scored</Link>.</p>
+      {f.after && <p className="small muted">Picks made after the match by the model trained only on matches before it.</p>}
     </div>
   );
 }
@@ -455,7 +440,6 @@ function SpotlightCharts({ doc }: { doc: MatchDoc }) {
     <>
     <div className="card anim-rise">
       <h3>When wickets fall</h3>
-      <p className="small muted" style={{ margin: "0 0 4px" }}>Darker cells: overs each wicket most often falls in</p>
       <div className="grid g2" style={{ marginTop: 8 }}>
         {s.teams.map((t, k) => (
           <div key={t.name}>

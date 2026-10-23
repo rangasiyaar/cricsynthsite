@@ -118,10 +118,8 @@ a:hover { color: var(--cs-steel-800); }
 :focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; }
 .noise-overlay { display: none !important; }
 
-@keyframes cs-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
 @keyframes cs-pulse { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
-.cs-cursor { animation: cs-blink 1.1s steps(1) infinite; }
-@media (prefers-reduced-motion: reduce) { .cs-cursor, .cs-live-dot { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .cs-live-dot { animation: none !important; } }
 
 /* ── Brand lockup ─────────────────────────────── */
 .cs-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--cs-ink); }

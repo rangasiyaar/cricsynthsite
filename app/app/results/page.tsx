@@ -100,10 +100,9 @@ function Results() {
       <div className={`grid res-stats${index.fantasy ? " four" : ""}`}>
         <div className="card"><div className="cs-k">Projections that came true</div>
           <div className="stat dash-stat">{pct(index.accuracy)}</div>
-          <p className="small muted">{index.hits} of {index.checks} checks across {scored} match{scored === 1 ? "" : "es"}.</p></div>
+          <p className="small muted">{index.hits} of {index.checks} · {scored} match{scored === 1 ? "" : "es"}</p></div>
         <div className="card"><div className="cs-k">Favourite won</div>
-          <div className="stat dash-stat">{index.favourite_won}<span className="dash-of"> / {scored}</span></div>
-          <p className="small muted">The side we made more likely to win.</p></div>
+          <div className="stat dash-stat">{index.favourite_won}<span className="dash-of"> / {scored}</span></div></div>
         <div className="card"><div className="cs-k">By tab</div>
           <div className="res-tabs">
             {TABS.map((t) => (
@@ -113,8 +112,7 @@ function Results() {
         {index.fantasy && (
           <div className="card"><div className="cs-k">Fantasy picks</div>
             <div className="stat dash-stat">{pct(index.fantasy.single)}</div>
-            <p className="small muted">Of the best possible XI, for our single team on average across {index.fantasy.matches} match
-              {index.fantasy.matches === 1 ? "" : "es"}. Best of our five teams: {pct(index.fantasy.best_of_teams)}.</p></div>
+            <p className="small muted">Of the best XI · best of 5 teams {pct(index.fantasy.best_of_teams)}</p></div>
         )}
       </div>
 
@@ -177,8 +175,6 @@ function Results() {
         </div>
       )}
 
-      <p className="small muted">A range counts when the result lands inside the 80% range we showed, so expect about 8 in 10. A pick counts
-        when the outcome was among our top choices. Forecasts lock at the start of play.</p>
     </div>
   );
 }
@@ -188,7 +184,6 @@ export default function ResultsPage() {
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">Results</p>
       <h1><span>What we said.</span><span>What happened.</span></h1>
-      <p className="cs-lede">Every projection in the match centre, checked against the scorecard once the match is over.</p>
       <div style={{ marginTop: 32 }}>
         <Suspense fallback={<div className="skeleton card" style={{ minHeight: 280 }} />}><Results /></Suspense>
       </div>

@@ -47,7 +47,7 @@ function Forecast({ m, st, now }: { m: MatchCard; st: Status; now: number | null
         {m.headline && <div className="a-mcard-note">{m.headline}</div>}
       </Link>
       <div className="a-mcard-act">
-        <span className="a-row-sub">{st === "live" ? "Forecast locked at the start" : "Change the toss, pitch or form"}</span>
+        <span className="a-row-sub">{st === "live" ? "Forecast locked at the start" : ""}</span>
         <Link href={`/m/lab/?id=${id}`} className="a-pill">{Icon.lab}MatchSynth Lab</Link>
       </div>
     </article>
@@ -133,7 +133,7 @@ export default function Matches() {
     <>
       <TopBar title="Matches" right={<AccountButton />} />
       <PullToRefresh onRefresh={load} refreshing={ix.refreshing && !!cards} />
-      <Title eyebrow="Match centre" sub="Every forecast comes from 20,000 simulations of the match.">Matches</Title>
+      <Title eyebrow="Match centre">Matches</Title>
       <div className="a-chips" role="tablist" aria-label="Show matches">
         {FILTERS.map(([f, l]) => (
           <button key={f} type="button" className="a-chip" role="tab" aria-selected={filter === f} aria-pressed={filter === f} onClick={() => setFilter(f)}>

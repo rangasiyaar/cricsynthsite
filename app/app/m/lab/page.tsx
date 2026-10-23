@@ -4,14 +4,14 @@
 // across them, and the levers are saved per match on the phone.
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview, useFresh } from "@/components/App";
+import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview, snapScreen, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionsFor } from "@/components/MatchCentre";
 import { LabLevers, LabResult, useLab, type Lab } from "@/components/ScenarioLab";
 import { loadMatch, peekMatch } from "@/lib/data";
 import type { MatchDoc } from "@/lib/types";
 
 function Busy({ lab }: { lab: Lab }) {
-  return lab.busy ? <span className="a-lab-busy"><i />Simulating…</span> : <span className="a-lab-busy">5,000 simulations</span>;
+  return lab.busy ? <span className="a-lab-busy"><i />Simulating…</span> : null;
 }
 
 function LabMenu({ lab, id }: { lab: Lab; id: string }) {
@@ -25,19 +25,15 @@ function LabMenu({ lab, id }: { lab: Lab; id: string }) {
       </div>
       <MatchHero doc={doc} note={<Busy lab={lab} />} />
       <div className="a-lab-card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-          <span className="a-group-label" style={{ margin: 0 }}>Against the published forecast</span>
-        </div>
         <LabResult lab={lab} movers={false} />
       </div>
       <MenuGroup label="Your scenario">
         <MenuRow icon={Icon.scene} tone="accent" title="Set the scene" href={`${q}&s=scene`}
-                 sub={lab.changed ? "Toss, pitch, dew, form, bowlers, situation" : "Nothing changed yet: this is the match as published"}
-                 value={lab.changes ? `${lab.changes}` : undefined} />
+                 sub={lab.changes ? `${lab.changes} change${lab.changes === 1 ? "" : "s"}` : "As published"} />
       </MenuGroup>
       <MenuGroup label="Results of your scenario">
         {sectionsFor(doc).map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s)} href={`${q}&s=${SLUG[s]}`} />
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s) || undefined} href={`${q}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>
     </>
@@ -49,13 +45,13 @@ function Scene({ lab, id }: { lab: Lab; id: string }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon accent">{Icon.scene}</span>
-        <div><h1>Set the scene</h1><p>Every change re-runs the match on your phone.</p></div>
+        <div><h1>Set the scene</h1></div>
       </div>
       <div className="a-lab-card"><LabResult lab={lab} movers /></div>
       <div className="a-levers"><LabLevers lab={lab} /></div>
       <div className="a-sticky-cta">
         <button type="button" className="a-btn soft" onClick={lab.reset} disabled={!lab.changed}>Reset</button>
-        <a className="a-btn" href={`/m/lab/?id=${encodeURIComponent(id)}`} onClick={(e) => { e.preventDefault(); window.history.back(); }}>See results</a>
+        <a className="a-btn" href={`/m/lab/?id=${encodeURIComponent(id)}`} onClick={(e) => { e.preventDefault(); snapScreen(true); window.history.back(); }}>See results</a>
       </div>
     </>
   );
@@ -74,7 +70,7 @@ function LabScreens({ doc }: { doc: MatchDoc }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon">{TAB_ICONS[section]}</span>
-        <div><h1>{section}</h1><p>Your scenario · <Busy lab={lab} /></p></div>
+        <div><h1>{section}</h1><p>Your scenario {lab.busy && <>· <Busy lab={lab} /></>}</p></div>
       </div>
       <div className="a-content" key={section} style={{ opacity: lab.busy ? 0.6 : 1, transition: "opacity .2s" }}>
         <SectionView doc={lab.labDoc} section={section} live={false} />

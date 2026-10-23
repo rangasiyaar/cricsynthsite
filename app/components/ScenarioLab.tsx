@@ -218,8 +218,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
 
         <div className="grid lab-main" style={{ opacity: lab.busy ? 0.6 : 1, transition: "opacity .2s" }}>
           <div className="card">
-            <div className="card-head"><h3>Your scenario</h3>
-              <span className="small muted">{lab.changed ? "Change v the match as published · your settings are saved for this match" : "No changes yet: this is the match as published"}</span></div>
+            <div className="card-head"><h3>Your scenario</h3></div>
             <LabResult lab={lab} />
           </div>
           <ForecastTabs doc={lab.labDoc} live={false} />
