@@ -71,7 +71,7 @@ function Match() {
   const menu = `/m/match/?id=${encodeURIComponent(id)}`;
   return (
     <>
-      <TopBar back={section ? menu : "/m/matches/"} title={section ? `${section} · ${short}` : short}
+      <TopBar back={section ? menu : "/m/matches/"}
               right={doc && <button type="button" className="a-icon" aria-label="Share this match" onClick={onShare}>{Icon.share}</button>} />
       {note && <div className="a-toast" role="status">{note}</div>}
       <OfflineBar show={fresh.offline} onRetry={fresh.refresh} />

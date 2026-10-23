@@ -55,7 +55,7 @@ export default function AppLogin() {
 
   return (
     <div className="a-login">
-      <div className="a-login-brand"><Logo /><span>Cric<b>Synthesis</b></span></div>
+      <div className="a-brand"><Logo /><span>Cric<b>Synthesis</b></span></div>
       <div className="a-login-hero">
         <h1>{mode === "up" ? <>Create your<br /><span>account.</span></> : <>Every match,<br /><span>simulated.</span></>}</h1>
         <p>{forLab ? "MatchSynth Lab is part of Pro, and Pro is free for every account during the beta. Sign in or create an account to open it."

@@ -89,10 +89,9 @@ function Page() {
   useEffect(() => { if (fresh.data && !doc) setDoc(fresh.data); }, [fresh.data, doc]);
   const err = !id ? "No match selected." : fresh.error ? "This match isn't available in the lab." : null;
   const menu = `/m/lab/?id=${encodeURIComponent(id)}`;
-  const title = slug === "scene" ? "Set the scene" : slug ? "Your scenario" : "MatchSynth Lab";
   return (
     <>
-      <TopBar back={slug ? menu : `/m/match/?id=${encodeURIComponent(id)}`} title={title} />
+      <TopBar back={slug ? menu : `/m/match/?id=${encodeURIComponent(id)}`} />
       <AppGate pro>
         {err ? <Empty title="Lab unavailable">{err}</Empty> : !doc ? <Loading rows={3} /> : <LabScreens doc={doc} />}
       </AppGate>

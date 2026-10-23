@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { hideSplash, onAlertTap, onBackButton, reportError, themeStatusBar } from "@/lib/native";
+import { hideSplash, onAlertTap, onBackButton, reportError, share, signOutNative, themeStatusBar } from "@/lib/native";
 import { TIERS } from "@/lib/plans";
 import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
@@ -37,6 +37,7 @@ export function AppRuntime() {
     seen.observe(html, { attributes: true, attributeFilter: ["data-theme"] });
     let off = () => {};
     onBackButton(() => {
+      if (drawer.close) { drawer.close(); return true; }
       if (TOP.has(window.location.pathname) && !window.location.search.includes("s=")) return false;
       snapScreen(true);
       window.history.back();
@@ -144,22 +145,122 @@ export function BackButton({ fallback }: { fallback: string }) {
   return <button type="button" className="a-icon" aria-label="Back" onClick={back}>{Icon.back}</button>;
 }
 
-/** The bar at the top of every screen: back (or the logo on a top-level screen), a title once it scrolls, actions. */
-export function TopBar({ back, title, right }: { back?: string; title?: React.ReactNode; right?: React.ReactNode }) {
+/** The bar at the top of every screen: back (when there is somewhere to go back to), the CricSynthesis logo and
+ *  name, the screen's own actions, and the menu. */
+export function TopBar({ back, right }: { back?: string; right?: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 24);
+    const on = () => setScrolled(window.scrollY > 8);
     on(); window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
   return (
     <header className={`a-top${scrolled ? " is-scrolled" : ""}`}>
-      {back ? <BackButton fallback={back} /> : <span className="a-mark" aria-hidden="true"><Logo /></span>}
-      <div className="a-top-title">{title}</div>
-      <div className="a-top-actions">{right}</div>
+      {back && <BackButton fallback={back} />}
+      <Link href="/m/matches/" className={`a-brand${back ? "" : " solo"}`} aria-label="CricSynthesis, matches"><Logo /><span>Cric<b>Synthesis</b></span></Link>
+      <div className="a-top-actions">{right}<MenuButton /></div>
     </header>
   );
 }
+
+// ── menu ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+// The open menu registers how to close it, so the phone's back button closes the menu before leaving the screen.
+const drawer: { close: (() => void) | null } = { close: null };
+
+const MENU_ICONS = {
+  menu: svg("M4 7h16M4 12h16M4 17h16"),
+  close: svg("M6 6l12 12M18 6L6 18"),
+  matches: svg("M4 5h16v14H4zM4 10h16M10 10v9"),
+  user: svg("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"),
+  settings: svg("M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"),
+  help: svg("M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"),
+  results: svg("M4 20V10M10 20V4M16 20v-7M22 20H2"),
+  share: svg("M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"),
+  privacy: svg("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"),
+  terms: svg("M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"),
+  credits: svg("M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM15 9.5a3.5 3.5 0 1 0 0 5"),
+  logout: svg("M14 17l5-5-5-5M19 12H8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5"),
+};
+
+function MenuButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" className="a-icon" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(true)}>{MENU_ICONS.menu}</button>
+      {open && <Drawer onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+function Drawer({ onClose }: { onClose: () => void }) {
+  const { user, plan } = usePlan();
+  const router = useRouter();
+  const [closing, setClosing] = useState(false);
+  const close = useCallback(() => { setClosing(true); setTimeout(onClose, 200); }, [onClose]);
+  useEffect(() => {
+    drawer.close = close;
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
+    document.addEventListener("keydown", esc);
+    document.documentElement.classList.add("a-locked");
+    return () => { drawer.close = null; document.removeEventListener("keydown", esc); document.documentElement.classList.remove("a-locked"); };
+  }, [close]);
+  const go = (href: string) => {
+    close();
+    // once the drawer is gone, slide to the new screen like any other tap
+    setTimeout(() => { if (new URL(href, location.href).pathname !== location.pathname) snapScreen(false); router.push(href); }, 220);
+  };
+  const logOut = async () => {
+    const { signOut } = await import("firebase/auth");
+    const { auth } = await import("@/lib/firebase");
+    await signOutNative(); await signOut(auth());
+    close(); router.replace("/m/login/");
+  };
+  const onShare = () => { share("CricSynthesis", `${SITE}/`); };
+  const Item = ({ icon, label, onClick, href }: { icon: React.ReactNode; label: string; onClick?: () => void; href?: string }) =>
+    href ? <a className="a-drawer-item" href={href} onClick={() => close()}>{icon}<span>{label}</span></a>
+         : <button type="button" className="a-drawer-item" onClick={onClick}>{icon}<span>{label}</span></button>;
+  return (
+    <div className={`a-drawer-wrap${closing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-label="Menu">
+      <button type="button" className="a-drawer-scrim" aria-label="Close menu" onClick={close} />
+      <nav className="a-drawer">
+        <div className="a-drawer-head">
+          <span className="a-brand"><Logo /><span>Cric<b>Synthesis</b></span></span>
+          <button type="button" className="a-icon" aria-label="Close menu" onClick={close}>{MENU_ICONS.close}</button>
+        </div>
+        {user ? (
+          <button type="button" className="a-drawer-who" onClick={() => go("/m/account/")}>
+            <span className="a-avatar">{initials(user.displayName || user.email || "?")}</span>
+            <span><b>{user.displayName || "Your account"}</b><small>{user.email}{plan === "pro" ? " · Pro" : ""}</small></span>
+          </button>
+        ) : user === null ? (
+          <div className="a-drawer-guest">
+            <p>Sign in to open MatchSynth Lab. Pro is free during the beta.</p>
+            <button type="button" className="a-btn" onClick={() => go("/m/login/")}>Sign in</button>
+          </div>
+        ) : null}
+        <div className="a-drawer-list">
+          <Item icon={MENU_ICONS.matches} label="Matches" onClick={() => go("/m/matches/")} />
+          {user && <Item icon={MENU_ICONS.user} label="Account" onClick={() => go("/m/account/")} />}
+          <Item icon={MENU_ICONS.settings} label="App settings" onClick={() => go("/m/settings/")} />
+          <Item icon={MENU_ICONS.help} label="Help" onClick={() => go("/m/help/")} />
+        </div>
+        <div className="a-drawer-list">
+          <Item icon={MENU_ICONS.results} label="Past results" href={`${SITE}/results/`} />
+          <Item icon={MENU_ICONS.share} label="Share the app" onClick={onShare} />
+        </div>
+        <div className="a-drawer-list">
+          <Item icon={MENU_ICONS.privacy} label="Privacy policy" href={`${SITE}/privacy/`} />
+          <Item icon={MENU_ICONS.terms} label="Terms of service" href={`${SITE}/terms/`} />
+          <Item icon={MENU_ICONS.credits} label="Data credits" href={`${SITE}/credits/`} />
+        </div>
+        {user && <div className="a-drawer-list"><Item icon={MENU_ICONS.logout} label="Log out" onClick={logOut} /></div>}
+        <p className="a-drawer-foot">CricSynthesis for Android · {APP_VERSION}</p>
+      </nav>
+    </div>
+  );
+}
+
+export const APP_VERSION = "beta";
 
 /** A screen's large title, with an optional line above (eyebrow) and below (subtitle). */
 export function Title({ eyebrow, children, sub }: { eyebrow?: React.ReactNode; children: React.ReactNode; sub?: React.ReactNode }) {
@@ -172,13 +273,6 @@ export function Title({ eyebrow, children, sub }: { eyebrow?: React.ReactNode; c
   );
 }
 
-/** The signed-in account's initials, linking to Account; "Sign in" for guests. */
-export function AccountButton() {
-  const { user } = usePlan();
-  if (user === undefined) return <span className="a-icon" style={{ visibility: "hidden" }} />;
-  if (!user) return <Link href="/m/login/" className="a-pill">Sign in</Link>;
-  return <Link href="/m/account/" className="a-avatar" aria-label="Account">{initials(user.displayName || user.email || "?")}</Link>;
-}
 export const initials = (name: string) =>
   name.split(/[\s@.]+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join("");
 

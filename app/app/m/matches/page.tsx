@@ -3,7 +3,7 @@
 // finished matches show how the forecast and the fantasy picks did.
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { AccountButton, Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, pct0, useFresh, useNow } from "@/components/App";
+import { Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, pct0, useFresh, useNow } from "@/components/App";
 import { loadIndex, loadResults, peekIndex, peekResults } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { alertChoice, hasAlerts, setAlerts } from "@/lib/native";
@@ -131,7 +131,7 @@ export default function Matches() {
 
   return (
     <>
-      <TopBar title="Matches" right={<AccountButton />} />
+      <TopBar />
       <PullToRefresh onRefresh={load} refreshing={ix.refreshing && !!cards} />
       <Title eyebrow="Match centre">Matches</Title>
       <div className="a-chips" role="tablist" aria-label="Show matches">
