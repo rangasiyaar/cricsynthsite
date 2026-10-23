@@ -2,8 +2,8 @@ name: Android app
 
 # The Android app (mobile/): the app screens of app/ (app/app/m) in a Capacitor shell.
 # Every run makes a debug APK. With the signing secrets it also makes a signed release APK and an App Bundle for the
-# Play Store. Google sign-in needs the Firebase Android config (secret GOOGLE_SERVICES_JSON); without it the app is
-# built without the native Google plugin and offers email sign-in only.
+# Play Store. Google sign-in, match alerts and crash reports need the Firebase Android config (secret
+# GOOGLE_SERVICES_JSON); without it the app is built without those native plugins and offers email sign-in only.
 #
 # Secrets (all optional):
 #   GOOGLE_SERVICES_JSON   contents of google-services.json for the Android app in.cricsynthesis.app
@@ -53,8 +53,8 @@ jobs:
           if [ -n "$GOOGLE_SERVICES_JSON" ]; then
             printf '%s' "$GOOGLE_SERVICES_JSON" > mobile/android/app/google-services.json
           else
-            echo "::notice::No GOOGLE_SERVICES_JSON secret: building without Google sign-in (email sign-in only)"
-            (cd mobile && npm rm --no-audit --no-fund @capacitor-firebase/authentication)
+            echo "::notice::No GOOGLE_SERVICES_JSON secret: building without Google sign-in, match alerts and crash reports"
+            (cd mobile && npm rm --no-audit --no-fund @capacitor-firebase/authentication @capacitor-firebase/messaging @capacitor-firebase/crashlytics)
           fi
       - name: App screens
         run: cd mobile && node scripts/build-web.mjs
@@ -83,7 +83,7 @@ jobs:
             for f in mobile/android/app/build/outputs/apk/*/*.apk mobile/android/app/build/outputs/bundle/*/*.aab; do
               [ -f "$f" ] && echo "- $(basename "$f"): $(du -h "$f" | cut -f1)"
             done
-            [ -f mobile/android/app/google-services.json ] && echo "- Google sign-in: on" || echo "- Google sign-in: off (no GOOGLE_SERVICES_JSON secret)"
+            [ -f mobile/android/app/google-services.json ] && echo "- Google sign-in, match alerts, crash reports: on" || echo "- Google sign-in, match alerts, crash reports: off (no GOOGLE_SERVICES_JSON secret)"
           } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:

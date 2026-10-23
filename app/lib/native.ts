@@ -57,3 +57,55 @@ export async function share(title: string, url: string): Promise<"shared" | "cop
     return "copied";
   } catch { return "none"; }
 }
+
+// ── match alerts (Firebase Cloud Messaging topics; sent by the nightly publish, cricsim/notify.py) ─────────────────
+export type AlertTopic = "forecasts" | "xis";
+export const ALERTS: { topic: AlertTopic; title: string; sub: string }[] = [
+  { topic: "forecasts", title: "New forecasts", sub: "When a match's forecast is published" },
+  { topic: "xis", title: "Playing XIs named", sub: "When a forecast is re-run with the confirmed teams" },
+];
+const ALERT_KEY = "cs-alerts";
+
+/** Alerts need the native messaging plugin, which the app carries once its Firebase config is set up. */
+export const hasAlerts = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseMessaging");
+
+/** The topics this phone is subscribed to, or null if the person hasn't been asked yet. */
+export function alertChoice(): AlertTopic[] | null {
+  try { const v = localStorage.getItem(ALERT_KEY); return v === null ? null : (JSON.parse(v) as AlertTopic[]); } catch { return null; }
+}
+
+/** Subscribe to exactly `topics` (asking for notification permission first); returns what is now on. */
+export async function setAlerts(topics: AlertTopic[]): Promise<AlertTopic[]> {
+  if (!hasAlerts()) return [];
+  const { FirebaseMessaging } = await import("@capacitor-firebase/messaging");
+  if (topics.length) {
+    const p = await FirebaseMessaging.requestPermissions();
+    if (p.receive !== "granted") topics = [];
+  }
+  for (const a of ALERTS) {
+    const on = topics.includes(a.topic);
+    await (on ? FirebaseMessaging.subscribeToTopic({ topic: a.topic }) : FirebaseMessaging.unsubscribeFromTopic({ topic: a.topic })).catch(() => {});
+  }
+  try { localStorage.setItem(ALERT_KEY, JSON.stringify(topics)); } catch {}
+  return topics;
+}
+
+/** Tapping an alert: `open` gets the app path it points at (alerts carry a `path` like /m/match/?id=…). */
+export async function onAlertTap(open: (path: string) => void): Promise<() => void> {
+  if (!hasAlerts()) return () => {};
+  const { FirebaseMessaging } = await import("@capacitor-firebase/messaging");
+  const h = await FirebaseMessaging.addListener("notificationActionPerformed", (e) => {
+    const path = (e.notification.data as { path?: unknown } | undefined)?.path;
+    if (typeof path === "string" && /^\/m\/[\w/?=&%.-]*$/.test(path)) open(path);
+  });
+  return () => { h.remove(); };
+}
+
+// ── crash reports (Firebase Crashlytics: native crashes by itself, script errors from here) ───────────────────────
+export const hasCrashReports = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseCrashlytics");
+
+export async function reportError(message: string) {
+  if (!hasCrashReports()) return;
+  const { FirebaseCrashlytics } = await import("@capacitor-firebase/crashlytics");
+  await FirebaseCrashlytics.recordException({ message: message.slice(0, 1000) }).catch(() => {});
+}

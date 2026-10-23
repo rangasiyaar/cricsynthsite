@@ -2,10 +2,11 @@
 // App home: every published match with its status, a countdown to the start and a way into MatchSynth Lab;
 // finished matches show how the forecast and the fantasy picks did.
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AccountButton, Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, pct0, useFresh, useNow } from "@/components/App";
 import { loadIndex, loadResults, peekIndex, peekResults } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
+import { alertChoice, hasAlerts, setAlerts } from "@/lib/native";
 import { countdown, kickoffMs, startLabel, status, type Status } from "@/lib/schedule";
 import type { MatchCard, ResultSummary } from "@/lib/types";
 
@@ -85,6 +86,24 @@ function Result({ r }: { r: ResultSummary }) {
   );
 }
 
+/** Asked once: turn on alerts for new forecasts and named XIs. */
+function AlertsPrompt() {
+  const [show, setShow] = useState(false);
+  useEffect(() => { setShow(hasAlerts() && alertChoice() === null); }, []);
+  if (!show) return null;
+  const answer = async (yes: boolean) => { await setAlerts(yes ? ["forecasts", "xis"] : []); setShow(false); };
+  return (
+    <section className="a-prompt" aria-label="Match alerts">
+      <h2>Get match alerts</h2>
+      <p>We&apos;ll tell you when a new forecast is out and when it&apos;s re-run with the playing XIs. Change it any time in Account.</p>
+      <div className="a-prompt-actions">
+        <button type="button" className="a-btn" onClick={() => answer(true)}>Turn on</button>
+        <button type="button" className="a-btn soft" onClick={() => answer(false)}>Not now</button>
+      </div>
+    </section>
+  );
+}
+
 export default function Matches() {
   const now = useNow(1000);
   const [filter, setFilter] = useState<Filter>("all");
@@ -123,6 +142,7 @@ export default function Matches() {
         ))}
       </div>
       <OfflineBar show={ix.offline} onRetry={load} />
+      <AlertsPrompt />
       {error && <Empty title="Couldn't load matches" action={<button type="button" className="a-pill" onClick={load}>Try again</button>}>Check your connection.</Empty>}
       {!cards && !error && <Loading />}
       {cards && (

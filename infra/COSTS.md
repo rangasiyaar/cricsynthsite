@@ -19,6 +19,8 @@ changes its pricing pages.
 | **Secret Manager** | 6 active versions | `cricapi-admin-key` (one version) |
 | **GitHub Actions** (not Google) | Free on public repos; 2,000 min/month on private | Nightly publish ≈ 12–15 min (data + fit + simulate + build), weekly Pattern Lab; the heavy batch work never runs on Google |
 | **Firebase Auth** | Google / email sign-in | No phone (SMS) auth — SMS is billed |
+| **Firebase Cloud Messaging** (Android app alerts) | Free, no message quota for topics | Two topics; at most 6 alerts per nightly publish (`cricsim/notify.py`), off until the repo variable `ALERTS_ENABLED=true` |
+| **Firebase Crashlytics** (Android app crash reports) | Free | Only in builds with the Firebase Android config; no Analytics or BigQuery export |
 | **Upstash Redis** (not Google) | Free tier | API usage counters, flushed to Firestore in batches |
 
 ## Watch-list

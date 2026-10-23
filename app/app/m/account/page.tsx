@@ -3,9 +3,9 @@
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AppGate, Icon, MenuGroup, MenuRow, TopBar, initials } from "@/components/App";
+import { AppGate, MenuGroup, MenuRow, SwitchRow, TopBar, initials } from "@/components/App";
 import { auth, usePlan } from "@/lib/firebase";
-import { signOutNative } from "@/lib/native";
+import { ALERTS, alertChoice, hasAlerts, setAlerts, signOutNative, type AlertTopic } from "@/lib/native";
 import { SITE } from "@/lib/seo";
 
 type Theme = "light" | "dark" | "system";
@@ -29,6 +29,15 @@ function Account() {
   const { user, plan, source } = usePlan();
   const router = useRouter();
   const [theme, setTheme] = useState<Theme>("system");
+  const [alerts, setAlertsOn] = useState<AlertTopic[] | null>(null);
+  const [alertsBusy, setAlertsBusy] = useState(false);
+  useEffect(() => { if (hasAlerts()) setAlertsOn(alertChoice() ?? []); }, []);
+  const flip = async (t: AlertTopic, on: boolean) => {
+    setAlertsBusy(true);
+    const next = on ? [...(alerts ?? []), t] : (alerts ?? []).filter((x) => x !== t);
+    setAlertsOn(await setAlerts(next));
+    setAlertsBusy(false);
+  };
   useEffect(() => {
     let t: string | null = null;
     try { t = localStorage.getItem("cs-theme"); } catch {}
@@ -60,6 +69,11 @@ function Account() {
           </div>
         </div>
       </MenuGroup>
+      {alerts && (
+        <MenuGroup label="Match alerts">
+          {ALERTS.map((a) => <SwitchRow key={a.topic} title={a.title} sub={a.sub} on={alerts.includes(a.topic)} disabled={alertsBusy} onChange={(v) => flip(a.topic, v)} />)}
+        </MenuGroup>
+      )}
       <MenuGroup label="On the website">
         <MenuRow icon={KEY} title="API keys and usage" sub="Keys, limits and email preferences" href={`${SITE}/account/`} />
         <MenuRow icon={CHART} title="How past forecasts scored" sub="Every result, checked" href={`${SITE}/results/`} />

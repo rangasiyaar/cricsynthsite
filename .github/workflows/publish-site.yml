@@ -126,6 +126,10 @@ jobs:
           python3 infra/rules-tests/run.py --project "$PROJECT"
           echo '{"projects": {"default": "'"$PROJECT"'"}}' > .firebaserc
           npx --yes firebase-tools@13.29.1 deploy --only firestore:rules --project "$PROJECT" --non-interactive
+      - name: Plan match alerts (compare with the live site before it changes)
+        if: env.GCP == 'true' && vars.ALERTS_ENABLED == 'true'
+        continue-on-error: true
+        run: uv run python -m cricsim.notify plan --publish data/publish --out data/notify.json | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Deploy to Firebase Hosting
         if: env.GCP == 'true'
         run: |
@@ -134,6 +138,12 @@ jobs:
            "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"]}}}}
           EOF
           npx --yes firebase-tools@13.29.1 deploy --only hosting:app --project "$PROJECT" --non-interactive
+      - name: Send match alerts (Firebase Cloud Messaging topics for the Android app)
+        if: env.GCP == 'true' && vars.ALERTS_ENABLED == 'true' && hashFiles('data/notify.json') != ''
+        continue-on-error: true
+        run: |
+          export FCM_ACCESS_TOKEN="$(gcloud auth print-access-token)"
+          uv run python -m cricsim.notify send --plan data/notify.json --project "$PROJECT" | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: env.GCP != 'true'
         with: { name: site, path: app/out, retention-days: 7 }

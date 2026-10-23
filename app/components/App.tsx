@@ -8,13 +8,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { hideSplash, onBackButton, themeStatusBar } from "@/lib/native";
+import { hideSplash, onAlertTap, onBackButton, reportError, themeStatusBar } from "@/lib/native";
 import type { MatchDoc } from "@/lib/types";
 
 // Screens where the back button closes the app instead of going back.
 const TOP = new Set(["/", "/index.html", "/m/", "/m/index.html", "/m/matches/", "/m/login/"]);
 
 export function AppRuntime() {
+  const router = useRouter();
+  useEffect(() => {
+    // script errors go to crash reports (native crashes are reported by the plugin itself)
+    const onErr = (e: ErrorEvent) => reportError(`${e.message} @ ${e.filename}:${e.lineno}`);
+    const onRej = (e: PromiseRejectionEvent) => reportError(`Unhandled: ${String((e.reason as Error)?.stack ?? e.reason)}`);
+    window.addEventListener("error", onErr);
+    window.addEventListener("unhandledrejection", onRej);
+    let offTap = () => {};
+    onAlertTap((path) => router.push(path)).then((f) => { offTap = f; });
+    return () => { window.removeEventListener("error", onErr); window.removeEventListener("unhandledrejection", onRej); offTap(); };
+  }, [router]);
   useEffect(() => {
     hideSplash();
     const html = document.documentElement;
@@ -224,6 +235,16 @@ export function MenuRow({ icon, title, sub, value, href, onClick, tone }: {
     </>
   );
   return href ? <Link href={href} className="a-row">{body}</Link> : <button type="button" className="a-row" onClick={onClick}>{body}</button>;
+}
+
+/** A menu row with an on/off switch. */
+export function SwitchRow({ title, sub, on, onChange, disabled }: { title: string; sub?: string; on: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
+  return (
+    <label className="a-row a-switch-row">
+      <span className="a-row-text"><span className="a-row-title">{title}</span>{sub && <span className="a-row-sub">{sub}</span>}</span>
+      <input type="checkbox" role="switch" className="a-switch" checked={on} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
+    </label>
+  );
 }
 
 // ── data ──

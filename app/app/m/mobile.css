@@ -227,3 +227,19 @@ html body .a-field input:focus { box-shadow: 0 0 0 2px var(--cs-steel); }
 .a-offline { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 14px; padding: 10px 12px 10px 14px;
   border-radius: 14px; background: rgba(138, 106, 31, .12); color: var(--cs-warn); font-size: 13.5px; }
 .a-offline button { border: 0; background: none; color: inherit; font-weight: 700; padding: 6px 8px; cursor: pointer; }
+
+/* ── switches and the alerts prompt ── */
+.a-switch-row { cursor: pointer; }
+.a-switch-row + .a-switch-row::before { left: 14px; }
+.a-switch { appearance: none; -webkit-appearance: none; flex: none; width: 48px; height: 28px; border-radius: 999px; background: var(--a-surface-2);
+  position: relative; cursor: pointer; transition: background .2s; margin: 0; }
+.a-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2); transition: transform .2s; }
+.a-switch:checked { background: var(--cs-steel); }
+.a-switch:checked::after { transform: translateX(20px); }
+.a-switch:disabled { opacity: .5; }
+.a-prompt { display: grid; gap: 12px; background: var(--a-tint); border-radius: var(--a-r); padding: 16px; margin-bottom: 16px; }
+.a-prompt h2 { font-family: var(--cs-head); font-weight: 600; font-size: 20px; text-transform: uppercase; margin: 0; color: var(--cs-ink); }
+.a-prompt p { margin: 0; font-size: 14px; color: var(--cs-ink-2); line-height: 1.45; }
+.a-prompt-actions { display: flex; gap: 8px; }
+.a-prompt-actions .a-btn { min-height: 44px; font-size: 15px; }

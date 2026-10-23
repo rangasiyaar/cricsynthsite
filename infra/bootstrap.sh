@@ -39,7 +39,7 @@ gcloud services enable \
   cloudscheduler.googleapis.com pubsub.googleapis.com eventarc.googleapis.com \
   cloudfunctions.googleapis.com billingbudgets.googleapis.com cloudbilling.googleapis.com \
   iam.googleapis.com iamcredentials.googleapis.com sts.googleapis.com \
-  secretmanager.googleapis.com firebase.googleapis.com firebasehosting.googleapis.com \
+  secretmanager.googleapis.com firebase.googleapis.com firebasehosting.googleapis.com fcm.googleapis.com \
   identitytoolkit.googleapis.com
 
 log "Firestore (Native mode, ${REGION}) — the first database gets the free quota"
@@ -84,7 +84,8 @@ for R in roles/datastore.user roles/bigquery.dataViewer roles/bigquery.jobUser r
 for R in roles/datastore.user roles/bigquery.dataEditor roles/bigquery.jobUser; do grant cs-jobs "$R"; done
 for R in roles/run.admin roles/artifactregistry.writer roles/iam.serviceAccountUser \
          roles/firebasehosting.admin roles/cloudscheduler.admin roles/firebaserules.admin \
-         roles/datastore.indexAdmin roles/serviceusage.serviceUsageConsumer; do grant cs-deployer "$R"; done
+         roles/datastore.indexAdmin roles/serviceusage.serviceUsageConsumer \
+         roles/firebasecloudmessaging.admin; do grant cs-deployer "$R"; done   # FCM: the app's match alerts
 # The nightly publish (GitHub Actions) uploads the model, forecasts and Pattern Lab report here.
 gcloud storage buckets add-iam-policy-binding "gs://$MODELS_BUCKET" \
   --member="serviceAccount:cs-deployer@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectAdmin >/dev/null
