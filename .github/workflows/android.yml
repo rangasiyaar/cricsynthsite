@@ -9,7 +9,7 @@ name: Android app
 #   GOOGLE_SERVICES_JSON   contents of google-services.json for the Android app in.cricsynthesis.app
 #   ANDROID_KEYSTORE_B64   the release keystore, base64
 #   ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
-# Run it by hand with "release" ticked to also publish the APK as a GitHub release (a pre-release while in beta).
+# Run it by hand with "release" ticked to also publish the APK as a GitHub release (signed: a full release; debug: a pre-release).
 on:
   workflow_dispatch:
     inputs:
@@ -121,7 +121,9 @@ jobs:
           apk=$(ls out/apk/release/*.apk 2>/dev/null | head -1); kind=release
           [ -n "$apk" ] || { apk=$(ls out/apk/debug/*.apk | head -1); kind=debug; }
           cp "$apk" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk"
+          # a signed build is a full release (and the latest); a debug build stays a pre-release
+          flag=--latest; [ "$kind" = release ] || flag=--prerelease
           gh release create "$tag" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk" \
-            --target "$GITHUB_SHA" --prerelease \
+            --target "$GITHUB_SHA" $flag \
             --title "CricSynthesis for Android ${version} (build ${GITHUB_RUN_NUMBER})" \
             --notes "Android app, ${kind} build ${GITHUB_RUN_NUMBER}. Install the APK on an Android phone (allow installs from this source when asked)."
