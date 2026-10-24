@@ -9,7 +9,7 @@ changes its pricing pages.
 
 | Service | Free each month | How we stay under |
 |---|---|---|
-| **Firebase Hosting** (website + app at cricsynthesis.in, API front door) | 10 GB storage · 360 MB/day transfer | Static export; forecasts are static JSON (≈60 KB per match, 10-min cache); JS/CSS/fonts cached for a year; only the newest release is needed |
+| **Firebase Hosting** (website + app at cricsynthesis.in, API front door) | 10 GB storage · 360 MB/day transfer | Static export; forecasts are static JSON (≈60 KB per match, 10-min cache); JS/CSS/fonts cached for a year; only the newest release is needed. The Android APK (≈7 MB, `/download/`) is the big item: ~50 downloads/day fit in the transfer allowance — move it to a public Cloud Storage bucket (100 GB/month free egress) if downloads grow |
 | **Firestore** (database created Oct 2026, us-central1) | 1 GiB stored · 50k reads/day · 20k writes/day · 10 GiB egress | One doc per match tab (a page ≈ 2–4 reads); writes from batch jobs, plus the account dashboard (a few small docs per user: profile + up to 5 API keys, rules-enforced); the API caches key lookups for 60 s; dashboard usage is written once a minute per active account (≤ 1,440 writes/day each, one doc per account-day) |
 | **Cloud Run** (API + jobs) | 2M requests · 180k vCPU-s · 360k GiB-s · **1 GB egress** | Max 2 API instances, scale to zero, CPU only during requests; fans never hit Cloud Run (they read Firestore / Hosting); the Scenario Lab runs in the browser |
 | **BigQuery** | 10 GiB storage · 1 TiB queries | Tables partitioned + clustered; every query sets `maximum_bytes_billed`; daily quota 50 GiB; load jobs are free |

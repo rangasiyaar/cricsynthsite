@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth, useUser } from "@/lib/firebase";
+import { AppPromo } from "@/components/AppPromo";
 
 export function Logo() {
   return (
@@ -36,9 +37,9 @@ function ThemeToggle() {
   );
 }
 
-const LINKS: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
+const LINKS: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
                                    ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
-const DRAWER: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/pricing/", "Pricing"], ["/developers/", "API"],
+const DRAWER: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
                                     ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
@@ -125,7 +126,7 @@ export function Nav() {
 export function SiteFrame({ children }: { children: React.ReactNode }) {
   const path = usePathname() || "/";
   if (path === "/m" || path.startsWith("/m/")) return <main className="app-wrap">{children}</main>;
-  return <><Nav /><main className="cs-wrap">{children}</main><Footer /></>;
+  return <><Nav /><main className="cs-wrap">{children}</main><Footer /><AppPromo /></>;
 }
 
 export function Footer() {
@@ -143,6 +144,7 @@ export function Footer() {
               <Link href="/#next" className="footer-link">Upcoming matches</Link>
               <Link href="/results/" className="footer-link">Results</Link>
               <Link href="/lab/" className="footer-link">MatchSynth Lab</Link>
+              <Link href="/app/" className="footer-link">Android app</Link>
               <Link href="/pricing/" className="footer-link">Pricing</Link>
               <Link href="/blog/" className="footer-link">Blog</Link>
             </div>

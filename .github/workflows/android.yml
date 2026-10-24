@@ -105,6 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write               # republish the site so /download/ serves the new APK
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -127,3 +128,5 @@ jobs:
             --target "$GITHUB_SHA" $flag \
             --title "CricSynthesis for Android ${version} (build ${GITHUB_RUN_NUMBER})" \
             --notes "Android app, ${kind} build ${GITHUB_RUN_NUMBER}. Install the APK on an Android phone (allow installs from this source when asked)."
+          # the website's download page serves the latest signed release
+          [ "$kind" = release ] && gh workflow run publish-site.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f quick=true || true
