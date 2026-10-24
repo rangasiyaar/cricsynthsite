@@ -1,6 +1,6 @@
 "use client";
-// A small card offering the Android app, a few seconds after a page opens. Closing it hides it for a day
-// (per browser) for a day; it never shows on the app's own page, sign-in, account or admin, or once someone has downloaded.
+// A small card offering the Android app, a few seconds after a page opens. Closing it (or tapping through to the app)
+// hides it for a day in that browser; it never shows on the app's own page, sign-in, account or admin.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
