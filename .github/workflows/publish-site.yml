@@ -145,6 +145,25 @@ jobs:
         run: |
           rm -rf app/public/data && cp -r data/publish app/public/data
           cd app && npm ci && npm test && npx next build
+      - name: Android app version (the latest signed release; /download/cricsynthesis.apk redirects to its file)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p app/out/download
+          gh release view -R "$GITHUB_REPOSITORY" --json tagName,publishedAt,assets > "$RUNNER_TEMP/release.json" \
+            || { echo "::warning::No app release yet; the download page shows the app as coming soon"; exit 0; }
+          python3 - "$RUNNER_TEMP/release.json" <<'PY'
+          import json, re, sys
+          r = json.load(open(sys.argv[1]))
+          a = next((a for a in r["assets"] if a["name"] == "CricSynthesis.apk"), None)
+          m = re.search(r"android-v(.+)-build(\d+)$", r["tagName"])
+          if a and m:
+              json.dump({"version": m.group(1), "build": int(m.group(2)), "bytes": a["size"], "updated": r["publishedAt"][:10],
+                         "url": "/download/cricsynthesis.apk"}, open("app/out/download/app.json", "w"))
+              print(open("app/out/download/app.json").read())
+          else:
+              print("::warning::The latest release has no CricSynthesis.apk yet")
+          PY
       - name: MCP package and its install index (served with the site under /pypi/)
         run: uv run python cricmcp/build_index.py --out app/out/pypi
       - name: Firestore rules (test against the Rules API, then release; unchanged rules are skipped)

@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      actions: write               # republish the site so /download/ serves the new APK
+      actions: write               # republish the site so /download/app.json shows the new version
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -122,9 +122,10 @@ jobs:
           apk=$(ls out/apk/release/*.apk 2>/dev/null | head -1); kind=release
           [ -n "$apk" ] || { apk=$(ls out/apk/debug/*.apk | head -1); kind=debug; }
           cp "$apk" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk"
+          cp "$apk" CricSynthesis.apk       # fixed name: the website's /download/ link points at the latest release's copy
           # a signed build is a full release (and the latest); a debug build stays a pre-release
           flag=--latest; [ "$kind" = release ] || flag=--prerelease
-          gh release create "$tag" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk" \
+          gh release create "$tag" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk" CricSynthesis.apk \
             --target "$GITHUB_SHA" $flag \
             --title "CricSynthesis for Android ${version} (build ${GITHUB_RUN_NUMBER})" \
             --notes "Android app, ${kind} build ${GITHUB_RUN_NUMBER}. Install the APK on an Android phone (allow installs from this source when asked)."

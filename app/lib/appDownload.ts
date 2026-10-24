@@ -1,9 +1,9 @@
 "use client";
-// The Android app download: the latest signed release, copied into the site at /download/ when it's published
-// (publish-site.yml writes /download/app.json next to the APK).
+// The Android app download: /download/cricsynthesis.apk redirects to the latest signed release on GitHub
+// (firebase.json); publish-site.yml writes /download/app.json with its version and size.
 import { useEffect, useState } from "react";
 
-export type AppInfo = { version: string | null; build: number | null; bytes: number; sha256: string; updated: string; url: string };
+export type AppInfo = { version: string; build: number; bytes: number; updated: string; url: string };
 
 export const APK_URL = "/download/cricsynthesis.apk";
 

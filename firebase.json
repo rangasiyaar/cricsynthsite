@@ -88,19 +88,6 @@
           ]
         },
         {
-          "source": "/download/*.apk",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/vnd.android.package-archive"
-            },
-            {
-              "key": "Content-Disposition",
-              "value": "attachment; filename=\"CricSynthesis.apk\""
-            }
-          ]
-        },
-        {
           "source": "**/*.@(html|txt)",
           "headers": [
             {
@@ -138,6 +125,11 @@
         }
       ],
       "redirects": [
+        {
+          "source": "/download/cricsynthesis.apk",
+          "destination": "https://github.com/rangasiyaar/cricsynthsite/releases/latest/download/CricSynthesis.apk",
+          "type": 302
+        },
         {
           "source": "/login.html",
           "destination": "/login/",
