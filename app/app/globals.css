@@ -405,7 +405,7 @@ body .nav .nav-link { white-space: nowrap; }
 }
 
 /* ── /app/ page: the Android app ── */
-.app-hero { padding-bottom: clamp(40px, 6vw, 72px); }
+.app-hero { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(40px, 6vw, 72px); }   /* the home hero allows for its overlay nav; here, the same top gap as .page-head */
 .app-hero .cs-hero-ctas .btn svg { flex: none; }
 .phone { justify-self: center; width: min(300px, 82vw); height: 560px; max-height: 120vw; border-radius: 44px; padding: 12px; background: var(--cs-ink);
   box-shadow: 0 30px 60px -20px rgba(20, 24, 28, .35), 0 0 0 1px var(--cs-line); }
