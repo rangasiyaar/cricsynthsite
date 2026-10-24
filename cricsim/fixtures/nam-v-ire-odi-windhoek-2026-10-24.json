@@ -1,7 +1,7 @@
 {
-  "id": "nam-v-ire-odi-windhoek-2026-10-25",
+  "id": "nam-v-ire-odi-windhoek-2026-10-24",
   "title": "Namibia v Ireland",
-  "date": "2026-10-25",
+  "date": "2026-10-24",
   "start_time": "13:00",
   "format": "OD",
   "gender": "male",
@@ -12,7 +12,8 @@
   "city": "Windhoek",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "batting_first": 0,
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "Namibia",
@@ -23,12 +24,12 @@
         "Jan Frylinck",
         "Gerhard Erasmus",
         "Jan Nicol Loftie-Eaton",
+        "Alexander Volschenk",
         "Zane Green",
         "JJ Smit",
         "Ruben Trumpelmann",
-        "Bernard Scholtz",
-        "Jack Brassell",
-        "Max Heingo"
+        "Max Heingo",
+        "Jack Brassell"
       ],
       "roles": [
         "AR",
@@ -36,9 +37,9 @@
         "AR",
         "AR",
         "AR",
+        "BAT",
         "WK",
         "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -75,9 +76,9 @@
         "Curtis Campher",
         "George Dockrell",
         "Andy McBrine",
-        "Mark Adair",
-        "Matthew Humphreys",
-        "Liam McCarthy"
+        "Gavin Hoey",
+        "Jai Moondra",
+        "Byron McDonough"
       ],
       "roles": [
         "BAT",
