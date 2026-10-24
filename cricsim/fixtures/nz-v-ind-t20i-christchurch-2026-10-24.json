@@ -110,7 +110,13 @@
         "Kuldeep Yadav",
         "Kumar Kushagra"
       ],
-      "captain": "Shreyas Iyer"
+      "captain": "Shreyas Iyer",
+      "aka": {
+        "Vaibhav Sooryavanshi": [
+          "Vaibhav Suryavanshi",
+          "V Suryavanshi"
+        ]
+      }
     }
   ]
 }
