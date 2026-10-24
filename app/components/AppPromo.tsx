@@ -1,6 +1,6 @@
 "use client";
-// A small card offering the Android app, a few seconds after a page opens. Closing it hides it for two weeks
-// (per browser); it never shows on the app's own page, sign-in, account or admin, or once someone has downloaded.
+// A small card offering the Android app, a few seconds after a page opens. Closing it hides it for a day
+// (per browser) for a day; it never shows on the app's own page, sign-in, account or admin, or once someone has downloaded.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { Logo } from "@/components/Shell";
 import { APK_URL, isAndroid, useAppInfo } from "@/lib/appDownload";
 
 const KEY = "cs-app-promo";
-const QUIET_DAYS = 14;
+const QUIET_DAYS = 1;
 const SKIP = ["/app/", "/login/", "/account/", "/admin/"];
 
 function quiet(): boolean {
