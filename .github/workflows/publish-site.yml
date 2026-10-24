@@ -44,25 +44,49 @@ jobs:
       # same daily cache as the Simulate fixture workflow: data + model are built once a day
       - name: Day key
         id: day
-        run: echo "key=engine-$(date -u +%Y-%m-%d)-${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache@v4
+        run: |
+          h="${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}"
+          echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          # the last two days' data and model, used when today's download fails
+          echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          echo "prev2=engine-$(date -u -d '2 days ago' +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v4
         id: cache
         with:
           path: |
             data/parquet
             data/models/latest
           key: ${{ steps.day.outputs.key }}
+          restore-keys: |
+            ${{ steps.day.outputs.prev }}
+            ${{ steps.day.outputs.prev2 }}
       - name: Data
+        id: data
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          uv run cricdata download --kind all --dest data/raw
-          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
-            --names data/raw/names.csv --out data/parquet
-          uv run cricdata attributes --out data/parquet
+          if uv run cricdata download --kind all --dest data/raw \
+             && uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+                  --names data/raw/names.csv --out data/parquet.new \
+             && uv run cricdata attributes --out data/parquet.new; then
+            rm -rf data/parquet && mv data/parquet.new data/parquet
+            echo "fresh=true" >> "$GITHUB_OUTPUT"
+          elif [ -d data/models/latest ] && [ -d data/parquet ]; then
+            echo "::warning::Match data download failed; using the last saved data and model"
+            rm -rf data/parquet.new
+          else
+            echo "::error::Match data download failed and there is no saved data to fall back on"; exit 1
+          fi
           rm -rf data/raw
       - name: Fit (all data)
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.data.outputs.fresh == 'true'
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - uses: actions/cache/save@v4          # only a fresh day's data and model is saved, so a failed download is retried
+        if: steps.data.outputs.fresh == 'true'
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
       - name: Upcoming fixtures
         run: |
           mkdir -p data/coverage/matches
