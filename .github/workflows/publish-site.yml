@@ -15,6 +15,10 @@ on:
         description: "Fixture file(s) to simulate again even though started: one name, a comma-separated list, or all"
         required: false
         default: ""
+      quick:
+        description: "Use the last saved data and model (skip today's download and fit)"
+        type: boolean
+        default: false
   push:
     branches: [claude/cricsynthesis-platform]
     paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
@@ -62,7 +66,7 @@ jobs:
             ${{ steps.day.outputs.prev2 }}
       - name: Data
         id: data
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true' && !(inputs.quick && steps.cache.outputs.cache-matched-key != '')
         run: |
           if uv run cricdata download --kind all --dest data/raw \
              && uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
