@@ -1,7 +1,7 @@
 {
-  "id": "nz-v-ind-t20i-christchurch-2026-10-25",
+  "id": "nz-v-ind-t20i-christchurch-2026-10-24",
   "title": "New Zealand v India",
-  "date": "2026-10-25",
+  "date": "2026-10-24",
   "start_time": "12:30",
   "format": "T20",
   "gender": "male",
@@ -11,7 +11,8 @@
   "venue_search": "hagley",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "batting_first": 0,
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "New Zealand",
@@ -25,8 +26,8 @@
         "Michael Bracewell",
         "Mitchell Santner",
         "Nathan Smith",
-        "Adam Milne",
         "Matt Henry",
+        "Jacob Duffy",
         "Lockie Ferguson"
       ],
       "roles": [
@@ -68,22 +69,22 @@
       "players": [
         "Sanju Samson",
         "Abhishek Sharma",
+        "Vaibhav Sooryavanshi",
         "Shreyas Iyer",
         "Tilak Varma",
-        "Shivam Dube",
         "Nitish Kumar Reddy",
         "Naman Dhir",
         "Axar Patel",
         "Bhuvneshwar Kumar",
         "Arshdeep Singh",
-        "Mayank Yadav"
+        "Prince Yadav"
       ],
       "roles": [
         "WK",
         "BAT",
         "BAT",
         "BAT",
-        "AR",
+        "BAT",
         "AR",
         "AR",
         "AR",
