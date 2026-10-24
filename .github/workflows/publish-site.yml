@@ -145,28 +145,6 @@ jobs:
         run: |
           rm -rf app/public/data && cp -r data/publish app/public/data
           cd app && npm ci && npm test && npx next build
-      - name: Android app download (the latest signed release, served at /download/)
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p app/out/download
-          if gh release download -R "$GITHUB_REPOSITORY" --pattern '*.apk' -D "$RUNNER_TEMP/apk"; then
-            apk=$(ls "$RUNNER_TEMP"/apk/*.apk | head -1)
-            cp "$apk" app/out/download/cricsynthesis.apk
-            # the version page and popup read this; build number and version come from the file name
-            python3 - "$apk" <<'PY'
-          import hashlib, json, os, re, sys, datetime
-          apk = sys.argv[1]
-          m = re.search(r"cricsynthesis-(.+)-build(\d+)\.apk$", os.path.basename(apk))
-          json.dump({"version": m.group(1) if m else None, "build": int(m.group(2)) if m else None,
-                     "bytes": os.path.getsize(apk), "sha256": hashlib.sha256(open(apk, "rb").read()).hexdigest(),
-                     "updated": datetime.date.today().isoformat(), "url": "/download/cricsynthesis.apk"},
-                    open("app/out/download/app.json", "w"))
-          PY
-            cat app/out/download/app.json
-          else
-            echo "::warning::No signed app release found; the download page shows the app as coming soon"
-          fi
       - name: MCP package and its install index (served with the site under /pypi/)
         run: uv run python cricmcp/build_index.py --out app/out/pypi
       - name: Firestore rules (test against the Rules API, then release; unchanged rules are skipped)
