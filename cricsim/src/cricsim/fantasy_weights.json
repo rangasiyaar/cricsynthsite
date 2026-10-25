@@ -1,0 +1,8 @@
+{
+ "T20": {"weights": [2.382129, 0.588987, 0.016275, -0.305556, 13.909633, -0.058226, 0.301124, 0.060644, -7.414079, 0.677129, 0.002613, 0.253753, 3.308165, 3.239448, -0.316639],
+         "lambda": 10.0,
+         "features": ["intercept", "dmean", "sd", "p_top x100", "win", "last10", "ewma", "year", "has form", "matches (/20)", "matches x (ewma - dmean)", "overs bowled", "top order", "middle order", "known"],
+         "matches": 400, "from": "2026-07-25", "to": "2026-10-14",
+         "lab": "68.0% of the best XI v 66.4% for the simulations alone, +17.2 points a match (95%: +7.4 to +26.8), 340 matches judged out of sample (fantasy-lab run 2)"},
+ "_note": "One-day picks stay on the simulations: the learned pick's gain there was +5.4 (95%: -13.1 to +22.9), not distinguishable from noise. Refit with the Fantasy lab workflow (weights in its log / artifact)."
+}
