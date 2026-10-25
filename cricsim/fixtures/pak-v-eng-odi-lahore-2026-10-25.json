@@ -1,0 +1,107 @@
+{
+  "id": "pak-v-eng-odi-lahore-2026-10-25",
+  "title": "Pakistan v England",
+  "date": "2026-10-25",
+  "start_time": "13:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "Pakistan ODI Tri-Series 2026 \u00b7 4th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "Gaddafi Stadium, Lahore",
+  "venue_search": "gaddafi",
+  "city": "Lahore",
+  "status": "scheduled",
+  "published": true,
+  "batting_first": 1,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "Pakistan",
+      "short": "PAK",
+      "players": [
+        "Fakhar Zaman",
+        "Saim Ayub",
+        "Babar Azam",
+        "Saad Baig",
+        "Salman Agha",
+        "Hasan Nawaz",
+        "Shadab Khan",
+        "Arafat Minhas",
+        "Shaheen Afridi",
+        "Razaullah",
+        "Haris Rauf"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shaheen Afridi",
+      "squad": [
+        "Fakhar Zaman",
+        "Saim Ayub",
+        "Babar Azam",
+        "Saad Baig",
+        "Salman Agha",
+        "Hasan Nawaz",
+        "Shadab Khan",
+        "Arafat Minhas",
+        "Shaheen Afridi",
+        "Razaullah",
+        "Haris Rauf"
+      ]
+    },
+    {
+      "name": "England",
+      "short": "ENG",
+      "players": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Jordan Cox",
+        "Sam Curran",
+        "Will Jacks",
+        "Jamie Overton",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Henry Crocombe"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harry Brook",
+      "squad": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Jordan Cox",
+        "Sam Curran",
+        "Will Jacks",
+        "Jamie Overton",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Henry Crocombe"
+      ]
+    }
+  ]
+}
