@@ -133,10 +133,12 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
                  twelve: bool = False, latest: int = 0, latest_format: str = "T20",
-                 latest_teams: list[str] | None = None) -> dict:
+                 latest_teams: list[str] | None = None, fantasy_rows: bool = False) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
-    latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first."""
+    latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first.
+    fantasy_rows: also return every fantasy match's players (predictions, recent real points, real points) as
+    rep["fantasy_rows"], for cricsim.fantasy_lab."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     if latest:
@@ -151,7 +153,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
-               latest_format, latest_teams)
+               latest_format, latest_teams, fantasy_rows)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -168,11 +170,16 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
          fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False,
-         latest: bool = False, latest_format: str = "T20", latest_teams: list[str] | None = None) -> dict:
+         latest: bool = False, latest_format: str = "T20", latest_teams: list[str] | None = None,
+         fantasy_rows: bool = False) -> dict:
     skipped: dict = {}
     matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest,
                               latest_format=latest_format, teams=latest_teams)
     od_fantasy = latest and latest_format == "OD"          # one-day fantasy only when asked for (separate benchmark)
+    history = None
+    if fantasy_rows:
+        from cricsim import fantasy_history
+        history = fantasy_history.build(con, parquet, "OD" if od_fantasy else "T20")
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -227,7 +234,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         actual_order = batting_order(con, mt["match_id"])
         if mt["format"] != "OD" or od_fantasy:
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
-                                                          actual_order))
+                                                          actual_order, history))
         for inn0, lg in enumerate(part.innings):
             actual = mt["innings"][inn0][2]
             sim = lg.runs
@@ -299,6 +306,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                                        "share": "full quota" if act_b >= quota else
                                                 "half+ quota" if act_b >= quota / 2 else "under half"})
     rep = score(res, cutoff, len(matches))
+    if fantasy_rows:
+        rep["fantasy_rows"] = [r["rows"] for r in res.get("fantasy", []) if "rows" in r]
     rep["listed_12"] = dict(sorted(skipped.items(), key=lambda kv: -kv[1]))
     rep["listed_12_included"] = twelve
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
@@ -324,7 +333,7 @@ def _xi_score(pids, pts, team) -> np.ndarray:
 
 
 def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bowlers_known: bool,
-             actual_order: dict | None = None) -> dict:
+             actual_order: dict | None = None, history=None) -> dict:
     """Pick fantasy XIs from the simulations, score them on the real match (fielding on both sides or neither)."""
     team_of = {p: k for k, t in enumerate(spec.teams) for p in t.everyone}
     mode = (model.meta.get("sim") or {}).get("fielding")     # "real": fielding scored, not used in picks; "both"
@@ -398,6 +407,17 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     common = np.bincount(key, minlength=6).argmax()
     out["common_scenario"] = team_points(*pick_xi(dict(zip(pids, pts[key == common].mean(0))), team_of), real)
     out["favourite_wins"] = team_points(*pick_xi(dict(zip(pids, pts[win == fav].mean(0))), team_of), real)  # (c)
+    if history is not None:          # every player: what we predicted, recent real form, what he scored
+        top_all = np.bincount(pts.argmax(1), minlength=len(pids)) / len(pts)
+        dmean = decisive_mean(pts, win)
+        p90 = np.percentile(pts, 90, axis=0)
+        out["rows"] = {"match": mt["match_id"], "date": str(mt["date"]), "label": out["label"], "format": mt["format"],
+                       "players": [{"p": p, "team": team_of[p], "mean": float(pts[:, i].mean()), "dmean": float(dmean[i]),
+                                    "sd": float(sd[p]), "p90": float(p90[i]), "p_top": float(top_all[i]),
+                                    "slot": slot.get(p, 11), "bowl": bowl.get(p, 0.0),
+                                    "win": float((win == team_of[p]).mean()), "known": model.knows(p),
+                                    "real": float(real[p]), **history.features(p, mt["date"])}
+                                   for i, p in enumerate(pids)]}
     ptop = _p_top(pids, pts, xi)
     pc = sorted(xi, key=lambda p: -ptop[p])
     out["ptop_captain"] = team_points(xi, pc[0], pc[1], real)

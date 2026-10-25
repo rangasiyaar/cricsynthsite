@@ -573,3 +573,21 @@ def test_publish_keeps_a_live_forecast_with_the_same_inputs(world, tmp_path, mon
     assert calls == [1]
     P.publish_all(world["model"], tmp_path / "cov", tmp_path / "out", n=300, fetch=fetch, model_id="m2")  # new model
     assert calls == [1, 1]
+
+
+def test_fantasy_rows_and_lab(world, tmp_path):
+    """Backtest rows carry predictions, recent real form and real points; the lab scores strategies on them."""
+    import json
+
+    from cricsim.fantasy_lab import default_strategies, evaluate, report
+    rep = run_backtest(world["parquet"], date(2024, 1, 1), limit=12, n_sims=100, fantasy_rows=True)
+    rows = rep["fantasy_rows"]
+    assert len(rows) == rep["fantasy"]["n"] > 0
+    ps = rows[-1]["players"]
+    assert len(ps) == 22 and max(p["real"] for p in ps) > 4 and all("dmean" in p for p in ps)
+    assert any(p["n"] > 0 and p["last10"] is not None for p in ps)    # real form from earlier matches
+    res = evaluate(json.loads(json.dumps(rows, default=str)), default_strategies(), min_train=4)
+    n = len(rows) - 4
+    assert len(res["best"]) == n and all(len(v) == n for v in res.values())
+    assert all(b >= v for k, vs in res.items() if k not in ("best", "label") for v, b in zip(vs, res["best"]))
+    assert "simulations (live rule)" in report(res, "t")
