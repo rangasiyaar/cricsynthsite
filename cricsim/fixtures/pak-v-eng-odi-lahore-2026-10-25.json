@@ -57,7 +57,14 @@
         "Shaheen Afridi",
         "Razaullah",
         "Haris Rauf"
-      ]
+      ],
+      "aka": {
+        "Salman Agha": [
+          "Salman Ali Agha",
+          "Agha Salman",
+          "Salman Agha"
+        ]
+      }
     },
     {
       "name": "England",
@@ -101,7 +108,14 @@
         "Liam Dawson",
         "Gus Atkinson",
         "Henry Crocombe"
-      ]
+      ],
+      "aka": {
+        "Gus Atkinson": [
+          "Angus Atkinson",
+          "AAP Atkinson",
+          "Gus Atkinson"
+        ]
+      }
     }
   ]
 }
