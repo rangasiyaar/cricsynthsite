@@ -26,7 +26,7 @@ from cricsim.engine.fit import FitConfig, fit
 from cricsim.engine.model import RECENT, Model
 from cricsim.engine.simulate import RECENT_ROLE, simulate
 from cricsim.engine.spec import MatchSpec, TeamSpec
-from cricsim.fantasy import actual_points, decisive_mean, pick_xi, portfolio, team_points
+from cricsim.fantasy import actual_points, decisive_mean, pick_xi, portfolio, sim_features, team_points
 from cricsim.fantasy import sim_points as _sim_points
 
 log = logging.getLogger(__name__)
@@ -408,16 +408,10 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     out["common_scenario"] = team_points(*pick_xi(dict(zip(pids, pts[key == common].mean(0))), team_of), real)
     out["favourite_wins"] = team_points(*pick_xi(dict(zip(pids, pts[win == fav].mean(0))), team_of), real)  # (c)
     if history is not None:          # every player: what we predicted, recent real form, what he scored
-        top_all = np.bincount(pts.argmax(1), minlength=len(pids)) / len(pts)
-        dmean = decisive_mean(pts, win)
-        p90 = np.percentile(pts, 90, axis=0)
+        feats = sim_features(model, sims, pids, pts, team_of)
         out["rows"] = {"match": mt["match_id"], "date": str(mt["date"]), "label": out["label"], "format": mt["format"],
-                       "players": [{"p": p, "team": team_of[p], "mean": float(pts[:, i].mean()), "dmean": float(dmean[i]),
-                                    "sd": float(sd[p]), "p90": float(p90[i]), "p_top": float(top_all[i]),
-                                    "slot": slot.get(p, 11), "bowl": bowl.get(p, 0.0),
-                                    "win": float((win == team_of[p]).mean()), "known": model.knows(p),
-                                    "real": float(real[p]), **history.features(p, mt["date"])}
-                                   for i, p in enumerate(pids)]}
+                       "players": [{"p": p, "team": team_of[p], **feats[p], "real": float(real[p]),
+                                    **history.features(p, mt["date"])} for p in pids]}
     ptop = _p_top(pids, pts, xi)
     pc = sorted(xi, key=lambda p: -ptop[p])
     out["ptop_captain"] = team_points(xi, pc[0], pc[1], real)

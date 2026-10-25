@@ -49,7 +49,7 @@ jobs:
           uv run python -m cricsim.engine backtest --parquet data/parquet ${{ matrix.args }} --sims 1000 \
             --fielding both --fantasy-rows --out data/lab/${{ matrix.family }} --memory 3GB > /dev/null
       - name: Compare pick strategies
-        run: uv run python -m cricsim.fantasy_lab data/lab/${{ matrix.family }}.fantasy_rows.json --out data/lab/${{ matrix.family }}-lab.md | tee -a "$GITHUB_STEP_SUMMARY"
+        run: uv run python -m cricsim.fantasy_lab data/lab/${{ matrix.family }}.fantasy_rows.json --out data/lab/${{ matrix.family }}-lab.md --weights-out data/lab/weights-${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: fantasy-lab-${{ matrix.family }}

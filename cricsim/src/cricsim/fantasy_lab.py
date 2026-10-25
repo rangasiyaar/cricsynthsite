@@ -19,7 +19,7 @@ from pathlib import Path
 import click
 import numpy as np
 
-from cricsim.fantasy import pick_xi, team_points
+from cricsim.fantasy import STACK_FEATURES, pick_xi, stack_features as features, team_points
 
 FORM = ("last5", "last10", "ewma", "year")
 
@@ -27,16 +27,6 @@ FORM = ("last5", "last10", "ewma", "year")
 def _src(r: dict, key: str) -> float:
     v = r.get(key)
     return r["dmean"] if v is None else v
-
-
-def features(r: dict) -> list[float]:
-    """Regression inputs for one player: simulations, recent form (0 with a flag when there is none), role."""
-    has = r.get("n", 0) > 0
-    n = min(r.get("n", 0), 20) / 20
-    return [1.0, r["dmean"], r["sd"], r["p_top"] * 100, r["win"],
-            _src(r, "last10") if has else 0.0, _src(r, "ewma") if has else 0.0, _src(r, "year") if has else 0.0,
-            float(has), n, n * (_src(r, "ewma") - r["dmean"]) if has else 0.0,
-            min(r["bowl"], 60) / 6, float(r["slot"] <= 3), float(4 <= r["slot"] <= 7), float(r["known"])]
 
 
 def ridge(X: np.ndarray, y: np.ndarray, lam: float = 10.0) -> np.ndarray:
@@ -144,16 +134,29 @@ def correlations(matches: list[dict]) -> str:
 @click.argument("rows", nargs=-1, type=click.Path(exists=True, path_type=Path))
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/fantasy-lab/report.md"))
 @click.option("--min-train", default=60, help="Matches every strategy waits for before it is judged")
-def main(rows: tuple[Path, ...], out: Path, min_train: int) -> None:
-    parts = []
+@click.option("--weights-out", type=click.Path(path_type=Path), default=None,
+              help="Also fit the learned pick (ridge, λ=10) on all matches and write its weights per format family")
+def main(rows: tuple[Path, ...], out: Path, min_train: int, weights_out: Path | None) -> None:
+    parts, weights = [], {}
     for path in rows:
         matches = json.loads(path.read_text())
+        if weights_out and matches:
+            X = np.array([features(r) for m in matches for r in m["players"]])
+            y = np.array([r["real"] for m in matches for r in m["players"]])
+            fam = "OD" if matches[0]["format"] == "OD" else "T20"
+            weights[fam] = {"weights": [round(float(x), 6) for x in ridge(X, y, 10.0)], "lambda": 10.0,
+                            "features": list(STACK_FEATURES), "matches": len(matches),
+                            "from": min(m["date"] for m in matches), "to": max(m["date"] for m in matches)}
         fmt = matches[0]["format"] if matches else "?"
         res = evaluate(matches, default_strategies(), min_train=min(min_train, max(len(matches) // 3, 10)))
         parts.append(report(res, f"{path.stem} ({fmt}, {len(matches)} matches)"))
         parts.append("\n### Ranking players\n\n" + correlations(matches))
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("# Fantasy lab\n\n" + "\n\n".join(parts) + "\n")
+    if weights_out:
+        weights_out.parent.mkdir(parents=True, exist_ok=True)
+        weights_out.write_text(json.dumps(weights, indent=1))
+        click.echo(f"weights → {weights_out}:\n{json.dumps(weights)}")
     click.echo(out.read_text())
 
 

@@ -155,6 +155,52 @@ def decisive_mean(pts: np.ndarray, winner: np.ndarray, stretch: float = DECISIVE
     return (pts * w[:, None]).sum(0) / w.sum()
 
 
+def sim_features(model, sims, pids: list[str], pts: np.ndarray, team_of: dict[str, int]) -> dict[str, dict]:
+    """What the simulations say about each player, as the learned pick uses it: expected points (plain and leaning
+    to the favourite), spread, 90th percentile, chance of being the match's top scorer, usual batting slot,
+    expected balls bowled, his side's win chance, and whether the model has seen him."""
+    win = np.concatenate([part.winner for part in sims.parts])
+    slot, bowl = {}, {}
+    for part in sims.parts:
+        for lg in part.innings:
+            for k, p in enumerate(lg.order):
+                slot[p] = k + 1
+            for k, p in enumerate(lg.bowlers):
+                bowl[p] = bowl.get(p, 0.0) + float(lg.bowl_balls[:, k].sum()) / sims.n
+    top = np.bincount(pts.argmax(1), minlength=len(pids)) / len(pts)
+    dmean, p90, sd = decisive_mean(pts, win), np.percentile(pts, 90, axis=0), pts.std(0)
+    return {p: {"mean": float(pts[:, i].mean()), "dmean": float(dmean[i]), "sd": float(sd[i]), "p90": float(p90[i]),
+                "p_top": float(top[i]), "slot": slot.get(p, 11), "bowl": bowl.get(p, 0.0),
+                "win": float((win == team_of[p]).mean()), "known": bool(model.knows(p))}
+            for i, p in enumerate(pids)}
+
+
+STACK_FEATURES = ("intercept", "dmean", "sd", "p_top x100", "win", "last10", "ewma", "year", "has form",
+                  "matches (/20)", "matches x (ewma - dmean)", "overs bowled", "top order", "middle order", "known")
+
+
+def stack_features(r: dict) -> list[float]:
+    """Inputs of the learned pick for one player: the simulations plus his real recent fantasy points (zero, with a
+    flag, when he has none). `r` is sim_features' row merged with fantasy_history.History.features."""
+    has = (r.get("n") or 0) > 0
+
+    def form(k):
+        v = r.get(k)
+        return (r["dmean"] if v is None else v) if has else 0.0
+    n = min(r.get("n") or 0, 20) / 20
+    return [1.0, r["dmean"], r["sd"], r["p_top"] * 100, r["win"], form("last10"), form("ewma"), form("year"),
+            float(has), n, n * (form("ewma") - r["dmean"]) if has else 0.0,
+            min(r["bowl"], 60) / 6, float(r["slot"] <= 3), float(4 <= r["slot"] <= 7), float(r["known"])]
+
+
+def load_weights() -> dict:
+    """Learned pick weights per format family (cricsim/fantasy_weights.json, fitted by cricsim.fantasy_lab)."""
+    import json
+    from pathlib import Path
+    f = Path(__file__).with_name("fantasy_weights.json")
+    return json.loads(f.read_text()) if f.exists() else {}
+
+
 RETIRED = ("retired hurt", "retired not out")
 
 
@@ -252,13 +298,14 @@ def _roles_ok(xi, roles) -> bool:
 
 def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int = 5,
               roles: dict[str, str] | None = None, n_candidates: int = 300,
-              seed: int = 0, captains: int = 0) -> list[tuple[list[str], str, str]]:
+              seed: int = 0, captains: int = 0, first=None) -> list[tuple[list[str], str, str]]:
     """k teams that together cover the likely matches: start from the expected-points XI, then greedily add
     the candidate that most raises the average (over simulations) of the portfolio's best team.
     Candidates are the best XI of individual simulations, so each is the right team for some plausible game;
     with `captains`, also every captain / vice-captain pair among each XI's top `captains` by expected points
     (the expected-points XI included), so the set can spread its captaincy as well as its players.
-    Greedy, so the first j teams of a k-team set are the j-team set."""
+    Greedy, so the first j teams of a k-team set are the j-team set. `first`: start from this team instead
+    (the single pick, so the set always contains it)."""
     col = {p: i for i, p in enumerate(pids)}
     half = len(pts) // 2
     ev = pts[half:]                                     # candidates come from one half, are judged on the other
@@ -268,7 +315,7 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
         return ev[:, [col[p] for p in xi]].sum(1) + ev[:, col[c]] + 0.5 * ev[:, col[vc]]
 
     mean = dict(zip(pids, pts.mean(0)))
-    teams = [pick_xi(mean, team_of, roles)]
+    teams = [first or pick_xi(mean, team_of, roles)]
     rng = np.random.default_rng(seed)
     rows = rng.choice(half, size=min(n_candidates, half), replace=False)
     cands, seen = [], set()
@@ -296,9 +343,12 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
     return teams
 
 
-def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5) -> dict:
+def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, form: dict | None = None) -> dict:
     """What the match centre's Fantasy tab shows: one XI with captain and vice-captain, and a set of k teams that
-    together cover the likely matches, all as player ids, with each player's expected points and role."""
+    together cover the likely matches, all as player ids, with each player's expected points and role.
+    With `form` (player id -> fantasy_history features, written into the coverage file by cricsim.resolve) and
+    learned weights for the format, expected points are the learned blend of the simulations and recent real form
+    (fantasy lab: 68.1% of the best XI v 66.2% from the simulations alone on 340 recent T20-type matches)."""
     from cricsim.engine.modelling import infer_roles
     spec = sims.spec
     roles = infer_roles(model, spec, roles)
@@ -306,6 +356,12 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5) 
     pids, pts = sim_points(sims, roles, model=model, fielding=fielding)
     team_of = {p: t for t, tm in enumerate(spec.teams) for p in tm.everyone}
     exp = dict(zip(pids, decisive_mean(pts, np.concatenate([part.winner for part in sims.parts]))))
+    w = load_weights().get("OD" if spec.format == "OD" else "T20") if form is not None else None
+    method = "simulations"
+    if w:
+        feats = sim_features(model, sims, pids, pts, team_of)
+        exp = {p: float(np.dot(stack_features({**feats[p], **(form.get(p) or {"n": 0})}), w["weights"])) for p in pids}
+        method = "simulations + recent form"
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
 
     def team(t):
@@ -314,8 +370,9 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5) 
                 "expected": round(sum(exp[p] for p in xi) + exp[c] + 0.5 * exp[vc], 1)}
     return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1)} for p in pids},
             "single": team(pick_xi(exp, team_of, use_roles)),
-            "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5)],
-            "fielding": fielding, "simulations": int(sims.n), "format": spec.format}
+            "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5,
+                                                 first=pick_xi(exp, team_of, use_roles))],
+            "fielding": fielding, "simulations": int(sims.n), "format": spec.format, "method": method}
 
 
 def main() -> None:

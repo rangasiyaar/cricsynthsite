@@ -44,8 +44,17 @@ class History:
                 "n_year": len(recent), "since": (day - days[-1]).days}
 
 
-def build(con, parquet: Path, family: str = "T20") -> History:
+def family(fmt: str) -> str:
+    return "OD" if fmt == "OD" else "T20"
+
+
+def build(con, parquet: Path, family: str = "T20", players: set[str] | None = None) -> History:
+    """All players' history, or only `players`' (much faster: what a live fixture needs)."""
     fmts = ", ".join(f"'{f}'" for f in FAMILIES[family])
+    only = ""
+    if players:
+        ids = ", ".join("'" + p.replace("'", "''") + "'" for p in players)
+        only = f" AND match_id IN (SELECT DISTINCT match_id FROM read_parquet('{(parquet / 'match_players' / '*.parquet').as_posix()}') WHERE player_id IN ({ids}))"
     od = family == "OD"
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     pts: dict[tuple[str, str], float] = {}
@@ -59,11 +68,11 @@ def build(con, parquet: Path, family: str = "T20") -> History:
         SELECT match_id, batter_id, any_value(match_date), sum(runs_batter), count(*) FILTER (WHERE wides = 0),
                count(*) FILTER (WHERE runs_batter = 4 AND NOT coalesce(non_boundary, FALSE)),
                count(*) FILTER (WHERE runs_batter = 6 AND NOT coalesce(non_boundary, FALSE))
-        FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL
+        FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL{only}
         GROUP BY 1, 2""").fetchall()
     outs = {(m, p) for m, p in con.execute(f"""
         SELECT DISTINCT match_id, player_out_id FROM read_parquet('{d}')
-        WHERE format IN ({fmts}) AND NOT is_super_over AND is_wicket
+        WHERE format IN ({fmts}) AND NOT is_super_over{only} AND is_wicket
           AND wicket_kind NOT IN ('retired hurt', 'retired not out')""").fetchall()}
     if bat:
         m, p, dd, r, b, f4, f6 = zip(*bat)
@@ -77,7 +86,7 @@ def build(con, parquet: Path, family: str = "T20") -> History:
                count(*) FILTER (WHERE wicket_kind IN ('bowled', 'caught', 'lbw', 'stumped', 'caught and bowled',
                                                      'hit wicket')),
                count(*) FILTER (WHERE wicket_kind IN ('bowled', 'lbw'))
-        FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND bowler_id IS NOT NULL
+        FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND bowler_id IS NOT NULL{only}
         GROUP BY 1, 2""").fetchall()
     if bowl:
         m, p, balls, runs, w, bl = zip(*bowl)
@@ -88,7 +97,7 @@ def build(con, parquet: Path, family: str = "T20") -> History:
         ev: dict[str, list] = {}
         for m, kind, f, b in con.execute(f"""
                 SELECT match_id, kind, fielder_ids, bowler_id FROM read_parquet('{(parquet / "wickets" / "*.parquet").as_posix()}')
-                WHERE format IN ({fmts}) AND NOT is_super_over""").fetchall():
+                WHERE format IN ({fmts}) AND NOT is_super_over{only}""").fetchall():
             ev.setdefault(m, []).append((kind, f, b))
         for m, events in ev.items():
             for p, x in fielding_points(events).items():
@@ -97,7 +106,7 @@ def build(con, parquet: Path, family: str = "T20") -> History:
     mt = (parquet / "matches" / "*.parquet").as_posix()
     for m, p, dt in con.execute(f"""
             SELECT mp.match_id, mp.player_id, mt.match_date FROM read_parquet('{mp}') mp
-            JOIN read_parquet('{mt}') mt USING (match_id) WHERE mt.format IN ({fmts})""").fetchall():
+            JOIN read_parquet('{mt}') mt USING (match_id) WHERE mt.format IN ({fmts}){only.replace('match_id IN', 'mp.match_id IN')}""").fetchall():
         add(m, p, 4.0)                                    # playing points: everyone listed
         day.setdefault(m, dt)
     rows: dict[str, list[tuple[date, float]]] = {}

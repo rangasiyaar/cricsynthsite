@@ -130,7 +130,7 @@ def _fantasy(model: Model, sims, cov: dict, summary: dict) -> dict | None:
     if cov.get("format") not in FANTASY_FORMATS or sims.scenario.start is not None:
         return None
     roles = {p: str(r).upper() for t in cov["teams"] for p, r in zip(t["players"], t.get("roles") or []) if r}
-    f = fantasy_picks(model, sims, roles or None)
+    f = fantasy_picks(model, sims, roles or None, form=cov.get("form"))
     names = {p["id"]: p["name"] for t in summary["teams"] for p in t["players"]}
     for pid, row in f["players"].items():
         row["name"] = names.get(pid, pid.removeprefix("new:"))

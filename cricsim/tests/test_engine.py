@@ -591,3 +591,27 @@ def test_fantasy_rows_and_lab(world, tmp_path):
     assert len(res["best"]) == n and all(len(v) == n for v in res.values())
     assert all(b >= v for k, vs in res.items() if k not in ("best", "label") for v, b in zip(vs, res["best"]))
     assert "simulations (live rule)" in report(res, "t")
+
+
+def test_learned_fantasy_pick_uses_recent_form(world, monkeypatch):
+    """With form and learned weights, expected points follow the weights (here: all on recent form)."""
+    from cricsim import fantasy
+    from cricsim.engine.simulate import simulate
+    from cricsim.fantasy import STACK_FEATURES, fantasy_picks, stack_features
+    spec = _spec(world["world"])
+    sims = simulate(world["model"], spec, n=300, seed=1)
+    pids = [p for t in spec.teams for p in t.everyone]
+    star = pids[-1]                                        # a tail-ender, never picked on the simulations alone
+    form = {p: {"n": 10, "last5": 20.0, "last10": 20.0, "ewma": 20.0, "year": 20.0, "n_year": 10, "since": 5}
+            for p in pids}
+    form[star] = {**form[star], "last10": 500.0}
+    w = [0.0] * len(STACK_FEATURES)
+    w[STACK_FEATURES.index("last10")] = 1.0
+    assert len(stack_features({"dmean": 1, "sd": 1, "p_top": 0, "win": .5, "bowl": 0, "slot": 1, "known": True,
+                               **form[star]})) == len(STACK_FEATURES)
+    monkeypatch.setattr(fantasy, "load_weights", lambda: {"T20": {"weights": w}})
+    f = fantasy_picks(world["model"], sims, form=form)
+    assert f["method"] == "simulations + recent form" and f["single"]["captain"] == star
+    assert star in f["teams"][0]["players"]                # the set starts from the single pick
+    monkeypatch.setattr(fantasy, "load_weights", lambda: {})
+    assert fantasy_picks(world["model"], sims, form=form)["method"] == "simulations"

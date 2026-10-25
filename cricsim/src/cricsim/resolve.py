@@ -178,6 +178,15 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
         if vid:
             fx["venue_id"], fx["venue"] = vid, fx.get("venue") or vname
     fx.pop("venue_search", None)
+    if fx.get("date") and fx.get("format"):    # recent real fantasy points, for the learned fantasy pick
+        from datetime import date as _date
+
+        from cricsim import fantasy_history
+        ids = {p for t in fx["teams"] for p in t["players"] if not p.startswith("new:")}
+        hist = fantasy_history.build(con, parquet, fantasy_history.family(fx["format"]), players=ids)
+        day = _date.fromisoformat(fx["date"])
+        fx["form"] = {p: hist.features(p, day) for p in sorted(ids)}
+        click.echo(f"  fantasy form: {sum(f['n'] > 0 for f in fx['form'].values())}/{len(ids)} players with past matches")
     if missing:
         click.echo("  newcomers: " + "; ".join(missing))
     out.parent.mkdir(parents=True, exist_ok=True)
