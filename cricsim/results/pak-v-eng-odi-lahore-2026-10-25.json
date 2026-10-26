@@ -1,0 +1,454 @@
+{
+ "id": "pak-v-eng-odi-lahore-2026-10-25",
+ "innings": [
+  {
+   "team": "England",
+   "runs": 241,
+   "wickets": 10,
+   "overs": "46.4",
+   "batting": [
+    {
+     "name": "Tom Banton",
+     "dismissal": "c Arafat Minhas b Shaheen Afridi",
+     "runs": 4,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ben Duckett",
+     "dismissal": "c Salman Agha b Arafat Minhas",
+     "runs": 105,
+     "balls": 111,
+     "fours": 10,
+     "sixes": 2
+    },
+    {
+     "name": "Joe Root",
+     "dismissal": "c Saim Ayub b Shaheen Afridi",
+     "runs": 5,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Brook",
+     "dismissal": "run out (Razaullah/Saad Baig)",
+     "runs": 1,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jordan Cox",
+     "dismissal": "c Babar Azam b Haris Rauf",
+     "runs": 6,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Curran",
+     "dismissal": "c Salman Agha b Shaheen Afridi",
+     "runs": 42,
+     "balls": 52,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Will Jacks",
+     "dismissal": "c and b Razaullah",
+     "runs": 13,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Dawson",
+     "dismissal": "c Shadab Khan b Razaullah",
+     "runs": 5,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jamie Overton",
+     "dismissal": "c Babar Azam b Arafat Minhas",
+     "runs": 10,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gus Atkinson",
+     "dismissal": "not out",
+     "runs": 36,
+     "balls": 28,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Henry Crocombe",
+     "dismissal": "c Babar Azam b Shaheen Afridi",
+     "runs": 8,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Shaheen Afridi",
+     "overs": "8.4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Razaullah",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Haris Rauf",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Saim Ayub",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Salman Agha",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shadab Khan",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Arafat Minhas",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tom Banton",
+     "score": 4,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Joe Root",
+     "score": 11,
+     "over": "2.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harry Brook",
+     "score": 19,
+     "over": "5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jordan Cox",
+     "score": 52,
+     "over": "9.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sam Curran",
+     "score": 145,
+     "over": "26.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Will Jacks",
+     "score": 175,
+     "over": "33.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ben Duckett",
+     "score": 187,
+     "over": "36.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Liam Dawson",
+     "score": 187,
+     "over": "37.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jamie Overton",
+     "score": 201,
+     "over": "40.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Henry Crocombe",
+     "score": 241,
+     "over": "46.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 56
+  },
+  {
+   "team": "Pakistan",
+   "runs": 243,
+   "wickets": 9,
+   "overs": "47.1",
+   "batting": [
+    {
+     "name": "Fakhar Zaman",
+     "dismissal": "c Jamie Overton b Gus Atkinson",
+     "runs": 10,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Saim Ayub",
+     "dismissal": "c Jamie Overton b Henry Crocombe",
+     "runs": 6,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Babar Azam",
+     "dismissal": "b Gus Atkinson",
+     "runs": 10,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Saad Baig",
+     "dismissal": "c Will Jacks b Jamie Overton",
+     "runs": 32,
+     "balls": 22,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Salman Agha",
+     "dismissal": "c Sam Curran b Liam Dawson",
+     "runs": 26,
+     "balls": 49,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Hasan Nawaz",
+     "dismissal": "c Harry Brook b Liam Dawson",
+     "runs": 15,
+     "balls": 33,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Arafat Minhas",
+     "dismissal": "c Joe Root b Jamie Overton",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shadab Khan",
+     "dismissal": "not out",
+     "runs": 113,
+     "balls": 96,
+     "fours": 13,
+     "sixes": 5
+    },
+    {
+     "name": "Shaheen Afridi",
+     "dismissal": "c Sam Curran b Jamie Overton",
+     "runs": 4,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Razaullah",
+     "dismissal": "b Will Jacks",
+     "runs": 8,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Haris Rauf",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Gus Atkinson",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 62,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henry Crocombe",
+     "overs": "6.1",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 5
+    },
+    {
+     "name": "Jamie Overton",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sam Curran",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Liam Dawson",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 30,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Will Jacks",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Fakhar Zaman",
+     "score": 18,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Saim Ayub",
+     "score": 27,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Babar Azam",
+     "score": 31,
+     "over": "6.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Saad Baig",
+     "score": 74,
+     "over": "11.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Hasan Nawaz",
+     "score": 102,
+     "over": "22.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Arafat Minhas",
+     "score": 103,
+     "over": "23.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Salman Agha",
+     "score": 122,
+     "over": "28.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Shaheen Afridi",
+     "score": 131,
+     "over": "29.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Razaullah",
+     "score": 154,
+     "over": "33.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 9,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 52
+  }
+ ],
+ "winner": "Pakistan",
+ "result": "Pakistan won by 1 wicket"
+}
