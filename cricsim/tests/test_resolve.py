@@ -59,3 +59,21 @@ def test_fixture_alternate_spellings_are_tried(tmp_path, monkeypatch):
     resolve.main.callback(tmp_path, tmp_path / "fx.json", tmp_path / "out.json")
     out = json.loads((tmp_path / "out.json").read_text())
     assert out["teams"][0]["players"] == ["sm", "kg"] and "India" in seen
+
+
+def test_find_venue_prefers_the_fixture_city_even_for_a_common_word(tmp_path):
+    """"stadium" matches dozens of grounds; Wellington's must still win for a Wellington fixture."""
+    import duckdb
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    from cricsim.resolve import find_venue
+    rows = [(f"v{i}", f"Ground {i} Stadium", f"City{i}") for i in range(25) for _ in range(10)]
+    rows += [("sky", "Sky Stadium", "Wellington")] * 2 + [("basin", "Basin Reserve", "Wellington")] * 5
+    (tmp_path / "matches").mkdir()
+    pq.write_table(pa.table({"venue_id": [r[0] for r in rows], "venue": [r[1] for r in rows],
+                             "venue_raw": [r[1] for r in rows], "city": [r[2] for r in rows]}),
+                   tmp_path / "matches" / "m.parquet")
+    con = duckdb.connect()
+    assert find_venue(con, tmp_path, "stadium", "Wellington") == ("sky", "Sky Stadium")
+    assert find_venue(con, tmp_path, "stadium", None)[0].startswith("v")

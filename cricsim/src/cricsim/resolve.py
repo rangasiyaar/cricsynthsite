@@ -101,16 +101,20 @@ def find_venue(con, parquet: Path, text: str, city: str | None = None) -> tuple[
     venue after the last comma) only grounds in that city count, so a name several cities share can't pick the wrong
     one; without a usable city, a search matching grounds in several cities is reported."""
     m = (parquet / "matches" / "*.parquet").as_posix()
-    rows = con.execute(f"""SELECT venue_id, any_value(venue), lower(any_value(city)), count(*) n FROM read_parquet('{m}')
-                           WHERE lower(venue) LIKE ? OR lower(venue_raw) LIKE ? GROUP BY 1 ORDER BY n DESC LIMIT 20""",
-                       [f"%{text.lower()}%"] * 2).fetchall()
-    if not rows:
-        return None, None
-    if city:
-        c = (canonical_city(city.strip()) or "").lower()
-        local = [r for r in rows if r[2] == c or c in r[1].lower()]
+    like = f"%{text.lower()}%"
+    if city:       # the city's own grounds first: a common word ("stadium") must not lose them below the top 20
+        c = (canonical_city(city.strip()) or city.strip()).lower()
+        local = con.execute(f"""SELECT venue_id, any_value(venue) FROM read_parquet('{m}')
+                                WHERE (lower(venue) LIKE ? OR lower(venue_raw) LIKE ?)
+                                  AND (lower(city) = ? OR lower(venue) LIKE ?)
+                                GROUP BY 1 ORDER BY count(*) DESC LIMIT 1""", [like, like, c, f"%{c}%"]).fetchall()
         if local:
             return local[0][0], local[0][1]
+    rows = con.execute(f"""SELECT venue_id, any_value(venue), lower(any_value(city)), count(*) n FROM read_parquet('{m}')
+                           WHERE lower(venue) LIKE ? OR lower(venue_raw) LIKE ? GROUP BY 1 ORDER BY n DESC LIMIT 20""",
+                       [like, like]).fetchall()
+    if not rows:
+        return None, None
     cities = {r[2] for r in rows if r[2] and r[3] >= max(3, rows[0][3] // 4)}
     if len(cities) > 1:
         click.echo(f"  warning: venue search {text!r} matches grounds in {', '.join(sorted(cities))}; "
