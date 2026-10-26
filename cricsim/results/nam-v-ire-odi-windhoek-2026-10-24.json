@@ -1,0 +1,403 @@
+{
+ "id": "nam-v-ire-odi-windhoek-2026-10-24",
+ "innings": [
+  {
+   "team": "Namibia",
+   "runs": 321,
+   "wickets": 6,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Michael van Lingen",
+     "dismissal": "c Paul Stirling b Curtis Campher",
+     "runs": 22,
+     "balls": 31,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Louren Steenkamp",
+     "dismissal": "c Lorcan Tucker b Byron McDonough",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jan Frylinck",
+     "dismissal": "c Jai Moondra b Gavin Hoey",
+     "runs": 76,
+     "balls": 90,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Gerhard Erasmus",
+     "dismissal": "not out",
+     "runs": 156,
+     "balls": 125,
+     "fours": 14,
+     "sixes": 4
+    },
+    {
+     "name": "Jan Nicol Loftie-Eaton",
+     "dismissal": "c Paul Stirling b Gavin Hoey",
+     "runs": 15,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Zane Green",
+     "dismissal": "c Paul Stirling b Gavin Hoey",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alexander Volschenk",
+     "dismissal": "c (sub)Jordan Neill b Jai Moondra",
+     "runs": 30,
+     "balls": 20,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "JJ Smit",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jai Moondra",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 63,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 7
+    },
+    {
+     "name": "Byron McDonough",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 71,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Andy McBrine",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Curtis Campher",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 74,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Gavin Hoey",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "George Dockrell",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Louren Steenkamp",
+     "score": 4,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Michael van Lingen",
+     "score": 49,
+     "over": "10.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jan Frylinck",
+     "score": 166,
+     "over": "32.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jan Nicol Loftie-Eaton",
+     "score": 211,
+     "over": "40.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Zane Green",
+     "score": 225,
+     "over": "42.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Alexander Volschenk",
+     "score": 317,
+     "over": "49.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 5,
+    "w": 11,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "Ireland",
+   "runs": 290,
+   "wickets": 10,
+   "overs": "47.3",
+   "batting": [
+    {
+     "name": "Andrew Balbirnie",
+     "dismissal": "run out ((sub)Malan Kruger/Zane Green)",
+     "runs": 22,
+     "balls": 34,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Paul Stirling",
+     "dismissal": "lbw b Jack Brassell",
+     "runs": 77,
+     "balls": 71,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Cade Carmichael",
+     "dismissal": "b Max Heingo",
+     "runs": 12,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Tector",
+     "dismissal": "b Jan Nicol Loftie-Eaton",
+     "runs": 6,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Lorcan Tucker",
+     "dismissal": "c JJ Smit b Jack Brassell",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Curtis Campher",
+     "dismissal": "c Zane Green b Jack Brassell",
+     "runs": 45,
+     "balls": 45,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "George Dockrell",
+     "dismissal": "c Zane Green b Jack Brassell",
+     "runs": 48,
+     "balls": 48,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Andy McBrine",
+     "dismissal": "run out (Gerhard Erasmus/Zane Green)",
+     "runs": 7,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gavin Hoey",
+     "dismissal": "c Jack Brassell b Gerhard Erasmus",
+     "runs": 31,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Jai Moondra",
+     "dismissal": "c and b Gerhard Erasmus",
+     "runs": 20,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Byron McDonough",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "JJ Smit",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 7
+    },
+    {
+     "name": "Ruben Trumpelmann",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 63,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Max Heingo",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Jack Brassell",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Jan Nicol Loftie-Eaton",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gerhard Erasmus",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Andrew Balbirnie",
+     "score": 54,
+     "over": "11"
+    },
+    {
+     "wicket": 2,
+     "batter": "Cade Carmichael",
+     "score": 98,
+     "over": "18.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harry Tector",
+     "score": 119,
+     "over": "21.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Lorcan Tucker",
+     "score": 120,
+     "over": "22.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Paul Stirling",
+     "score": 125,
+     "over": "24.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Curtis Campher",
+     "score": 210,
+     "over": "37.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "George Dockrell",
+     "score": 229,
+     "over": "39.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Andy McBrine",
+     "score": 231,
+     "over": "40.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jai Moondra",
+     "score": 289,
+     "over": "47.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Gavin Hoey",
+     "score": 290,
+     "over": "47.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 18,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 48
+  }
+ ],
+ "winner": "Namibia",
+ "result": "Namibia won by 31 runs"
+}
