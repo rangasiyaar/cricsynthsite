@@ -1,0 +1,120 @@
+{
+  "id": "nz-v-ind-t20i-wellington-2026-10-27",
+  "title": "New Zealand v India",
+  "date": "2026-10-27",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "India tour of New Zealand 2026 · 3rd T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Hnry Stadium, Wellington",
+  "venue_search": "stadium",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Finn Allen",
+        "Tim Seifert",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Kyle Jamieson",
+        "Jacob Duffy",
+        "Adam Milne"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Tim Seifert",
+        "Mitchell Santner",
+        "Finn Allen",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Nathan Smith",
+        "Jacob Duffy",
+        "Kyle Jamieson",
+        "Adam Milne",
+        "Blair Tickner",
+        "Matthew Fisher",
+        "Devon Conway"
+      ],
+      "captain": "Mitchell Santner"
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Sanju Samson",
+        "Abhishek Sharma",
+        "Vaibhav Sooryavanshi",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Nitish Kumar Reddy",
+        "Naman Dhir",
+        "Axar Patel",
+        "Bhuvneshwar Kumar",
+        "Arshdeep Singh",
+        "Prince Yadav"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Sanju Samson",
+        "Shreyas Iyer",
+        "Abhishek Sharma",
+        "Vaibhav Sooryavanshi",
+        "Tilak Varma",
+        "Nitish Kumar Reddy",
+        "Naman Dhir",
+        "Axar Patel",
+        "Bhuvneshwar Kumar",
+        "Arshdeep Singh",
+        "Prince Yadav",
+        "Shivam Dube",
+        "Kuldeep Yadav",
+        "Varun Chakaravarthy",
+        "Kumar Kushagra",
+        "Mayank Yadav"
+      ],
+      "captain": "Shreyas Iyer",
+      "aka": {
+        "Vaibhav Sooryavanshi": [
+          "Vaibhav Suryavanshi",
+          "V Suryavanshi"
+        ]
+      }
+    }
+  ],
+  "city": "Wellington"
+}
