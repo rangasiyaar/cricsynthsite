@@ -34,7 +34,7 @@ log = logging.getLogger(__name__)
 
 def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0, end: date | None = None,
                     twelve: bool = False, skipped: dict | None = None, latest: bool = False,
-                    latest_format: str = "T20", teams: list[str] | None = None) -> list[dict]:
+                    latest_format: str = "T20", teams: list[str] | None = None, family_only: bool = False) -> list[dict]:
     """Held-out matches with both XIs. Matches listing 12 players a side (an Impact Player or other substitute
     rule) are skipped and counted in `skipped`, or with twelve=True kept with the first 11 listed as the XI (what a
     forecast from the announced XI sees). latest=True: the most recent matches of `latest_format` (T20 = any
@@ -55,7 +55,7 @@ def holdout_matches(con, parquet: Path, cutoff: date, limit: int, seed: int = 0,
           {(("AND m.format = 'OD'" if latest_format == "OD" else "AND m.format IN ('T20', 'HUNDRED', 'T10')")
             + (" AND m.team1 IN (" + ",".join("'" + t.replace("'", "''") + "'" for t in teams) + ")"
                " AND m.team2 IN (" + ",".join("'" + t.replace("'", "''") + "'" for t in teams) + ")" if teams else ""))
-           if latest else ""}
+           if latest or family_only else ""}
         ORDER BY {"m.match_date DESC, m.match_id DESC" if latest else f"hash(m.match_id || '{seed}')"}
         LIMIT {4 * limit if latest else limit}""").fetchall()
     out = []
@@ -133,14 +133,16 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
                  twelve: bool = False, latest: int = 0, latest_format: str = "T20",
-                 latest_teams: list[str] | None = None, fantasy_rows: bool = False, stack_rows: bool = False) -> dict:
+                 latest_teams: list[str] | None = None, fantasy_rows: bool = False, stack_rows: bool = False,
+                 end: date | None = None) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
     latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first.
     fantasy_rows: also return every fantasy match's players (predictions, recent real points, real points) as
     rep["fantasy_rows"], for cricsim.fantasy_lab.
     stack_rows: also return every match's win chance and players' runs and wickets predictions next to real recent
-    form, team results and the outcome as rep["stack_rows"], for cricsim.stack_lab."""
+    form, team results and the outcome as rep["stack_rows"], for cricsim.stack_lab (one format family: with
+    a cutoff, only `latest_format` matches are drawn). end: only matches before this date (an earlier test window)."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     if latest:
@@ -154,7 +156,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     model = model or fit(parquet, cfg, memory=memory, con=con)
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
-    rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
+    rep = _run(con, parquet, model, cutoff, end, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
                latest_format, latest_teams, fantasy_rows, stack_rows)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
@@ -176,7 +178,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
          fantasy_rows: bool = False, stack_rows: bool = False) -> dict:
     skipped: dict = {}
     matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest,
-                              latest_format=latest_format, teams=latest_teams)
+                              latest_format=latest_format, teams=latest_teams, family_only=stack_rows)
     od_fantasy = latest and latest_format == "OD"          # one-day fantasy only when asked for (separate benchmark)
     history = None
     if fantasy_rows:
@@ -186,7 +188,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     if stack_rows:
         from cricsim import fantasy_history
         from cricsim.direct_features import Builder
-        fam = "OD" if latest and latest_format == "OD" else "T20"
+        fam = "OD" if latest_format == "OD" else "T20"
         stats = fantasy_history.build_stats(con, parquet, fam)
         direct = Builder(con, parquet, fam)
     log.info("backtesting %d matches", len(matches))

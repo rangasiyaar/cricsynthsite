@@ -57,6 +57,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), default=None)
 @click.option("--matches", default=600)
+@click.option("--end", type=click.DateTime(["%Y-%m-%d"]), default=None, help="With --cutoff: only matches before this date")
 @click.option("--latest", default=0, help="Test on the most recent N matches (trained up to the first)")
 @click.option("--latest-format", type=click.Choice(["T20", "OD"]), default="T20", help="With --latest: T20-type or one-day")
 @click.option("--latest-teams", default="", help="With --latest: only matches between these teams, comma-separated")
@@ -104,7 +105,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
               help="Also write every match's win chance and players' runs/wickets predictions with recent form for cricsim.stack_lab")
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
-def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: str, latest_teams: str, insample: int, half_life: float | None, fantasy_bowlers: bool,
+def backtest(parquet: Path, cutoff, end, matches: int, latest: int, latest_format: str, latest_teams: str, insample: int, half_life: float | None, fantasy_bowlers: bool,
              comp_groups: str | None, shrink: str, slot_usage: bool | None, bowl_focus: float | None,
              experience: bool | None, home: bool | None, recent_role: float | None, order: str, roles: bool, listed_bonus: float | None, overs_plan: bool | None, plan_eps: float | None, plan_power: float | None,
              phase_skill: bool | None, form: float | None, sims: int, new_ground: bool | None,
@@ -148,7 +149,8 @@ def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: st
                                                          ("era_ahead", era_ahead), ("dyn_order", dyn_order),
                                                          ("impact12", impact12 or None), ("fielding", fielding))
                                       if v is not None},
-                       order=order, roles=roles, twelve=twelve, fantasy_rows=fantasy_rows, stack_rows=stack_rows)
+                       order=order, roles=roles, twelve=twelve, fantasy_rows=fantasy_rows, stack_rows=stack_rows,
+                       end=end.date() if end else None)
     import json
     for key in ("fantasy_rows", "stack_rows"):
         if key in rep:

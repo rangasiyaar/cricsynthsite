@@ -9,6 +9,13 @@ on:
     branches: [claude/cricsynthesis-platform]
     paths: [".github/workflows/stack-lab.yml", "cricsim/src/cricsim/stack_lab.py", "cricsim/src/cricsim/direct_features.py"]
   workflow_dispatch:
+    inputs:
+      t20:
+        description: Backtest window for T20-type matches (default the latest 400)
+        default: --latest 400
+      od:
+        description: Backtest window for one-day matches (default the latest 200)
+        default: --latest 200 --latest-format OD
 
 permissions:
   contents: read
@@ -22,9 +29,9 @@ jobs:
       matrix:
         include:
           - family: T20
-            args: --latest 400
+            args: ${{ inputs.t20 || '--latest 400' }}
           - family: OD
-            args: --latest 200 --latest-format OD
+            args: ${{ inputs.od || '--latest 200 --latest-format OD' }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
