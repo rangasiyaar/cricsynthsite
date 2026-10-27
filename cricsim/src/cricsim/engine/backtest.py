@@ -447,11 +447,21 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     # the captain vote: 100 teams, each from one simulated match story (expected points moved halfway towards
     # that simulation); the most-voted captain if he is in our XI (vote_overall) / the most-voted inside it (vote_in_xi)
     vrng = np.random.default_rng(zlib.crc32(mt["match_id"].encode()) + 11)
-    votes = dict.fromkeys(pids, 0)
+    votes, vc_votes, picked = dict.fromkeys(pids, 0), dict.fromkeys(pids, 0), dict.fromkeys(pids, 0)
     mu = pts.mean(0)
     for s_ in vrng.choice(len(pts), size=min(100, len(pts)), replace=False):
-        votes[pick_xi({p: mean[p] + 0.5 * (pts[s_, j] - mu[j]) for j, p in enumerate(pids)}, team_of)[1]] += 1
+        xi_s, c_s, vc_s = pick_xi({p: mean[p] + 0.5 * (pts[s_, j] - mu[j]) for j, p in enumerate(pids)}, team_of)
+        votes[c_s] += 1
+        vc_votes[vc_s] += 1
+        for p in xi_s:
+            picked[p] += 1
     vote_key = {p: votes[p] * 1e3 + mean[p] for p in pids}
+    # the 11 picked most often across those teams: captain by our rule (expected points), and by the vote
+    mp_xi = pick_xi({p: picked[p] * 1e3 + mean[p] for p in pids}, team_of)[0]
+    mp_c, mp_vc = sorted(mp_xi, key=lambda p: -mean[p])[:2]
+    out["xi_most_picked"] = team_points(mp_xi, mp_c, mp_vc, real)
+    v_c, v_vc = sorted(mp_xi, key=lambda p: -(votes[p] * 1e6 + vc_votes[p] * 1e3 + mean[p]))[:2]
+    out["xi_most_picked_vote_captain"] = team_points(mp_xi, v_c, v_vc, real)
     top_vote = max(pids, key=lambda p: vote_key[p])
     out["cap_vote_overall"] = by_rule(lambda p: p == top_vote) if top_vote in xi else out["mean"]
     out["cap_vote_in_xi"] = by_rule(lambda p: True, vote_key)
@@ -715,6 +725,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
                                                    "cap_top_order", "cap_all_rounder", "cap_favoured_side", "cap_floor",
                                                    "cap_ar_bonus_0.15", "cap_ar_bonus_0.3", "cap_vote_overall", "cap_vote_in_xi",
+                                                   "xi_most_picked", "xi_most_picked_vote_captain",
                                                    "cap_shrink_0.1", "cap_shrink_0.2", "cap_shrink_0.3",
                                                    "cap_stretch_1.2", "cap_stretch_1.4", "xi_stretch_1.2", "xi_stretch_1.4",
                                                    "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
@@ -723,7 +734,8 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                           "captain_rules_v_live": _paired(f, "mean", ("oracle_captain", "upside_captain", "ptop_captain",
                                                                        "cap_top_order", "cap_all_rounder", "cap_floor",
                                                                        "cap_ar_bonus_0.15", "cap_ar_bonus_0.3",
-                                                                       "cap_vote_overall", "cap_vote_in_xi")),
+                                                                       "cap_vote_overall", "cap_vote_in_xi",
+                                                                       "xi_most_picked", "xi_most_picked_vote_captain")),
                           "ceiling_perfect_model": round(float(np.mean([r["ceil_team"] for r in f])
                                                                / np.mean([r["ceil_best"] for r in f])), 3)}
         if len(f) <= 30:
@@ -906,7 +918,8 @@ def write_report(rep: dict, path: Path) -> None:
         L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
         L.append("")
         if fz.get("captain_rules_v_live"):
-            L += ["Captain rules on our same XI v the live captain (points a match, 95% range)", "",
+            L += ["Captain rules on our same XI (and the most-picked XI of 100 match-story teams) v our live team "
+                  "(points a match, 95% range)", "",
                   "| Rule | v live captain | Better / worse / same |", "|---|---|---|"]
             L += [f"| {k} | {v['diff']:+.1f} ({v['lo']:+.1f} to {v['hi']:+.1f}) | {v['better']} / {v['worse']} / "
                   f"{v['n'] - v['better'] - v['worse']} |" for k, v in fz["captain_rules_v_live"].items()]
