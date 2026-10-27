@@ -684,5 +684,7 @@ def test_captain_lab_scores_on_a_scorecard(world):
                 {"name": a[1], "dismissal": "not out", "runs": 12, "balls": 10, "fours": 1, "sixes": 0}],
              "bowling": [{"name": b[9], "overs": "4", "maidens": 0, "runs": 30, "wickets": 3}]}]}
     r = evaluate(world["model"], cov, fixture, card, n_teams=20, n_sims=300)
-    assert r["best"] > 0 and all(0 < r[k]["share"] <= 1 for k in ("live", "captains", "live_top_captain"))
-    assert "captains team" in report([r, r])
+    assert r["best"] > 0 and all(0 < r[k]["share"] <= 1 for k in ("live", "captains", "live_top_captain", "appearances", "quota"))
+    assert abs(sum(r["p_top_role"].values()) - 1) < 0.05 and r["top_real"]["points"] >= 4
+    text = report([r, r])
+    assert "captains with role quotas" in text and "Who tops the scoring" in text

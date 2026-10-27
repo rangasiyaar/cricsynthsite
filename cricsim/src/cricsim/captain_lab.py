@@ -28,6 +28,44 @@ def captains_team(t: dict) -> tuple[list[str], str, str]:
     return pick_xi(rank, t["team_of"], t["use_roles"])
 
 
+QUOTA = {"WK": (1, 2), "BAT": (3, 4), "AR": (2, 3), "BOWL": (3, 4)}
+
+
+def _vote(t: dict) -> dict[str, float]:
+    counts, exp = t["counts"], t["exp"]
+    return {p: counts[p]["c"] * 1e6 + counts[p]["vc"] * 1e3 + exp[p] for p in t["pids"]}
+
+
+def appearances_team(t: dict) -> tuple[list[str], str, str]:
+    """The 11 players picked most often across the teams (within the rules); captain and vice-captain by the vote."""
+    counts, exp = t["counts"], t["exp"]
+    rank = {p: counts[p]["xi"] * 1e3 + counts[p]["c"] + exp[p] / 1e3 for p in t["pids"]}
+    return pick_xi(rank, t["team_of"], t["use_roles"], captain_score=_vote(t))
+
+
+def quota_captains_team(t: dict) -> tuple[list[str], str, str]:
+    """The most-voted captains per role, with role quotas (1-2 WK, 3-4 BAT, 2-3 AR, 3-4 BOWL) so bowlers get in."""
+    vote, roles, team_of = _vote(t), t["roles"], t["team_of"]
+    by_role = {r: sorted((p for p in t["pids"] if roles.get(p) == r), key=lambda p: -vote[p]) for r in QUOTA}
+    best, best_total = None, -1e30
+    for w in range(QUOTA["WK"][0], QUOTA["WK"][1] + 1):
+        for b in range(QUOTA["BAT"][0], QUOTA["BAT"][1] + 1):
+            for a in range(QUOTA["AR"][0], QUOTA["AR"][1] + 1):
+                bo = 11 - w - b - a
+                n = {"WK": w, "BAT": b, "AR": a, "BOWL": bo}
+                if not QUOTA["BOWL"][0] <= bo <= QUOTA["BOWL"][1] or any(len(by_role[r]) < n[r] for r in n):
+                    continue
+                xi = [p for r in n for p in by_role[r][:n[r]]]
+                per_team = [sum(team_of[p] == k for p in xi) for k in (0, 1)]
+                total = sum(vote[p] for p in xi)
+                if min(per_team) >= 1 and max(per_team) <= 10 and total > best_total:
+                    best, best_total = xi, total
+    if best is None:                                          # quotas can't be met (e.g. roles unknown)
+        return captains_team(t)
+    c, vc = sorted(best, key=lambda p: -vote[p])[:2]
+    return best, c, vc
+
+
 def evaluate(model, cov: dict, fixture: dict, card: dict, n_teams: int = 100, n_sims: int = 20_000) -> dict:
     t = build(model, cov, n_teams, n_sims)
     pids, team_of, roles, exp = t["pids"], t["team_of"], t["roles"], t["exp"]
@@ -40,6 +78,7 @@ def evaluate(model, cov: dict, fixture: dict, card: dict, n_teams: int = 100, n_
     best = team_points(*pick_xi(real, team_of, t["use_roles"]), real)
     live = t["live"]
     cap = captains_team(t)
+    appear, quota = appearances_team(t), quota_captains_team(t)
     top_c = max(pids, key=lambda p: (t["counts"][p]["c"], t["counts"][p]["vc"], exp[p]))
     live_c = (live[0], top_c, live[1] if live[1] != top_c else live[2]) if top_c in live[0] else live
 
@@ -49,34 +88,61 @@ def evaluate(model, cov: dict, fixture: dict, card: dict, n_teams: int = 100, n_
         return {"points": round(pts, 1), "share": round(pts / best, 4) if best > 0 else None,
                 "captain": shown.get(c, names[c]), "c_points": round(real[c], 1), "vice_captain": shown.get(vc, names[vc]),
                 "overlap": len(set(xi) & set(live[0]))}
+    # who really topped the scoring, against how often the simulations expected each role to
+    pts = t["pts"]
+    sim_top = pts.argmax(1)
+    p_role = {r: float(np.isin(sim_top, [j for j, p in enumerate(pids) if roles.get(p) == r]).mean()) for r in QUOTA}
+    top_real = max(pids, key=lambda p: real[p])
+    best_xi = pick_xi(real, team_of, t["use_roles"])
     return {"id": cov["id"], "title": cov.get("title"), "format": cov.get("format"), "best": round(best, 1),
-            "live": score(live), "captains": score(cap), "live_top_captain": score(live_c)}
+            "live": score(live), "captains": score(cap), "live_top_captain": score(live_c),
+            "appearances": score(appear), "quota": score(quota),
+            "top_real": {"player": shown.get(top_real, names[top_real]), "role": roles.get(top_real),
+                         "points": round(real[top_real], 1)},
+            "best_xi_roles": {r: sum(roles.get(p) == r for p in best_xi[0]) for r in QUOTA},
+            "live_xi_roles": {r: sum(roles.get(p) == r for p in live[0]) for r in QUOTA},
+            "p_top_role": {r: round(v, 4) for r, v in p_role.items()},
+            "captains_bowlers": sum(roles.get(p) == "BOWL" for p in cap[0])}
+
+
+TEAMS = {"live": "live team", "live_top_captain": "live team, top captain", "captains": "captains team",
+         "appearances": "most-picked XI", "quota": "captains with role quotas"}
 
 
 def report(rows: list[dict]) -> str:
     L = ["# Captains lab", "",
-         "Per match: our live single team; the same team with the most-picked captain; and the team of the 11 "
-         "most-picked captains (100 teams from the pre-match simulations). Real points, as a share of the best team "
-         "in hindsight.", "",
-         "| match | best | live team | live team, top captain | captains team | live captain (pts) | top captain (pts) | players shared |",
-         "|---|---:|---:|---:|---:|---|---|---:|"]
+         "Per match, real points (share of the best team in hindsight) of: our live single team; the same team with "
+         "the most-picked captain; the 11 most-picked captains; the 11 players picked most often across the teams "
+         "(captain by the vote); and the most-picked captains with role quotas (1-2 WK, 3-4 BAT, 2-3 AR, 3-4 BOWL). "
+         "100 teams per match from the pre-match simulations.", "",
+         "| match | best | " + " | ".join(TEAMS.values()) + " | real top scorer | bowlers: captains team / best XI |",
+         "|---|---:|" + "---:|" * len(TEAMS) + "---|---:|"]
     for r in rows:
-        lv, lc, ct = r["live"], r["live_top_captain"], r["captains"]
-        L.append(f"| {r['title']} ({r['id'][-10:]}) | {r['best']} | {lv['points']} ({lv['share']:.0%}) | "
-                 f"{lc['points']} ({lc['share']:.0%}) | {ct['points']} ({ct['share']:.0%}) | {lv['captain']} ({lv['c_points']}) | "
-                 f"{ct['captain']} ({ct['c_points']}) | {ct['overlap']}/11 |")
-    if rows:
-        def avg(k):
-            return np.mean([r[k]["share"] for r in rows]), np.mean([r[k]["points"] for r in rows])
-        d = np.array([r["captains"]["points"] - r["live"]["points"] for r in rows])
-        rng = np.random.default_rng(0)
+        cells = " | ".join(f"{r[k]['points']} ({r[k]['share']:.0%})" for k in TEAMS)
+        tr = r["top_real"]
+        L.append(f"| {r['title']} ({r['id'][-10:]}) | {r['best']} | {cells} | {tr['player']} ({tr['role']}, {tr['points']}) | "
+                 f"{r['captains_bowlers']} / {r['best_xi_roles']['BOWL']} |")
+    if not rows:
+        return "\n".join(L)
+    rng = np.random.default_rng(0)
+    L += ["", "| team | share of best (average) | points (average) | v live team (points a match, 95% range) | better in |",
+          "|---|---:|---:|---:|---:|"]
+    base = np.array([r["live"]["points"] for r in rows])
+    for k, name in TEAMS.items():
+        v = np.array([r[k]["points"] for r in rows])
+        d = v - base
         boot = [d[rng.integers(len(d), size=len(d))].mean() for _ in range(5000)]
         lo, hi = np.percentile(boot, [2.5, 97.5])
-        L += ["", "| | live team | live team, top captain | captains team |", "|---|---:|---:|---:|",
-              "| share of best (average) | " + " | ".join(f"{avg(k)[0]:.1%}" for k in ("live", "live_top_captain", "captains")) + " |",
-              "| points (average) | " + " | ".join(f"{avg(k)[1]:.1f}" for k in ("live", "live_top_captain", "captains")) + " |",
-              "", f"Captains team v live team: {d.mean():+.1f} points a match (95% range {lo:+.1f} to {hi:+.1f}), "
-              f"better in {(d > 0).sum()} of {len(d)} matches."]
+        L.append(f"| {name} | {np.mean([r[k]['share'] for r in rows]):.1%} | {v.mean():.1f} | "
+                 f"{d.mean():+.1f} ({lo:+.1f} to {hi:+.1f}) | {(d > 0).sum()} of {len(d)} |")
+    L += ["", "## Who tops the scoring: real matches v the simulations", "",
+          "| role | real top scorer (matches) | expected by the simulations (matches) | in the best XI (average) | in our live XI (average) |",
+          "|---|---:|---:|---:|---:|"]
+    for role in QUOTA:
+        real_n = sum(r["top_real"]["role"] == role for r in rows)
+        exp_n = sum(r["p_top_role"][role] for r in rows)
+        L.append(f"| {role} | {real_n} | {exp_n:.1f} | {np.mean([r['best_xi_roles'][role] for r in rows]):.1f} | "
+                 f"{np.mean([r['live_xi_roles'][role] for r in rows]):.1f} |")
     return "\n".join(L)
 
 
