@@ -116,3 +116,35 @@ def build(con, parquet: Path, family: str = "T20", players: set[str] | None = No
     for v in rows.values():
         v.sort()
     return History(rows)
+
+
+def build_stats(con, parquet: Path, family: str = "T20") -> dict:
+    """Real runs per innings batted, wickets per match bowled and every team's results, oldest first, for one
+    format family: what the stacking lab blends with the simulations."""
+    fmts = ", ".join(f"'{f}'" for f in FAMILIES[family])
+    d = (parquet / "deliveries" / "*.parquet").as_posix()
+    mt = (parquet / "matches" / "*.parquet").as_posix()
+    runs: dict[str, list] = {}
+    for p, dt, r in con.execute(f"""
+            SELECT batter_id, any_value(match_date), sum(runs_batter) FROM read_parquet('{d}')
+            WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL GROUP BY match_id, batter_id""").fetchall():
+        runs.setdefault(p, []).append((dt, float(r)))
+    wkts: dict[str, list] = {}
+    for p, dt, w in con.execute(f"""
+            SELECT bowler_id, any_value(match_date),
+                   count(*) FILTER (WHERE wicket_kind IN ('bowled', 'caught', 'lbw', 'stumped', 'caught and bowled', 'hit wicket'))
+            FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND bowler_id IS NOT NULL
+            GROUP BY match_id, bowler_id""").fetchall():
+        wkts.setdefault(p, []).append((dt, float(w)))
+    teams: dict[str, list] = {}
+    h2h: dict[tuple[str, str], list] = {}
+    for t1, t2, w, dt in con.execute(f"""
+            SELECT team1, team2, winner, match_date FROM read_parquet('{mt}')
+            WHERE format IN ({fmts}) AND winner IS NOT NULL AND winner IN (team1, team2)""").fetchall():
+        for a, b in ((t1, t2), (t2, t1)):
+            teams.setdefault(a, []).append((dt, 1.0 if w == a else 0.0))
+            h2h.setdefault((a, b), []).append((dt, 1.0 if w == a else 0.0))
+    for v in (*runs.values(), *wkts.values(), *teams.values(), *h2h.values()):
+        v.sort()
+    return {"runs": History(runs), "wkts": History(wkts), "teams": History(teams),
+            "h2h": History({f"{a}|{b}": v for (a, b), v in h2h.items()})}

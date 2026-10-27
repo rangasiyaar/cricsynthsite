@@ -133,12 +133,14 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  half_life: float | None = None, fantasy_bowlers: bool = False, fit_overrides: dict | None = None,
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
                  twelve: bool = False, latest: int = 0, latest_format: str = "T20",
-                 latest_teams: list[str] | None = None, fantasy_rows: bool = False) -> dict:
+                 latest_teams: list[str] | None = None, fantasy_rows: bool = False, stack_rows: bool = False) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
     latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first.
     fantasy_rows: also return every fantasy match's players (predictions, recent real points, real points) as
-    rep["fantasy_rows"], for cricsim.fantasy_lab."""
+    rep["fantasy_rows"], for cricsim.fantasy_lab.
+    stack_rows: also return every match's win chance and players' runs and wickets predictions next to real recent
+    form, team results and the outcome as rep["stack_rows"], for cricsim.stack_lab."""
     con = duckdb.connect()
     con.execute(f"SET memory_limit='{memory}'")
     if latest:
@@ -153,7 +155,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, None, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
-               latest_format, latest_teams, fantasy_rows)
+               latest_format, latest_teams, fantasy_rows, stack_rows)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -171,7 +173,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
          fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False,
          latest: bool = False, latest_format: str = "T20", latest_teams: list[str] | None = None,
-         fantasy_rows: bool = False) -> dict:
+         fantasy_rows: bool = False, stack_rows: bool = False) -> dict:
     skipped: dict = {}
     matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest,
                               latest_format=latest_format, teams=latest_teams)
@@ -180,6 +182,10 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     if fantasy_rows:
         from cricsim import fantasy_history
         history = fantasy_history.build(con, parquet, "OD" if od_fantasy else "T20")
+    stats = None
+    if stack_rows:
+        from cricsim import fantasy_history
+        stats = fantasy_history.build_stats(con, parquet, "OD" if latest and latest_format == "OD" else "T20")
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -232,6 +238,15 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                         if mt.get("toss_winner") else None,
                 "listed": mt.get("listed", 11)})
         actual_order = batting_order(con, mt["match_id"])
+        stack = None
+        if stats is not None:
+            stack = {"date": mt["date"], "format": mt["format"], "label": f"{mt['date']} · {t1} v {t2} ({mt['comp']})",
+                     "win": None, "bat": [], "bowl": []}
+            res.setdefault("stack", []).append(stack)
+            if mt["winner"] in (t1, t2):
+                stack["win"] = {"p": p1, "won": mt["winner"] == t1, "bf": bf,
+                                "t1": _form(stats["teams"], t1, mt["date"]), "t2": _form(stats["teams"], t2, mt["date"]),
+                                "h2h": _form(stats["h2h"], f"{t1}|{t2}", mt["date"])}
         if mt["format"] != "OD" or od_fantasy:
             res.setdefault("fantasy", []).append(_fantasy(con, model, spec, sims, mt, n_sims, fantasy_bowlers,
                                                           actual_order, history))
@@ -277,6 +292,11 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                 act = runs_by.get(p, 0)
                 group = ("established" if f"{p}|{mt['comp']}" in seen else
                          "cross-league debutant" if model.knows(p) else "unknown")
+                if stack is not None:
+                    stack["bat"].append({"p": p, "team": (bf + inn0) % 2, "slot": s + 1, "mean": float(sim_r.mean()),
+                                         "p30": float((sim_r >= 30).mean()), "p_bat": float(batted.mean()),
+                                         "balls": float(lg.bat_balls[batted, s].mean()), "known": model.knows(p),
+                                         "actual": act, "form": _form(stats["runs"], p, mt["date"], hit=30)})
                 res["players"].append({"group": group, "pred_mean": float(sim_r.mean()), "actual": act,
                                        "in80": bool(np.percentile(sim_r, 10) <= act <= np.percentile(sim_r, 90)),
                                        "p30": float((sim_r >= 30).mean()), "hit30": act >= 30,
@@ -294,6 +314,11 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                 act_b = bowled_by.get(p, 0)
                 sim_c = lg.bowl_runs[bowled, j]
                 act_c = conceded_by.get(p, 0)
+                if stack is not None:
+                    stack["bowl"].append({"p": p, "mean": float(sim_w.mean()), "p2": float((sim_w >= 2).mean()),
+                                          "p_bowls": float(bowled.mean()), "balls": float(lg.bowl_balls[bowled, j].mean()),
+                                          "known": model.knows(p), "actual": wk_by[p],
+                                          "form": _form(stats["wkts"], p, mt["date"], hit=2)})
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
                                        "pred_conceded": float(sim_c.mean()), "act_conceded": act_c,
                                        "conceded_in80": bool(np.percentile(sim_c, 10) <= act_c <= np.percentile(sim_c, 90)),
@@ -308,10 +333,21 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     rep = score(res, cutoff, len(matches))
     if fantasy_rows:
         rep["fantasy_rows"] = [r["rows"] for r in res.get("fantasy", []) if "rows" in r]
+    if stack_rows:
+        rep["stack_rows"] = res.get("stack", [])
     rep["listed_12"] = dict(sorted(skipped.items(), key=lambda kv: -kv[1]))
     rep["listed_12_included"] = twelve
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")
     return rep
+
+
+def _form(hist, key: str, day, hit: float | None = None) -> dict:
+    """Recent real form before `day` (History.features), plus the share of the last 10 at or above `hit`."""
+    f = hist.features(key, day)
+    if hit is not None:
+        x = hist.before(key, day)[-10:]
+        f["hit10"] = float((x >= hit).mean()) if len(x) else None
+    return f
 
 
 def _horizon(day, cutoff: date) -> str:

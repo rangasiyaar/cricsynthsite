@@ -1,0 +1,58 @@
+name: Stacking lab
+
+# Does blending the simulations with real recent form (players' runs and wickets, teams' results and head-to-head)
+# beat the simulations alone? Backtests the most recent matches (model trained up to the day before the first),
+# writes every prediction next to recent form and the outcome, and compares the simulations with calibrated and
+# stacked versions learned only from earlier matches (cricsim.stack_lab). Results in the run summary; rows kept as an artifact.
+on:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: [".github/workflows/stack-lab.yml", "cricsim/src/cricsim/stack_lab.py"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - family: T20
+            args: --latest 400
+          - family: OD
+            args: --latest 200 --latest-format OD
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Backtest with stacking rows
+        run: |
+          uv run python -m cricsim.engine backtest --parquet data/parquet ${{ matrix.args }} --sims 1000 \
+            --fielding both --stack-rows --out data/lab/${{ matrix.family }} --memory 3GB > /dev/null
+      - name: Compare simulations, calibration and stacks
+        run: uv run python -m cricsim.stack_lab data/lab/${{ matrix.family }}.stack_rows.json --out data/lab/${{ matrix.family }}-stack.md --weights-out data/lab/stack-weights-${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stack-lab-${{ matrix.family }}
+          path: data/lab/
+          retention-days: 30

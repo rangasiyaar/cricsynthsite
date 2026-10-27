@@ -615,3 +615,23 @@ def test_learned_fantasy_pick_uses_recent_form(world, monkeypatch):
     assert star in f["teams"][0]["players"]                # the set starts from the single pick
     monkeypatch.setattr(fantasy, "load_weights", lambda: {})
     assert fantasy_picks(world["model"], sims, form=form)["method"] == "simulations"
+
+
+def test_stack_rows_and_lab(world, tmp_path):
+    """Backtest rows carry win chances, players' runs/wickets predictions and real recent form; the stacking lab
+    scores the simulations against learned blends on later matches."""
+    import json
+
+    from cricsim.stack_lab import TARGETS, evaluate, fit_all, report
+    rep = run_backtest(world["parquet"], date(2024, 1, 1), limit=12, n_sims=100, stack_rows=True)
+    rows = json.loads(json.dumps(rep["stack_rows"], default=str))
+    assert len(rows) == 12 and sum(m["win"] is not None for m in rows) > 0
+    bat = [r for m in rows for r in m["bat"]]
+    assert bat and any(r["form"]["n"] > 0 and r["form"]["hit10"] is not None for r in bat)
+    assert all(0 <= r["p30"] <= 1 for r in bat) and any(m["bowl"] for m in rows)
+    for name, spec in TARGETS.items():
+        res = evaluate(rows, name, spec, min_train=4, refit=2)
+        assert res["_n"] and all(len(v[m]) == len(res["_n"]) for k, v in res.items() if k != "_n" for m in v)
+        assert "simulations (live)" in report(res, name, spec["kind"])
+        w = fit_all(rows, spec)
+        assert all(len(v["weights"]) == len(v["columns"]) for k, v in w.items() if k != "rows")

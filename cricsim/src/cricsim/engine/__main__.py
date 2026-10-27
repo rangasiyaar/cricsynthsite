@@ -100,6 +100,8 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--sims", default=1000)
 @click.option("--fantasy-rows", "fantasy_rows", is_flag=True,
               help="Also write every fantasy match's players (predictions, recent form, real points) for cricsim.fantasy_lab")
+@click.option("--stack-rows", "stack_rows", is_flag=True,
+              help="Also write every match's win chance and players' runs/wickets predictions with recent form for cricsim.stack_lab")
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/backtest/report"))
 @click.option("--memory", default="4GB")
 def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: str, latest_teams: str, insample: int, half_life: float | None, fantasy_bowlers: bool,
@@ -110,7 +112,7 @@ def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: st
              team_day: bool | None, chase_wickets: bool | None, collapse: bool | None, bat_switch: bool | None,
              era_team_type: bool | None, era_ahead: float | None, twelve: bool,
              dyn_order: float | None, rule_split: bool | None, impact12: bool, fielding: str | None,
-             fantasy_rows: bool, out: Path, memory: str) -> None:
+             fantasy_rows: bool, stack_rows: bool, out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
     over: dict = {"comp_groups": comp_groups} if comp_groups else {}
@@ -146,11 +148,12 @@ def backtest(parquet: Path, cutoff, matches: int, latest: int, latest_format: st
                                                          ("era_ahead", era_ahead), ("dyn_order", dyn_order),
                                                          ("impact12", impact12 or None), ("fielding", fielding))
                                       if v is not None},
-                       order=order, roles=roles, twelve=twelve, fantasy_rows=fantasy_rows)
-    if fantasy_rows:
-        import json
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.with_suffix(".fantasy_rows.json").write_text(json.dumps(rep.pop("fantasy_rows"), default=str))
+                       order=order, roles=roles, twelve=twelve, fantasy_rows=fantasy_rows, stack_rows=stack_rows)
+    import json
+    for key in ("fantasy_rows", "stack_rows"):
+        if key in rep:
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.with_suffix(f".{key}.json").write_text(json.dumps(rep.pop(key), default=str))
     write_report(rep, out)
     click.echo(out.with_suffix(".md").read_text())
 
