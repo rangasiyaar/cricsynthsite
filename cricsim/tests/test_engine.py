@@ -177,6 +177,8 @@ def test_backtest_runs_and_reports(world, tmp_path):
     assert {"cap_vote_overall", "cap_vote_in_xi", "cap_ar_bonus_0.3", "xi_most_picked_vote_captain"} <= set(cr)
     assert cr["oracle_captain"]["diff"] >= 0
     assert "Captain rules on our same XI" in text
+    ct = fz["contest"]["0.35"]
+    assert 0 <= ct["live_top_rate"] <= 1 and 0 < ct["field_top_rate"] < 0.3 and "Contest: top 22 of 197" in text
     rep_f = run_backtest(world["parquet"], date(2024, 1, 1), limit=6, n_sims=100, sim_overrides={"fielding": True})
     assert rep_f["fantasy"]["best_possible"] > 0
     rep_l = run_backtest(world["parquet"], None, latest=3, n_sims=100, sim_overrides={"fielding": True})

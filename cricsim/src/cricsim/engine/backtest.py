@@ -356,6 +356,69 @@ def _form(hist, key: str, day, hit: float | None = None) -> dict:
     return form(hist, key, day, hit)
 
 
+CONTEST = (197, 22)                     # field size and the places that count (top 22 of 197)
+FIELD_NOISE = (0.2, 0.35)               # how differently the other players rate each player (log-normal sd)
+
+
+def _contest(pids, pts, mean, team_of, real, live, stories, rng) -> dict:
+    """A small contest: our team against 196 others built by players who each rate everyone a bit differently
+    (expected points × a random factor), every team the best XI by its owner's ratings. The "contest team" is,
+    among our live team and the match-story teams, the one that beats the field's 22nd-best team in the most
+    simulations (pre-match only). Scored on the real match: rank in the field and whether it made the top 22."""
+    n_field, top = CONTEST[0] - 1, CONTEST[1]
+    col = {p: j for j, p in enumerate(pids)}
+
+    def sim_scores(team):
+        xi_, c_, vc_ = team
+        idx = [col[p] for p in xi_]
+        return pts[:, idx].sum(1) + pts[:, col[c_]] + 0.5 * pts[:, col[vc_]]
+    cands = [live] + stories
+    cand_sims = np.array([sim_scores(t) for t in cands])
+    out = {}
+    for noise in FIELD_NOISE:
+        field = [pick_xi({p: mean[p] * float(np.exp(rng.normal(0, noise))) for p in pids}, team_of) for _ in range(n_field)]
+        fsims = np.array([sim_scores(t) for t in field])                      # field × simulations
+        cut = np.partition(fsims, n_field - top, axis=0)[n_field - top]        # the field's 22nd-best score, per sim
+        p_top = (cand_sims > cut).mean(1)
+        best = cands[int(np.argmax(p_top))]
+        freal = np.array([team_points(*t, real) for t in field])
+
+        def rank(team):
+            got = team_points(*team, real)
+            return int((freal > got).sum()) + 1, float((freal < got).mean())
+        r_live, pct_live = rank(live)
+        r_best, pct_best = rank(best)
+        r_typ = [int((freal > freal[i]).sum()) for i in range(n_field)]          # a typical field player's rank
+        out[str(noise)] = {"live_rank": r_live, "live_pct": pct_live, "live_top": r_live <= top,
+                           "live_p_top": float(p_top[0]),
+                           "contest_rank": r_best, "contest_pct": pct_best, "contest_top": r_best <= top,
+                           "contest_p_top": float(p_top.max()), "contest_is_live": best is live,
+                           "field_top_rate": float(np.mean([r < top for r in r_typ]))}
+    return out
+
+
+def _contest_summary(f: list[dict]) -> dict:
+    out, rng = {}, np.random.default_rng(0)
+    rows = [r["contest"] for r in f if "contest" in r]
+    for noise in (str(n) for n in FIELD_NOISE):
+        v = [r[noise] for r in rows if noise in r]
+        if not v:
+            continue
+        d = np.array([x["contest_top"] - x["live_top"] for x in v], dtype=float)
+        boot = [d[rng.integers(len(d), size=len(d))].mean() for _ in range(2000)]
+        lo, hi = np.percentile(boot, [2.5, 97.5])
+        out[noise] = {"n": len(v), "live_top_rate": round(float(np.mean([x["live_top"] for x in v])), 3),
+                      "contest_top_rate": round(float(np.mean([x["contest_top"] for x in v])), 3),
+                      "field_top_rate": round(float(np.mean([x["field_top_rate"] for x in v])), 3),
+                      "live_percentile": round(float(np.mean([x["live_pct"] for x in v])), 3),
+                      "contest_percentile": round(float(np.mean([x["contest_pct"] for x in v])), 3),
+                      "live_predicted_top": round(float(np.mean([x["live_p_top"] for x in v])), 3),
+                      "contest_predicted_top": round(float(np.mean([x["contest_p_top"] for x in v])), 3),
+                      "contest_same_as_live": round(float(np.mean([x["contest_is_live"] for x in v])), 3),
+                      "contest_v_live": [round(float(d.mean()), 3), round(float(lo), 3), round(float(hi), 3)]}
+    return out
+
+
 def _paired(f: list[dict], base: str, keys: tuple[str, ...]) -> dict:
     """Points a match against `base` on the same matches, with a 95% bootstrap range and how often better / worse."""
     out, rng = {}, np.random.default_rng(0)
@@ -449,8 +512,10 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     vrng = np.random.default_rng(zlib.crc32(mt["match_id"].encode()) + 11)
     votes, vc_votes, picked = dict.fromkeys(pids, 0), dict.fromkeys(pids, 0), dict.fromkeys(pids, 0)
     mu = pts.mean(0)
+    stories = []
     for s_ in vrng.choice(len(pts), size=min(100, len(pts)), replace=False):
         xi_s, c_s, vc_s = pick_xi({p: mean[p] + 0.5 * (pts[s_, j] - mu[j]) for j, p in enumerate(pids)}, team_of)
+        stories.append((xi_s, c_s, vc_s))
         votes[c_s] += 1
         vc_votes[vc_s] += 1
         for p in xi_s:
@@ -465,6 +530,8 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     top_vote = max(pids, key=lambda p: vote_key[p])
     out["cap_vote_overall"] = by_rule(lambda p: p == top_vote) if top_vote in xi else out["mean"]
     out["cap_vote_in_xi"] = by_rule(lambda p: True, vote_key)
+    out["contest"] = _contest(pids, pts, mean, team_of, real, (xi, c, vc), stories,
+                              np.random.default_rng(zlib.crc32(mt["match_id"].encode()) + 13))
     # winner's-curse correction: the highest of several noisy estimates is too high, more so the noisier it is
     for k in (0.1, 0.2, 0.3):
         out[f"cap_shrink_{k}"] = by_rule(lambda p: True, {p: mean[p] - k * sd[p] for p in pids})
@@ -731,6 +798,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
                                                    "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
+                          "contest": _contest_summary(f),
                           "captain_rules_v_live": _paired(f, "mean", ("oracle_captain", "upside_captain", "ptop_captain",
                                                                        "cap_top_order", "cap_all_rounder", "cap_floor",
                                                                        "cap_ar_bonus_0.15", "cap_ar_bonus_0.3",
@@ -917,6 +985,20 @@ def write_report(rep: dict, path: Path) -> None:
               "| Strategy | Avg points | Share of best |", "|---|---|---|"]
         L += [f"| {k} | {v['points']} | {100 * v['share_of_best']:.1f}% |" for k, v in fz["strategies"].items()]
         L.append("")
+        if fz.get("contest"):
+            L += [f"Contest: top {CONTEST[1]} of {CONTEST[0]} against a modelled field (others rate players with "
+                  "noise of the given size; a typical field team finishes top 22 at the field rate)", "",
+                  "| Field noise | Matches | Live team top-22 | Contest team top-22 | Typical field team | "
+                  "Live percentile | Contest percentile | Contest v live (95% range) | Contest = live |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+            for k, v in fz["contest"].items():
+                cv = v["contest_v_live"]
+                L.append(f"| {k} | {v['n']} | {100 * v['live_top_rate']:.1f}% (predicted {100 * v['live_predicted_top']:.0f}%) | "
+                         f"{100 * v['contest_top_rate']:.1f}% (predicted {100 * v['contest_predicted_top']:.0f}%) | "
+                         f"{100 * v['field_top_rate']:.1f}% | {100 * v['live_percentile']:.0f}% | "
+                         f"{100 * v['contest_percentile']:.0f}% | {100 * cv[0]:+.1f} pts ({100 * cv[1]:+.1f} to {100 * cv[2]:+.1f}) | "
+                         f"{100 * v['contest_same_as_live']:.0f}% |")
+            L.append("")
         if fz.get("captain_rules_v_live"):
             L += ["Captain rules on our same XI (and the most-picked XI of 100 match-story teams) v our live team "
                   "(points a match, 95% range)", "",
