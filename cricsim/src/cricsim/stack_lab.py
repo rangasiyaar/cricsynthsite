@@ -7,6 +7,9 @@ next to his real recent runs and wickets. For each prediction it compares
 - the simulations alone (what the site shows),
 - a calibration layer (the simulation's own number, re-scaled),
 - a stack (the simulation's number plus recent form, team results or head-to-head),
+- a direct model: the outcome learned straight from match-level inputs (cricsim.direct_features: phase, matchup,
+  slot, ground, workload, form, team strength...) with no simulation, linear and as boosted trees,
+- a blend: the simulation's number plus the same direct inputs,
 
 where the learned ones are refitted rolling forward in date order, so nothing is judged on a match it learned from.
 Scores: Brier (and log-loss for the result) for chances, mean absolute and squared error for expected runs/wickets.
@@ -160,15 +163,64 @@ def _loss(kind, pred, y):
     return {"brier": (p - y) ** 2, "logloss": -(y * np.log(p) + (1 - y) * np.log(1 - p))}
 
 
+DIRECT = {"direct (linear)": ("direct", "linear"), "direct (boosted trees)": ("direct", "trees"),
+          "blend: simulations + direct (linear)": ("blend", "linear"),
+          "blend: simulations + direct (boosted trees)": ("blend", "trees")}
+
+
+def _direct_names(matches, which) -> list[str]:
+    names: set[str] = set()
+    for m in matches:
+        for r in _rows(m, which):
+            names |= set(r.get("x") or {})
+    return sorted(names)
+
+
+def _design(rows, spec, names):
+    """(simulation + recent-form inputs, direct inputs) for these rows."""
+    S = np.array([spec["x"](r) for r in rows], dtype=float)
+    D = np.array([[float((r.get("x") or {}).get(k, 0.0)) for k in names] for r in rows], dtype=float).reshape(len(rows), len(names))
+    if spec["rows"] == "win":                               # team results and head-to-head are direct inputs too
+        D = np.hstack([D, S[:, 2:5]])
+    return S, D
+
+
+def _inputs(how, S, D):
+    if how == "direct":
+        return np.hstack([np.ones((len(D), 1)), D])
+    return np.hstack([S[:, :2], D])                         # intercept, the simulation's number, direct inputs
+
+
+def _trees(kind, X, y):
+    from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
+    args = dict(max_iter=200, learning_rate=0.05, max_leaf_nodes=15, min_samples_leaf=40, l2_regularization=1.0,
+                early_stopping=False, random_state=0)
+    if kind == "mean":
+        return HistGradientBoostingRegressor(loss="poisson", **args).fit(X[:, 1:], y)
+    if len(set(y.tolist())) < 2:
+        return None
+    return HistGradientBoostingClassifier(**args).fit(X[:, 1:], y)
+
+
+def _trees_predict(kind, model, X, base):
+    if model is None:
+        return base
+    if kind == "mean":
+        return model.predict(X[:, 1:])
+    return np.clip(model.predict_proba(X[:, 1:])[:, 1], EPS, 1 - EPS)
+
+
 def evaluate(matches: list[dict], name: str, spec: dict, min_train: int, refit: int = 5,
-             lam_mean: float = 10.0, lam_prob: float = 1.0) -> dict:
+             lam_mean: float = 10.0, lam_prob: float = 1.0, trees: bool = True) -> dict:
     """Per judged match: each strategy's summed losses and the item count (for match-level bootstrap)."""
     matches = sorted(matches, key=lambda m: str(m["date"]))
     kind = spec["kind"]
     lam = lam_mean if kind == "mean" else lam_prob
-    X_by = [np.array([spec["x"](r) for r in _rows(m, spec["rows"])], dtype=float) for m in matches]
+    names = _direct_names(matches, spec["rows"])
+    direct = {k: v for k, v in DIRECT.items() if names and (trees or v[1] == "linear")}
+    designs = [_design(_rows(m, spec["rows"]), spec, names) for m in matches]
     y_by = [np.array([spec["y"](r) for r in _rows(m, spec["rows"])], dtype=float) for m in matches]
-    strategies = ["simulations (live)", *spec["strategies"]]
+    strategies = ["simulations (live)", *spec["strategies"], *direct]
     out = {k: {} for k in strategies}
     count = []
     fitted: dict = {}
@@ -178,12 +230,24 @@ def evaluate(matches: list[dict], name: str, spec: dict, min_train: int, refit: 
         if not any(len(y) for y in y_by[:i]):
             continue
         if not fitted or (i - min_train) % refit == 0:
-            Xt = np.vstack([x for x in X_by[:i] if len(x)])
+            St = np.vstack([s for s, _ in designs[:i] if len(s)])
+            Dt = np.vstack([d for s, d in designs[:i] if len(s)])
             yt = np.concatenate([y for y in y_by[:i] if len(y)])
-            fitted = {k: (cols, _fit(kind, Xt[:, cols], yt, lam)) for k, cols in spec["strategies"].items()}
-        X, y = X_by[i], y_by[i]
-        base = X[:, 1] if kind == "mean" else sigmoid(X[:, 1])
-        preds = {"simulations (live)": base, **{k: _predict(kind, X[:, cols], w) for k, (cols, w) in fitted.items()}}
+            fitted = {k: ("cols", cols, _fit(kind, St[:, cols], yt, lam)) for k, cols in spec["strategies"].items()}
+            for k, (how, model) in direct.items():
+                X = _inputs(how, St, Dt)
+                fitted[k] = (how, model, _fit(kind, X, yt, lam) if model == "linear" else _trees(kind, X, yt))
+        S, D = designs[i]
+        y = y_by[i]
+        base = S[:, 1] if kind == "mean" else sigmoid(S[:, 1])
+        preds = {"simulations (live)": base}
+        for k, (how, what, w) in fitted.items():
+            if how == "cols":
+                preds[k] = _predict(kind, S[:, what], w)
+            elif what == "linear":
+                preds[k] = _predict(kind, _inputs(how, S, D), w)
+            else:
+                preds[k] = _trees_predict(kind, w, _inputs(how, S, D), base)
         for k, p in preds.items():
             for metric, v in _loss(kind, p, y).items():
                 out[k].setdefault(metric, []).append(float(v.sum()))
@@ -219,14 +283,23 @@ def report(res: dict, title: str, kind: str) -> str:
 
 
 def fit_all(matches: list[dict], spec: dict, lam_mean: float = 10.0, lam_prob: float = 1.0) -> dict:
+    """Linear weights of every strategy fitted on all rows (the trees are only judged, not exported)."""
     rows = [r for m in matches for r in _rows(m, spec["rows"])]
     if not rows:
         return {}
-    X = np.array([spec["x"](r) for r in rows], dtype=float)
+    names = _direct_names(matches, spec["rows"])
+    S, D = _design(rows, spec, names)
     y = np.array([spec["y"](r) for r in rows], dtype=float)
     lam = lam_mean if spec["kind"] == "mean" else lam_prob
-    return {"rows": len(rows), **{k: {"columns": cols, "weights": [round(float(v), 6) for v in _fit(spec["kind"], X[:, cols], y, lam)]}
-                                  for k, cols in spec["strategies"].items()}}
+    out = {"rows": len(rows), "direct_inputs": names + (["team form (log-odds)", "team form (ewma)", "head-to-head"]
+                                                        if spec["rows"] == "win" else [])}
+    for k, cols in spec["strategies"].items():
+        out[k] = {"columns": cols, "weights": [round(float(v), 6) for v in _fit(spec["kind"], S[:, cols], y, lam)]}
+    if names:
+        for k, (how, model) in DIRECT.items():
+            if model == "linear":
+                out[k] = {"weights": [round(float(v), 6) for v in _fit(spec["kind"], _inputs(how, S, D), y, lam)]}
+    return out
 
 
 @click.command()

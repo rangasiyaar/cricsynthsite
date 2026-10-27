@@ -629,9 +629,14 @@ def test_stack_rows_and_lab(world, tmp_path):
     bat = [r for m in rows for r in m["bat"]]
     assert bat and any(r["form"]["n"] > 0 and r["form"]["hit10"] is not None for r in bat)
     assert all(0 <= r["p30"] <= 1 for r in bat) and any(m["bowl"] for m in rows)
+    assert all(len(r["x"]) == len(bat[0]["x"]) and np.isfinite(list(r["x"].values())).all() for r in bat)
+    assert any(r["x"]["known"] and r["x"]["avg"] > 0 for r in bat)          # a record from earlier matches
+    assert all("bat_avg_d" in m["win"]["x"] for m in rows if m["win"])
     for name, spec in TARGETS.items():
         res = evaluate(rows, name, spec, min_train=4, refit=2)
         assert res["_n"] and all(len(v[m]) == len(res["_n"]) for k, v in res.items() if k != "_n" for m in v)
         assert "simulations (live)" in report(res, name, spec["kind"])
+        assert "direct (linear)" in res and "blend: simulations + direct (boosted trees)" in res
         w = fit_all(rows, spec)
-        assert all(len(v["weights"]) == len(v["columns"]) for k, v in w.items() if k != "rows")
+        assert all(len(v["weights"]) == len(v["columns"]) for v in w.values() if isinstance(v, dict) and "columns" in v)
+        assert len(w["direct (linear)"]["weights"]) == len(w["direct_inputs"]) + 1

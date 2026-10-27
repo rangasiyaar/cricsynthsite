@@ -10,6 +10,9 @@ dependencies = [
     "click>=8.1",
 ]
 
+[project.optional-dependencies]
+lab = ["scikit-learn>=1.4"]   # stacking lab only: gradient-boosted direct models (never needed live)
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

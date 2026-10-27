@@ -185,7 +185,10 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
     stats = None
     if stack_rows:
         from cricsim import fantasy_history
-        stats = fantasy_history.build_stats(con, parquet, "OD" if latest and latest_format == "OD" else "T20")
+        from cricsim.direct_features import Builder
+        fam = "OD" if latest and latest_format == "OD" else "T20"
+        stats = fantasy_history.build_stats(con, parquet, fam)
+        direct = Builder(con, parquet, fam)
     log.info("backtesting %d matches", len(matches))
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     seen = {r[0] for r in con.execute(f"""
@@ -243,8 +246,11 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
             stack = {"date": mt["date"], "format": mt["format"], "label": f"{mt['date']} · {t1} v {t2} ({mt['comp']})",
                      "win": None, "bat": [], "bowl": []}
             res.setdefault("stack", []).append(stack)
+            ctx = direct.context(mt["date"], mt["venue_id"], mt["comp"], mt["xi"], [t1, t2], bf,
+                                 spec.rules["overs"] * spec.rules["bpo"], mt["gender"] == "female",
+                                 mt["team_type"] == "international")
             if mt["winner"] in (t1, t2):
-                stack["win"] = {"p": p1, "won": mt["winner"] == t1, "bf": bf,
+                stack["win"] = {"p": p1, "won": mt["winner"] == t1, "bf": bf, "x": direct.match(ctx),
                                 "t1": _form(stats["teams"], t1, mt["date"]), "t2": _form(stats["teams"], t2, mt["date"]),
                                 "h2h": _form(stats["h2h"], f"{t1}|{t2}", mt["date"])}
         if mt["format"] != "OD" or od_fantasy:
@@ -296,7 +302,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                     stack["bat"].append({"p": p, "team": (bf + inn0) % 2, "slot": s + 1, "mean": float(sim_r.mean()),
                                          "p30": float((sim_r >= 30).mean()), "p_bat": float(batted.mean()),
                                          "balls": float(lg.bat_balls[batted, s].mean()), "known": model.knows(p),
-                                         "actual": act, "form": _form(stats["runs"], p, mt["date"], hit=30)})
+                                         "actual": act, "form": _form(stats["runs"], p, mt["date"], hit=30),
+                                         "x": direct.batter(p, ctx, spec.teams[(bf + inn0) % 2].name, s + 1)})
                 res["players"].append({"group": group, "pred_mean": float(sim_r.mean()), "actual": act,
                                        "in80": bool(np.percentile(sim_r, 10) <= act <= np.percentile(sim_r, 90)),
                                        "p30": float((sim_r >= 30).mean()), "hit30": act >= 30,
@@ -318,7 +325,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
                     stack["bowl"].append({"p": p, "mean": float(sim_w.mean()), "p2": float((sim_w >= 2).mean()),
                                           "p_bowls": float(bowled.mean()), "balls": float(lg.bowl_balls[bowled, j].mean()),
                                           "known": model.knows(p), "actual": wk_by[p],
-                                          "form": _form(stats["wkts"], p, mt["date"], hit=2)})
+                                          "form": _form(stats["wkts"], p, mt["date"], hit=2),
+                                          "x": direct.bowler(p, ctx, spec.teams[(bf + inn0 + 1) % 2].name)})
                 res["bowlers"].append({"p2": float((sim_w >= 2).mean()), "hit2": wk_by[p] >= 2,
                                        "pred_conceded": float(sim_c.mean()), "act_conceded": act_c,
                                        "conceded_in80": bool(np.percentile(sim_c, 10) <= act_c <= np.percentile(sim_c, 90)),

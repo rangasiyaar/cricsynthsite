@@ -7,7 +7,7 @@ name: Stacking lab
 on:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: [".github/workflows/stack-lab.yml", "cricsim/src/cricsim/stack_lab.py"]
+    paths: [".github/workflows/stack-lab.yml", "cricsim/src/cricsim/stack_lab.py", "cricsim/src/cricsim/direct_features.py"]
   workflow_dispatch:
 
 permissions:
