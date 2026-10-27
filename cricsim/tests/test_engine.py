@@ -655,3 +655,17 @@ def test_bowling_form_for_a_fixture_matches_the_full_history(world):
     day = _date(2030, 1, 1)
     assert form(some["wkts"], pid, day, hit=2) == form(full["wkts"], pid, day, hit=2)
     assert set(some["wkts"].dates) == {pid}
+
+
+def test_fantasy_teams_table(world):
+    """Many teams from simulated match stories: every team has one captain and one vice-captain, eleven players."""
+    from cricsim.fantasy_teams import markdown, teams
+    spec = _spec(world["world"])
+    cov = {"id": "t", "title": "A v B", "format": "T20", "gender": "male", "comp_key": spec.comp_key,
+           "venue_id": spec.venue_id, "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
+    fixture = {"teams": [{"players": [f"Player {p}" for p in t.players]} for t in spec.teams]}
+    res = teams(world["model"], cov, n_teams=20, n_sims=300, fixture=fixture)
+    assert sum(r["captain"] for r in res["rows"]) == 20 == sum(r["vice_captain"] for r in res["rows"])
+    assert sum(r["in_xi"] for r in res["rows"]) == 20 * 11
+    assert abs(sum(r["top_scorer"] for r in res["rows"]) - 100) < 1
+    assert res["rows"][0]["player"].startswith("Player ") and "| captain |" in markdown(res)

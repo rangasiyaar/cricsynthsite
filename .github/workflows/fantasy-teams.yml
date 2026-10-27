@@ -1,0 +1,55 @@
+name: Fantasy teams
+
+# Builds many fantasy teams for one fixture from its simulated match stories and tables who captains them
+# (cricsim.fantasy_teams). Uses the day's saved data and model when there is one. Result in the run summary.
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: Fixture file name in cricsim/fixtures/
+        required: true
+      teams:
+        description: How many teams
+        default: "100"
+
+permissions:
+  contents: read
+
+jobs:
+  teams:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: |
+          h="${{ hashFiles('cricsim/src/cricsim/engine/**', '!cricsim/src/cricsim/engine/backtest.py', '!cricsim/src/cricsim/engine/mvp_backtest.py', '!cricsim/src/cricsim/engine/__main__.py', 'cricdata/src/**') }}"
+          echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+          restore-keys: ${{ steps.day.outputs.prev }}
+      - name: Data and model (only when nothing is saved)
+        if: steps.cache.outputs.cache-matched-key == ''
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+          uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - name: Teams
+        run: |
+          f="cricsim/fixtures/${{ inputs.fixture }}"
+          uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" --out data/resolved.json
+          set -o pipefail
+          uv run python -m cricsim.fantasy_teams --model data/models/latest --coverage data/resolved.json \
+            --fixture "$f" --teams ${{ inputs.teams }} | tee -a "$GITHUB_STEP_SUMMARY"
