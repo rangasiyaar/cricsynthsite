@@ -24,6 +24,25 @@ from cricsim.fantasy import decisive_mean, load_weights, pick_xi, sim_features, 
 
 def teams(model, cov: dict, n_teams: int = 100, n_sims: int = 20_000, mix: float = 0.5, seed: int = 0,
           fixture: dict | None = None) -> dict:
+    t = build(model, cov, n_teams, n_sims, mix, seed)
+    pids, pts, exp, roles, team_of, counts = (t[k] for k in ("pids", "pts", "exp", "roles", "team_of", "counts"))
+    top = pts.argmax(1)
+    names = {p: (model.names[model.pid(p)] if model.knows(p) else p.removeprefix("new:")) for p in pids}
+    shown = ({p: n for t, ft in zip(cov["teams"], fixture["teams"]) for p, n in zip(t["players"], ft["players"])}
+             if fixture else {})          # the names as the fixture gave them
+    rows = [{"player": shown.get(p, names[p]), "team": cov["teams"][team_of[p]].get("short") or cov["teams"][team_of[p]]["name"],
+             "role": roles.get(p), "expected": round(exp[p], 1), "p90": round(float(np.percentile(pts[:, j], 90)), 1),
+             "captain": counts[p]["c"], "vice_captain": counts[p]["vc"], "in_xi": counts[p]["xi"],
+             "top_scorer": round(float((top == j).mean()) * 100, 1)} for j, p in enumerate(pids)]
+    rows.sort(key=lambda r: (-r["captain"], -r["vice_captain"], -r["expected"]))
+    live = t["live"]
+    return {"title": cov.get("title"), "teams": n_teams, "simulations": int(len(pts)), "mix": mix, "rows": rows,
+            "live_captain": shown.get(live[1], names[live[1]]), "live_vice_captain": shown.get(live[2], names[live[2]])}
+
+
+def build(model, cov: dict, n_teams: int = 100, n_sims: int = 20_000, mix: float = 0.5, seed: int = 0) -> dict:
+    """The simulations, everyone's expected points (as the live pick computes them), the live single XI and how often
+    each player is captain / vice-captain / in the XI across `n_teams` teams built from simulated match stories."""
     from cricsim.engine.modelling import infer_roles
     spec, scenario = spec_from_dict(cov)
     sims = simulate(model, spec, n=n_sims, scenario=scenario, seed=seed)
@@ -48,18 +67,8 @@ def teams(model, cov: dict, n_teams: int = 100, n_sims: int = 20_000, mix: float
         counts[vc]["vc"] += 1
         for p in xi:
             counts[p]["xi"] += 1
-    top = pts.argmax(1)
-    names = {p: (model.names[model.pid(p)] if model.knows(p) else p.removeprefix("new:")) for p in pids}
-    shown = ({p: n for t, ft in zip(cov["teams"], fixture["teams"]) for p, n in zip(t["players"], ft["players"])}
-             if fixture else {})          # the names as the fixture gave them
-    rows = [{"player": shown.get(p, names[p]), "team": cov["teams"][team_of[p]].get("short") or cov["teams"][team_of[p]]["name"],
-             "role": roles.get(p), "expected": round(exp[p], 1), "p90": round(float(np.percentile(pts[:, j], 90)), 1),
-             "captain": counts[p]["c"], "vice_captain": counts[p]["vc"], "in_xi": counts[p]["xi"],
-             "top_scorer": round(float((top == j).mean()) * 100, 1)} for j, p in enumerate(pids)]
-    rows.sort(key=lambda r: (-r["captain"], -r["vice_captain"], -r["expected"]))
-    live = pick_xi(exp, team_of, use_roles)
-    return {"title": cov.get("title"), "teams": n_teams, "simulations": int(sims.n), "mix": mix, "rows": rows,
-            "live_captain": shown.get(live[1], names[live[1]]), "live_vice_captain": shown.get(live[2], names[live[2]])}
+    return {"pids": pids, "pts": pts, "exp": exp, "roles": roles, "use_roles": use_roles, "team_of": team_of,
+            "counts": counts, "live": pick_xi(exp, team_of, use_roles)}
 
 
 def markdown(res: dict) -> str:

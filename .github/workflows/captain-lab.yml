@@ -1,0 +1,62 @@
+name: Captains lab
+
+# For every match with a manual scorecard: 100 teams from the pre-match simulations, the team of the most-picked
+# captains v our live single team, scored on the real scorecard (cricsim.captain_lab). The model is fitted only on
+# matches before `cutoff` (the first scored match) so nothing is learned from the matches being judged.
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff:
+        description: Fit the model on matches before this date
+        default: "2026-10-11"
+      teams:
+        description: Teams per match
+        default: "100"
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: |
+          h="${{ hashFiles('cricsim/src/cricsim/engine/**', '!cricsim/src/cricsim/engine/backtest.py', '!cricsim/src/cricsim/engine/mvp_backtest.py', '!cricsim/src/cricsim/engine/__main__.py', 'cricdata/src/**') }}"
+          echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+          restore-keys: ${{ steps.day.outputs.prev }}
+      - name: Data (only when nothing is saved)
+        if: steps.cache.outputs.cache-matched-key == ''
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Fit before the cutoff
+        run: uv run python -m cricsim.engine fit --parquet data/parquet --cutoff ${{ inputs.cutoff }} --out data/models/cutoff --memory 3GB > /dev/null
+      - name: Resolve the scored matches' fixtures
+        run: |
+          mkdir -p data/coverage
+          for r in cricsim/results/*.json; do
+            f="cricsim/fixtures/$(basename "$r")"
+            [ -f "$f" ] && uv run python -m cricsim.resolve --parquet data/parquet --fixture "$f" --out "data/coverage/$(basename "$r")" > /dev/null
+          done
+      - name: Captains lab
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.captain_lab --model data/models/cutoff --coverage data/coverage \
+            --teams ${{ inputs.teams }} | tee -a "$GITHUB_STEP_SUMMARY"

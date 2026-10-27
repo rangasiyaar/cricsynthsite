@@ -669,3 +669,20 @@ def test_fantasy_teams_table(world):
     assert sum(r["in_xi"] for r in res["rows"]) == 20 * 11
     assert abs(sum(r["top_scorer"] for r in res["rows"]) - 100) < 1
     assert res["rows"][0]["player"].startswith("Player ") and "| captain |" in markdown(res)
+
+
+def test_captain_lab_scores_on_a_scorecard(world):
+    """The captains team and the live team are scored on a manual scorecard against the best team in hindsight."""
+    from cricsim.captain_lab import evaluate, report
+    spec = _spec(world["world"])
+    cov = {"id": "lab-match", "title": "A v B", "format": "T20", "gender": "male", "comp_key": spec.comp_key,
+           "venue_id": spec.venue_id, "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
+    fixture = {"teams": [{"players": [f"Player {p}" for p in t.players]} for t in spec.teams]}
+    a, b = fixture["teams"][0]["players"], fixture["teams"][1]["players"]
+    card = {"innings": [{"team": spec.teams[0].name, "batting": [
+                {"name": a[0], "dismissal": f"c {b[3]} b {b[9]}", "runs": 64, "balls": 40, "fours": 6, "sixes": 3},
+                {"name": a[1], "dismissal": "not out", "runs": 12, "balls": 10, "fours": 1, "sixes": 0}],
+             "bowling": [{"name": b[9], "overs": "4", "maidens": 0, "runs": 30, "wickets": 3}]}]}
+    r = evaluate(world["model"], cov, fixture, card, n_teams=20, n_sims=300)
+    assert r["best"] > 0 and all(0 < r[k]["share"] <= 1 for k in ("live", "captains", "live_top_captain"))
+    assert "captains team" in report([r, r])
