@@ -12,7 +12,8 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "batting_first": 0,
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "Netherlands",
@@ -22,22 +23,22 @@
         "Michael Levitt",
         "Colin Ackermann",
         "Bas de Leede",
-        "Scott Edwards",
-        "Zach Lion-Cachet",
         "Noah Croes",
+        "Zach Lion-Cachet",
+        "Cedric de Lange",
         "Aryan Dutt",
+        "Daniel Doram",
         "Timm van der Gugten",
-        "Paul van Meekeren",
-        "Vivian Kingma"
+        "Fred Klaassen"
       ],
       "roles": [
         "BAT",
         "BAT",
         "AR",
         "AR",
-        "BAT",
-        "BAT",
         "WK",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -58,7 +59,8 @@
         "Scott Edwards",
         "Vivian Kingma",
         "Saqib Zulfiqar",
-        "Musa Ahmed"
+        "Musa Ahmed",
+        "Daniel Doram"
       ],
       "captain": "Bas de Leede"
     },
@@ -68,24 +70,24 @@
       "players": [
         "Jatinder Singh",
         "Hammad Mirza",
+        "Aryan Bisht",
         "Mujibur Ali",
         "Zikria Islam",
         "Vinayak Shukla",
         "Sanju Sajeev",
         "Jay Odedra",
-        "Shakeel Ahmed",
         "Samay Shrivastava",
         "Shah Faisal",
         "Hassnain Shah"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "WK",
+        "BAT",
+        "BAT",
         "AR",
-        "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -106,7 +108,8 @@
         "Karan Sonavale",
         "Zikria Islam",
         "Nadeem Khan",
-        "Abdul Khaliq"
+        "Abdul Khaliq",
+        "Aryan Bisht"
       ],
       "captain": "Vinayak Shukla"
     }
