@@ -641,3 +641,17 @@ def test_stack_rows_and_lab(world, tmp_path):
         w = fit_all(rows, spec)
         assert all(len(v["weights"]) == len(v["columns"]) for v in w.values() if isinstance(v, dict) and "columns" in v)
         assert len(w["direct (linear)"]["weights"]) == len(w["direct_inputs"]) + 1
+
+
+def test_bowling_form_for_a_fixture_matches_the_full_history(world):
+    """resolve reads only the fixture's players' wickets: the same form as from everyone's history."""
+    from datetime import date as _date
+
+    from cricsim.fantasy_history import build_stats, form
+    con = duckdb.connect()
+    full = build_stats(con, world["parquet"], "T20")
+    pid = next(p for p in full["wkts"].dates if len(full["wkts"].dates[p]) > 3)
+    some = build_stats(con, world["parquet"], "T20", players={pid})
+    day = _date(2030, 1, 1)
+    assert form(some["wkts"], pid, day, hit=2) == form(full["wkts"], pid, day, hit=2)
+    assert set(some["wkts"].dates) == {pid}

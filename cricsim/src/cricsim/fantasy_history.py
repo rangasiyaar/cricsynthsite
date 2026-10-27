@@ -118,22 +118,34 @@ def build(con, parquet: Path, family: str = "T20", players: set[str] | None = No
     return History(rows)
 
 
-def build_stats(con, parquet: Path, family: str = "T20") -> dict:
+def form(hist: History, key: str, day: date, hit: float | None = None) -> dict:
+    """Recent real form before `day` (History.features), plus the share of the last 10 at or above `hit`."""
+    f = hist.features(key, day)
+    if hit is not None:
+        x = hist.before(key, day)[-10:]
+        f["hit10"] = float((x >= hit).mean()) if len(x) else None
+    return f
+
+
+def build_stats(con, parquet: Path, family: str = "T20", players: set[str] | None = None) -> dict:
     """Real runs per innings batted, wickets per match bowled and every team's results, oldest first, for one
-    format family: what the stacking lab blends with the simulations."""
+    format family: what the stacking lab blends with the simulations (only `players`' runs and wickets if given)."""
     fmts = ", ".join(f"'{f}'" for f in FAMILIES[family])
+    ids = ", ".join("'" + p.replace("'", "''") + "'" for p in players) if players else ""
     d = (parquet / "deliveries" / "*.parquet").as_posix()
     mt = (parquet / "matches" / "*.parquet").as_posix()
     runs: dict[str, list] = {}
     for p, dt, r in con.execute(f"""
             SELECT batter_id, any_value(match_date), sum(runs_batter) FROM read_parquet('{d}')
-            WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL GROUP BY match_id, batter_id""").fetchall():
+            WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL{f" AND batter_id IN ({ids})" if ids else ""}
+            GROUP BY match_id, batter_id""").fetchall():
         runs.setdefault(p, []).append((dt, float(r)))
     wkts: dict[str, list] = {}
     for p, dt, w in con.execute(f"""
             SELECT bowler_id, any_value(match_date),
                    count(*) FILTER (WHERE wicket_kind IN ('bowled', 'caught', 'lbw', 'stumped', 'caught and bowled', 'hit wicket'))
             FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND bowler_id IS NOT NULL
+              {f"AND bowler_id IN ({ids})" if ids else ""}
             GROUP BY match_id, bowler_id""").fetchall():
         wkts.setdefault(p, []).append((dt, float(w)))
     teams: dict[str, list] = {}

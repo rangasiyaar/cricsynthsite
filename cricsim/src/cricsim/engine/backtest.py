@@ -352,12 +352,8 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
 
 
 def _form(hist, key: str, day, hit: float | None = None) -> dict:
-    """Recent real form before `day` (History.features), plus the share of the last 10 at or above `hit`."""
-    f = hist.features(key, day)
-    if hit is not None:
-        x = hist.before(key, day)[-10:]
-        f["hit10"] = float((x >= hit).mean()) if len(x) else None
-    return f
+    from cricsim.fantasy_history import form
+    return form(hist, key, day, hit)
 
 
 def _horizon(day, cutoff: date) -> str:

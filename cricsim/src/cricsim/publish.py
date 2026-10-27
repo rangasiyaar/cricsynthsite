@@ -23,6 +23,7 @@ from pathlib import Path
 
 import click
 
+from cricsim import stack
 from cricsim.engine.io import spec_from_dict
 from cricsim.engine.model import Model
 from cricsim.engine.pack import engine_pack
@@ -52,7 +53,7 @@ MATCH_FIELDS = ("id", "title", "date", "start_time", "format", "gender", "compet
 def code_key() -> str:
     """The simulation and publishing code: a change to any of it means simulating again."""
     h = hashlib.sha256()
-    for f in sorted(Path(__file__).parent.rglob("*.py")):
+    for f in sorted([*Path(__file__).parent.rglob("*.py"), *Path(__file__).parent.glob("*_weights.json")]):
         h.update(f.read_bytes())
     return h.hexdigest()[:16]
 
@@ -100,6 +101,8 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
     spec, scenario = spec_from_dict(cov)
     sims = simulate(model, spec, n=n, scenario=scenario, seed=seed)
     summary = summarize(sims, model)
+    if sims.scenario.start is None:           # pre-match: bowlers' wickets blended with their recent real wickets
+        stack.adjust_bowlers(summary, cov.get("bowl_form"), cov.get("format"), sims.rules["bpo"])
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     match = {k: cov.get(k) for k in MATCH_FIELDS}
     match["teams"] = [{"name": t["name"], "short": t.get("short") or short_name(t["name"]), "players": t["players"]}

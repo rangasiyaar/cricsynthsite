@@ -329,6 +329,9 @@ def main(rows: tuple[Path, ...], out: Path, min_train: int, weights_out: Path | 
     if weights_out:
         weights_out.parent.mkdir(parents=True, exist_ok=True)
         weights_out.write_text(json.dumps(weights, indent=1))
+        from cricsim.stack import MEAN, P2              # the blend that goes live (cricsim/stack_weights.json)
+        live = {fam: {t: {s: v[t][s]} for t, s in (P2, MEAN) if s in v.get(t, {})} for fam, v in weights.items()}
+        click.echo(f"live weights (cricsim/src/cricsim/stack_weights.json): {json.dumps(live)}")
     click.echo(out.read_text())
 
 

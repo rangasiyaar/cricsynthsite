@@ -191,6 +191,12 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
         day = _date.fromisoformat(fx["date"])
         fx["form"] = {p: hist.features(p, day) for p in sorted(ids)}
         click.echo(f"  fantasy form: {sum(f['n'] > 0 for f in fx['form'].values())}/{len(ids)} players with past matches")
+        fam = fantasy_history.family(fx["format"])
+        from cricsim.stack import families
+        if fam in families():                  # recent real wickets, for the bowlers' blended forecasts
+            stats = fantasy_history.build_stats(con, parquet, fam, players=ids)
+            fx["bowl_form"] = {p: fantasy_history.form(stats["wkts"], p, day, hit=2) for p in sorted(ids)}
+            click.echo(f"  bowling form: {sum(f['n'] > 0 for f in fx['bowl_form'].values())}/{len(ids)} players have bowled")
     if missing:
         click.echo("  newcomers: " + "; ".join(missing))
     out.parent.mkdir(parents=True, exist_ok=True)

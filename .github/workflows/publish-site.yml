@@ -21,7 +21,7 @@ on:
         default: false
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read
@@ -49,7 +49,8 @@ jobs:
       - name: Day key
         id: day
         run: |
-          h="${{ hashFiles('cricsim/src/cricsim/engine/**', 'cricdata/src/**') }}"
+          # the code that shapes the data and the fitted model (not the backtest and lab tools beside it)
+          h="${{ hashFiles('cricsim/src/cricsim/engine/**', '!cricsim/src/cricsim/engine/backtest.py', '!cricsim/src/cricsim/engine/mvp_backtest.py', '!cricsim/src/cricsim/engine/__main__.py', 'cricdata/src/**') }}"
           echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
           # the last two days' data and model, used when today's download fails
           echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
