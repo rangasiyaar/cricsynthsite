@@ -178,6 +178,8 @@ def _direct_names(matches, which) -> list[str]:
 
 def _design(rows, spec, names):
     """(simulation + recent-form inputs, direct inputs) for these rows."""
+    if not rows:                                            # e.g. no result, so no win-chance row
+        return np.empty((0, 0)), np.empty((0, 0))
     S = np.array([spec["x"](r) for r in rows], dtype=float)
     D = np.array([[float((r.get("x") or {}).get(k, 0.0)) for k in names] for r in rows], dtype=float).reshape(len(rows), len(names))
     if spec["rows"] == "win":                               # team results and head-to-head are direct inputs too
