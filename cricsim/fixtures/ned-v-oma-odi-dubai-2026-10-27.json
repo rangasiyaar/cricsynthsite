@@ -20,25 +20,25 @@
       "short": "NED",
       "players": [
         "Max O'Dowd",
-        "Michael Levitt",
-        "Colin Ackermann",
-        "Bas de Leede",
-        "Noah Croes",
-        "Zach Lion-Cachet",
         "Cedric de Lange",
-        "Aryan Dutt",
-        "Daniel Doram",
+        "Noah Croes",
+        "Bas de Leede",
+        "Zach Lion-Cachet",
+        "Colin Ackermann",
+        "Michael Levitt",
         "Timm van der Gugten",
-        "Fred Klaassen"
+        "Aryan Dutt",
+        "Fred Klaassen",
+        "Daniel Doram"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "AR",
         "AR",
         "WK",
         "AR",
         "AR",
+        "AR",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -69,24 +69,24 @@
       "short": "OMA",
       "players": [
         "Jatinder Singh",
+        "Jeet Shah",
+        "Mujibur Ali",
         "Hammad Mirza",
         "Aryan Bisht",
-        "Mujibur Ali",
+        "Saishiv Narayan",
         "Zikria Islam",
-        "Vinayak Shukla",
-        "Sanju Sajeev",
         "Jay Odedra",
-        "Samay Shrivastava",
+        "Hassnain Shah",
         "Shah Faisal",
-        "Hassnain Shah"
+        "Samay Shrivastava"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "AR",
-        "BAT",
         "AR",
         "BOWL",
         "BOWL",
@@ -109,9 +109,22 @@
         "Zikria Islam",
         "Nadeem Khan",
         "Abdul Khaliq",
-        "Aryan Bisht"
+        "Aryan Bisht",
+        "Jeet Shah",
+        "Saishiv Narayan"
       ],
-      "captain": "Vinayak Shukla"
+      "captain": "Jatinder Singh",
+      "aka": {
+        "Mujibur Ali": [
+          "Mujibur Imran Ali"
+        ],
+        "Hassnain Shah": [
+          "Hassnain Ali Shah"
+        ],
+        "Shah Faisal": [
+          "Faisal Shah"
+        ]
+      }
     }
   ]
 }
