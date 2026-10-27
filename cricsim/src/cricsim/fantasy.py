@@ -267,6 +267,8 @@ def pick_xi(score: dict[str, float], team_of: dict[str, int], roles: dict[str, s
             if not any(team_of[p] == t for p in xi):
                 xi[-1] = next(p for p in ranked if team_of[p] == t)
     else:
+        xi = _by_role_counts(score, team_of, roles, ranked)
+    if roles and xi is None:
         pool = ranked[:15]
         for role in ("WK", "BAT", "AR", "BOWL"):
             pool += [p for p in ranked if roles.get(p) == role and p not in pool][:2]
@@ -283,6 +285,33 @@ def pick_xi(score: dict[str, float], team_of: dict[str, int], roles: dict[str, s
     cs = captain_score or score
     c, vc = sorted(xi, key=lambda p: -cs[p])[:2]
     return xi, c, vc
+
+
+def _by_role_counts(score, team_of, roles, ranked) -> list[str] | None:
+    """The best 11 under the role rules (1-8 of each role) for every split of the 11 across roles, taking each role's
+    top players: exact when the per-side rule (1-10 a side) holds too. None when the best such XI breaks it, or a
+    player has no role (the full search then decides)."""
+    by_role = {r: [p for p in ranked if roles.get(p) == r] for r in ("WK", "BAT", "AR", "BOWL")}
+    if sum(len(v) for v in by_role.values()) != len(ranked):
+        return None
+    best, best_total = None, -1e18
+    for w in range(1, 9):
+        for b in range(1, 9):
+            for a in range(1, 9):
+                bo = 11 - w - b - a
+                if not 1 <= bo <= 8:
+                    continue
+                n = {"WK": w, "BAT": b, "AR": a, "BOWL": bo}
+                if any(len(by_role[r]) < n[r] for r in n):
+                    continue
+                xi = [p for r in n for p in by_role[r][:n[r]]]
+                total = sum(score[p] for p in xi)
+                if total > best_total:
+                    best, best_total = xi, total
+    if best is None:
+        return None
+    per_team = [sum(team_of[p] == t for p in best) for t in (0, 1)]
+    return best if min(per_team) >= 1 and max(per_team) <= 10 else None
 
 
 def team_points(xi: list[str], c: str, vc: str, real: dict[str, float]) -> float:
