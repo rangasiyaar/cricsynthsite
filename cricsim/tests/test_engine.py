@@ -173,6 +173,9 @@ def test_backtest_runs_and_reports(world, tmp_path):
     write_report(rep, tmp_path / "bt")
     text = (tmp_path / "bt.md").read_text()
     assert "Backtest" in text and "In-sample check" in text and "Captain candidates" in text
+    cr = fz["captain_rules_v_live"]
+    assert {"cap_vote_overall", "cap_vote_in_xi", "cap_ar_bonus_0.3"} <= set(cr) and cr["oracle_captain"]["diff"] >= 0
+    assert "Captain rules on our same XI" in text
     rep_f = run_backtest(world["parquet"], date(2024, 1, 1), limit=6, n_sims=100, sim_overrides={"fielding": True})
     assert rep_f["fantasy"]["best_possible"] > 0
     rep_l = run_backtest(world["parquet"], None, latest=3, n_sims=100, sim_overrides={"fielding": True})
