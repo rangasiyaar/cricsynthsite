@@ -1,0 +1,137 @@
+{
+  "id": "indw-v-zimw-odi-vadodara-2026-10-28",
+  "title": "India Women v Zimbabwe Women",
+  "date": "2026-10-28",
+  "start_time": "14:00",
+  "format": "OD",
+  "gender": "female",
+  "competition": "Zimbabwe Women tour of India 2026 · 3rd ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "BCA Stadium, Kotambi, Vadodara",
+  "venue_search": "kotambi",
+  "city": "Vadodara",
+  "status": "scheduled",
+  "published": true,
+  "note": "Playing XIs confirmed. Zimbabwe won the toss and bat first.",
+  "teams": [
+    {
+      "name": "India Women",
+      "short": "INDW",
+      "players": [
+        "Pratika Rawal",
+        "Smriti Mandhana",
+        "Shafali Verma",
+        "Harmanpreet Kaur",
+        "Harleen Deol",
+        "Deepti Sharma",
+        "Yastika Bhatia",
+        "Sayali Satghare",
+        "Jintimani Kalita",
+        "Kranti Gaud",
+        "Vaishnavi Sharma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Pratika Rawal",
+        "Smriti Mandhana",
+        "Shafali Verma",
+        "Harmanpreet Kaur",
+        "Harleen Deol",
+        "Deepti Sharma",
+        "Yastika Bhatia",
+        "Sayali Satghare",
+        "Jintimani Kalita",
+        "Kranti Gaud",
+        "Vaishnavi Sharma",
+        "Tejal Hasabnis",
+        "Richa Ghosh",
+        "Shree Charani",
+        "Nandani Sharma"
+      ],
+      "captain": "Smriti Mandhana",
+      "aka": {
+        "Kranti Gaud": [
+          "Kranti Goud",
+          "K Goud"
+        ],
+        "Shree Charani": [
+          "Nallapureddy Shree Charani",
+          "N Charani",
+          "Sree Charani"
+        ]
+      }
+    },
+    {
+      "name": "Zimbabwe Women",
+      "short": "ZIMW",
+      "players": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri-Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare"
+      ],
+      "roles": [
+        "WK",
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri-Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare",
+        "Tendai Makusha",
+        "Sharne Mayers",
+        "Kelis Ndhlovu",
+        "Kudzai Chigora"
+      ],
+      "captain": "Josephine Nkomo",
+      "aka": {
+        "Kelis Ndhlovu": [
+          "Kelis Ndlovu",
+          "K Ndlovu"
+        ],
+        "Chipo Mugeri-Tiripano": [
+          "Chipo Mugeri",
+          "Chipo Tiripano",
+          "C Mugeri"
+        ]
+      }
+    }
+  ],
+  "batting_first": 1
+}
