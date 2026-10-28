@@ -1,0 +1,131 @@
+{
+  "id": "pka-v-spr-t20-kirtipur-2026-10-28",
+  "title": "Pokhara Avengers v Sudurpaschim Royals",
+  "date": "2026-10-28",
+  "start_time": "16:45",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League 2026 · 4th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs: Royals as in their first match, Pokhara from the squad; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pokhara Avengers",
+      "short": "PKA",
+      "players": [
+        "Kushal Bhurtel",
+        "Dinesh Kharel",
+        "Arjun Kumal",
+        "Shakib Al Hasan",
+        "Chamika Karunaratne",
+        "Kiran Thagunna",
+        "Arjun Gharti",
+        "Mahedi Hasan",
+        "Bipin Khatri",
+        "Sagar Dhakal",
+        "Aakash Chand"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "squad": [
+        "Kushal Bhurtel",
+        "Dinesh Kharel",
+        "Arjun Kumal",
+        "Shakib Al Hasan",
+        "Chamika Karunaratne",
+        "Kiran Thagunna",
+        "Arjun Gharti",
+        "Mahedi Hasan",
+        "Bipin Khatri",
+        "Sagar Dhakal",
+        "Aakash Chand",
+        "Dhananjaya Lakshan",
+        "Mohammad Saifuddin",
+        "Bibek Rana Magar",
+        "Bipin Acharya",
+        "Sudip Aryal",
+        "Santosh BK",
+        "Pratik Pokharel",
+        "Abhishek Tiwari"
+      ],
+      "captain": "Kushal Bhurtel"
+    },
+    {
+      "name": "Sudurpaschim Royals",
+      "short": "SPR",
+      "players": [
+        "Saif Zaib",
+        "Binod Bhandari",
+        "Aarif Sheikh",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Ishan Pandey",
+        "Sherfane Rutherford",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Hemant Dhami",
+        "Abhinash Bohara"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Saif Zaib",
+        "Binod Bhandari",
+        "Aarif Sheikh",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Ishan Pandey",
+        "Sherfane Rutherford",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Hemant Dhami",
+        "Abhinash Bohara",
+        "Naren Saud",
+        "Milan Bohara",
+        "Deepak Bohara",
+        "Tek Bahadur Rawat",
+        "Hikmat Mahara",
+        "Ayub Chand",
+        "Sachin Bhatta"
+      ],
+      "captain": "Dipendra Singh Airee",
+      "aka": {
+        "Abhinash Bohara": [
+          "Avinash Bohara",
+          "A Bohara"
+        ],
+        "Dipendra Singh Airee": [
+          "Dipendra Airee",
+          "DS Airee"
+        ]
+      }
+    }
+  ]
+}
