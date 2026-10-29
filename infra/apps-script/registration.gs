@@ -4,8 +4,10 @@
  * 1. Saves each request to the sheet.
  * 2. Sends a confirmation email through Resend from hello@cricsynthesis.in.
  *
- * Called by the site's "Build with CricSynthesis" form, by API plan upgrade requests from the account page, and when
- * someone creates an account (type "welcome": recorded in Firestore signups/{email}, each address welcomed only once).
+ * Called by the site's "Build with CricSynthesis" form, by API plan upgrade requests from the account page, when
+ * someone creates an account (type "welcome": recorded in Firestore signups/{email}, each address welcomed only once),
+ * and by job applications from the careers page (type "application": a row in the Applications tab, the resume saved
+ * to Drive under "CricSynthesis applications/<job>", a confirmation to the applicant and a notice to hello@).
  * Firestore is written with this script's own Google sign-in (the project owner), so no security-rule change is needed;
  * the manifest (appsscript.json) must list the datastore scope, see infra/apps-script/appsscript.json.
  * The Resend key lives in Script properties (Project Settings > Script properties > RESEND_API_KEY), not in code.
@@ -37,6 +39,7 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
 
     if (data.type === 'welcome') return json(welcomeSignup(book, data));
+    if (data.type === 'application') return json(jobApplication(book, data));
 
     var sheet = book.getSheets()[0];
 
@@ -87,6 +90,77 @@ function welcomeSignup(book, data) {
   firestore('patch', '/signups/' + encodeURIComponent(email) + '?updateMask.fieldPaths=welcome&updateMask.fieldPaths=welcomedAt',
             { fields: { welcome: { stringValue: sent ? 'sent' : 'failed' }, welcomedAt: { timestampValue: new Date().toISOString() } } });
   return { success: true };
+}
+
+// ── job applications ──────────────────────────────────────────────────────────────────────────────────────────────
+
+var APPLY_FIELDS = ['name', 'email', 'phone', 'city', 'portfolio', 'status', 'experience', 'notice', 'reels', 'graphic', 'cricket'];
+var RESUME_TYPES = { 'application/pdf': 'pdf', 'application/msword': 'doc',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx' };
+var RESUME_MAX = 5 * 1024 * 1024;
+
+function jobApplication(book, data) {
+  if (data.website) return { success: true };                       // honeypot field filled: a bot
+  for (var i = 0; i < APPLY_FIELDS.length; i++) if (!String(data[APPLY_FIELDS[i]] || '').trim()) return { success: false, error: 'missing' };
+  var email = String(data.email).trim().toLowerCase();
+  if (!/^[^\s@\/]+@[^\s@\/]+\.[^\s@\/]+$/.test(email)) return { success: false, error: 'email' };
+  var job = String(data.job || 'general').replace(/[^a-z0-9-]/g, '').slice(0, 60) || 'general';
+  var r = data.resume || {}, ext = RESUME_TYPES[r.type];
+  if (!ext || !r.data) return { success: false, error: 'resume' };
+  var bytes;
+  try { bytes = Utilities.base64Decode(r.data); } catch (e) { return { success: false, error: 'resume' }; }
+  if (!bytes.length || bytes.length > RESUME_MAX) return { success: false, error: 'resume' };
+
+  var stamp = Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd HHmm');
+  var safe = String(data.name).replace(/[^\w .-]/g, '').trim().slice(0, 60) || 'applicant';
+  var file = applicationsFolder(job).createFile(Utilities.newBlob(bytes, r.type, stamp + ' ' + safe + '.' + ext));
+
+  var sheet = book.getSheetByName('Applications') || book.insertSheet('Applications');
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Received (IST)', 'Role', 'Name', 'Email', 'Phone', 'City', 'Portfolio', 'LinkedIn', 'Status', 'Experience',
+      'Notice period', 'Tools', 'Short-form videos', 'Data graphic', 'Follows cricket', 'Notes', 'Resume', 'Review status']);
+    sheet.setFrozenRows(1);
+  }
+  var cell = function (v, n) { return String(v || '').slice(0, n || 2000).replace(/^[=+\-@]/, "'$&"); };  // no formula injection
+  sheet.appendRow([Utilities.formatDate(new Date(), 'Asia/Kolkata', 'yyyy-MM-dd HH:mm'), cell(data.jobTitle || job, 120),
+    cell(data.name, 120), email, cell(data.phone, 30), cell(data.city, 80), cell(data.portfolio, 300), cell(data.linkedin, 300),
+    cell(data.status, 60), cell(data.experience, 40), cell(data.notice, 40), cell(data.tools, 300), cell(data.reels), cell(data.graphic),
+    cell(data.cricket), cell(data.notes), file.getUrl(), 'New']);
+
+  var mail = applicationEmail(data);
+  sendViaResend(email, mail.subject, mail.html, mail.text);
+  sendViaResend(REPLY_TO, 'New application: ' + plain(esc(data.jobTitle || job)) + ' from ' + plain(esc(data.name)),
+    p(esc(data.name) + ' (' + esc(email) + ', ' + esc(data.city) + ') applied for ' + esc(data.jobTitle || job) + '.') +
+    p('<a href="' + book.getUrl() + '#gid=' + sheet.getSheetId() + '">Open the Applications sheet</a> · <a href="' + file.getUrl() + '">Resume</a>'),
+    data.name + ' applied for ' + (data.jobTitle || job) + '. Applications sheet: ' + book.getUrl());
+  return { success: true };
+}
+
+function applicationsFolder(job) {
+  var root = folderIn(DriveApp.getRootFolder(), 'CricSynthesis applications');
+  return folderIn(root, job);
+}
+
+function folderIn(parent, name) {
+  var it = parent.getFoldersByName(name);
+  return it.hasNext() ? it.next() : parent.createFolder(name);
+}
+
+function applicationEmail(d) {
+  var first = firstName(d.name), role = esc(d.jobTitle || 'the role');
+  var body =
+    p('Thank you for applying for the <strong style="color:#1d1f20">' + role + '</strong> position at CricSynthesis. ' +
+      'We have received your application and resume.') +
+    p('We review every application. If your profile matches what we are looking for, we will contact you about the next step, ' +
+      'a short assignment based on a real forecast.');
+  return {
+    subject: 'Your application to CricSynthesis',
+    html: layout('Application received', 'Thank you, ' + first + '.', body, 'View open roles', SITE + '/careers/',
+                 'you applied for a role on cricsynthesis.in'),
+    text: 'Thank you, ' + plain(first) + '.\n\nWe have received your application for the ' + plain(role) + ' position at ' +
+      'CricSynthesis. We review every application and will contact you if you are shortlisted.\n\nOpen roles: ' + SITE +
+      '/careers/\n\nCricSynthesis\n' + SITE
+  };
 }
 
 function firestore(method, path, body) {
@@ -263,6 +337,11 @@ function testWelcomeSignup() {
 
 function testWelcomeEmail() {
   var m = welcomeEmail({ name: 'Saurav Kumar' });
+  console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
+}
+
+function testApplicationEmail() {
+  var m = applicationEmail({ name: 'Saurav Kumar', jobTitle: 'Graphics Designer & Video Editor' });
   console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
 }
 

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo";
 import { POSTS, postPath } from "@/lib/blog";
+import { JOBS, jobPath } from "@/lib/jobs";
 
 export const dynamic = "force-static";
 
@@ -17,5 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...PAGES.map(([path, priority, changeFrequency]) => ({ url: `${SITE}${path}`, lastModified: now, changeFrequency, priority })),
     ...POSTS.map((p) => ({ url: `${SITE}${postPath(p.slug)}`, lastModified: new Date(p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
+    ...JOBS.map((j) => ({ url: `${SITE}${jobPath(j.slug)}`, lastModified: new Date(j.posted), changeFrequency: "weekly" as const, priority: 0.4 })),
   ];
 }
