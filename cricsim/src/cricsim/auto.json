@@ -1,5 +1,6 @@
 {
-  "_about": "Which upcoming matches cricsim.auto adds as fixtures (limited-overs only). international: every men's and women's T20I / ODI. leagues: series names (regular expressions, case-insensitive). days_ahead: how early a fixture is created.",
+  "_about": "Which upcoming matches cricsim.auto adds as fixtures (limited-overs only). all: every T20 / T10 / 50-over match on the schedule, domestic and unofficial included, except the series in exclude. With all off: international (men's and women's T20I / ODI) plus the leagues listed (regular expressions, case-insensitive). days_ahead: how early a fixture is created.",
+  "all": true,
   "international": true,
   "leagues": [
     "Indian Premier League",
@@ -29,11 +30,7 @@
     "\\bNPL\\b"
   ],
   "exclude": [
-    "Sixes",
-    "Legends",
-    "Masters",
-    "Warm-up",
-    "Tour Match"
+    "Sixes"
   ],
   "days_ahead": 2
 }

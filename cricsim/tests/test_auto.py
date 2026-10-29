@@ -47,7 +47,7 @@ HEAD = {"matchId": 161223, "state": "Toss", "status": "India opt to bowl",
 
 
 def test_wanted_and_ids():
-    cfg = json.loads(auto.CONFIG.read_text())
+    cfg = {**json.loads(auto.CONFIG.read_text()), "all": False, "exclude": ["Sixes", "Legends"]}
     assert auto.wanted(MI, cfg) == "T20" and auto.fixture_id(MI, "T20") == "nz-v-ind-t20i-auckland-2026-10-30"
     assert auto.wanted({**MI, "matchFormat": "TEST"}, cfg) is None
     league = {**MI, "matchType": "League", "seriesName": "Nepal Premier League 2026"}
@@ -154,7 +154,7 @@ def test_hand_written_fixture_is_linked_not_replaced(tmp_path):
 
 
 def test_schedule_without_match_type():
-    cfg = json.loads(auto.CONFIG.read_text())
+    cfg = {**json.loads(auto.CONFIG.read_text()), "all": False}
     bare = {k: v for k, v in MI.items() if k != "matchType"}
     assert auto.wanted({**bare, "seriesName": "Ireland tour of Namibia, 2026", "matchFormat": "ODI"}, cfg) == "OD"
     assert auto.wanted({**bare, "seriesName": "Afghanistan vs Zimbabwe in UAE, 2026"}, cfg) == "T20"
@@ -163,3 +163,12 @@ def test_schedule_without_match_type():
     assert auto.wanted({**bare, "seriesName": "ICC CWC Challenge League A, 2024-26", "matchFormat": "ODI"}, cfg) == "OD"
     assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
     assert auto.fixture_id({**bare, "seriesName": "WBBL 2026"}, "T20").split("-")[3] == "t20"
+
+
+def test_all_limited_overs():
+    cfg = json.loads(auto.CONFIG.read_text())                  # the live config: everything but the Sixes
+    bare = {k: v for k, v in MI.items() if k != "matchType"}
+    assert auto.wanted({**bare, "seriesName": "CSA T20 Challenge 2026"}, cfg) == "T20"
+    assert auto.wanted({**bare, "seriesName": "The Ford Trophy 2026-27", "matchFormat": "ODI"}, cfg) == "OD"
+    assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
+    assert auto.wanted({**bare, "seriesName": "Ranji Trophy Elite 2026-27", "matchFormat": "TEST"}, cfg) is None

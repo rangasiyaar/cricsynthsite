@@ -74,7 +74,7 @@ def wanted(mi: dict, cfg: dict) -> str | None:
     fmt = "HUNDRED" if re.search(r"\bhundred\b", series, re.I) else FMT.get((mi.get("matchFormat") or "").upper())
     if not fmt:
         return None
-    if is_intl(mi) and cfg.get("international", True):
+    if cfg.get("all") or (is_intl(mi) and cfg.get("international", True)):
         return fmt
     return fmt if any(re.search(x, series, re.I) for x in cfg.get("leagues", [])) else None
 
