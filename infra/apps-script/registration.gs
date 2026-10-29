@@ -164,9 +164,11 @@ function applicationEmail(d) {
       'are looking for, we will contact you about the next step, a short assignment based on a real forecast. If you are not ' +
       'shortlisted, we will let you know by email.\n\nTo update your application, write to hello@cricsynthesis.in with the role ' +
       'in the subject line.\n\nOpen roles: ' + SITE + '/careers/\n\n--\n' + CAREERS_NOTICE_TEXT + '\n\n© ' + new Date().getFullYear() +
-      ' CricSynthesis · ' + SITE
+      ' CricSynthesis · ' + ADDRESS + ' · ' + SITE
   };
 }
+
+var ADDRESS = '13, BTM Stage 1, Bengaluru, 560068';
 
 var CAREERS_NOTICE_TEXT =
   'This is an automated message sent from a no-reply address; replies to it are not monitored. For questions, write to ' +
@@ -181,8 +183,12 @@ var CAREERS_NOTICE_TEXT =
 // Job emails: centred logo, no-reply notice, links and disclaimers. Light theme, site colours.
 function careersLayout(eyebrow, heading, body, cta, ctaUrl) {
   var font = "'Barlow', 'Segoe UI', Arial, sans-serif";
-  var small = 'margin:0 0 10px 0;color:#7a7f85;font-size:12px;line-height:1.6;';
-  var link = 'color:#416180;text-decoration:none;';
+  var small = 'margin:0 0 10px 0;color:#b6babe;font-size:12px;line-height:1.6;';
+  var flink = 'color:#94bce3;text-decoration:none;';
+  var social = function (url, icon, name) {
+    return '<td style="padding:0 5px;"><a href="' + url + '" style="text-decoration:none;"><img src="' + SITE + '/email/' + icon +
+      '.png" alt="' + name + '" width="32" height="32" style="display:block;border:0;outline:none;width:32px;height:32px;"></a></td>';
+  };
   return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<meta name="color-scheme" content="light"><title>CricSynthesis Careers</title></head>' +
     '<body style="margin:0;padding:0;background:#f2f2f3;font-family:' + font + ';">' +
@@ -205,33 +211,34 @@ function careersLayout(eyebrow, heading, body, cta, ctaUrl) {
     'font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;">' + cta + '</a></td></tr></table></td></tr>' +
     '<tr><td style="padding:0 40px 28px 40px;color:#3d4146;font-size:15px;line-height:1.6;">Regards,<br><strong style="color:#1d1f20;">' +
     'Hiring team, CricSynthesis</strong></td></tr>' +
-    // footer
-    '<tr><td style="background:#f7f7f8;border-top:1px solid #e4e5e7;padding:24px 40px 26px 40px;" align="center">' +
-    '<p style="margin:0 0 6px 0;color:#1d1f20;font-size:13px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">CricSynthesis</p>' +
-    '<p style="margin:0 0 14px 0;color:#6b7075;font-size:13px;">Cricket simulation and analytics</p>' +
-    '<p style="margin:0 0 16px 0;font-size:13px;">' +
-    '<a href="' + SITE + '/careers/" style="' + link + '">Careers</a> &nbsp;·&nbsp; ' +
-    '<a href="' + SITE + '/privacy/" style="' + link + '">Privacy policy</a> &nbsp;·&nbsp; ' +
-    '<a href="' + SITE + '/terms/" style="' + link + '">Terms</a> &nbsp;·&nbsp; ' +
-    '<a href="' + SITE + '" style="' + link + '">cricsynthesis.in</a></p>' +
-    '<p style="margin:0;font-size:13px;">' +
-    '<a href="https://in.linkedin.com/company/cricsynthesis" style="' + link + '">LinkedIn</a> &nbsp;·&nbsp; ' +
-    '<a href="https://x.com/cricsynthesis" style="' + link + '">X</a> &nbsp;·&nbsp; ' +
-    '<a href="https://instagram.com/cricsynthesis" style="' + link + '">Instagram</a></p></td></tr>' +
-    '</table>' +
-    // disclaimers
-    '<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;"><tr><td style="padding:22px 24px 0 24px;font-family:' + font + ';">' +
-    '<p style="' + small + '"><strong style="color:#5d6268;">This is an automated message sent from a no-reply address.</strong> Replies to this ' +
-    'email are not monitored. For questions, write to <a href="mailto:hello@cricsynthesis.in" style="' + link + '">hello@cricsynthesis.in</a>.</p>' +
-    '<p style="' + small + '"><strong style="color:#5d6268;">Recruitment fraud.</strong> CricSynthesis never asks candidates for payment, ' +
+    // footer: site steel, logo, links, social icons, address and disclaimers
+    '<tr><td style="background:#1d2d3d;padding:32px 40px 28px 40px;" align="center">' +
+    '<a href="' + SITE + '" style="text-decoration:none;"><img src="' + SITE + '/email/logo-light.png" alt="CricSynthesis" width="150" ' +
+    'style="display:block;margin:0 auto;border:0;outline:none;width:150px;height:auto;"></a>' +
+    '<p style="margin:10px 0 18px 0;color:#94bce3;font-size:13px;">Cricket simulation and analytics</p>' +
+    '<p style="margin:0 0 20px 0;color:#5d7a96;font-size:13px;">' +
+    '<a href="' + SITE + '/careers/" style="' + flink + '">Careers</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '/privacy/" style="' + flink + '">Privacy policy</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '/terms/" style="' + flink + '">Terms</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '" style="' + flink + '">cricsynthesis.in</a></p>' +
+    '<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 20px auto;"><tr>' +
+    social('https://in.linkedin.com/company/cricsynthesis', 'linkedin', 'LinkedIn') +
+    social('https://x.com/cricsynthesis', 'x', 'X') +
+    social('https://instagram.com/cricsynthesis', 'instagram', 'Instagram') + '</tr></table>' +
+    '<p style="margin:0;color:#b6babe;font-size:12px;line-height:1.6;">' + ADDRESS + '</p>' +
+    '<div style="height:1px;background:#33475b;margin:24px 0 20px 0;font-size:0;line-height:0;">&nbsp;</div>' +
+    '<div style="text-align:left;">' +
+    '<p style="' + small + '"><strong style="color:#e6e7e8;">This is an automated message sent from a no-reply address.</strong> Replies to this ' +
+    'email are not monitored. For questions, write to <a href="mailto:hello@cricsynthesis.in" style="' + flink + '">hello@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#e6e7e8;">Recruitment fraud.</strong> CricSynthesis never asks candidates for payment, ' +
     'bank details or fees at any stage of hiring. If anyone does so in our name, do not respond and report it to ' +
-    '<a href="mailto:hello@cricsynthesis.in" style="' + link + '">hello@cricsynthesis.in</a>.</p>' +
-    '<p style="' + small + '"><strong style="color:#5d6268;">Your data.</strong> We process your application only to assess it, as described ' +
-    'in our <a href="' + SITE + '/privacy/" style="' + link + '">privacy policy</a>. To have it deleted, write to ' +
-    '<a href="mailto:privacy@cricsynthesis.in" style="' + link + '">privacy@cricsynthesis.in</a>.</p>' +
-    '<p style="' + small + '"><strong style="color:#5d6268;">Confidentiality.</strong> This email and any attachments are confidential and ' +
-    'intended only for the addressee. If you received it in error, please delete it.</p>' +
-    '<p style="margin:14px 0 0 0;color:#8a8e93;font-size:11px;text-align:center;">© ' + new Date().getFullYear() +
+    '<a href="mailto:hello@cricsynthesis.in" style="' + flink + '">hello@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#e6e7e8;">Your data.</strong> We process your application only to assess it, as described ' +
+    'in our <a href="' + SITE + '/privacy/" style="' + flink + '">privacy policy</a>. To have it deleted, write to ' +
+    '<a href="mailto:privacy@cricsynthesis.in" style="' + flink + '">privacy@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#e6e7e8;">Confidentiality.</strong> This email and any attachments are confidential and ' +
+    'intended only for the addressee. If you received it in error, please delete it.</p></div>' +
+    '<p style="margin:16px 0 0 0;color:#8f9499;font-size:11px;line-height:1.6;">© ' + new Date().getFullYear() +
     ' CricSynthesis. You are receiving this because you applied for a role on cricsynthesis.in.</p>' +
     '</td></tr></table>' +
     '</td></tr></table></body></html>';
