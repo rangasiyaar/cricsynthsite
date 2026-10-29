@@ -5,6 +5,8 @@ name: Auto
 # once a match is over. What changed is committed and a quick publish is asked for (a bot push alone doesn't start
 # one). Free: Actions minutes cost nothing on a public repository.
 on:
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch:
     inputs:
       dry_run:
