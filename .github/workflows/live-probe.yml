@@ -1,0 +1,19 @@
+name: Live probe
+
+# One-off check of which public live-score endpoints answer from a cloud runner (infra/live/probe.py).
+# Nothing is published; the raw responses are kept as an artifact for a few days.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 infra/live/probe.py --out probe
+      - uses: actions/upload-artifact@v4
+        with: { name: live-probe, path: probe, retention-days: 3 }
