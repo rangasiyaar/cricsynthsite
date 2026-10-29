@@ -42,7 +42,7 @@ def main() -> None:
         if not up and mi:
             later = [m for m in mi if m.get("state") in ("Upcoming", "Preview")]
             up = str((later or mi)[0]["matchId"])
-    if not fin:
+    if not fin or fin == "-":
         html = get(f"{BASE}/cricket-match/live-scores")
         done = [m for m in objects(flight(html), "matchInfo") if (m.get("state") or "").lower() == "complete"]
         fin = str(done[0]["matchId"]) if done else None
@@ -60,6 +60,9 @@ def main() -> None:
                 m = re.search(r'"scoreCard":\s*(?=\[)', text)
                 if m:
                     cards = json.JSONDecoder().raw_decode(text, m.end())[0]
+                    if not cards:
+                        print("empty scoreCard")
+                        continue
                     c = cards[0]
                     print("innings keys:", list(c))
                     for k in ("batTeamDetails", "bowlTeamDetails", "scoreDetails", "extrasData", "wicketsData", "ppData"):
