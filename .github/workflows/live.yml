@@ -1,0 +1,55 @@
+name: Live
+
+# Live match state for the match centre's live projection (cricsim.live): every 30 minutes, and each run keeps
+# polling (one page a minute per match) while one of our published matches is on, writing Firestore live/{id}
+# when an over ends or a wicket falls. One run at a time; the next scheduled run waits and takes over.
+# Free: Actions minutes cost nothing on a public repository; Firestore writes are ~50 per T20 (infra/COSTS.md).
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: "Page match id to check the page format (prints what we read; writes nothing)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Print the live docs instead of writing them"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write                  # keyless auth to Google Cloud (Workload Identity Federation)
+
+concurrency: { group: live, cancel-in-progress: false }
+
+env:
+  GCP: ${{ vars.GCP_ENABLED == 'true' }}
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Page check
+        if: inputs.probe != ''
+        run: uv run python -m cricsim.live --probe "${{ inputs.probe }}"
+      - uses: google-github-actions/auth@v2
+        if: inputs.probe == '' && env.GCP == 'true' && !inputs.dry_run
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - name: Poll while matches are on
+        if: inputs.probe == ''
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ] || [ "$GCP" != "true" ]; then
+            uv run python -m cricsim.live --fixtures cricsim/fixtures --dry-run --max-minutes 340
+          else
+            uv run python -m cricsim.live --fixtures cricsim/fixtures --max-minutes 340
+          fi
