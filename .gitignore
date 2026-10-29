@@ -52,3 +52,6 @@ data/
 firebase-debug.log
 infra/.state/
 tsconfig.tsbuildinfo
+
+# Apps Script source (kept outside the repo)
+infra/apps-script/
