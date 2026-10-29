@@ -15,5 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 infra/live/probe.py --out probe
+      - run: python3 infra/live/probe2.py
       - uses: actions/upload-artifact@v4
         with: { name: live-probe, path: probe, retention-days: 3 }
