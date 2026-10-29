@@ -496,13 +496,14 @@ body .legal-content .jobs-list li { margin: 0; }
 .apply-form fieldset { border: 0; border-top: 1px solid var(--cs-line); margin: 0; padding: 18px 0 0; display: grid; gap: 16px; min-width: 0; }
 .apply-form legend { font: 600 20px var(--cs-head); text-transform: uppercase; letter-spacing: .03em; color: var(--cs-ink); padding: 0 12px 0 0; }
 .apply-required { font-size: 13px; color: var(--cs-ink-3); margin: 0; }
-.apply-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 20px; }
-.apply-form .f { display: grid; gap: 6px; min-width: 0; }
+.apply-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 20px; align-items: start; }
+.apply-form .f { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .apply-form .f > span { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--cs-ink-2); }
 .apply-form .f > span em { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--cs-ink-3); margin-left: 6px; }
 .apply-form input:not([type=checkbox]), .apply-form select, .apply-form textarea {
   font: 15px/1.45 var(--cs-body); color: var(--cs-ink); background: var(--cs-bg); border: 1px solid var(--cs-line); border-radius: 0;
   padding: 10px 12px; width: 100%; box-sizing: border-box; }
+.apply-form input:not([type=checkbox]):not([type=file]), .apply-form select { height: 44px; }
 .apply-form textarea { resize: vertical; }
 .apply-form input[type=file] { padding: 9px; }
 .apply-form input:focus, .apply-form select:focus, .apply-form textarea:focus { border-color: var(--cs-steel); outline: 0; box-shadow: 0 0 0 3px rgba(89, 128, 166, .2); }
