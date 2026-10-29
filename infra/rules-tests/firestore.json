@@ -603,6 +603,75 @@
      "created": "2026-10-10T12:00:00Z"
     }
    }
+  },
+  {
+   "expectation": "ALLOW",
+   "request": {
+    "path": "/databases/(default)/documents/live/pka-v-spr",
+    "time": "2026-10-29T12:00:00Z",
+    "auth": null,
+    "method": "get"
+   },
+   "resource": {
+    "data": {
+     "published": true,
+     "runs": 46
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "path": "/databases/(default)/documents/live/pka-v-spr",
+    "time": "2026-10-29T12:00:00Z",
+    "auth": null,
+    "method": "get"
+   },
+   "resource": {
+    "data": {
+     "runs": 46
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "path": "/databases/(default)/documents/live/pka-v-spr",
+    "time": "2026-10-29T12:00:00Z",
+    "auth": {
+     "uid": "u1"
+    },
+    "method": "create",
+    "resource": {
+     "data": {
+      "published": true,
+      "runs": 999
+     }
+    }
+   }
+  },
+  {
+   "expectation": "DENY",
+   "request": {
+    "path": "/databases/(default)/documents/live/pka-v-spr",
+    "time": "2026-10-29T12:00:00Z",
+    "auth": {
+     "uid": "u1"
+    },
+    "method": "update",
+    "resource": {
+     "data": {
+      "published": true,
+      "runs": 999
+     }
+    }
+   },
+   "resource": {
+    "data": {
+     "published": true,
+     "runs": 46
+    }
+   }
   }
  ]
 }

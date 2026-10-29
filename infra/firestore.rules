@@ -21,6 +21,8 @@ service cloud.firestore {
     match /leagues/{id}       { allow read: if true; }
     match /trackRecord/{id}   { allow read: if true; }
     match /site/{id}          { allow read: if true; }   // home page lists, featured matches
+    // Live match state (cricsim.live, written by the live job): browsers re-simulate the rest of the match from it.
+    match /live/{matchId}     { allow read: if published(); }
 
     function me(uid) { return request.auth != null && request.auth.uid == uid; }
 

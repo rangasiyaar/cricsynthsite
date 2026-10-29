@@ -85,7 +85,7 @@ for R in roles/datastore.user roles/bigquery.dataEditor roles/bigquery.jobUser; 
 for R in roles/run.admin roles/artifactregistry.writer roles/iam.serviceAccountUser \
          roles/firebasehosting.admin roles/cloudscheduler.admin roles/firebaserules.admin \
          roles/datastore.indexAdmin roles/serviceusage.serviceUsageConsumer \
-         roles/firebasecloudmessaging.admin; do grant cs-deployer "$R"; done   # FCM: the app's match alerts
+         roles/firebasecloudmessaging.admin roles/datastore.user; do grant cs-deployer "$R"; done   # FCM: the app's match alerts; datastore: live/{id} from live.yml
 # The nightly publish (GitHub Actions) uploads the model, forecasts and Pattern Lab report here.
 gcloud storage buckets add-iam-policy-binding "gs://$MODELS_BUCKET" \
   --member="serviceAccount:cs-deployer@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/storage.objectAdmin >/dev/null
