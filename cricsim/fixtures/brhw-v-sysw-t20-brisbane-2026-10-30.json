@@ -1,0 +1,122 @@
+{
+  "id": "brhw-v-sysw-t20-brisbane-2026-10-30",
+  "title": "Brisbane Heat Women v Sydney Sixers Women",
+  "date": "2026-10-30",
+  "start_time": "13:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 3rd Match",
+  "comp_key": "wbbl",
+  "venue": "Allan Border Field, Brisbane",
+  "venue_search": "brisbane",
+  "city": "Brisbane",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Brisbane Heat Women",
+      "short": "BRHW",
+      "players": [
+        "Grace Harris",
+        "Charli Knott",
+        "Sianna Ginger",
+        "Mikayla Wrigley",
+        "Lucinda Bourke",
+        "Lily Bassingthwaighte",
+        "Bonnie Berry",
+        "Catherine White",
+        "Redmayne",
+        "Lucy Hamilton",
+        "Annie O Neil"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR",
+        "AR"
+      ],
+      "captain": "Redmayne",
+      "squad": [
+        "Redmayne",
+        "Charli Knott",
+        "Grace Harris",
+        "Lucinda Bourke",
+        "Sianna Ginger",
+        "Lucy Hamilton",
+        "Annie O Neil",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte",
+        "Bonnie Berry",
+        "Catherine White",
+        "Orla Prendergast",
+        "Yastika Bhatia",
+        "Grace Parsons",
+        "Mikayla Wrigley",
+        "Mark Sorell"
+      ]
+    },
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SYSW",
+      "players": [
+        "Erin Burns",
+        "Sarah Coyte",
+        "Courtney Sippel",
+        "Maitlan Brown",
+        "Elsa Hunter",
+        "Frankie Nicklin",
+        "Maddy Darke",
+        "Sophia Dunkley",
+        "Eva Ragg",
+        "Lauren Cheatle",
+        "Ashleigh Gardner"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Ashleigh Gardner",
+      "squad": [
+        "Ashleigh Gardner",
+        "Maddy Darke",
+        "Ellyse Perry",
+        "Sophia Dunkley",
+        "Melie Kerr",
+        "Erin Burns",
+        "Maitlan Brown",
+        "Sarah Coyte",
+        "Lauren Cheatle",
+        "Courtney Sippel",
+        "Elsa Hunter",
+        "Eva Ragg",
+        "Caoimhe Bray",
+        "Alice Capsey",
+        "Grace Lyons",
+        "Frankie Nicklin",
+        "Matthew Mott"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162711,
+    "auto": true,
+    "xis": false
+  }
+}
