@@ -6,7 +6,7 @@ on:
     inputs:
       finished: { description: "A finished match's page id (blank: one from the live page)", required: false, default: "" }
       upcoming: { description: "An upcoming match's page id (blank: one from the schedule)", required: false, default: "" }
-      fetch: { description: "A site data path to print (gzip + base64), e.g. matches/<id>.json; skips the probes", required: false, default: "" }
+      fetch: { description: "A site data path to print, e.g. matches/<id>.json; skips the probes", required: false, default: "" }
 
 permissions:
   contents: read
@@ -23,5 +23,5 @@ jobs:
         run: uv run python -m cricsim.auto --list | sort -u
       - if: inputs.fetch != ''
         run: |
-          curl -fsS "https://cricsynthesis.in/data/${{ inputs.fetch }}" | gzip -9 | base64 -w 0 > out.b64
-          echo "BEGIN"; cat out.b64; echo; echo "END"
+          curl -fsS "https://cricsynthesis.in/data/${{ inputs.fetch }}" > out.json
+          echo "BEGIN"; cat out.json; echo; echo "END"
