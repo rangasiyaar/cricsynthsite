@@ -16,6 +16,7 @@
 
 const FROM = 'CricSynthesis <hello@cricsynthesis.in>';
 const REPLY_TO = 'hello@cricsynthesis.in';
+const CAREERS_FROM = 'CricSynthesis Careers <no-reply@cricsynthesis.in>';   // job emails: automated, replies not monitored
 const SITE = 'https://cricsynthesis.in';
 const LOGO = SITE + '/email-logo.png';
 const FIRESTORE = 'https://firestore.googleapis.com/v1/projects/cricsynthesis/databases/(default)/documents';
@@ -128,8 +129,8 @@ function jobApplication(book, data) {
     cell(data.cricket), cell(data.notes), file.getUrl(), 'New']);
 
   var mail = applicationEmail(data);
-  sendViaResend(email, mail.subject, mail.html, mail.text);
-  sendViaResend(REPLY_TO, 'New application: ' + plain(esc(data.jobTitle || job)) + ' from ' + plain(esc(data.name)),
+  sendViaResend(email, mail.subject, mail.html, mail.text, CAREERS_FROM);
+  sendViaResend(REPLY_TO, ('New application: ' + (data.jobTitle || job) + ' from ' + data.name).replace(/[\r\n]+/g, ' ').slice(0, 200),
     p(esc(data.name) + ' (' + esc(email) + ', ' + esc(data.city) + ') applied for ' + esc(data.jobTitle || job) + '.') +
     p('<a href="' + book.getUrl() + '#gid=' + sheet.getSheetId() + '">Open the Applications sheet</a> · <a href="' + file.getUrl() + '">Resume</a>'),
     data.name + ' applied for ' + (data.jobTitle || job) + '. Applications sheet: ' + book.getUrl());
@@ -147,20 +148,93 @@ function folderIn(parent, name) {
 }
 
 function applicationEmail(d) {
-  var first = firstName(d.name), role = esc(d.jobTitle || 'the role');
+  var first = firstName(d.name), title = String(d.jobTitle || 'the role').slice(0, 120), role = esc(title);
   var body =
     p('Thank you for applying for the <strong style="color:#1d1f20">' + role + '</strong> position at CricSynthesis. ' +
       'We have received your application and resume.') +
-    p('We review every application. If your profile matches what we are looking for, we will contact you about the next step, ' +
-      'a short assignment based on a real forecast.');
+    p('Our team reviews every application. If your profile matches what we are looking for, we will contact you about ' +
+      'the next step, a short assignment based on a real forecast. If you are not shortlisted, we will let you know by email.') +
+    p('If you need to update your application, write to <a href="mailto:hello@cricsynthesis.in" style="color:#416180;">' +
+      'hello@cricsynthesis.in</a> with the role in the subject line.');
   return {
-    subject: 'Your application to CricSynthesis',
-    html: layout('Application received', 'Thank you, ' + first + '.', body, 'View open roles', SITE + '/careers/',
-                 'you applied for a role on cricsynthesis.in'),
-    text: 'Thank you, ' + plain(first) + '.\n\nWe have received your application for the ' + plain(role) + ' position at ' +
-      'CricSynthesis. We review every application and will contact you if you are shortlisted.\n\nOpen roles: ' + SITE +
-      '/careers/\n\nCricSynthesis\n' + SITE
+    subject: 'Application received: ' + title + ' at CricSynthesis',
+    html: careersLayout('Application received', 'Thank you, ' + first + '.', body, 'View open roles', SITE + '/careers/'),
+    text: 'Thank you, ' + plain(first) + '.\n\nThank you for applying for the ' + title + ' position at CricSynthesis. ' +
+      'We have received your application and resume.\n\nOur team reviews every application. If your profile matches what we ' +
+      'are looking for, we will contact you about the next step, a short assignment based on a real forecast. If you are not ' +
+      'shortlisted, we will let you know by email.\n\nTo update your application, write to hello@cricsynthesis.in with the role ' +
+      'in the subject line.\n\nOpen roles: ' + SITE + '/careers/\n\n--\n' + CAREERS_NOTICE_TEXT + '\n\n© ' + new Date().getFullYear() +
+      ' CricSynthesis · ' + SITE
   };
+}
+
+var CAREERS_NOTICE_TEXT =
+  'This is an automated message sent from a no-reply address; replies to it are not monitored. For questions, write to ' +
+  'hello@cricsynthesis.in.\n' +
+  'CricSynthesis never asks candidates for payment, bank details or fees at any stage of hiring. If anyone does so in our name, ' +
+  'do not respond and report it to hello@cricsynthesis.in.\n' +
+  'We process your application data only to assess your application, as described in our privacy policy (' + SITE + '/privacy/). ' +
+  'To have it deleted, write to privacy@cricsynthesis.in.\n' +
+  'This email and any attachments are confidential and intended only for the addressee. If you received it in error, ' +
+  'please delete it.';
+
+// Job emails: centred logo, no-reply notice, links and disclaimers. Light theme, site colours.
+function careersLayout(eyebrow, heading, body, cta, ctaUrl) {
+  var font = "'Barlow', 'Segoe UI', Arial, sans-serif";
+  var small = 'margin:0 0 10px 0;color:#7a7f85;font-size:12px;line-height:1.6;';
+  var link = 'color:#416180;text-decoration:none;';
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<meta name="color-scheme" content="light"><title>CricSynthesis Careers</title></head>' +
+    '<body style="margin:0;padding:0;background:#f2f2f3;font-family:' + font + ';">' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f2f2f3;"><tr><td align="center" style="padding:40px 16px;">' +
+    '<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #dcdde0;border-radius:12px;overflow:hidden;">' +
+    '<tr><td style="padding:0;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>' +
+    '<td width="54%" style="height:6px;background:#5980a6;font-size:0;line-height:0;">&nbsp;</td>' +
+    '<td style="height:6px;background:#b5653a;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>' +
+    // centred logo
+    '<tr><td align="center" style="padding:34px 40px 10px 40px;"><a href="' + SITE + '" style="text-decoration:none;">' +
+    '<img src="' + LOGO + '" alt="CricSynthesis" width="175" height="34" style="display:block;margin:0 auto;border:0;outline:none;width:175px;height:auto;"></a></td></tr>' +
+    '<tr><td style="padding:0 40px;"><div style="height:1px;background:#e4e5e7;font-size:0;line-height:0;">&nbsp;</div></td></tr>' +
+    // heading and body
+    '<tr><td style="padding:28px 40px 0 40px;">' +
+    '<p style="margin:0 0 10px 0;color:#416180;font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;">' + eyebrow + '</p>' +
+    '<h1 style="margin:0 0 18px 0;color:#1d1f20;font-size:24px;line-height:1.3;font-weight:700;">' + heading + '</h1>' +
+    body + '</td></tr>' +
+    '<tr><td style="padding:8px 40px 30px 40px;"><table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>' +
+    '<td style="background:#5980a6;border-radius:6px;"><a href="' + ctaUrl + '" style="display:inline-block;padding:12px 22px;color:#ffffff;' +
+    'font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;">' + cta + '</a></td></tr></table></td></tr>' +
+    '<tr><td style="padding:0 40px 28px 40px;color:#3d4146;font-size:15px;line-height:1.6;">Regards,<br><strong style="color:#1d1f20;">' +
+    'Hiring team, CricSynthesis</strong></td></tr>' +
+    // footer
+    '<tr><td style="background:#f7f7f8;border-top:1px solid #e4e5e7;padding:24px 40px 26px 40px;" align="center">' +
+    '<p style="margin:0 0 6px 0;color:#1d1f20;font-size:13px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;">CricSynthesis</p>' +
+    '<p style="margin:0 0 14px 0;color:#6b7075;font-size:13px;">Cricket simulation and analytics</p>' +
+    '<p style="margin:0 0 16px 0;font-size:13px;">' +
+    '<a href="' + SITE + '/careers/" style="' + link + '">Careers</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '/privacy/" style="' + link + '">Privacy policy</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '/terms/" style="' + link + '">Terms</a> &nbsp;·&nbsp; ' +
+    '<a href="' + SITE + '" style="' + link + '">cricsynthesis.in</a></p>' +
+    '<p style="margin:0;font-size:13px;">' +
+    '<a href="https://in.linkedin.com/company/cricsynthesis" style="' + link + '">LinkedIn</a> &nbsp;·&nbsp; ' +
+    '<a href="https://x.com/cricsynthesis" style="' + link + '">X</a> &nbsp;·&nbsp; ' +
+    '<a href="https://instagram.com/cricsynthesis" style="' + link + '">Instagram</a></p></td></tr>' +
+    '</table>' +
+    // disclaimers
+    '<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;"><tr><td style="padding:22px 24px 0 24px;font-family:' + font + ';">' +
+    '<p style="' + small + '"><strong style="color:#5d6268;">This is an automated message sent from a no-reply address.</strong> Replies to this ' +
+    'email are not monitored. For questions, write to <a href="mailto:hello@cricsynthesis.in" style="' + link + '">hello@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#5d6268;">Recruitment fraud.</strong> CricSynthesis never asks candidates for payment, ' +
+    'bank details or fees at any stage of hiring. If anyone does so in our name, do not respond and report it to ' +
+    '<a href="mailto:hello@cricsynthesis.in" style="' + link + '">hello@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#5d6268;">Your data.</strong> We process your application only to assess it, as described ' +
+    'in our <a href="' + SITE + '/privacy/" style="' + link + '">privacy policy</a>. To have it deleted, write to ' +
+    '<a href="mailto:privacy@cricsynthesis.in" style="' + link + '">privacy@cricsynthesis.in</a>.</p>' +
+    '<p style="' + small + '"><strong style="color:#5d6268;">Confidentiality.</strong> This email and any attachments are confidential and ' +
+    'intended only for the addressee. If you received it in error, please delete it.</p>' +
+    '<p style="margin:14px 0 0 0;color:#8a8e93;font-size:11px;text-align:center;">© ' + new Date().getFullYear() +
+    ' CricSynthesis. You are receiving this because you applied for a role on cricsynthesis.in.</p>' +
+    '</td></tr></table>' +
+    '</td></tr></table></body></html>';
 }
 
 function firestore(method, path, body) {
@@ -177,13 +251,15 @@ function json(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function sendViaResend(to, subject, html, text) {
+function sendViaResend(to, subject, html, text, from) {
   var key = PropertiesService.getScriptProperties().getProperty('RESEND_API_KEY');
+  var mail = { from: from || FROM, to: [to], subject: subject, html: html, text: text };
+  if (!from) mail.reply_to = REPLY_TO;
   var res = UrlFetchApp.fetch('https://api.resend.com/emails', {
     method: 'post',
     contentType: 'application/json',
     headers: { Authorization: 'Bearer ' + key },
-    payload: JSON.stringify({ from: FROM, to: [to], reply_to: REPLY_TO, subject: subject, html: html, text: text }),
+    payload: JSON.stringify(mail),
     muteHttpExceptions: true
   });
   if (res.getResponseCode() >= 300) console.error('Resend error', res.getResponseCode(), res.getContentText());
@@ -342,7 +418,7 @@ function testWelcomeEmail() {
 
 function testApplicationEmail() {
   var m = applicationEmail({ name: 'Saurav Kumar', jobTitle: 'Graphics Designer & Video Editor' });
-  console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text));
+  console.log(sendViaResend('ibeingsaurav@gmail.com', m.subject, m.html, m.text, CAREERS_FROM));
 }
 
 function testUpgradeEmail() {
