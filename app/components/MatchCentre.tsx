@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveEngine from "@/components/LiveEngine";
+import LiveProjection from "@/components/LiveProjection";
 import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
@@ -132,6 +133,7 @@ function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
   const short = doc.match.teams.map((t) => t.short) as [string, string];
   return (
     <div className="grid">
+      {live && <LiveProjection doc={doc} />}
       <Tiles s={s} short={short} />
       {live && <LiveEngine doc={doc} />}
       <div className="grid g2"><RunFan s={s} /><WinCurve s={s} /></div>
