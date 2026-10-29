@@ -1,9 +1,11 @@
 name: Live probe
 
-# One-off check of which public live-score endpoints answer from a cloud runner (infra/live/probe.py).
-# Nothing is published; the raw responses are kept as an artifact for a few days.
+# One-off checks of the public score pages' data (infra/live/probe*.py). Nothing is published.
 on:
   workflow_dispatch:
+    inputs:
+      finished: { description: "A finished match's page id (blank: one from the live page)", required: false, default: "" }
+      upcoming: { description: "An upcoming match's page id (blank: one from the schedule)", required: false, default: "" }
 
 permissions:
   contents: read
@@ -14,7 +16,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - run: python3 infra/live/probe.py --out probe
-      - run: python3 infra/live/probe2.py
-      - uses: actions/upload-artifact@v4
-        with: { name: live-probe, path: probe, retention-days: 3 }
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run python infra/live/probe3.py ${{ inputs.finished }} ${{ inputs.upcoming }}
