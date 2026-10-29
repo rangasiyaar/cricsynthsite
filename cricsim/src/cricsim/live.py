@@ -96,7 +96,11 @@ def find_match(fx: dict, listing: list[dict]) -> int | None:
     k = kickoff(fx)
     best, who = 0.0, None
     for mi in listing:
-        if k and mi.get("startDate") and abs(int(mi["startDate"]) / 1000 - k.timestamp()) > 12 * 3600:
+        try:
+            start = float(mi.get("startDate") or 0) / 1000
+        except (TypeError, ValueError):
+            start = 0
+        if k and start and abs(start - k.timestamp()) > 12 * 3600:
             continue
         t1, t2 = mi.get("team1") or {}, mi.get("team2") or {}
         a, b = fx["teams"]

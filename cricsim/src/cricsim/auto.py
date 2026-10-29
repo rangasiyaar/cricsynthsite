@@ -39,8 +39,15 @@ def _slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
 
-def _ist(ms: float) -> datetime:
-    return datetime.fromtimestamp(ms / 1000, IST)
+def _ist(ms) -> datetime | None:
+    """A page start time (milliseconds, sometimes as text) in IST; None if it can't be read."""
+    try:
+        return datetime.fromtimestamp(float(ms) / 1000, IST)
+    except (TypeError, ValueError):
+        try:
+            return datetime.fromisoformat(str(ms)).astimezone(IST)
+        except ValueError:
+            return None
 
 
 def _overs(x) -> str:
@@ -281,7 +288,8 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
     horizon = now + timedelta(days=float(cfg.get("days_ahead", 2)))
     for mi in by_id.values():
         fmt = wanted(mi, cfg)
-        if not fmt or not mi.get("startDate") or not now < _ist(mi["startDate"]) <= horizon:
+        start = _ist(mi.get("startDate"))
+        if not fmt or not start or not now < start <= horizon:
             continue
         name = linked(fixtures, mi)
         if name:
@@ -290,7 +298,7 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
                 save(name, {**fx, "live": {**(fx.get("live") or {}), "id": int(mi["matchId"])}}, "linked")
             continue
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mi['matchId']}")))
-        fx = new_fixture(mi, fmt, sq, _previous_xis(fixtures, _ist(mi["startDate"]).date().isoformat()))
+        fx = new_fixture(mi, fmt, sq, _previous_xis(fixtures, start.date().isoformat()))
         if fx:
             save(f"{fx['id']}.json", fx, "new fixture")
             rerun.append(f"{fx['id']}.json")
@@ -340,7 +348,8 @@ def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, sho
     if show:
         cfg = json.loads(CONFIG.read_text())
         for mi in live.match_list(live._safe(live.get, SCHEDULE)) + live.match_list(live._safe(live.get, live.LIST)):
-            when = _ist(mi["startDate"]).strftime("%d %b %H:%M") if mi.get("startDate") else "?"
+            st = _ist(mi.get("startDate"))
+            when = st.strftime("%d %b %H:%M") if st else repr(mi.get("startDate"))
             click.echo(f"{when} | {wanted(mi, cfg) or '-':7} | {mi.get('matchType')} | {mi.get('matchFormat')} | "
                        f"{mi.get('seriesName')} | {(mi.get('team1') or {}).get('teamName')} v "
                        f"{(mi.get('team2') or {}).get('teamName')} | {mi.get('state')}")
