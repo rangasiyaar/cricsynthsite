@@ -214,18 +214,17 @@ function careersLayout(eyebrow, heading, body, cta, ctaUrl) {
     // footer: site steel, logo, links, social icons, address and disclaimers
     '<tr><td style="background:#1d2d3d;padding:32px 40px 28px 40px;" align="center">' +
     '<a href="' + SITE + '" style="text-decoration:none;"><img src="' + SITE + '/email/logo-light.png" alt="CricSynthesis" width="150" ' +
-    'style="display:block;margin:0 auto;border:0;outline:none;width:150px;height:auto;"></a>' +
-    '<p style="margin:10px 0 18px 0;color:#94bce3;font-size:13px;">Cricket simulation and analytics</p>' +
+    'style="display:block;margin:0 auto 20px auto;border:0;outline:none;width:150px;height:auto;"></a>' +
     '<p style="margin:0 0 20px 0;color:#5d7a96;font-size:13px;">' +
     '<a href="' + SITE + '/careers/" style="' + flink + '">Careers</a> &nbsp;·&nbsp; ' +
     '<a href="' + SITE + '/privacy/" style="' + flink + '">Privacy policy</a> &nbsp;·&nbsp; ' +
-    '<a href="' + SITE + '/terms/" style="' + flink + '">Terms</a> &nbsp;·&nbsp; ' +
-    '<a href="' + SITE + '" style="' + flink + '">cricsynthesis.in</a></p>' +
+    '<a href="' + SITE + '/terms/" style="' + flink + '">Terms</a></p>' +
     '<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 20px auto;"><tr>' +
     social('https://in.linkedin.com/company/cricsynthesis', 'linkedin', 'LinkedIn') +
     social('https://x.com/cricsynthesis', 'x', 'X') +
     social('https://instagram.com/cricsynthesis', 'instagram', 'Instagram') + '</tr></table>' +
     '<p style="margin:0;color:#b6babe;font-size:12px;line-height:1.6;">' + ADDRESS + '</p>' +
+    '<p style="margin:4px 0 0 0;font-size:12px;line-height:1.6;"><a href="' + SITE + '" style="' + flink + '">cricsynthesis.in</a></p>' +
     '<div style="height:1px;background:#33475b;margin:24px 0 20px 0;font-size:0;line-height:0;">&nbsp;</div>' +
     '<div style="text-align:left;">' +
     '<p style="' + small + '"><strong style="color:#e6e7e8;">This is an automated message sent from a no-reply address.</strong> Replies to this ' +
