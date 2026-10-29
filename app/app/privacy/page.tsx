@@ -15,7 +15,7 @@ export default function Privacy() {
         <li><b>Account details.</b> When you sign in with Google or with email and password we receive your name, email address,
           profile picture (Google only) and a user ID. Passwords are handled by our sign-in provider; we never see them.</li>
         <li><b>Contact and access requests.</b> Name, work email, organisation and interest you enter in our forms.</li>
-        <li><b>Job applications.</b> The details, answers and resume you submit when you apply for a role. We use them only to
+        <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such as gender. We use them only to
           assess your application and contact you about it, and delete them within 12 months unless you ask us to keep them longer.</li>
         <li><b>API usage.</b> For API customers: API key, request counts, endpoints called, timestamps and IP addresses, used to
           enforce plan limits and keep the service secure.</li>

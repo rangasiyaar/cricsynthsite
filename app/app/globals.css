@@ -474,18 +474,17 @@ body .nav .nav-link { white-space: nowrap; }
 .jobs-count { font: 600 13px var(--cs-head); text-transform: uppercase; letter-spacing: .1em; color: var(--cs-ink-3); margin: 0 0 10px; }
 .jobs-list { list-style: none; margin: 0 0 24px; padding: 0; border-top: 1px solid var(--cs-line); }
 body .legal-content .jobs-list li { margin: 0; }
-.job-row { display: grid; grid-template-columns: 1fr auto auto; gap: 6px 24px; align-items: center; padding: 20px 4px; border-bottom: 1px solid var(--cs-line); color: var(--cs-ink); text-decoration: none; }
-.job-row:hover .job-row-title, .job-row:focus-visible .job-row-title { color: var(--cs-steel-700); }
-.job-row-main { display: grid; gap: 4px; min-width: 0; }
+.job-row { display: grid; grid-template-columns: 1fr auto; gap: 12px 24px; align-items: center; padding: 20px 4px; border-bottom: 1px solid var(--cs-line); }
+.job-row-main { display: grid; gap: 4px; min-width: 0; color: var(--cs-ink); text-decoration: none; }
+.job-row-main:hover .job-row-title, .job-row-main:focus-visible .job-row-title { color: var(--cs-steel-700); }
 .job-row-title { font: 600 22px/1.2 var(--cs-head); text-transform: uppercase; letter-spacing: .02em; }
 .job-row-summary { font-size: 15px; color: var(--cs-ink-2); }
-.job-row-meta { font: 500 13px var(--cs-mono); color: var(--cs-ink-3); white-space: nowrap; }
-.job-row-go { font-size: 20px; color: var(--cs-steel-700); }
-@media (max-width: 640px) { .job-row { grid-template-columns: 1fr auto; } .job-row-meta { grid-column: 1; white-space: normal; } .job-row-go { grid-row: 1 / span 2; grid-column: 2; } }
+.job-row-meta { font: 500 13px var(--cs-mono); color: var(--cs-ink-3); margin-top: 2px; }
+@media (max-width: 640px) { .job-row { grid-template-columns: 1fr; } .job-row-apply { justify-self: start; } }
 .jobs-note { font-size: 14px; color: var(--cs-ink-3); }
 .job-back { font-size: 14px; margin: 0 0 18px; }
 .job-back a { color: var(--cs-ink-2); text-decoration: none; } .job-back a:hover { color: var(--cs-steel-700); }
-.job-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; margin: 0 0 20px; border: 1px solid var(--cs-line); }
+.job-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0; margin: 0 0 20px; border: 1px solid var(--cs-line); }
 .job-meta div { padding: 12px 14px; border-right: 1px solid var(--cs-line); }
 .job-meta div:last-child { border-right: 0; }
 .job-meta dt { font: 600 11px var(--cs-head); text-transform: uppercase; letter-spacing: .1em; color: var(--cs-ink-3); }
@@ -511,13 +510,16 @@ body .legal-content .jobs-list li { margin: 0; }
 .apply-checks label, .apply-consent { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; color: var(--cs-ink-2); }
 .apply-checks input, .apply-consent input { accent-color: var(--cs-steel); margin-top: 4px; }
 .apply-consent { font-size: 14px; }
+.apply-phone { display: flex; align-items: stretch; min-width: 0; }
+.apply-phone-cc { display: flex; align-items: center; padding: 0 12px; border: 1px solid var(--cs-line); border-right: 0; background: var(--cs-surface); color: var(--cs-ink-2); font-size: 15px; font-weight: 500; }
+.apply-form .apply-phone input { flex: 1; min-width: 0; }
+.apply-hint { font-size: 12px; color: var(--cs-ink-3); }
 .apply-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .apply-error { color: var(--cs-danger); font-size: 14px; margin: 0; }
 .apply-foot { display: flex; gap: 16px; align-items: center; }
 .apply-done { display: grid; gap: 12px; padding: 8px 0; }
 body .legal-content .apply-done h2 { border-top: 0; padding-top: 0; margin: 0; }
 body .legal-content a.cs-btn, body .legal-content a.cs-btn:hover { color: var(--cs-paper); text-decoration: none; }
-body .legal-content a.job-row { color: var(--cs-ink); text-decoration: none; }
-body .legal-content a.job-row:hover { color: var(--cs-ink); }
+body .legal-content a.job-row-main, body .legal-content a.job-row-main:hover { color: var(--cs-ink); text-decoration: none; }
 body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14px; font-size: clamp(28px, 4vw, 38px); }
 .apply-meta { font: 500 13px var(--cs-mono); color: var(--cs-ink-3); margin: -6px 0 0; }
