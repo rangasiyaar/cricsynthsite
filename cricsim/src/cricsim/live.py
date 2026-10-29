@@ -33,6 +33,7 @@ UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chr
 DURATION = {"T20": 4.5, "T10": 2.5, "HUNDRED": 3.5, "OD": 9.5}     # hours after the start we keep polling
 EARLY = timedelta(minutes=20)                                      # before the start: toss and XIs
 POLL = 60                                                          # seconds between polls of a live match
+ROSTER_REFRESH = 600                                               # seconds before re-reading the published XIs
 FINISHED = ("complete", "abandon", "no result", "cancel")
 GENERIC = {"women", "woman", "men", "cricket", "club", "team", "xi", "cc", "the", "of"}
 
@@ -239,6 +240,7 @@ def run(fixtures: Path, dry: bool, once: bool, max_minutes: float, fetch=_fetch,
     writer, end = Writer(dry), time.monotonic() + max_minutes * 60
     ids: dict[str, int] = {}
     rosters: dict[str, Roster] = {}
+    fetched: dict[str, float] = {}
     last: dict[str, tuple] = {}
     outs: dict[str, tuple[int, int, list[str]]] = {}             # match → (innings, wickets, names) last read
     done: set[str] = set()
@@ -259,13 +261,15 @@ def run(fixtures: Path, dry: bool, once: bool, max_minutes: float, fetch=_fetch,
                     continue
                 ids[mid] = found
                 click.echo(f"{mid}: page match {found}")
-            if mid not in rosters:
+            if mid not in rosters or time.monotonic() - fetched.get(mid, 0) > ROSTER_REFRESH:
+                fetched[mid] = time.monotonic()             # again every few minutes: XIs can change at the toss
                 doc = fetch(f"matches/{mid}.json")
-                if not doc:
+                if doc:
+                    rosters[mid] = Roster(doc, fx)
+                elif mid not in rosters:
                     click.echo(f"{mid}: no published forecast, skipped")
                     done.add(mid)
                     continue
-                rosters[mid] = Roster(doc, fx)
             fmt = fx.get("format", "T20")
             text = flight(_safe(page, f"{BASE}/live-cricket-scores/{ids[mid]}"))
             doc = state(text, rosters[mid], fmt, match_id=ids[mid])
