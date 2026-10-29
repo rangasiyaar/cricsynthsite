@@ -151,3 +151,15 @@ def test_hand_written_fixture_is_linked_not_replaced(tmp_path):
     got = json.loads((fixtures / "mine.json").read_text())
     assert got["live"]["id"] == 161223 and got["teams"][0]["players"] == ["x"] * 11      # linked; my XIs kept
     assert len(list(fixtures.glob("*.json"))) == 1
+
+
+def test_schedule_without_match_type():
+    cfg = json.loads(auto.CONFIG.read_text())
+    bare = {k: v for k, v in MI.items() if k != "matchType"}
+    assert auto.wanted({**bare, "seriesName": "Ireland tour of Namibia, 2026", "matchFormat": "ODI"}, cfg) == "OD"
+    assert auto.wanted({**bare, "seriesName": "Afghanistan vs Zimbabwe in UAE, 2026"}, cfg) == "T20"
+    assert auto.wanted({**bare, "seriesName": "WBBL 2026"}, cfg) == "T20"
+    assert auto.wanted({**bare, "seriesName": "CSA T20 Challenge 2026"}, cfg) is None
+    assert auto.wanted({**bare, "seriesName": "ICC CWC Challenge League A, 2024-26", "matchFormat": "ODI"}, cfg) is None
+    assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
+    assert auto.fixture_id({**bare, "seriesName": "WBBL 2026"}, "T20").split("-")[3] == "t20"

@@ -57,6 +57,15 @@ def _overs(x) -> str:
 
 # ── which matches ─────────────────────────────────────────────────────────────────────────────────────────────────
 
+INTL = re.compile(r"\btour of\b|tri-?series|quadrangular|\bICC\b|world cup|asia cup|champions trophy|\bvs?\b.+\bin\b", re.I)
+
+
+def is_intl(mi: dict) -> bool:
+    """International: tagged so, or (the schedule often leaves the tag out) a tour / ICC event by its series name."""
+    t = (mi.get("matchType") or "").lower()
+    return t == "international" or (not t and bool(INTL.search(mi.get("seriesName") or "")))
+
+
 def wanted(mi: dict, cfg: dict) -> str | None:
     """Our format for a schedule match we cover, else None."""
     series = mi.get("seriesName") or ""
@@ -65,15 +74,14 @@ def wanted(mi: dict, cfg: dict) -> str | None:
     fmt = "HUNDRED" if re.search(r"\bhundred\b", series, re.I) else FMT.get((mi.get("matchFormat") or "").upper())
     if not fmt:
         return None
-    intl = (mi.get("matchType") or "").lower() == "international"
-    if intl and cfg.get("international", True):
+    if is_intl(mi) and cfg.get("international", True):
         return fmt
     return fmt if any(re.search(x, series, re.I) for x in cfg.get("leagues", [])) else None
 
 
 def fixture_id(mi: dict, fmt: str) -> str:
     t1, t2 = mi.get("team1") or {}, mi.get("team2") or {}
-    intl = (mi.get("matchType") or "").lower() == "international"
+    intl = is_intl(mi)
     kind = {"T20": "t20", "OD": "odi", "T10": "t10", "HUNDRED": "hundred"}[fmt] + ("i" if intl and fmt in ("T20", "T10") else "")
     city = _slug((mi.get("venueInfo") or {}).get("city") or "venue")
     return "-".join([_slug(t1.get("teamSName") or t1.get("teamName", "a")), "v",
@@ -153,7 +161,7 @@ def new_fixture(mi: dict, fmt: str, sq: dict, previous: dict[str, list[str]]) ->
         sides.append(side)
     start, venue = _ist(mi["startDate"]), mi.get("venueInfo") or {}
     women = any("women" in (x or "").lower() for x in (mi.get("seriesName"), t1.get("teamName"), t2.get("teamName")))
-    intl = (mi.get("matchType") or "").lower() == "international"
+    intl = is_intl(mi)
     series = re.sub(r",?\s*\d{4}(-\d{2,4})?\s*$", "", mi.get("seriesName") or "").strip()
     confirmed = all(len(sq.get(int(t.get("teamId", -1)), {}).get("xi", [])) >= 11 for t in (t1, t2))
     return {"id": fixture_id(mi, fmt), "title": f"{sides[0]['name']} v {sides[1]['name']}",

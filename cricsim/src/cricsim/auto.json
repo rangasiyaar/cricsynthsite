@@ -2,10 +2,39 @@
   "_about": "Which upcoming matches cricsim.auto adds as fixtures (limited-overs only). international: every men's and women's T20I / ODI. leagues: series names (regular expressions, case-insensitive). days_ahead: how early a fixture is created.",
   "international": true,
   "leagues": [
-    "Indian Premier League", "Women's Premier League", "Big Bash League", "Pakistan Super League",
-    "Caribbean Premier League", "SA20", "The Hundred", "Nepal Premier League", "International League T20",
-    "Major League Cricket", "Lanka Premier League", "Bangladesh Premier League", "Super Smash", "Vitality Blast"
+    "Indian Premier League",
+    "Women's Premier League",
+    "Big Bash League",
+    "Pakistan Super League",
+    "Caribbean Premier League",
+    "SA20",
+    "The Hundred",
+    "Nepal Premier League",
+    "International League T20",
+    "Major League Cricket",
+    "Lanka Premier League",
+    "Bangladesh Premier League",
+    "Super Smash",
+    "Vitality Blast",
+    "\\bWBBL\\b",
+    "\\bBBL\\b",
+    "\\bIPL\\b",
+    "\\bWPL\\b",
+    "\\bPSL\\b",
+    "\\bCPL\\b",
+    "\\bBPL\\b",
+    "\\bLPL\\b",
+    "\\bMLC\\b",
+    "\\bILT20\\b",
+    "\\bNPL\\b"
   ],
-  "exclude": ["Sixes", "Legends", "Masters", "Warm-up", "Tour Match"],
+  "exclude": [
+    "Sixes",
+    "Legends",
+    "Masters",
+    "Warm-up",
+    "Tour Match",
+    "Challenge League"
+  ],
   "days_ahead": 2
 }
