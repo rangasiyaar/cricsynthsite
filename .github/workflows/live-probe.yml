@@ -18,4 +18,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
-      - run: uv run python infra/live/probe3.py ${{ inputs.finished }} ${{ inputs.upcoming }}
+      - run: uv run python -m cricsim.auto --list | sort -u

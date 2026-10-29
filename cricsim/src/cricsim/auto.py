@@ -335,7 +335,16 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
 @click.option("--changed", type=click.Path(path_type=Path), default=None,
               help="Write the fixture files to re-simulate now (comma-separated) here")
 @click.option("--dry-run", is_flag=True, help="Report what would change; write nothing")
-def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool) -> None:
+@click.option("--list", "show", is_flag=True, help="List the scheduled matches and whether we cover them")
+def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool) -> None:
+    if show:
+        cfg = json.loads(CONFIG.read_text())
+        for mi in live.match_list(live._safe(live.get, SCHEDULE)) + live.match_list(live._safe(live.get, live.LIST)):
+            when = _ist(mi["startDate"]).strftime("%d %b %H:%M") if mi.get("startDate") else "?"
+            click.echo(f"{when} | {wanted(mi, cfg) or '-':7} | {mi.get('matchType')} | {mi.get('matchFormat')} | "
+                       f"{mi.get('seriesName')} | {(mi.get('team1') or {}).get('teamName')} v "
+                       f"{(mi.get('team2') or {}).get('teamName')} | {mi.get('state')}")
+        return
     rerun = run(fixtures, results, write=not dry_run)
     if changed:
         changed.write_text(",".join(rerun))
