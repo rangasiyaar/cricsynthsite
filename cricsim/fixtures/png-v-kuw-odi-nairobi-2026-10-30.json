@@ -1,0 +1,122 @@
+{
+  "id": "png-v-kuw-odi-nairobi-2026-10-30",
+  "title": "Papua New Guinea v Kuwait",
+  "date": "2026-10-30",
+  "start_time": "12:15",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ICC CWC Challenge League A, 2024-26 · 42nd Match",
+  "comp_key": "intl-international-OD",
+  "venue": "Gymkhana Club Ground, Nairobi",
+  "venue_search": "nairobi",
+  "city": "Nairobi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Papua New Guinea",
+      "short": "PNG",
+      "players": [
+        "Tony Ura",
+        "Hiri Hiri",
+        "Boio Ray",
+        "Patrick Nou",
+        "Vagi Guba",
+        "Sese Bau",
+        "Assad Vala",
+        "Charles Amini",
+        "Alei Nao",
+        "Kabua Morea",
+        "Gaudi Toka"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Assad Vala",
+      "squad": [
+        "Sese Bau",
+        "Assad Vala",
+        "Tony Ura",
+        "Charles Amini",
+        "Hiri Hiri",
+        "Kiplin Doriga",
+        "Alei Nao",
+        "Kabua Morea",
+        "Gaudi Toka",
+        "John Kariko",
+        "Michael Charlie",
+        "Nosaina Pokana",
+        "Boio Ray",
+        "Hila Vare",
+        "Patrick Nou",
+        "Damien Ravu",
+        "Jason Kila",
+        "Vagi Guba",
+        "Peter Karoho"
+      ]
+    },
+    {
+      "name": "Kuwait",
+      "short": "KUW",
+      "players": [
+        "Usman Patel",
+        "Clinto Anto",
+        "Ali Zaheer",
+        "Mohammad Amin",
+        "Bilal Tahir",
+        "Ravija Sandaruwan",
+        "Mohammed Aslam",
+        "Sayed Monib",
+        "Yasin Patel",
+        "Shiraz Khan",
+        "Mohamed Shafeeq"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mohammed Aslam",
+      "squad": [
+        "Ravija Sandaruwan",
+        "Clinto Anto",
+        "Ali Zaheer",
+        "Mohammad Amin",
+        "Usman Patel",
+        "Yasin Patel",
+        "Mohammed Aslam",
+        "Bilal Tahir",
+        "Shiraz Khan",
+        "Sayed Monib",
+        "Mohamed Shafeeq",
+        "Meet Bhavsar",
+        "Nimish Lathief",
+        "Anudeep Chenthamara"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175580,
+    "auto": true,
+    "xis": false
+  }
+}

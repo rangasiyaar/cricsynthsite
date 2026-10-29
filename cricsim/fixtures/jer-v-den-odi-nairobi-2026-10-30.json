@@ -1,0 +1,122 @@
+{
+  "id": "jer-v-den-odi-nairobi-2026-10-30",
+  "title": "Jersey v Denmark",
+  "date": "2026-10-30",
+  "start_time": "12:15",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ICC CWC Challenge League A, 2024-26 · 43rd Match",
+  "comp_key": "intl-international-OD",
+  "venue": "Ruaraka Sports Club Ground, Nairobi",
+  "venue_search": "nairobi",
+  "city": "Nairobi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Jersey",
+      "short": "JER",
+      "players": [
+        "Patrick Gouge",
+        "Nick Greenwood",
+        "Josh Lawrenson",
+        "Zak Tribe",
+        "Jonty Jenner",
+        "Harrison Carlyon",
+        "Julius Sumerauer",
+        "Stanley Norman",
+        "Charles Perchard",
+        "Daniel Birrell",
+        "George Richardson"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Charles Perchard",
+      "squad": [
+        "Harrison Carlyon",
+        "Nick Greenwood",
+        "Josh Lawrenson",
+        "Zak Tribe",
+        "Jonty Jenner",
+        "Charlie Brennan",
+        "Patrick Gouge",
+        "Jake Dunford",
+        "Julius Sumerauer",
+        "Charles Perchard",
+        "Daniel Birrell",
+        "Asa Tribe",
+        "Stanley Norman",
+        "Dominic Blampied",
+        "George Richardson"
+      ]
+    },
+    {
+      "name": "Denmark",
+      "short": "DEN",
+      "players": [
+        "Taranjit Bharaj",
+        "Hamid Shah",
+        "Zameer Khan",
+        "Delawar Khan",
+        "Saud Munir",
+        "Saif Ahmad",
+        "Nicolaj Laegsgaard",
+        "Eshan Karimi",
+        "Surya Anand",
+        "Oliver Hald",
+        "Jonas Henriksen"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Hamid Shah",
+      "squad": [
+        "Taranjit Bharaj",
+        "Hamid Shah",
+        "Zameer Khan",
+        "Saif Ahmad",
+        "Surya Anand",
+        "Nicolaj Laegsgaard",
+        "Abdul Hashmi",
+        "Delawar Khan",
+        "Oliver Hald",
+        "Jonas Henriksen",
+        "Eshan Karimi",
+        "Shangeev Thanikaithasan",
+        "Abdullah Mahmood",
+        "Lucky Ali",
+        "Saud Munir",
+        "Shakeel Zeb",
+        "Musa Shaheen Mahmood",
+        "Sebastian Heath"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175583,
+    "auto": true,
+    "xis": false
+  }
+}
