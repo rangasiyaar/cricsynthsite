@@ -1,0 +1,422 @@
+{
+ "id": "nam-v-ire-odi-windhoek-2026-10-30",
+ "innings": [
+  {
+   "team": "Ireland",
+   "runs": 298,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Andrew Balbirnie",
+     "dismissal": "c Louren Steenkamp b Smit",
+     "runs": 19,
+     "balls": 34,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Tim Tector",
+     "dismissal": "c Louren Steenkamp b Smit",
+     "runs": 73,
+     "balls": 81,
+     "fours": 7,
+     "sixes": 3
+    },
+    {
+     "name": "Cade Carmichael",
+     "dismissal": "b Ruben Trumpelmann",
+     "runs": 7,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Tector",
+     "dismissal": "b Jack Brassell",
+     "runs": 15,
+     "balls": 43,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lorcan Tucker",
+     "dismissal": "b Bernard Scholtz",
+     "runs": 28,
+     "balls": 33,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Curtis Campher",
+     "dismissal": "c Gerhard Erasmus b Smit",
+     "runs": 66,
+     "balls": 50,
+     "fours": 2,
+     "sixes": 6
+    },
+    {
+     "name": "George Dockrell",
+     "dismissal": "not out",
+     "runs": 47,
+     "balls": 34,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Jordan Neill",
+     "dismissal": "b Gerhard Erasmus",
+     "runs": 14,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Jai Moondra",
+     "dismissal": "c Ruben Trumpelmann b Smit",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam McCarthy",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Bernard Scholtz",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 58,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "JJ Smit",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 34,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Ruben Trumpelmann",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 59,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Jack Brassell",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 3
+    },
+    {
+     "name": "Jan Nicol Loftie-Eaton",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gerhard Erasmus",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Andrew Balbirnie",
+     "score": 32,
+     "over": "9.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Cade Carmichael",
+     "score": 46,
+     "over": "13.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Tim Tector",
+     "score": 121,
+     "over": "25.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Harry Tector",
+     "score": 153,
+     "over": "31.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lorcan Tucker",
+     "score": 171,
+     "over": "36.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Curtis Campher",
+     "score": 260,
+     "over": "46.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jordan Neill",
+     "score": 275,
+     "over": "47.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Jai Moondra",
+     "score": 290,
+     "over": "49.1"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 6,
+    "w": 10,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 32
+  },
+  {
+   "team": "Namibia",
+   "runs": 168,
+   "wickets": 10,
+   "overs": "41",
+   "batting": [
+    {
+     "name": "Louren Steenkamp",
+     "dismissal": "c Curtis Campher b Jai Moondra",
+     "runs": 21,
+     "balls": 34,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Malan Kruger",
+     "dismissal": "c Lorcan Tucker b Jai Moondra",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jan Frylinck",
+     "dismissal": "c Balbirnie b Jai Moondra",
+     "runs": 4,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Alexander Volschenk",
+     "dismissal": "c Balbirnie b Curtis Campher",
+     "runs": 8,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jan Nicol Loftie-Eaton",
+     "dismissal": "c Lorcan Tucker b Jordan Neill",
+     "runs": 23,
+     "balls": 34,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Gerhard Erasmus",
+     "dismissal": "lbw b Liam McCarthy",
+     "runs": 1,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Zane Green",
+     "dismissal": "b Jai Moondra",
+     "runs": 45,
+     "balls": 58,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "JJ Smit",
+     "dismissal": "c Lorcan Tucker b Matthew Humphreys",
+     "runs": 3,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ruben Trumpelmann",
+     "dismissal": "b Jai Moondra",
+     "runs": 40,
+     "balls": 34,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Bernard Scholtz",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jack Brassell",
+     "dismissal": "c George Dockrell b Jai Moondra",
+     "runs": 11,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jai Moondra",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 26,
+     "wickets": 6,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jordan Neill",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Liam McCarthy",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Curtis Campher",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matthew Humphreys",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Malan Kruger",
+     "score": 1,
+     "over": "2.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jan Frylinck",
+     "score": 15,
+     "over": "6.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Louren Steenkamp",
+     "score": 32,
+     "over": "10.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Alexander Volschenk",
+     "score": 35,
+     "over": "12.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Gerhard Erasmus",
+     "score": 45,
+     "over": "15.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Jan Nicol Loftie-Eaton",
+     "score": 78,
+     "over": "23.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "JJ Smit",
+     "score": 88,
+     "over": "26.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Zane Green",
+     "score": 145,
+     "over": "34.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ruben Trumpelmann",
+     "score": 152,
+     "over": "36.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Jack Brassell",
+     "score": 168,
+     "over": "40.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 29
+  }
+ ],
+ "winner": "Ireland",
+ "result": "Ireland won by 130 runs"
+}
