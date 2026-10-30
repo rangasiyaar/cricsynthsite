@@ -1,0 +1,116 @@
+{
+  "id": "nd-v-akl-odi-mount-maunganui-2026-10-31",
+  "title": "Northern Districts v Auckland",
+  "date": "2026-10-31",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 4th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Bay Oval, Mount Maunganui",
+  "venue_search": "mount maunganui",
+  "city": "Mount Maunganui",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Northern Districts",
+      "short": "ND",
+      "players": [
+        "Aryan Mann",
+        "Robert ODonnell",
+        "Michael Sclanders",
+        "Joe Carter",
+        "Xavier Bell",
+        "Brett Hampton",
+        "Snehith Reddy",
+        "James Naylor",
+        "Cooper Rowell",
+        "Flynn Morey",
+        "Katene Clarke"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Robert ODonnell",
+      "squad": [
+        "Aryan Mann",
+        "Robert ODonnell",
+        "Michael Sclanders",
+        "Joe Carter",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Katene Clarke",
+        "Snehith Reddy",
+        "Josh Brown",
+        "James Naylor",
+        "Cooper Rowell",
+        "Flynn Morey"
+      ]
+    },
+    {
+      "name": "Auckland",
+      "short": "AKL",
+      "players": [
+        "Cam Fletcher",
+        "Sean Solia",
+        "Dale Phillips",
+        "Lachlan Stackpole",
+        "Luke Watson",
+        "Jaskaran Sandhu",
+        "Jack Wright",
+        "Ryan Harrison",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Harry Cullen-Hieatt"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Sean Solia",
+      "squad": [
+        "Sean Solia",
+        "Cam Fletcher",
+        "Dale Phillips",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Luke Watson",
+        "Jaskaran Sandhu",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Jack Wright",
+        "Harry Cullen-Hieatt",
+        "Jock McKenzie",
+        "Jordan Sussex",
+        "Harjot Johal",
+        "Samrath Singh"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170457,
+    "auto": true,
+    "xis": false
+  }
+}
