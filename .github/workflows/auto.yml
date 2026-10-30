@@ -21,12 +21,16 @@ on:
         description: "How long this run keeps making passes"
         type: number
         default: 330
+      late:
+        description: "Missed XIs: fixture files (comma-separated) to fetch XIs for now and re-run, then stop"
+        type: string
+        default: ""
 
 permissions:
   contents: write                  # commit fixtures and scorecards
   actions: write                   # start the quick publish and the next run
 
-concurrency: { group: auto, cancel-in-progress: false }
+concurrency: { group: "${{ inputs.late && 'auto-late' || 'auto' }}", cancel-in-progress: false }
 
 jobs:
   auto:
@@ -39,8 +43,20 @@ jobs:
       - name: Dry run
         if: ${{ inputs.dry_run }}
         run: uv run python -m cricsim.auto --dry-run
+      - name: Missed XIs, re-run after the start
+        if: ${{ inputs.late }}
+        env: { GH_TOKEN: "${{ github.token }}", LATE: "${{ inputs.late }}" }
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          uv run python -m cricsim.auto --late "$LATE" --changed "$RUNNER_TEMP/rerun.txt"
+          git add cricsim/fixtures
+          if git diff --cached --quiet; then echo "no XIs found"; exit 0; fi
+          git commit -q -m "Late XIs (after the start): $(cat "$RUNNER_TEMP/rerun.txt" | sed 's/\.json//g' | cut -c1-200)"
+          for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
+          gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt")"
       - name: Fixtures, XIs, scorecards every 10 minutes
-        if: ${{ !inputs.dry_run }}
+        if: ${{ !inputs.dry_run && !inputs.late }}
         env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}" }
         run: |
           git config user.name "github-actions[bot]"
@@ -60,6 +76,6 @@ jobs:
             sleep 600
           done
       - name: Start the next run
-        if: ${{ !inputs.dry_run && !cancelled() }}
+        if: ${{ !inputs.dry_run && !inputs.late && !cancelled() }}
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh workflow run auto.yml --ref "$GITHUB_REF_NAME"

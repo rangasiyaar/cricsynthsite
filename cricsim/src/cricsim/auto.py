@@ -276,8 +276,11 @@ def _previous_xis(fixtures: dict[str, dict], before: str) -> dict[str, list[str]
 
 
 def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page=live.get,
-        cfg: dict | None = None, write: bool = True) -> list[str]:
-    """One pass. Returns the fixture files whose forecast should be re-run now (new, or XIs named)."""
+        cfg: dict | None = None, write: bool = True, late: set[str] | None = None) -> list[str]:
+    """One pass. Returns the fixture files whose forecast should be re-run now (new, or XIs named).
+
+    `late` names fixtures whose XIs were missed before the start: their named XIs are fetched whatever the time,
+    and the note says the forecast was updated after the start."""
     now, cfg = now or datetime.now(timezone.utc), cfg or json.loads(CONFIG.read_text())
     paths = {p.name: p for p in sorted(fixtures_dir.glob("*.json"))}
     fixtures = {n: json.loads(p.read_text()) for n, p in paths.items()}
@@ -311,19 +314,30 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
             save(f"{fx['id']}.json", fx, "new fixture")
             rerun.append(f"{fx['id']}.json")
 
-    # 2. named XIs before the start
+    # 2. named XIs before the start (or, for `late` fixtures, whenever asked)
     for name, fx in list(fixtures.items()):
         lv, k = fx.get("live") or {}, kickoff(fx)
         mid = lv.get("id")
-        if not mid or not k or lv.get("xis") or not k - XI_FROM <= now <= k + timedelta(minutes=20):
+        if late is not None:
+            if name not in late or not mid:
+                continue
+        elif not mid or not k or lv.get("xis") or not k - XI_FROM <= now <= k + timedelta(minutes=20):
             continue
         if not lv.get("auto") and "confirmed" in (fx.get("note") or "").lower():
             continue                                          # XIs already confirmed by hand
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mid}")))
         head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
         if confirm_xis(fx, sq, head):
+            if late is not None:
+                fx["note"] += " Updated after the start: the forecast was re-run on the confirmed XIs at " \
+                              f"{now.astimezone(IST):%H:%M} IST on {now.astimezone(IST):%d %b}."
             save(name, fx, "playing XIs")
             rerun.append(name)
+        elif late is not None:
+            click.echo(f"no named XIs on the page yet: {name}")
+
+    if late is not None:
+        return rerun
 
     # 3. scorecards of finished matches
     for name, fx in fixtures.items():
@@ -352,7 +366,8 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
               help="Write the fixture files to re-simulate now (comma-separated) here")
 @click.option("--dry-run", is_flag=True, help="Report what would change; write nothing")
 @click.option("--list", "show", is_flag=True, help="List the scheduled matches and whether we cover them")
-def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool) -> None:
+@click.option("--late", default="", help="Fixture files (comma-separated) whose missed XIs to fetch now, whatever the time")
+def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool, late: str) -> None:
     if show:
         cfg = json.loads(CONFIG.read_text())
         for mi in live.match_list(live._safe(live.get, SCHEDULE)) + live.match_list(live._safe(live.get, live.LIST)):
@@ -362,7 +377,8 @@ def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, sho
                        f"{mi.get('seriesName')} | {(mi.get('team1') or {}).get('teamName')} v "
                        f"{(mi.get('team2') or {}).get('teamName')} | {mi.get('state')}")
         return
-    rerun = run(fixtures, results, write=not dry_run)
+    names = {n.strip() for n in late.split(",") if n.strip()}
+    rerun = run(fixtures, results, write=not dry_run, late=names or None)
     if changed:
         changed.write_text(",".join(rerun))
 
