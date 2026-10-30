@@ -12,36 +12,36 @@
   "city": "Mount Maunganui",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Auckland won the toss and bowl first.",
   "teams": [
     {
       "name": "Northern Districts",
       "short": "ND",
       "players": [
-        "Aryan Mann",
-        "Robert ODonnell",
-        "Michael Sclanders",
+        "Nick Kelly",
+        "Henry Cooper",
         "Joe Carter",
-        "Xavier Bell",
+        "Robert ODonnell",
         "Brett Hampton",
+        "Xavier Bell",
         "Snehith Reddy",
+        "Aryan Mann",
+        "Josh Brown",
         "James Naylor",
-        "Cooper Rowell",
-        "Flynn Morey",
-        "Katene Clarke"
+        "Cooper Rowell"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Robert ODonnell",
       "squad": [
@@ -63,29 +63,29 @@
       "name": "Auckland",
       "short": "AKL",
       "players": [
-        "Cam Fletcher",
         "Sean Solia",
         "Dale Phillips",
-        "Lachlan Stackpole",
         "Luke Watson",
-        "Jaskaran Sandhu",
-        "Jack Wright",
+        "Cam Fletcher",
+        "Lachlan Stackpole",
         "Ryan Harrison",
+        "Jaskaran Sandhu",
         "Adithya Ashok",
         "Angus Olliver",
+        "Jack Wright",
         "Harry Cullen-Hieatt"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
+        "AR",
         "AR"
       ],
       "captain": "Sean Solia",
@@ -111,6 +111,7 @@
   "live": {
     "id": 170457,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

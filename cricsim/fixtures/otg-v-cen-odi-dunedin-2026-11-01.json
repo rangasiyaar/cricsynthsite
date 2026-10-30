@@ -1,0 +1,114 @@
+{
+  "id": "otg-v-cen-odi-dunedin-2026-11-01",
+  "title": "Otago v Central Stags",
+  "date": "2026-11-01",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 6th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "University Oval, Dunedin",
+  "venue_search": "dunedin",
+  "city": "Dunedin",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Otago",
+      "short": "OTG",
+      "players": [
+        "Max Chu",
+        "Jacob Cumming",
+        "Jamal Todd",
+        "Tom Jones",
+        "Thorn Parkes",
+        "Zac Cumming",
+        "Luke Georgeson",
+        "Matthew Bacon",
+        "Jarrod McKay",
+        "Thomas O Connor",
+        "Ben Lockrose"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Matthew Bacon",
+        "Jacob Cumming",
+        "Zac Cumming",
+        "Jamal Todd",
+        "Jarrod McKay",
+        "Max Chu",
+        "Thomas O Connor",
+        "Tom Jones",
+        "Thorn Parkes",
+        "Ben Lockrose",
+        "Troy Johnson",
+        "Mason Clarke",
+        "Danru Ferns",
+        "Jack Boyle",
+        "Luke Georgeson"
+      ]
+    },
+    {
+      "name": "Central Stags",
+      "short": "CEN",
+      "players": [
+        "Dane Cleaver",
+        "Will Young",
+        "Tom Bruce",
+        "Josh Clarkson",
+        "Brad Schmulian",
+        "Ajaz Patel",
+        "Brett Randell",
+        "Angus Schaw",
+        "Raymond Toole",
+        "Taylor Bettelheim",
+        "Sam Cassidy"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "squad": [
+        "Tom Bruce",
+        "Josh Clarkson",
+        "Dane Cleaver",
+        "Ajaz Patel",
+        "Brett Randell",
+        "Angus Schaw",
+        "Brad Schmulian",
+        "Raymond Toole",
+        "Will Young",
+        "Taylor Bettelheim",
+        "Sam Cassidy",
+        "Toby Findlay"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170470,
+    "auto": true,
+    "xis": false
+  }
+}
