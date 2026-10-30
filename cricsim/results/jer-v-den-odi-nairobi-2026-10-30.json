@@ -1,0 +1,449 @@
+{
+ "id": "jer-v-den-odi-nairobi-2026-10-30",
+ "innings": [
+  {
+   "team": "Jersey",
+   "runs": 312,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Harrison Carlyon",
+     "dismissal": "c Musa Shaheen b Simon Sorensen",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Julius Sumerauer",
+     "dismissal": "lbw b Lucky Ali",
+     "runs": 43,
+     "balls": 46,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Josh Lawrenson",
+     "dismissal": "c Musa Shaheen b Abdullah Mahmood",
+     "runs": 81,
+     "balls": 97,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Zak Tribe",
+     "dismissal": "b Abdullah Mahmood",
+     "runs": 12,
+     "balls": 24,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jonty Jenner",
+     "dismissal": "c Surya Anand b Abdullah Mahmood",
+     "runs": 81,
+     "balls": 53,
+     "fours": 10,
+     "sixes": 4
+    },
+    {
+     "name": "Charlie Brennan",
+     "dismissal": "c Taranjit Bharaj b Abdullah Mahmood",
+     "runs": 16,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "William Perchard",
+     "dismissal": "c Hamid Shah b Lucky Ali",
+     "runs": 23,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Benjamin Ward",
+     "dismissal": "c Abdullah Mahmood b Surya Anand",
+     "runs": 31,
+     "balls": 25,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Jake Dunford",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Charles Perchard",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 3,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Surya Anand",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Simon Sorensen",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Shakeel Zeb",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lucky Ali",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 66,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Saif Ahmad",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abdullah Mahmood",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 63,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hamid Shah",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Harrison Carlyon",
+     "score": 3,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Julius Sumerauer",
+     "score": 69,
+     "over": "13.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Zak Tribe",
+     "score": 89,
+     "over": "19.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jonty Jenner",
+     "score": 205,
+     "over": "35.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Charlie Brennan",
+     "score": 229,
+     "over": "39.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Josh Lawrenson",
+     "score": 242,
+     "over": "41.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "William Perchard",
+     "score": 271,
+     "over": "45.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Benjamin Ward",
+     "score": 302,
+     "over": "49.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 1,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 47
+  },
+  {
+   "team": "Denmark",
+   "runs": 240,
+   "wickets": 10,
+   "overs": "47.5",
+   "batting": [
+    {
+     "name": "Musa Shaheen Mahmood",
+     "dismissal": "lbw b Harrison Carlyon",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hamid Shah",
+     "dismissal": "c Jake Dunford b Benjamin Ward",
+     "runs": 41,
+     "balls": 67,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Lucky Ali",
+     "dismissal": "c Jake Dunford b Charles Perchard",
+     "runs": 66,
+     "balls": 78,
+     "fours": 10,
+     "sixes": 1
+    },
+    {
+     "name": "Saif Ahmad",
+     "dismissal": "c Julius Sumerauer b Benjamin Ward",
+     "runs": 10,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sebastian Heath",
+     "dismissal": "st Jake Dunford b Zak Tribe",
+     "runs": 28,
+     "balls": 32,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Shangeev Thanikaithasan",
+     "dismissal": "c Jake Dunford b Zak Tribe",
+     "runs": 15,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Taranjit Bharaj",
+     "dismissal": "st Jake Dunford b Zak Tribe",
+     "runs": 17,
+     "balls": 26,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Surya Anand",
+     "dismissal": "run out (Benjamin Ward/Zak Tribe)",
+     "runs": 12,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abdullah Mahmood",
+     "dismissal": "b Charles Perchard",
+     "runs": 27,
+     "balls": 23,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Shakeel Zeb",
+     "dismissal": "c George Richardson b Benjamin Ward",
+     "runs": 1,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Simon Sorensen",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Harrison Carlyon",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Julius Sumerauer",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Charles Perchard",
+     "overs": "6.5",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "George Richardson",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 3,
+     "wides": 1
+    },
+    {
+     "name": "Zak Tribe",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 44,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Josh Lawrenson",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Benjamin Ward",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Musa Shaheen Mahmood",
+     "score": 1,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lucky Ali",
+     "score": 106,
+     "over": "21.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Saif Ahmad",
+     "score": 122,
+     "over": "24.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Hamid Shah",
+     "score": 129,
+     "over": "26.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shangeev Thanikaithasan",
+     "score": 147,
+     "over": "29.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Taranjit Bharaj",
+     "score": 194,
+     "over": "37.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sebastian Heath",
+     "score": 199,
+     "over": "39.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Surya Anand",
+     "score": 217,
+     "over": "41.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Shakeel Zeb",
+     "score": 227,
+     "over": "44.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Abdullah Mahmood",
+     "score": 240,
+     "over": "47.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 6,
+    "w": 11,
+    "nb": 4,
+    "p": 0
+   },
+   "powerplay_runs": 62
+  }
+ ],
+ "winner": "Jersey",
+ "result": "Jersey won by 72 runs"
+}
