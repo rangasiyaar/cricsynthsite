@@ -12,33 +12,33 @@
   "city": "Auckland",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. India won the toss and bowl first. Updated after the start: the forecast was re-run on the confirmed XIs at 14:46 IST on 30 Oct.",
   "teams": [
     {
       "name": "New Zealand",
       "short": "NZ",
       "players": [
-        "Tim Seifert",
         "Finn Allen",
+        "Tim Seifert",
         "Daryl Mitchell",
         "Glenn Phillips",
         "Bevon Jacobs",
         "Michael Bracewell",
         "Mitchell Santner",
-        "Kyle Jamieson",
+        "Nathan Smith",
         "Adam Milne",
         "Jacob Duffy",
         "Matthew Fisher"
       ],
       "roles": [
+        "BAT",
         "WK",
-        "BAT",
         "AR",
         "AR",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -70,30 +70,30 @@
       "name": "India",
       "short": "IND",
       "players": [
-        "Sanju Samson",
         "Abhishek Sharma",
-        "Vaibhav Sooryavanshi",
+        "Sanju Samson",
+        "Ishan Kishan",
         "Shreyas Iyer",
         "Tilak Varma",
+        "Nitish Reddy",
         "Naman Dhir",
         "Axar Patel",
-        "Bhuvneshwar Kumar",
         "Arshdeep Singh",
         "Prince Yadav",
-        "Nitish Reddy"
+        "Mayank Yadav"
       ],
       "roles": [
+        "AR",
         "WK",
+        "WK",
+        "BAT",
+        "BAT",
         "AR",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "captain": "Shreyas Iyer",
       "squad": [
@@ -125,6 +125,7 @@
   "live": {
     "id": 161223,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

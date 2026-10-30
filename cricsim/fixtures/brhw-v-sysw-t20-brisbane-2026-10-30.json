@@ -12,7 +12,7 @@
   "city": "Brisbane",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sydney Sixers Women won the toss and bowl first. Updated after the start: the forecast was re-run on the confirmed XIs at 14:46 IST on 30 Oct.",
   "teams": [
     {
       "name": "Brisbane Heat Women",
@@ -20,28 +20,28 @@
       "players": [
         "Grace Harris",
         "Charli Knott",
-        "Sianna Ginger",
-        "Mikayla Wrigley",
-        "Lucinda Bourke",
-        "Lily Bassingthwaighte",
-        "Bonnie Berry",
-        "Catherine White",
         "Redmayne",
+        "Orla Prendergast",
         "Lucy Hamilton",
-        "Annie O Neil"
+        "Annie O Neil",
+        "Sianna Ginger",
+        "Lucinda Bourke",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte",
+        "Ayaka Kato-Stafford"
       ],
       "roles": [
         "AR",
         "AR",
-        "AR",
         "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
         "BAT",
-        "BOWL",
-        "BOWL",
-        "BOWL",
-        "WK",
         "AR",
-        "AR"
+        "BOWL",
+        "BOWL"
       ],
       "captain": "Redmayne",
       "squad": [
@@ -67,30 +67,30 @@
       "name": "Sydney Sixers Women",
       "short": "SYSW",
       "players": [
-        "Erin Burns",
-        "Sarah Coyte",
-        "Courtney Sippel",
-        "Maitlan Brown",
-        "Elsa Hunter",
-        "Frankie Nicklin",
-        "Maddy Darke",
         "Sophia Dunkley",
+        "Ellyse Perry",
+        "Melie Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
         "Eva Ragg",
+        "Erin Burns",
         "Lauren Cheatle",
-        "Ashleigh Gardner"
+        "Sarah Coyte",
+        "Caoimhe Bray",
+        "Frankie Nicklin"
       ],
       "roles": [
-        "AR",
-        "AR",
-        "BOWL",
-        "AR",
         "BAT",
-        "BOWL",
+        "AR",
+        "AR",
+        "AR",
         "WK",
         "BAT",
-        "BAT",
+        "AR",
         "BOWL",
-        "AR"
+        "AR",
+        "BOWL",
+        "BOWL"
       ],
       "captain": "Ashleigh Gardner",
       "squad": [
@@ -117,6 +117,7 @@
   "live": {
     "id": 162711,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

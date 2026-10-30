@@ -12,36 +12,36 @@
   "city": "Nairobi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Denmark won the toss and bowl first. Updated after the start: the forecast was re-run on the confirmed XIs at 14:46 IST on 30 Oct.",
   "teams": [
     {
       "name": "Jersey",
       "short": "JER",
       "players": [
-        "Patrick Gouge",
-        "Nick Greenwood",
+        "Harrison Carlyon",
         "Josh Lawrenson",
         "Zak Tribe",
         "Jonty Jenner",
-        "Harrison Carlyon",
-        "Julius Sumerauer",
-        "Stanley Norman",
+        "Charlie Brennan",
+        "Benjamin Ward",
+        "Jake Dunford",
         "Charles Perchard",
-        "Daniel Birrell",
-        "George Richardson"
+        "George Richardson",
+        "William Perchard",
+        "Julius Sumerauer"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "AR"
       ],
       "captain": "Charles Perchard",
       "squad": [
@@ -66,30 +66,30 @@
       "name": "Denmark",
       "short": "DEN",
       "players": [
-        "Taranjit Bharaj",
         "Hamid Shah",
-        "Zameer Khan",
-        "Delawar Khan",
-        "Saud Munir",
+        "Musa Shaheen",
+        "Lucky Ali",
         "Saif Ahmad",
-        "Nicolaj Laegsgaard",
-        "Eshan Karimi",
+        "Shangeev Thanikaithasan",
+        "Sebastian Heath",
+        "Taranjit Bharaj",
         "Surya Anand",
-        "Oliver Hald",
-        "Jonas Henriksen"
+        "Abdullah Mahmood",
+        "Shakeel Zeb",
+        "Simon Sorensen"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "AR",
+        "AR"
       ],
       "captain": "Hamid Shah",
       "squad": [
@@ -117,6 +117,7 @@
   "live": {
     "id": 175583,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
