@@ -1,0 +1,114 @@
+{
+  "id": "wel-v-cntbry-odi-wellington-2026-10-31",
+  "title": "Wellington v Canterbury",
+  "date": "2026-10-31",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 5th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Basin Reserve, Wellington",
+  "venue_search": "wellington",
+  "city": "Wellington",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Wellington",
+      "short": "WEL",
+      "players": [
+        "Tom Blundell",
+        "James Hartshorn",
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Tashkoff",
+        "Muhammad Abbas",
+        "Oscar Jackson",
+        "Logan van Beek",
+        "Liam Dudding",
+        "Yahya Zeb",
+        "Gareth Severin"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "James Hartshorn",
+      "squad": [
+        "Tom Blundell",
+        "James Hartshorn",
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Tashkoff",
+        "Muhammad Abbas",
+        "Oscar Jackson",
+        "Logan van Beek",
+        "Liam Dudding",
+        "Yahya Zeb",
+        "Callum McLachlan"
+      ]
+    },
+    {
+      "name": "Canterbury",
+      "short": "CNTBRY",
+      "players": [
+        "Tom Latham",
+        "Henry Nicholls",
+        "Bowes",
+        "Scott Janett",
+        "Leo Carter",
+        "Cole McConchie",
+        "Cameron Paul",
+        "LLB Harper",
+        "Angus McKenzie",
+        "Matt Rowe",
+        "Ish Sodhi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Henry Nicholls",
+      "squad": [
+        "Henry Nicholls",
+        "Tom Latham",
+        "Bowes",
+        "Scott Janett",
+        "Leo Carter",
+        "Cole McConchie",
+        "LLB Harper",
+        "Angus McKenzie",
+        "Matt Rowe",
+        "Ish Sodhi",
+        "Raunaq Kapur",
+        "Travis Muller",
+        "Cameron Paul"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170460,
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,341 @@
+{
+ "id": "brhw-v-sysw-t20-brisbane-2026-10-30",
+ "innings": [
+  {
+   "team": "Brisbane Heat Women",
+   "runs": 154,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Charli Knott",
+     "dismissal": "c Melie Kerr b Ashleigh Gardner",
+     "runs": 57,
+     "balls": 47,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Grace Harris",
+     "dismissal": "c Alice Capsey b Lauren Cheatle",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Georgia Redmayne",
+     "dismissal": "c Lauren Cheatle b Sarah Coyte",
+     "runs": 58,
+     "balls": 44,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Orla Prendergast",
+     "dismissal": "b Caoimhe Bray",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Annie O Neil",
+     "dismissal": "c Caoimhe Bray b Ashleigh Gardner",
+     "runs": 18,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Lucy Hamilton",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sianna Ginger",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lauren Cheatle",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Caoimhe Bray",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Melie Kerr",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Grace Harris",
+     "score": 20,
+     "over": "2.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Charli Knott",
+     "score": 117,
+     "over": "14.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Orla Prendergast",
+     "score": 119,
+     "over": "15.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Georgia Redmayne",
+     "score": 138,
+     "over": "17.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Annie O Neil",
+     "score": 146,
+     "over": "18.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  },
+  {
+   "team": "Sydney Sixers Women",
+   "runs": 157,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ellyse Perry",
+     "dismissal": "c Ayaka Kato-Stafford b Charli Knott",
+     "runs": 58,
+     "balls": 38,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Sophia Dunkley",
+     "dismissal": "c Orla Prendergast b Sianna Ginger",
+     "runs": 37,
+     "balls": 26,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Melie Kerr",
+     "dismissal": "b Sianna Ginger",
+     "runs": 18,
+     "balls": 20,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "dismissal": "c Ayaka Kato-Stafford b Sarah Glenn",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alice Capsey",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Eva Ragg",
+     "dismissal": "c Redmayne b Charli Knott",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Erin Burns",
+     "dismissal": "run out (Sianna Ginger)",
+     "runs": 11,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 1,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lucy Hamilton",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Lily Bassingthwaighte",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Orla Prendergast",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Glenn",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ayaka Kato-Stafford",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sianna Ginger",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Charli Knott",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sophia Dunkley",
+     "score": 53,
+     "over": "6.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Melie Kerr",
+     "score": 103,
+     "over": "13.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ashleigh Gardner",
+     "score": 116,
+     "over": "14.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ellyse Perry",
+     "score": 118,
+     "over": "15.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Eva Ragg",
+     "score": 130,
+     "over": "17.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Erin Burns",
+     "score": 153,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 1,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 12
+  }
+ ],
+ "winner": "Sydney Sixers Women",
+ "result": "Sydney Sixers Women won by 4 wickets"
+}
