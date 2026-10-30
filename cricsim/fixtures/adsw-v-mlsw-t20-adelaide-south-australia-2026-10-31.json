@@ -1,0 +1,118 @@
+{
+  "id": "adsw-v-mlsw-t20-adelaide-south-australia-2026-10-31",
+  "title": "Adelaide Strikers Women v Melbourne Stars Women",
+  "date": "2026-10-31",
+  "start_time": "10:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 4th Match",
+  "comp_key": "wbbl",
+  "venue": "Karen Rolton Oval, Adelaide, South Australia",
+  "venue_search": "adelaide, south australia",
+  "city": "Adelaide, South Australia",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Adelaide Strikers Women",
+      "short": "ADSW",
+      "players": [
+        "Emma de Broughe",
+        "Madeline Penna",
+        "Ellie Johnston",
+        "Amanda-Jade Wellington",
+        "Maggie Clark",
+        "Ella Wilson",
+        "Eleanor Larosa",
+        "Bridget Patterson",
+        "Laura Wolvaardt",
+        "Sophie Ecclestone",
+        "Megan Schutt"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Tahlia McGrath",
+        "Bridget Patterson",
+        "Laura Wolvaardt",
+        "Maia Bouchier",
+        "Emma de Broughe",
+        "Eleanor Larosa",
+        "Madeline Penna",
+        "Ellie Johnston",
+        "Sophie Ecclestone",
+        "Amanda-Jade Wellington",
+        "Megan Schutt",
+        "Anesu Mushangwe",
+        "Darcie Brown",
+        "Ella Wilson",
+        "Maggie Clark"
+      ]
+    },
+    {
+      "name": "Melbourne Stars Women",
+      "short": "MLSW",
+      "players": [
+        "Amy Jones",
+        "Meg Lanning",
+        "Naomi Stalenberg",
+        "Rhys McKenna",
+        "Annabel Sutherland",
+        "Danielle Gibson",
+        "Kim Garth",
+        "Maisy Gibson",
+        "Sophie Day",
+        "Charlie Dean",
+        "Carly Leeson"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Meg Lanning",
+      "squad": [
+        "Meg Lanning",
+        "Amy Jones",
+        "Rhys McKenna",
+        "Annabel Sutherland",
+        "Danielle Gibson",
+        "Kim Garth",
+        "Naomi Stalenberg",
+        "Charlie Dean",
+        "Carly Leeson",
+        "Maisy Gibson",
+        "Sophie Day",
+        "Indigo Noble",
+        "Zoe Samuel",
+        "Tia Davidge",
+        "Prestwidge"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162713,
+    "auto": true,
+    "xis": false
+  }
+}

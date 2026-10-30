@@ -1,0 +1,117 @@
+{
+  "id": "prsw-v-mlrw-t20-perth-2026-10-31",
+  "title": "Perth Scorchers Women v Melbourne Renegades Women",
+  "date": "2026-10-31",
+  "start_time": "13:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 5th Match",
+  "comp_key": "wbbl",
+  "venue": "W.A.C.A. Ground, Perth",
+  "venue_search": "perth",
+  "city": "Perth",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PRSW",
+      "players": [
+        "Katie Mack",
+        "Chloe Piparo",
+        "Mikayla Hinkley",
+        "Ines McKeon",
+        "Amy Edgar",
+        "Lilly Mills",
+        "Ruby Strange",
+        "Ebony Hoskin",
+        "Sophie Devine",
+        "Chloe Ainsworth",
+        "Freya Kemp"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "squad": [
+        "Beth Mooney",
+        "Sophie Devine",
+        "Amy Edgar",
+        "Katie Mack",
+        "Chloe Ainsworth",
+        "Freya Kemp",
+        "Fatima Sana",
+        "Alana King",
+        "Chloe Piparo",
+        "Mikayla Hinkley",
+        "Lilly Mills",
+        "Ines McKeon",
+        "Ebony Hoskin",
+        "Ruby Strange"
+      ]
+    },
+    {
+      "name": "Melbourne Renegades Women",
+      "short": "MLRW",
+      "players": [
+        "Nicole Faltum",
+        "Sophie Molineux",
+        "Courtney Webb",
+        "Hayley Matthews",
+        "Milly Illingworth",
+        "Tayla Vlaeminck",
+        "Sara Kennedy",
+        "Georgia Wareham",
+        "Tess Flintoff",
+        "Chloe Tryon",
+        "Deandra Dottin"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Sophie Molineux",
+      "squad": [
+        "Sophie Molineux",
+        "Nicole Faltum",
+        "Courtney Webb",
+        "Hayley Matthews",
+        "Georgia Wareham",
+        "Tess Flintoff",
+        "Chloe Tryon",
+        "Deandra Dottin",
+        "Annie Wikman",
+        "Milly Illingworth",
+        "Tayla Vlaeminck",
+        "Olivia Porter",
+        "Sophie Reid",
+        "Sara Kennedy",
+        "Lucy Wilson"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162731,
+    "auto": true,
+    "xis": false
+  }
+}
