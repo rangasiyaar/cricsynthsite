@@ -1,0 +1,364 @@
+{
+ "id": "afg-v-zim-t20i-sharjah-2026-10-29",
+ "innings": [
+  {
+   "team": "Afghanistan",
+   "runs": 221,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Rahmanullah Gurbaz",
+     "dismissal": "c Sikandar Raza b Brad Evans",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ibrahim Zadran",
+     "dismissal": "b Kundai Matigimu",
+     "runs": 1,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Akram",
+     "dismissal": "c Vincent Masekesa b Brad Evans",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sediqullah Atal",
+     "dismissal": "c Tadiwanashe Marumani b Vincent Masekesa",
+     "runs": 17,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Shahidullah Kamal",
+     "dismissal": "c Tadiwanashe Marumani b Kundai Matigimu",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "dismissal": "c Brad Evans b Sikandar Raza",
+     "runs": 116,
+     "balls": 50,
+     "fours": 5,
+     "sixes": 12
+    },
+    {
+     "name": "Ijaz Ahmad Ahmadzai",
+     "dismissal": "c Tafadzwa Tsiga b Ernest Masuku",
+     "runs": 52,
+     "balls": 27,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Rashid Khan",
+     "dismissal": "not out",
+     "runs": 25,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 4
+    },
+    {
+     "name": "Mujeeb Ur Rahman",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Brad Evans",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ernest Masuku",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Kundai Matigimu",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 48,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Vincent Masekesa",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sikandar Raza",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ryan Burl",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Rahmanullah Gurbaz",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mohammad Akram",
+     "score": 1,
+     "over": "0.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ibrahim Zadran",
+     "score": 5,
+     "over": "3.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shahidullah Kamal",
+     "score": 5,
+     "over": "3.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sediqullah Atal",
+     "score": 38,
+     "over": "8.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ijaz Ahmad Ahmadzai",
+     "score": 180,
+     "over": "17.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Azmatullah Omarzai",
+     "score": 195,
+     "over": "18.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 19
+  },
+  {
+   "team": "Zimbabwe",
+   "runs": 202,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Brian Bennett",
+     "dismissal": "c Rashid Khan b Abdullah Ahmadzai",
+     "runs": 22,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Innocent Kaia",
+     "dismissal": "c Shahidullah Kamal b Azmatullah Omarzai",
+     "runs": 25,
+     "balls": 13,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Sikandar Raza",
+     "dismissal": "not out",
+     "runs": 106,
+     "balls": 56,
+     "fours": 5,
+     "sixes": 9
+    },
+    {
+     "name": "Ryan Burl",
+     "dismissal": "b Abdullah Ahmadzai",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tadiwanashe Marumani",
+     "dismissal": "lbw b Rashid Khan",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Wessly Madhevere",
+     "dismissal": "c Mohammad Akram b Fareed Ahmad",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tafadzwa Tsiga",
+     "dismissal": "not out",
+     "runs": 31,
+     "balls": 23,
+     "fours": 1,
+     "sixes": 2
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Fareed Ahmad Malik",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mujeeb Ur Rahman",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Abdullah Ahmadzai",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Rashid Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shahidullah Kamal",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ijaz Ahmad Ahmadzai",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Innocent Kaia",
+     "score": 39,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Brian Bennett",
+     "score": 59,
+     "over": "5.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ryan Burl",
+     "score": 65,
+     "over": "7.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tadiwanashe Marumani",
+     "score": 69,
+     "over": "8.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Wessly Madhevere",
+     "score": 82,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 59
+  }
+ ],
+ "winner": "Afghanistan",
+ "result": "Afghanistan won by 19 runs"
+}

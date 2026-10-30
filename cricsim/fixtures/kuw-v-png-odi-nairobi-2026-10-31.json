@@ -1,0 +1,122 @@
+{
+  "id": "kuw-v-png-odi-nairobi-2026-10-31",
+  "title": "Kuwait v Papua New Guinea",
+  "date": "2026-10-31",
+  "start_time": "12:15",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ICC CWC Challenge League A, 2024-26 · 44th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "Gymkhana Club Ground, Nairobi",
+  "venue_search": "nairobi",
+  "city": "Nairobi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kuwait",
+      "short": "KUW",
+      "players": [
+        "Usman Patel",
+        "Clinto Anto",
+        "Ali Zaheer",
+        "Mohammad Amin",
+        "Bilal Tahir",
+        "Ravija Sandaruwan",
+        "Mohammed Aslam",
+        "Sayed Monib",
+        "Yasin Patel",
+        "Shiraz Khan",
+        "Mohamed Shafeeq"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mohammed Aslam",
+      "squad": [
+        "Ravija Sandaruwan",
+        "Clinto Anto",
+        "Ali Zaheer",
+        "Mohammad Amin",
+        "Usman Patel",
+        "Yasin Patel",
+        "Mohammed Aslam",
+        "Bilal Tahir",
+        "Shiraz Khan",
+        "Sayed Monib",
+        "Mohamed Shafeeq",
+        "Meet Bhavsar",
+        "Nimish Lathief",
+        "Anudeep Chenthamara"
+      ]
+    },
+    {
+      "name": "Papua New Guinea",
+      "short": "PNG",
+      "players": [
+        "Tony Ura",
+        "Hiri Hiri",
+        "Boio Ray",
+        "Patrick Nou",
+        "Vagi Guba",
+        "Sese Bau",
+        "Assad Vala",
+        "Charles Amini",
+        "Alei Nao",
+        "Kabua Morea",
+        "Gaudi Toka"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Assad Vala",
+      "squad": [
+        "Sese Bau",
+        "Assad Vala",
+        "Tony Ura",
+        "Charles Amini",
+        "Hiri Hiri",
+        "Kiplin Doriga",
+        "Alei Nao",
+        "Kabua Morea",
+        "Gaudi Toka",
+        "John Kariko",
+        "Michael Charlie",
+        "Boio Ray",
+        "Hila Vare",
+        "Patrick Nou",
+        "Damien Ravu",
+        "Jason Kila",
+        "Vagi Guba",
+        "Peter Karoho",
+        "Nosaina Pokana"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175590,
+    "auto": true,
+    "xis": false
+  }
+}
