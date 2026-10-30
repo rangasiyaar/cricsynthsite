@@ -1,0 +1,120 @@
+{
+  "id": "war-v-wpr-t20-gqeberha-2026-10-31",
+  "title": "Warriors v Western Province",
+  "date": "2026-10-31",
+  "start_time": "21:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA T20 Challenge 2026 · Super Eights",
+  "comp_key": "csa-t20-challenge",
+  "venue": "St George's Park, Gqeberha",
+  "venue_search": "gqeberha",
+  "city": "Gqeberha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Warriors",
+      "short": "WAR",
+      "players": [
+        "Modiri Litheko",
+        "Andile Mokgakane",
+        "Matthew Boast",
+        "Sibonelo Makhanya",
+        "Muhammad Manack",
+        "JP King",
+        "Jordan Morris",
+        "Ethan Frosler",
+        "Wezo Gqiba",
+        "Raubenheimer",
+        "Jean du Plessis"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Jean du Plessis",
+      "squad": [
+        "Modiri Litheko",
+        "Jean du Plessis",
+        "Muhammad Manack",
+        "JP King",
+        "Andile Mokgakane",
+        "Jordan Morris",
+        "Ethan Frosler",
+        "Wezo Gqiba",
+        "Matthew Boast",
+        "Raubenheimer",
+        "Gideon Peters",
+        "B Hendricks",
+        "Sibonelo Makhanya",
+        "Olivier",
+        "Patrick Kruger",
+        "Thomas Kaber"
+      ]
+    },
+    {
+      "name": "Western Province",
+      "short": "WPR",
+      "players": [
+        "Daniel Smith",
+        "Jiveshan Pillay",
+        "Moore",
+        "Valentine Kitime",
+        "Sinalo Gobeni",
+        "Kyle Simmonds",
+        "Oliver Whitehead",
+        "Raeeq Daniels",
+        "Kashief Joseph",
+        "Mpongwana",
+        "Josh Breed"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Daniel Smith",
+      "squad": [
+        "Daniel Smith",
+        "Jiveshan Pillay",
+        "Kashief Joseph",
+        "Moore",
+        "Mpongwana",
+        "Kyle Simmonds",
+        "Oliver Whitehead",
+        "Valentine Kitime",
+        "Sinalo Gobeni",
+        "Josh Breed",
+        "Raeeq Daniels",
+        "Dane Paterson",
+        "Tshepo Lebohang Moreki",
+        "Joshua van Heerden",
+        "Asakhe Tsaka"
+      ]
+    }
+  ],
+  "live": {
+    "id": 173547,
+    "auto": true,
+    "xis": false
+  }
+}
