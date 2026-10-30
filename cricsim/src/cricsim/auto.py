@@ -279,8 +279,7 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         cfg: dict | None = None, write: bool = True, late: set[str] | None = None) -> list[str]:
     """One pass. Returns the fixture files whose forecast should be re-run now (new, or XIs named).
 
-    `late` names fixtures whose XIs were missed before the start: their named XIs are fetched whatever the time,
-    and the note says the forecast was updated after the start."""
+    `late` names fixtures whose XIs were missed before the start: their named XIs are fetched whatever the time."""
     now, cfg = now or datetime.now(timezone.utc), cfg or json.loads(CONFIG.read_text())
     paths = {p.name: p for p in sorted(fixtures_dir.glob("*.json"))}
     fixtures = {n: json.loads(p.read_text()) for n, p in paths.items()}
@@ -328,9 +327,6 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mid}")))
         head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
         if confirm_xis(fx, sq, head):
-            if late is not None:
-                fx["note"] += " Updated after the start: the forecast was re-run on the confirmed XIs at " \
-                              f"{now.astimezone(IST):%H:%M} IST on {now.astimezone(IST):%d %b}."
             save(name, fx, "playing XIs")
             rerun.append(name)
         elif late is not None:

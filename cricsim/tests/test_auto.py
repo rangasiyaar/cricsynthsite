@@ -150,7 +150,7 @@ def test_late_xis_after_the_start(tmp_path):
     assert auto.run(fixtures, results, now=later, page=pages.get) == []      # outside the normal window
     assert auto.run(fixtures, results, now=later, page=pages.get, late={name}) == [name]
     fx = json.loads((fixtures / name).read_text())
-    assert fx["live"]["xis"] and "Updated after the start" in fx["note"] and "14:30 IST" in fx["note"]
+    assert fx["live"]["xis"] and fx["batting_first"] == 0
 
 
 def test_hand_written_fixture_is_linked_not_replaced(tmp_path):
