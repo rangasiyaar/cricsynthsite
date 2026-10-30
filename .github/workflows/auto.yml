@@ -4,41 +4,62 @@ name: Auto
 # cricsim/src/cricsim/auto.json): new fixtures two days out, the named XIs and toss before the start, the scorecard
 # once a match is over. What changed is committed and a quick publish is asked for (a bot push alone doesn't start
 # one). Free: Actions minutes cost nothing on a public repository.
+#
+# GitHub runs frequent schedules hours late, which misses the toss, so one run stays up and makes a pass every
+# 10 minutes for about 5.5 hours, then starts the next run itself. The schedule only restarts the chain if it
+# breaks; the concurrency group keeps a single run (plus at most one queued).
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "7 */3 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Report what would change; commit nothing"
+        description: "One pass that reports what would change; commit nothing"
         type: boolean
         default: false
+      minutes:
+        description: "How long this run keeps making passes"
+        type: number
+        default: 330
 
 permissions:
   contents: write                  # commit fixtures and scorecards
-  actions: write                   # start the quick publish
+  actions: write                   # start the quick publish and the next run
 
 concurrency: { group: auto, cancel-in-progress: false }
 
 jobs:
   auto:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
-      - name: Fixtures, XIs, scorecards
-        run: |
-          uv run python -m cricsim.auto --changed "$RUNNER_TEMP/rerun.txt" ${{ inputs.dry_run && '--dry-run' || '' }}
-      - name: Commit and publish
+      - name: Dry run
+        if: ${{ inputs.dry_run }}
+        run: uv run python -m cricsim.auto --dry-run
+      - name: Fixtures, XIs, scorecards every 10 minutes
         if: ${{ !inputs.dry_run }}
-        env: { GH_TOKEN: "${{ github.token }}" }
+        env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}" }
         run: |
-          git add cricsim/fixtures cricsim/results
-          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Auto: $(git diff --cached --name-only | sed 's|.*/||; s|\.json||' | paste -sd, - | cut -c1-200)"
-          for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
-          gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt" 2>/dev/null)"
+          end=$(( $(date +%s) + MINUTES * 60 ))
+          while :; do
+            git pull --rebase -q origin "$GITHUB_REF_NAME" || git rebase --abort 2>/dev/null || true
+            rm -f "$RUNNER_TEMP/rerun.txt"
+            uv run python -m cricsim.auto --changed "$RUNNER_TEMP/rerun.txt" || echo "pass failed; retrying next round"
+            git add cricsim/fixtures cricsim/results
+            if ! git diff --cached --quiet; then
+              git commit -q -m "Auto: $(git diff --cached --name-only | sed 's|.*/||; s|\.json||' | paste -sd, - | cut -c1-200)"
+              for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
+              gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt" 2>/dev/null)" || true
+            fi
+            [ $(( $(date +%s) + 600 )) -lt "$end" ] || break
+            sleep 600
+          done
+      - name: Start the next run
+        if: ${{ !inputs.dry_run && !cancelled() }}
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh workflow run auto.yml --ref "$GITHUB_REF_NAME"
