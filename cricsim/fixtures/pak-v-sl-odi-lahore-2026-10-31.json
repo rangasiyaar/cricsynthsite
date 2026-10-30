@@ -1,0 +1,122 @@
+{
+  "id": "pak-v-sl-odi-lahore-2026-10-31",
+  "title": "Pakistan v Sri Lanka",
+  "date": "2026-10-31",
+  "start_time": "13:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "Pakistan ODI Tri-Series, 2026 · Final",
+  "comp_key": "intl-international-OD",
+  "venue": "Gaddafi Stadium, Lahore",
+  "venue_search": "lahore",
+  "city": "Lahore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan",
+      "short": "PAK",
+      "players": [
+        "Fakhar Zaman",
+        "Babar Azam",
+        "Saad Baig",
+        "Salman Agha",
+        "Hasan Nawaz",
+        "Shadab Khan",
+        "Arafat Minhas",
+        "Shaheen Afridi",
+        "Razaullah",
+        "Haris Rauf",
+        "Sahibzada Farhan"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Shaheen Afridi",
+      "squad": [
+        "Shaheen Afridi",
+        "Abrar Ahmed",
+        "Arafat Minhas",
+        "Babar Azam",
+        "Faheem Ashraf",
+        "Fakhar Zaman",
+        "Haris Rauf",
+        "Hasan Nawaz",
+        "Ghazi Ghori",
+        "Naseem Shah",
+        "Razaullah",
+        "Saad Baig",
+        "Salman Agha",
+        "Shadab Khan",
+        "Sufyan Moqim",
+        "Sahibzada Farhan",
+        "Maaz Sadaqat"
+      ]
+    },
+    {
+      "name": "Sri Lanka",
+      "short": "SL",
+      "players": [
+        "Lahiru Udara",
+        "Kusal Mendis",
+        "Kamindu Mendis",
+        "Sahan Arachchige",
+        "Dasun Shanaka",
+        "Maheesh Theekshana",
+        "Eshan Malinga",
+        "Avishka Fernando",
+        "Pavan Rathnayake",
+        "Sachindu Colombage",
+        "Kamil Mishara"
+      ],
+      "roles": [
+        "WK",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Kusal Mendis",
+      "squad": [
+        "Kusal Mendis",
+        "Avishka Fernando",
+        "Kamil Mishara",
+        "Pavan Rathnayake",
+        "Sahan Arachchige",
+        "Kamindu Mendis",
+        "Janith Liyanage",
+        "Dasun Shanaka",
+        "Dunith Wellalage",
+        "Maheesh Theekshana",
+        "Sachindu Colombage",
+        "Dushmantha Chameera",
+        "Asitha Fernando",
+        "Dilshan Madushanka",
+        "Eshan Malinga",
+        "Lahiru Udara"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170761,
+    "auto": true,
+    "xis": false
+  }
+}
