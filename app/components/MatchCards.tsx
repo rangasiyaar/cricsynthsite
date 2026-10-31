@@ -40,7 +40,7 @@ export function FixtureCard({ m, status, i = 0 }: { m: MatchCard; status: Status
   const pa = m.win[a.name] ?? 0, pb = m.win[b.name] ?? 0;
   return (
     <Link href={`/match/?id=${encodeURIComponent(m.id)}`} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
-      <div className="fixture-top"><StatusTag s={status} />{status === "upcoming" ? <When date={m.date} time={m.start_time} /> : <span>{m.start_time ? `${m.start_time} IST` : m.date}</span>}</div>
+      <div className="fixture-top"><span className="fixture-tags"><StatusTag s={status} />{m.xis && status !== "result" && <span className="tag status-xis">Lineup updated</span>}</span>{status === "upcoming" ? <When date={m.date} time={m.start_time} /> : <span>{m.start_time ? `${m.start_time} IST` : m.date}</span>}</div>
       <p className="fixture-comp">{m.competition ?? FORMAT[m.format]}</p>
       <div className="fixture-teams">
         <span><b>{a.short}</b><Pct p={pa} /></span>

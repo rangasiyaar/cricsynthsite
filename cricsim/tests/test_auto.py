@@ -189,3 +189,10 @@ def test_all_limited_overs():
     assert auto.wanted({**bare, "seriesName": "The Ford Trophy 2026-27", "matchFormat": "ODI"}, cfg) == "OD"
     assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
     assert auto.wanted({**bare, "seriesName": "Ranji Trophy Elite 2026-27", "matchFormat": "TEST"}, cfg) is None
+
+
+def test_xis_confirmed_flag():
+    from cricsim.publish import xis_confirmed
+    assert xis_confirmed({"live": {"xis": True}})
+    assert xis_confirmed({"note": "Playing XIs confirmed. India won the toss and bowl first."})
+    assert not xis_confirmed({"live": {"xis": False}, "note": "Probable XIs from the squads; updated when the teams are named."})

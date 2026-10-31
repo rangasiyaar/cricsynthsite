@@ -5,7 +5,7 @@ export type Dist = { mean: number | null; q: Record<string, number> };
 export type MatchCard = {
   id: string; title?: string; date?: string; start_time?: string; format: string; competition?: string; venue?: string;
   teams: { name: string; short: string }[]; win: Record<string, number>; projected: (number | null)[];
-  headline?: string | null; published: boolean; generated_at: string;
+  headline?: string | null; xis?: boolean; published: boolean; generated_at: string;
 };
 export type MatchIndex = { matches: MatchCard[]; generated_at?: string };
 

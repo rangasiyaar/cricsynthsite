@@ -379,6 +379,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
                                "teams": [{"name": t["name"], "short": t.get("short")} for t in m["teams"]],
                                "win": sm["result"]["win"], "projected": [t["batting"]["score"]["q"].get("50") for t in sm["teams"]],
                                "headline": doc["insights"][0]["text"] if doc.get("insights") else None,
+                               "xis": bool(m.get("xis")),
                                "published": True, "generated_at": doc.get("generated_at"), "status": "started"})
     idx["matches"].sort(key=lambda c: (c.get("date") or "", c.get("start_time") or ""))
     idx_p.write_text(json.dumps(idx))

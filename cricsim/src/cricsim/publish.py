@@ -47,7 +47,12 @@ def load_coverage(coverage: Path) -> list[dict]:
 SIM_FIELDS = ("format", "gender", "venue_id", "comp_key", "team_type", "batting_first", "target", "start", "scenario")
 TEAM_FIELDS = ("players", "bowlers", "bowling_xi", "roles")
 MATCH_FIELDS = ("id", "title", "date", "start_time", "format", "gender", "competition", "comp_key", "venue", "venue_id",
-                "status")
+                "status", "xis")
+
+
+def xis_confirmed(fx: dict) -> bool:
+    """True once the playing XIs are named (by the auto job, or noted as confirmed in a hand-written fixture)."""
+    return bool((fx.get("live") or {}).get("xis")) or "confirmed" in (fx.get("note") or "").lower()
 
 
 def code_key() -> str:
@@ -82,7 +87,7 @@ def _card(doc: dict, match: dict) -> dict:
             "win": summary["result"]["win"],
             "projected": [x["batting"]["score"]["q"].get("50") for x in t],
             "headline": doc["insights"][0]["text"] if doc.get("insights") else None,
-            "published": doc["published"], "generated_at": doc["generated_at"]}
+            "xis": bool(match.get("xis")), "published": doc["published"], "generated_at": doc["generated_at"]}
 
 
 def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int = 0, key: str | None = None,
@@ -90,6 +95,7 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
     """Simulate one match and write its documents. `previous` (the live doc and pack) is kept as it is when it was
     simulated from the same inputs (`key`): only the match details are refreshed."""
     (out / "matches").mkdir(parents=True, exist_ok=True)
+    cov = {**cov, "xis": xis_confirmed(cov)}
     if previous and key and previous[0].get("sim_key") == key:
         doc, pack = previous
         doc["match"] = {**doc["match"], **{k: cov.get(k) for k in MATCH_FIELDS if k in cov}}
