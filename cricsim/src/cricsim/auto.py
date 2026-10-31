@@ -366,8 +366,27 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
               help="Write the fixture files to re-simulate now (comma-separated) here")
 @click.option("--dry-run", is_flag=True, help="Report what would change; write nothing")
 @click.option("--list", "show", is_flag=True, help="List the scheduled matches and whether we cover them")
+@click.option("--squads", "squads_id", type=int, default=None, help="Show what we read from one match's squads page")
 @click.option("--late", default="", help="Fixture files (comma-separated) whose missed XIs to fetch now, whatever the time")
-def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool, late: str) -> None:
+def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool, late: str,
+         squads_id: int | None) -> None:
+    if squads_id:
+        text = live.flight(live._safe(live.get, f"{live.BASE}/cricket-match-squads/{squads_id}"))
+        click.echo(f"page data: {len(text)} chars; 'players' keys: {text.count('\"players\"')}; "
+                   f"'teamId': {text.count('\"teamId\"')}")
+        for block in live.objects(text, "players"):
+            click.echo("block: " + ", ".join(f"{k} ({len(v) if isinstance(v, list) else type(v).__name__})" for k, v in block.items()))
+            for v in block.values():
+                if isinstance(v, list) and v:
+                    click.echo(f"  sample: {json.dumps(v[0])[:300]}")
+                    break
+        for t, s in squads(text).items():
+            click.echo(f"team {t}: xi {len(s['xi'])}, squad {len(s['squad'])}")
+        for k in ("team1", "team2"):
+            o = live.first(text, k)
+            click.echo(f"{k}: {json.dumps(o)[:200] if o else None}")
+        click.echo(f"snippet: {text[max(0, text.find('quad')-200):text.find('quad')+400]!r}")
+        return
     if show:
         cfg = json.loads(CONFIG.read_text())
         for mi in live.match_list(live._safe(live.get, SCHEDULE)) + live.match_list(live._safe(live.get, live.LIST)):
