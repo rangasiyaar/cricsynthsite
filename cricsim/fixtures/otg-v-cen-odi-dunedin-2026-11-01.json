@@ -12,32 +12,32 @@
   "city": "Dunedin",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Central Stags won the toss and bowl first.",
   "teams": [
     {
       "name": "Otago",
       "short": "OTG",
       "players": [
-        "Max Chu",
         "Jacob Cumming",
-        "Jamal Todd",
-        "Tom Jones",
+        "Jack Boyle",
         "Thorn Parkes",
-        "Zac Cumming",
         "Luke Georgeson",
-        "Matthew Bacon",
-        "Jarrod McKay",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
         "Thomas O Connor",
-        "Ben Lockrose"
+        "Ferns",
+        "Bacon"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
-        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -59,35 +59,36 @@
         "Danru Ferns",
         "Jack Boyle",
         "Luke Georgeson"
-      ]
+      ],
+      "captain": "Luke Georgeson"
     },
     {
       "name": "Central Stags",
       "short": "CEN",
       "players": [
-        "Dane Cleaver",
         "Will Young",
-        "Tom Bruce",
-        "Josh Clarkson",
-        "Brad Schmulian",
-        "Ajaz Patel",
-        "Brett Randell",
-        "Angus Schaw",
-        "Raymond Toole",
         "Taylor Bettelheim",
-        "Sam Cassidy"
+        "Schmulian",
+        "Tom Bruce",
+        "Dane Cleaver",
+        "Sam Cassidy",
+        "Jake Gibson",
+        "Ajaz Patel",
+        "Toby Findlay",
+        "Raymond Toole",
+        "Oscar Mabin"
       ],
       "roles": [
-        "WK",
         "BAT",
         "AR",
         "AR",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
-        "BOWL",
+        "WK",
         "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
         "AR"
       ],
       "squad": [
@@ -103,12 +104,14 @@
         "Taylor Bettelheim",
         "Sam Cassidy",
         "Toby Findlay"
-      ]
+      ],
+      "captain": "Tom Bruce"
     }
   ],
   "live": {
     "id": 170470,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
