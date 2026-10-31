@@ -12,38 +12,38 @@
   "city": "Gqeberha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Warriors won the toss and bowl first.",
   "teams": [
     {
       "name": "Warriors",
       "short": "WAR",
       "players": [
-        "Modiri Litheko",
-        "Andile Mokgakane",
-        "Matthew Boast",
+        "Jordan Hermann",
         "Sibonelo Makhanya",
-        "Muhammad Manack",
+        "Matthew de Villiers",
+        "Tristan Stubbs",
         "JP King",
-        "Jordan Morris",
-        "Ethan Frosler",
-        "Wezo Gqiba",
-        "Raubenheimer",
-        "Jean du Plessis"
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Thomas Kaber",
+        "B Hendricks",
+        "Wesley Bedja",
+        "Kerwin Mungroo"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
+        "WK",
         "AR",
         "AR",
+        "BAT",
         "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "WK"
+        "AR",
+        "BOWL"
       ],
-      "captain": "Jean du Plessis",
+      "captain": "Matthew de Villiers",
       "squad": [
         "Modiri Litheko",
         "Jean du Plessis",
@@ -67,32 +67,32 @@
       "name": "Western Province",
       "short": "WPR",
       "players": [
-        "Daniel Smith",
         "Jiveshan Pillay",
-        "Moore",
-        "Valentine Kitime",
-        "Sinalo Gobeni",
-        "Kyle Simmonds",
-        "Oliver Whitehead",
-        "Raeeq Daniels",
         "Kashief Joseph",
+        "Joshua van Heerden",
+        "Daniel Smith",
+        "Valentine Kitime",
+        "Oliver Whitehead",
+        "George Linde",
         "Mpongwana",
-        "Josh Breed"
+        "Raeeq Daniels",
+        "Josh Breed",
+        "Tshepo Lebohang Moreki"
       ],
       "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "AR",
         "AR",
         "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Daniel Smith",
+      "captain": "George Linde",
       "squad": [
         "Daniel Smith",
         "Jiveshan Pillay",
@@ -115,6 +115,7 @@
   "live": {
     "id": 173547,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
