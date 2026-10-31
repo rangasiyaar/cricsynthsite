@@ -146,9 +146,24 @@ def test_late_xis_after_the_start(tmp_path):
     name = "nz-v-ind-t20i-auckland-2026-10-30.json"
     pages[f"{live.BASE}/cricket-match-squads/161223"] = _squads(True)
     pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(HEAD))
-    later = datetime(2026, 10, 30, 9, 0, tzinfo=timezone.utc)                 # 2.5 hours after the start
+    later = datetime(2026, 10, 30, 10, 30, tzinfo=timezone.utc)               # 3.5 hours after the start: T20 over
     assert auto.run(fixtures, results, now=later, page=pages.get) == []      # outside the normal window
     assert auto.run(fixtures, results, now=later, page=pages.get, late={name}) == [name]
+
+
+def test_xis_named_after_the_start(tmp_path):
+    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
+    fixtures.mkdir()
+    results.mkdir()
+    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(MI)), live.LIST: "",
+             f"{live.BASE}/cricket-match-squads/161223": _squads(False)}
+    auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc), page=pages.get)
+    name = "nz-v-ind-t20i-auckland-2026-10-30.json"
+    pages[f"{live.BASE}/cricket-match-squads/161223"] = _squads(True)
+    pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(HEAD))
+    mid_match = datetime(2026, 10, 30, 8, 30, tzinfo=timezone.utc)            # 1.5 hours after the start
+    assert auto.run(fixtures, results, now=mid_match, page=pages.get) == [name]
+    assert json.loads((fixtures / name).read_text())["live"]["xis"]
     fx = json.loads((fixtures / name).read_text())
     assert fx["live"]["xis"] and fx["batting_first"] == 0
 

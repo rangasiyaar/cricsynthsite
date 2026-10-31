@@ -3,8 +3,9 @@
 1. Fixtures: upcoming limited-overs matches in the competitions listed in auto.json become cricsim/fixtures/<id>.json
    (days_ahead before the start) with probable XIs: the side's last XI in our fixtures (same series) where it is
    still in the squad, else the squad picked by role.
-2. Playing XIs: from 75 minutes before the start, once both XIs are named, the fixture gets them, the captains and
-   who bats first, so the forecast is re-run on the real teams before it freezes at the start.
+2. Playing XIs: from 75 minutes before the start until the match is due to end, once both XIs are named, the fixture
+   gets them, the captains and who bats first, and the forecast is re-run on the real teams (also after the start,
+   when the teams are named late).
 3. Scorecards: when a match is over, cricsim/results/<id>.json in our scorecard format (an existing card is never
    replaced), so the results page scores it.
 
@@ -320,7 +321,8 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         if late is not None:
             if name not in late or not mid:
                 continue
-        elif not mid or not k or lv.get("xis") or not k - XI_FROM <= now <= k + timedelta(minutes=20):
+        elif not mid or not k or lv.get("xis") or (paths.get(name) and (results_dir / name).exists()) \
+                or not k - XI_FROM <= now <= k + timedelta(hours=RESULT_AFTER.get(fx.get("format", ""), 4.0)):
             continue
         if not lv.get("auto") and "confirmed" in (fx.get("note") or "").lower():
             continue                                          # XIs already confirmed by hand
