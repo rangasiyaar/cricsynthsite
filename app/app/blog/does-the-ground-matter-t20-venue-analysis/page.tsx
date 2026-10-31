@@ -67,11 +67,6 @@ export default function Post() {
           built the real ones in.
         </p>
         <Byline name={AUTHOR.name} role={AUTHOR.role} photo={AUTHOR.photo} date={post.date} minutes={post.minutes} url={url} title={post.title} />
-        <div className="post-stats">
-          <div><b>1.73m</b><span>T20 deliveries scored, 2022 to October 2026</span></div>
-          <div><b>163</b><span>grounds with enough cricket since 2025 to test</span></div>
-          <div><b>0.04</b><span>how well a ground&rsquo;s wicket timing repeats from one period to the next (0 = not at all)</span></div>
-        </div>
       </div>
 
       <div className="post-layout">
