@@ -524,3 +524,19 @@ body .legal-content a.cs-btn, body .legal-content a.cs-btn:hover { color: var(--
 body .legal-content a.job-row-main, body .legal-content a.job-row-main:hover { color: var(--cs-ink); text-decoration: none; }
 body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14px; font-size: clamp(28px, 4vw, 38px); }
 .apply-meta { font: 500 13px var(--cs-mono); color: var(--cs-ink-3); margin: -6px 0 0; }
+
+/* ── Matches page and match-card status tags ── */
+.match-group { margin-top: 40px; }
+.match-group .section-head { display: flex; align-items: center; gap: 12px; justify-content: flex-start; }
+.tab-count { font-family: var(--cs-mono); font-size: 12px; opacity: .7; margin-left: 4px; }
+.fixture-top .tag { text-transform: none; letter-spacing: 0; font-size: 11px; padding: 1px 8px; }
+.tag.status-live { color: var(--cs-danger, #a8443b); border-color: currentColor; }
+.tag.status-live .cs-live-dot { width: 6px; height: 6px; background: currentColor; }
+.tag.status-upcoming { color: var(--cs-steel-700); border-color: currentColor; }
+.tag.status-result { color: var(--cs-ink-3); }
+.fixture-comp { margin: 10px 0 0; font-size: 12px; color: var(--cs-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.result-teams { margin: 12px 0 10px; display: grid; gap: 6px; }
+.result-teams div { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--cs-head); color: var(--cs-ink-2); }
+.result-teams b { font-size: 26px; font-weight: 600; }
+.result-teams .mono { font-size: 15px; }
+.result-teams .won b, .result-teams .won .mono { color: var(--cs-ink); }

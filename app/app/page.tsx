@@ -3,33 +3,16 @@ import Link from "next/link";
 import RequestAccess from "@/components/RequestAccess";
 import Scoreboard from "@/components/Scoreboard";
 import { useEffect, useState } from "react";
-import { Num, Pct, WinBar } from "@/components/charts";
 import { Spotlight } from "@/components/MatchCentre";
 import { Tiles } from "@/components/Tiles";
 import { loadIndex, loadMatch } from "@/lib/data";
-import { FORMAT } from "@/lib/format";
 import { useCountdown } from "@/lib/motion";
+import { FixtureCard, kickoff, useNow } from "@/components/MatchCards";
 import type { MatchCard, MatchDoc } from "@/lib/types";
 
-function When({ date, time }: { date?: string; time?: string }) {
+function Countdown({ date, time }: { date?: string; time?: string }) {
   const left = useCountdown(date, time);
   return <span className="when">{left ? <><span className="cs-live-dot" />in {left}</> : date}</span>;
-}
-
-function Fixture({ m, i }: { m: MatchCard; i: number }) {
-  const [a, b] = m.teams;
-  const pa = m.win[a.name] ?? 0, pb = m.win[b.name] ?? 0;
-  return (
-    <Link href={`/match/?id=${encodeURIComponent(m.id)}`} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
-      <div className="fixture-top"><span>{m.competition ?? FORMAT[m.format]}</span><When date={m.date} time={m.start_time} /></div>
-      <div className="fixture-teams">
-        <span><b>{a.short}</b><Pct p={pa} /></span>
-        <span><Pct p={pb} /><b>{b.short}</b></span>
-      </div>
-      <WinBar a={a.name} b={b.name} pa={pa} pb={pb} />
-      <div className="fixture-foot"><span>{a.name}</span><span className="mono">{m.projected.map((x) => (x === null ? "—" : Math.round(x))).join(" – ")}</span><span>{b.name}</span></div>
-    </Link>
-  );
 }
 
 function Featured({ doc }: { doc: MatchDoc }) {
@@ -40,7 +23,7 @@ function Featured({ doc }: { doc: MatchDoc }) {
   const href = `/match/?id=${encodeURIComponent(match.id)}`;
   return (
     <section className="featured">
-      <Scoreboard doc={doc} mid={<When date={match.date} time={match.start_time} />} foot={<>
+      <Scoreboard doc={doc} mid={<Countdown date={match.date} time={match.start_time} />} foot={<>
         <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
         <Link className="cs-btn cs-btn--secondary" href={`/lab/?id=${encodeURIComponent(match.id)}`}>Open in MatchSynth Lab</Link>
       </>} />
@@ -50,43 +33,40 @@ function Featured({ doc }: { doc: MatchDoc }) {
 }
 
 
-// Fixture start times are IST.
-const kickoff = (m: MatchCard) => (m.date ? Date.parse(`${m.date}T${m.start_time ?? "23:59"}:00+05:30`) : Infinity);
-
 export default function Home() {
   const [matches, setMatches] = useState<MatchCard[] | null>(null);
   const [featured, setFeatured] = useState<MatchDoc | null>(null);
   const [error, setError] = useState(false);
+  const now = useNow();
   useEffect(() => {
-    loadIndex().then((i) => {
-      const ms = i.matches.filter((m) => m.published);
-      setMatches(ms);
-      // feature the next match yet to start; a match under way only if nothing else is coming up
-      const now = Date.now();
-      const next = ms.find((m) => kickoff(m) > now) ?? ms[ms.length - 1];
-      if (next) loadMatch(next.id).then(setFeatured).catch(() => {});
-    }).catch(() => setError(true));
+    loadIndex().then((i) => setMatches(i.matches.filter((m) => m.published))).catch(() => setError(true));
   }, []);
+  // the next match yet to start is featured; when it starts, the one after takes its place
+  const upcoming = (matches ?? []).filter((m) => kickoff(m) > now).sort((x, y) => kickoff(x) - kickoff(y));
+  const nextId = upcoming[0]?.id;
+  useEffect(() => {
+    if (!nextId) { setFeatured(null); return; }
+    loadMatch(nextId).then(setFeatured).catch(() => {});
+  }, [nextId]);
 
   return (
     <>
       <section id="next" style={{ paddingTop: "clamp(32px, 5vw, 56px)" }}>
         <div className="section-head"><div><h2>Next match</h2></div>
-          {matches && matches.length > 1 && <a href="#matches" className="row-link">All upcoming matches</a>}</div>
+          <Link href="/matches/" className="row-link">All matches</Link></div>
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
-        {!featured && !error && matches?.length !== 0 && <div className="skeleton" style={{ minHeight: 320 }} />}
-        {matches && matches.length === 0 && <p className="notice">No upcoming matches are published yet.</p>}
-        {featured && <><Featured doc={featured} /><Spotlight doc={featured} /></>}
+        {!error && !matches && <div className="skeleton" style={{ minHeight: 320 }} />}
+        {matches && !nextId && <p className="notice">No upcoming matches are published yet. See <Link href="/matches/">live matches and results</Link>.</p>}
+        {nextId && featured?.match.id === nextId && <><Featured doc={featured} /><Spotlight doc={featured} /></>}
+        {nextId && featured?.match.id !== nextId && <div className="skeleton" style={{ minHeight: 320 }} />}
       </section>
 
-      {matches && matches.length > 1 && (
+      {upcoming.length > 1 && (
         <section id="matches" style={{ paddingTop: 72, scrollMarginTop: 80 }}>
-          <div className="section-head"><h2>Upcoming matches</h2></div>
-          <div className="fixtures">{matches.map((m, i) => <Fixture key={m.id} m={m} i={i} />)}</div>
+          <div className="section-head"><h2>Up next</h2><Link href="/matches/" className="row-link">All matches</Link></div>
+          <div className="fixtures">{upcoming.slice(1, 4).map((m, i) => <FixtureCard key={m.id} m={m} status="upcoming" i={i} />)}</div>
         </section>
       )}
-
-
 
       <RequestAccess />
       <div style={{ height: "clamp(40px, 6vw, 72px)" }} />

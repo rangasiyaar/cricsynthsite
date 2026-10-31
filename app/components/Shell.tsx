@@ -37,9 +37,9 @@ function ThemeToggle() {
   );
 }
 
-const LINKS: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
+const LINKS: [string, string][] = [["/matches/", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
                                    ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/mcp/", "MCP"]];
-const DRAWER: [string, string][] = [["/#next", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
+const DRAWER: [string, string][] = [["/matches/", "Matches"], ["/results/", "Results"], ["/lab/", "MatchSynth Lab"], ["/app/", "App"], ["/pricing/", "Pricing"], ["/developers/", "API"],
                                     ["/blog/", "Blog"], ["/docs/", "Docs"], ["/playground/", "Playground"], ["/contact/", "Contact"]];
 
 function AccountLink({ className, onClick }: { className: string; onClick?: () => void }) {
@@ -141,7 +141,7 @@ export function Footer() {
           <div className="footer-links">
             <div className="footer-column">
               <h4 className="footer-heading">Match centre</h4>
-              <Link href="/#next" className="footer-link">Upcoming matches</Link>
+              <Link href="/matches/" className="footer-link">Matches</Link>
               <Link href="/results/" className="footer-link">Results</Link>
               <Link href="/lab/" className="footer-link">MatchSynth Lab</Link>
               <Link href="/app/" className="footer-link">Android app</Link>
