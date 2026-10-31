@@ -1,0 +1,118 @@
+{
+  "id": "afg-v-zim-t20i-sharjah-2026-11-01",
+  "title": "Afghanistan v Zimbabwe",
+  "date": "2026-11-01",
+  "start_time": "20:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Afghanistan vs Zimbabwe in UAE, 2026 · 3rd T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Sharjah Cricket Stadium, Sharjah",
+  "venue_search": "sharjah",
+  "city": "Sharjah",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Afghanistan",
+      "short": "AFG",
+      "players": [
+        "Rahmanullah Gurbaz",
+        "Ibrahim Zadran",
+        "Sediqullah Atal",
+        "Mohammad Akram",
+        "Shahidullah Kamal",
+        "Azmatullah Omarzai",
+        "Ijaz Ahmad Ahmadzai",
+        "Rashid Khan",
+        "Mujeeb Ur Rahman",
+        "Abdullah Ahmadzai",
+        "Abdullah Tarakhail"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ibrahim Zadran",
+      "squad": [
+        "Ibrahim Zadran",
+        "Rahmanullah Gurbaz",
+        "Noor ul Rahman",
+        "Sediqullah Atal",
+        "Mohammad Akram",
+        "Shahidullah Kamal",
+        "Ijaz Ahmad Ahmadzai",
+        "Azmatullah Omarzai",
+        "Abdullah Tarakhail",
+        "Rashid Khan",
+        "Noor Ahmad",
+        "Mujeeb Ur Rahman",
+        "Fazalhaq Farooqi",
+        "Abdullah Ahmadzai",
+        "Fareed Ahmad Malik"
+      ]
+    },
+    {
+      "name": "Zimbabwe",
+      "short": "ZIM",
+      "players": [
+        "Brian Bennett",
+        "Innocent Kaia",
+        "Ryan Burl",
+        "Sikandar Raza",
+        "Tadiwanashe Marumani",
+        "Tafadzwa Tsiga",
+        "Brad Evans",
+        "Kundai Matigimu",
+        "Vincent Masekesa",
+        "Ben Curran",
+        "Blessing Muzarabani"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Sikandar Raza",
+      "squad": [
+        "Sikandar Raza",
+        "Ben Curran",
+        "Blessing Muzarabani",
+        "Brad Evans",
+        "Brian Bennett",
+        "Innocent Kaia",
+        "Kundai Matigimu",
+        "Newman Nyamhuri",
+        "Ryan Burl",
+        "Tadiwanashe Marumani",
+        "Tafadzwa Tsiga",
+        "Vincent Masekesa",
+        "Wellington Masakadza",
+        "Wessly Madhevere"
+      ]
+    }
+  ],
+  "live": {
+    "id": 172717,
+    "auto": true,
+    "xis": false
+  }
+}
