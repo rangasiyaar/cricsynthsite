@@ -1,0 +1,122 @@
+{
+  "id": "nz-v-ind-t20i-hamilton-2026-11-01",
+  "title": "New Zealand v India",
+  "date": "2026-11-01",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "India tour of New Zealand 2026 · 5th T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Seddon Park, Hamilton",
+  "venue_search": "hamilton",
+  "city": "Hamilton",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Finn Allen",
+        "Tim Seifert",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Adam Milne",
+        "Jacob Duffy",
+        "Matthew Fisher"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Santner",
+      "squad": [
+        "Tim Seifert",
+        "Mitchell Santner",
+        "Finn Allen",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Nathan Smith",
+        "Adam Milne",
+        "Jacob Duffy",
+        "Matthew Fisher",
+        "Kyle Jamieson",
+        "Devon Conway",
+        "Josh Clarkson",
+        "Blair Tickner"
+      ]
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Abhishek Sharma",
+        "Sanju Samson",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Nitish Reddy",
+        "Naman Dhir",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Prince Yadav",
+        "Mayank Yadav"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shreyas Iyer",
+      "squad": [
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Sanju Samson",
+        "Abhishek Sharma",
+        "Tilak Varma",
+        "Naman Dhir",
+        "Nitish Reddy",
+        "Axar Patel",
+        "Arshdeep Singh",
+        "Prince Yadav",
+        "Mayank Yadav",
+        "Bhuvneshwar Kumar",
+        "Kuldeep Yadav",
+        "Shivam Dube",
+        "Varun Chakaravarthy",
+        "Auqib Nabi",
+        "Kumar Kushagra",
+        "Vaibhav Sooryavanshi"
+      ]
+    }
+  ],
+  "live": {
+    "id": 161234,
+    "auto": true,
+    "xis": false
+  }
+}
