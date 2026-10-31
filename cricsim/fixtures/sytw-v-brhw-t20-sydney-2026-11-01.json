@@ -1,0 +1,121 @@
+{
+  "id": "sytw-v-brhw-t20-sydney-2026-11-01",
+  "title": "Sydney Thunder Women v Brisbane Heat Women",
+  "date": "2026-11-01",
+  "start_time": "10:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 6th Match",
+  "comp_key": "wbbl",
+  "venue": "Drummoyne Oval, Sydney",
+  "venue_search": "sydney",
+  "city": "Sydney",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Thunder Women",
+      "short": "SYTW",
+      "players": [
+        "Tahlia Wilson",
+        "Laura Harris",
+        "Jemma Barsby",
+        "Hasrat Gill",
+        "Nicola Hancock",
+        "Samantha Bates",
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Heather Knight",
+        "Nadine de Klerk",
+        "HJ Darlington"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Phoebe Litchfield",
+      "squad": [
+        "Phoebe Litchfield",
+        "Tahlia Wilson",
+        "Georgia Voll",
+        "Laura Harris",
+        "Heather Knight",
+        "Samantha Bates",
+        "Anika Learoyd",
+        "Nadine de Klerk",
+        "Hasrat Gill",
+        "HJ Darlington",
+        "Lauren Bell",
+        "Claire Moore",
+        "Lucy Finn",
+        "Nicola Hancock",
+        "Jemma Barsby"
+      ]
+    },
+    {
+      "name": "Brisbane Heat Women",
+      "short": "BRHW",
+      "players": [
+        "Grace Harris",
+        "Charli Knott",
+        "Redmayne",
+        "Orla Prendergast",
+        "Lucy Hamilton",
+        "Annie O Neil",
+        "Sianna Ginger",
+        "Lucinda Bourke",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte",
+        "Ayaka Kato-Stafford"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Redmayne",
+      "squad": [
+        "Redmayne",
+        "Grace Harris",
+        "Charli Knott",
+        "Orla Prendergast",
+        "Lucy Hamilton",
+        "Annie O Neil",
+        "Sianna Ginger",
+        "Lucinda Bourke",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte",
+        "Ayaka Kato-Stafford",
+        "Catherine White",
+        "Bonnie Berry",
+        "Mikayla Wrigley",
+        "Grace Parsons",
+        "Yastika Bhatia",
+        "Jonassen"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162733,
+    "auto": true,
+    "xis": false
+  }
+}
