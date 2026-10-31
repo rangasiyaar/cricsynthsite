@@ -1,0 +1,122 @@
+{
+  "id": "sysw-v-hbhw-t20-sydney-2026-11-01",
+  "title": "Sydney Sixers Women v Hobart Hurricanes Women",
+  "date": "2026-11-01",
+  "start_time": "13:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 7th Match",
+  "comp_key": "wbbl",
+  "venue": "Drummoyne Oval, Sydney",
+  "venue_search": "sydney",
+  "city": "Sydney",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SYSW",
+      "players": [
+        "Sophia Dunkley",
+        "Ellyse Perry",
+        "Melie Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Caoimhe Bray",
+        "Frankie Nicklin"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ashleigh Gardner",
+      "squad": [
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Ellyse Perry",
+        "Sophia Dunkley",
+        "Melie Kerr",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Caoimhe Bray",
+        "Frankie Nicklin",
+        "Grace Lyons",
+        "Elsa Hunter",
+        "Courtney Sippel",
+        "Maddy Darke",
+        "Maitlan Brown"
+      ]
+    },
+    {
+      "name": "Hobart Hurricanes Women",
+      "short": "HBHW",
+      "players": [
+        "Lizelle Lee",
+        "Maddy Green",
+        "Ruth Johnston",
+        "Nicola Carey",
+        "Chamari Athapaththu",
+        "Rachel Trenaman",
+        "Molly Strano",
+        "Lauren Smith",
+        "Ira Aery",
+        "Heather Graham",
+        "Callie Wilson"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Nicola Carey",
+      "squad": [
+        "Lizelle Lee",
+        "Nicola Carey",
+        "Chamari Athapaththu",
+        "Rachel Trenaman",
+        "Heather Graham",
+        "Maddy Green",
+        "Ruth Johnston",
+        "Molly Strano",
+        "Lauren Smith",
+        "Ira Aery",
+        "Callie Wilson",
+        "Kate Pelle",
+        "Amy Smith",
+        "Ella Hayward",
+        "Hayley Silver-holmes",
+        "Linsey Smith",
+        "Chinelle Henry"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162747,
+    "auto": true,
+    "xis": false
+  }
+}
