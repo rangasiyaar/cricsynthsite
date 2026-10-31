@@ -327,6 +327,11 @@ def _fetch(path: str, sites=SITES) -> dict | None:
     return None
 
 
+def _xis(f: dict) -> bool:
+    """The playing XIs are named (same test as cricsim.publish.xis_confirmed; frozen docs predate the flag)."""
+    return bool((f.get("live") or {}).get("xis")) or "confirmed" in (f.get("note") or "").lower()
+
+
 def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime | None = None, fetch=_fetch,
         picks: Path | None = None) -> dict:
     fx = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(fixtures.glob("*.json"))}
@@ -379,7 +384,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
                                "teams": [{"name": t["name"], "short": t.get("short")} for t in m["teams"]],
                                "win": sm["result"]["win"], "projected": [t["batting"]["score"]["q"].get("50") for t in sm["teams"]],
                                "headline": doc["insights"][0]["text"] if doc.get("insights") else None,
-                               "xis": bool(m.get("xis")),
+                               "xis": bool(m.get("xis")) or _xis(fx.get(mid, {})),
                                "published": True, "generated_at": doc.get("generated_at"), "status": "started"})
     idx["matches"].sort(key=lambda c: (c.get("date") or "", c.get("start_time") or ""))
     idx_p.write_text(json.dumps(idx))
