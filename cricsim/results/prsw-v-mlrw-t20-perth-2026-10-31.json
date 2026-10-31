@@ -1,0 +1,285 @@
+{
+ "id": "prsw-v-mlrw-t20-perth-2026-10-31",
+ "innings": [
+  {
+   "team": "Melbourne Renegades Women",
+   "runs": 136,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Hayley Matthews",
+     "dismissal": "c Freya Kemp b Chloe Ainsworth",
+     "runs": 7,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Courtney Webb",
+     "dismissal": "b Chloe Ainsworth",
+     "runs": 6,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sophie Molineux",
+     "dismissal": "c Freya Kemp b Fatima Sana",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tess Flintoff",
+     "dismissal": "lbw b Alana King",
+     "runs": 2,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nicole Faltum",
+     "dismissal": "b Fatima Sana",
+     "runs": 48,
+     "balls": 49,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Georgia Wareham",
+     "dismissal": "c Fatima Sana b Sophie Devine",
+     "runs": 62,
+     "balls": 39,
+     "fours": 8,
+     "sixes": 1
+    },
+    {
+     "name": "Deandra Dottin",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chloe Tryon",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chloe Ainsworth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Fatima Sana",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Alana King",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sophie Devine",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amy Edgar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lilly Mills",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hayley Matthews",
+     "score": 15,
+     "over": "2.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sophie Molineux",
+     "score": 16,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Courtney Webb",
+     "score": 16,
+     "over": "4.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tess Flintoff",
+     "score": 20,
+     "over": "5.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Georgia Wareham",
+     "score": 129,
+     "over": "18.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Nicole Faltum",
+     "score": 135,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 16
+  },
+  {
+   "team": "Perth Scorchers Women",
+   "runs": 138,
+   "wickets": 1,
+   "overs": "13.3",
+   "batting": [
+    {
+     "name": "Katie Mack",
+     "dismissal": "b Tayla Vlaeminck",
+     "runs": 9,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Beth Mooney",
+     "dismissal": "not out",
+     "runs": 58,
+     "balls": 40,
+     "fours": 9,
+     "sixes": 0
+    },
+    {
+     "name": "Sophie Devine",
+     "dismissal": "not out",
+     "runs": 47,
+     "balls": 32,
+     "fours": 4,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Tayla Vlaeminck",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 7
+    },
+    {
+     "name": "Milly Illingworth",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Sophie Molineux",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Georgia Wareham",
+     "overs": "1.3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hayley Matthews",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Deandra Dottin",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 3
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Katie Mack",
+     "score": 14,
+     "over": "2.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 7,
+    "w": 15,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 34
+  }
+ ],
+ "winner": "Perth Scorchers Women",
+ "result": "Perth Scorchers Women won by 9 wickets"
+}
