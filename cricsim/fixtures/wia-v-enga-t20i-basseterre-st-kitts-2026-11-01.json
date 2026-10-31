@@ -1,0 +1,115 @@
+{
+  "id": "wia-v-enga-t20i-basseterre-st-kitts-2026-11-01",
+  "title": "West Indies A v England Lions",
+  "date": "2026-11-01",
+  "start_time": "23:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "England Lions tour of West Indies, 2026 · 1st T20",
+  "comp_key": "intl-international-T20",
+  "venue": "Conaree Sports Club, Basseterre, St Kitts",
+  "venue_search": "basseterre, st kitts",
+  "city": "Basseterre, St Kitts",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "West Indies A",
+      "short": "WIA",
+      "players": [
+        "Jewel Andrew",
+        "Alick Athanaze",
+        "Kamil Pooran",
+        "Zachary Carter",
+        "Joshua James",
+        "Karima Gore",
+        "Quentin Sampson",
+        "Keon Gaston",
+        "Vitel Lawes",
+        "Jakeem Pollard",
+        "Zishan Motara"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Alick Athanaze",
+      "squad": [
+        "Alick Athanaze",
+        "Jewel Andrew",
+        "Joshua James",
+        "Kamil Pooran",
+        "Karima Gore",
+        "Quentin Sampson",
+        "Keon Gaston",
+        "Zachary Carter",
+        "Vitel Lawes",
+        "Jakeem Pollard",
+        "Zishan Motara",
+        "Sadrack Descarte"
+      ]
+    },
+    {
+      "name": "England Lions",
+      "short": "ENGA",
+      "players": [
+        "Thomas Rew",
+        "Ben McKinney",
+        "Asa Tribe",
+        "Jack Haynes",
+        "Ben Mayes",
+        "Rehan Ahmed",
+        "Patterson-White",
+        "Scott Currie",
+        "Eddie Jack",
+        "Naavya Sharma",
+        "Adam Finch"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Thomas Rew",
+      "squad": [
+        "Thomas Rew",
+        "Ben McKinney",
+        "Asa Tribe",
+        "Jack Haynes",
+        "Ben Mayes",
+        "Rehan Ahmed",
+        "Patterson-White",
+        "Eddie Jack",
+        "Scott Currie",
+        "Calvin Harrison",
+        "James Rew",
+        "Ekansh Singh",
+        "Naavya Sharma",
+        "Adam Finch"
+      ]
+    }
+  ],
+  "live": {
+    "id": 176470,
+    "auto": true,
+    "xis": false
+  }
+}
