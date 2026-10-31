@@ -1,0 +1,111 @@
+{
+  "id": "jab-v-poa-t20-kirtipur-2026-11-01",
+  "title": "Janakpur Bolts v Pokhara Avengers",
+  "date": "2026-11-01",
+  "start_time": "16:15",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League 2026 · 9th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Janakpur Bolts",
+      "short": "JAB",
+      "players": [
+        "Trit Raj Das",
+        "Moeen Ali",
+        "Mayan Yadav",
+        "Saif Hassan",
+        "Kusal Perera",
+        "Anil Sah",
+        "Lalit Rajbanshi",
+        "Abhisekh Tiwari",
+        "Amar Routela",
+        "Rahul Yadav",
+        "Harmeet Singh"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harmeet Singh",
+      "squad": [
+        "Trit Raj Das",
+        "Moeen Ali",
+        "Mayan Yadav",
+        "Saif Hassan",
+        "Kusal Perera",
+        "Anil Sah",
+        "Lalit Rajbanshi",
+        "Abhisekh Tiwari",
+        "Amar Routela",
+        "Rahul Yadav",
+        "Harmeet Singh"
+      ]
+    },
+    {
+      "name": "Pokhara Avengers",
+      "short": "POA",
+      "players": [
+        "Dinesh Kharel",
+        "Mahedi Hasan",
+        "Kushal Bhurtel",
+        "Shakib Al Hasan",
+        "Sadeera Samarawickrama",
+        "Dhananjaya Lakshan",
+        "Arjun Gharti",
+        "Kiran Thagunna",
+        "Bipin Khatri",
+        "Pratik Pokhrel",
+        "Aakash Chand"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kushal Bhurtel",
+      "squad": [
+        "Dinesh Kharel",
+        "Mahedi Hasan",
+        "Kushal Bhurtel",
+        "Shakib Al Hasan",
+        "Sadeera Samarawickrama",
+        "Dhananjaya Lakshan",
+        "Arjun Gharti",
+        "Kiran Thagunna",
+        "Bipin Khatri",
+        "Pratik Pokhrel",
+        "Aakash Chand"
+      ]
+    }
+  ],
+  "live": {
+    "id": 177670,
+    "auto": true,
+    "xis": false
+  }
+}
