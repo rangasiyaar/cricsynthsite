@@ -12,38 +12,38 @@
   "city": "Nairobi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Papua New Guinea won the toss and bowl first.",
   "teams": [
     {
       "name": "Kuwait",
       "short": "KUW",
       "players": [
-        "Usman Patel",
-        "Clinto Anto",
-        "Ali Zaheer",
-        "Mohammad Amin",
-        "Bilal Tahir",
-        "Ravija Sandaruwan",
-        "Mohammed Aslam",
-        "Sayed Monib",
-        "Yasin Patel",
-        "Shiraz Khan",
-        "Mohamed Shafeeq"
+        "Subham Patel",
+        "Dhiren Gondaria",
+        "Irfan Karim",
+        "Sachin Bhudia",
+        "Rakep Patel",
+        "Sachin Gill",
+        "Francis Mutua",
+        "Brian Likavu",
+        "Shem Ngoche",
+        "Vishil Patel",
+        "Vraj Patel"
       ],
       "roles": [
+        "BOWL",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
-        "AR",
-        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "WK",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Mohammed Aslam",
+      "captain": "Dhiren Gondaria",
       "squad": [
         "Ravija Sandaruwan",
         "Clinto Anto",
@@ -65,29 +65,29 @@
       "name": "Papua New Guinea",
       "short": "PNG",
       "players": [
-        "Tony Ura",
-        "Hiri Hiri",
-        "Boio Ray",
-        "Patrick Nou",
-        "Vagi Guba",
-        "Sese Bau",
         "Assad Vala",
-        "Charles Amini",
-        "Alei Nao",
+        "Boio Ray",
+        "Doko Rupa",
+        "John Kariko",
         "Kabua Morea",
-        "Gaudi Toka"
+        "Lega Siaka",
+        "Tony Ura",
+        "Patrick Nou",
+        "Semo Kamea",
+        "Sese Bau",
+        "Alei Nao"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Assad Vala",
@@ -117,6 +117,7 @@
   "live": {
     "id": 175590,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
