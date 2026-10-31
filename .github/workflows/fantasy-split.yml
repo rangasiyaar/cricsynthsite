@@ -1,0 +1,22 @@
+name: Fantasy split
+
+# Fantasy XI by win chance (favourite's share of the 11 = its win %, C/VC from the favourite) on every scored
+# result, against the published XI. Reads the site's published data; writes nothing.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["cricsim/src/cricsim/fantasy_split.py", ".github/workflows/fantasy-split.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - run: uv run python -m cricsim.fantasy_split
