@@ -211,3 +211,32 @@ def test_xis_confirmed_flag():
     assert xis_confirmed({"live": {"xis": True}})
     assert xis_confirmed({"note": "Playing XIs confirmed. India won the toss and bowl first."})
     assert not xis_confirmed({"live": {"xis": False}, "note": "Probable XIs from the squads; updated when the teams are named."})
+
+
+def test_empty_squads_page_takes_last_xi_in_the_series(tmp_path):
+    """Leagues whose squads page stays empty until the toss: each side's XI from its latest finished match."""
+    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
+    fixtures.mkdir()
+    results.mkdir()
+    mi = {**MI, "seriesId": 9, "seriesName": "Nepal Premier League 2026", "matchType": None}
+    prev = [{**mi, "matchId": 100 + t["teamId"], "state": "Complete", "startDate": START - 86_400_000,
+             "team1": t, "team2": {"teamId": 77, "teamName": "Other"}} for t in (MI["team1"], MI["team2"])]
+
+    def card(team, rows):
+        bat = {str(i): {"batName": n, "isKeeper": k, "isCaptain": i == 0, "outDesc": ""} for i, (n, _, k) in enumerate(rows)}
+        bowl = {str(i): {"bowlName": n} for i, (n, r, _) in enumerate(rows) if "Bowl" in r}
+        return _page('"scoreCard":' + json.dumps([
+            {"inningsId": 1, "batTeamDetails": {"batTeamId": team["teamId"], "batTeamName": team["teamName"], "batsmenData": bat}},
+            {"inningsId": 2, "bowlTeamDetails": {"bowlTeamId": team["teamId"], "bowlTeamName": team["teamName"], "bowlersData": bowl}}]))
+
+    pages = {auto.SCHEDULE: _page(*('"matchInfo":' + json.dumps(m) for m in [mi, *prev])), live.LIST: "",
+             f"{live.BASE}/cricket-match-squads/161223": _page("{}"),
+             f"{live.BASE}/live-cricket-scorecard/113": card(MI["team1"], NZ[:11]),
+             f"{live.BASE}/live-cricket-scorecard/102": card(MI["team2"], IND[:11])}
+    day_before = datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc)
+    [name] = auto.run(fixtures, results, now=day_before, page=pages.get)
+    fx = json.loads((fixtures / name).read_text())
+    assert fx["teams"][0]["players"] == [n for n, _, _ in NZ[:11]]                       # batting order kept
+    assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]]
+    assert fx["teams"][0]["roles"][0] == "WK" and fx["teams"][1]["roles"][-1] == "BOWL"
+    assert fx["teams"][0]["captain"] == "Tim Seifert" and not fx["live"]["xis"]

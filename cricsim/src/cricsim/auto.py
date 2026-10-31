@@ -263,6 +263,41 @@ def scorecard(fx: dict, card_text: str, head: dict) -> dict | None:
     return out
 
 
+def card_xi(card_text: str, team: dict) -> list[dict]:
+    """One side's XI from a finished match's scorecard (batting order; who bowled sets the role)."""
+    m = re.search(r'"scoreCard":\s*(?=\[)', card_text)
+    cards = json.JSONDecoder().raw_decode(card_text, m.end())[0] if m else []
+    tid, name = team.get("teamId"), (team.get("teamName") or "").lower()
+    ours = lambda d, k: (tid is not None and d.get(f"{k}TeamId") == tid) or (d.get(f"{k}TeamName") or "").lower() == name
+    batting = next((c["batTeamDetails"] for c in cards if ours(c.get("batTeamDetails") or {}, "bat")), None)
+    if not batting:
+        return []
+    bowled = {b.get("bowlName") for c in cards if ours(c.get("bowlTeamDetails") or {}, "bowl")
+              for b in ((c["bowlTeamDetails"].get("bowlersData") or {}).values())}
+    xi = []
+    for i, b in enumerate((batting.get("batsmenData") or {}).values()):
+        if not b.get("batName"):
+            continue
+        kind = "wk-batter" if b.get("isKeeper") else ("bowler" if i >= 7 else "allrounder") if b.get("batName") in bowled \
+            else "batter"
+        xi.append({"name": b["batName"], "role": kind, "keeper": bool(b.get("isKeeper")),
+                   "captain": bool(b.get("isCaptain")), "teamId": tid})
+    return xi if len(xi) >= 11 else []
+
+
+def last_xi(listing: list[dict], mi: dict, team: dict, page) -> list[dict]:
+    """A side's XI in its latest finished match of the same series (for leagues whose squads page stays empty)."""
+    tid, start = team.get("teamId"), int(mi.get("startDate") or 0)
+    done = [m for m in listing if m.get("seriesId") == mi.get("seriesId") and int(m.get("startDate") or 0) < start
+            and (m.get("state") or "").lower() == "complete"
+            and tid in ((m.get("team1") or {}).get("teamId"), (m.get("team2") or {}).get("teamId"))]
+    for m in sorted(done, key=lambda m: -int(m.get("startDate") or 0))[:2]:
+        xi = card_xi(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{m['matchId']}")), team)
+        if xi:
+            return xi
+    return []
+
+
 # ── one run ───────────────────────────────────────────────────────────────────────────────────────────────────────
 
 def _previous_xis(fixtures: dict[str, dict], before: str) -> dict[str, list[str]]:
@@ -309,7 +344,14 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
                 save(name, {**fx, "live": {**(fx.get("live") or {}), "id": int(mi["matchId"])}}, "linked")
             continue
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mi['matchId']}")))
-        fx = new_fixture(mi, fmt, sq, _previous_xis(fixtures, start.date().isoformat()))
+        previous = _previous_xis(fixtures, start.date().isoformat())
+        for t in (mi.get("team1") or {}, mi.get("team2") or {}):
+            if len(sq.get(int(t.get("teamId", -1)), {}).get("squad", [])) < 11:      # no squad on the page yet
+                xi = last_xi(listing, mi, t, page)
+                if xi:
+                    sq[int(t["teamId"])] = {"xi": [], "squad": xi}
+                    previous[t.get("teamName", "")] = [p["name"] for p in xi]
+        fx = new_fixture(mi, fmt, sq, previous)
         if fx:
             save(f"{fx['id']}.json", fx, "new fixture")
             rerun.append(f"{fx['id']}.json")
