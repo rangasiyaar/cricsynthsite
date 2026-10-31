@@ -500,6 +500,15 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
         cap = max(pool, key=lambda p: key[p])
         vc_ = max((p for p in xi if p != cap), key=lambda p: mean[p])
         return team_points(xi, cap, vc_, real)
+    # the win-% split: the favourite's share of the 11 = its win chance (60-40: 7 and 4), each side's best by
+    # expected points; captain and vice-captain the favourite's top two (or the XI's top two)
+    p_fav = float((win == fav_side).mean())
+    n_fav = min(10, max(1, round(11 * p_fav)))
+    ranked = {t: sorted((p for p in pids if team_of[p] == t), key=lambda p: -mean[p]) for t in (0, 1)}
+    sx = ranked[fav_side][:n_fav] + ranked[1 - fav_side][:11 - n_fav]
+    out["win_split"] = team_points(sx, *ranked[fav_side][:2], real)
+    out["win_split_cv_overall"] = team_points(sx, *sorted(sx, key=lambda p: -mean[p])[:2], real)
+    out["fav_won"] = mt["winner"] == spec.teams[fav_side].name if mt["winner"] in mt["teams"] else None
     out["cap_top_order"] = by_rule(lambda p: slot.get(p, 11) <= 3 and bowl.get(p, 0.0) < 12)
     out["cap_all_rounder"] = by_rule(lambda p: is_ar[p])
     out["cap_favoured_side"] = by_rule(lambda p: team_of[p] == fav_side)
@@ -791,6 +800,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "oracle_captain", "toss_unknown", "bowlers_known", "team_news",
                                                    "team_news_ptop", "team_news_oracle_captain", "captains_5",
                                                    "cap_top_order", "cap_all_rounder", "cap_favoured_side", "cap_floor",
+                                                   "win_split", "win_split_cv_overall",
                                                    "cap_ar_bonus_0.15", "cap_ar_bonus_0.3", "cap_vote_overall", "cap_vote_in_xi",
                                                    "xi_most_picked", "xi_most_picked_vote_captain",
                                                    "cap_shrink_0.1", "cap_shrink_0.2", "cap_shrink_0.3",
@@ -799,7 +809,12 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
                           "contest": _contest_summary(f),
-                          "captain_rules_v_live": _paired(f, "mean", ("oracle_captain", "upside_captain", "ptop_captain",
+                          "win_split_by_result": {
+                              lab: {"n": len(g), "live": round(float(np.mean([r["mean"] for r in g])), 1),
+                                    "win_split": round(float(np.mean([r["win_split"] for r in g])), 1)}
+                              for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
+                                             ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
+                          "captain_rules_v_live": _paired(f, "mean", ("win_split", "win_split_cv_overall", "oracle_captain", "upside_captain", "ptop_captain",
                                                                        "cap_top_order", "cap_all_rounder", "cap_floor",
                                                                        "cap_ar_bonus_0.15", "cap_ar_bonus_0.3",
                                                                        "cap_vote_overall", "cap_vote_in_xi",
@@ -1005,6 +1020,11 @@ def write_report(rep: dict, path: Path) -> None:
                   "| Rule | v live captain | Better / worse / same |", "|---|---|---|"]
             L += [f"| {k} | {v['diff']:+.1f} ({v['lo']:+.1f} to {v['hi']:+.1f}) | {v['better']} / {v['worse']} / "
                   f"{v['n'] - v['better'] - v['worse']} |" for k, v in fz["captain_rules_v_live"].items()]
+            L.append("")
+        if fz.get("win_split_by_result"):
+            L += ["Win-% split XI v live XI, by whether the favourite won", "", "| | Matches | Live | Win-% split |",
+                  "|---|---|---|---|"]
+            L += [f"| {k} | {v['n']} | {v['live']} | {v['win_split']} |" for k, v in fz["win_split_by_result"].items()]
             L.append("")
         if fz.get("per_match"):
             L += ["Per match (share of the best possible XI)", "",
