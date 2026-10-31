@@ -34,7 +34,7 @@ permissions:
   contents: write                  # commit fixtures and scorecards
   actions: write                   # start the quick publish and the next run
 
-concurrency: { group: "${{ (inputs.late || inputs.list) && 'auto-late' || 'auto' }}", cancel-in-progress: false }
+concurrency: { group: "${{ (inputs.late || inputs.list || inputs.dry_run) && 'auto-late' || 'auto' }}", cancel-in-progress: false }
 
 jobs:
   auto:
