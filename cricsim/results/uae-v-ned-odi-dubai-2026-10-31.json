@@ -1,0 +1,313 @@
+{
+ "id": "uae-v-ned-odi-dubai-2026-10-31",
+ "innings": [
+  {
+   "team": "Netherlands",
+   "runs": 263,
+   "wickets": 4,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Max O'Dowd",
+     "dismissal": "lbw b Aayan Khan",
+     "runs": 106,
+     "balls": 119,
+     "fours": 10,
+     "sixes": 3
+    },
+    {
+     "name": "Cedric de Lange",
+     "dismissal": "b Muhammad Rohid Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Noah Croes",
+     "dismissal": "b Aayan Khan",
+     "runs": 16,
+     "balls": 44,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Scott Edwards",
+     "dismissal": "not out",
+     "runs": 94,
+     "balls": 95,
+     "fours": 8,
+     "sixes": 1
+    },
+    {
+     "name": "Bas de Leede",
+     "dismissal": "lbw b Aayan Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Colin Ackermann",
+     "dismissal": "not out",
+     "runs": 34,
+     "balls": 40,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Muhammad Arfan",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Muhammad Rohid Khan",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Khuzaima Tanveer",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Awais Ali Shah",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aayan Afzal Khan",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Muhammad Shahdad",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Cedric de Lange",
+     "score": 4,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Noah Croes",
+     "score": 76,
+     "over": "15.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Max O'Dowd",
+     "score": 182,
+     "over": "37.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bas de Leede",
+     "score": 182,
+     "over": "37.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 10,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "United Arab Emirates",
+   "runs": 266,
+   "wickets": 5,
+   "overs": "49",
+   "batting": [
+    {
+     "name": "Muhammad Waseem",
+     "dismissal": "c Timm van der Gugten b Paul van Meekeren",
+     "runs": 19,
+     "balls": 13,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Adeeb Usmani",
+     "dismissal": "not out",
+     "runs": 81,
+     "balls": 93,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Muhammad Shahdad",
+     "dismissal": "c and b Bas de Leede",
+     "runs": 14,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Rahul Chopra",
+     "dismissal": "c (sub)Shariz Ahmad b Aryan Dutt",
+     "runs": 11,
+     "balls": 26,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Akshdeep Nath",
+     "dismissal": "lbw b Bas de Leede",
+     "runs": 99,
+     "balls": 88,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Sohaib Khan",
+     "dismissal": "c Aryan Dutt b Colin Ackermann",
+     "runs": 28,
+     "balls": 52,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Awais Ali Shah",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Paul van Meekeren",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Timm van der Gugten",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bas de Leede",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Aryan Dutt",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Daniel Doram",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Colin Ackermann",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Muhammad Waseem",
+     "score": 22,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Muhammad Shahdad",
+     "score": 58,
+     "over": "9.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rahul Chopra",
+     "score": 87,
+     "over": "16.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sohaib Khan",
+     "score": 165,
+     "over": "32.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Akshdeep Nath",
+     "score": 258,
+     "over": "48.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 58
+  }
+ ],
+ "winner": "United Arab Emirates",
+ "result": "United Arab Emirates won by 5 wickets"
+}
