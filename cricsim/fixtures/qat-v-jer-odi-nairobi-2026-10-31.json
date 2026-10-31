@@ -12,38 +12,38 @@
   "city": "Nairobi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Qatar won the toss and bowl first.",
   "teams": [
     {
       "name": "Qatar",
       "short": "QAT",
       "players": [
+        "Daniel Louis",
         "Imal Liyanage",
-        "Kamran Khan",
-        "Muhammad Tanveer",
-        "Shakkir Kassim",
-        "Amir Farooq",
-        "Tamoor Sajjad",
-        "Shakir Ali",
-        "Daniel Archer Louis",
-        "Muhammad Murad",
-        "Mohammed Nadeem",
-        "Muhammad Jabir"
+        "Mirza Mohammed Baig",
+        "Ikramullah Khan",
+        "Muhammad Asim",
+        "Mujeeb ur Rehman",
+        "Owais Ahmed",
+        "Shahzaib Jamil",
+        "Shahzeb Afridi",
+        "Zeeshan Haider",
+        "Zubair Ali"
       ],
       "roles": [
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
+        "BAT",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "WK",
+        "AR",
+        "AR",
+        "BAT"
       ],
-      "captain": "Kamran Khan",
+      "captain": "Mirza Mohammed Baig",
       "squad": [
         "Kamran Khan",
         "Imal Liyanage",
@@ -73,30 +73,30 @@
       "name": "Jersey",
       "short": "JER",
       "players": [
-        "Patrick Gouge",
-        "Nick Greenwood",
-        "Josh Lawrenson",
-        "Zak Tribe",
-        "Jonty Jenner",
         "Harrison Carlyon",
         "Julius Sumerauer",
-        "Stanley Norman",
+        "Jonty Jenner",
         "Charles Perchard",
-        "Daniel Birrell",
-        "George Richardson"
+        "Benjamin Ward",
+        "Charlie Brennan",
+        "Jake Dunford",
+        "Josh Lawrenson",
+        "Scott van Breda",
+        "Toby Britton",
+        "Zak Tribe"
       ],
       "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
+        "WK",
         "BOWL",
-        "BOWL",
-        "BOWL"
+        "BAT"
       ],
       "captain": "Charles Perchard",
       "squad": [
@@ -121,6 +121,7 @@
   "live": {
     "id": 175597,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
