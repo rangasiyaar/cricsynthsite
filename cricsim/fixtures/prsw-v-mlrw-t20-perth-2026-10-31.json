@@ -12,36 +12,36 @@
   "city": "Perth",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Perth Scorchers Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Perth Scorchers Women",
       "short": "PRSW",
       "players": [
+        "Beth Mooney",
         "Katie Mack",
-        "Chloe Piparo",
-        "Mikayla Hinkley",
-        "Ines McKeon",
-        "Amy Edgar",
-        "Lilly Mills",
-        "Ruby Strange",
-        "Ebony Hoskin",
         "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Fatima Sana",
         "Chloe Ainsworth",
-        "Freya Kemp"
+        "Alana King",
+        "Lilly Mills",
+        "Amy Edgar"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
         "BAT",
-        "BOWL",
-        "BOWL",
-        "BOWL",
         "AR",
         "AR",
-        "AR"
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
       ],
       "squad": [
         "Beth Mooney",
@@ -58,36 +58,37 @@
         "Ines McKeon",
         "Ebony Hoskin",
         "Ruby Strange"
-      ]
+      ],
+      "captain": "Beth Mooney"
     },
     {
       "name": "Melbourne Renegades Women",
       "short": "MLRW",
       "players": [
-        "Nicole Faltum",
-        "Sophie Molineux",
         "Courtney Webb",
         "Hayley Matthews",
-        "Milly Illingworth",
-        "Tayla Vlaeminck",
-        "Sara Kennedy",
-        "Georgia Wareham",
+        "Sophie Molineux",
         "Tess Flintoff",
+        "Georgia Wareham",
+        "Nicole Faltum",
         "Chloe Tryon",
-        "Deandra Dottin"
+        "Deandra Dottin",
+        "Annie Wikman",
+        "Milly Illingworth",
+        "Tayla Vlaeminck"
       ],
       "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
         "WK",
         "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "AR",
-        "AR",
-        "AR",
-        "AR"
+        "BOWL"
       ],
       "captain": "Sophie Molineux",
       "squad": [
@@ -112,6 +113,7 @@
   "live": {
     "id": 162731,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
