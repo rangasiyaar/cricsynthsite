@@ -15,7 +15,7 @@ function Countdown({ date, time }: { date?: string; time?: string }) {
   return <span className="when">{left ? <><span className="cs-live-dot" />in {left}</> : date}</span>;
 }
 
-function Featured({ doc }: { doc: MatchDoc }) {
+function Featured({ doc, xis }: { doc: MatchDoc; xis: boolean }) {
   const { match, summary: s } = doc;
   const [a] = s.teams.map((t) => t.name);
   const short = match.teams.map((t) => t.short) as [string, string];
@@ -23,7 +23,8 @@ function Featured({ doc }: { doc: MatchDoc }) {
   const href = `/match/?id=${encodeURIComponent(match.id)}`;
   return (
     <section className="featured">
-      <Scoreboard doc={doc} mid={<Countdown date={match.date} time={match.start_time} />} foot={<>
+      <Scoreboard doc={doc} mid={<><Countdown date={match.date} time={match.start_time} />
+        {xis && <span className="tag status-xis featured-xis">Lineup updated</span>}</>} foot={<>
         <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
         <Link className="cs-btn cs-btn--secondary" href={`/lab/?id=${encodeURIComponent(match.id)}`}>Open in MatchSynth Lab</Link>
       </>} />
@@ -39,15 +40,19 @@ export default function Home() {
   const [error, setError] = useState(false);
   const now = useNow();
   useEffect(() => {
-    loadIndex().then((i) => setMatches(i.matches.filter((m) => m.published))).catch(() => setError(true));
+    const load = () => loadIndex().then((i) => setMatches(i.matches.filter((m) => m.published))).catch(() => setError(true));
+    load();
+    const t = setInterval(load, 5 * 60_000);      // picks up named XIs (and the re-run forecast) without a reload
+    return () => clearInterval(t);
   }, []);
   // the next match yet to start is featured; when it starts, the one after takes its place
   const upcoming = (matches ?? []).filter((m) => kickoff(m) > now).sort((x, y) => kickoff(x) - kickoff(y));
   const nextId = upcoming[0]?.id;
+  const version = upcoming[0]?.generated_at;
   useEffect(() => {
     if (!nextId) { setFeatured(null); return; }
     loadMatch(nextId).then(setFeatured).catch(() => {});
-  }, [nextId]);
+  }, [nextId, version]);
 
   return (
     <>
@@ -57,7 +62,7 @@ export default function Home() {
         {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
         {!error && !matches && <div className="skeleton" style={{ minHeight: 320 }} />}
         {matches && !nextId && <p className="notice">No upcoming matches are published yet. See <Link href="/matches/">live matches and results</Link>.</p>}
-        {nextId && featured?.match.id === nextId && <><Featured doc={featured} /><Spotlight doc={featured} /></>}
+        {nextId && featured?.match.id === nextId && <><Featured doc={featured} xis={!!(upcoming[0]?.xis || featured.match.xis)} /><Spotlight doc={featured} /></>}
         {nextId && featured?.match.id !== nextId && <div className="skeleton" style={{ minHeight: 320 }} />}
       </section>
 

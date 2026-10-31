@@ -77,7 +77,7 @@ export type FantasyPicks = {
 
 export type MatchDoc = {
   match: { id: string; title?: string; date?: string; start_time?: string; format: string; competition?: string;
-           venue?: string; teams: { name: string; short: string; players: string[] }[] };
+           venue?: string; xis?: boolean; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
   fantasy?: FantasyPicks;
 };

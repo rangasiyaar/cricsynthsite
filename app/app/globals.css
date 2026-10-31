@@ -542,3 +542,4 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .result-teams .won b, .result-teams .won .mono { color: var(--cs-ink); }
 .fixture-tags { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .tag.status-xis { color: #2f7a4f; border-color: currentColor; }
+.featured-xis { margin-top: 8px; font-size: 11px; padding: 1px 8px; }
