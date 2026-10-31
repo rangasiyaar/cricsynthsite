@@ -17,6 +17,10 @@ on:
         description: "One pass that reports what would change; commit nothing"
         type: boolean
         default: false
+      list:
+        description: "List the scheduled matches and whether we cover them; change nothing"
+        type: boolean
+        default: false
       minutes:
         description: "How long this run keeps making passes"
         type: number
@@ -30,7 +34,7 @@ permissions:
   contents: write                  # commit fixtures and scorecards
   actions: write                   # start the quick publish and the next run
 
-concurrency: { group: "${{ inputs.late && 'auto-late' || 'auto' }}", cancel-in-progress: false }
+concurrency: { group: "${{ (inputs.late || inputs.list) && 'auto-late' || 'auto' }}", cancel-in-progress: false }
 
 jobs:
   auto:
@@ -43,6 +47,9 @@ jobs:
       - name: Dry run
         if: ${{ inputs.dry_run }}
         run: uv run python -m cricsim.auto --dry-run
+      - name: List the schedule
+        if: ${{ inputs.list }}
+        run: uv run python -m cricsim.auto --list
       - name: Missed XIs, re-run after the start
         if: ${{ inputs.late }}
         env: { GH_TOKEN: "${{ github.token }}", LATE: "${{ inputs.late }}" }
@@ -56,7 +63,7 @@ jobs:
           for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
           gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt")"
       - name: Fixtures, XIs, scorecards every 10 minutes
-        if: ${{ !inputs.dry_run && !inputs.late }}
+        if: ${{ !inputs.dry_run && !inputs.late && !inputs.list }}
         env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}" }
         run: |
           git config user.name "github-actions[bot]"
@@ -76,6 +83,6 @@ jobs:
             sleep 600
           done
       - name: Start the next run
-        if: ${{ !inputs.dry_run && !inputs.late && !cancelled() }}
+        if: ${{ !inputs.dry_run && !inputs.late && !inputs.list && !cancelled() }}
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh workflow run auto.yml --ref "$GITHUB_REF_NAME"

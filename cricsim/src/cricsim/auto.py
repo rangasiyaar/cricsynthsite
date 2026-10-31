@@ -313,6 +313,8 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         if fx:
             save(f"{fx['id']}.json", fx, "new fixture")
             rerun.append(f"{fx['id']}.json")
+        else:
+            click.echo(f"squads not out yet: {mi.get('seriesName')} {mi.get('matchDesc')} ({mi['matchId']})")
 
     # 2. named XIs before the start (or, for `late` fixtures, whenever asked)
     for name, fx in list(fixtures.items()):
