@@ -232,12 +232,7 @@
         },
         {
           "source": "/matches.html",
-          "destination": "/match/",
-          "type": 301
-        },
-        {
-          "source": "/matches/**",
-          "destination": "/match/",
+          "destination": "/matches/",
           "type": 301
         },
         {
