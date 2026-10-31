@@ -5,28 +5,28 @@
   "start_time": "09:00",
   "format": "T20",
   "gender": "female",
-  "competition": "T20 Spring Challenge 2026 \u00b7 6th Match",
+  "competition": "T20 Spring Challenge 2026 · 6th Match",
   "venue": "Bankstown Oval, Sydney",
   "venue_search": "bankstown",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "Adelaide Strikers Women",
       "short": "ADSW",
       "players": [
-        "Emma de Broughe",
-        "Madeline Penna",
         "Ellie Johnston",
-        "Kate Peterson",
-        "Amanda-Jade Wellington",
-        "Elizabeth Worthley",
-        "Isabella Malgioglio",
-        "Maggie Clark",
-        "Ella Wilson",
+        "Emma de Broughe",
         "Eleanor Larosa",
-        "Emerson Filsell"
+        "Madeline Penna",
+        "Kate Peterson",
+        "Elizabeth Worthley",
+        "Emerson Filsell",
+        "Maggie Clark",
+        "Isabella Malgioglio",
+        "Amanda-Jade Wellington",
+        "Ella Wilson"
       ],
       "roles": [
         "BAT",
@@ -63,15 +63,15 @@
       "short": "PRSW",
       "players": [
         "Katie Mack",
-        "Chloe Piparo",
-        "Mikayla Hinkley",
         "Ines McKeon",
-        "Alyssa Dermody",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
         "Rebecca McGrath",
-        "Amy Edgar",
         "Lilly Mills",
         "Ruby Strange",
         "Taneale Peschel",
+        "Alyssa Dermody",
+        "Amy Edgar",
         "Ebony Hoskin"
       ],
       "roles": [
@@ -104,5 +104,6 @@
       ],
       "captain": "Chloe Piparo"
     }
-  ]
+  ],
+  "batting_first": 1
 }

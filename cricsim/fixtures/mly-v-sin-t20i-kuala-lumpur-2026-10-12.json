@@ -5,29 +5,29 @@
   "start_time": "06:45",
   "format": "T20",
   "gender": "male",
-  "competition": "ICC Men's T20 World Cup Asia Sub Regional Qualifier B 2026 \u00b7 10th Match",
+  "competition": "ICC Men's T20 World Cup Asia Sub Regional Qualifier B 2026 · 10th Match",
   "comp_key": "intl-international-T20",
   "venue": "Bayuemas Oval, Kuala Lumpur",
   "venue_search": "bayuemas",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed.",
   "teams": [
     {
       "name": "Malaysia",
       "short": "MLY",
       "players": [
-        "Syed Aziz Mubarak",
-        "Virandeep Singh",
-        "Muhammad Amir Azim",
         "Nazmus Sakib",
+        "Syed Aziz Mubarak",
+        "Aslam Khan Malik",
+        "Virandeep Singh",
         "Muhamad Syahadat",
         "Aqeel Wahid",
         "Sharvin Muniandy",
         "Pavandeep Singh",
-        "Prashant Madhukar",
         "Vijay Unni",
-        "Aslam Khan Malik"
+        "Prashant Madhukar",
+        "Muhammad Amir Azim"
       ],
       "roles": [
         "BAT",
@@ -64,17 +64,17 @@
       "name": "Singapore",
       "short": "SIN",
       "players": [
+        "Suryansh Gulecha",
         "Surendran Chandramohan",
         "Riaan Naik",
         "Manpreet Singh",
-        "Daksh Pratap Singh Tyagi",
-        "Suryansh Gulecha",
-        "Kabir Zandani",
-        "Harsh Venkataram",
-        "Akshay Puri",
         "Girin Gune",
+        "Daksh Pratap Singh Tyagi",
+        "Harsh Venkataram",
+        "Kabir Zandani",
+        "Pranav Sudarshan",
         "Jeevan Santhanam",
-        "Pranav Sudarshan"
+        "Akshay Puri"
       ],
       "roles": [
         "BAT",
@@ -108,5 +108,6 @@
       ],
       "captain": "Manpreet Singh"
     }
-  ]
+  ],
+  "batting_first": 0
 }
