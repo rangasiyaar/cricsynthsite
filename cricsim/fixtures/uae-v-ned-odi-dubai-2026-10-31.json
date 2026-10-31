@@ -12,38 +12,38 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Netherlands won the toss and bat first.",
   "teams": [
     {
       "name": "United Arab Emirates",
       "short": "UAE",
       "players": [
+        "Rahul Chopra",
         "Adeeb Usmani",
-        "Harpreet Singh Bhatia",
-        "Sohaib Khan",
-        "Aayan Afzal Khan",
         "Akshdeep Nath",
-        "Ali Naseer",
+        "Muhammad Shahdad",
+        "Sohaib Khan",
+        "Muhammad Waseem",
+        "Aayan Khan",
+        "Muhammad Rohid Khan",
         "Khuzaima Tanveer",
-        "Muhammad Arfan",
-        "Ibrar Ahmad",
-        "Basil Hameed",
-        "Muhammad Shahdad"
+        "Awais Ali Shah",
+        "Muhammad Arfan"
       ],
       "roles": [
         "WK",
+        "WK",
+        "AR",
+        "AR",
         "BAT",
         "BAT",
         "AR",
-        "AR",
-        "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "AR",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Harpreet Singh Bhatia",
+      "captain": "Rahul Chopra",
       "squad": [
         "Harpreet Singh Bhatia",
         "Aayan Afzal Khan",
@@ -70,20 +70,20 @@
         "Cedric de Lange",
         "Noah Croes",
         "Bas de Leede",
-        "Zach Lion-Cachet",
+        "Scott Edwards",
         "Colin Ackermann",
         "Michael Levitt",
         "Timm van der Gugten",
         "Aryan Dutt",
-        "Fred Klaassen",
-        "Daniel Doram"
+        "Paul van Meekeren",
+        "Doram"
       ],
       "roles": [
         "BAT",
         "BAT",
         "WK",
         "AR",
-        "BAT",
+        "WK",
         "AR",
         "AR",
         "AR",
@@ -121,12 +121,14 @@
         "Saqib Zulfiqar",
         "Cedric de Lange",
         "Tim Pringle"
-      ]
+      ],
+      "captain": "Bas de Leede"
     }
   ],
   "live": {
     "id": 176353,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
