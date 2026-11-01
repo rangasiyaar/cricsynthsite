@@ -419,6 +419,51 @@ def _contest_summary(f: list[dict]) -> dict:
     return out
 
 
+def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
+    """Match scripts: every simulation labelled by how the match went (winner, first-innings total in thirds,
+    powerplay wickets of the side batting first 0-1 / 2+, close or comfortable finish); one XI per script for the
+    five most common, from the players' mean points in those simulations only (captain / vice-captain its top two).
+    Scored on the real match, with how often the real script was among the five and the real script's own team."""
+    bpo, overs = spec.rules["bpo"], spec.rules["overs"]
+    pp = {"OD": 10, "T10": 2, "HUNDRED": 5}.get(spec.format, 6)
+    cat = lambda f: np.concatenate([f(p) for p in sims.parts])
+    win = cat(lambda p: p.winner)
+    bf = cat(lambda p: np.full(p.n, p.batting_first))
+    r1, r2 = cat(lambda p: p.innings[0].runs), cat(lambda p: p.innings[1].runs)
+    pw = cat(lambda p: p.innings[0].over_wkts[:, :pp].sum(1))
+    w2, l2 = cat(lambda p: p.innings[1].wkts), cat(lambda p: p.innings[1].legal)
+    cuts = np.percentile(r1, [33.3, 66.7])
+
+    def close(first_won, margin, wk, legal):
+        return (margin < 20) if first_won else (wk >= 7 or legal >= overs * bpo - bpo)
+    band = np.digitize(r1, cuts)
+    tight = np.array([close(win[i] == bf[i], r1[i] - r2[i], w2[i], l2[i]) for i in range(len(win))])
+    key = win * 12 + band * 4 + (pw >= 2) * 2 + tight
+    counts = np.bincount(key, minlength=24)
+    top = [int(k) for k in np.argsort(-counts)[:5] if counts[k] > 0]
+
+    def team(k):
+        return pick_xi(dict(zip(pids, pts[key == k].mean(0))), team_of)
+    got = [team_points(*team(k), real) for k in top]
+    out = {"script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
+           "script_share_top5": float(counts[top].sum() / counts.sum())}
+    out["script_oracle"] = out["script_top1"]                    # no result: nothing to compare
+    # the real match's script
+    names = [t.name for t in spec.teams]
+    if mt["winner"] in names and len(mt["innings"]) == 2:
+        rw = names.index(mt["winner"])
+        rbf = names.index(mt["innings"][0][1]) if mt["innings"][0][1] in names else int(bf[0])
+        a1, a2 = float(mt["innings"][0][2]), float(mt["innings"][1][2])
+        rpw = con.execute("SELECT count(*) FROM hold WHERE match_id = ? AND innings_no = 1 AND is_wicket AND over < ?",
+                          [mt["match_id"], pp]).fetchone()[0]
+        rl2 = con.execute("SELECT count(*) FROM hold WHERE match_id = ? AND innings_no = 2 AND is_legal",
+                          [mt["match_id"]]).fetchone()[0]
+        rk = rw * 12 + int(np.digitize(a1, cuts)) * 4 + (rpw >= 2) * 2 + int(close(rw == rbf, a1 - a2, mt["innings"][1][3], rl2))
+        out["script_hit"] = rk in top
+        out["script_oracle"] = team_points(*team(rk), real) if counts[rk] else out["script_top1"]
+    return out
+
+
 def _paired(f: list[dict], base: str, keys: tuple[str, ...]) -> dict:
     """Points a match against `base` on the same matches, with a 95% bootstrap range and how often better / worse."""
     out, rng = {}, np.random.default_rng(0)
@@ -563,6 +608,7 @@ def _fantasy(con, model: Model, spec: MatchSpec, sims, mt: dict, n_sims: int, bo
     common = np.bincount(key, minlength=6).argmax()
     out["common_scenario"] = team_points(*pick_xi(dict(zip(pids, pts[key == common].mean(0))), team_of), real)
     out["favourite_wins"] = team_points(*pick_xi(dict(zip(pids, pts[win == fav].mean(0))), team_of), real)  # (c)
+    out.update(_script_teams(con, spec, sims, mt, pids, pts, team_of, real))
     if history is not None:          # every player: what we predicted, recent real form, what he scored
         feats = sim_features(model, sims, pids, pts, team_of)
         out["rows"] = {"match": mt["match_id"], "date": str(mt["date"]), "label": out["label"], "format": mt["format"],
@@ -805,6 +851,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                                    "xi_most_picked", "xi_most_picked_vote_captain",
                                                    "cap_shrink_0.1", "cap_shrink_0.2", "cap_shrink_0.3",
                                                    "cap_stretch_1.2", "cap_stretch_1.4", "xi_stretch_1.2", "xi_stretch_1.4",
+                                                   "script_top1", "script_top5_avg", "script_top5_best", "script_oracle",
                                                    "random_5", "portfolio_3", "portfolio_5", "portfolio_10", "portfolio_20",
                                                    "portfolio_cap_5", "portfolio_cap_10", "portfolio_cap_20")
                                          if all(k in r for r in f)},
@@ -814,6 +861,12 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                     "win_split": round(float(np.mean([r["win_split"] for r in g])), 1)}
                               for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
                                              ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
+                          "scripts": {"hit_rate": round(float(np.mean([r["script_hit"] for r in f if "script_hit" in r])), 3)
+                                      if any("script_hit" in r for r in f) else None,
+                                      "top5_share_of_sims": round(float(np.mean([r["script_share_top5"] for r in f])), 3)
+                                      if all("script_share_top5" in r for r in f) else None,
+                                      "v_live": _paired(f, "mean", ("script_top1", "script_top5_avg")),
+                                      "best_v_portfolio_5": _paired(f, "portfolio_5", ("script_top5_best",))},
                           "captain_rules_v_live": _paired(f, "mean", ("win_split", "win_split_cv_overall", "oracle_captain", "upside_captain", "ptop_captain",
                                                                        "cap_top_order", "cap_all_rounder", "cap_floor",
                                                                        "cap_ar_bonus_0.15", "cap_ar_bonus_0.3",
