@@ -11,7 +11,7 @@
 
 python -m cricsim.auto --fixtures cricsim/fixtures --results cricsim/results [--changed FILE] [--dry-run]
 
-Run by .github/workflows/auto.yml every 10 minutes, which commits what changed and asks for a quick publish.
+Run by .github/workflows/auto.yml every 5 minutes, which commits what changed and asks for a quick publish.
 Fixtures stay ours to edit: a hand-written fixture is linked (live.id) and gets the confirmed XIs, nothing else.
 """
 from __future__ import annotations

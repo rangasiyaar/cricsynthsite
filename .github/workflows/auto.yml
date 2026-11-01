@@ -6,7 +6,7 @@ name: Auto
 # one). Free: Actions minutes cost nothing on a public repository.
 #
 # GitHub runs frequent schedules hours late, which misses the toss, so one run stays up and makes a pass every
-# 10 minutes for about 5.5 hours, then starts the next run itself. The schedule only restarts the chain if it
+# 5 minutes for about 5.5 hours, then starts the next run itself. The schedule only restarts the chain if it
 # breaks; the concurrency group keeps a single run (plus at most one queued).
 on:
   schedule:
@@ -70,7 +70,7 @@ jobs:
           git commit -q -m "Late XIs (after the start): $(cat "$RUNNER_TEMP/rerun.txt" | sed 's/\.json//g' | cut -c1-200)"
           for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
           gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt")"
-      - name: Fixtures, XIs, scorecards every 10 minutes
+      - name: Fixtures, XIs, scorecards every 5 minutes
         if: ${{ !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
         env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}" }
         run: |
@@ -87,8 +87,8 @@ jobs:
               for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
               gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt" 2>/dev/null)" || true
             fi
-            [ $(( $(date +%s) + 600 )) -lt "$end" ] || break
-            sleep 600
+            [ $(( $(date +%s) + 300 )) -lt "$end" ] || break
+            sleep 300
           done
       - name: Start the next run
         if: ${{ !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads && !cancelled() }}
