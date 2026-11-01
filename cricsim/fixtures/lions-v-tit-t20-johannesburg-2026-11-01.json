@@ -12,36 +12,36 @@
   "city": "Johannesburg",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Lions won the toss and bat first.",
   "teams": [
     {
       "name": "Lions",
       "short": "LIONS",
       "players": [
-        "Wandile Makwetu",
-        "Mitchell Van Buuren",
         "Zubayr Hamza",
-        "Onkgomoditse R Seletswane",
+        "Neil Timmers",
         "Rassie van der Dussen",
-        "Delano Potgieter",
-        "Codi Yusuf",
-        "Wiaan Mulder",
-        "Siya Plaatjie",
+        "Connor Esterhuizen",
+        "Mitchell Van Buuren",
+        "Onkgomoditse R Seletswane",
         "Bjorn Fortuin",
-        "Lutho Sipamla"
+        "Nqabayomzi Peter",
+        "Codi Yusuf",
+        "Siya Plaatjie",
+        "JJ Basson"
       ],
       "roles": [
+        "BAT",
+        "WK",
+        "BAT",
         "WK",
         "BAT",
         "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "AR",
+        "BOWL",
+        "AR"
       ],
       "squad": [
         "Mitchell Van Buuren",
@@ -62,36 +62,37 @@
         "JJ Basson",
         "Neil Timmers",
         "Morteza Manack"
-      ]
+      ],
+      "captain": "Bjorn Fortuin"
     },
     {
       "name": "Titans",
       "short": "TIT",
       "players": [
-        "Donovan Ferreira",
-        "Keegan Petersen",
-        "Tshepang Dithole",
+        "Lhuan-dre Pretorius",
+        "Lethabo Phahlamohlaka",
         "Dewald Brevis",
+        "Donovan Ferreira",
         "Dayyaan Galiem",
-        "Esosa Aihevba",
-        "Evan Jones",
         "Eathan Bosch",
-        "Beyers Swanepoel",
         "Rivaldo Moonsamy",
-        "Keagan Lion-Cachet"
+        "Junior Dala",
+        "Beyers Swanepoel",
+        "Tsepo Ndwandwa",
+        "Tabraiz Shamsi"
       ],
       "roles": [
         "WK",
+        "WK",
         "BAT",
-        "BAT",
-        "BAT",
+        "WK",
         "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
         "BOWL",
         "WK",
-        "WK"
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
       ],
       "squad": [
         "Keegan Petersen",
@@ -114,12 +115,14 @@
         "Tabraiz Shamsi",
         "Janco Smit",
         "Esosa Aihevba"
-      ]
+      ],
+      "captain": "Donovan Ferreira"
     }
   ],
   "live": {
     "id": 173567,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
