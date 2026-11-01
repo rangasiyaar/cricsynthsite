@@ -12,14 +12,14 @@
   "city": "Hamilton",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. New Zealand won the toss and bowl first.",
   "teams": [
     {
       "name": "New Zealand",
       "short": "NZ",
       "players": [
-        "Finn Allen",
         "Tim Seifert",
+        "Finn Allen",
         "Daryl Mitchell",
         "Glenn Phillips",
         "Bevon Jacobs",
@@ -28,11 +28,11 @@
         "Nathan Smith",
         "Adam Milne",
         "Jacob Duffy",
-        "Matthew Fisher"
+        "Blair Tickner"
       ],
       "roles": [
-        "BAT",
         "WK",
+        "BAT",
         "AR",
         "AR",
         "BAT",
@@ -66,27 +66,27 @@
       "name": "India",
       "short": "IND",
       "players": [
-        "Abhishek Sharma",
         "Sanju Samson",
+        "Abhishek Sharma",
         "Ishan Kishan",
         "Shreyas Iyer",
         "Tilak Varma",
         "Nitish Reddy",
         "Naman Dhir",
-        "Axar Patel",
+        "Bhuvneshwar Kumar",
         "Arshdeep Singh",
         "Prince Yadav",
-        "Mayank Yadav"
+        "Varun Chakaravarthy"
       ],
       "roles": [
+        "WK",
         "AR",
         "WK",
-        "WK",
         "BAT",
         "BAT",
         "AR",
         "BAT",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -117,6 +117,7 @@
   "live": {
     "id": 161234,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
