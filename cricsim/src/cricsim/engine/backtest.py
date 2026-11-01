@@ -460,6 +460,13 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
                           [mt["match_id"]]).fetchone()[0]
         rk = rw * 12 + int(np.digitize(a1, cuts)) * 4 + (rpw >= 2) * 2 + int(close(rw == rbf, a1 - a2, mt["innings"][1][3], rl2))
         out["script_hit"] = rk in top
+        n = counts.sum()
+        rank = int((counts > counts[rk]).sum()) + 1
+        out["script_pred"] = {"p": float(counts[rk] / n), "rank": rank, "top1": float(counts[top[0]] / n),
+                              "p_win": float((win == rw).mean()), "fav_won": bool((win == rw).mean() > 0.5),
+                              "band": int(np.digitize(a1, cuts)),
+                              "p_pp2": float((pw >= 2).mean()), "pp2": bool(rpw >= 2),
+                              "p_close": float(tight.mean()), "close": bool(rk % 2)}
         out["script_oracle"] = team_points(*team(rk), real) if counts[rk] else out["script_top1"]
     return out
 
@@ -861,6 +868,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                                     "win_split": round(float(np.mean([r["win_split"] for r in g])), 1)}
                               for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
                                              ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
+                          "script_pred": [r["script_pred"] for r in f if "script_pred" in r],
                           "scripts": {"hit_rate": round(float(np.mean([r["script_hit"] for r in f if "script_hit" in r])), 3)
                                       if any("script_hit" in r for r in f) else None,
                                       "top5_share_of_sims": round(float(np.mean([r["script_share_top5"] for r in f])), 3)

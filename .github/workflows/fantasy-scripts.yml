@@ -66,3 +66,5 @@ jobs:
               for k, v in d.items():
                   print(f"| {k} {lab} | {v['diff']:+.1f} ({v['lo']:+.1f} to {v['hi']:+.1f}) | {v['better']} / {v['worse']} of {v['n']} |")
           PY
+      - name: Script prediction
+        run: set -o pipefail; uv run python -m cricsim.script_check data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
