@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pokhara Avengers won the toss and bowl first.",
   "teams": [
     {
       "name": "Janakpur Bolts",
@@ -22,25 +22,25 @@
         "Moeen Ali",
         "Mayan Yadav",
         "Saif Hassan",
-        "Kusal Perera",
+        "Abhisekh Tiwari",
+        "James Neesham",
+        "Amar Routela",
         "Anil Sah",
         "Lalit Rajbanshi",
-        "Abhisekh Tiwari",
-        "Amar Routela",
-        "Rahul Yadav",
-        "Harmeet Singh"
+        "Harmeet Singh",
+        "Rahul Yadav"
       ],
       "roles": [
         "BAT",
         "AR",
         "BAT",
-        "AR",
-        "WK",
         "BAT",
         "AR",
-        "BAT",
-        "BAT",
+        "AR",
         "BOWL",
+        "WK",
+        "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Harmeet Singh",
@@ -63,29 +63,29 @@
       "short": "POA",
       "players": [
         "Dinesh Kharel",
-        "Mahedi Hasan",
         "Kushal Bhurtel",
         "Shakib Al Hasan",
-        "Sadeera Samarawickrama",
-        "Dhananjaya Lakshan",
-        "Arjun Gharti",
         "Kiran Thagunna",
+        "Arjun Gharti",
+        "Mahedi Hasan",
+        "Bipin Acharya",
         "Bipin Khatri",
-        "Pratik Pokhrel",
-        "Aakash Chand"
+        "Saifuddin",
+        "Chamika Karunaratne",
+        "Pratik Pokhrel"
       ],
       "roles": [
+        "BOWL",
         "BAT",
         "AR",
-        "AR",
-        "AR",
         "BAT",
-        "AR",
         "WK",
-        "BAT",
+        "AR",
+        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR",
+        "AR",
+        "AR"
       ],
       "captain": "Kushal Bhurtel",
       "squad": [
@@ -106,6 +106,7 @@
   "live": {
     "id": 177670,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

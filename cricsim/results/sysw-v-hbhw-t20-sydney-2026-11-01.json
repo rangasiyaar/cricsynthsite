@@ -1,0 +1,440 @@
+{
+ "id": "sysw-v-hbhw-t20-sydney-2026-11-01",
+ "innings": [
+  {
+   "team": "Sydney Sixers Women",
+   "runs": 196,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sophia Dunkley",
+     "dismissal": "c Chamari Athapaththu b Chinelle Henry",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ellyse Perry",
+     "dismissal": "c Lauren Smith b Nicola Carey",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Melie Kerr",
+     "dismissal": "c Maddy Green b Chinelle Henry",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "dismissal": "c Chinelle Henry b Heather Graham",
+     "runs": 124,
+     "balls": 60,
+     "fours": 10,
+     "sixes": 9
+    },
+    {
+     "name": "Alice Capsey",
+     "dismissal": "not out",
+     "runs": 54,
+     "balls": 40,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Eva Ragg",
+     "dismissal": "c Chinelle Henry b Nicola Carey",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Erin Burns",
+     "dismissal": "lbw b Nicola Carey",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lauren Cheatle",
+     "dismissal": "c Lauren Smith b Molly Strano",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "dismissal": "c Lauren Smith b Molly Strano",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Caoimhe Bray",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chinelle Henry",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nicola Carey",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Heather Graham",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Isabella Malgioglio",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hayley Silver-holmes",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Lauren Smith",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Molly Strano",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sophia Dunkley",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ellyse Perry",
+     "score": 4,
+     "over": "1.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Melie Kerr",
+     "score": 6,
+     "over": "2.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ashleigh Gardner",
+     "score": 182,
+     "over": "17.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Eva Ragg",
+     "score": 187,
+     "over": "18.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Erin Burns",
+     "score": 188,
+     "over": "18.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Lauren Cheatle",
+     "score": 189,
+     "over": "19.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sarah Coyte",
+     "score": 189,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 15
+  },
+  {
+   "team": "Hobart Hurricanes Women",
+   "runs": 109,
+   "wickets": 10,
+   "overs": "17.4",
+   "batting": [
+    {
+     "name": "Lizelle Lee",
+     "dismissal": "c Lauren Cheatle b Ashleigh Gardner",
+     "runs": 5,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chamari Athapaththu",
+     "dismissal": "c Erin Burns b Caoimhe Bray",
+     "runs": 10,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Rachel Trenaman",
+     "dismissal": "b Caoimhe Bray",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nicola Carey",
+     "dismissal": "b Ashleigh Gardner",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Heather Graham",
+     "dismissal": "b Melie Kerr",
+     "runs": 4,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Maddy Green",
+     "dismissal": "not out",
+     "runs": 42,
+     "balls": 33,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Chinelle Henry",
+     "dismissal": "b Ashleigh Gardner",
+     "runs": 32,
+     "balls": 20,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Hayley Silver-holmes",
+     "dismissal": "run out (Caoimhe Bray/Ashleigh Gardner)",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Molly Strano",
+     "dismissal": "c Ellyse Perry b Lauren Cheatle",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lauren Smith",
+     "dismissal": "c Ellyse Perry b Melie Kerr",
+     "runs": 9,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Isabella Malgioglio",
+     "dismissal": "b Melie Kerr",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Caoimhe Bray",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Lauren Cheatle",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Melie Kerr",
+     "overs": "2.4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Frankie Nicklin",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Chamari Athapaththu",
+     "score": 17,
+     "over": "4.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rachel Trenaman",
+     "score": 17,
+     "over": "4.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Lizelle Lee",
+     "score": 17,
+     "over": "5.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nicola Carey",
+     "score": 21,
+     "over": "5.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Heather Graham",
+     "score": 26,
+     "over": "7.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chinelle Henry",
+     "score": 78,
+     "over": "13.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hayley Silver-holmes",
+     "score": 80,
+     "over": "14"
+    },
+    {
+     "wicket": 8,
+     "batter": "Molly Strano",
+     "score": 80,
+     "over": "14.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Lauren Smith",
+     "score": 107,
+     "over": "17.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Isabella Malgioglio",
+     "score": 109,
+     "over": "17.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 15
+  }
+ ],
+ "winner": "Sydney Sixers Women",
+ "result": "Sydney Sixers Women won by 87 runs"
+}
