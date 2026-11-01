@@ -445,7 +445,26 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
     def team(k):
         return pick_xi(dict(zip(pids, pts[key == k].mean(0))), team_of)
     got = [team_points(*team(k), real) for k in top]
-    out = {"script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
+    # calibrated picks: simulations reweighted for what the script check found (the favourite wins more often
+    # than simulated: log-odds x s; T20 first innings come in lower: the bottom third counted x b), and teams from
+    # the reliable parts of the script only (winner x first-innings third)
+    p0 = float((win == 0).mean())
+    cal = {"date": str(mt["date"])}
+    for st in (1.0, 1.2, 1.4, 1.6):
+        if 0 < p0 < 1:
+            q0 = 1 / (1 + np.exp(-st * np.log(p0 / (1 - p0))))
+            ww = np.where(win == 0, q0 / p0, (1 - q0) / (1 - p0))
+        else:
+            ww = np.ones(len(win))
+        for b in (1.0, 1.35, 1.7):
+            w = ww * np.where(band == 0, b, 1.0)
+            cal[f"cal_{st}_{b}"] = team_points(*pick_xi(dict(zip(pids, (pts * w[:, None]).sum(0) / w.sum())), team_of), real)
+    rkey = win * 3 + band
+    rc = np.bincount(rkey, minlength=6)
+    rtop = [int(k) for k in np.argsort(-rc)[:5] if rc[k] > 0]
+    cal["reliable_top5_best"] = max(team_points(*pick_xi(dict(zip(pids, pts[rkey == k].mean(0))), team_of), real) for k in rtop)
+    cal["best"] = team_points(*pick_xi(real, team_of), real)
+    out = {"cal_row": cal, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
            "script_share_top5": float(counts[top].sum() / counts.sum())}
     out["script_oracle"] = out["script_top1"]                    # no result: nothing to compare
     # the real match's script
@@ -869,6 +888,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                               for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
                                              ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
                           "script_pred": [r["script_pred"] for r in f if "script_pred" in r],
+                          "cal_rows": [{**r["cal_row"], "portfolio_5": r.get("portfolio_5")} for r in f if "cal_row" in r],
                           "scripts": {"hit_rate": round(float(np.mean([r["script_hit"] for r in f if "script_hit" in r])), 3)
                                       if any("script_hit" in r for r in f) else None,
                                       "top5_share_of_sims": round(float(np.mean([r["script_share_top5"] for r in f])), 3)

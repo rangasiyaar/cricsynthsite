@@ -68,3 +68,5 @@ jobs:
           PY
       - name: Script prediction
         run: set -o pipefail; uv run python -m cricsim.script_check data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Calibrated picks
+        run: set -o pipefail; uv run python -m cricsim.fantasy_cal data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
