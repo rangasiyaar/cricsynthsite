@@ -12,32 +12,32 @@
   "city": "Sharjah",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Afghanistan won the toss and bowl first.",
   "teams": [
     {
       "name": "Afghanistan",
       "short": "AFG",
       "players": [
-        "Rahmanullah Gurbaz",
         "Ibrahim Zadran",
-        "Sediqullah Atal",
         "Mohammad Akram",
-        "Shahidullah Kamal",
-        "Azmatullah Omarzai",
+        "Sediqullah Atal",
         "Ijaz Ahmad Ahmadzai",
+        "Noor ul Rahman",
+        "Azmatullah Omarzai",
+        "Abdullah Tarakhail",
         "Rashid Khan",
-        "Mujeeb Ur Rahman",
+        "Noor Ahmad",
         "Abdullah Ahmadzai",
-        "Abdullah Tarakhail"
+        "Fazalhaq Farooqi"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
-        "AR",
-        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL",
@@ -68,14 +68,14 @@
       "players": [
         "Brian Bennett",
         "Innocent Kaia",
-        "Ryan Burl",
         "Sikandar Raza",
+        "Ryan Burl",
         "Tadiwanashe Marumani",
+        "Wessly Madhevere",
         "Tafadzwa Tsiga",
-        "Brad Evans",
-        "Kundai Matigimu",
+        "Ernest Masuku",
+        "Newman Nyamhuri",
         "Vincent Masekesa",
-        "Ben Curran",
         "Blessing Muzarabani"
       ],
       "roles": [
@@ -84,11 +84,11 @@
         "AR",
         "AR",
         "WK",
-        "WK",
         "AR",
+        "WK",
+        "BOWL",
         "BOWL",
         "AR",
-        "BAT",
         "BOWL"
       ],
       "captain": "Sikandar Raza",
@@ -113,6 +113,7 @@
   "live": {
     "id": 172717,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
