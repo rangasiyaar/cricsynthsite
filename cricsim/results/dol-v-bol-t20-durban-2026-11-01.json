@@ -1,0 +1,272 @@
+{
+ "id": "dol-v-bol-t20-durban-2026-11-01",
+ "innings": [
+  {
+   "team": "Dolphins",
+   "runs": 174,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Romashan Pillay",
+     "dismissal": "c Lehan Botha b Glenton Stuurman",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bryce Parsons",
+     "dismissal": "c Blayde Capell b Lizaad Williams",
+     "runs": 6,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ntando Zuma",
+     "dismissal": "not out",
+     "runs": 42,
+     "balls": 41,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Jason Smith",
+     "dismissal": "c Mahima b Lizaad Williams",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hanu Viljoen",
+     "dismissal": "run out (Kaplan/Blayde Capell)",
+     "runs": 114,
+     "balls": 59,
+     "fours": 11,
+     "sixes": 7
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Glenton Stuurman",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Imran Manack",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Lizaad Williams",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Siyabonga Mahima",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Akhona Mnyaka",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ferisco Adams",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Neil Brand",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Romashan Pillay ",
+     "score": 8,
+     "over": "2.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Bryce Parsons",
+     "score": 12,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jason Smith",
+     "score": 12,
+     "over": "3.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Hanu Viljoen",
+     "score": 174,
+     "over": "20"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 5,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 21
+  },
+  {
+   "team": "Boland",
+   "runs": 163,
+   "wickets": 2,
+   "overs": "18.2",
+   "batting": [
+    {
+     "name": "Blayde Capell",
+     "dismissal": "c Keshav Maharaj b Okuhle Cele",
+     "runs": 90,
+     "balls": 53,
+     "fours": 6,
+     "sixes": 5
+    },
+    {
+     "name": "Gavin Kaplan",
+     "dismissal": "c Bryce Parsons b Subrayen",
+     "runs": 55,
+     "balls": 44,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Lehan Botha",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Neil Brand",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Keshav Maharaj",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Prenelan Subrayen",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ottneil Baartman",
+     "overs": "3.2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Okuhle Cele",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bryce Parsons",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Andile Simelane",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Gavin Kaplan",
+     "score": 119,
+     "over": "13.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Blayde Capell",
+     "score": 159,
+     "over": "17.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 59
+  }
+ ],
+ "winner": "Boland",
+ "result": "Boland won by 7 wickets"
+}
