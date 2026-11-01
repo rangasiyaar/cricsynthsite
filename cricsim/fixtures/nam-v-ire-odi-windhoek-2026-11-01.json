@@ -12,32 +12,32 @@
   "city": " Windhoek",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Ireland won the toss and bat first.",
   "teams": [
     {
       "name": "Namibia",
       "short": "NAM",
       "players": [
+        "Michael van Lingen",
         "Louren Steenkamp",
-        "Malan Kruger",
         "Jan Frylinck",
-        "Alexander Volschenk",
-        "Jan Nicol Loftie-Eaton",
         "Gerhard Erasmus",
+        "Malan Kruger",
         "Zane Green",
-        "JJ Smit",
+        "Smit",
+        "Willem Myburgh",
         "Ruben Trumpelmann",
-        "Bernard Scholtz",
-        "Jack Brassell"
+        "Jack Brassell",
+        "Max Heingo"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
+        "AR",
+        "AR",
+        "BAT",
         "WK",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -62,16 +62,16 @@
       "name": "Ireland",
       "short": "IRE",
       "players": [
-        "Andrew Balbirnie",
+        "Balbirnie",
         "Tim Tector",
         "Cade Carmichael",
         "Harry Tector",
         "Lorcan Tucker",
         "Curtis Campher",
         "George Dockrell",
+        "Gavin Hoey",
         "Jordan Neill",
         "Jai Moondra",
-        "Liam McCarthy",
         "Matthew Humphreys"
       ],
       "roles": [
@@ -81,9 +81,9 @@
         "BAT",
         "WK",
         "AR",
-        "BAT",
+        "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -106,6 +106,7 @@
   "live": {
     "id": 174977,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
