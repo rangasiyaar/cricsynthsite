@@ -12,35 +12,35 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Brisbane Heat Women won the toss and bat first.",
   "teams": [
     {
       "name": "Sydney Thunder Women",
       "short": "SYTW",
       "players": [
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Anika Learoyd",
+        "Heather Knight",
+        "Nadine de Klerk",
         "Tahlia Wilson",
         "Laura Harris",
         "Jemma Barsby",
-        "Hasrat Gill",
-        "Nicola Hancock",
-        "Samantha Bates",
-        "Phoebe Litchfield",
-        "Georgia Voll",
-        "Heather Knight",
-        "Nadine de Klerk",
-        "HJ Darlington"
+        "HJ Darlington",
+        "Lauren Bell",
+        "Samantha Bates"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
         "BAT",
         "BOWL",
-        "AR",
-        "AR",
         "BOWL",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Phoebe Litchfield",
@@ -69,11 +69,11 @@
         "Grace Harris",
         "Charli Knott",
         "Redmayne",
+        "Yastika Bhatia",
         "Orla Prendergast",
         "Lucy Hamilton",
         "Annie O Neil",
         "Sianna Ginger",
-        "Lucinda Bourke",
         "Sarah Glenn",
         "Lily Bassingthwaighte",
         "Ayaka Kato-Stafford"
@@ -82,11 +82,11 @@
         "AR",
         "AR",
         "WK",
+        "WK",
         "AR",
         "AR",
         "AR",
         "AR",
-        "BAT",
         "AR",
         "BOWL",
         "BOWL"
@@ -116,6 +116,7 @@
   "live": {
     "id": 162733,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
