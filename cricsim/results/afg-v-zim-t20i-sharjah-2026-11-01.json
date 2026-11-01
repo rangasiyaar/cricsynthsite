@@ -1,0 +1,334 @@
+{
+ "id": "afg-v-zim-t20i-sharjah-2026-11-01",
+ "innings": [
+  {
+   "team": "Zimbabwe",
+   "runs": 79,
+   "wickets": 10,
+   "overs": "14.3",
+   "batting": [
+    {
+     "name": "Brian Bennett",
+     "dismissal": "c Ibrahim Zadran b Azmatullah Omarzai",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Innocent Kaia",
+     "dismissal": "c Noor ul Rahman b Fazalhaq Farooqi",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sikandar Raza",
+     "dismissal": "c Ibrahim Zadran b Abdullah Tarakhail",
+     "runs": 2,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ryan Burl",
+     "dismissal": "lbw b Abdullah Ahmadzai",
+     "runs": 30,
+     "balls": 29,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Wessly Madhevere",
+     "dismissal": "st Noor ul Rahman b Noor Ahmad",
+     "runs": 10,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tadiwanashe Marumani",
+     "dismissal": "c Azmatullah Omarzai b Noor Ahmad",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tafadzwa Tsiga",
+     "dismissal": "c Ibrahim Zadran b Noor Ahmad",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Newman Nyamhuri",
+     "dismissal": "b Noor Ahmad",
+     "runs": 9,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Blessing Muzarabani",
+     "dismissal": "c Azmatullah Omarzai b Abdullah Tarakhail",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ernest Masuku",
+     "dismissal": "lbw b Noor Ahmad",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Vincent Masekesa",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Fazalhaq Farooqi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abdullah Tarakhail",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Rashid Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Noor Ahmad",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 5,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abdullah Ahmadzai",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Innocent Kaia",
+     "score": 8,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Brian Bennett",
+     "score": 8,
+     "over": "1.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sikandar Raza",
+     "score": 13,
+     "over": "3.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ryan Burl",
+     "score": 56,
+     "over": "9.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Wessly Madhevere",
+     "score": 59,
+     "over": "10.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Tafadzwa Tsiga",
+     "score": 59,
+     "over": "10.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Tadiwanashe Marumani",
+     "score": 60,
+     "over": "10.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Newman Nyamhuri",
+     "score": 72,
+     "over": "12.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Blessing Muzarabani",
+     "score": 74,
+     "over": "13.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Ernest Masuku",
+     "score": 79,
+     "over": "14.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 37
+  },
+  {
+   "team": "Afghanistan",
+   "runs": 54,
+   "wickets": 3,
+   "overs": "6",
+   "batting": [
+    {
+     "name": "Mohammad Akram",
+     "dismissal": "c Sikandar Raza b Blessing Muzarabani",
+     "runs": 14,
+     "balls": 5,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ibrahim Zadran",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sediqullah Atal",
+     "dismissal": "c Madhevere b Ernest Masuku",
+     "runs": 20,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Noor ul Rahman",
+     "dismissal": "lbw b Ernest Masuku",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Blessing Muzarabani",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Newman Nyamhuri",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Ernest Masuku",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 3,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Mohammad Akram",
+     "score": 15,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sediqullah Atal",
+     "score": 44,
+     "over": "4.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Noor ul Rahman",
+     "score": 44,
+     "over": "4.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 54
+  }
+ ],
+ "winner": "Afghanistan",
+ "result": "Afghanistan won by 7 wickets"
+}
