@@ -139,11 +139,20 @@ def probable(squad: list[dict], previous: list[str] | None) -> list[dict]:
     return xi[:11]
 
 
+def _full(name: str, squad: list[str]) -> str:
+    """A name the page shortens ("Smit", "Balbirnie") as it is in the squad ("JJ Smit"), when only one fits."""
+    if not name or name in squad:
+        return name
+    fits = [s for s in squad if s.lower().endswith(" " + name.lower())]
+    return fits[0] if len(fits) == 1 else name
+
+
 def _team(fx_team: dict | None, page: dict, players: list[dict]) -> dict:
-    cap = next((p["name"] for p in players if p.get("captain")), None)
+    squad = (fx_team or {}).get("squad") or []
+    cap = next((_full(p["name"], squad) for p in players if p.get("captain")), None)
     t = {**(fx_team or {}), "name": (fx_team or {}).get("name") or page.get("teamName") or page.get("name"),
          "short": (fx_team or {}).get("short") or page.get("teamSName") or page.get("shortName"),
-         "players": [p["name"] for p in players], "roles": [role(p) for p in players]}
+         "players": [_full(p["name"], squad) for p in players], "roles": [role(p) for p in players]}
     if cap:
         t["captain"] = cap
     return t

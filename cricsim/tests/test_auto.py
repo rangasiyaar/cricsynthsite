@@ -240,3 +240,9 @@ def test_empty_squads_page_takes_last_xi_in_the_series(tmp_path):
     assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]]
     assert fx["teams"][0]["roles"][0] == "WK" and fx["teams"][1]["roles"][-1] == "BOWL"
     assert fx["teams"][0]["captain"] == "Tim Seifert" and not fx["live"]["xis"]
+
+
+def test_short_page_names_take_the_squad_name():
+    assert auto._full("Smit", ["JJ Smit", "Gerhard Erasmus"]) == "JJ Smit"
+    assert auto._full("Smit", ["JJ Smit", "Ruan Smit"]) == "Smit"                     # two fit: left as is
+    assert auto._full("Gerhard Erasmus", ["Gerhard Erasmus"]) == "Gerhard Erasmus"
