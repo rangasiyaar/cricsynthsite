@@ -12,34 +12,34 @@
   "city": "Durban",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Boland won the toss and bowl first.",
   "teams": [
     {
       "name": "Dolphins",
       "short": "DOL",
       "players": [
-        "Hanu Viljoen",
-        "Jason Smith",
-        "Marques Ackerman",
-        "Khaya Zondo",
-        "Semal Pillay",
-        "Bryce Parsons",
         "Romashan Pillay",
-        "Prenelan Subrayen",
-        "Keith Dudgeon",
+        "Bryce Parsons",
+        "Ntando Zuma",
+        "Jason Smith",
+        "Hanu Viljoen",
+        "Gomolemo Phiri",
         "Andile Simelane",
+        "Keshav Maharaj",
+        "Prenelan Subrayen",
+        "Ottneil Baartman",
         "Okuhle Cele"
       ],
       "roles": [
+        "AR",
+        "AR",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
+        "WK",
+        "WK",
         "BOWL",
+        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -64,36 +64,37 @@
         "Tristan Luus",
         "Bayanda Majola",
         "Ottneil Baartman"
-      ]
+      ],
+      "captain": "Keshav Maharaj"
     },
     {
       "name": "Boland",
       "short": "BOL",
       "players": [
+        "Blayde Capell",
         "Gavin Kaplan",
-        "Ethan John Cunningham",
-        "Ruan Gerhard Terblanche",
-        "Gysbert Wege",
-        "Ferisco Adams",
-        "Jevano Baron",
         "Neil Brand",
-        "Nathan Jacobs",
         "Lehan Botha",
+        "Jhedli van Briesies",
+        "Ferisco Adams",
+        "Glenton Stuurman",
         "Imran Manack",
-        "Jhedli van Briesies"
+        "Lizaad Williams",
+        "Akhona Mnyaka",
+        "Siyabonga Mahima"
       ],
       "roles": [
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
+        "WK",
         "AR",
-        "AR",
+        "BOWL",
+        "WK",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "WK"
+        "BOWL",
+        "BOWL"
       ],
       "squad": [
         "Gavin Kaplan",
@@ -114,12 +115,14 @@
         "Jason Muirhead",
         "Gysbert Wege",
         "Akhona Mnyaka"
-      ]
+      ],
+      "captain": "Glenton Stuurman"
     }
   ],
   "live": {
     "id": 173557,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
