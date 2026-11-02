@@ -12,7 +12,7 @@
   "city": "Melbourne",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Melbourne Stars Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Melbourne Stars Women",
@@ -25,7 +25,7 @@
         "Naomi Stalenberg",
         "Danielle Gibson",
         "Charlie Dean",
-        "Carly Leeson",
+        "Prestwidge",
         "Kim Garth",
         "Maisy Gibson",
         "Sophie Day"
@@ -38,7 +38,7 @@
         "BAT",
         "AR",
         "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -113,6 +113,7 @@
   "live": {
     "id": 162753,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
