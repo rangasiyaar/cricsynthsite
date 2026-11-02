@@ -19,4 +19,4 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read
         env: { URL: "${{ inputs.url }}", PAGES: "${{ inputs.pages }}" }
-        run: python3 scripts/page_probe.py "$URL" --pages "$PAGES"
+        run: python3 -u scripts/page_probe.py "$URL" --pages "$PAGES"

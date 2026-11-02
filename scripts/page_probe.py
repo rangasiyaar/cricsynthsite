@@ -5,6 +5,7 @@ python scripts/page_probe.py https://example.com --pages 30
 """
 import argparse
 import re
+import socket
 import time
 import urllib.parse
 import urllib.request
@@ -43,6 +44,7 @@ class Page(HTMLParser):
 
 
 def main():
+    socket.setdefaulttimeout(20)                 # robots.txt and pages: never hang
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--pages", type=int, default=30)
