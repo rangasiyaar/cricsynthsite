@@ -7,13 +7,15 @@ import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
 import { Tiles } from "@/components/Tiles";
+import VenueIntel from "@/components/VenueIntel";
 import { KIND, num, pct, range } from "@/lib/format";
 import { rate, type Rated } from "@/lib/ratings";
 import type { FantasyTeam, MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
-const SHORT: Record<string, string> = { "Top players": "Top" };
-type Tab = (typeof TABS)[number] | "Fantasy";
+const SHORT: Record<string, string> = { "Top players": "Top", "Venue intelligence": "Venue" };
+const FULL: Record<string, string> = { "Venue intelligence": "Venue" };   // the tab bar is full on wide screens
+type Tab = (typeof TABS)[number] | "Venue intelligence" | "Fantasy";
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 const icon = (d: string) => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
@@ -27,12 +29,14 @@ export const TAB_ICONS: Record<string, React.ReactNode> = {
   "Top players": icon("M4 20h4V10H4zM10 20h4V4h-4zM16 20h4v-7h-4z"),
   MVP: icon("M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"),
   Fantasy: icon("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"),
+  "Venue intelligence": icon("M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"),
   Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
 };
 
 /** The sections of the match centre for one summary (Fantasy only when the match has picks). */
 export type Section = Tab;
-export const sectionsFor = (doc: MatchDoc): Section[] => (doc.fantasy ? [...TABS, "Fantasy"] : [...TABS]);
+export const sectionsFor = (doc: MatchDoc): Section[] =>
+  [...TABS, ...(doc.match.venue_id ? ["Venue intelligence" as const] : []), ...(doc.fantasy ? ["Fantasy" as const] : [])];
 
 /** One section's content: the website shows it under a tab, the app on a screen of its own. */
 export function SectionView({ doc, section, live = true }: { doc: MatchDoc; section: Section; live?: boolean }) {
@@ -44,6 +48,7 @@ export function SectionView({ doc, section, live = true }: { doc: MatchDoc; sect
     case "Top players": return <TopPlayers doc={doc} />;
     case "MVP": return <Mvp doc={doc} />;
     case "Matchups": return <Matchups doc={doc} />;
+    case "Venue intelligence": return <VenueIntel doc={doc} />;
     case "Fantasy": return doc.fantasy ? <Fantasy doc={doc} /> : null;
   }
 }
@@ -59,7 +64,7 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
       <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
         {tabs.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
-            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
+            <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{FULL[t] ?? t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
           </button>
         ))}
         {extra}

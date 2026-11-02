@@ -77,7 +77,7 @@ export type FantasyPicks = {
 
 export type MatchDoc = {
   match: { id: string; title?: string; date?: string; start_time?: string; format: string; competition?: string;
-           venue?: string; xis?: boolean; teams: { name: string; short: string; players: string[] }[] };
+           venue?: string; venue_id?: string; gender?: string; xis?: boolean; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
   fantasy?: FantasyPicks;
 };
@@ -101,3 +101,29 @@ export type ResultDoc = ResultSummary & { forecast: { win: Record<string, number
 export type ResultIndex = { matches: ResultSummary[]; hits: number; checks: number; accuracy: number | null;
                             tabs: Record<string, TabScore>; favourite_won: number; brier: number | null; generated_at?: string;
                             fantasy?: { matches: number; single: number; best_of_teams: number } };
+
+// Venue intelligence (cricsim/venue_intel.py): venue/<match id>.json.
+export type VenueStat = { economy?: number | null; balls_per_wicket?: number | null; share_of_balls?: number | null;
+                          share_of_wickets?: number | null; runs_per_over?: number; boundary_pct?: number | null; balls: number };
+export type VenueIntel = {
+  venue: { id: string; name?: string }; format: string; gender: string; since: string;
+  model: { character: string; scoring_index: number; wicket_index: number } | null;
+  history: {
+    matches: number; from: string; to: string; decided: number; bat_first_won: number | null;
+    first_innings: { n: number; mean: number | null; median: number | null; q25: number | null; q75: number | null;
+                     high: { team: string; runs: number; date: string } | null; low: { team: string; runs: number; date: string } | null };
+    second_innings: { n: number; mean: number | null };
+    toss: { n: number; chose_bat: number | null; toss_winner_won: number | null };
+    recent: { date: string; first: { team: string; runs: number; wickets: number };
+              second: { team: string; runs: number; wickets: number } | null; winner: string | null; margin: string | null;
+              rain: boolean; result: string | null }[];
+  } | null;
+  phases: { here: Record<string, VenueStat & { runs_per_over: number }>; all: Record<string, VenueStat & { runs_per_over: number }> };
+  bowling: { here: Partial<Record<"pace" | "spin", VenueStat>>; all: Partial<Record<"pace" | "spin", VenueStat>> };
+  players: {
+    batting: { id: string; name: string; team: string; innings: number; runs: number; balls: number; outs: number;
+               strike_rate: number | null; average: number | null }[];
+    bowling: { id: string; name: string; team: string; matches: number; balls: number; runs: number; wickets: number;
+               economy: number | null }[];
+  };
+};

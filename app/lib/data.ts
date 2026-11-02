@@ -4,7 +4,7 @@
 // In the Android app (and its screens under /m/) every file that loads is also kept on the phone (Cache Storage):
 // screens open straight away from the last copy (`peek…`) while the network copy loads, and still open offline.
 import type { Pack } from "./engine/sim.ts";
-import type { MatchDoc, MatchIndex, ResultDoc, ResultIndex } from "./types.ts";
+import type { MatchDoc, MatchIndex, ResultDoc, ResultIndex, VenueIntel } from "./types.ts";
 
 const BASE = process.env.NEXT_PUBLIC_DATA_URL || "/data";
 const CACHE = "cs-data-v1";
@@ -46,6 +46,7 @@ const matchPath = (id: string) => `matches/${encodeURIComponent(id)}.json`;
 export const loadIndex = () => get<MatchIndex>("index.json");
 export const loadMatch = (id: string) => get<MatchDoc>(matchPath(id));
 export const loadPack = (id: string) => get<Pack>(`matches/${encodeURIComponent(id)}.pack.json`, true);
+export const loadVenue = (id: string) => get<VenueIntel>(`venue/${encodeURIComponent(id)}.json`, true);
 export const loadResults = () => get<ResultIndex>("results/index.json");
 export const loadResult = (id: string) => get<ResultDoc>(`results/${encodeURIComponent(id)}.json`);
 

@@ -21,7 +21,7 @@ on:
         default: false
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/venue_intel.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: read
@@ -111,6 +111,12 @@ jobs:
         run: uv run python -m cricsim.results --fixtures cricsim/fixtures --scorecards cricsim/results --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Analytics kit (static files the MCP server computes analytics from)
         run: uv run python -m cricsim.kit --model data/models/latest --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Venue intelligence (the match centre's Venue tab; a failure leaves the tab empty, never blocks publishing)
+        continue-on-error: true
+        run: |
+          [ -d data/parquet/deliveries ] || { echo "::warning::No parquet: Venue tab left empty"; exit 0; }
+          uv run python -m cricsim.venue_intel --parquet data/parquet --model data/models/latest --publish data/publish --memory 3GB \
+            | tee -a "$GITHUB_STEP_SUMMARY"
 
       - uses: google-github-actions/auth@v2
         if: env.GCP == 'true'

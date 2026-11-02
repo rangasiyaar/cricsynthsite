@@ -561,3 +561,13 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .seo-links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 14px; }
 .seo-body.hub { max-width: 1100px; padding-top: clamp(40px, 6vw, 72px); }
 .seo-body h2 { font-size: clamp(20px, 2.6vw, 28px); }
+
+/* Venue intelligence tab */
+.vi { gap: 24px; }
+.vi-name { font-family: var(--cs-head); font-weight: 600; font-size: 20px; margin: 0 0 6px; color: var(--cs-ink); }
+.vi-char { font-size: 15px; margin: 0 0 8px; color: var(--cs-ink-2); }
+.vi-d { font-size: 12px; color: var(--cs-ink-3); margin-left: 4px; font-variant-numeric: tabular-nums; }
+.vi-d.bat { color: #2e7d50; }
+.vi-d.bowl { color: var(--cs-danger); }
+.vi-key { margin-bottom: 0; }
+@media (min-width: 861px) and (max-width: 1280px) { .page-head .tabs.mc-tabs button, .page-head .tabs.mc-tabs .tab-link { padding-left: 10px; padding-right: 10px; } }

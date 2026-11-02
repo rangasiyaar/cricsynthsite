@@ -322,7 +322,7 @@ export function MatchHero({ doc, note }: { doc: MatchDoc; note?: React.ReactNode
 
 // ── menus ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 export const SLUG: Record<Section, string> = {
-  Overview: "overview", Scores: "scores", Wickets: "wickets", Players: "players", "Top players": "top", MVP: "mvp", Matchups: "matchups", Fantasy: "fantasy",
+  Overview: "overview", Scores: "scores", Wickets: "wickets", Players: "players", "Top players": "top", MVP: "mvp", Matchups: "matchups", "Venue intelligence": "venue", Fantasy: "fantasy",
 };
 export const fromSlug = (slug: string | null, list: Section[]) => list.find((x) => SLUG[x] === slug) ?? null;
 
