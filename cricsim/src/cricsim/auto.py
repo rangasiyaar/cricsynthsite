@@ -295,11 +295,17 @@ def card_xi(card_text: str, team: dict) -> list[dict]:
 
 
 def last_xi(listing: list[dict], mi: dict, team: dict, page) -> list[dict]:
-    """A side's XI in its latest finished match of the same series (for leagues whose squads page stays empty)."""
+    """A side's XI in its latest finished match of the same series (for leagues whose squads page stays empty). The
+    day's schedule only holds recent matches, so the series' own match list is read when it has none for the side."""
     tid, start = team.get("teamId"), int(mi.get("startDate") or 0)
-    done = [m for m in listing if m.get("seriesId") == mi.get("seriesId") and int(m.get("startDate") or 0) < start
-            and (m.get("state") or "").lower() == "complete"
-            and tid in ((m.get("team1") or {}).get("teamId"), (m.get("team2") or {}).get("teamId"))]
+
+    def finished(ms):
+        return [m for m in ms if m.get("seriesId") == mi.get("seriesId") and int(m.get("startDate") or 0) < start
+                and (m.get("state") or "").lower() == "complete"
+                and tid in ((m.get("team1") or {}).get("teamId"), (m.get("team2") or {}).get("teamId"))]
+    done = finished(listing)
+    if not done and mi.get("seriesId"):
+        done = finished(live.match_list(live._safe(page, f"{live.BASE}/cricket-series/{mi['seriesId']}/series/matches") or ""))
     for m in sorted(done, key=lambda m: -int(m.get("startDate") or 0))[:2]:
         xi = card_xi(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{m['matchId']}")), team)
         if xi:
@@ -308,6 +314,27 @@ def last_xi(listing: list[dict], mi: dict, team: dict, page) -> list[dict]:
 
 
 # ── one run ───────────────────────────────────────────────────────────────────────────────────────────────────────
+
+LABEL = {"WK": "wk-batter", "BAT": "batter", "AR": "allrounder", "BOWL": "bowler"}
+
+
+def _previous_sides(fixtures: dict[str, dict], before: str) -> dict[str, dict]:
+    """Each side as it was in our most recent fixture for it (dated before the given day): players and roles."""
+    last: dict[str, tuple[str, dict]] = {}
+    for fx in fixtures.values():
+        d = fx.get("date") or ""
+        for t in fx.get("teams", []):
+            if d < before and (t["name"] not in last or d > last[t["name"]][0]):
+                last[t["name"]] = (d, t)
+    return {k: v for k, (_, v) in last.items()}
+
+
+def _as_squad(side: dict) -> list[dict]:
+    """A fixture side as squad entries (with roles, so the probable XI keeps its keeper and balance)."""
+    roles = side.get("roles") or []
+    return [{"name": n, "role": LABEL.get(roles[i] if i < len(roles) else "", "allrounder"),
+             "keeper": (roles[i] if i < len(roles) else "") == "WK"} for i, n in enumerate(side["players"])]
+
 
 def _previous_xis(fixtures: dict[str, dict], before: str) -> dict[str, list[str]]:
     """Each side's most recent XI in our fixtures (dated before the given day)."""
@@ -354,12 +381,15 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
             continue
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mi['matchId']}")))
         previous = _previous_xis(fixtures, start.date().isoformat())
+        last_sides = _previous_sides(fixtures, start.date().isoformat())
         for t in (mi.get("team1") or {}, mi.get("team2") or {}):
             if len(sq.get(int(t.get("teamId", -1)), {}).get("squad", [])) < 11:      # no squad on the page yet
                 xi = last_xi(listing, mi, t, page)
                 if xi:
                     sq[int(t["teamId"])] = {"xi": [], "squad": xi}
                     previous[t.get("teamName", "")] = [p["name"] for p in xi]
+                elif t.get("teamName") in last_sides and len(last_sides[t["teamName"]]["players"]) >= 11:
+                    sq[int(t["teamId"])] = {"xi": [], "squad": _as_squad(last_sides[t["teamName"]])}  # our own last XI
         fx = new_fixture(mi, fmt, sq, previous)
         if fx:
             save(f"{fx['id']}.json", fx, "new fixture")

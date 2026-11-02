@@ -242,6 +242,48 @@ def test_empty_squads_page_takes_last_xi_in_the_series(tmp_path):
     assert fx["teams"][0]["captain"] == "Tim Seifert" and not fx["live"]["xis"]
 
 
+def test_series_page_gives_the_last_xi_when_the_schedule_has_dropped_it(tmp_path):
+    """The day's schedule only holds recent matches: the side's last finished match comes from the series' list."""
+    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
+    fixtures.mkdir()
+    results.mkdir()
+    mi = {**MI, "seriesId": 9, "seriesName": "Nepal Premier League 2026", "matchType": None}
+    prev = [{**mi, "matchId": 100 + t["teamId"], "state": "Complete", "startDate": START - 5 * 86_400_000,
+             "team1": t, "team2": {"teamId": 77, "teamName": "Other"}} for t in (MI["team1"], MI["team2"])]
+
+    def card(team, rows):
+        bat = {str(i): {"batName": n, "isKeeper": k, "isCaptain": i == 0, "outDesc": ""} for i, (n, _, k) in enumerate(rows)}
+        return _page('"scoreCard":' + json.dumps([
+            {"inningsId": 1, "batTeamDetails": {"batTeamId": team["teamId"], "batTeamName": team["teamName"], "batsmenData": bat}}]))
+
+    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(mi)), live.LIST: "",           # past matches not on it
+             f"{live.BASE}/cricket-match-squads/161223": _page("{}"),
+             f"{live.BASE}/cricket-series/9/series/matches": _page(*('"matchInfo":' + json.dumps(m) for m in prev)),
+             f"{live.BASE}/live-cricket-scorecard/113": card(MI["team1"], NZ[:11]),
+             f"{live.BASE}/live-cricket-scorecard/102": card(MI["team2"], IND[:11])}
+    [name] = auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc), page=pages.get)
+    fx = json.loads((fixtures / name).read_text())
+    assert fx["teams"][0]["players"] == [n for n, _, _ in NZ[:11]] and fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]]
+
+
+def test_our_own_last_fixture_gives_the_xi_when_nothing_else_does(tmp_path):
+    """No squads, nothing on the schedule or the series page: each side's XI (and roles) from our last fixture for it."""
+    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
+    fixtures.mkdir()
+    results.mkdir()
+    sides = [{"name": MI["team1"]["teamName"], "players": [n for n, _, _ in NZ[:11]], "roles": ["WK"] + ["BAT"] * 4 + ["AR"] * 3 + ["BOWL"] * 3},
+             {"name": MI["team2"]["teamName"], "players": [n for n, _, _ in IND[:11]], "roles": ["BAT"] * 4 + ["WK"] + ["AR"] * 3 + ["BOWL"] * 3}]
+    (fixtures / "old.json").write_text(json.dumps({"id": "old", "date": "2026-10-20", "format": "T20", "teams": sides}))
+    mi = {**MI, "seriesId": 9, "seriesName": "The Ford Trophy 2026-27", "matchType": None}
+    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(mi)), live.LIST: "",
+             f"{live.BASE}/cricket-match-squads/161223": _page("{}")}
+    [name] = auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc),
+                      page=lambda u: pages.get(u, ""))
+    fx = json.loads((fixtures / name).read_text())
+    assert set(fx["teams"][0]["players"]) == set(sides[0]["players"]) and set(fx["teams"][1]["players"]) == set(sides[1]["players"])
+    assert fx["teams"][0]["roles"].count("WK") == 1 and not fx["live"]["xis"]
+
+
 def test_short_page_names_take_the_squad_name():
     assert auto._full("Smit", ["JJ Smit", "Gerhard Erasmus"]) == "JJ Smit"
     assert auto._full("Smit", ["JJ Smit", "Ruan Smit"]) == "Smit"                     # two fit: left as is
