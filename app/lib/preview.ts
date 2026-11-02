@@ -241,7 +241,7 @@ export function previewLd(a: Article, home: [string, string] = ["Match previews"
   const url = `${SITE}${a.path}`;
   return [
     { "@context": "https://schema.org", "@type": "Article", headline: a.title.slice(0, 110), description: a.description,
-      datePublished: a.date, dateModified: a.updated, mainEntityOfPage: url,
+      datePublished: a.date, dateModified: a.updated, mainEntityOfPage: url, image: `${SITE}/og-logo.png?v=1`,
       author: { "@type": "Organization", name: PREVIEW_AUTHOR.name, url: SITE },
       publisher: { "@type": "Organization", name: "CricSynthesis", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/email-logo.png` } } },
     { "@context": "https://schema.org", "@type": "SportsEvent", name: `${a.teams[0]} vs ${a.teams[1]}${a.no ? `, ${a.no}` : ""}`, sport: "Cricket",
