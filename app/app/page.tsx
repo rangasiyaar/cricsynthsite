@@ -8,6 +8,7 @@ import { Tiles } from "@/components/Tiles";
 import { loadIndex, loadMatch } from "@/lib/data";
 import { useCountdown } from "@/lib/motion";
 import { FixtureCard, kickoff, useNow } from "@/components/MatchCards";
+import { matchPath } from "@/lib/matchText";
 import type { MatchCard, MatchDoc } from "@/lib/types";
 
 function Countdown({ date, time }: { date?: string; time?: string }) {
@@ -20,7 +21,7 @@ function Featured({ doc, xis }: { doc: MatchDoc; xis: boolean }) {
   const [a] = s.teams.map((t) => t.name);
   const short = match.teams.map((t) => t.short) as [string, string];
   const ci = s.result.win_ci95?.[a];
-  const href = `/match/?id=${encodeURIComponent(match.id)}`;
+  const href = matchPath(match.id);
   return (
     <section className="featured">
       <Scoreboard doc={doc} mid={<><Countdown date={match.date} time={match.start_time} />

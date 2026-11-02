@@ -50,9 +50,10 @@ export function SectionView({ doc, section, live = true }: { doc: MatchDoc; sect
 
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
  *  live engine, which always runs the published match). */
-export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean }) {
-  const [tab, setTab] = useState<Tab>("Overview");
+export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean;
+                                                                       initial?: string | null }) {
   const tabs = sectionsFor(doc);
+  const [tab, setTab] = useState<Tab>(() => tabs.find((t) => t.toLowerCase() === (initial ?? "").toLowerCase()) ?? "Overview");
   return (
     <>
       <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
@@ -68,17 +69,18 @@ export function ForecastTabs({ doc, extra, live = true }: { doc: MatchDoc; extra
   );
 }
 
-export default function MatchCentre({ doc, initialTab }: { doc: MatchDoc; initialTab?: string | null }) {
+/** `heading`: the page's own h1 (the per-match pages bring theirs); `initialTab`: a tab name, e.g. "fantasy". */
+export default function MatchCentre({ doc, initialTab, heading = true }: { doc: MatchDoc; initialTab?: string | null; heading?: boolean }) {
   useEffect(() => { if (initialTab === "lab") window.location.replace(`/lab/?id=${encodeURIComponent(doc.match.id)}`); }, [initialTab, doc.match.id]);
   const { match, summary: s } = doc;
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
   return (
     <div className="page-head" style={{ paddingTop: 40, paddingBottom: 80 }}>
-      <h1 className="sr-only">{a} v {b}</h1>
+      {heading && <h1 className="sr-only">{a} v {b}</h1>}
       <Scoreboard doc={doc} foot={s.result.tie > 0.002 ? <span className="sb-note">Tie {pct(s.result.tie, 1)}</span> : undefined} />
 
-      <ForecastTabs doc={doc} extra={
+      <ForecastTabs doc={doc} initial={initialTab} extra={
         <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
           <span className="mc-ico" aria-hidden="true">{TAB_ICONS.Lab}</span>
           <span className="mc-label"><span className="mc-full">MatchSynth Lab</span><span className="mc-short">Lab</span></span>

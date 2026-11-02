@@ -62,7 +62,7 @@ def _doc(match: str | None) -> tuple[dict, dict]:
 
 
 def _link(mid: str) -> str:
-    return f"{SITE}/match/?id={mid}"
+    return f"{SITE}/match/{mid}/"
 
 
 def _player_index(doc: dict) -> dict[str, tuple[int, dict]]:

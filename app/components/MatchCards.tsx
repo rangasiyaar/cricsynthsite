@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Pct, WinBar } from "@/components/charts";
 import { FORMAT } from "@/lib/format";
+import { matchPath, resultPath } from "@/lib/matchText";
 import { useCountdown } from "@/lib/motion";
 import type { MatchCard, ResultSummary } from "@/lib/types";
 
@@ -39,7 +40,7 @@ export function FixtureCard({ m, status, i = 0 }: { m: MatchCard; status: Status
   const [a, b] = m.teams;
   const pa = m.win[a.name] ?? 0, pb = m.win[b.name] ?? 0;
   return (
-    <Link href={`/match/?id=${encodeURIComponent(m.id)}`} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
+    <Link href={matchPath(m.id)} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
       <div className="fixture-top"><span className="fixture-tags"><StatusTag s={status} />{m.xis && status !== "result" && <span className="tag status-xis">Lineup updated</span>}</span>{status === "upcoming" ? <When date={m.date} time={m.start_time} /> : <span>{m.start_time ? `${m.start_time} IST` : m.date}</span>}</div>
       <p className="fixture-comp">{m.competition ?? FORMAT[m.format]}</p>
       <div className="fixture-teams">
@@ -57,7 +58,7 @@ const fmtDate = (d?: string) => (d ? new Date(`${d}T00:00:00`).toLocaleDateStrin
 export function ResultCard({ r, i = 0 }: { r: ResultSummary; i?: number }) {
   const score = (team: string) => r.scores.find((s) => s.team === team);
   return (
-    <Link href={`/results/?id=${encodeURIComponent(r.id)}`} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
+    <Link href={resultPath(r.id)} className="card fixture anim-rise" style={{ animationDelay: `${i * 70}ms` }}>
       <div className="fixture-top"><StatusTag s="result" /><span>{fmtDate(r.date)}</span></div>
       <p className="fixture-comp">{r.competition}</p>
       <div className="result-teams">

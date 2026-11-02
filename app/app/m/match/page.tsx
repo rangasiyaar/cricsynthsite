@@ -10,6 +10,7 @@ import { FORMAT } from "@/lib/format";
 import { share } from "@/lib/native";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
 import { SITE } from "@/lib/seo";
+import { matchPath, resultPath } from "@/lib/matchText";
 import type { MatchDoc } from "@/lib/types";
 
 function Menu({ doc }: { doc: MatchDoc }) {
@@ -65,7 +66,7 @@ function Match() {
   const section = doc ? fromSlug(params.get("s"), sectionsFor(doc)) : null;
   const short = doc ? doc.match.teams.map((t) => t.short).join(" v ") : "Match";
   const onShare = async () => {
-    const r = await share(doc?.match.title ?? short, `${SITE}/match/?id=${encodeURIComponent(id)}`);
+    const r = await share(doc?.match.title ?? short, `${SITE}${matchPath(id)}`);
     if (r === "copied") { setNote("Link copied"); setTimeout(() => setNote(null), 2000); }
   };
   const menu = `/m/match/?id=${encodeURIComponent(id)}`;
@@ -77,7 +78,7 @@ function Match() {
       <OfflineBar show={fresh.offline} onRetry={fresh.refresh} />
       {error && (
         <Empty title="Not available" action={<button type="button" className="a-pill" onClick={() => router.replace("/m/matches/")}>Back to matches</button>}>
-          {error} <a href={`${SITE}/results/?id=${encodeURIComponent(id)}`}>See the result on the website</a>.
+          {error} <a href={`${SITE}${resultPath(id)}`}>See the result on the website</a>.
         </Empty>
       )}
       {!doc && !error && <Loading rows={3} />}

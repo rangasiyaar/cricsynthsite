@@ -1,27 +1,23 @@
 "use client";
+// Old links (/match/?id=…&tab=…) forward to the match's own page; with no match chosen, to the match list.
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import MatchCentre from "@/components/MatchCentre";
-import { loadMatch } from "@/lib/data";
-import type { MatchDoc } from "@/lib/types";
+import { Suspense, useEffect } from "react";
+import { matchPath } from "@/lib/matchText";
 
-function Loader() {
+const Skeleton = () => <div className="skeleton card" style={{ marginTop: 32, minHeight: 320 }} />;
+
+function Forward() {
   const params = useSearchParams();
   const router = useRouter();
-  const id = params.get("id") || "";
-  const [doc, setDoc] = useState<MatchDoc | null>(null);
-  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    if (!id) { router.replace("/matches/"); return; }      // no match chosen: the match list
-    loadMatch(id).then((d) => { setDoc(d); document.title = `${d.match.title ?? d.match.id} · CricSynthesis`; })
-      .catch(() => setError("This match isn't published (yet)."));
-  }, [id, router]);
-  if (!id) return <div className="skeleton card" style={{ marginTop: 32, minHeight: 320 }} />;
-  if (error) return <p className="notice" style={{ marginTop: 32 }}>{error}</p>;
-  if (!doc) return <div className="skeleton card" style={{ marginTop: 32, minHeight: 320 }} />;
-  return <MatchCentre doc={doc} initialTab={params.get("tab")} />;
+    const id = params.get("id"), tab = params.get("tab");
+    if (!id) { router.replace("/matches/"); return; }
+    if (tab === "lab") { router.replace(`/lab/?id=${encodeURIComponent(id)}`); return; }
+    router.replace(tab?.toLowerCase() === "fantasy" ? matchPath(id, "fantasy") : `${matchPath(id)}${tab ? `?tab=${encodeURIComponent(tab)}` : ""}`);
+  }, [params, router]);
+  return <Skeleton />;
 }
 
 export default function MatchPage() {
-  return <Suspense fallback={<div className="skeleton card" style={{ marginTop: 32, minHeight: 320 }} />}><Loader /></Suspense>;
+  return <Suspense fallback={<Skeleton />}><Forward /></Suspense>;
 }

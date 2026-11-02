@@ -543,3 +543,16 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .fixture-tags { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .tag.status-xis { color: #2f7a4f; border-color: currentColor; }
 .featured-xis { margin-top: 8px; font-size: 11px; padding: 1px 8px; }
+
+/* Per-match search pages (/match/{id}/, /fantasy/, /playing-xi/) */
+.seo-head { padding-bottom: 0; }
+.seo-h1 { font-size: clamp(26px, 4vw, 40px); margin: 8px 0 0; }
+.seo-key { margin: 14px 0 0; font-size: 17px; }
+.seo-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.seo-nav a { border: 1px solid var(--cs-line); padding: 6px 12px; font-size: 14px; text-decoration: none; color: inherit; }
+.seo-nav a[aria-current="page"] { background: var(--cs-steel); color: var(--cs-paper); border-color: var(--cs-steel); }
+.seo-body { max-width: 860px; padding-top: 0; padding-bottom: 80px; }
+.seo-body h2 { margin-top: 32px; }
+.seo-faq { border-top: 1px solid var(--cs-line); padding: 12px 0; }
+.seo-faq summary { cursor: pointer; font-weight: 600; }
+.seo-faq p { margin: 8px 0 0; }

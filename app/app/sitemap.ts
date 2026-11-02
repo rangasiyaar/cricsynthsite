@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo";
 import { POSTS, postPath } from "@/lib/blog";
 import { JOBS, jobPath } from "@/lib/jobs";
+import { matchIds, readMatch, readResult, resultIds } from "@/lib/build";
+import { matchPath, resultPath } from "@/lib/matchText";
 
 export const dynamic = "force-static";
 
@@ -13,11 +15,33 @@ const PAGES: [string, number, MetadataRoute.Sitemap[number]["changeFrequency"]][
   ["/privacy/", 0.2, "yearly"], ["/terms/", 0.2, "yearly"],
 ];
 
+/** Every published match (prediction, playing XI, fantasy once picked) and every result, dated by its last publish. */
+function matches(now: Date): MetadataRoute.Sitemap {
+  const results = new Set(resultIds());
+  return matchIds().flatMap((id) => {
+    const d = readMatch(id);
+    if (!d) return [];
+    const done = results.has(id);
+    const lastModified = d.generated_at ? new Date(d.generated_at) : now;
+    const freq = done ? "monthly" as const : "hourly" as const;
+    return [
+      { url: `${SITE}${matchPath(id)}`, lastModified, changeFrequency: freq, priority: done ? 0.5 : 0.9 },
+      { url: `${SITE}${matchPath(id, "xi")}`, lastModified, changeFrequency: freq, priority: done ? 0.4 : 0.8 },
+      ...(d.fantasy ? [{ url: `${SITE}${matchPath(id, "fantasy")}`, lastModified, changeFrequency: freq, priority: done ? 0.4 : 0.8 }] : []),
+    ];
+  }).concat([...results].map((id) => {
+    const r = readResult(id);
+    return { url: `${SITE}${resultPath(id)}`, lastModified: r?.date ? new Date(`${r.date}T00:00:00Z`) : now,
+             changeFrequency: "monthly" as const, priority: 0.5 };
+  }));
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [
     ...PAGES.map(([path, priority, changeFrequency]) => ({ url: `${SITE}${path}`, lastModified: now, changeFrequency, priority })),
     ...POSTS.map((p) => ({ url: `${SITE}${postPath(p.slug)}`, lastModified: new Date(p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
+    ...matches(now),
     ...JOBS.map((j) => ({ url: `${SITE}${jobPath(j.slug)}`, lastModified: new Date(j.posted), changeFrequency: "weekly" as const, priority: 0.4 })),
   ];
 }
