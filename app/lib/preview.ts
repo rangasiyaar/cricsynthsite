@@ -8,7 +8,7 @@ import type { MatchDoc, PlayerRow, ResultIndex, VenueIntel } from "./types.ts";
 
 export const PREVIEW_AUTHOR = { name: "CricSynthesis Staff", role: "Match analysis" };
 /** Off while the design is reviewed: pages exist but stay out of search, the sitemap and every menu. */
-export const PREVIEWS_LIVE = false;
+export const PREVIEWS_LIVE = true;
 
 export type Block =
   | { p: string }                                         // **bold** and [text](href) allowed

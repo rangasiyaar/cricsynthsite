@@ -16,7 +16,7 @@ function Inner({ id, tab }: { id: string; tab?: string }) {
   useEffect(() => { loadMatch(id).then(setDoc).catch(() => setError(true)); }, [id]);
   if (error) return <p className="notice" style={{ marginTop: 32 }}>This match isn&apos;t published (yet).</p>;
   if (!doc) return <Skeleton />;
-  return <MatchCentre doc={doc} heading={false} initialTab={params.get("tab") ?? tab} />;
+  return <MatchCentre doc={doc} initialTab={params.get("tab") ?? tab} />;
 }
 
 export default function LiveMatch({ id, tab }: { id: string; tab?: string }) {

@@ -4,12 +4,13 @@ import { POSTS, postPath } from "@/lib/blog";
 import { JOBS, jobPath } from "@/lib/jobs";
 import { matchIds, readMatch, readResult, resultIds } from "@/lib/build";
 import { matchPath, resultPath } from "@/lib/matchText";
+import { fantasyPath, previewPath } from "@/lib/preview";
 
 export const dynamic = "force-static";
 
 // Rebuilt with every deploy (nightly at least), so lastModified tells crawlers the pages are fresh.
 const PAGES: [string, number, MetadataRoute.Sitemap[number]["changeFrequency"]][] = [
-  ["/", 1, "daily"], ["/matches/", 0.9, "daily"], ["/results/", 0.8, "daily"], ["/lab/", 0.7, "weekly"], ["/app/", 0.7, "monthly"],
+  ["/", 1, "daily"], ["/matches/", 0.9, "daily"], ["/results/", 0.8, "daily"], ["/previews/", 0.9, "hourly"], ["/fantasy/", 0.9, "hourly"], ["/lab/", 0.7, "weekly"], ["/app/", 0.7, "monthly"],
   ["/pricing/", 0.6, "monthly"], ["/developers/", 0.7, "monthly"], ["/docs/", 0.6, "weekly"], ["/playground/", 0.5, "monthly"],
   ["/mcp/", 0.5, "monthly"], ["/blog/", 0.7, "weekly"], ["/contact/", 0.4, "yearly"], ["/careers/", 0.3, "monthly"], ["/credits/", 0.2, "yearly"],
   ["/privacy/", 0.2, "yearly"], ["/terms/", 0.2, "yearly"],
@@ -26,8 +27,8 @@ function matches(now: Date): MetadataRoute.Sitemap {
     const freq = done ? "monthly" as const : "hourly" as const;
     return [
       { url: `${SITE}${matchPath(id)}`, lastModified, changeFrequency: freq, priority: done ? 0.5 : 0.9 },
-      { url: `${SITE}${matchPath(id, "xi")}`, lastModified, changeFrequency: freq, priority: done ? 0.4 : 0.8 },
-      ...(d.fantasy ? [{ url: `${SITE}${matchPath(id, "fantasy")}`, lastModified, changeFrequency: freq, priority: done ? 0.4 : 0.8 }] : []),
+      ...(done ? [] : [{ url: `${SITE}${previewPath(id)}`, lastModified, changeFrequency: freq, priority: 0.9 },
+        ...(d.fantasy ? [{ url: `${SITE}${fantasyPath(id)}`, lastModified, changeFrequency: freq, priority: 0.9 }] : [])]),
     ];
   }).concat([...results].map((id) => {
     const r = readResult(id);

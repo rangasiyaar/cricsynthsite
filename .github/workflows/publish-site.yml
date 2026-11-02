@@ -201,10 +201,10 @@ jobs:
           KEY, SITE = "c398390757d92f9452033a4d9660e389", "https://cricsynthesis.in"
           q = lambda i: urllib.parse.quote(i, safe="")
           d = json.load(open("data/publish/index.json"))
-          urls = [f"{SITE}/matches/", f"{SITE}/results/"]
+          urls = [f"{SITE}/matches/", f"{SITE}/results/", f"{SITE}/previews/", f"{SITE}/fantasy/"]
           live = "PREVIEWS_LIVE = true" in open("app/lib/preview.ts").read()       # posts are pinged only once they are public
           for m in d["matches"]:
-              urls += [f"{SITE}/match/{q(m['id'])}/", f"{SITE}/match/{q(m['id'])}/playing-xi/", f"{SITE}/match/{q(m['id'])}/fantasy/"]
+              urls += [f"{SITE}/match/{q(m['id'])}/"]
               if live:
                   urls += [f"{SITE}/previews/{q(m['id'])}/", f"{SITE}/fantasy/{q(m['id'])}/"]
           body = json.dumps({"host": "cricsynthesis.in", "key": KEY, "keyLocation": f"{SITE}/{KEY}.txt", "urlList": urls[:10000]}).encode()

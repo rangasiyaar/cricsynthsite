@@ -143,6 +143,8 @@ export function Footer() {
               <h4 className="footer-heading">Match centre</h4>
               <Link href="/matches/" className="footer-link">Matches</Link>
               <Link href="/results/" className="footer-link">Results</Link>
+              <Link href="/previews/" className="footer-link">Match previews</Link>
+              <Link href="/fantasy/" className="footer-link">Fantasy predictions</Link>
               <Link href="/lab/" className="footer-link">MatchSynth Lab</Link>
               <Link href="/app/" className="footer-link">Android app</Link>
               <Link href="/pricing/" className="footer-link">Pricing</Link>
