@@ -520,7 +520,7 @@ def _tables(con, cfg: FitConfig, ids: dict[str, list[str]], parquet: Path) -> di
     """Usage, batting positions, dismissal kinds, extras runs, player meta."""
     cut = f"AND match_date < DATE '{cfg.cutoff}'" if cfg.cutoff else ""
     ref = f"DATE '{cfg.cutoff or con.execute('SELECT max(match_date) FROM balls').fetchone()[0]}'"
-    wexpr = f"pow(0.5, date_diff('day', match_date, {ref}) / (365.25 * {cfg.half_life_years}))"
+    wexpr = f"pow(0.5, date_diff('day', match_date, {ref}) / (365.25::DOUBLE * {float(cfg.half_life_years)!r}::DOUBLE))"
     pidx = {p: i for i, p in enumerate(ids["players"])}
     P = len(ids["players"])
     fam_sql = "CASE WHEN format = 'OD' THEN 1 ELSE 0 END"

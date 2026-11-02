@@ -76,7 +76,7 @@ def main(parquet, tune_start, tune_end, valid_end, family, trials, tune_matches,
                          "shrink_venue": SHRINK["venue"], "shrink_bat_exp": SHRINK["bat_exp"],
                          "shrink_bowl_exp": SHRINK["bowl_exp"], "venue_half_life": 3.0, "comp_groups": "off",
                          "new_ground": False, "era_gender": False, "half_life": 3.0})       # trial 0 = current settings
-    study.optimize(objective, n_trials=trials)
+    study.optimize(objective, n_trials=trials, catch=(Exception,))      # one bad setting must not end the search
     best = study.best_trial
     over, hl = _space(optuna.trial.FixedTrial(best.params))
     log.info("validating best (search brier %.4f) v current settings on %s to %s", best.value, t1, t2)
