@@ -1,0 +1,56 @@
+name: Tune engine
+
+# Optuna search over the engine's hand-set settings (half-lives, prior strengths, competition grouping) against a
+# backtest window, then the winner v the current settings on later matches the search never saw.
+on:
+  workflow_dispatch:
+    inputs:
+      family: { description: "T20 or OD", default: "T20" }
+      tune_start: { description: "Search window starts (model fitted before it)", default: "2026-05-01" }
+      tune_end: { description: "Search window ends = validation starts", default: "2026-07-01" }
+      valid_end: { description: "Validation ends", default: "2026-11-01" }
+      trials: { description: "Settings to try", default: "30" }
+
+permissions:
+  contents: read
+
+jobs:
+  tune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras && uv pip install "optuna>=4,<5"
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Tune
+        env:
+          FAMILY: ${{ inputs.family }}
+          T0: ${{ inputs.tune_start }}
+          T1: ${{ inputs.tune_end }}
+          T2: ${{ inputs.valid_end }}
+          TRIALS: ${{ inputs.trials }}
+        run: |
+          set -o pipefail
+          .venv/bin/python -m cricsim.engine.tune --parquet data/parquet --family "$FAMILY" --tune-start "$T0" \
+            --tune-end "$T1" --valid-end "$T2" --trials "$TRIALS" --out "data/tune/$FAMILY" \
+            2> >(grep -E "trial|validating|ERROR|Traceback|Error" >&2) | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tune-${{ inputs.family }}
+          path: data/tune
