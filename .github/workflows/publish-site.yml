@@ -186,6 +186,25 @@ jobs:
            "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"]}}}}
           EOF
           npx --yes firebase-tools@13.29.1 deploy --only hosting:app --project "$PROJECT" --non-interactive
+      - name: IndexNow (tell search engines which match pages changed; the key file is app/public/c398390757d92f9452033a4d9660e389.txt)
+        if: env.GCP == 'true'
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import json, urllib.parse, urllib.request
+          KEY, SITE = "c398390757d92f9452033a4d9660e389", "https://cricsynthesis.in"
+          q = lambda i: urllib.parse.quote(i, safe="")
+          d = json.load(open("data/publish/index.json"))
+          urls = [f"{SITE}/matches/", f"{SITE}/results/"]
+          for m in d["matches"]:
+              urls += [f"{SITE}/match/{q(m['id'])}/", f"{SITE}/match/{q(m['id'])}/playing-xi/", f"{SITE}/match/{q(m['id'])}/fantasy/"]
+          body = json.dumps({"host": "cricsynthesis.in", "key": KEY, "keyLocation": f"{SITE}/{KEY}.txt", "urlList": urls[:10000]}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", body, {"Content-Type": "application/json; charset=utf-8"})
+          try:
+              print("IndexNow", urllib.request.urlopen(req, timeout=20).status, len(urls), "urls")
+          except Exception as e:
+              print("::warning::IndexNow:", e)
+          PY
       - name: Send match alerts (Firebase Cloud Messaging topics for the Android app)
         if: env.GCP == 'true' && vars.ALERTS_ENABLED == 'true' && hashFiles('data/notify.json') != ''
         continue-on-error: true

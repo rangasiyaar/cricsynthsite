@@ -51,7 +51,8 @@ export function facts(doc: MatchDoc) {
                                  wk: t.batting.wickets.mean })),
     pp: pp.map((ph, k) => ph && { team: s.teams[k].name, overs: ph.overs, runs: ph.runs.mean, wk: ph.wickets.mean }),
     toss, batters, bowlers, picks, fantasy: f, name,
-    xi: m.teams.map((t, k) => ({ team: t.name, players: (s.teams[k]?.players ?? []).map((p) => p.name) })),
+    xi: m.teams.map((t, k) => ({ team: t.name, players: (s.teams[k]?.players ?? []).map((p) => p.name),
+                                       ids: (s.teams[k]?.players ?? []).map((p) => p.id) })),
     insights: doc.insights ?? [],
   };
 }

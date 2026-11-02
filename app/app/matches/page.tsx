@@ -1,6 +1,7 @@
 "use client";
 // Matches: every match we forecast, by status. Upcoming and live come from index.json (a match moves to Live at its
 // start time, without a reload); results from results/index.json.
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FixtureCard, ResultCard, StatusTag, kickoff, useNow, type Status } from "@/components/MatchCards";
 import { loadIndex, loadResults } from "@/lib/data";
@@ -43,6 +44,8 @@ export default function MatchesPage() {
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <p className="cs-eyebrow">Matches</p>
       <h1><span>Every match we forecast.</span><span>Upcoming, live and finished.</span></h1>
+      <p className="seo-links muted">Browse by <Link href="/series/">series</Link><Link href="/venues/">ground</Link>
+        <Link href="/teams/">head to head</Link><Link href="/players/">player</Link></p>
       <div className="tabs" role="tablist" aria-label="Filter matches">
         {FILTERS.map((f) => (
           <button key={f} role="tab" aria-selected={filter === f} onClick={() => setFilter(f)}>

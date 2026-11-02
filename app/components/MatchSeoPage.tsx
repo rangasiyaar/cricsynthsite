@@ -6,6 +6,7 @@ import LiveMatch from "@/components/LiveMatch";
 import { readMatch } from "@/lib/build";
 import { description, facts, faq, jsonLd, matchPath, title, type Kind } from "@/lib/matchText";
 import { seo } from "@/lib/seo";
+import { pairPath, playerPath, seriesName, seriesPath, venuePath } from "@/lib/hubs";
 
 const TAB: Record<Kind, string | undefined> = { prediction: undefined, fantasy: "fantasy", xi: "players" };
 const NAV: [Kind, string][] = [["prediction", "Prediction"], ["fantasy", "Fantasy"], ["xi", "Playing XI"]];
@@ -24,6 +25,7 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
   const x = facts(doc);
   const qa = faq(x, kind);
   const [a, b] = x.score;
+  const series = seriesName(doc.match.competition);
   const h1 = kind === "fantasy" ? `${x.A} vs ${x.B} Fantasy Prediction` : kind === "xi"
     ? `${x.A} vs ${x.B} ${x.xis ? "Playing XI" : "Probable Playing XI"}` : `${x.A} vs ${x.B} Prediction`;
   const sub = [x.series, x.no, x.when, x.time && `${x.time} IST`, x.venue].filter(Boolean).join(" · ");
@@ -44,6 +46,11 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
           ))}
           <Link href={`/lab/?id=${encodeURIComponent(id)}`}>MatchSynth Lab</Link>
         </nav>
+        <p className="seo-links muted">
+          {series && <Link href={seriesPath(series)}>All {series} predictions</Link>}
+          {x.venue && <Link href={venuePath(x.venue)}>{x.venue.split(",")[0]} pitch report</Link>}
+          <Link href={pairPath(x.A, x.B)}>{x.A} vs {x.B} head to head</Link>
+        </p>
       </div>
 
       <LiveMatch id={id} tab={TAB[kind]} />
@@ -62,7 +69,10 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
         {(kind === "xi" || kind === "fantasy") && <>
           <h2>{x.xis ? "Playing XIs" : "Probable XIs"}</h2>
           <div className="grid g2">
-            {x.xi.map((t) => <div key={t.team}><h3>{t.team}</h3><ol>{t.players.map((p) => <li key={p}>{p}</li>)}</ol></div>)}
+            {x.xi.map((t) => <div key={t.team}><h3>{t.team}</h3><ol>{t.players.map((p, i) => {
+              const href = playerPath(p, t.ids[i]);
+              return <li key={p}>{href ? <Link href={href}>{p}</Link> : p}</li>;
+            })}</ol></div>)}
           </div>
           {!x.xis && <p className="small muted">Probable XIs from recent line-ups; the forecast reruns once the toss is done and the teams are named.</p>}
         </>}

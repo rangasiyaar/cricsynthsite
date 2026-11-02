@@ -4,6 +4,7 @@ import { POSTS, postPath } from "@/lib/blog";
 import { JOBS, jobPath } from "@/lib/jobs";
 import { matchIds, readMatch, readResult, resultIds } from "@/lib/build";
 import { matchPath, resultPath } from "@/lib/matchText";
+import { pairs, players, series, venues, type Row } from "@/lib/hubs";
 
 export const dynamic = "force-static";
 
@@ -36,12 +37,26 @@ function matches(now: Date): MetadataRoute.Sitemap {
   }));
 }
 
+/** Venues, series, head-to-heads and players, dated by their latest match. */
+function hubs(now: Date): MetadataRoute.Sitemap {
+  const at = (l: Row[]) => (l[0]?.doc.generated_at ? new Date(l[0].doc.generated_at) : now);
+  const of = (base: string, m: Map<string, Row[]>, priority: number) =>
+    [...m.entries()].map(([s, l]) => ({ url: `${SITE}/${base}/${s}/`, lastModified: at(l), changeFrequency: "daily" as const, priority }));
+  return [
+    ...["venues", "series", "teams", "players"].map((b) => ({ url: `${SITE}/${b}/`, lastModified: now, changeFrequency: "daily" as const, priority: 0.6 })),
+    ...of("series", series(), 0.7), ...of("venues", venues(), 0.6), ...of("teams", pairs(), 0.6),
+    ...[...players().entries()].map(([s, p]) => ({ url: `${SITE}/players/${s}/`, lastModified: at(p.matches.map((m) => m.row)),
+      changeFrequency: "weekly" as const, priority: 0.4 })),
+  ];
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [
     ...PAGES.map(([path, priority, changeFrequency]) => ({ url: `${SITE}${path}`, lastModified: now, changeFrequency, priority })),
     ...POSTS.map((p) => ({ url: `${SITE}${postPath(p.slug)}`, lastModified: new Date(p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
     ...matches(now),
+    ...hubs(now),
     ...JOBS.map((j) => ({ url: `${SITE}${jobPath(j.slug)}`, lastModified: new Date(j.posted), changeFrequency: "weekly" as const, priority: 0.4 })),
   ];
 }

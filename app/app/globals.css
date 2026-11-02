@@ -556,3 +556,8 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .seo-faq { border-top: 1px solid var(--cs-line); padding: 12px 0; }
 .seo-faq summary { cursor: pointer; font-weight: 600; }
 .seo-faq p { margin: 8px 0 0; }
+.hub-list { columns: 2 280px; padding-left: 18px; }
+.hub-list li { margin: 4px 0; break-inside: avoid; }
+.seo-links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 14px; }
+.seo-body.hub { max-width: 1100px; padding-top: clamp(40px, 6vw, 72px); }
+.seo-body h2 { font-size: clamp(20px, 2.6vw, 28px); }
