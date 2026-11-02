@@ -1,0 +1,333 @@
+{
+ "id": "chr-v-spr-t20-kirtipur-2026-11-02",
+ "innings": [
+  {
+   "team": "Chitwan Rhinos",
+   "runs": 129,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Dev Khanal",
+     "dismissal": "lbw b Hemant Dhami",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Dawid Malan",
+     "dismissal": "c Bhandari b Dipendra Singh Airee",
+     "runs": 16,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Arjun Saud",
+     "dismissal": "b Kuggeleijn",
+     "runs": 15,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Ravi Bopara",
+     "dismissal": "c Dipendra Singh Airee b Kuggeleijn",
+     "runs": 49,
+     "balls": 40,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Sikandar Raza",
+     "dismissal": "c Brandon McMullen b Anil Kharel",
+     "runs": 15,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bibek Yadav",
+     "dismissal": "run out (Dipendra Singh Airee/Bhandari)",
+     "runs": 17,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Tom Taylor",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Scott Kuggeleijn",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Hemant Dhami",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Brandon McMullen",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anil Kharel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abinash Bohara",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Dev Khanal",
+     "score": 10,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Arjun Saud",
+     "score": 27,
+     "over": "4.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Dawid Malan",
+     "score": 62,
+     "over": "9.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sikandar Raza",
+     "score": 94,
+     "over": "15.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ravi Bopara",
+     "score": 113,
+     "over": "18.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Bibek Yadav",
+     "score": 129,
+     "over": "20"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 39
+  },
+  {
+   "team": "Sudur Paschim Royals",
+   "runs": 131,
+   "wickets": 5,
+   "overs": "16.4",
+   "batting": [
+    {
+     "name": "Saif Zaib",
+     "dismissal": "b Rijan Dhakal",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Binod Bhandari",
+     "dismissal": "c Bopara b Ranjit Kumar",
+     "runs": 11,
+     "balls": 7,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Brandon McMullen",
+     "dismissal": "c Dev Khanal b Ranjit Kumar",
+     "runs": 43,
+     "balls": 21,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Ishan Pandey",
+     "dismissal": "lbw b Mousom Dhakal",
+     "runs": 25,
+     "balls": 29,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "dismissal": "b Ranjit Kumar",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aarif Sheikh",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 26,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Tom Taylor",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rijan Dhakal",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ranjit Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Sikandar Raza",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 3,
+     "wides": 3
+    },
+    {
+     "name": "Dev Khanal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mousom Dhakal",
+     "overs": "2.4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Saif Zaib",
+     "score": 3,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Binod Bhandari",
+     "score": 34,
+     "over": "3.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Brandon McMullen",
+     "score": 70,
+     "over": "6.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Dipendra Singh Airee",
+     "score": 70,
+     "over": "6.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ishan Pandey",
+     "score": 103,
+     "over": "12.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 5,
+    "nb": 4,
+    "p": 0
+   },
+   "powerplay_runs": 66
+  }
+ ],
+ "winner": "Sudur Paschim Royals",
+ "result": "Sudur Paschim Royals won by 5 wickets"
+}
