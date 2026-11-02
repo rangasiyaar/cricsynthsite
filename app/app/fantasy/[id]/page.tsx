@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PreviewArticle from "@/components/PreviewArticle";
-import { fantasyParams, readMatch, readResults, readVenue } from "@/lib/build";
+import { isUpcoming, resultIds, fantasyParams, readMatch, readResults, readVenue } from "@/lib/build";
 import { PREVIEWS_LIVE, buildFantasy, fantasyPath, previewLd } from "@/lib/preview";
 import { seo } from "@/lib/seo";
 
@@ -13,13 +13,16 @@ const HOME: [string, string] = ["Fantasy predictions", "/fantasy/"];
 function article(id: string) {
   const d = readMatch(id);
   if (!d) return null;
-  try { return buildFantasy(d, readVenue(id), readResults()); } catch { return null; }   // an odd document never breaks the build
+  try {
+    const a = buildFantasy(d, readVenue(id), readResults());
+    return a && { ...a, played: !isUpcoming(d), result: resultIds().includes(id) };
+  } catch { return null; }   // an odd document never breaks the build
 }
 
 export async function generateMetadata({ params }: P): Promise<Metadata> {
   const id = (await params).id, a = article(id);
   if (!a) return seo(fantasyPath(id), "Fantasy prediction | CricSynthesis", "Fantasy prediction.", { noindex: true });
-  const base = seo(a.path, `${a.title} | CricSynthesis`, a.description, { noindex: !PREVIEWS_LIVE });
+  const base = seo(a.path, `${a.title} | CricSynthesis`, a.description, { noindex: !PREVIEWS_LIVE || a.played });
   return { ...base, openGraph: { ...base.openGraph, type: "article", publishedTime: a.date, modifiedTime: a.updated } };
 }
 

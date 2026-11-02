@@ -45,11 +45,20 @@ export function readResult(id: string): ResultDoc | null {
 export const readVenue = (id: string) => (id === PLACEHOLDER ? null : read<VenueIntel>(`venue/${decodeURIComponent(id)}.json`));
 export const readResults = () => read<ResultIndex>("results/index.json");
 
-/** Matches still to be played (no result yet): the ones that get a written preview. */
-export function upcomingIds(): string[] {
-  const done = new Set(resultIds());
-  return matchIds().filter((id) => !done.has(id) && readMatch(id));
+/** Not yet played: no result, and no more than 8 hours past its start (IST; a day's end when no time is set). A match
+ *  abandoned or never scored drops out on its own. */
+let doneCache: Set<string> | null = null;
+export function isUpcoming(d: MatchDoc, now = Date.now()): boolean {
+  doneCache ??= new Set(resultIds());
+  if (doneCache.has(d.match.id)) return false;
+  if (!d.match.date) return true;
+  const start = Date.parse(`${d.match.date}T${d.match.start_time ?? "23:59"}:00+05:30`);
+  return Number.isNaN(start) || start + 8 * 3600_000 > now;
 }
-export const previewParams = () => params(upcomingIds());
-/** Upcoming matches with fantasy picks: the ones that get a fantasy prediction post. */
-export const fantasyParams = () => params(upcomingIds().filter((id) => readMatch(id)?.fantasy));
+
+/** Matches still to be played: the ones listed, in the sitemap and in search. */
+export const upcomingIds = (): string[] => matchIds().filter((id) => { const d = readMatch(id); return !!d && isUpcoming(d); });
+/** Every published match keeps its preview and fantasy page (a played one says so and stays out of search), so a page
+ *  Google has already seen never turns into a 404. */
+export const previewParams = () => params(matchIds().filter((id) => readMatch(id)));
+export const fantasyParams = () => params(matchIds().filter((id) => readMatch(id)?.fantasy));

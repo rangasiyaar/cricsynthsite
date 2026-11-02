@@ -21,6 +21,7 @@ export type Article = {
   id: string; path: string; title: string; h1: string; description: string; standfirst: string; keypoints: string[];
   sections: Section[]; faq: { q: string; a: string }[]; date: string; updated: string; minutes: number;
   teams: [string, string]; venue?: string; series: string; no: string; start?: string; xis: boolean;
+  played?: boolean; result?: boolean;            // set by the page: the match is over (and whether its result is in)
 };
 
 export const previewPath = (id: string) => `/previews/${encodeURIComponent(id)}/`;

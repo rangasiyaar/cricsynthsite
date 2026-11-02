@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo";
 import { POSTS, postPath } from "@/lib/blog";
 import { JOBS, jobPath } from "@/lib/jobs";
-import { matchIds, readMatch, readResult, resultIds } from "@/lib/build";
+import { isUpcoming, matchIds, readMatch, readResult, resultIds } from "@/lib/build";
 import { matchPath, resultPath } from "@/lib/matchText";
 import { fantasyPath, previewPath } from "@/lib/preview";
 
@@ -27,7 +27,7 @@ function matches(now: Date): MetadataRoute.Sitemap {
     const freq = done ? "monthly" as const : "hourly" as const;
     return [
       { url: `${SITE}${matchPath(id)}`, lastModified, changeFrequency: freq, priority: done ? 0.5 : 0.9 },
-      ...(done ? [] : [{ url: `${SITE}${previewPath(id)}`, lastModified, changeFrequency: freq, priority: 0.9 },
+      ...(!isUpcoming(d) ? [] : [{ url: `${SITE}${previewPath(id)}`, lastModified, changeFrequency: freq, priority: 0.9 },
         ...(d.fantasy ? [{ url: `${SITE}${fantasyPath(id)}`, lastModified, changeFrequency: freq, priority: 0.9 }] : [])]),
     ];
   }).concat([...results].map((id) => {

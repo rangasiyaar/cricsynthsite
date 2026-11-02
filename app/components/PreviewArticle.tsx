@@ -37,6 +37,10 @@ export default function PreviewArticle({ a, ld, home = ["Match previews", "/prev
         <h1 className="post-title">{a.h1}</h1>
         <p className="post-standfirst">{a.standfirst}</p>
         <Byline name={PREVIEW_AUTHOR.name} role={PREVIEW_AUTHOR.role} date={a.date} minutes={a.minutes} url={`${SITE}${a.path}`} title={a.title} />
+        {a.played && <p className="notice" style={{ marginTop: 16 }}>This match has been played. This was our pre-match
+          {a.path.startsWith("/fantasy/") ? " fantasy prediction" : " preview"}, kept as it was.{" "}
+          {a.result ? <Link href={`/results/${encodeURIComponent(a.id)}/`}>See what happened against our forecast →</Link>
+            : <Link href={`/match/${encodeURIComponent(a.id)}/`}>Open the match centre →</Link>}</p>}
         <p className="small muted pv-status" style={{ marginTop: 8 }}>
           <span className={`tag ${a.xis ? "status-xis" : ""}`}>{a.xis ? "Playing XIs confirmed" : "Probable XIs"}</span>
           Updated {updated.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} IST
