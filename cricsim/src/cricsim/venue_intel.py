@@ -38,6 +38,15 @@ def _r(x, nd=1):
     return None if x is None or (isinstance(x, float) and np.isnan(x)) else round(float(x), nd)
 
 
+def _hist(x: np.ndarray, width: int = 10) -> list[dict]:
+    """Share of first innings in each 10-run band (the Venue tab's histogram)."""
+    if not len(x):
+        return []
+    lo = int(x.min() // width * width)
+    counts = np.bincount(((x - lo) // width).astype(int))
+    return [{"x": lo + i * width, "p": round(float(c) / len(x), 4)} for i, c in enumerate(counts)]
+
+
 class Ground:
     """Queries for one parquet set; ground-wide numbers and all-ground baselines are cached."""
 
@@ -85,7 +94,8 @@ class Ground:
                               "median": _r(np.median(firsts), 0) if len(firsts) else None,
                               "q25": _r(np.percentile(firsts, 25), 0) if len(firsts) else None,
                               "q75": _r(np.percentile(firsts, 75), 0) if len(firsts) else None,
-                              "high": side(hi) if hi else None, "low": side(lo) if lo else None},
+                              "high": side(hi) if hi else None, "low": side(lo) if lo else None,
+                              "hist": _hist(firsts)},
             "second_innings": {"n": len(seconds), "mean": _r(seconds.mean()) if len(seconds) else None},
             "bat_first_won": _r(np.mean([r[4] == r[9] for r in decided]), 3) if decided else None,
             "decided": len(decided),

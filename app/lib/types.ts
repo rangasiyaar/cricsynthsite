@@ -111,7 +111,8 @@ export type VenueIntel = {
   history: {
     matches: number; from: string; to: string; decided: number; bat_first_won: number | null;
     first_innings: { n: number; mean: number | null; median: number | null; q25: number | null; q75: number | null;
-                     high: { team: string; runs: number; date: string } | null; low: { team: string; runs: number; date: string } | null };
+                     high: { team: string; runs: number; date: string } | null; low: { team: string; runs: number; date: string } | null;
+                     hist?: { x: number; p: number }[] };
     second_innings: { n: number; mean: number | null };
     toss: { n: number; chose_bat: number | null; toss_winner_won: number | null };
     recent: { date: string; first: { team: string; runs: number; wickets: number };

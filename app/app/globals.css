@@ -575,3 +575,6 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .pv-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; }
 .post-body .pv-links a { text-decoration: none; font-weight: 600; }
 .pv-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.vi-split { margin-top: 10px; }
+.vi-split-labels { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--cs-ink-2); margin-bottom: 4px; }
+.vi-split-labels b { color: var(--cs-ink); font-variant-numeric: tabular-nums; }

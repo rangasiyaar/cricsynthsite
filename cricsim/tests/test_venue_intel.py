@@ -37,12 +37,14 @@ def _doc(w, vid):
 def test_ground_history_and_conditions(parquet):
     con = duckdb.connect()
     vid = con.execute(f"SELECT venue_id FROM read_parquet('{parquet['parquet'].as_posix()}/matches/*.parquet') "
-                      "GROUP BY 1 ORDER BY count(*) DESC LIMIT 1").fetchone()[0]
+                      "WHERE team1 LIKE 'Premier%' GROUP BY 1 ORDER BY count(*) DESC, 1 LIMIT 1").fetchone()[0]   # the Premier ground
     v = intel(Ground(parquet["parquet"]), _doc(parquet["world"], vid), today=date(2025, 6, 1))
     h = v["history"]
     assert h["matches"] > 5 and h["first_innings"]["mean"] > 50
     assert 0 <= h["bat_first_won"] <= 1 and len(h["recent"]) == 8
     assert h["first_innings"]["low"]["runs"] <= h["first_innings"]["median"] <= h["first_innings"]["high"]["runs"]
+    hist = h["first_innings"]["hist"]
+    assert abs(sum(b["p"] for b in hist) - 1) < 0.01 and hist[0]["x"] <= h["first_innings"]["low"]["runs"]
     here, every = v["phases"]["here"], v["phases"]["all"]
     assert set(here) == {"powerplay", "middle", "death"} and every["middle"]["balls"] >= here["middle"]["balls"]
     assert set(v["bowling"]["here"]) == {"pace", "spin"}

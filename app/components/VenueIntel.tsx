@@ -2,6 +2,8 @@
 // Venue intelligence: how this ground has played lately (scores, batting first v chasing, toss, phases, pace v spin),
 // how the model reads it, and how this match's players have done there. From venue/<match id>.json.
 import { useEffect, useState } from "react";
+import { Histogram, type Marker } from "@/components/charts";
+import { PhaseChart, RecentChart, SplitBar, useChartWidth } from "@/components/VenueCharts";
 import { loadVenue } from "@/lib/data";
 import { num, pct } from "@/lib/format";
 import type { MatchDoc, VenueIntel as V, VenueStat } from "@/lib/types";
@@ -30,6 +32,7 @@ const Row = ({ left, right, color }: { left: React.ReactNode; right: React.React
 export default function VenueIntel({ doc }: { doc: MatchDoc }) {
   const [v, setV] = useState<V | null>(null);
   const [missing, setMissing] = useState(false);
+  const chartW = useChartWidth();
   useEffect(() => { loadVenue(doc.match.id).then(setV).catch(() => setMissing(true)); }, [doc.match.id]);
   if (missing) return <p className="notice">No ground record for this match yet. It appears once the venue is matched to its history.</p>;
   if (!v) return <div className="skeleton card" style={{ minHeight: 320 }} aria-busy="true" />;
@@ -40,6 +43,20 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
   const name = v.venue.name ?? doc.match.venue ?? "This ground";
   const since = year(v.since);
   const pace = bw.here.pace, spin = bw.here.spin;
+  const hist = h?.first_innings.hist ?? [];
+  // the ground's own spread (from its histogram) and each side's projected first innings, as markers on one chart
+  const qOf = (q: number) => { let c = 0; for (const b of hist) { c += b.p; if (c >= q) return b.x + 5; } return hist[hist.length - 1]?.x ?? 0; };
+  const markers: Marker[] = [
+    ...(hist.length ? [{ color: "var(--cs-ink-2)", name: "This ground", q10: qOf(0.1), q25: h!.first_innings.q25 ?? qOf(0.25),
+      q50: h!.first_innings.median ?? qOf(0.5), q75: h!.first_innings.q75 ?? qOf(0.75), q90: qOf(0.9) }] : []),
+    ...doc.summary.teams.map((t, k) => {
+      const sc = t.batting.by_innings?.find((b) => b.innings === 1)?.score ?? t.batting.score;
+      return { color: COLORS[k], name: `${t.name} batting first`, q10: sc.q["10"], q25: sc.q["25"], q50: sc.q["50"], q75: sc.q["75"], q90: sc.q["90"] };
+    }),
+  ];
+  const recent = [...(h?.recent ?? [])].reverse().map((r) => ({
+    label: new Date(`${r.date}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
+    runs: r.first.runs, team: r.first.team, defended: r.winner ? r.winner === r.first.team : null }));
 
   return (
     <div className="grid vi">
@@ -58,18 +75,33 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
         <Tile i={2} label="Batting first v chasing">
           <Row left="Batting first won" right={<><b className="tile-big">{pct(h?.bat_first_won)}</b><span className="tile-sub">of {h?.decided ?? 0}</span></>} />
           <Row left="Chasing won" right={<b className="tile-big">{h?.bat_first_won == null ? "—" : pct(1 - h.bat_first_won)}</b>} />
+          {h?.bat_first_won != null && <SplitBar left="bat first" right="chase" p={h.bat_first_won} />}
         </Tile>
         <Tile i={3} label="Toss">
           <Row left="Winners chose to bat" right={<b className="tile-big">{pct(h?.toss.chose_bat)}</b>} />
           <Row left="Toss winner won the match" right={<b className="tile-big">{pct(h?.toss.toss_winner_won)}</b>} />
+          {h?.toss.chose_bat != null && <SplitBar left="bat" right="bowl" p={h.toss.chose_bat} />}
         </Tile>
       </div>
+
+      {hist.length > 0 && (
+        <div className="card">
+          <h3>First-innings scores at this ground</h3>
+          <p className="small muted" style={{ marginTop: 0 }}>Every first innings here since {since} (bars), with this ground&apos;s typical range and
+            each side&apos;s projected total batting first in this match.</p>
+          <Histogram W={chartW} height={chartW < 1000 ? 200 : 240} series={[{ name: "First innings here", color: "var(--cs-steel)", points: hist }]} width={10} markers={markers} xLabel="first-innings totals" />
+        </div>
+      )}
 
       <div className="grid">
         <div className="card">
           <h3>Scoring by phase</h3>
           <p className="small muted" style={{ marginTop: 0 }}>This ground against every ground in the same format since {since}.</p>
-          <div className="table-wrap"><table>
+          <PhaseChart unit="runs per over" rows={["powerplay", "middle", "death"].filter((p) => ph.here[p])
+            .map((p) => ({ label: PHASE[p], here: ph.here[p].runs_per_over, all: ph.all[p]?.runs_per_over }))} />
+          <div className="chart-caption"><span><i style={{ background: "var(--cs-steel)" }} />This ground</span>
+            <span><i style={{ background: "var(--cs-ink-3)", opacity: 0.35 }} />All grounds</span></div>
+          <div className="table-wrap" style={{ marginTop: 16 }}><table>
             <thead><tr><th>Phase</th><th className="num">Runs per over</th><th className="num">Balls per wicket</th><th className="num">Boundary balls</th></tr></thead>
             <tbody>{["powerplay", "middle", "death"].filter((p) => ph.here[p]).map((p) => {
               const a = ph.here[p], b = ph.all[p];
@@ -85,7 +117,16 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
         <div className="card">
           <h3>Pace v spin</h3>
           <p className="small muted" style={{ marginTop: 0 }}>Every bowler at this ground since {since}, against all grounds.</p>
-          {pace || spin ? <div className="table-wrap"><table>
+          {pace?.share_of_balls != null && <SplitBar left="pace" right="spin" p={pace.share_of_balls} />}
+          {pace?.share_of_wickets != null && <SplitBar left="of wickets to pace" right="to spin" p={pace.share_of_wickets} />}
+          {pace?.economy && spin?.economy && <>
+            <div style={{ marginTop: 18 }} />
+            <PhaseChart unit="runs an over" height={200} rows={[{ label: "Pace economy", here: pace.economy, all: bw.all.pace?.economy ?? undefined },
+              { label: "Spin economy", here: spin.economy, all: bw.all.spin?.economy ?? undefined }]} />
+            <div className="chart-caption"><span><i style={{ background: "var(--cs-steel)" }} />This ground</span>
+              <span><i style={{ background: "var(--cs-ink-3)", opacity: 0.35 }} />All grounds</span></div>
+          </>}
+          {pace || spin ? <div className="table-wrap" style={{ marginTop: 16 }}><table>
             <thead><tr><th /><th className="num">Share of overs</th><th className="num">Economy</th><th className="num">Balls per wicket</th><th className="num">Share of wickets</th></tr></thead>
             <tbody>{(["pace", "spin"] as const).filter((k) => bw.here[k]).map((k) => {
               const a = bw.here[k] as VenueStat, b = bw.all[k];
@@ -102,7 +143,8 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
       {h && h.recent.length > 0 && (
         <div className="card">
           <h3>Recent matches here</h3>
-          <div className="table-wrap"><table>
+          <RecentChart rows={recent} median={h.first_innings.median} />
+          <div className="table-wrap" style={{ marginTop: 16 }}><table>
             <thead><tr><th>Date</th><th>Batting first</th><th>Chasing</th><th>Result</th></tr></thead>
             <tbody>{h.recent.map((r, i) => (
               <tr key={i}><td className="small">{fmtDate(r.date)}</td>
