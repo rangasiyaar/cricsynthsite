@@ -21,19 +21,19 @@ function BlockView({ b }: { b: Block }) {
   if ("table" in b) return (
     <div className="post-table"><table>
       {b.table.head.some(Boolean) && <thead><tr>{b.table.head.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>}
-      <tbody>{b.table.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
+      <tbody>{b.table.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}><Rich text={c} /></td>)}</tr>)}</tbody>
     </table></div>);
   if ("stats" in b) return <div className="post-stats">{b.stats.map((s) => <div key={s.label}><b>{s.big}</b><span>{s.label}</span></div>)}</div>;
   return <p className="pv-links">{b.links.map((l) => <Link key={l.href + l.label} href={l.href}>{l.label} →</Link>)}</p>;
 }
 
-export default function PreviewArticle({ a, ld }: { a: Article; ld: object[] }) {
+export default function PreviewArticle({ a, ld, home = ["Match previews", "/previews/"] }: { a: Article; ld: object[]; home?: [string, string] }) {
   const updated = new Date(a.updated);
   return (
     <article className="page-head blog post wide">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <div style={{ maxWidth: 820 }}>
-        <p className="cs-eyebrow"><Link href="/previews/">Match previews</Link>{a.series ? ` · ${a.series}` : ""}</p>
+        <p className="cs-eyebrow"><Link href={home[1]}>{home[0]}</Link>{a.series ? ` · ${a.series}` : ""}</p>
         <h1 className="post-title">{a.h1}</h1>
         <p className="post-standfirst">{a.standfirst}</p>
         <Byline name={PREVIEW_AUTHOR.name} role={PREVIEW_AUTHOR.role} date={a.date} minutes={a.minutes} url={`${SITE}${a.path}`} title={a.title} />
@@ -52,11 +52,11 @@ export default function PreviewArticle({ a, ld }: { a: Article; ld: object[] }) 
           {a.faq.map((f) => <div key={f.q} className="post-faq"><h3>{f.q}</h3><p>{f.a}</p></div>)}
           <div className="post-author">
             <p><b>{PREVIEW_AUTHOR.name}</b> · {PREVIEW_AUTHOR.role}</p>
-            <p>Previews are written from our simulation of the match: every ball played out thousands of times with the actual XIs, ground and form. They are projections, not certainties.</p>
+            <p>Written from our simulation of the match: every ball played out thousands of times with the actual XIs, ground and form. They are projections, not certainties.</p>
           </div>
         </div>
-        <nav className="post-toc" aria-label="In this preview">
-          <p>In this preview</p>
+        <nav className="post-toc" aria-label="In this article">
+          <p>In this article</p>
           {a.sections.map((s) => <a key={s.id} href={`#${s.id}`}>{s.heading}</a>)}
           <a href="#faq">Questions people ask</a>
         </nav>

@@ -190,7 +190,7 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
       { p: "Every number in this preview comes from the match centre, where you can dig into each one:" },
       { links: [{ href: matchPath(id), label: "Match centre" }, { href: tab(id, "Venue intelligence"), label: "Ground analysis" },
         { href: tab(id, "Players"), label: "Player projections" }, { href: tab(id, "Matchups"), label: "Match-ups" },
-        ...(doc.fantasy ? [{ href: tab(id, "Fantasy"), label: "Fantasy picks" }] : []),
+        ...(doc.fantasy ? [{ href: fantasyPath(id), label: "Fantasy prediction" }, { href: tab(id, "Fantasy"), label: "Fantasy tab" }] : []),
         { href: `/lab/?id=${encodeURIComponent(id)}`, label: "Try your own scenario in MatchSynth Lab" }] },
     ] },
   ];
@@ -237,7 +237,7 @@ function signed(x: number) {
   return d === 0 ? "level" : `${d > 0 ? "+" : "−"}${Math.abs(d)}%`;
 }
 
-export function previewLd(a: Article) {
+export function previewLd(a: Article, home: [string, string] = ["Match previews", "/previews/"]) {
   const url = `${SITE}${a.path}`;
   return [
     { "@context": "https://schema.org", "@type": "Article", headline: a.title.slice(0, 110), description: a.description,
@@ -250,9 +250,146 @@ export function previewLd(a: Article) {
       ...(a.venue ? { location: { "@type": "Place", name: a.venue } } : {}),
       competitor: a.teams.map((n) => ({ "@type": "SportsTeam", name: n })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Match previews", item: `${SITE}/previews/` },
+      { "@type": "ListItem", position: 1, name: home[0], item: `${SITE}${home[1]}` },
       { "@type": "ListItem", position: 2, name: `${a.teams[0]} vs ${a.teams[1]}`, item: url }] },
     { "@context": "https://schema.org", "@type": "FAQPage",
       mainEntity: a.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
   ];
+}
+
+// ── Fantasy prediction articles (/fantasy/{id}/) ────────────────────────────────────────────────────────────────────
+export const fantasyPath = (id: string) => `/fantasy/${encodeURIComponent(id)}/`;
+const ROLE: Record<string, string> = { WK: "Wicketkeeper", BAT: "Batter", AR: "All-rounder", BOWL: "Bowler" };
+
+export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: ResultIndex | null, now = new Date()): Article | null {
+  const f = doc.fantasy;
+  if (!f) return null;
+  const { match: m, summary: s } = doc;
+  const id = m.id;
+  const [A, B] = s.teams.map((t) => t.name) as [string, string];
+  const short = [m.teams[0]?.short ?? A, m.teams[1]?.short ?? B];
+  const [series, no = ""] = (m.competition ?? "").split(" · ");
+  const sims = (f.simulations ?? s.meta.simulations).toLocaleString("en-IN");
+  const ground = m.venue?.replace(/\s+/g, " ").trim(), groundShort = ground?.split(",")[0];
+  const when = longDate(m.date);
+  const xisWord = m.xis ? "confirmed" : "probable";
+  const rows = new Map<string, PlayerRow>();
+  s.teams.forEach((t) => t.players.forEach((p) => rows.set(p.id, p)));
+  const P = (pid: string) => ({ ...f.players[pid], id: pid, name: f.players[pid]?.name ?? rows.get(pid)?.name ?? pid, row: rows.get(pid) });
+  const all = Object.keys(f.players).map(P).sort((a, b) => b.expected - a.expected);
+  const xi = f.single.players.map(P).sort((a, b) => b.expected - a.expected);
+  const inXi = new Set(f.single.players);
+  const cap = P(f.single.captain), vc = P(f.single.vice_captain);
+  const teamName = (k: number) => s.teams[k]?.name ?? "";
+  const split = [0, 1].map((k) => xi.filter((p) => p.team === k).length);
+  const roles = ["WK", "BAT", "AR", "BOWL"].map((r) => [r, xi.filter((p) => p.role === r).length] as const).filter(([, n]) => n);
+
+  const why = (p: ReturnType<typeof P>) => {
+    const b = p.row?.batting, w = p.row?.bowling, bits: string[] = [];
+    if (b && b.p_bats > 0.6) bits.push(`about ${r0(b.runs.mean)} runs on average with a ${pc(b.p_at_least["30"])} chance of 30+`);
+    if (w && w.p_bowls > 0.5) bits.push(`${w.wickets.mean?.toFixed(1)} wickets on average with a ${pc(w.p_wickets["2"])} chance of 2+`);
+    return bits.length ? bits.join(", and ") : "a steady points source";
+  };
+  // upside: a big haul (50+ runs or 3+ wickets) relative to the field
+  const upside = (p: ReturnType<typeof P>) => Math.max(p.row?.batting?.p_at_least["50"] ?? 0, p.row?.bowling?.p_wickets["3"] ?? 0);
+  const safe = xi.filter((p) => (p.row?.batting?.p_bats ?? 0) > 0.9 || (p.row?.bowling?.p_bowls ?? 0) > 0.9).slice(0, 4);
+  const cut = xi[xi.length - 1]?.expected ?? 0;
+  const diffs = all.filter((p) => !inXi.has(p.id) && p.expected >= 0.85 * cut).slice(0, 4);
+  const punts = all.filter((p) => !inXi.has(p.id) && !diffs.includes(p)).sort((a, b) => upside(b) - upside(a)).filter((p) => upside(p) >= 0.08).slice(0, 3);
+  const capOptions = all.slice(0, 3);
+
+  // ground angle
+  const h = venue?.history ?? null;
+  const pace = venue?.bowling.here.pace, spin = venue?.bowling.here.spin, paceAll = venue?.bowling.all.pace, spinAll = venue?.bowling.all.spin;
+  const angle: string[] = [];
+  if (venue?.model) angle.push(`${groundShort ?? "The ground"} plays **${venue.model.character}**${venue.model.scoring_index > 1.03 ? ", so top-order batters and finishers carry extra value" : venue.model.scoring_index < 0.97 ? ", so wicket-taking bowlers carry extra value" : ""}.`);
+  if (pace?.economy && spin?.economy && paceAll?.economy && spinAll?.economy) {
+    const pe = pace.economy / paceAll.economy - 1, se = spin.economy / spinAll.economy - 1;
+    if (se < pe - 0.03) angle.push("Spin has done relatively well here compared with other grounds: lean towards spinners who bowl their full quota.");
+    else if (pe < se - 0.03) angle.push("Pace has done relatively well here compared with other grounds: seamers who bowl at the death are worth a look.");
+  }
+  if (h?.bat_first_won != null && Math.abs(h.bat_first_won - 0.5) > 0.06)
+    angle.push(`Teams ${h.bat_first_won > 0.5 ? "batting first" : "chasing"} have won ${pc(h.bat_first_won > 0.5 ? h.bat_first_won : 1 - h.bat_first_won)} of decided matches here; once the toss is known, the side ${h.bat_first_won > 0.5 ? "setting the total" : "chasing"} is worth an extra player.`);
+
+  const rec = results?.fantasy;
+  const table = (players: ReturnType<typeof P>[]) => ({ table: { head: ["Player", "Team", "Role", "Expected points"], rows: [
+    ...players.map((p) => [`${p.name}${p.id === f.single.captain ? " (C)" : p.id === f.single.vice_captain ? " (VC)" : ""}`, short[p.team] ?? "",
+      ROLE[p.role ?? ""] ?? "—", (p.expected * (p.id === f.single.captain ? 2 : p.id === f.single.vice_captain ? 1.5 : 1)).toFixed(0)]),
+    ["**Team total**", "", "", f.single.expected.toFixed(0)]] } }) as Block;
+
+  const sections: Section[] = [
+    { id: "details", heading: "Match details", blocks: [{ table: { head: ["", ""], rows: [
+      ["Match", `${A} vs ${B}${no ? `, ${no}` : ""}`], ...(series ? [["Series", series]] : []), ["Date", when],
+      ...(m.start_time ? [["Start", `${m.start_time} IST`]] : []), ...(ground ? [["Ground", ground]] : []),
+      ["Line-ups", m.xis ? "Confirmed XIs" : "Probable XIs (updates at the toss)"]] } }] },
+    { id: "team", heading: "Best fantasy XI", blocks: [
+      { p: `Our team for ${A} vs ${B}, built from every player's points across ${sims} simulations of the match with the ${xisWord} XIs. It is the XI with the highest expected total that fits the usual team rules: **${split[0]} from ${short[0]}, ${split[1]} from ${short[1]}**, with ${list(roles.map(([r, n]) => `${n} ${(ROLE[r] ?? r).toLowerCase()}${n === 1 ? "" : "s"}`))}.` },
+      table(xi),
+      { links: [{ href: tab(id, "Fantasy"), label: "Open the Fantasy tab" }] },
+    ] },
+    { id: "captain", heading: "Captain and vice-captain", blocks: [
+      { p: `**${cap.name}** (${teamName(cap.team)}) is our captain, with ${cap.expected.toFixed(0)} expected points: ${why(cap)}. **${vc.name}** (${teamName(vc.team)}) is vice-captain with ${vc.expected.toFixed(0)}: ${why(vc)}.` },
+      { p: "The three strongest captaincy options:" },
+      { list: capOptions.map((p) => `**${p.name}** (${short[p.team]}): ${p.expected.toFixed(0)} expected points, ${pc(upside(p))} chance of a big haul`), ordered: true },
+    ] },
+    { id: "safe", heading: "Safe picks", blocks: [
+      { p: "Players almost certain to get a full go with bat or ball, so their points rarely collapse:" },
+      { list: safe.map((p) => `**${p.name}** (${short[p.team]}, ${ROLE[p.role ?? ""] ?? "player"}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
+    ] },
+    ...(diffs.length ? [{ id: "differentials", heading: "Differentials", blocks: [
+      { p: "Close to our XI on expected points but outside it: good swaps if you want a team that stands apart:" },
+      { list: diffs.map((p) => `**${p.name}** (${short[p.team]}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
+    ] } as Section] : []),
+    ...(punts.length ? [{ id: "punts", heading: "High-ceiling punts", blocks: [
+      { p: "Lower on average, but with a real chance of a match-winning haul (50+ runs or 3+ wickets):" },
+      { list: punts.map((p) => `**${p.name}** (${short[p.team]}): ${pc(upside(p))} chance of a big haul, ${p.expected.toFixed(0)} expected`) },
+    ] } as Section] : []),
+    ...(angle.length ? [{ id: "pitch", heading: `Pitch angle: ${groundShort ?? "the ground"}`, blocks: [
+      ...angle.map((t) => ({ p: t }) as Block),
+      { links: [{ href: tab(id, "Venue intelligence"), label: "Full ground analysis" }] },
+    ] } as Section] : []),
+    ...(f.teams.length > 1 ? [{ id: "combos", heading: `${f.teams.length} teams for multiple entries`, blocks: [
+      { p: "If you enter more than one team, these are built to cover different ways the match can go, rather than repeating the same XI:" },
+      { table: { head: ["Team", "Captain", "Vice-captain", "Expected"], rows: f.teams.map((t, i) => [String(i + 1), P(t.captain).name, P(t.vice_captain).name, t.expected.toFixed(0)]) } },
+      { links: [{ href: `/lab/?id=${encodeURIComponent(id)}`, label: "Rebuild the teams for your own scenario in MatchSynth Lab" }] },
+    ] } as Section] : []),
+    ...(rec && rec.matches ? [{ id: "record", heading: "How our fantasy picks have done", blocks: [
+      { p: `Across ${rec.matches} matches we have scored, our single team averaged **${pc(rec.single)}** of the best possible XI picked after the match, and the best of our five teams **${pc(rec.best_of_teams)}**.` },
+      { links: [{ href: "/results/", label: "Every result, pick by pick" }] },
+    ] } as Section] : []),
+    { id: "explore", heading: "Explore this match", blocks: [
+      { links: [{ href: previewPath(id), label: "Match preview" }, { href: matchPath(id), label: "Match centre" },
+        { href: tab(id, "Players"), label: "Player projections" }, { href: tab(id, "MVP"), label: "Most valuable player" },
+        { href: `/lab/?id=${encodeURIComponent(id)}`, label: "MatchSynth Lab" }] },
+    ] },
+  ];
+
+  const keypoints = [
+    `Captain ${cap.name}, vice-captain ${vc.name}.`,
+    `Team split ${short[0]} ${split[0]} – ${split[1]} ${short[1]}; ${f.single.expected.toFixed(0)} expected points.`,
+    ...(safe[0] ? [`Safest pick: ${safe[0].name}.`] : []),
+    ...(diffs[0] ? [`Differential: ${diffs[0].name}.`] : []),
+    ...(punts[0] ? [`High-ceiling punt: ${punts[0].name} (${pc(upside(punts[0]))} chance of a big haul).`] : []),
+    ...(venue?.model ? [`${groundShort} plays ${venue.model.character}.`] : []),
+  ];
+  const faq = [
+    { q: `Who should be captain for ${A} vs ${B}?`, a: `${cap.name}, with ${cap.expected.toFixed(0)} expected points; ${vc.name} as vice-captain.` },
+    { q: `What is the best fantasy team for ${A} vs ${B}?`, a: `${xi.map((p) => p.name).join(", ")}.` },
+    { q: `Which players are good differentials?`, a: diffs.length ? `${list(diffs.map((p) => p.name))}: close to the best XI on expected points but less obvious picks.` : "Our XI already includes every player close to the top on expected points." },
+    { q: `How are these fantasy picks made?`, a: `Every player's points are counted ball by ball across ${sims} simulations of the match; the team is the XI with the highest expected total that fits the team rules.` },
+    { q: `Are these the confirmed playing XIs?`, a: m.xis ? "Yes, the picks use the XIs named at the toss." : "Not yet: the picks use probable XIs and update once the teams are named at the toss." },
+  ];
+  const words = JSON.stringify(sections).split(/\s+/).length;
+  const label = [no, shortDate(m.date)].filter(Boolean).join(", ");
+  return {
+    id, path: fantasyPath(id), teams: [A, B], venue: ground, series, no,
+    start: m.date ? (m.start_time ? `${m.date}T${m.start_time}:00+05:30` : m.date) : undefined,
+    title: `${short[0]} vs ${short[1]} Fantasy Prediction${label ? `, ${label}` : ""}: Captain, Vice-Captain & Best XI`,
+    h1: `${A} vs ${B}: fantasy prediction`,
+    description: `${A} vs ${B} fantasy team from ${sims} simulations: ${cap.name} captain, ${vc.name} vice-captain, safe picks, differentials and ${f.teams.length} teams for multiple entries.`,
+    standfirst: `Our fantasy team for ${A} vs ${B}${no ? `, ${no}` : ""}${groundShort ? ` at ${groundShort}` : ""}${when ? ` on ${when}` : ""}: captain, vice-captain, safe picks, differentials and punts, from ${sims} simulations with the ${xisWord} XIs.`,
+    keypoints, sections, faq,
+    date: (doc.generated_at ?? now.toISOString()).slice(0, 10), updated: doc.generated_at ?? now.toISOString(),
+    minutes: Math.max(3, Math.round(words / 220)),
+  };
 }

@@ -51,3 +51,5 @@ export function upcomingIds(): string[] {
   return matchIds().filter((id) => !done.has(id) && readMatch(id));
 }
 export const previewParams = () => params(upcomingIds());
+/** Upcoming matches with fantasy picks: the ones that get a fantasy prediction post. */
+export const fantasyParams = () => params(upcomingIds().filter((id) => readMatch(id)?.fantasy));
