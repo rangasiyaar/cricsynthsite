@@ -1,0 +1,22 @@
+name: Page probe
+
+# Read a public website for research (robots.txt honoured, same-site links, at most N pages, one a second) and print
+# its pages' text to the log. Reads only; stores nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      url: { description: "Start URL", required: true }
+      pages: { description: "Most pages to read", default: "30" }
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read
+        env: { URL: "${{ inputs.url }}", PAGES: "${{ inputs.pages }}" }
+        run: python3 scripts/page_probe.py "$URL" --pages "$PAGES"
