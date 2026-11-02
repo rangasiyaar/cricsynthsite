@@ -571,3 +571,6 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 .vi-d.bowl { color: var(--cs-danger); }
 .vi-key { margin-bottom: 0; }
 @media (min-width: 861px) and (max-width: 1280px) { .page-head .tabs.mc-tabs button, .page-head .tabs.mc-tabs .tab-link { padding-left: 10px; padding-right: 10px; } }
+/* Match previews */
+.pv-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; }
+.post-body .pv-links a { text-decoration: none; font-weight: 600; }

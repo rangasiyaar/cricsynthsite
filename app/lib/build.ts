@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { description, facts, faq, jsonLd, title, type Kind } from "./matchText.ts";
-import type { MatchDoc, ResultDoc } from "./types.ts";
+import type { MatchDoc, ResultDoc, ResultIndex, VenueIntel } from "./types.ts";
 
 const DATA = path.join(process.cwd(), "public", "data");
 const PLACEHOLDER = "_";               // a static export needs one param even with no data (dev, tests)
@@ -41,3 +41,13 @@ export function readResult(id: string): ResultDoc | null {
   const r = id === PLACEHOLDER ? null : read<ResultDoc>(`results/${decodeURIComponent(id)}.json`);
   return r && Array.isArray(r.teams) && r.teams.length === 2 && r.forecast?.win && Array.isArray(r.items) ? r : null;
 }
+
+export const readVenue = (id: string) => (id === PLACEHOLDER ? null : read<VenueIntel>(`venue/${decodeURIComponent(id)}.json`));
+export const readResults = () => read<ResultIndex>("results/index.json");
+
+/** Matches still to be played (no result yet): the ones that get a written preview. */
+export function upcomingIds(): string[] {
+  const done = new Set(resultIds());
+  return matchIds().filter((id) => !done.has(id) && readMatch(id));
+}
+export const previewParams = () => params(upcomingIds());
