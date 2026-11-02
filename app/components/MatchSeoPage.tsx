@@ -30,7 +30,8 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(x, kind, id, qa)) }} />
-      <div className="page-head seo-head">
+      {/* Search text only: the scoreboard below shows the same facts, so it stays out of sight (screen readers still get it). */}
+      <div className="seo-head sr-only">
         <nav className="small muted" aria-label="Breadcrumb"><Link href="/matches/">Matches</Link> / {x.A} vs {x.B}</nav>
         <h1 className="seo-h1">{h1}</h1>
         <p className="small muted" style={{ margin: "6px 0 0" }}>{sub}</p>
