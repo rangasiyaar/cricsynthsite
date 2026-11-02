@@ -122,7 +122,7 @@ export function faq(x: Facts, kind: Kind): QA[] {
   return out;
 }
 
-/** SportsEvent + BreadcrumbList + FAQPage for one page. */
+/** SportsEvent + BreadcrumbList for one page (`qa` kept in the signature for callers). */
 export function jsonLd(x: Facts, kind: Kind, id: string, qa: QA[]) {
   const url = `${SITE}${matchPath(id, kind)}`;
   const crumbs = [["Matches", `${SITE}/matches/`], [vs(x), `${SITE}${matchPath(id)}`]];
@@ -136,8 +136,7 @@ export function jsonLd(x: Facts, kind: Kind, id: string, qa: QA[]) {
       competitor: [x.A, x.B].map((n) => ({ "@type": "SportsTeam", name: n })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: crumbs.map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })) },
-    ...(qa.length ? [{ "@context": "https://schema.org", "@type": "FAQPage",
-      mainEntity: qa.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }] : []),
+    // No FAQPage: its answers are not shown on the page, and Google only accepts FAQ markup for visible answers.
   ];
 }
 

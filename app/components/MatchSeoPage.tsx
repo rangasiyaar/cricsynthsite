@@ -49,7 +49,8 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
 
       <LiveMatch id={id} tab={TAB[kind]} />
 
-      <article className="page-head seo-body">
+      {/* Preview and questions: search text only, out of sight like the header (the match centre shows the same numbers). */}
+      <article className="seo-body sr-only">
         {kind === "prediction" && <>
           <h2>Match preview</h2>
           {x.insights.slice(0, 8).map((t, i) => <p key={i}>{t.text}</p>)}
