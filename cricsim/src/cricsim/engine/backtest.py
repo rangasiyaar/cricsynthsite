@@ -500,6 +500,7 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
         res = r - np.polyval(np.polyfit(lv, r, 1), lv)
         crow["partial_cov_points"] = float(np.corrcoef(c, res)[0, 1]) if res.std() > 0 else 0.0
     corr = _correlation(sims, pids, pts, team_of, real, live, str(mt["date"]))
+    corr.update(_profile_xi(pids, pts, team_of, real, live))
     out = {"cal_row": cal, "cov_row": crow, "corr_row": corr, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
            "script_share_top5": float(counts[top].sum() / counts.sum())}
     out["script_oracle"] = out["script_top1"]                    # no result: nothing to compare
@@ -524,6 +525,40 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
                               "p_close": float(tight.mean()), "close": bool(rk % 2)}
         out["script_oracle"] = team_points(*team(rk), real) if counts[rk] else out["script_top1"]
     return out
+
+
+def _profile_xi(pids, pts, team_of, real, live) -> dict:
+    """Player profiles from the simulated points: safe (25th percentile, the floor), consistent (median, a typical
+    day) and x factor (90th percentile, the ceiling). Team: the 5 best safe, then 4 consistent, then 2 x factor
+    (no repeats; 1-10 a side). Captain by expected points, or x factor captain + safe vice-captain."""
+    j = {p: i for i, p in enumerate(pids)}
+    floor, typical, ceil = (dict(zip(pids, np.percentile(pts, q, axis=0))) for q in (25, 50, 90))
+    xi: list[str] = []
+    picked: dict[str, str] = {}
+
+    def take(score, n, label):
+        for p in sorted(pids, key=lambda p: -score[p]):
+            if n == 0:
+                break
+            if p in xi or sum(team_of[q] == team_of[p] for q in xi) >= 10:
+                continue
+            xi.append(p)
+            picked[p] = label
+            n -= 1
+    take(floor, 5, "safe")
+    take(typical, 4, "consistent")
+    take(ceil, 2, "x")
+    for t in (0, 1):                     # at least one from each side: swap the weakest x factor / consistent pick
+        if not any(team_of[p] == t for p in xi):
+            out_p = min((p for p in xi if picked[p] != "safe"), key=lambda p: ceil[p])
+            in_p = max((p for p in pids if team_of[p] == t), key=lambda p: ceil[p])
+            xi[xi.index(out_p)] = in_p
+            picked[in_p] = picked.pop(out_p)
+    c, vc = sorted(xi, key=lambda p: -live[p])[:2]
+    xs = sorted((p for p in xi if picked[p] == "x"), key=lambda p: -ceil[p]) or [c]
+    ss = sorted((p for p in xi if picked[p] == "safe" and p != xs[0]), key=lambda p: -floor[p]) or [vc]
+    return {"profile": team_points(xi, c, vc, real), "profile_xcap": team_points(xi, xs[0], ss[0], real),
+            "profile_overlap": len(set(xi) & set(pick_xi(live, team_of)[0]))}
 
 
 def _correlation(sims, pids, pts, team_of, real, live, day) -> dict:

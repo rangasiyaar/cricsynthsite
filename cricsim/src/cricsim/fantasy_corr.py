@@ -53,6 +53,15 @@ def main(report: str) -> None:
     for k, lab in (("live", "Live XI (expected points)"), ("upside", "Upside XI (simulated top 10%)"),
                    ("steady", "Steady XI (simulated bottom 10%)")):
         L.append(f"| {lab} | {arr(k).mean():.1f} | {100 * arr(k).mean() / best.mean():.1f}% | {near(k):.0f}% |")
+    if all("profile" in r for r in rows):
+        L += ["", "### Profile team: 5 safe (floor) + 4 consistent (typical day) + 2 x factor (ceiling)", "",
+              f"Shares {np.mean([r['profile_overlap'] for r in rows]):.1f} of 11 players with the live XI", "",
+              "| Team | Avg points | Share of best | Matches at 80%+ of best |", "|---|---|---|---|"]
+        for k, lab in (("live", "Live XI"), ("profile", "Profile XI, captain by expected points"),
+                       ("profile_xcap", "Profile XI, x factor captain + safe vice-captain")):
+            L.append(f"| {lab} | {arr(k).mean():.1f} | {100 * arr(k).mean() / best.mean():.1f}% | {near(k):.0f}% |")
+        L += ["", f"- Profile XI v live: {_paired(arr('profile'), arr('live'))} points a match",
+              f"- Profile XI (x factor captain) v live: {_paired(arr('profile_xcap'), arr('live'))}"]
     L += ["", f"- Upside v live: {_paired(arr('upside'), arr('live'))} points a match",
           f"- Steady v live: {_paired(arr('steady'), arr('live'))}"]
     click.echo("\n".join(L))
