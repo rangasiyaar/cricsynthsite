@@ -12,36 +12,36 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Kathmandu Gorkhas won the toss and bowl first.",
   "teams": [
     {
       "name": "Karnali Yaks",
       "short": "KAY",
       "players": [
-        "Akbar Ali",
+        "Jishan Alam",
         "Ariful Islam",
-        "David Miller",
-        "Sahibzada Farhan",
-        "Shubh Kansakar",
-        "Sompal Kami",
-        "Mark Watt",
+        "Deepak Dumre",
         "Hussain Talat",
+        "Mark Watt",
+        "Pawan Sarraf",
+        "Sompal Kami",
+        "Gulsan Jha",
+        "Nandan Yadav",
         "Yuvraj Khatri",
-        "Surya Tamang",
-        "Dipendra Rawat"
+        "UB Singh Thakuri"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
+        "AR",
+        "AR",
+        "AR",
         "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Sompal Kami",
       "squad": [
@@ -72,23 +72,23 @@
       "short": "KAG",
       "players": [
         "Smit Patel",
-        "Heazlett",
-        "Rashid Khan",
-        "Bhim Sharki",
         "David Warner",
+        "Bhim Sharki",
+        "Rashid Khan",
         "Karan KC",
-        "Harishankar Shah",
-        "Sumit Maharjan",
-        "Ripon Mondol",
+        "Mohammad Aadil Alam",
+        "Santosh Yadav",
+        "Jahandad Khan",
+        "Dev Shah",
         "Shahab Alam",
-        "Dayanand Mandal"
+        "Ripon Mondol"
       ],
       "roles": [
         "WK",
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
@@ -124,6 +124,7 @@
   "live": {
     "id": 177671,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
