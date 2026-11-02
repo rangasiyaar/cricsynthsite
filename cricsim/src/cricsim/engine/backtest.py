@@ -499,7 +499,8 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
         # does coverage explain real points beyond expected points? (partial correlation)
         res = r - np.polyval(np.polyfit(lv, r, 1), lv)
         crow["partial_cov_points"] = float(np.corrcoef(c, res)[0, 1]) if res.std() > 0 else 0.0
-    out = {"cal_row": cal, "cov_row": crow, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
+    corr = _correlation(sims, pids, pts, team_of, real, live, str(mt["date"]))
+    out = {"cal_row": cal, "cov_row": crow, "corr_row": corr, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
            "script_share_top5": float(counts[top].sum() / counts.sum())}
     out["script_oracle"] = out["script_top1"]                    # no result: nothing to compare
     # the real match's script
@@ -523,6 +524,72 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
                               "p_close": float(tight.mean()), "close": bool(rk % 2)}
         out["script_oracle"] = team_points(*team(rk), real) if counts[rk] else out["script_top1"]
     return out
+
+
+def _correlation(sims, pids, pts, team_of, real, live, day) -> dict:
+    """Players rising and falling together: per pair type, the simulated correlation of fantasy points and the real
+    co-movement (product of standardised surprises, real - expected, over the simulated spread); and teams built on
+    it: an upside XI (best 90th percentile of the simulated team total) and a steady XI (best 10th percentile),
+    both by swaps from the live XI, against the live XI."""
+    slot, bowl = {}, dict.fromkeys(pids, 0.0)
+    for part in sims.parts:
+        for lg in part.innings:
+            for k, pl in enumerate(lg.order):
+                slot.setdefault(pl, []).append(k + 1)
+            for k, pl in enumerate(lg.bowlers):
+                if pl in bowl:
+                    bowl[pl] += float(lg.bowl_balls[:, k].sum()) / sims.n
+    is_bat = {p: (np.median(slot.get(p, [11])) <= 6 and bowl[p] < 12) for p in pids}
+    is_bowl = {p: bowl[p] >= 12 for p in pids}
+    sd = pts.std(0) + 1e-9
+    z = {p: (real[p] - pts[:, j].mean()) / sd[j] for j, p in enumerate(pids)}
+    cm = np.corrcoef(pts.T)
+    types: dict[str, list] = {}
+    for i, a in enumerate(pids):
+        for j in range(i + 1, len(pids)):
+            b = pids[j]
+            same = team_of[a] == team_of[b]
+            if is_bat[a] and is_bat[b]:
+                t = "batter-batter, same team" if same else "batter-batter, opponents"
+            elif (is_bat[a] and is_bowl[b]) or (is_bowl[a] and is_bat[b]):
+                t = "batter-bowler, same team" if same else "batter v opposing bowler"
+            elif is_bowl[a] and is_bowl[b]:
+                t = "bowler-bowler, same team" if same else "bowler-bowler, opponents"
+            else:
+                continue
+            types.setdefault(t, []).append((float(cm[i, j]), float(z[a] * z[b])))
+    row = {"date": day, "types": {t: [float(np.mean([v[0] for v in x])), float(np.mean([v[1] for v in x])), len(x)]
+                                  for t, x in types.items()}}
+
+    def total(xi, c, vc):
+        idx = [pids.index(p) for p in xi]
+        return pts[:, idx].sum(1) + pts[:, pids.index(c)] + 0.5 * pts[:, pids.index(vc)]
+
+    def search(q):
+        xi, c, vc = pick_xi(live, team_of)
+        best = np.percentile(total(xi, c, vc), q)
+        for _ in range(2):
+            improved = False
+            for out_p in list(xi):
+                for in_p in pids:
+                    if in_p in xi:
+                        continue
+                    cand = [in_p if p == out_p else p for p in xi]
+                    if not all(1 <= sum(team_of[p] == t for p in cand) <= 10 for t in (0, 1)):
+                        continue
+                    cc, cv = sorted(cand, key=lambda p: -live[p])[:2]
+                    v = np.percentile(total(cand, cc, cv), q)
+                    if v > best + 1e-9:
+                        xi, c, vc, best, improved = cand, cc, cv, v, True
+                        break
+            if not improved:
+                break
+        return team_points(xi, c, vc, real)
+    row["live"] = team_points(*pick_xi(live, team_of), real)
+    row["upside"] = search(90)
+    row["steady"] = search(10)
+    row["best"] = team_points(*pick_xi(real, team_of), real)
+    return row
 
 
 def _paired(f: list[dict], base: str, keys: tuple[str, ...]) -> dict:
@@ -923,6 +990,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                               for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
                                              ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
                           "script_pred": [r["script_pred"] for r in f if "script_pred" in r],
+                          "corr_rows": [r["corr_row"] for r in f if "corr_row" in r],
                           "cov_rows": [r["cov_row"] for r in f if "cov_row" in r],
                           "cal_rows": [{**r["cal_row"], "portfolio_5": r.get("portfolio_5")} for r in f if "cal_row" in r],
                           "scripts": {"hit_rate": round(float(np.mean([r["script_hit"] for r in f if "script_hit" in r])), 3)

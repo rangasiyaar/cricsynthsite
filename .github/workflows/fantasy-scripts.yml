@@ -72,3 +72,5 @@ jobs:
         run: set -o pipefail; uv run python -m cricsim.fantasy_cal data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Coverage index
         run: set -o pipefail; uv run python -m cricsim.fantasy_coverage data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Player correlation
+        run: set -o pipefail; uv run python -m cricsim.fantasy_corr data/lab/${{ matrix.family }}.json | tee -a "$GITHUB_STEP_SUMMARY"
