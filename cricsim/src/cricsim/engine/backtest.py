@@ -134,7 +134,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
                  sim_overrides: dict | None = None, order: str = "history", roles: bool = False,
                  twelve: bool = False, latest: int = 0, latest_format: str = "T20",
                  latest_teams: list[str] | None = None, fantasy_rows: bool = False, stack_rows: bool = False,
-                 end: date | None = None) -> dict:
+                 end: date | None = None, family_only: bool = False) -> dict:
     """fit_overrides: FitConfig fields for a model variant, e.g. {"comp_groups": "club", "shrink": {"bat": 150}};
     sim_overrides: simulator settings, e.g. {"slot_usage": True, "bowl_focus": 3.0}.
     latest: test on the most recent N T20-type matches instead, the model trained up to the day before the first.
@@ -157,7 +157,7 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
     if sim_overrides:
         model.meta["sim"] = dict(sim_overrides)
     rep = _run(con, parquet, model, cutoff, end, limit, n_sims, fantasy_bowlers, order, roles, twelve, bool(latest),
-               latest_format, latest_teams, fantasy_rows, stack_rows)
+               latest_format, latest_teams, fantasy_rows, stack_rows, family_only)
     rep["half_life_years"] = cfg.half_life_years
     rep["variant"] = {"order": order, "roles": roles, "phase_skill": cfg.phase_skill, "comp_groups": cfg.comp_groups, "experience": cfg.experience, "home": cfg.home,
                       "collapse": cfg.collapse, "bat_switch": cfg.bat_switch, "era_team_type": cfg.era_team_type,
@@ -175,11 +175,11 @@ def run_backtest(parquet: Path, cutoff: date, limit: int = 600, n_sims: int = 10
 def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit: int, n_sims: int,
          fantasy_bowlers: bool = False, order: str = "history", roles: bool = False, twelve: bool = False,
          latest: bool = False, latest_format: str = "T20", latest_teams: list[str] | None = None,
-         fantasy_rows: bool = False, stack_rows: bool = False) -> dict:
+         fantasy_rows: bool = False, stack_rows: bool = False, family_only: bool = False) -> dict:
     skipped: dict = {}
     matches = holdout_matches(con, parquet, cutoff, limit, end=end, twelve=twelve, skipped=skipped, latest=latest,
-                              latest_format=latest_format, teams=latest_teams, family_only=stack_rows)
-    od_fantasy = latest and latest_format == "OD"          # one-day fantasy only when asked for (separate benchmark)
+                              latest_format=latest_format, teams=latest_teams, family_only=stack_rows or family_only)
+    od_fantasy = (latest or family_only) and latest_format == "OD"          # one-day fantasy only when asked for (separate benchmark)
     history = None
     if fantasy_rows:
         from cricsim import fantasy_history

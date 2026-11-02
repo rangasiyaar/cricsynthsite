@@ -1,0 +1,58 @@
+name: Rolling backtest
+
+# The model refitted at the start of each window and judged on the matches inside it (as the nightly refit keeps the
+# live model), next to one model frozen at the start of the period: true live accuracy, and what staleness costs.
+on:
+  workflow_dispatch:
+    inputs:
+      start: { description: "First window starts", default: "2026-05-01" }
+      end: { description: "Last window ends", default: "2026-11-01" }
+      every: { description: "Days per window", default: "30" }
+      matches: { description: "Most matches per window", default: "250" }
+
+permissions:
+  contents: read
+
+jobs:
+  rolling:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [T20, OD]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Rolling backtest
+        env:
+          START: ${{ inputs.start }}
+          END: ${{ inputs.end }}
+          EVERY: ${{ inputs.every }}
+          N: ${{ inputs.matches }}
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.engine.rolling --parquet data/parquet --start "$START" --end "$END" \
+            --every "$EVERY" --matches "$N" --family ${{ matrix.family }} --out data/rolling/${{ matrix.family }} \
+            2> >(grep -E "window|fresh|ERROR|Traceback" >&2) | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rolling-${{ matrix.family }}
+          path: data/rolling
