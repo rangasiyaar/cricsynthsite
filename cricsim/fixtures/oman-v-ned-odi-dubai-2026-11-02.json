@@ -12,35 +12,35 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Netherlands won the toss and bowl first.",
   "teams": [
     {
       "name": "Oman",
       "short": "OMAN",
       "players": [
         "Jatinder Singh",
-        "Mujibur Ali",
+        "Jeet Shah",
+        "Karan Sonavale",
         "Hammad Mirza",
-        "Zikria Islam",
-        "Jay Odedra",
+        "Mujibur Ali",
+        "Vinayak Shukla",
+        "Aryan Bisht",
+        "Nadeem Khan",
         "Hassnain Shah",
-        "Shah Faisal",
-        "Samay Shrivastava",
-        "Hasnain Ul Wahab",
-        "Abdul Khaliq",
-        "Shakeel Ahmed"
+        "Shakeel Ahmed",
+        "Samay Shrivastava"
       ],
       "roles": [
         "BAT",
+        "BAT",
         "AR",
         "WK",
-        "BAT",
         "AR",
-        "AR",
+        "WK",
         "BOWL",
         "BOWL",
-        "BAT",
-        "BAT",
+        "AR",
+        "BOWL",
         "BOWL"
       ],
       "squad": [
@@ -59,7 +59,8 @@
         "Shah Faisal",
         "Sanju Sajeev",
         "Abdul Khaliq"
-      ]
+      ],
+      "captain": "Vinayak Shukla"
     },
     {
       "name": "Netherlands",
@@ -67,30 +68,30 @@
       "players": [
         "Max O'Dowd",
         "Cedric de Lange",
-        "Noah Croes",
-        "Bas de Leede",
+        "Zach Lion-Cachet",
         "Scott Edwards",
         "Colin Ackermann",
+        "Noah Croes",
         "Michael Levitt",
-        "Timm van der Gugten",
+        "Shariz Ahmad",
+        "Kyle Klein",
         "Aryan Dutt",
-        "Paul van Meekeren",
-        "Vikramjit Singh"
+        "Fred Klaassen"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "BAT",
         "WK",
         "AR",
         "WK",
         "AR",
         "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BAT"
+        "BOWL"
       ],
-      "captain": "Scott Edwards",
+      "captain": "Max O'Dowd",
       "squad": [
         "Scott Edwards",
         "Max O'Dowd",
@@ -127,6 +128,7 @@
   "live": {
     "id": 176364,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
