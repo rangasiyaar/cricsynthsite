@@ -574,3 +574,4 @@ body .legal-content h2.job-title { border-top: 0; padding-top: 0; margin: 0 0 14
 /* Match previews */
 .pv-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; }
 .post-body .pv-links a { text-decoration: none; font-weight: 600; }
+.pv-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }

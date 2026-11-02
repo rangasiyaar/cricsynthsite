@@ -37,7 +37,11 @@ export default function PreviewArticle({ a, ld, home = ["Match previews", "/prev
         <h1 className="post-title">{a.h1}</h1>
         <p className="post-standfirst">{a.standfirst}</p>
         <Byline name={PREVIEW_AUTHOR.name} role={PREVIEW_AUTHOR.role} date={a.date} minutes={a.minutes} url={`${SITE}${a.path}`} title={a.title} />
-        <p className="small muted" style={{ marginTop: 8 }}>Updated {updated.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} IST</p>
+        <p className="small muted pv-status" style={{ marginTop: 8 }}>
+          <span className={`tag ${a.xis ? "status-xis" : ""}`}>{a.xis ? "Playing XIs confirmed" : "Probable XIs"}</span>
+          Updated {updated.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} IST
+          {!a.xis && " · rebuilt automatically when the teams are named"}
+        </p>
       </div>
       <div className="post-layout">
         <div className="post-body">

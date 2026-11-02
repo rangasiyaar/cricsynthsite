@@ -20,7 +20,7 @@ export type Section = { id: string; heading: string; blocks: Block[] };
 export type Article = {
   id: string; path: string; title: string; h1: string; description: string; standfirst: string; keypoints: string[];
   sections: Section[]; faq: { q: string; a: string }[]; date: string; updated: string; minutes: number;
-  teams: [string, string]; venue?: string; series: string; no: string; start?: string;
+  teams: [string, string]; venue?: string; series: string; no: string; start?: string; xis: boolean;
 };
 
 export const previewPath = (id: string) => `/previews/${encodeURIComponent(id)}/`;
@@ -221,7 +221,7 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
   const standfirst = `${st.tone === "close" ? `${A} and ${B} look evenly matched` : `${fav} start as ${st.adj} favourites against ${dog}`}${no ? ` in the ${no}` : ""}${series ? ` of ${series}` : ""}${groundShort ? ` at ${groundShort}` : ""}`
     + `${when ? ` on ${when}` : ""}. We played the match out ${sims} times with the ${xisWord} XIs: here is what decides it.`;
   return {
-    id, path: previewPath(id), teams: [A, B], venue: ground, series, no,
+    id, path: previewPath(id), teams: [A, B], venue: ground, series, no, xis: !!m.xis,
     start: m.date ? (m.start_time ? `${m.date}T${m.start_time}:00+05:30` : m.date) : undefined,
     title: `${A} vs ${B} Preview & Prediction${label ? `, ${label}` : ""}: Pitch Report, Playing XI, Who Will Win`,
     h1: `${A} vs ${B}: preview and prediction`,
@@ -382,7 +382,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   const words = JSON.stringify(sections).split(/\s+/).length;
   const label = [no, shortDate(m.date)].filter(Boolean).join(", ");
   return {
-    id, path: fantasyPath(id), teams: [A, B], venue: ground, series, no,
+    id, path: fantasyPath(id), teams: [A, B], venue: ground, series, no, xis: !!m.xis,
     start: m.date ? (m.start_time ? `${m.date}T${m.start_time}:00+05:30` : m.date) : undefined,
     title: `${short[0]} vs ${short[1]} Fantasy Prediction${label ? `, ${label}` : ""}: Captain, Vice-Captain & Best XI`,
     h1: `${A} vs ${B}: fantasy prediction`,
