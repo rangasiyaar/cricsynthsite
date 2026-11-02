@@ -1,0 +1,111 @@
+{
+  "id": "bik-v-jab-t20-kirtipur-2026-11-03",
+  "title": "Biratnagar Kings v Janakpur Bolts",
+  "date": "2026-11-03",
+  "start_time": "12:15",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League 2026 · 12th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Biratnagar Kings",
+      "short": "BIK",
+      "players": [
+        "Shehan Jayasuriya",
+        "Lokesh Bam",
+        "Andre Russell",
+        "Imran Sheikh",
+        "Angelo Mathews",
+        "Shubham Ranjane",
+        "Narayan Joshi",
+        "Rupesh Singh",
+        "Sandeep Lamichhane",
+        "Basir Ahamad",
+        "Pratis GC"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Sandeep Lamichhane",
+      "squad": [
+        "Shehan Jayasuriya",
+        "Lokesh Bam",
+        "Andre Russell",
+        "Imran Sheikh",
+        "Angelo Mathews",
+        "Shubham Ranjane",
+        "Narayan Joshi",
+        "Rupesh Singh",
+        "Sandeep Lamichhane",
+        "Basir Ahamad",
+        "Pratis GC"
+      ]
+    },
+    {
+      "name": "Janakpur Bolts",
+      "short": "JAB",
+      "players": [
+        "Moeen Ali",
+        "Trit Raj Das",
+        "Saif Hassan",
+        "Harmeet Singh",
+        "Anil Sah",
+        "James Neesham",
+        "Abhisekh Tiwari",
+        "Amar Routela",
+        "Mayan Yadav",
+        "Lalit Rajbanshi",
+        "Rahul Yadav"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harmeet Singh",
+      "squad": [
+        "Moeen Ali",
+        "Trit Raj Das",
+        "Saif Hassan",
+        "Harmeet Singh",
+        "Anil Sah",
+        "James Neesham",
+        "Abhisekh Tiwari",
+        "Amar Routela",
+        "Mayan Yadav",
+        "Lalit Rajbanshi",
+        "Rahul Yadav"
+      ]
+    }
+  ],
+  "live": {
+    "id": 177690,
+    "auto": true,
+    "xis": false
+  }
+}

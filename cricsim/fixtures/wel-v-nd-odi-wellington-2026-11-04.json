@@ -1,0 +1,111 @@
+{
+  "id": "wel-v-nd-odi-wellington-2026-11-04",
+  "title": "Wellington v Northern Districts",
+  "date": "2026-11-04",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 8th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Basin Reserve, Wellington",
+  "venue_search": "wellington",
+  "city": "Wellington",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Wellington",
+      "short": "WEL",
+      "players": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Abbas",
+        "Oscar Jackson",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "James Hartshorn",
+        "Liam Dudding",
+        "Yahya Zeb"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "James Hartshorn",
+      "squad": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Abbas",
+        "Oscar Jackson",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "James Hartshorn",
+        "Liam Dudding",
+        "Yahya Zeb"
+      ]
+    },
+    {
+      "name": "Northern Districts",
+      "short": "ND",
+      "players": [
+        "Nick Kelly",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert ODonnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Snehith Reddy",
+        "Aryan Mann",
+        "Josh Brown",
+        "James Naylor",
+        "Cooper Rowell"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Robert ODonnell",
+      "squad": [
+        "Nick Kelly",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert ODonnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Snehith Reddy",
+        "Aryan Mann",
+        "Josh Brown",
+        "James Naylor",
+        "Cooper Rowell"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170481,
+    "auto": true,
+    "xis": false
+  }
+}

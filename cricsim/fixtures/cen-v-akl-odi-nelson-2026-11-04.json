@@ -1,0 +1,111 @@
+{
+  "id": "cen-v-akl-odi-nelson-2026-11-04",
+  "title": "Central Stags v Auckland",
+  "date": "2026-11-04",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 7th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Saxton Oval, Nelson",
+  "venue_search": "nelson",
+  "city": "Nelson",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Central Stags",
+      "short": "CEN",
+      "players": [
+        "Will Young",
+        "Taylor Bettelheim",
+        "Brad Schmulian",
+        "Tom Bruce",
+        "Dane Cleaver",
+        "Sam Cassidy",
+        "Jake Gibson",
+        "Ajaz Patel",
+        "Toby Findlay",
+        "Oscar Mabin",
+        "Raymond Toole"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Tom Bruce",
+      "squad": [
+        "Will Young",
+        "Taylor Bettelheim",
+        "Brad Schmulian",
+        "Tom Bruce",
+        "Dane Cleaver",
+        "Sam Cassidy",
+        "Jake Gibson",
+        "Ajaz Patel",
+        "Toby Findlay",
+        "Oscar Mabin",
+        "Raymond Toole"
+      ]
+    },
+    {
+      "name": "Auckland",
+      "short": "AKL",
+      "players": [
+        "Sean Solia",
+        "Dale Phillips",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Jack Wright",
+        "Harry Cullen-Hieatt"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sean Solia",
+      "squad": [
+        "Sean Solia",
+        "Dale Phillips",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Jack Wright",
+        "Harry Cullen-Hieatt"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170473,
+    "auto": true,
+    "xis": false
+  }
+}

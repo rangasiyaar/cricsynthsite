@@ -1,0 +1,111 @@
+{
+  "id": "otg-v-cntbry-odi-dunedin-2026-11-04",
+  "title": "Otago v Canterbury",
+  "date": "2026-11-04",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy 2026-27 · 9th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "University Oval, Dunedin",
+  "venue_search": "dunedin",
+  "city": "Dunedin",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Otago",
+      "short": "OTG",
+      "players": [
+        "Jacob Cumming",
+        "Jack Boyle",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Thomas O Connor",
+        "Danru Ferns",
+        "Matthew Bacon"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Luke Georgeson",
+      "squad": [
+        "Jacob Cumming",
+        "Jack Boyle",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Thomas O Connor",
+        "Danru Ferns",
+        "Matthew Bacon"
+      ]
+    },
+    {
+      "name": "Canterbury",
+      "short": "CNTBRY",
+      "players": [
+        "Henry Nicholls",
+        "Chad Bowes",
+        "Scott Janett",
+        "Tom Latham",
+        "Leo Carter",
+        "Cole McConchie",
+        "Cameron Paul",
+        "Kyle Jamieson",
+        "LLB Harper",
+        "Angus McKenzie",
+        "Raunaq Kapur"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Henry Nicholls",
+      "squad": [
+        "Henry Nicholls",
+        "Chad Bowes",
+        "Scott Janett",
+        "Tom Latham",
+        "Leo Carter",
+        "Cole McConchie",
+        "Cameron Paul",
+        "Kyle Jamieson",
+        "LLB Harper",
+        "Angus McKenzie",
+        "Raunaq Kapur"
+      ]
+    }
+  ],
+  "live": {
+    "id": 170487,
+    "auto": true,
+    "xis": false
+  }
+}
