@@ -464,7 +464,42 @@ def _script_teams(con, spec, sims, mt, pids, pts, team_of, real) -> dict:
     rtop = [int(k) for k in np.argsort(-rc)[:5] if rc[k] > 0]
     cal["reliable_top5_best"] = max(team_points(*pick_xi(dict(zip(pids, pts[rkey == k].mean(0))), team_of), real) for k in rtop)
     cal["best"] = team_points(*pick_xi(real, team_of), real)
-    out = {"cal_row": cal, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
+    # coverage index: expected balls in action (faced + bowled) per player across the simulations
+    cov = dict.fromkeys(pids, 0.0)
+    for part in sims.parts:
+        for lg in part.innings:
+            for k, pl in enumerate(lg.order):
+                if pl in cov:
+                    cov[pl] += float(lg.bat_balls[:, k].sum()) / sims.n
+            for k, pl in enumerate(lg.bowlers):
+                if pl in cov:
+                    cov[pl] += float(lg.bowl_balls[:, k].sum()) / sims.n
+    from cricsim.fantasy import decisive_mean
+    live = dict(zip(pids, decisive_mean(pts, win)))
+    avg = float(np.mean(list(cov.values()))) or 1.0
+    crow = {"date": str(mt["date"]), "live": team_points(*pick_xi(live, team_of), real), "best": cal["best"]}
+    crow["cov_xi"] = team_points(*pick_xi(cov, team_of), real)
+    for k in (0.25, 0.5, 1.0):
+        crow[f"cov_blend_{k}"] = team_points(*pick_xi({p: live[p] * ((cov[p] + 1) / (avg + 1)) ** k for p in pids}, team_of), real)
+    xi, _, _ = pick_xi(live, team_of)
+    cc = sorted(xi, key=lambda p: -live[p] * (cov[p] + 1) / (avg + 1))
+    crow["cov_captain"] = team_points(xi, cc[0], cc[1], real)
+    # how well the index matched real time in action (balls faced + bowled)
+    act = dict(con.execute("""SELECT p, sum(n) FROM (
+            SELECT batter_id p, count(*) n FROM hold WHERE match_id = ? AND coalesce(wides, 0) = 0 GROUP BY 1
+            UNION ALL SELECT bowler_id, count(*) FROM hold WHERE match_id = ? AND is_legal GROUP BY 1) GROUP BY 1""",
+                           [mt["match_id"], mt["match_id"]]).fetchall())
+    a = np.array([float(act.get(p, 0)) for p in pids])
+    c = np.array([cov[p] for p in pids])
+    r = np.array([real[p] for p in pids])
+    lv = np.array([live[p] for p in pids])
+    if a.std() > 0 and c.std() > 0:
+        crow["corr_cov_actual"] = float(np.corrcoef(c, a)[0, 1])
+        crow["corr_actual_points"] = float(np.corrcoef(a, r)[0, 1])
+        # does coverage explain real points beyond expected points? (partial correlation)
+        res = r - np.polyval(np.polyfit(lv, r, 1), lv)
+        crow["partial_cov_points"] = float(np.corrcoef(c, res)[0, 1]) if res.std() > 0 else 0.0
+    out = {"cal_row": cal, "cov_row": crow, "script_top5_best": max(got), "script_top5_avg": float(np.mean(got)), "script_top1": got[0],
            "script_share_top5": float(counts[top].sum() / counts.sum())}
     out["script_oracle"] = out["script_top1"]                    # no result: nothing to compare
     # the real match's script
@@ -888,6 +923,7 @@ def score(res: dict, cutoff: date, n_matches: int) -> dict:
                               for lab, g in (("favourite won", [r for r in f if r.get("fav_won") is True]),
                                              ("favourite lost", [r for r in f if r.get("fav_won") is False])) if g},
                           "script_pred": [r["script_pred"] for r in f if "script_pred" in r],
+                          "cov_rows": [r["cov_row"] for r in f if "cov_row" in r],
                           "cal_rows": [{**r["cal_row"], "portfolio_5": r.get("portfolio_5")} for r in f if "cal_row" in r],
                           "scripts": {"hit_rate": round(float(np.mean([r["script_hit"] for r in f if "script_hit" in r])), 3)
                                       if any("script_hit" in r for r in f) else None,
