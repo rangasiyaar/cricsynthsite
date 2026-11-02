@@ -12,35 +12,35 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sudur Paschim Royals won the toss and bowl first.",
   "teams": [
     {
       "name": "Chitwan Rhinos",
       "short": "CHR",
       "players": [
-        "Arjun Saud",
-        "Dev Khanal",
-        "Malan",
-        "Bibek Yadav",
-        "Bopara",
-        "Mousley",
-        "Tom Taylor",
-        "Mousom Dhakal",
         "Rijan Dhakal",
+        "Kamal Singh",
+        "Dev Khanal",
+        "Arjun Saud",
+        "Bibek Yadav",
         "Ranjit Kumar",
-        "Deepak Bohara"
+        "Mousom Dhakal",
+        "Bopara",
+        "Malan",
+        "Tom Taylor",
+        "Sikandar Raza"
       ],
       "roles": [
+        "BOWL",
+        "AR",
+        "BAT",
         "WK",
         "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
         "BAT",
-        "BAT",
         "AR",
-        "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
         "AR"
       ],
       "captain": "Bopara",
@@ -74,27 +74,27 @@
       "name": "Sudur Paschim Royals",
       "short": "SPR",
       "players": [
-        "Bhandari",
-        "Ishan Pandey",
         "Dipendra Singh Airee",
-        "Sherfane Rutherford",
-        "Saif Zaib",
+        "Bhandari",
+        "Aarif Sheikh",
+        "Ishan Pandey",
         "Hemant Dhami",
         "Abinash Bohara",
-        "Milan Bohara",
-        "Aarif Sheikh",
+        "Saif Zaib",
+        "Brandon McMullen",
         "Kuggeleijn",
-        "Tharindu Ratnayake"
+        "Sherfane Rutherford",
+        "Anil Kharel"
       ],
       "roles": [
+        "AR",
         "WK",
+        "AR",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
         "AR",
         "AR",
         "AR"
@@ -127,6 +127,7 @@
   "live": {
     "id": 177681,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
