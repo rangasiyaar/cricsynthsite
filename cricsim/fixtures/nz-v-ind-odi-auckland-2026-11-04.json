@@ -1,0 +1,111 @@
+{
+  "id": "nz-v-ind-odi-auckland-2026-11-04",
+  "title": "New Zealand v India",
+  "date": "2026-11-04",
+  "start_time": "07:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "India tour of New Zealand 2026 · 1st ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Eden Park, Auckland",
+  "venue_search": "auckland",
+  "city": "Auckland",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Tim Seifert",
+        "Finn Allen",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Adam Milne",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Santner",
+      "squad": [
+        "Tim Seifert",
+        "Finn Allen",
+        "Daryl Mitchell",
+        "Glenn Phillips",
+        "Bevon Jacobs",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Adam Milne",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ]
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Sanju Samson",
+        "Abhishek Sharma",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Naman Dhir",
+        "Nitish Kumar Reddy",
+        "Bhuvneshwar Kumar",
+        "Prince Yadav",
+        "Arshdeep Singh",
+        "Varun Chakaravarthy"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shreyas Iyer",
+      "squad": [
+        "Sanju Samson",
+        "Abhishek Sharma",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Tilak Varma",
+        "Naman Dhir",
+        "Nitish Kumar Reddy",
+        "Bhuvneshwar Kumar",
+        "Prince Yadav",
+        "Arshdeep Singh",
+        "Varun Chakaravarthy"
+      ]
+    }
+  ],
+  "live": {
+    "id": 161245,
+    "auto": true,
+    "xis": false
+  }
+}
