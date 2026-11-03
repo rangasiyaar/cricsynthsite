@@ -29,7 +29,7 @@ export default function Login() {
   const [emailOpen, setEmailOpen] = useState(false);
 
   // wait while a sign-in is in flight, so a new account's welcome request goes out first
-  useEffect(() => { if (user && !busy) window.location.replace(next()); }, [user, busy]);
+  useEffect(() => { if (user && !busy) { welcome(user); window.location.replace(next()); } }, [user, busy]);
 
   const run = async (f: () => Promise<unknown>) => {
     setBusy(true); setErr(null); setInfo(null);

@@ -35,7 +35,7 @@ export default function AppLogin() {
 
   // Google needs the native plugin inside the app; without it the app offers email only.
   useEffect(() => { const g = !isNative() || hasNativeGoogle(); setGoogle(g); if (!g) setEmailOpen(true); }, []);
-  useEffect(() => { if (user && !busy) router.replace(next()); }, [user, busy, router]);
+  useEffect(() => { if (user && !busy) { welcome(user); router.replace(next()); } }, [user, busy, router]);
 
   const run = async (f: () => Promise<unknown>) => {
     setBusy(true); setErr(null); setInfo(null);
