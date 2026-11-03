@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Lumbini Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "Lumbini Lions",
@@ -21,24 +21,24 @@
         "D Arcy Short",
         "Aasif Sheikh",
         "Niroshan Dickwella",
-        "Shamim Hossain",
         "Rohit Paudel",
-        "Tilak Bhandari",
+        "Shamim Hossain",
         "Sundeep Jora",
-        "Dilip Nath",
-        "Shadley van Schalkwyk",
+        "Abhishesh Gautam",
+        "Ruben Trumpelmann",
+        "Tilak Bhandari",
         "Kishore Mahato",
         "Sher Malla"
       ],
       "roles": [
-        "BAT",
-        "BAT",
+        "AR",
         "WK",
         "BAT",
-        "AR",
+        "BAT",
         "AR",
         "BAT",
         "BAT",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -48,57 +48,62 @@
         "D Arcy Short",
         "Aasif Sheikh",
         "Niroshan Dickwella",
-        "Shamim Hossain",
         "Rohit Paudel",
-        "Tilak Bhandari",
+        "Shamim Hossain",
         "Sundeep Jora",
-        "Dilip Nath",
-        "Shadley van Schalkwyk",
+        "Abhishesh Gautam",
+        "Ruben Trumpelmann",
+        "Tilak Bhandari",
         "Kishore Mahato",
-        "Sher Malla"
+        "Sher Malla",
+        "Dilip Nath",
+        "Shadley van Schalkwyk"
       ]
     },
     {
       "name": "Pokhara Avengers",
       "short": "POA",
       "players": [
-        "Dinesh Kharel",
-        "Mahedi Hasan",
         "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sadeera Samarawickrama",
         "Shakib Al Hasan",
         "Arjun Gharti",
         "Kiran Thagunna",
-        "Mohammad Saifuddin",
+        "Arjun Kumal",
         "Chamika Karunaratne",
         "Bipin Acharya",
         "Bipin Khatri",
-        "Pratik Pokhrel"
+        "Aakash Chand"
       ],
       "roles": [
         "BAT",
         "AR",
-        "AR",
+        "WK",
         "AR",
         "WK",
         "BAT",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "BAT",
         "BOWL"
       ],
       "captain": "Kushal Bhurtel",
       "squad": [
-        "Dinesh Kharel",
-        "Mahedi Hasan",
         "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sadeera Samarawickrama",
         "Shakib Al Hasan",
         "Arjun Gharti",
         "Kiran Thagunna",
-        "Mohammad Saifuddin",
+        "Arjun Kumal",
         "Chamika Karunaratne",
         "Bipin Acharya",
         "Bipin Khatri",
+        "Aakash Chand",
+        "Dinesh Kharel",
+        "Mohammad Saifuddin",
         "Pratik Pokhrel"
       ]
     }
@@ -106,6 +111,7 @@
   "live": {
     "id": 177691,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
