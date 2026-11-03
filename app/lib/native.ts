@@ -74,7 +74,15 @@ export async function appInfo(): Promise<AppInfo | null> {
   return i ? { version: i.version, build: Number(i.build) || 0 } : null;
 }
 
-export type Release = { version: string; build: number; bytes?: number; updated?: string; url: string };
+export type Change = { version: string; notes: string[] };
+export type Release = { version: string; build: number; bytes?: number; updated?: string; url: string; changes?: Change[] };
+
+/** -1, 0 or 1 comparing two "x.y.z" versions. */
+export const cmpVersion = (a: string, b: string): number => {
+  const x = a.split(".").map(Number), y = b.split(".").map(Number);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (x[i] || 0) - (y[i] || 0); if (d) return Math.sign(d); }
+  return 0;
+};
 
 /** The latest published release, from the site's /download/app.json (written by the publish job). */
 export async function latestRelease(site: string): Promise<Release | null> {

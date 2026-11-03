@@ -341,6 +341,11 @@ html.a-locked { overflow: hidden; }
 .a-dialog p { margin: 0 0 6px; font-size: 15px; line-height: 1.5; color: var(--cs-ink-2); }
 .a-btn.a-btn-quiet { background: transparent; color: var(--cs-ink); border: 1px solid var(--cs-line); }
 .a-btn.a-btn-quiet:active { background: var(--cs-bg); }
+.a-changes { margin: 4px 0 14px; border: 1px solid var(--cs-line); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
+.a-changes summary { cursor: pointer; font-weight: 600; color: var(--cs-ink); }
+.a-changes > div { margin-top: 10px; }
+.a-changes ul { margin: 4px 0 0; padding-left: 18px; color: var(--cs-ink-2); line-height: 1.5; }
+.a-avatar.a-avatar-top { width: 32px; height: 32px; margin: 0; font-size: 13px; }
 .a-alert { position: fixed; left: 12px; right: 12px; top: calc(10px + env(safe-area-inset-top)); z-index: 70; display: grid; gap: 2px; text-align: left;
   background: var(--cs-ink); color: var(--cs-bg); border: 0; border-radius: 14px; padding: 12px 16px; font: inherit; animation: a-in .2s both; }
 .a-alert b { font-size: 15px; }

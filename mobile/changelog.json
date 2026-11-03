@@ -1,0 +1,17 @@
+[
+  {"version": "0.2.2", "notes": [
+    "The menu opens from your profile icon, in place of the three lines",
+    "Match screens no longer have a share button at the top",
+    "The update prompt waits until the app has opened and lists what's new"
+  ]},
+  {"version": "0.2.1", "notes": [
+    "Plainer headings across the match screens",
+    "Tabs renamed: Venue, and Batter v bowler"
+  ]},
+  {"version": "0.2.0", "notes": [
+    "The app tells you when a new version is out",
+    "Version number in the side menu and settings",
+    "Share the app opens Android's share sheet",
+    "Match alerts work on Android 13 and later, and show while the app is open"
+  ]}
+]

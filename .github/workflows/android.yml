@@ -128,6 +128,7 @@ jobs:
           gh release create "$tag" "cricsynthesis-${version}-build${GITHUB_RUN_NUMBER}.apk" CricSynthesis.apk \
             --target "$GITHUB_SHA" $flag \
             --title "CricSynthesis for Android ${version} (build ${GITHUB_RUN_NUMBER})" \
-            --notes "Android app, ${kind} build ${GITHUB_RUN_NUMBER}. Install the APK on an Android phone (allow installs from this source when asked)."
+            --notes "$(node -e 'const [v, k, n] = process.argv.slice(1); const c = require("./mobile/changelog.json").find((e) => e.version === v);
+              console.log((c ? c.notes.map((x) => "- " + x).join("\n") + "\n\n" : "") + `Android app, ${k} build ${n}. Install the APK on an Android phone (allow installs from this source when asked).`)' "$version" "$kind" "$GITHUB_RUN_NUMBER")"
           # the website's download page serves the latest signed release
           [ "$kind" = release ] && gh workflow run publish-site.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f quick=true || true

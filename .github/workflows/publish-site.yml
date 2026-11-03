@@ -166,7 +166,8 @@ jobs:
           m = re.search(r"android-v(.+)-build(\d+)$", r["tagName"])
           if a and m:
               json.dump({"version": m.group(1), "build": int(m.group(2)), "bytes": a["size"], "updated": r["publishedAt"][:10],
-                         "url": "/download/cricsynthesis.apk"}, open("app/out/download/app.json", "w"))
+                         "url": "/download/cricsynthesis.apk",
+                         "changes": json.load(open("mobile/changelog.json"))[:6]}, open("app/out/download/app.json", "w"))
               print(open("app/out/download/app.json").read())
           else:
               print("::warning::The latest release has no CricSynthesis.apk yet")

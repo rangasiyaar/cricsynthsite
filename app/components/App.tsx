@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { appInfo, hideSplash, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
+import { appInfo, cmpVersion, hideSplash, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
   themeStatusBar, type AppInfo, type Release } from "@/lib/native";
 import { TIERS } from "@/lib/plans";
 import { SITE } from "@/lib/seo";
@@ -17,11 +17,14 @@ import type { MatchDoc } from "@/lib/types";
 // Screens where the back button closes the app instead of going back.
 const TOP = new Set(["/", "/index.html", "/m/", "/m/index.html", "/m/matches/", "/m/login/"]);
 
+const SPLASH = new Set(["/", "/index.html", "/m/", "/m/index.html"]);   // the update prompt waits until the app is past these
 const LATER_KEY = "cs-update-later";      // "<build>:<time>": "Later" hides that build's prompt for a day
 
 export function AppRuntime() {
   const router = useRouter();
+  const pathname = usePathname();
   const [update, setUpdate] = useState<Release | null>(null);
+  const [mine, setMine] = useState("");
   const [alert, setAlert] = useState<{ title: string; body: string; path?: string } | null>(null);
   useEffect(() => {
     // a newer release on the site: offer it once the app is open (Later hides it for a day, per build)
@@ -32,6 +35,7 @@ export function AppRuntime() {
         const [b, t] = (localStorage.getItem(LATER_KEY) ?? "").split(":").map(Number);
         if (b === rel.build && Date.now() - t < 86_400_000) return;
       } catch {}
+      setMine(me.version);
       setUpdate(rel);
     });
     let offOpen = () => {};
@@ -68,11 +72,22 @@ export function AppRuntime() {
   }, []);
   const later = () => { try { localStorage.setItem(LATER_KEY, `${update?.build}:${Date.now()}`); } catch {} setUpdate(null); };
   return <>
-    {update && (
+    {update && !SPLASH.has(pathname) && (
       <div className="a-dialog-wrap" role="dialog" aria-modal="true" aria-labelledby="a-update-title">
         <div className="a-dialog">
           <h2 id="a-update-title">Update available</h2>
           <p>Version {update.version} (build {update.build}) is ready{update.bytes ? `, ${(update.bytes / 1048576).toFixed(1)} MB` : ""}.</p>
+          {(() => {
+            const news = (update.changes ?? []).filter((c) => cmpVersion(c.version, mine) > 0 && cmpVersion(c.version, update.version) <= 0);
+            return news.length > 0 && (
+              <details className="a-changes">
+                <summary>What&apos;s new</summary>
+                {news.map((c) => (
+                  <div key={c.version}><b>{c.version}</b><ul>{c.notes.map((n) => <li key={n}>{n}</li>)}</ul></div>
+                ))}
+              </details>
+            );
+          })()}
           <button type="button" className="a-btn" onClick={() => { openExternal(update.url); setUpdate(null); }}>Update</button>
           <button type="button" className="a-btn a-btn-quiet" onClick={later}>Later</button>
         </div>
@@ -213,7 +228,6 @@ export function TopBar({ back, right }: { back?: string; right?: React.ReactNode
 const drawer: { close: (() => void) | null } = { close: null };
 
 const MENU_ICONS = {
-  menu: svg("M4 7h16M4 12h16M4 17h16"),
   close: svg("M6 6l12 12M18 6L6 18"),
   matches: svg("M4 5h16v14H4zM4 10h16M10 10v9"),
   user: svg("M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"),
@@ -227,10 +241,13 @@ const MENU_ICONS = {
 };
 
 function MenuButton() {
+  const { user } = usePlan();
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" className="a-icon" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(true)}>{MENU_ICONS.menu}</button>
+      <button type="button" className="a-icon" aria-label="Account and menu" aria-expanded={open} onClick={() => setOpen(true)}>
+        {user ? <span className="a-avatar a-avatar-top">{initials(user.displayName || user.email || "?")}</span> : MENU_ICONS.user}
+      </button>
       {open && <Drawer onClose={() => setOpen(false)} />}
     </>
   );

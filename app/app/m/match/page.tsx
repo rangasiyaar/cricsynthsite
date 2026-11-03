@@ -2,15 +2,14 @@
 // App match centre: the match at a glance and a menu of sections; each section opens on a screen of its own
 // (?s=<section>), so the phone's back button returns to the menu.
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, TopBar, fromSlug, preview, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionName, sectionsFor, type Section } from "@/components/MatchCentre";
 import { loadMatch, peekMatch } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
-import { share } from "@/lib/native";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
 import { SITE } from "@/lib/seo";
-import { matchPath, resultPath } from "@/lib/matchText";
+import { resultPath } from "@/lib/matchText";
 import type { MatchDoc } from "@/lib/types";
 
 function Menu({ doc }: { doc: MatchDoc }) {
@@ -61,20 +60,12 @@ function Match() {
   const fresh = useFresh(id || null, () => peekMatch(id), () => loadMatch(id));
   const doc = fresh.data;
   const error = !id ? "No match selected." : fresh.error ? "This match's forecast isn't available in the app." : null;
-  const [note, setNote] = useState<string | null>(null);
 
   const section = doc ? fromSlug(params.get("s"), sectionsFor(doc)) : null;
-  const short = doc ? doc.match.teams.map((t) => t.short).join(" v ") : "Match";
-  const onShare = async () => {
-    const r = await share(doc?.match.title ?? short, `${SITE}${matchPath(id)}`);
-    if (r === "copied") { setNote("Link copied"); setTimeout(() => setNote(null), 2000); }
-  };
   const menu = `/m/match/?id=${encodeURIComponent(id)}`;
   return (
     <>
-      <TopBar back={section ? menu : "/m/matches/"}
-              right={doc && <button type="button" className="a-icon" aria-label="Share this match" onClick={onShare}>{Icon.share}</button>} />
-      {note && <div className="a-toast" role="status">{note}</div>}
+      <TopBar back={section ? menu : "/m/matches/"} />
       <OfflineBar show={fresh.offline} onRetry={fresh.refresh} />
       {error && (
         <Empty title="Not available" action={<button type="button" className="a-pill" onClick={() => router.replace("/m/matches/")}>Back to matches</button>}>
