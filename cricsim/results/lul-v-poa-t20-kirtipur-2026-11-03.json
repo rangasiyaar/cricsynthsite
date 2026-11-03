@@ -1,0 +1,341 @@
+{
+ "id": "lul-v-poa-t20-kirtipur-2026-11-03",
+ "innings": [
+  {
+   "team": "Pokhara Avengers",
+   "runs": 97,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Arjun Kumal",
+     "dismissal": "b Ruben Trumpelmann",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kushal Bhurtel",
+     "dismissal": "c Ruben Trumpelmann b Tilak Bhandari",
+     "runs": 14,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sadeera Samarawickrama",
+     "dismissal": "c Abhishesh Gautam b Ruben Trumpelmann",
+     "runs": 7,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bipin Acharya",
+     "dismissal": "c and b Sher Malla",
+     "runs": 1,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shakib Al Hasan",
+     "dismissal": "c Aasif Sheikh b Rohit Paudel",
+     "runs": 3,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mahedi Hasan",
+     "dismissal": "c D Arcy Short b Tilak Bhandari",
+     "runs": 13,
+     "balls": 24,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Arjun Gharti",
+     "dismissal": "lbw b Ruben Trumpelmann",
+     "runs": 6,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chamika Karunaratne",
+     "dismissal": "run out (Niroshan Dickwella)",
+     "runs": 25,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Kiran Thagunna",
+     "dismissal": "c and b Abhishesh Gautam",
+     "runs": 12,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Bipin Khatri",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Aakash Chand",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ruben Trumpelmann",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Kishor Mahato",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sher Malla",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abhishesh Gautam",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Tilak Bhandari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rohit Paudel",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 2,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arjun Kumal",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sadeera Samarawickrama",
+     "score": 11,
+     "over": "2.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Bipin Acharya",
+     "score": 15,
+     "over": "3.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kushal Bhurtel",
+     "score": 29,
+     "over": "7.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shakib Al Hasan",
+     "score": 31,
+     "over": "8.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Arjun Gharti",
+     "score": 50,
+     "over": "14.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mahedi Hasan",
+     "score": 52,
+     "over": "15.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kiran Thagunna",
+     "score": 70,
+     "over": "16.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Chamika Karunaratne",
+     "score": 91,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 3,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 23
+  },
+  {
+   "team": "Lumbini Lions",
+   "runs": 98,
+   "wickets": 2,
+   "overs": "11.4",
+   "batting": [
+    {
+     "name": "Aasif Sheikh",
+     "dismissal": "run out (Aakash Chand/Bipin Acharya)",
+     "runs": 7,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "D Arcy Short",
+     "dismissal": "c Aakash Chand b Bipin Khatri",
+     "runs": 13,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Rohit Paudel",
+     "dismissal": "not out",
+     "runs": 47,
+     "balls": 32,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Niroshan Dickwella",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 26,
+     "fours": 2,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mahedi Hasan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bipin Khatri",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Shakib Al Hasan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chamika Karunaratne",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kushal Bhurtel",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aakash Chand",
+     "overs": "1.4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aasif Sheikh",
+     "score": 8,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "D Arcy Short",
+     "score": 21,
+     "over": "1.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 1,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  }
+ ],
+ "winner": "Lumbini Lions",
+ "result": "Lumbini Lions won by 8 wickets"
+}
