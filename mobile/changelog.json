@@ -1,14 +1,14 @@
 [
-  {"version": "0.2.2", "notes": [
+  {"version": "0.2.2", "date": "2026-11-03", "notes": [
     "The menu opens from your profile icon, in place of the three lines",
     "Match screens no longer have a share button at the top",
     "The update prompt waits until the app has opened and lists what's new"
   ]},
-  {"version": "0.2.1", "notes": [
+  {"version": "0.2.1", "date": "2026-11-03", "notes": [
     "Plainer headings across the match screens",
     "Tabs renamed: Venue, and Batter v bowler"
   ]},
-  {"version": "0.2.0", "notes": [
+  {"version": "0.2.0", "date": "2026-11-03", "notes": [
     "The app tells you when a new version is out",
     "Version number in the side menu and settings",
     "Share the app opens Android's share sheet",

@@ -1,5 +1,7 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import { DownloadButton, PhonePreview, VersionLine } from "@/components/AppDownload";
 
@@ -18,10 +20,16 @@ const FEATURES: { title: string; text: string }[] = [
 const FAQ: [string, React.ReactNode][] = [
   ["Why isn't it on the Play Store?", "It will be. Until then you install it straight from this page, which Android allows once you say yes to installs from your browser."],
   ["Is it safe to install?", "Every version is signed with the same CricSynthesis key, so Android will only ever update it with a build from us. It needs no special permissions."],
-  ["How do I update it?", "Download it again from this page and install. It updates in place and keeps your sign-in and settings."],
+  ["How do I update it?", "The app tells you when a new version is out: tap Update and install. You can also download it again from this page. It updates in place and keeps your sign-in and settings."],
   ["Is it free?", <>Yes. The match centre is free, and MatchSynth Lab is part of Pro, which every signed-in account gets free during the beta. See <Link href="/pricing/">plans</Link>.</>],
   ["I have an iPhone.", "There's no iPhone app yet. The website works the same way: in Safari tap Share, then Add to Home Screen, and it opens like an app."],
 ];
+
+// The app's release notes (mobile/changelog.json, newest first): the same notes the app's update prompt and the
+// release page show, read when the site is built.
+type Change = { version: string; date?: string; notes: string[] };
+const CHANGES: Change[] = JSON.parse(readFileSync(path.join(process.cwd(), "..", "mobile", "changelog.json"), "utf8"));
+const day = (d?: string) => d ? new Date(`${d}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }) : "";
 
 export default function AppPage() {
   return (
@@ -53,6 +61,16 @@ export default function AppPage() {
         <li><div className="cs-step-n">02</div><h3>Allow and install</h3><p>Open the download. If Android asks, allow installs from your browser, then tap Install.</p></li>
         <li><div className="cs-step-n">03</div><h3>Open and sign in</h3><p>Browse matches straight away, or sign in with Google or email to open MatchSynth Lab.</p></li>
       </ol>
+
+      <h2 style={{ marginTop: 72 }}>What&apos;s new</h2>
+      <div className="app-faq">
+        {CHANGES.slice(0, 8).map((c, i) => (
+          <details key={c.version} open={i === 0}>
+            <summary><span>Version {c.version}{c.date && <span className="muted" style={{ fontWeight: 400 }}> · {day(c.date)}</span>}</span></summary>
+            <ul>{c.notes.map((n) => <li key={n}>{n}</li>)}</ul>
+          </details>
+        ))}
+      </div>
 
       <h2 style={{ marginTop: 72 }}>Questions</h2>
       <div className="app-faq">

@@ -444,6 +444,7 @@ body .nav .nav-link { white-space: nowrap; }
 .app-faq summary::after { content: "+"; font-family: var(--cs-mono); color: var(--cs-steel-700); transition: transform .2s; }
 .app-faq details[open] summary::after { transform: rotate(45deg); }
 .app-faq p { margin: 0 0 18px; color: var(--cs-ink-2); line-height: 1.6; max-width: 64ch; }
+.app-faq details ul { margin: 0 0 18px; padding-left: 20px; color: var(--cs-ink-2); line-height: 1.6; max-width: 64ch; }
 .app-cta { margin: 80px 0 96px; padding: clamp(28px, 5vw, 48px); background: var(--cs-surface); display: flex; flex-wrap: wrap; gap: 20px;
   align-items: center; justify-content: space-between; }
 .app-cta h2 { margin: 0; font-size: clamp(26px, 3.4vw, 38px); }
