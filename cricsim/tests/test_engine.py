@@ -338,8 +338,8 @@ def test_new_ground_level_and_venue_half_life(world):
     ng = m.meta["fit"]["new_ground"]
     assert "balls" in ng
     assert np.isfinite(m.factors["venue"][0]).all()
-    base = fit(world["parquet"], FitConfig())
-    assert not base.factors["venue"][0].any()                       # default: unseen ground = global average
+    base = fit(world["parquet"], FitConfig(new_ground=False, venue_half_life=None))
+    assert not base.factors["venue"][0].any()                       # new_ground off: unseen ground = global average
     assert not np.allclose(m.factors["venue"][1:], base.factors["venue"][1:])   # shorter memory moves ground factors
 
 

@@ -18,7 +18,7 @@ def main() -> None:
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/models/latest"))
 @click.option("--cutoff", type=click.DateTime(["%Y-%m-%d"]), default=None, help="Train only on matches before this date")
-@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
+@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 4.17)")
 @click.option("--memory", default="4GB")
 def fit(parquet: Path, out: Path, cutoff, half_life: float | None, memory: str) -> None:
     """Fit the ball-outcome model and player ratings."""
@@ -62,7 +62,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--latest-format", type=click.Choice(["T20", "OD"]), default="T20", help="With --latest: T20-type or one-day")
 @click.option("--latest-teams", default="", help="With --latest: only matches between these teams, comma-separated")
 @click.option("--insample", default=0, help="Also re-run the model on this many matches from its last six months")
-@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 3)")
+@click.option("--half-life", "half_life", type=float, default=None, help="Recency half-life in years (default 4.17)")
 @click.option("--fantasy-bowlers", is_flag=True, help="Also score fantasy XIs picked with the real bowling plan")
 @click.option("--comp-groups", type=click.Choice(["off", "club", "all"]), default=None,
               help="Variant: competitions lean on similar competitions")

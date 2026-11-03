@@ -22,7 +22,7 @@ from pathlib import Path
 import click
 
 from cricsim.engine.backtest import run_backtest
-from cricsim.engine.fit import SHRINK
+from cricsim.engine.fit import SHRINK, FitConfig
 
 log = logging.getLogger(__name__)
 
@@ -119,10 +119,12 @@ def main(parquet, tune_start, tune_end, valid_end, family, trials, tune_matches,
         return s["brier"] if s["brier"] is not None else 1.0
 
     study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=0))
+    cur = FitConfig()
     study.enqueue_trial({"shrink_bat": SHRINK["bat"], "shrink_bowl": SHRINK["bowl"], "shrink_comp": SHRINK["comp"],
                          "shrink_venue": SHRINK["venue"], "shrink_bat_exp": SHRINK["bat_exp"],
-                         "shrink_bowl_exp": SHRINK["bowl_exp"], "venue_half_life": 3.0, "comp_groups": "off",
-                         "new_ground": False, "era_gender": False, "half_life": 3.0})       # trial 0 = current settings
+                         "shrink_bowl_exp": SHRINK["bowl_exp"], "venue_half_life": cur.venue_half_life or cur.half_life_years,
+                         "comp_groups": cur.comp_groups, "new_ground": cur.new_ground, "era_gender": cur.era_gender,
+                         "half_life": cur.half_life_years})       # trial 0 = current settings
     study.optimize(objective, n_trials=trials, catch=(Exception,))      # one bad setting must not end the search
     best = study.best_trial
     over, hl = _space(optuna.trial.FixedTrial(best.params))

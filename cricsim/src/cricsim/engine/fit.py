@@ -39,6 +39,11 @@ SHRINK = {  # prior strength, in balls
     "bat_exp": 3000, "bowl_exp": 3000, "home": 2000, "bat_phase": 1500, "bowl_phase": 1500,
     "bat": 150, "bowl": 300, "bat_fmt": 900, "bowl_fmt": 900, "bat_kind": 900, "bowl_hand": 900,
 }
+# Tuned (Optuna search May-Jun 2026, validated Jul-Oct 2026). T20, 571 unseen matches: Brier 0.2171 -> 0.2133, better
+# for men, women, internationals, leagues and both halves of the window. One-day, 239 matches: 0.2115 -> 0.2125 (within
+# noise). Was: bat 150, bowl 300, comp 6000, venue 6000, bat_exp 3000, bowl_exp 3000; half-life 3, venue half-life 3,
+# new_ground off, comp_groups off.
+SHRINK.update({"bat": 62, "bowl": 100, "comp": 5200, "venue": 1000, "bat_exp": 4700, "bowl_exp": 5300})
 ORDER = ("base", "era", "era_g", "era_tt", "set", "chase", "chase_w", "collapse", "bat_switch", "mile", "streak", "dots", "spell", "freehit", "hand_kind", "venue", "venue_g", "venue_ph", "venue_kind", "comp",
          "home", "bat_exp", "bowl_exp", "bat", "bowl", "bat_fmt", "bowl_fmt", "bat_kind", "bowl_hand",
          "bat_phase", "bowl_phase")
@@ -48,7 +53,7 @@ ORDER = ("base", "era", "era_g", "era_tt", "set", "chase", "chase_w", "collapse"
 class FitConfig:
     cutoff: date | None = None                 # only balls strictly before this date (backtests)
     min_date: date = date(2004, 1, 1)
-    half_life_years: float = 3.0
+    half_life_years: float = 4.17                # tuned (was 3.0), see SHRINK
     passes: int = 4
     collapse: bool = False                     # wickets in the last 12 deliveries (collapses come in bunches)
     bat_switch: bool = True                    # batter's previous match was in the other format family
@@ -62,13 +67,13 @@ class FitConfig:
                                                # (backtest, 3 cutoffs: win Brier -0.0003, -0.0021, -0.0012)
     experience: bool = True                    # players with little history: a factor by career balls so far
                                                # (backtest, 3 cutoffs: win Brier -0.005 to -0.011)
-    new_ground: bool = False                   # a ground the model has never seen gets the level of grounds in their
+    new_ground: bool = True                    # tuned (was off); a ground the model has never seen gets the level of grounds in their
                                                # first matches, not the global average (venue audit: new grounds
                                                # scored 2-7% under the model at three cutoffs)
-    venue_half_life: float | None = None       # recency half-life (years) for the ground factors only (None = half_life_years)
+    venue_half_life: float | None = 7.44       # tuned (was None = 3); recency half-life (years) for the ground factors only (None = half_life_years)
     era_gender: bool = False                   # men's and women's cricket each get their own season trend (a deviation
                                                # from the shared one, shrunk to it)
-    comp_groups: str = "off"                   # a competition's prior = similar competitions (format × gender):
+    comp_groups: str = "club"                  # tuned (was "off"); a competition's prior = similar competitions (format × gender):
                                                # "club" (leagues only), "all" (internationals too) or "off"
     shrink: dict = field(default_factory=lambda: dict(SHRINK))
 

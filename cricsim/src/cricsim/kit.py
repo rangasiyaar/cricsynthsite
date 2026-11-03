@@ -118,7 +118,7 @@ def player_doc(model: Model, i: int, similar: dict) -> dict:
         "bat": [_f(f["bat"][i].astype(np.float64) + bat_fmt[fam]) for fam in (0, 1)],
         "bowl": [_f(f["bowl"][i].astype(np.float64) + bowl_fmt[fam]) for fam in (0, 1)],
         "bat_kind": _f(f["bat_kind"].reshape(P, -1, S.K)[i]), "bowl_hand": _f(f["bowl_hand"].reshape(P, -1, S.K)[i]),
-        "balls_faced": _f(model.balls_faced[i], 1), "balls_bowled": _f(model.balls_bowled[i], 1),
+        "balls_faced": _f(model.balls_faced[i], 3), "balls_bowled": _f(model.balls_bowled[i], 3),   # 3 dp: no double rounding v insight.py
         "usage": _f(model.usage[i], 3) if model.usage is not None else None,
         "bat_pos": _f(model.bat_pos[i], 2) if model.bat_pos is not None else None,
         "appearances": _f(model.appearances[i], 1) if model.appearances is not None else None,
