@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Histogram, type Marker } from "@/components/charts";
 import { PhaseChart, RecentChart, SplitBar, useChartWidth } from "@/components/VenueCharts";
 import { loadVenue } from "@/lib/data";
+import { isNative } from "@/lib/native";
 import { num, pct } from "@/lib/format";
 import type { MatchDoc, VenueIntel as V, VenueStat } from "@/lib/types";
 
@@ -87,8 +88,6 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
       {hist.length > 0 && (
         <div className="card">
           <h3>First-innings scores at this ground</h3>
-          <p className="small muted" style={{ marginTop: 0 }}>Every first innings here since {since} (bars), with this ground&apos;s typical range and
-            each side&apos;s projected total batting first in this match.</p>
           <Histogram W={chartW} height={chartW < 1000 ? 200 : 240} series={[{ name: "First innings here", color: "var(--cs-steel)", points: hist }]} width={10} markers={markers} xLabel="first-innings totals" />
         </div>
       )}
@@ -96,7 +95,6 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
       <div className="grid">
         <div className="card">
           <h3>Scoring by phase</h3>
-          <p className="small muted" style={{ marginTop: 0 }}>This ground against every ground in the same format since {since}.</p>
           <PhaseChart unit="runs per over" rows={["powerplay", "middle", "death"].filter((p) => ph.here[p])
             .map((p) => ({ label: PHASE[p], here: ph.here[p].runs_per_over, all: ph.all[p]?.runs_per_over }))} />
           <div className="chart-caption"><span><i style={{ background: "var(--cs-steel)" }} />This ground</span>
@@ -116,7 +114,6 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
 
         <div className="card">
           <h3>Pace v spin</h3>
-          <p className="small muted" style={{ marginTop: 0 }}>Every bowler at this ground since {since}, against all grounds.</p>
           {pace?.share_of_balls != null && <SplitBar left="pace" right="spin" p={pace.share_of_balls} />}
           {pace?.share_of_wickets != null && <SplitBar left="of wickets to pace" right="to spin" p={pace.share_of_wickets} />}
           {pace?.economy && spin?.economy && <>
@@ -136,7 +133,6 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
                 <td className="num">{pct(a.share_of_wickets)}</td></tr>;
             })}</tbody>
           </table></div> : <p className="small muted">Not enough bowling recorded here.</p>}
-          {v.model && <p className="small" style={{ marginBottom: 0 }}>Model read: runs <b>{signedPct(v.model.scoring_index)}</b>, wickets <b>{signedPct(v.model.wicket_index)}</b> against a neutral ground, after allowing for who played here.</p>}
         </div>
       </div>
 
@@ -153,9 +149,6 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
                 <td className="small">{r.winner ? `${r.winner}${r.margin ? ` by ${r.margin}` : ""}` : (r.result ?? "No result")}{r.rain ? " (rain rule)" : ""}</td></tr>
             ))}</tbody>
           </table></div>
-          {h.first_innings.high && h.first_innings.low && <p className="small muted" style={{ marginBottom: 0 }}>
-            Highest first innings since {since}: {h.first_innings.high.team} {h.first_innings.high.runs} ({fmtDate(h.first_innings.high.date)}).
-            Lowest: {h.first_innings.low.team} {h.first_innings.low.runs} ({fmtDate(h.first_innings.low.date)}).</p>}
         </div>
       )}
 
@@ -180,16 +173,9 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
           </div>
         </div>
       )}
-      <p className="small muted">{doc.match.format === "OD" ? "One-day" : doc.match.format} matches{doc.match.gender === "female" ? " (women's)" : ""} at
-        this ground since {since}. Rain-rule matches are left out of the score averages. Which ground traits really
-        repeat: <a href="/blog/does-the-ground-matter-t20-venue-analysis/">Does the ground matter?</a></p>
+      {!isNative() && <p className="small"><a href="/blog/does-the-ground-matter-t20-venue-analysis/">Does the ground matter? Our venue analysis</a></p>}
     </div>
   );
-}
-
-function signedPct(x: number) {
-  const d = Math.round(100 * (x - 1));
-  return d === 0 ? "level" : `${d > 0 ? "+" : "−"}${Math.abs(d)}%`;
 }
 
 function Dot({ doc, team }: { doc: MatchDoc; team: string }) {
