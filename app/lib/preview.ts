@@ -294,8 +294,8 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   // upside: a big haul (50+ runs or 3+ wickets) relative to the field
   const upside = (p: ReturnType<typeof P>) => Math.max(p.row?.batting?.p_at_least["50"] ?? 0, p.row?.bowling?.p_wickets["3"] ?? 0);
   const safe = xi.filter((p) => (p.row?.batting?.p_bats ?? 0) > 0.9 || (p.row?.bowling?.p_bowls ?? 0) > 0.9).slice(0, 4);
-  // always three differentials: the best players outside our XI on expected points
-  const diffs = all.filter((p) => !inXi.has(p.id)).slice(0, 3);
+  const cut = xi[xi.length - 1]?.expected ?? 0;
+  const diffs = all.filter((p) => !inXi.has(p.id) && p.expected >= 0.85 * cut).slice(0, 4);
   const punts = all.filter((p) => !inXi.has(p.id) && !diffs.includes(p)).sort((a, b) => upside(b) - upside(a)).filter((p) => upside(p) >= 0.08).slice(0, 3);
   const capOptions = all.slice(0, 3);
 
@@ -338,7 +338,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       { list: safe.map((p) => `**${p.name}** (${short[p.team]}, ${ROLE[p.role ?? ""] ?? "player"}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
     ] },
     ...(diffs.length ? [{ id: "differentials", heading: "Differentials", blocks: [
-      { p: "Three players outside our XI who score well in the simulations: good swaps if you want a team that stands apart:" },
+      { p: "Close to our XI on expected points but outside it: good swaps if you want a team that stands apart:" },
       { list: diffs.map((p) => `**${p.name}** (${short[p.team]}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
     ] } as Section] : []),
     ...(punts.length ? [{ id: "punts", heading: "High-ceiling punts", blocks: [
