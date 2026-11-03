@@ -72,6 +72,14 @@ def test_new_fixture_probable_then_confirmed():
     assert fx["teams"][1]["captain"] == "Shreyas Iyer" and fx["live"]["xis"] is True
     assert fx["note"] == "Playing XIs confirmed. India won the toss and bowl first."
     assert not auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)          # nothing new
+    # XIs entered by hand: the page's replace them; identical ones only drop the flag
+    fx["live"]["manual"] = True
+    assert not auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)
+    assert "manual" not in fx["live"]
+    fx["live"]["manual"] = True
+    fx["teams"][1]["players"] = list(reversed(fx["teams"][1]["players"]))                   # a different hand-entered XI
+    assert auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)
+    assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]] and "manual" not in fx["live"]
 
 
 CARD = {"scoreCard": [
@@ -168,7 +176,7 @@ def test_xis_named_after_the_start(tmp_path):
     assert fx["live"]["xis"] and fx["batting_first"] == 0
 
 
-def test_hand_written_fixture_is_linked_not_replaced(tmp_path):
+def test_hand_written_fixture_is_linked_and_page_xis_replace_mine(tmp_path):
     fixtures, results = tmp_path / "fixtures", tmp_path / "results"
     fixtures.mkdir()
     results.mkdir()
@@ -179,9 +187,10 @@ def test_hand_written_fixture_is_linked_not_replaced(tmp_path):
     pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(MI)), live.LIST: "",
              f"{live.BASE}/cricket-match-squads/161223": _squads(True),
              f"{live.BASE}/live-cricket-scores/161223": _page('"matchHeader":' + json.dumps(HEAD))}
-    assert auto.run(fixtures, results, now=datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc), page=pages.get) == []
+    assert auto.run(fixtures, results, now=datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc), page=pages.get) == ["mine.json"]
     got = json.loads((fixtures / "mine.json").read_text())
-    assert got["live"]["id"] == 161223 and got["teams"][0]["players"] == ["x"] * 11      # linked; my XIs kept
+    assert got["live"]["id"] == 161223 and got["live"]["xis"] is True                     # linked, then the page's
+    assert got["teams"][1]["players"] == [n for n, _, _ in IND[:11]]                      # named XIs replace mine
     assert len(list(fixtures.glob("*.json"))) == 1
 
 

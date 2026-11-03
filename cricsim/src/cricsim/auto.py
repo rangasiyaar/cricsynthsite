@@ -187,7 +187,9 @@ def new_fixture(mi: dict, fmt: str, sq: dict, previous: dict[str, list[str]]) ->
 
 
 def confirm_xis(fx: dict, sq: dict, head: dict) -> bool:
-    """Put the named XIs, captains and who bats first into the fixture. True if anything changed."""
+    """Put the named XIs, captains and who bats first into the fixture. True if anything changed.
+    XIs put in by hand (live.manual) are replaced by the page's once it names them; the flag is then dropped
+    (that alone doesn't count as a change, so identical XIs don't re-run the forecast)."""
     teams = [head.get("team1") or {}, head.get("team2") or {}]
     by_side: list[list[dict] | None] = [None, None]
     for t in teams:
@@ -198,6 +200,7 @@ def confirm_xis(fx: dict, sq: dict, head: dict) -> bool:
         by_side[k] = xi[:11]
     if by_side[0] is None or by_side[1] is None:
         return False
+    (fx.get("live") or {}).pop("manual", None)
     before = json.dumps(fx, sort_keys=True)
     for k in (0, 1):
         fx["teams"][k] = _team(fx["teams"][k], {}, by_side[k])
@@ -404,16 +407,18 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         if late is not None:
             if name not in late or not mid:
                 continue
-        elif not mid or not k or lv.get("xis") or (paths.get(name) and (results_dir / name).exists()) \
+        elif not mid or not k or (lv.get("xis") and not lv.get("manual")) \
+                or (paths.get(name) and (results_dir / name).exists()) \
                 or not k - XI_FROM <= now <= k + timedelta(hours=RESULT_AFTER.get(fx.get("format", ""), 4.0)):
-            continue
-        if not lv.get("auto") and "confirmed" in (fx.get("note") or "").lower():
-            continue                                          # XIs already confirmed by hand
+            continue                     # XIs put in by hand (live.manual) keep being checked: the page's replace them
         sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mid}")))
         head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
+        manual = bool(lv.get("manual"))
         if confirm_xis(fx, sq, head):
-            save(name, fx, "playing XIs")
+            save(name, fx, "playing XIs (replacing the hand-entered ones)" if manual else "playing XIs")
             rerun.append(name)
+        elif manual and not (fx.get("live") or {}).get("manual"):
+            save(name, fx, "page XIs match the hand-entered ones")
         elif late is not None:
             click.echo(f"no named XIs on the page yet: {name}")
 

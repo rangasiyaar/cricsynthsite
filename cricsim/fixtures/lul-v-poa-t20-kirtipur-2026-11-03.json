@@ -111,7 +111,8 @@
   "live": {
     "id": 177691,
     "auto": true,
-    "xis": true
+    "xis": true,
+    "manual": true
   },
   "batting_first": 1
 }
