@@ -227,6 +227,9 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         p1 = float((part.winner == 0).mean())
         if mt["winner"] in (t1, t2):
             res["win"].append((p1, 1.0 if mt["winner"] == t1 else 0.0, mt["format"]))
+            res.setdefault("win_rows", []).append({"date": str(mt["date"]), "gender": mt["gender"],
+                                                   "team_type": mt["team_type"], "comp": mt["comp"],
+                                                   "p": round(p1, 4), "y": 1.0 if mt["winner"] == t1 else 0.0})
             # the chase: how often it succeeds, and how far short failed chases fall (sims v actual)
             r1, r2 = part.innings[0].runs, part.innings[1].runs
             fail = r2 <= r1
@@ -345,6 +348,7 @@ def _run(con, parquet: Path, model: Model, cutoff: date, end: date | None, limit
         rep["fantasy_rows"] = [r["rows"] for r in res.get("fantasy", []) if "rows" in r]
     if stack_rows:
         rep["stack_rows"] = res.get("stack", [])
+    rep["win_rows"] = res.get("win_rows", [])           # one row per decided match: groups for tuning checks
     rep["listed_12"] = dict(sorted(skipped.items(), key=lambda kv: -kv[1]))
     rep["listed_12_included"] = twelve
     rep["era_recent"] = model.meta.get("fit", {}).get("era_recent")

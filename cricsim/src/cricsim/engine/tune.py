@@ -7,6 +7,10 @@ Search: model fitted before `--tune-start`, judged on the matches in [tune-start
 
 python -m cricsim.engine.tune --parquet data/parquet --tune-start 2026-05-01 --tune-end 2026-07-01 \
     --valid-end 2026-11-01 --trials 30 --out data/tune/T20
+
+--compare '<best_params JSON>' skips the search: it validates those settings against the current ones and breaks the
+win-probability scores down by group (men/women, internationals/leagues, each half of the window), to check a gain
+is not carried by one group.
 """
 from __future__ import annotations
 
@@ -39,6 +43,32 @@ def _space(trial) -> tuple[dict, float]:
     return over, trial.suggest_float("half_life", 1.0, 5.0)
 
 
+def _groups(rows: list[dict], mid: str) -> dict[str, list[dict]]:
+    g: dict[str, list[dict]] = {"All": rows}
+    for r in rows:
+        g.setdefault("Women" if r["gender"] == "female" else "Men", []).append(r)
+        g.setdefault("Internationals" if r["team_type"] == "international" else "Leagues and domestic", []).append(r)
+        g.setdefault(f"Before {mid}" if r["date"] < mid else f"From {mid}", []).append(r)
+    return g
+
+
+def _brier(rows: list[dict]) -> float | None:
+    return round(sum((r["p"] - r["y"]) ** 2 for r in rows) / len(rows), 4) if rows else None
+
+
+def compare_report(current: dict, tuned: dict, t1, t2) -> tuple[dict, list[str]]:
+    """Brier by group under each setting; both runs score the same validation matches."""
+    mid = str(t1 + (t2 - t1) / 2)
+    gc, gt = _groups(current.get("win_rows", []), mid), _groups(tuned.get("win_rows", []), mid)
+    out, md = {}, ["| Group | Matches | Brier now | Brier tuned | Change |", "|---|---|---|---|---|"]
+    for k in gc:
+        bc, bt = _brier(gc.get(k, [])), _brier(gt.get(k, []))
+        out[k] = {"n": len(gc.get(k, [])), "current": bc, "tuned": bt}
+        ch = "—" if bc is None or bt is None else f"{bt - bc:+.4f} ({'better' if bt < bc else 'worse' if bt > bc else 'same'})"
+        md.append(f"| {k} | {len(gc.get(k, []))} | {bc} | {bt} | {ch} |")
+    return out, md
+
+
 def _score(rep: dict) -> dict:
     r, t = rep.get("result") or {}, rep.get("first_innings_total") or {}
     return {"matches": r.get("n"), "brier": r.get("brier"), "log_loss": r.get("log_loss"), "accuracy": r.get("accuracy"),
@@ -57,11 +87,28 @@ def _score(rep: dict) -> dict:
 @click.option("--valid-matches", default=600)
 @click.option("--memory", default="3GB")
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/tune/report"))
-def main(parquet, tune_start, tune_end, valid_end, family, trials, tune_matches, tune_sims, valid_matches, memory, out):
+@click.option("--compare", default="", help="best_params JSON from a tuning run: skip the search, check by group")
+def main(parquet, tune_start, tune_end, valid_end, family, trials, tune_matches, tune_sims, valid_matches, memory, out,
+         compare):
     import optuna
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     t0, t1, t2 = tune_start.date(), tune_end.date(), valid_end.date()
     common = dict(memory=memory, family_only=True, latest_format=family)
+    if compare:
+        over, hl = _space(optuna.trial.FixedTrial(json.loads(compare)))
+        log.info("validating given settings v current settings on %s to %s", t1, t2)
+        rt = run_backtest(parquet, t1, limit=valid_matches, n_sims=1000, end=t2, half_life=hl, fit_overrides=over, **common)
+        rc = run_backtest(parquet, t1, limit=valid_matches, n_sims=1000, end=t2, **common)
+        groups, table = compare_report(rc, rt, t1, t2)
+        res = {"family": family, "validation": {"from": str(t1), "to": str(t2), "tuned": _score(rt), "current": _score(rc)},
+               "groups": groups, "params": json.loads(compare), "generated_at": datetime.utcnow().isoformat(timespec="seconds")}
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.with_suffix(".json").write_text(json.dumps(res, indent=1))
+        md = [f"# Tuned v current by group · {family} ({t1} to {t2})", "", *table, "",
+              "Lower Brier is better. Adopt only if the tuned settings are not clearly worse in any large group."]
+        out.with_suffix(".md").write_text("\n".join(md))
+        click.echo("\n".join(md))
+        return
 
     def objective(trial):
         over, hl = _space(trial)

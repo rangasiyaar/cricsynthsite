@@ -10,6 +10,7 @@ on:
       tune_end: { description: "Search window ends = validation starts", default: "2026-07-01" }
       valid_end: { description: "Validation ends", default: "2026-11-01" }
       trials: { description: "Settings to try", default: "30" }
+      compare: { description: "Optional: best_params JSON from an earlier run; skip the search and compare by group", default: "" }
 
 permissions:
   contents: read
@@ -45,12 +46,13 @@ jobs:
           T1: ${{ inputs.tune_end }}
           T2: ${{ inputs.valid_end }}
           TRIALS: ${{ inputs.trials }}
+          COMPARE: ${{ inputs.compare }}
         run: |
           set -o pipefail
           .venv/bin/python -m cricsim.engine.tune --parquet data/parquet --family "$FAMILY" --tune-start "$T0" \
-            --tune-end "$T1" --valid-end "$T2" --trials "$TRIALS" --out "data/tune/$FAMILY" \
+            --tune-end "$T1" --valid-end "$T2" --trials "$TRIALS" --out "data/tune/$FAMILY" --compare "$COMPARE" \
             2> >(grep -E "trial|validating|ERROR|Traceback|Error" >&2) | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: tune-${{ inputs.family }}
+          name: tune-${{ inputs.family }}${{ inputs.compare != '' && '-groups' || '' }}
           path: data/tune
