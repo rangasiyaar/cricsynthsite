@@ -1,0 +1,118 @@
+{
+  "id": "uae-v-oman-odi-dubai-2026-11-04",
+  "title": "United Arab Emirates v Oman",
+  "date": "2026-11-04",
+  "start_time": "11:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ICC CWC League Two 2023-27 · 145th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "ICC Academy Ground, Dubai",
+  "venue_search": "dubai",
+  "city": "Dubai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Arab Emirates",
+      "short": "UAE",
+      "players": [
+        "Rahul Chopra",
+        "Adeeb Usmani",
+        "Akshdeep Nath",
+        "Muhammad Shahdad",
+        "Sohaib Khan",
+        "Khuzaima Tanveer",
+        "Awais Ali Shah",
+        "Muhammad Arfan",
+        "Harpreet Singh Bhatia",
+        "Ibrar Ahmad",
+        "Aayan Afzal Khan"
+      ],
+      "roles": [
+        "WK",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Harpreet Singh Bhatia",
+      "squad": [
+        "Harpreet Singh Bhatia",
+        "Aayan Afzal Khan",
+        "Adeeb Usmani",
+        "Akshdeep Nath",
+        "Ali Naseer",
+        "Basil Hameed",
+        "Muhammad Arfan",
+        "Muhammad Shahdad",
+        "Rahul Chopra",
+        "Sohaib Khan",
+        "Tanish Suri",
+        "Ayaan Misbah",
+        "Khuzaima Tanveer",
+        "Ibrar Ahmad",
+        "Awais Ali Shah"
+      ]
+    },
+    {
+      "name": "Oman",
+      "short": "OMAN",
+      "players": [
+        "Jatinder Singh",
+        "Karan Sonavale",
+        "Hammad Mirza",
+        "Mujibur Ali",
+        "Vinayak Shukla",
+        "Nadeem Khan",
+        "Hassnain Shah",
+        "Shakeel Ahmed",
+        "Samay Shrivastava",
+        "Hasnain Ul Wahab",
+        "Zikria Islam"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "squad": [
+        "Jay Odedra",
+        "Karan Sonavale",
+        "Jatinder Singh",
+        "Shakeel Ahmed",
+        "Hammad Mirza",
+        "Samay Shrivastava",
+        "Vinayak Shukla",
+        "Hassnain Shah",
+        "Mujibur Ali",
+        "Hasnain Ul Wahab",
+        "Zikria Islam",
+        "Shah Faisal",
+        "Nadeem Khan",
+        "Abdul Khaliq",
+        "Sanju Sajeev"
+      ]
+    }
+  ],
+  "live": {
+    "id": 176375,
+    "auto": true,
+    "xis": false
+  }
+}
