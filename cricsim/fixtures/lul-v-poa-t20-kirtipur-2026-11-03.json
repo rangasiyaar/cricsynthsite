@@ -21,24 +21,24 @@
         "D Arcy Short",
         "Aasif Sheikh",
         "Niroshan Dickwella",
-        "Rohit Paudel",
         "Shamim Hossain",
+        "Rohit Paudel",
+        "Tilak Bhandari",
         "Sundeep Jora",
         "Abhishesh Gautam",
         "Ruben Trumpelmann",
-        "Tilak Bhandari",
         "Kishore Mahato",
         "Sher Malla"
       ],
       "roles": [
-        "AR",
+        "BAT",
         "WK",
-        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
         "BAT",
         "AR",
-        "BAT",
-        "BAT",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -64,21 +64,21 @@
       "name": "Pokhara Avengers",
       "short": "POA",
       "players": [
-        "Kushal Bhurtel",
         "Mahedi Hasan",
+        "Kushal Bhurtel",
         "Sadeera Samarawickrama",
         "Shakib Al Hasan",
         "Arjun Gharti",
         "Kiran Thagunna",
         "Arjun Kumal",
         "Chamika Karunaratne",
-        "Bipin Acharya",
         "Bipin Khatri",
+        "Bipin Acharya",
         "Aakash Chand"
       ],
       "roles": [
-        "BAT",
         "AR",
+        "BAT",
         "WK",
         "AR",
         "WK",
@@ -86,7 +86,7 @@
         "BAT",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Kushal Bhurtel",
@@ -111,8 +111,7 @@
   "live": {
     "id": 177691,
     "auto": true,
-    "xis": true,
-    "manual": true
+    "xis": true
   },
   "batting_first": 1
 }
