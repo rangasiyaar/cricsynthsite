@@ -12,7 +12,7 @@
   "city": "Wellington",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Northern Districts won the toss and bowl first.",
   "teams": [
     {
       "name": "Wellington",
@@ -26,21 +26,21 @@
         "Oscar Jackson",
         "Callum McLachlan",
         "Logan van Beek",
+        "Adam Milne",
         "James Hartshorn",
-        "Liam Dudding",
         "Yahya Zeb"
       ],
       "roles": [
         "BAT",
-        "AR",
         "BAT",
+        "WK",
         "AR",
-        "BAT",
+        "AR",
         "AR",
         "WK",
         "BOWL",
         "BOWL",
-        "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "James Hartshorn",
@@ -75,7 +75,7 @@
         "Cooper Rowell"
       ],
       "roles": [
-        "BAT",
+        "AR",
         "BAT",
         "BAT",
         "BAT",
@@ -83,7 +83,7 @@
         "BAT",
         "AR",
         "WK",
-        "BOWL",
+        "BAT",
         "BOWL",
         "BOWL"
       ],
@@ -106,6 +106,7 @@
   "live": {
     "id": 170481,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
