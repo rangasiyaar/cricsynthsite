@@ -115,7 +115,7 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 - Firestore: writes only from server code, except a signed-in user's own `users/{uid}` profile fields and
   `users/{uid}/keys/{k1..k5}` API keys (hash + prefix only, free plan only), email preferences and
   `users/{uid}/requests/{api-pro|api-business}` upgrade requests (file / cancel only). New accounts get a welcome email from
-  the welcome Apps Script (`infra/apps-script/welcome`, kept outside the repo; never commit it): the sign-in page posts the uid
-  (`app/lib/welcome.ts`, `WELCOME_URL`), the script looks it up in Firebase Auth, logs it in the sign-ups sheet and sends from welcome@. Rules in `infra/firestore.rules`, tests in
+  the sign-ups Apps Script (kept outside the repo; never commit it): the sign-in page posts the uid (`app/lib/welcome.ts`),
+  the script looks it up in Firebase Auth, logs it in the sheet's "Signups" tab (once per account) and sends from welcome@. Rules in `infra/firestore.rules`, tests in
   `infra/rules-tests/` (CI runs them, then releases the rules). Public docs must include `published: true`; keep docs < 1 MB.
 - Cloud Run: sizes come from `infra/limits.env`; scale to zero.
