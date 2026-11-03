@@ -1,0 +1,34 @@
+name: IndexNow ping
+
+# Tell search engines (Bing, Yandex and others via IndexNow) to re-crawl a list of URLs now, e.g. old static-site
+# pages that redirect (301) to their new home, so stale copies drop out of their indexes sooner. Run by hand;
+# the nightly publish already pings the match, preview, fantasy and blog pages.
+on:
+  workflow_dispatch:
+    inputs:
+      paths:
+        description: "Paths to ping, comma-separated (default: the old .html pages)"
+        type: string
+        default: "/index.html,/docs.html,/playground.html,/mcp.html,/privacy.html,/terms.html,/careers.html,/contact.html,/login.html,/pricing.html,/api.html,/developers.html,/dashboard.html,/account.html,/match.html,/matches.html,/lab.html,/results.html,/credits.html,/patterns,/sdk,/"
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: IndexNow (the key file is app/public/c398390757d92f9452033a4d9660e389.txt)
+        env:
+          PATHS: ${{ inputs.paths }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          KEY, SITE = "c398390757d92f9452033a4d9660e389", "https://cricsynthesis.in"
+          urls = [SITE + p.strip() for p in os.environ["PATHS"].split(",") if p.strip().startswith("/")]
+          body = json.dumps({"host": "cricsynthesis.in", "key": KEY, "keyLocation": f"{SITE}/{KEY}.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", body, {"Content-Type": "application/json; charset=utf-8"})
+          print("IndexNow", urllib.request.urlopen(req, timeout=20).status, len(urls), "urls")
+          for u in urls:
+              print(" ", u)
+          PY
