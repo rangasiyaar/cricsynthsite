@@ -8,7 +8,7 @@ import { Calibration, Drift, ErrorRemoved, GroundLevel, InningsShape, Persistenc
 const post = POSTS.find((p) => p.slug === "does-the-ground-matter-t20-venue-analysis")!;
 const path = postPath(post.slug);
 const url = `${SITE}${path}`;
-const base = seo(path, "Does the ground matter? T20 venue analysis from 1.7m balls | CricSynthesis", post.description, { image: BLOG_IMAGE });
+const base = seo(path, "Does the Ground Matter? T20 Venue Analysis | CricSynthesis", post.description, { image: BLOG_IMAGE });
 
 export const metadata: Metadata = {
   ...base,
@@ -41,7 +41,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "BlogPosting", headline: post.title, description: post.description, datePublished: post.date, dateModified: post.date,
+      "@type": "BlogPosting", headline: post.title, description: post.description, datePublished: post.date, dateModified: post.updated ?? post.date,
       mainEntityOfPage: url, image: `${SITE}${BLOG_IMAGE}`, keywords: post.tags.join(", "), wordCount: 3300,
       author: { "@type": "Person", name: AUTHOR.name, jobTitle: "Founder", description: AUTHOR.bio, worksFor: { "@type": "Organization", name: SITE_NAME, url: SITE } },
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/email-logo.png` } },
@@ -302,6 +302,12 @@ export default function Post() {
               at some grounds.</li>
             <li><b>Ignore &ldquo;wickets fall early here&rdquo;.</b> Look at who is bowling with the new ball instead.</li>
           </ol>
+          <p>
+            You can see this for any upcoming game: every <Link href="/matches/">match centre</Link> has a Venue intelligence tab
+            with the ground&rsquo;s recent first-innings scores, how its innings tend to unfold and how sides batting first have
+            fared there. Our <Link href="/previews/">match previews</Link> put the same ground read into words, next to the
+            forecast for the match.
+          </p>
 
           <h2 id="limits">Limitations</h2>
           <p>

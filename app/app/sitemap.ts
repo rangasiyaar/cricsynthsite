@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return [
     ...PAGES.map(([path, priority, changeFrequency]) => ({ url: `${SITE}${path}`, lastModified: now, changeFrequency, priority })),
-    ...POSTS.map((p) => ({ url: `${SITE}${postPath(p.slug)}`, lastModified: new Date(p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
+    ...POSTS.map((p) => ({ url: `${SITE}${postPath(p.slug)}`, lastModified: new Date(p.updated ?? p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
     ...matches(now),
     ...JOBS.map((j) => ({ url: `${SITE}${jobPath(j.slug)}`, lastModified: new Date(j.posted), changeFrequency: "weekly" as const, priority: 0.4 })),
   ];

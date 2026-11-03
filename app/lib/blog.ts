@@ -5,7 +5,7 @@ export const AUTHOR: { name: string; role: string; photo?: string; bio: string }
   bio: "Saurav Kumar founded CricSynthesis to forecast cricket the way it is played: ball by ball, from the real XIs, and checked in public after every match.",
 };
 
-export type Post = { slug: string; title: string; description: string; date: string; minutes: number; tags: string[] };
+export type Post = { slug: string; title: string; description: string; date: string; updated?: string; minutes: number; tags: string[] };   // updated: set when a post is revised
 
 export const POSTS: Post[] = [
   {

@@ -181,7 +181,8 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
         </div>
       )}
       <p className="small muted">{doc.match.format === "OD" ? "One-day" : doc.match.format} matches{doc.match.gender === "female" ? " (women's)" : ""} at
-        this ground since {since}. Rain-rule matches are left out of the score averages.</p>
+        this ground since {since}. Rain-rule matches are left out of the score averages. Which ground traits really
+        repeat: <a href="/blog/does-the-ground-matter-t20-venue-analysis/">Does the ground matter?</a></p>
     </div>
   );
 }

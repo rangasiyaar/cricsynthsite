@@ -192,16 +192,17 @@ jobs:
            "targets": {"${PROJECT}": {"hosting": {"app": ["${PROJECT}"]}}}}
           EOF
           npx --yes firebase-tools@13.29.1 deploy --only hosting:app --project "$PROJECT" --non-interactive
-      - name: IndexNow (tell search engines which match pages changed; the key file is app/public/c398390757d92f9452033a4d9660e389.txt)
+      - name: IndexNow (tell search engines which match and blog pages changed; the key file is app/public/c398390757d92f9452033a4d9660e389.txt)
         if: env.GCP == 'true'
         continue-on-error: true
         run: |
           python3 - <<'PY'
-          import json, urllib.parse, urllib.request
+          import json, re, urllib.parse, urllib.request
           KEY, SITE = "c398390757d92f9452033a4d9660e389", "https://cricsynthesis.in"
           q = lambda i: urllib.parse.quote(i, safe="")
           d = json.load(open("data/publish/index.json"))
-          urls = [f"{SITE}/matches/", f"{SITE}/results/", f"{SITE}/previews/", f"{SITE}/fantasy/"]
+          urls = [f"{SITE}/matches/", f"{SITE}/results/", f"{SITE}/previews/", f"{SITE}/fantasy/", f"{SITE}/blog/"]
+          urls += [f"{SITE}/blog/{s}/" for s in re.findall(r'slug: "([^"]+)"', open("app/lib/blog.ts").read())]
           live = "PREVIEWS_LIVE = true" in open("app/lib/preview.ts").read()       # posts are pinged only once they are public
           for m in d["matches"]:
               urls += [f"{SITE}/match/{q(m['id'])}/"]
