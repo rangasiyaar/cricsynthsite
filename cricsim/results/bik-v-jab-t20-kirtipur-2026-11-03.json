@@ -1,0 +1,328 @@
+{
+ "id": "bik-v-jab-t20-kirtipur-2026-11-03",
+ "innings": [
+  {
+   "team": "Biratnagar Kings",
+   "runs": 174,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Shehan Jayasuriya",
+     "dismissal": "st Anil Sah b Moeen Ali",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lokesh Bam",
+     "dismissal": "c Lalit Rajbanshi b Abhisekh Tiwari",
+     "runs": 50,
+     "balls": 40,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Imran Sheikh",
+     "dismissal": "c Anil Sah b Abhisekh Tiwari",
+     "runs": 56,
+     "balls": 45,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Andre Russell",
+     "dismissal": "not out",
+     "runs": 52,
+     "balls": 29,
+     "fours": 2,
+     "sixes": 5
+    },
+    {
+     "name": "Shubham Ranjane",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Moeen Ali",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lalit Rajbanshi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Harmeet Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rahul Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "James Neesham",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abhisekh Tiwari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Shehan Jayasuriya",
+     "score": 2,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Imran Sheikh",
+     "score": 109,
+     "over": "13.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Lokesh Bam",
+     "score": 146,
+     "over": "17.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 5,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 46
+  },
+  {
+   "team": "Janakpur Bolts",
+   "runs": 172,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Moeen Ali",
+     "dismissal": "c Shubham Ranjane b Andre Russell",
+     "runs": 10,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Trit Raj Das",
+     "dismissal": "b Mathews",
+     "runs": 6,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Saif Hassan",
+     "dismissal": "c Basir Ahamad b Andre Russell",
+     "runs": 71,
+     "balls": 48,
+     "fours": 2,
+     "sixes": 5
+    },
+    {
+     "name": "Anil Sah",
+     "dismissal": "c Imran Sheikh b Andre Russell",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bishal Shusling",
+     "dismissal": "c Basir Ahamad b Mathews",
+     "runs": 43,
+     "balls": 30,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "James Neesham",
+     "dismissal": "c Shubham Ranjane b Rupesh Singh",
+     "runs": 27,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Harmeet Singh",
+     "dismissal": "c Basir Ahamad b Andre Russell",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhisekh Tiwari",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Angelo Mathews",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shehan Jayasuriya",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rupesh Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Andre Russell",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 4,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Aprajit Poudel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sandeep Lamichhane",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Basir Ahamad",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Trit Raj Das",
+     "score": 15,
+     "over": "2.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Moeen Ali",
+     "score": 30,
+     "over": "4.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Anil Sah",
+     "score": 30,
+     "over": "4.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bishal Shusling",
+     "score": 106,
+     "over": "13.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "James Neesham",
+     "score": 162,
+     "over": "18.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Harmeet Singh",
+     "score": 163,
+     "over": "19.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Saif Hassan",
+     "score": 172,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 2,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 40
+  }
+ ],
+ "winner": "Biratnagar Kings",
+ "result": "Biratnagar Kings won by 2 runs"
+}
