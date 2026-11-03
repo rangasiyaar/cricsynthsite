@@ -49,13 +49,46 @@ export async function onBackButton(onBack: () => boolean): Promise<() => void> {
   return () => { h.remove(); };
 }
 
-/** The phone's share sheet, else the browser's, else copy the link. */
-export async function share(title: string, url: string): Promise<"shared" | "copied" | "none"> {
+/** The phone's share sheet (Android's, with suggested apps and contacts), else the browser's, else copy the link. */
+export async function share(title: string, url: string, text?: string): Promise<"shared" | "copied" | "none"> {
   try {
-    if (navigator.share) { await navigator.share({ title, url }); return "shared"; }
+    if (isNative() && cap()?.isPluginAvailable?.("Share")) {
+      const { Share } = await import("@capacitor/share");
+      await Share.share({ title, text: text ?? title, url, dialogTitle: title });
+      return "shared";
+    }
+    if (navigator.share) { await navigator.share({ title, text, url }); return "shared"; }
     await navigator.clipboard.writeText(url);
     return "copied";
   } catch { return "none"; }
+}
+
+// ── app version and updates ──────────────────────────────────────────────────────────────────────────────────────
+export type AppInfo = { version: string; build: number };
+
+/** The installed app's version name and build number (null on the website). */
+export async function appInfo(): Promise<AppInfo | null> {
+  if (!isNative()) return null;
+  const { App } = await import("@capacitor/app");
+  const i = await App.getInfo().catch(() => null);
+  return i ? { version: i.version, build: Number(i.build) || 0 } : null;
+}
+
+export type Release = { version: string; build: number; bytes?: number; updated?: string; url: string };
+
+/** The latest published release, from the site's /download/app.json (written by the publish job). */
+export async function latestRelease(site: string): Promise<Release | null> {
+  try {
+    const r = await fetch(`${site}/download/app.json`, { cache: "no-store" });
+    if (!r.ok) return null;
+    const j = (await r.json()) as Release;
+    return j && typeof j.build === "number" ? { ...j, url: j.url?.startsWith("http") ? j.url : `${site}${j.url}` } : null;
+  } catch { return null; }
+}
+
+/** Open a link outside the app: the app hands any address off its own to the phone's browser. */
+export function openExternal(url: string) {
+  window.location.href = url;
 }
 
 // ── match alerts (Firebase Cloud Messaging topics; sent by the nightly publish, cricsim/notify.py) ─────────────────
@@ -88,6 +121,18 @@ export async function setAlerts(topics: AlertTopic[]): Promise<AlertTopic[]> {
   }
   try { localStorage.setItem(ALERT_KEY, JSON.stringify(topics)); } catch {}
   return topics;
+}
+
+/** An alert that arrives while the app is open (Android doesn't show those itself): `show` gets its text and path. */
+export async function onAlertWhileOpen(show: (a: { title: string; body: string; path?: string }) => void): Promise<() => void> {
+  if (!hasAlerts()) return () => {};
+  const { FirebaseMessaging } = await import("@capacitor-firebase/messaging");
+  const h = await FirebaseMessaging.addListener("notificationReceived", (e) => {
+    const n = e.notification;
+    const path = (n.data as { path?: unknown } | undefined)?.path;
+    show({ title: n.title ?? "CricSynthesis", body: n.body ?? "", path: typeof path === "string" && /^\/m\/[\w/?=&%.-]*$/.test(path) ? path : undefined });
+  });
+  return () => { h.remove(); };
 }
 
 /** Tapping an alert: `open` gets the app path it points at (alerts carry a `path` like /m/match/?id=…). */

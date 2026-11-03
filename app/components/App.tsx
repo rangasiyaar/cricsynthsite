@@ -8,7 +8,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { hideSplash, onAlertTap, onBackButton, reportError, share, signOutNative, themeStatusBar } from "@/lib/native";
+import { appInfo, hideSplash, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
+  themeStatusBar, type AppInfo, type Release } from "@/lib/native";
 import { TIERS } from "@/lib/plans";
 import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
@@ -16,8 +17,28 @@ import type { MatchDoc } from "@/lib/types";
 // Screens where the back button closes the app instead of going back.
 const TOP = new Set(["/", "/index.html", "/m/", "/m/index.html", "/m/matches/", "/m/login/"]);
 
+const LATER_KEY = "cs-update-later";      // "<build>:<time>": "Later" hides that build's prompt for a day
+
 export function AppRuntime() {
   const router = useRouter();
+  const [update, setUpdate] = useState<Release | null>(null);
+  const [alert, setAlert] = useState<{ title: string; body: string; path?: string } | null>(null);
+  useEffect(() => {
+    // a newer release on the site: offer it once the app is open (Later hides it for a day, per build)
+    let live = true;
+    Promise.all([appInfo(), latestRelease(SITE)]).then(([me, rel]) => {
+      if (!live || !me || !rel || rel.build <= me.build) return;
+      try {
+        const [b, t] = (localStorage.getItem(LATER_KEY) ?? "").split(":").map(Number);
+        if (b === rel.build && Date.now() - t < 86_400_000) return;
+      } catch {}
+      setUpdate(rel);
+    });
+    let offOpen = () => {};
+    onAlertWhileOpen(setAlert).then((f) => { offOpen = f; });
+    return () => { live = false; offOpen(); };
+  }, []);
+  useEffect(() => { if (!alert) return; const t = setTimeout(() => setAlert(null), 8000); return () => clearTimeout(t); }, [alert]);
   useEffect(() => {
     // script errors go to crash reports (native crashes are reported by the plugin itself)
     const onErr = (e: ErrorEvent) => reportError(`${e.message} @ ${e.filename}:${e.lineno}`);
@@ -45,7 +66,31 @@ export function AppRuntime() {
     }).then((f) => { off = f; });
     return () => { seen.disconnect(); off(); };
   }, []);
-  return null;
+  const later = () => { try { localStorage.setItem(LATER_KEY, `${update?.build}:${Date.now()}`); } catch {} setUpdate(null); };
+  return <>
+    {update && (
+      <div className="a-dialog-wrap" role="dialog" aria-modal="true" aria-labelledby="a-update-title">
+        <div className="a-dialog">
+          <h2 id="a-update-title">Update available</h2>
+          <p>Version {update.version} (build {update.build}) is ready{update.bytes ? `, ${(update.bytes / 1048576).toFixed(1)} MB` : ""}.</p>
+          <button type="button" className="a-btn" onClick={() => { openExternal(update.url); setUpdate(null); }}>Update</button>
+          <button type="button" className="a-btn a-btn-quiet" onClick={later}>Later</button>
+        </div>
+      </div>
+    )}
+    {alert && (
+      <button type="button" className="a-alert" onClick={() => { if (alert.path) router.push(alert.path); setAlert(null); }}>
+        <b>{alert.title}</b>{alert.body && <span>{alert.body}</span>}
+      </button>
+    )}
+  </>;
+}
+
+/** "0.2.0 (build 17)" from the installed app; "beta" on the website preview. */
+export function useAppVersion(): string {
+  const [v, setV] = useState("beta");
+  useEffect(() => { appInfo().then((i: AppInfo | null) => { if (i) setV(`${i.version} (build ${i.build})`); }); }, []);
+  return v;
 }
 
 /** Screen changes like the phone's own: going forward, the new screen slides in from the right over the old one, which
@@ -178,7 +223,6 @@ const MENU_ICONS = {
   share: svg("M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"),
   privacy: svg("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"),
   terms: svg("M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"),
-  credits: svg("M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM15 9.5a3.5 3.5 0 1 0 0 5"),
   logout: svg("M14 17l5-5-5-5M19 12H8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5"),
 };
 
@@ -215,7 +259,8 @@ function Drawer({ onClose }: { onClose: () => void }) {
     await signOutNative(); await signOut(auth());
     close(); router.replace("/m/login/");
   };
-  const onShare = () => { share("CricSynthesis", `${SITE}/`); };
+  const version = useAppVersion();
+  const onShare = () => { share("CricSynthesis", `${SITE}/app/`, "CricSynthesis: cricket forecasts, playing XIs and match simulations"); };
   const Item = ({ icon, label, onClick, href }: { icon: React.ReactNode; label: string; onClick?: () => void; href?: string }) =>
     href ? <a className="a-drawer-item" href={href} onClick={() => close()}>{icon}<span>{label}</span></a>
          : <button type="button" className="a-drawer-item" onClick={onClick}>{icon}<span>{label}</span></button>;
@@ -251,16 +296,14 @@ function Drawer({ onClose }: { onClose: () => void }) {
         <div className="a-drawer-list">
           <Item icon={MENU_ICONS.privacy} label="Privacy policy" href={`${SITE}/privacy/`} />
           <Item icon={MENU_ICONS.terms} label="Terms of service" href={`${SITE}/terms/`} />
-          <Item icon={MENU_ICONS.credits} label="Data credits" href={`${SITE}/credits/`} />
         </div>
         {user && <div className="a-drawer-list"><Item icon={MENU_ICONS.logout} label="Log out" onClick={logOut} /></div>}
-        <p className="a-drawer-foot">CricSynthesis for Android · {APP_VERSION}</p>
+        <p className="a-drawer-foot">CricSynthesis for Android · Version {version}</p>
       </nav>
     </div>
   );
 }
 
-export const APP_VERSION = "beta";
 
 /** A screen's large title, with an optional line above (eyebrow) and below (subtitle). */
 export function Title({ eyebrow, children, sub }: { eyebrow?: React.ReactNode; children: React.ReactNode; sub?: React.ReactNode }) {

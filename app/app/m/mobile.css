@@ -331,3 +331,18 @@ html.a-locked { overflow: hidden; }
 .a-faq summary::after { content: "+"; flex: none; font-family: var(--cs-mono); font-size: 18px; color: var(--cs-steel-700); transition: transform .2s; }
 .a-faq details[open] summary::after { transform: rotate(45deg); }
 .a-faq p { margin: 0; padding: 0 16px 14px; font-size: 14px; line-height: 1.55; color: var(--cs-ink-2); }
+
+/* ── update prompt and alerts that arrive while the app is open ── */
+.a-dialog-wrap { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 24px;
+  background: rgba(17, 19, 21, .55); animation: a-in .2s both; }
+.a-dialog { width: min(100%, 380px); background: var(--a-surface); color: var(--cs-ink); border-radius: var(--a-r); padding: 24px 20px 18px;
+  display: grid; gap: 12px; box-shadow: 0 12px 40px rgba(0, 0, 0, .25); }
+.a-dialog h2 { font-family: var(--cs-head); font-weight: 600; font-size: 24px; text-transform: uppercase; margin: 0; }
+.a-dialog p { margin: 0 0 6px; font-size: 15px; line-height: 1.5; color: var(--cs-ink-2); }
+.a-btn.a-btn-quiet { background: transparent; color: var(--cs-ink); border: 1px solid var(--cs-line); }
+.a-btn.a-btn-quiet:active { background: var(--cs-bg); }
+.a-alert { position: fixed; left: 12px; right: 12px; top: calc(10px + env(safe-area-inset-top)); z-index: 70; display: grid; gap: 2px; text-align: left;
+  background: var(--cs-ink); color: var(--cs-bg); border: 0; border-radius: 14px; padding: 12px 16px; font: inherit; animation: a-in .2s both; }
+.a-alert b { font-size: 15px; }
+.a-alert span { font-size: 13px; opacity: .8; }
+@media (prefers-reduced-motion: reduce) { .a-dialog-wrap, .a-alert { animation: none; } }

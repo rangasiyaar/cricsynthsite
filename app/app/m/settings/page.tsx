@@ -1,7 +1,7 @@
 "use client";
 // App settings: appearance, match alerts, and the data kept on this phone.
 import { useEffect, useState } from "react";
-import { APP_VERSION, MenuGroup, SwitchRow, TopBar } from "@/components/App";
+import { MenuGroup, SwitchRow, TopBar, useAppVersion } from "@/components/App";
 import { ALERTS, alertChoice, hasAlerts, setAlerts, type AlertTopic } from "@/lib/native";
 
 type Theme = "light" | "dark" | "system";
@@ -19,6 +19,7 @@ async function clearSaved(): Promise<void> {
 }
 
 export default function Settings() {
+  const version = useAppVersion();
   const [theme, setTheme] = useState<Theme>("system");
   const [alerts, setAlertsOn] = useState<AlertTopic[] | null>(null);
   const [busy, setBusy] = useState(false);
@@ -59,7 +60,7 @@ export default function Settings() {
                   onClick={async () => { await clearSaved(); setCleared(true); }}>{cleared ? "Cleared" : "Clear saved data"}</button>
         </div>
       </MenuGroup>
-      <p className="a-version">CricSynthesis for Android · {APP_VERSION}</p>
+      <p className="a-version">CricSynthesis for Android · Version {version}</p>
     </>
   );
 }

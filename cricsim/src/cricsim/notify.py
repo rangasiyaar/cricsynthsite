@@ -133,5 +133,20 @@ def send_cmd(plan_file: Path, project: str) -> None:
     click.echo(f"Sent {send(alerts, project, token)} of {len(alerts)} alert(s)")
 
 
+@main.command("test")
+@click.option("--topic", type=click.Choice(["forecasts", "xis"]), default="forecasts")
+@click.option("--project", required=True)
+def test_cmd(topic: str, project: str) -> None:
+    """Send one test alert to a topic: every phone with that switch on should get it."""
+    token = os.environ.get("FCM_ACCESS_TOKEN", "")
+    if not token:
+        raise click.ClickException("FCM_ACCESS_TOKEN is not set")
+    alert = {"topic": topic, "match": "test", "path": "/m/matches/", "title": "Test alert from CricSynthesis",
+             "body": "Match alerts are working. Tap to open the matches."}
+    if not send([alert], project, token):
+        raise click.ClickException("FCM refused the test alert (see above)")
+    click.echo(f"Sent a test alert to the '{topic}' topic")
+
+
 if __name__ == "__main__":
     main()

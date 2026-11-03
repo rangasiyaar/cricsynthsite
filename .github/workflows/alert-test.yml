@@ -1,0 +1,35 @@
+name: Test match alert
+
+# Send one test notification to every phone subscribed to a topic (the app's alert switches), to check match alerts
+# end to end without waiting for a new forecast. Uses the same Google sign-in as the publish job.
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Topic: forecasts (New forecasts) or xis (Playing XIs named)"
+        type: choice
+        options: [forecasts, xis]
+        default: forecasts
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Send
+        run: |
+          export FCM_ACCESS_TOKEN="$(gcloud auth print-access-token)"
+          uv run python -m cricsim.notify test --topic "${{ inputs.topic }}" --project "$PROJECT"
