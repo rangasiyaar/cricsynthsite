@@ -394,6 +394,32 @@ function FantasyTable({ doc, t }: { doc: MatchDoc; t: FantasyTeam }) {
   );
 }
 
+/** Every player in the simulated XIs with a fantasy rating out of 10 (expected points against the match's top scorer).
+ *  The forecast is re-run when the XIs are named, so the list follows them. */
+function FantasyRatings({ doc }: { doc: MatchDoc }) {
+  const f = doc.fantasy!;
+  const short = doc.match.teams.map((x) => x.short);
+  const rows = Object.entries(f.players).sort(([, a], [, b]) => b.expected - a.expected);
+  const top = Math.max(rows[0]?.[1].expected ?? 0, 1e-9);
+  const rating = (e: number) => Math.min(10, Math.max(1, (10 * e) / top));
+  return (
+    <div className="card">
+      <div className="card-head"><h3>All players</h3><span className="small muted">{doc.match.xis ? "Playing XIs" : "Expected XIs"}</span></div>
+      <div className="table-wrap"><table className="rank-table">
+        <thead><tr><th>Player</th><th>Team</th><th>Category</th><th className="num">Rating</th></tr></thead>
+        <tbody>{rows.map(([id, r]) => (
+          <tr key={id}>
+            <td>{r.name ?? id}</td>
+            <td><span className="team-dot" style={{ background: COLORS[r.team] }} />{short[r.team]}</td>
+            <td className="small muted">{ROLE[r.role ?? ""] ?? "—"}</td>
+            <td className="num"><b>{rating(r.expected).toFixed(1)}</b><span className="small muted">/10</span></td>
+          </tr>
+        ))}</tbody>
+      </table></div>
+    </div>
+  );
+}
+
 /** Fantasy picks from the published simulations: the single best team, and five teams that cover the likely matches. */
 function Fantasy({ doc }: { doc: MatchDoc }) {
   const f = doc.fantasy!;
@@ -415,6 +441,7 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
           </div>
         ))}
       </div>
+      <FantasyRatings doc={doc} />
       {f.after && <p className="small muted">Picks made after the match by the model trained only on matches before it.</p>}
     </div>
   );
