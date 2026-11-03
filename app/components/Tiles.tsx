@@ -13,7 +13,7 @@ export function buildTiles(s: Summary, short: [string, string]): Tile[] {
 
   const qs = s.teams.map((t) => t.batting.score.q);
   const lo = Math.min(...qs.map((q) => q["10"])), hi = Math.max(...qs.map((q) => q["90"]));
-  tiles.push({ label: "Projected score · likely range", rows: s.teams.map((t, k) => {
+  tiles.push({ label: "Projected score", rows: s.teams.map((t, k) => {
     const q = t.batting.score.q;
     return {
       left: <>{short[k]}<RangeStrip q10={q["10"]} q25={q["25"]} q50={q["50"]} q75={q["75"]} q90={q["90"]} color={COLORS[k]} lo={lo} hi={hi} /></>, color: COLORS[k],

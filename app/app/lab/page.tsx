@@ -53,8 +53,8 @@ function Lab() {
 export default function LabPage() {
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">MatchSynth Lab <span className="tag pro">Pro</span></p>
-      <h1><span>Change the match.</span><span>See what moves.</span></h1>
+      <p className="cs-eyebrow"><span className="tag pro">Pro</span></p>
+      <h1><span>MatchSynth Lab</span></h1>
       <div style={{ marginTop: 32 }}>
         <RequireSignIn pro>
           <Suspense fallback={<div className="skeleton card" style={{ minHeight: 320 }} />}><Lab /></Suspense>

@@ -12,8 +12,7 @@ export default function FantasyList() {
     `${a.match.date ?? ""}${a.match.start_time ?? ""}`.localeCompare(`${b.match.date ?? ""}${b.match.start_time ?? ""}`));
   return (
     <div className="page-head blog">
-      <p className="cs-eyebrow">Fantasy predictions</p>
-      <h1><span>Fantasy picks,</span><span>by simulation.</span></h1>
+      <h1><span>Fantasy picks</span></h1>
       <p className="cs-lede">Best XI, captain and vice-captain, safe picks and differentials for every upcoming match we forecast.</p>
       <div className="blog-list">
         {docs.length ? docs.map((d) => {

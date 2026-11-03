@@ -28,8 +28,7 @@ export default function AppPage() {
     <>
       <section className="cs-hero app-hero">
         <div>
-          <p className="cs-eyebrow">Android app</p>
-          <h1><span>Every match.</span><span>In your pocket.</span></h1>
+          <h1><span>CricSynthesis for Android</span></h1>
           <p className="cs-lede">Forecasts for every match we cover, alerts when the teams are named, and MatchSynth Lab to re-run any
             match your way. Free on Android.</p>
           <div className="cs-hero-ctas">
@@ -61,7 +60,7 @@ export default function AppPage() {
       </div>
 
       <div className="app-cta">
-        <h2>Take the match centre with you.</h2>
+        <h2>Get the app</h2>
         <DownloadButton />
       </div>
     </>

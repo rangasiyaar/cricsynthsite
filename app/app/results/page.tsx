@@ -92,8 +92,7 @@ function Results() {
 export default function ResultsPage() {
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">Results</p>
-      <h1><span>What we said.</span><span>What happened.</span></h1>
+      <h1><span>Results</span></h1>
       <div style={{ marginTop: 32 }}>
         <Suspense fallback={<div className="skeleton card" style={{ minHeight: 280 }} />}><Results /></Suspense>
       </div>

@@ -5,7 +5,7 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview, snapScreen, useFresh } from "@/components/App";
-import { SectionView, TAB_ICONS, sectionsFor } from "@/components/MatchCentre";
+import { SectionView, TAB_ICONS, sectionName, sectionsFor } from "@/components/MatchCentre";
 import { LabLevers, LabResult, useLab, type Lab } from "@/components/ScenarioLab";
 import { loadMatch, peekMatch } from "@/lib/data";
 import type { MatchDoc } from "@/lib/types";
@@ -33,7 +33,7 @@ function LabMenu({ lab, id }: { lab: Lab; id: string }) {
       </MenuGroup>
       <MenuGroup label="Results of your scenario">
         {sectionsFor(doc).map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s) || undefined} href={`${q}&s=${SLUG[s]}`} />
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={sectionName(s)} sub={preview(doc, s) || undefined} href={`${q}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>
     </>
@@ -70,7 +70,7 @@ function LabScreens({ doc }: { doc: MatchDoc }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon">{TAB_ICONS[section]}</span>
-        <div><h1>{section}</h1><p>Your scenario {lab.busy && <>· <Busy lab={lab} /></>}</p></div>
+        <div><h1>{sectionName(section)}</h1><p>Your scenario {lab.busy && <>· <Busy lab={lab} /></>}</p></div>
       </div>
       <div className="a-content" key={section} style={{ opacity: lab.busy ? 0.6 : 1, transition: "opacity .2s" }}>
         <SectionView doc={lab.labDoc} section={section} live={false} />

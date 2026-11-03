@@ -31,8 +31,7 @@ const PER_CARD = 8;
 export default function Developers() {
   return (
     <div className="page-head">
-      <p className="cs-eyebrow">CricSynthesis API</p>
-      <h1><span>Cricket intelligence.</span><span>One API.</span></h1>
+      <h1><span>CricSynthesis API</span></h1>
       <p className="cs-lede">{ENDPOINTS.length} endpoints for player and venue analytics, match simulation and broadcast graphics.</p>
       <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
         <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>

@@ -14,8 +14,7 @@ export default function Pricing() {
   };
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">Plans</p>
-      <h1><span>Simple plans.</span><span>Pro is free in the beta.</span></h1>
+      <h1><span>Plans</span><span>Pro is free in the beta.</span></h1>
       {plan === "pro" && <p className="notice" style={{ marginTop: 20 }}>You're on Pro{source === "beta" ? " (free during the beta)" : ""}.</p>}
       <div className="grid g3" style={{ marginTop: 28 }}>
         {TIERS.map((t) => (

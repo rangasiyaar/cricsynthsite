@@ -9,8 +9,7 @@ export const metadata: Metadata = seo("/blog/", "Cricket analytics blog | CricSy
 export default function Blog() {
   return (
     <div className="page-head blog" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">Blog</p>
-      <h1 className="cs-h2">Notes from the data</h1>
+      <h1 className="cs-h2">Blog</h1>
       <div className="blog-list">
         {POSTS.map((p) => (
           <Link key={p.slug} href={postPath(p.slug)} className="blog-card">

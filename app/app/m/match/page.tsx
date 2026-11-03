@@ -4,7 +4,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, TopBar, fromSlug, preview, useFresh } from "@/components/App";
-import { SectionView, TAB_ICONS, sectionsFor, type Section } from "@/components/MatchCentre";
+import { SectionView, TAB_ICONS, sectionName, sectionsFor, type Section } from "@/components/MatchCentre";
 import { loadMatch, peekMatch } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { share } from "@/lib/native";
@@ -31,7 +31,7 @@ function Menu({ doc }: { doc: MatchDoc }) {
       </div>
       <MenuGroup label="Match centre">
         {sections.map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={s} sub={preview(doc, s) || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={sectionName(s)} sub={preview(doc, s) || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>
       <MenuGroup label="What if">
@@ -47,7 +47,7 @@ function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon">{TAB_ICONS[section]}</span>
-        <div><h1>{section}</h1>{preview(doc, section) && <p>{preview(doc, section)}</p>}</div>
+        <div><h1>{sectionName(section)}</h1>{preview(doc, section) && <p>{preview(doc, section)}</p>}</div>
       </div>
       <div className="a-content" key={section}><SectionView doc={doc} section={section} /></div>
     </>

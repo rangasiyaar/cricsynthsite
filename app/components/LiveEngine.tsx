@@ -75,7 +75,7 @@ export default function LiveEngine({ doc, heading = true }: { doc: MatchDoc; hea
     <div className="card live-engine" ref={box}>
       <div className="le-head">
         {heading ? <div>
-          <h3>The engine, live</h3>
+          <h3>Simulations running</h3>
         </div> : <span />}
         <button className="btn ghost" onClick={() => setRun(run + 1)} disabled={!pack || (n > 0 && n < TARGET)}>
           {n >= TARGET ? "Run again" : n ? "Running…" : "Start"}

@@ -41,8 +41,7 @@ export default function MatchesPage() {
 
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow">Matches</p>
-      <h1><span>Every match we forecast.</span><span>Upcoming, live and finished.</span></h1>
+      <h1><span>Matches</span></h1>
       <div className="tabs" role="tablist" aria-label="Filter matches">
         {FILTERS.map((f) => (
           <button key={f} role="tab" aria-selected={filter === f} onClick={() => setFilter(f)}>

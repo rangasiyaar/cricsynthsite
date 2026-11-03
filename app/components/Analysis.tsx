@@ -20,7 +20,7 @@ export function RunFan({ s }: { s: Summary }) {
   const step = top > 200 ? 50 : 25;
   return (
     <div className="card anim-rise">
-      <h3>Projected run fan</h3>
+      <h3>Score through the innings</h3>
       <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="run fan" columns={fans[0].map((r, i): Column => ({
         x0: sx(r.over - 0.5), x1: sx(r.over + 0.5), title: `After ${r.over} overs`,
@@ -63,7 +63,7 @@ export function WinCurve({ s }: { s: Summary }) {
   const medians = s.teams.map((t) => t.batting.by_innings?.find((b) => b.innings === 1)?.score.q["50"] ?? null);
   return (
     <div className="card anim-rise">
-      <h3>What a first-innings total is worth</h3>
+      <h3>Win chance by first-innings total</h3>
       {even ? <p className="small muted">Break-even around <b>{even.from}</b></p> : null}
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="win probability by first-innings total" columns={c.map((r): Column => ({
         x0: sx(r.from), x1: sx(r.to), title: `First innings ${r.from}–${r.to - 1}`,
@@ -97,7 +97,7 @@ export function PlayerLadder({ s }: { s: Summary }) {
   const W = 300, rowH = 26;
   return (
     <div className="card anim-rise">
-      <h3>Player outcome ranges</h3>
+      <h3>Player run ranges</h3>
       <div className="grid g2">
         {s.teams.map((t, k) => {
           const bats = t.players.filter((p) => p.batting && (p.batting.p_bats ?? 1) > 0.5);
@@ -164,7 +164,7 @@ export function ChaseCurve({ s }: { s: Summary }) {
   const even = pts.find((r) => r.p < 0.5);
   return (
     <div className="card anim-rise">
-      <h3>Chase curve</h3>
+      <h3>Chasing: win chance by target</h3>
       {even ? <p className="small muted">Chase favoured below about <b>{even.target}</b></p> : null}
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="chase success by target" columns={pts.map((r): Column => ({
         x0: sx(r.from + 1), x1: sx(r.to + 1), title: `Target ${r.from + 1}–${r.to}`,
@@ -199,7 +199,7 @@ export function Checkpoints({ s }: { s: Summary }) {
   const row = (k: number, o: number) => fans[k].find((r) => r.over === o);
   return (
     <div className="card anim-rise">
-      <h3>Score checkpoints</h3>
+      <h3>Score at each stage</h3>
       <div className="table-wrap"><table className="checkpoints">
         <thead><tr><th>After</th>{s.teams.map((t, k) => <th key={t.name} className="num" style={{ color: COLORS[k] }}>{t.name}</th>)}</tr></thead>
         <tbody>{marks.map((o) => (

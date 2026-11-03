@@ -13,9 +13,11 @@ import { rate, type Rated } from "@/lib/ratings";
 import type { FantasyTeam, MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
-const SHORT: Record<string, string> = { "Top players": "Top", "Venue intelligence": "Venue" };
-const FULL: Record<string, string> = { "Venue intelligence": "Venue" };   // the tab bar is full on wide screens
+const SHORT: Record<string, string> = { "Top players": "Top", "Venue intelligence": "Venue", Matchups: "Batter v bowler" };
+const FULL: Record<string, string> = { "Venue intelligence": "Venue", Matchups: "Batter v bowler" };   // the tab bar is full on wide screens
 type Tab = (typeof TABS)[number] | "Venue intelligence" | "Fantasy";
+/** The name shown for a section (keys stay the same so links keep working). */
+export const sectionName = (t: string): string => FULL[t] ?? t;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 const icon = (d: string) => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
@@ -147,7 +149,7 @@ function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
       <div className="grid g2">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
-            <h3>{t.name}: score range</h3>
+            <h3>{t.name}: likely total</h3>
             <p className="small" style={{ margin: "0 0 10px" }}>Projected <b>{Math.round(t.batting.score.q["50"])}</b>, likely <b>{range(t.batting.score.q, "25", "75")}</b>
               <span className="muted"> · 80% range {range(t.batting.score.q)}</span></p>
             <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
@@ -169,7 +171,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <div className="card-head">
-          <h3>Where each innings lands</h3>
+          <h3>Final totals</h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <Seg label="Innings" value={split} onChange={setSplit} options={[["all", "All"], ["first", "Batting first"], ["second", "Chasing"]]} />
             <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
@@ -189,7 +191,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
       <div className="grid g2">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
-            <h3 style={{ color: COLORS[k] }}>{t.name}: phase by phase</h3>
+            <h3 style={{ color: COLORS[k] }}>{t.name} by phase</h3>
             <div className="table-wrap"><table>
               <thead><tr><th>Phase</th><th>Overs</th><th className="num">Runs</th><th className="num">Likely</th><th className="num">Wickets</th><th className="num">No wicket</th></tr></thead>
               <tbody>{t.batting.phases.map((ph) => (
@@ -236,7 +238,7 @@ function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string
       <ExpectedWickets t={t} rules={rules} />
       <WicketHeatmap color={color} overs={overs} rows={fow.map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
       <div className="table-wrap" style={{ marginTop: 16 }}><table>
-        <thead><tr><th>Wicket</th><th className="num">Falls</th><th className="num">Typical over</th><th className="num">Score</th><th className="num">Partnership</th><th>Likeliest bowler</th><th>Likeliest batter out</th></tr></thead>
+        <thead><tr><th>Wicket</th><th className="num">Falls</th><th className="num">Typical over</th><th className="num">Score</th><th className="num">Partnership</th><th>Likely bowler</th><th>Likely batter out</th></tr></thead>
         <tbody>{fow.map((f) => (
           <tr key={f.wicket}><td>{f.wicket}</td><td className="num">{pct(f.p)}</td><td className="num">{num(f.over?.q["50"])}</td>
             <td className="num">{num(f.score?.q["50"])}</td><td className="num">{num(f.partnership?.q["50"])}</td>
@@ -292,7 +294,7 @@ function Mvp({ doc }: { doc: MatchDoc }) {
   const short = doc.match.teams.map((t) => t.short);
   return (
     <div className="card">
-      <h3>MVP ratings</h3>
+      <h3>Most valuable players</h3>
       <div className="table-wrap"><table className="rank-table">
         <thead><tr><th>#</th><th>Player</th><th className="num">Bat</th><th className="num">Bowl</th><th className="num">MVP</th></tr></thead>
         <tbody>{rows.map((r, i) => (
@@ -354,7 +356,7 @@ function Matchups({ doc }: { doc: MatchDoc }) {
   s.teams.forEach((t) => t.players.forEach((p) => names.set(p.id, p.name)));
   return (
     <div className="card">
-      <h3>Key duels</h3>
+      <h3>Batter v bowler</h3>
       <div className="table-wrap"><table>
         <thead><tr><th>Bowler</th><th>Batter</th><th className="num">Dismissal share</th></tr></thead>
         <tbody>{s.matchups.slice(0, 25).map((m) => (
@@ -400,10 +402,10 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid">
       <div className="card">
-        <div className="card-head"><h3>Best single team</h3><span className="small muted">{split}</span></div>
+        <div className="card-head"><h3>Best XI</h3><span className="small muted">{split}</span></div>
         <FantasyTable doc={doc} t={f.single} />
       </div>
-      <h3 style={{ margin: "12px 0 0" }}>Five-team combo</h3>
+      <h3 style={{ margin: "12px 0 0" }}>Five different teams</h3>
       <div className="grid g2">
         {f.teams.map((t, i) => (
           <div key={i} className="card">
@@ -423,15 +425,15 @@ export function Spotlight({ doc }: { doc: MatchDoc }) {
   return (
     <>
       <div className="section">
-        <div className="section-head"><div><h2>How the innings unfold</h2></div></div>
+        <div className="section-head"><div><h2>Innings by innings</h2></div></div>
         <SpotlightCharts doc={doc} />
       </div>
       <div className="section">
-        <div className="section-head"><div><h2>Watch the engine</h2></div></div>
+        <div className="section-head"><div><h2>Simulations running</h2></div></div>
         <LiveEngine doc={doc} heading={false} />
       </div>
       <div className="section">
-        <div className="section-head"><div><h2>Range of outcomes</h2></div></div>
+        <div className="section-head"><div><h2>All results</h2></div></div>
         <div className="grid">
           <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
           <PlayerLadder s={doc.summary} />

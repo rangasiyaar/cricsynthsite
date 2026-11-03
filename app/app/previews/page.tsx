@@ -12,8 +12,7 @@ export default function Previews() {
     `${a.match.date ?? ""}${a.match.start_time ?? ""}`.localeCompare(`${b.match.date ?? ""}${b.match.start_time ?? ""}`));
   return (
     <div className="page-head blog">
-      <p className="cs-eyebrow">Match previews</p>
-      <h1><span>Every match,</span><span>previewed.</span></h1>
+      <h1><span>Match previews</span></h1>
       <p className="cs-lede">Who will win, the pitch, the XIs, the players to watch and the score to expect, for every upcoming match we forecast.</p>
       <div className="blog-list">
         {docs.length ? docs.map((d) => {

@@ -46,7 +46,7 @@ export default function Mcp() {
   return (
     <div className="page-head">
       <p className="cs-eyebrow">Model Context Protocol</p>
-      <h1><span>CricSynthesis MCP.</span><span>Cricket for AI assistants.</span></h1>
+      <h1><span>CricSynthesis for AI assistants</span></h1>
       <p className="cs-lede">Ask Claude, ChatGPT desktop, Cursor or any MCP client about a player, ground, league or upcoming match.
         Free, and it runs on your own machine.</p>
 

@@ -57,7 +57,7 @@ export default function AppLogin() {
     <div className="a-login">
       <div className="a-brand"><Logo /><span>Cric<b>Synthesis</b></span></div>
       <div className="a-login-hero">
-        <h1>{mode === "up" ? <>Create your<br /><span>account.</span></> : <>Every match,<br /><span>simulated.</span></>}</h1>
+        <h1>{mode === "up" ? <>Create your<br /><span>account.</span></> : <>Sign in</>}</h1>
         <p>{forLab ? "MatchSynth Lab is part of Pro, and Pro is free for every account during the beta. Sign in or create an account to open it."
           : mode === "up" ? "Every account gets Pro free during the beta, including MatchSynth Lab."
           : "Win chances, projected scores and fantasy picks before the first ball. Sign in to open MatchSynth Lab."}</p>
