@@ -12,38 +12,38 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Oman won the toss and bowl first.",
   "teams": [
     {
       "name": "United Arab Emirates",
       "short": "UAE",
       "players": [
-        "Rahul Chopra",
+        "Muhammad Waseem",
         "Adeeb Usmani",
-        "Akshdeep Nath",
         "Muhammad Shahdad",
-        "Sohaib Khan",
-        "Khuzaima Tanveer",
+        "Rahul Chopra",
+        "Akshdeep Nath",
+        "Basil Hameed",
         "Awais Ali Shah",
-        "Muhammad Arfan",
-        "Harpreet Singh Bhatia",
-        "Ibrar Ahmad",
-        "Aayan Afzal Khan"
+        "Aayan Khan",
+        "Khuzaima Tanveer",
+        "Muhammad Rohid Khan",
+        "Junaid Siddique"
       ],
       "roles": [
-        "WK",
-        "WK",
-        "AR",
-        "AR",
         "BAT",
-        "BOWL",
+        "WK",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
         "AR",
         "BOWL",
-        "BAT",
         "BOWL",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Harpreet Singh Bhatia",
+      "captain": "Rahul Chopra",
       "squad": [
         "Harpreet Singh Bhatia",
         "Aayan Afzal Khan",
@@ -67,29 +67,29 @@
       "short": "OMAN",
       "players": [
         "Jatinder Singh",
-        "Karan Sonavale",
+        "Aamir Kaleem",
         "Hammad Mirza",
+        "Karan Sonavale",
         "Mujibur Ali",
         "Vinayak Shukla",
-        "Nadeem Khan",
+        "Narayan Saishiv",
+        "Jay Odedra",
         "Hassnain Shah",
         "Shakeel Ahmed",
-        "Samay Shrivastava",
-        "Hasnain Ul Wahab",
-        "Zikria Islam"
+        "Samay Shrivastava"
       ],
       "roles": [
         "BAT",
         "AR",
         "WK",
         "AR",
+        "AR",
         "WK",
-        "BOWL",
+        "BAT",
+        "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BAT",
-        "BAT"
+        "BOWL"
       ],
       "squad": [
         "Jay Odedra",
@@ -107,12 +107,14 @@
         "Nadeem Khan",
         "Abdul Khaliq",
         "Sanju Sajeev"
-      ]
+      ],
+      "captain": "Vinayak Shukla"
     }
   ],
   "live": {
     "id": 176375,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
