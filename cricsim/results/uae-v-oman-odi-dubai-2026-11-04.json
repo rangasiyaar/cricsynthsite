@@ -1,0 +1,434 @@
+{
+ "id": "uae-v-oman-odi-dubai-2026-11-04",
+ "innings": [
+  {
+   "team": "United Arab Emirates",
+   "runs": 226,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Muhammad Waseem",
+     "dismissal": "c Jatinder Singh b Shakeel Ahmed",
+     "runs": 29,
+     "balls": 28,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Adeeb Usmani",
+     "dismissal": "st Vinayak Shukla b Samay Shrivastava",
+     "runs": 47,
+     "balls": 53,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Muhammad Shahdad",
+     "dismissal": "c Hammad Mirza b Shakeel Ahmed",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rahul Chopra",
+     "dismissal": "c Mujibur Ali b Samay Shrivastava",
+     "runs": 47,
+     "balls": 79,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Akshdeep Nath",
+     "dismissal": "c Vinayak Shukla b Hassnain Shah",
+     "runs": 16,
+     "balls": 34,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Awais Ali Shah",
+     "dismissal": "b Jay Odedra",
+     "runs": 12,
+     "balls": 31,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Basil Hameed",
+     "dismissal": "c Aamir Kaleem b Shakeel Ahmed",
+     "runs": 43,
+     "balls": 45,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Aayan Afzal Khan",
+     "dismissal": "c Narayan Saishiv b Hassnain Shah",
+     "runs": 18,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Khuzaima Tanveer",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Junaid Siddique",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Shakeel Ahmed",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 42,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hassnain Shah",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Aamir Kaleem",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Samay Shrivastava",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Jay Odedra",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mujibur Ali",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Karan Sonavale",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Muhammad Waseem",
+     "score": 34,
+     "over": "6.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Muhammad Shahdad",
+     "score": 34,
+     "over": "6.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Adeeb Usmani",
+     "score": 100,
+     "over": "19.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Akshdeep Nath",
+     "score": 130,
+     "over": "27.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Awais Ali Shah",
+     "score": 153,
+     "over": "36.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Rahul Chopra",
+     "score": 162,
+     "over": "40.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Basil Hameed",
+     "score": 218,
+     "over": "48.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Aayan Afzal Khan",
+     "score": 222,
+     "over": "49.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 40
+  },
+  {
+   "team": "Oman",
+   "runs": 171,
+   "wickets": 9,
+   "overs": "48.3",
+   "batting": [
+    {
+     "name": "Jatinder Singh",
+     "dismissal": "c Muhammad Waseem b Khuzaima Tanveer",
+     "runs": 3,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aamir Kaleem",
+     "dismissal": "b Muhammad Rohid Khan",
+     "runs": 12,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Karan Sonavale",
+     "dismissal": "c Basil Hameed b Muhammad Rohid Khan",
+     "runs": 5,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hammad Mirza",
+     "dismissal": "c Basil Hameed b Awais Ali Shah",
+     "runs": 29,
+     "balls": 59,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Vinayak Shukla",
+     "dismissal": "c (sub)Aryansh Sharma b Aayan Khan",
+     "runs": 10,
+     "balls": 21,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Mujibur Ali",
+     "dismissal": "c Rahul Chopra b Khuzaima Tanveer",
+     "runs": 65,
+     "balls": 84,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Narayan Saishiv",
+     "dismissal": "c Muhammad Waseem b Awais Ali Shah",
+     "runs": 20,
+     "balls": 42,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hassnain Shah",
+     "dismissal": "c Muhammad Shahdad b Basil Hameed",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shakeel Ahmed",
+     "dismissal": "c Muhammad Rohid Khan b Aayan Khan",
+     "runs": 10,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jay Odedra",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Samay Shrivastava",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Junaid Siddique",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Muhammad Rohid Khan",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Khuzaima Tanveer",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 0
+    },
+    {
+     "name": "Aayan Afzal Khan",
+     "overs": "8.3",
+     "maidens": 1,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Awais Ali Shah",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Basil Hameed",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aamir Kaleem",
+     "score": 16,
+     "over": "5.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Karan Sonavale",
+     "score": 22,
+     "over": "7.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jatinder Singh",
+     "score": 28,
+     "over": "10.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Vinayak Shukla",
+     "score": 52,
+     "over": "17.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Hammad Mirza",
+     "score": 68,
+     "over": "24.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Narayan Saishiv",
+     "score": 132,
+     "over": "38.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hassnain Shah",
+     "score": 141,
+     "over": "41.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Mujibur Ali",
+     "score": 165,
+     "over": "44.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Shakeel Ahmed",
+     "score": 169,
+     "over": "46.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 28
+  }
+ ],
+ "winner": "United Arab Emirates",
+ "result": "United Arab Emirates won by 42 runs"
+}
