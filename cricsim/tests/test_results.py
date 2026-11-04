@@ -163,3 +163,23 @@ def test_fantasy_picks_are_scored_on_the_scorecard(tmp_path):
 def test_abandoned_without_toss_has_no_innings_key():
     rep = score(doc(), {"id": "x", "abandoned": True, "note": "Match abandoned due to rain (no toss)"}, FIXTURE)
     assert rep["checks"] == 0 and "abandoned" in rep["note"].lower()
+
+
+def test_blend_lab_scores_blended_xis():
+    from cricsim.blend_lab import WEIGHTS, match_rows, run
+    d = {**doc(), "fantasy": picks()}
+    for t in d["summary"]["teams"]:
+        for k, p in enumerate(t["players"]):
+            p["batting"].update({"balls": dist(2, 12, 30), "strike_rate": 110 + 3 * k})
+            p["bowling"].update({"overs": 3.0 if k >= 6 else 0.5, "economy": 7.0 + 0.2 * k})
+    card = {"id": "m", **parse((DATA / "scorecard_pak_sl.txt").read_text())}
+    r = match_rows(d, card, {"id": "m", **FIXTURE})
+    assert r and r["best"] > 0 and all(0 < r[(w, pooled)] <= 1 for w in WEIGHTS for pooled in (False, True))
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fx, sc = Path(tmp) / "fx", Path(tmp) / "sc"
+        fx.mkdir(); sc.mkdir()
+        (fx / "m.json").write_text(json.dumps({"id": "m", **FIXTURE}))
+        (sc / "m.json").write_text(json.dumps(card))
+        rep = run(fx, sc, fetch=lambda path, sites=None: d if path == "matches/m.json" else None)
+    assert "1 scored matches" in rep and "| 0.50 | 0.50 |" in rep

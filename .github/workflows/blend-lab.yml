@@ -1,0 +1,22 @@
+name: Blend lab
+
+# Re-picks the fantasy XI of every published, scored match from a weighted average of the fantasy and MVP rankings
+# and scores it on the real scorecard (share of the best possible XI). Report in the run summary.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Blend the rankings
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.blend_lab --fixtures cricsim/fixtures --scorecards cricsim/results | tee -a "$GITHUB_STEP_SUMMARY"
