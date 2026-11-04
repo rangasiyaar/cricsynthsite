@@ -141,6 +141,7 @@ def actual_points(con, match_id: str, table: str = "hold", fielding: list | None
     return pts
 
 
+SOLID = {"T20": 25, "OD": 30}     # points that make a decent fantasy game (the must-have share counts these)
 DECISIVE = 1.2      # picks lean towards the favourite winning: log-odds × this (won at all three backtest cutoffs)
 
 
@@ -397,7 +398,11 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, 
         xi, c, vc = t
         return {"players": sorted(xi, key=lambda p: -exp[p]), "captain": c, "vice_captain": vc,
                 "expected": round(sum(exp[p] for p in xi) + exp[c] + 0.5 * exp[vc], 1)}
-    return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1)} for p in pids},
+    solid = SOLID["OD" if spec.format == "OD" else "T20"]
+    p_solid = (pts >= solid).mean(0)                     # how often the player has a decent game (the must-have read)
+    return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1),
+                            "p_solid": round(float(p_solid[i]), 3)} for i, p in enumerate(pids)},
+            "solid": solid,
             "single": team(pick_xi(exp, team_of, use_roles)),
             "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5,
                                                  first=pick_xi(exp, team_of, use_roles))],

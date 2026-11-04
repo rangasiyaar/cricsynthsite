@@ -1,0 +1,47 @@
+name: Ground lab
+
+# Checks the fantasy pages' reads (recent form, "suits this ground" from ground profiles and similar grounds) against
+# what players went on to score in later matches. Report in the run summary.
+on:
+  workflow_dispatch:
+    inputs:
+      cutoff: { description: "Ground profiles use seasons before this; matches from it are checked", default: "2025-01-01" }
+      formats: { description: "Formats, space-separated", default: "T20 OD" }
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Check the reads
+        env:
+          CUTOFF: ${{ inputs.cutoff }}
+          FORMATS: ${{ inputs.formats }}
+        run: |
+          set -o pipefail
+          for f in $FORMATS; do
+            uv run python -m cricsim.ground_lab --parquet data/parquet --cutoff "$CUTOFF" --format "$f" --memory 5GB \
+              | tee -a "$GITHUB_STEP_SUMMARY"
+          done

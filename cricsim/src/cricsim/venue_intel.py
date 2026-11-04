@@ -218,6 +218,79 @@ def intel(g: Ground, doc: dict, model=None, today: date | None = None) -> dict |
             "players": g.players(vid, fmt, gender, since, until, xi)}
 
 
+# ── fantasy pages: recent form and "suits this ground" (a player's record here and at grounds that play like it) ──
+FIT_YEARS = 5            # a player's matches counted for the ground fit
+FIT_K = 6                # matches of pseudo-count pulling a player's ground record towards their usual level
+FORM_DAYS = 150          # form is shown only for players who have played this recently
+
+
+class FantasyData:
+    """Everything the fantasy reads need, loaded once for all published matches: ground profiles per format and
+    gender, every listed player's real fantasy points match by match, runs and wickets, and each match's ground."""
+
+    def __init__(self, g: Ground, players: set[str], today: date):
+        from cricsim import fantasy_history as fh
+        self.g, self.today, self._prof = g, today, {}
+        self.hist = {f: fh.build(g.con, g.p, f, players) for f in ("T20", "OD")} if players else {}
+        self.stats = {f: fh.build_stats(g.con, g.p, f, players) for f in ("T20", "OD")} if players else {}
+        self.where = {m: (v, f) for m, v, f in g.con.execute(
+            f"SELECT match_id, venue_id, format FROM {_tbl(g.p, 'matches')}").fetchall()}
+
+    def profiles(self, fmt: str, gender: str):
+        from cricsim import grounds
+        key = (fmt, gender)
+        if key not in self._prof:
+            since = self.today - timedelta(days=round(365.25 * YEARS))
+            self._prof[key] = grounds.build(self.g.con, self.g.p, fmt, gender, since, self.today)
+        return self._prof[key]
+
+
+def fantasy_reads(fd: FantasyData, doc: dict) -> dict | None:
+    """The fantasy page's ground profile (label, similar grounds) and, per player, recent form and ground fit."""
+    m = doc.get("match") or {}
+    vid, fmt, gender = m.get("venue_id"), m.get("format") or "T20", m.get("gender") or "male"
+    fam = "OD" if fmt == "OD" else "T20"
+    if fam not in fd.hist:
+        return None
+    day = min(date.fromisoformat(m["date"]) if m.get("date") else fd.today, fd.today)
+    prof = fd.profiles(fmt, gender)
+    ground = prof.describe(vid) if vid else None
+    group = {vid, *(s["id"] for s in (ground or {}).get("similar", []))} if ground else set()
+    hist, stats = fd.hist[fam], fd.stats[fam]
+    start = day - timedelta(days=round(365.25 * FIT_YEARS))
+    out = []
+    for t in doc["summary"]["teams"]:
+        for pl in t["players"]:
+            p = pl["id"]
+            row = {"id": p, "name": pl["name"].removeprefix("new:"), "team": t["name"]}
+            x = hist.before(p, day)
+            dates = hist.dates.get(p, [])[: len(x)]
+            if len(x) >= 10 and (day - dates[-1]).days <= FORM_DAYS:
+                usual = x[-30:-5]
+                runs = stats["runs"].before(p, day)[-5:]
+                wkts = stats["wkts"].before(p, day)[-5:]
+                row["form"] = {"last5": round(float(x[-5:].mean()), 1), "usual": round(float(usual.mean()), 1),
+                               "n": int(len(x)), "runs": [int(r) for r in runs], "wickets": [int(w) for w in wkts]}
+            if group and p in hist.matches:
+                mids = hist.matches[p][: len(x)]
+                keep = [(v, mid) for v, mid, d in zip(x, mids, dates)
+                        if d >= start and fd.where.get(mid, (None, None))[1] == fmt]
+                if len(keep) >= 8:
+                    allp = np.array([v for v, _ in keep])
+                    here = np.array([v for v, mid in keep if fd.where[mid][0] in group])
+                    at = np.array([v for v, mid in keep if fd.where[mid][0] == vid])
+                    if len(here) >= 3:
+                        diff = float(here.mean() - allp.mean())
+                        row["fit"] = {"n": int(len(here)), "mean": round(float(here.mean()), 1),
+                                      "usual": round(float(allp.mean()), 1), "n_all": int(len(allp)),
+                                      "n_ground": int(len(at)),
+                                      "mean_ground": round(float(at.mean()), 1) if len(at) else None,
+                                      "score": round(diff * len(here) / (len(here) + FIT_K), 1)}
+            if len(row) > 3:
+                out.append(row)
+    return {"ground": ground, "players": out}
+
+
 @click.command()
 @click.option("--parquet", type=click.Path(exists=True, path_type=Path), required=True)
 @click.option("--publish", type=click.Path(exists=True, path_type=Path), required=True)
@@ -231,14 +304,26 @@ def main(parquet: Path, publish: Path, model_dir: Path | None, memory: str) -> N
         model = Model.load(model_dir)
     g, out, n = Ground(parquet, memory), publish / "venue", 0
     out.mkdir(parents=True, exist_ok=True)
-    for f in sorted((publish / "matches").glob("*.json")):
-        if f.name.endswith(".pack.json"):
-            continue
+    docs = {f.stem: json.loads(f.read_text()) for f in sorted((publish / "matches").glob("*.json"))
+            if not f.name.endswith(".pack.json")}
+    fd = None
+    try:                                                   # the fantasy reads are extra: a failure leaves them out
+        fd = FantasyData(g, {p["id"] for d in docs.values() for t in d["summary"]["teams"] for p in t["players"]},
+                         date.today())
+    except Exception:
+        log.exception("fantasy data failed; fantasy reads left out")
+    for mid, doc in docs.items():
+        f = publish / "matches" / f"{mid}.json"
         try:
-            v = intel(g, json.loads(f.read_text()), model)
+            v = intel(g, doc, model)
         except Exception:
             log.exception("venue intel failed for %s", f.stem)
             continue
+        if v and fd and doc.get("fantasy"):
+            try:
+                v["fantasy"] = fantasy_reads(fd, doc)
+            except Exception:
+                log.exception("fantasy reads failed for %s", mid)
         if v:
             (out / f.name).write_text(json.dumps(v, separators=(",", ":")))
             n += 1

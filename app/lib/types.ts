@@ -70,7 +70,8 @@ export type Summary = {
 export type FantasyTeam = { players: string[]; captain: string; vice_captain: string; expected: number;
                             points?: number; share?: number | null };
 export type FantasyPicks = {
-  players: Record<string, { team: number; role?: string | null; expected: number; name?: string }>;
+  players: Record<string, { team: number; role?: string | null; expected: number; name?: string; p_solid?: number }>;
+  solid?: number;                            // points that make a decent game (p_solid is the share of simulations at or above it)
   single: FantasyTeam; teams: FantasyTeam[]; fielding?: boolean; simulations?: number; format?: string; after?: boolean;
   scenario?: boolean;                        // rebuilt in MatchSynth Lab from the user's scenario
 };

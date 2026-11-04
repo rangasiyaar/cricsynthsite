@@ -18,11 +18,12 @@ FAMILIES = {"T20": ("T20", "T10", "HUNDRED"), "OD": ("OD",)}
 
 
 class History:
-    """pid -> dates and points of every match played, oldest first."""
+    """pid -> dates and points of every match played, oldest first (and the match ids, when built with them)."""
 
-    def __init__(self, rows: dict[str, list[tuple[date, float]]]):
-        self.dates = {p: [d for d, _ in v] for p, v in rows.items()}
-        self.points = {p: np.array([x for _, x in v]) for p, v in rows.items()}
+    def __init__(self, rows: dict[str, list[tuple]]):
+        self.dates = {p: [r[0] for r in v] for p, v in rows.items()}
+        self.points = {p: np.array([r[1] for r in v]) for p, v in rows.items()}
+        self.matches = {p: [r[2] for r in v] for p, v in rows.items() if v and len(v[0]) > 2}
 
     def before(self, pid: str, day: date) -> np.ndarray:
         """Points in matches strictly before `day`, oldest first."""
@@ -112,7 +113,7 @@ def build(con, parquet: Path, family: str = "T20", players: set[str] | None = No
     rows: dict[str, list[tuple[date, float]]] = {}
     for (m, p), x in pts.items():
         if m in day:
-            rows.setdefault(p, []).append((day[m], x))
+            rows.setdefault(p, []).append((day[m], x, m))
     for v in rows.values():
         v.sort()
     return History(rows)
