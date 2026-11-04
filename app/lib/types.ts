@@ -128,4 +128,17 @@ export type VenueIntel = {
     bowling: { id: string; name: string; team: string; matches: number; balls: number; runs: number; wickets: number;
                economy: number | null }[];
   };
+  fantasy?: VenueFantasy | null;
+};
+
+// The fantasy page's reads (cricsim/venue_intel.py fantasy_reads): the ground's profile and similar grounds, and per
+// player recent form (fantasy points, last 5 v the 25 before) and ground fit (here + similar grounds v everywhere).
+export type GroundProfile = { id: string; name?: string | null; matches: number; label: string | null;
+  runs_per_over: number; boundary_pct: number; balls_per_wicket: number | null; pace_wicket_share: number;
+  similar: { id: string; name?: string | null; matches: number }[] };
+export type VenueFantasy = {
+  ground: GroundProfile | null;
+  players: { id: string; name: string; team: string;
+    form?: { last5: number; usual: number; n: number; runs: number[]; wickets: number[] };
+    fit?: { n: number; mean: number; usual: number; n_all: number; n_ground: number; mean_ground: number | null; score: number } }[];
 };

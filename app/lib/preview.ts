@@ -293,7 +293,29 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   };
   // upside: a big haul (50+ runs or 3+ wickets) relative to the field
   const upside = (p: ReturnType<typeof P>) => Math.max(p.row?.batting?.p_at_least["50"] ?? 0, p.row?.bowling?.p_wickets["3"] ?? 0);
-  const safe = xi.filter((p) => (p.row?.batting?.p_bats ?? 0) > 0.9 || (p.row?.bowling?.p_bowls ?? 0) > 0.9).slice(0, 4);
+  // must-haves: the XI players who most often have a decent game (25+ points, 30+ one-day) in the simulations;
+  // older documents without that share fall back to the players sure of a full go with bat or ball
+  const solid = f.solid ?? (m.format === "OD" ? 30 : 25);
+  const hasSolid = xi.some((p) => p.p_solid != null);
+  const safe = hasSolid
+    ? [...xi].sort((a, b) => (b.p_solid ?? 0) - (a.p_solid ?? 0)).slice(0, 4)
+    : xi.filter((p) => (p.row?.batting?.p_bats ?? 0) > 0.9 || (p.row?.bowling?.p_bowls ?? 0) > 0.9).slice(0, 4);
+
+  // recent form and "suits this ground" (venue/<id>.json fantasy reads)
+  const fz = venue?.fantasy ?? null;
+  const shortOf = (team: string) => short[s.teams.findIndex((t) => t.name === team)] ?? team;
+  const hot = (fz?.players ?? []).filter((p) => p.form && p.form.last5 - p.form.usual >= Math.max(6, 0.25 * p.form.usual))
+    .sort((a, b) => (b.form!.last5 - b.form!.usual) - (a.form!.last5 - a.form!.usual)).slice(0, 4);
+  const recentBits = (fm: NonNullable<(typeof hot)[number]["form"]>) => {
+    const bits: string[] = [];
+    if (fm.runs.some((x) => x > 0)) bits.push(`runs ${fm.runs.slice().reverse().join(", ")}`);
+    if (fm.wickets.reduce((a, b) => a + b, 0) >= 2) bits.push(`${fm.wickets.reduce((a, b) => a + b, 0)} wickets in their last ${fm.wickets.length} bowled`);
+    return bits.length ? ` (${bits.join("; ")}, latest first)` : "";
+  };
+  const g = fz?.ground ?? null;
+  const gName = groundShort ?? g?.name?.split(",")[0] ?? "this ground";
+  const like = (g?.similar ?? []).map((x) => x.name?.split(",")[0]).filter(Boolean).slice(0, 4) as string[];
+  const suits = (fz?.players ?? []).filter((p) => p.fit && p.fit.score >= 4).sort((a, b) => b.fit!.score - a.fit!.score).slice(0, 4);
   const cut = xi[xi.length - 1]?.expected ?? 0;
   const diffs = all.filter((p) => !inXi.has(p.id) && p.expected >= 0.85 * cut).slice(0, 4);
   const punts = all.filter((p) => !inXi.has(p.id) && !diffs.includes(p)).sort((a, b) => upside(b) - upside(a)).filter((p) => upside(p) >= 0.08).slice(0, 3);
@@ -333,10 +355,19 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       { p: "The three strongest captaincy options:" },
       { list: capOptions.map((p) => `**${p.name}** (${short[p.team]}): ${p.expected.toFixed(0)} expected points, ${pc(upside(p))} chance of a big haul`), ordered: true },
     ] },
-    { id: "safe", heading: "Safe picks", blocks: [
-      { p: "Players almost certain to get a full go with bat or ball, so their points rarely collapse:" },
-      { list: safe.map((p) => `**${p.name}** (${short[p.team]}, ${ROLE[p.role ?? ""] ?? "player"}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
-    ] },
+    hasSolid
+      ? { id: "safe", heading: "Must-haves", blocks: [
+          { p: `The players who most often have a decent game (${solid}+ points) across the simulations: the ones to build around.` },
+          { list: safe.map((p) => `**${p.name}** (${short[p.team]}, ${ROLE[p.role ?? ""] ?? "player"}): ${solid}+ points in ${pc(p.p_solid)} of simulations, ${p.expected.toFixed(0)} expected`) },
+        ] }
+      : { id: "safe", heading: "Safe picks", blocks: [
+          { p: "Players almost certain to get a full go with bat or ball, so their points rarely collapse:" },
+          { list: safe.map((p) => `**${p.name}** (${short[p.team]}, ${ROLE[p.role ?? ""] ?? "player"}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
+        ] },
+    ...(hot.length ? [{ id: "form", heading: "In form", blocks: [
+      { p: "Fantasy points per match in their last five, against the matches before:" },
+      { list: hot.map((p) => `**${p.name}** (${shortOf(p.team)}): ${r0(p.form!.last5)} a match, up from ${r0(p.form!.usual)}${recentBits(p.form!)}`) },
+    ] } as Section] : []),
     ...(diffs.length ? [{ id: "differentials", heading: "Differentials", blocks: [
       { p: "Close to our XI on expected points but outside it: good swaps if you want a team that stands apart:" },
       { list: diffs.map((p) => `**${p.name}** (${short[p.team]}): ${p.expected.toFixed(0)} expected, ${why(p)}`) },
@@ -344,6 +375,13 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
     ...(punts.length ? [{ id: "punts", heading: "High-ceiling punts", blocks: [
       { p: "Lower on average, but with a real chance of a match-winning haul (50+ runs or 3+ wickets):" },
       { list: punts.map((p) => `**${p.name}** (${short[p.team]}): ${pc(upside(p))} chance of a big haul, ${p.expected.toFixed(0)} expected`) },
+    ] } as Section] : []),
+    ...(g && (suits.length || like.length) ? [{ id: "ground", heading: `Suits ${gName}`, blocks: [
+      ...(like.length ? [{ p: `${g.label && g.label !== "Plays close to average" ? `**${g.label}.** ` : ""}Plays most like ${list(like)}.` } as Block] : []),
+      ...(suits.length ? [
+        { p: `Players who score more at ${gName} and grounds like it than they do elsewhere:` } as Block,
+        { list: suits.map((p) => `**${p.name}** (${shortOf(p.team)}): ${r0(p.fit!.mean)} points a match at these grounds v ${r0(p.fit!.usual)} overall (${p.fit!.n} matches${p.fit!.n_ground ? `, ${p.fit!.n_ground} here` : ""})`) } as Block,
+      ] : []),
     ] } as Section] : []),
     ...(angle.length ? [{ id: "pitch", heading: `Pitch angle: ${groundShort ?? "the ground"}`, blocks: [
       ...angle.map((t) => ({ p: t }) as Block),
@@ -368,7 +406,9 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   const keypoints = [
     `Captain ${cap.name}, vice-captain ${vc.name}.`,
     `Team split ${short[0]} ${split[0]} – ${split[1]} ${short[1]}; ${f.single.expected.toFixed(0)} expected points.`,
-    ...(safe[0] ? [`Safest pick: ${safe[0].name}.`] : []),
+    ...(safe[0] ? [`${hasSolid ? "Must-have" : "Safest pick"}: ${safe[0].name}.`] : []),
+    ...(hot[0] ? [`In form: ${hot[0].name}.`] : []),
+    ...(suits[0] ? [`Suits ${gName}: ${suits[0].name}.`] : []),
     ...(diffs[0] ? [`Differential: ${diffs[0].name}.`] : []),
     ...(punts[0] ? [`High-ceiling punt: ${punts[0].name} (${pc(upside(punts[0]))} chance of a big haul).`] : []),
     ...(venue?.model ? [`${groundShort} plays ${venue.model.character}.`] : []),
