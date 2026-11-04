@@ -1,0 +1,408 @@
+{
+ "id": "wel-v-nd-odi-wellington-2026-11-04",
+ "innings": [
+  {
+   "team": "Wellington",
+   "runs": 354,
+   "wickets": 7,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Sam Morgan",
+     "dismissal": "b Cooper Rowell",
+     "runs": 14,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Nick Greenwood",
+     "dismissal": "b Brett Hampton",
+     "runs": 45,
+     "balls": 43,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Gareth Severin",
+     "dismissal": "run out (Robert ODonnell)",
+     "runs": 15,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Jesse Tashkoff",
+     "dismissal": "c Henry Cooper b Josh Brown",
+     "runs": 51,
+     "balls": 59,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Muhammad Abbas",
+     "dismissal": "c Aryan Mann b Cooper Rowell",
+     "runs": 84,
+     "balls": 78,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Oscar Jackson",
+     "dismissal": "c Robert ODonnell b Cooper Rowell",
+     "runs": 71,
+     "balls": 62,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Callum McLachlan",
+     "dismissal": "b Cooper Rowell",
+     "runs": 27,
+     "balls": 9,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Logan van Beek",
+     "dismissal": "not out",
+     "runs": 26,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Adam Milne",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Brett Hampton",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 54,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 7
+    },
+    {
+     "name": "James Naylor",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 58,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Cooper Rowell",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 91,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Josh Brown",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 72,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Snehith Reddy",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henry Cooper",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sam Morgan",
+     "score": 30,
+     "over": "4.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Gareth Severin",
+     "score": 59,
+     "over": "8.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nick Greenwood",
+     "score": 100,
+     "over": "15.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jesse Tashkoff",
+     "score": 164,
+     "over": "28.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Muhammad Abbas",
+     "score": 284,
+     "over": "45.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Oscar Jackson",
+     "score": 296,
+     "over": "45.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Callum McLachlan",
+     "score": 327,
+     "over": "47.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 12,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 64
+  },
+  {
+   "team": "Northern Districts",
+   "runs": 152,
+   "wickets": 10,
+   "overs": "35.1",
+   "batting": [
+    {
+     "name": "Henry Cooper",
+     "dismissal": "c Callum McLachlan b James Hartshorn",
+     "runs": 3,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nick Kelly",
+     "dismissal": "c Callum McLachlan b Adam Milne",
+     "runs": 9,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Joe Carter",
+     "dismissal": "c Sam Morgan b Logan van Beek",
+     "runs": 9,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Robert ODonnell",
+     "dismissal": "c Callum McLachlan b Adam Milne",
+     "runs": 0,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Brett Hampton",
+     "dismissal": "c Adam Milne b Yahya Zeb",
+     "runs": 32,
+     "balls": 30,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Xavier Bell",
+     "dismissal": "lbw b Logan van Beek",
+     "runs": 48,
+     "balls": 64,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Snehith Reddy",
+     "dismissal": "c Oscar Jackson b Logan van Beek",
+     "runs": 30,
+     "balls": 43,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Aryan Mann",
+     "dismissal": "c Nick Greenwood b Adam Milne",
+     "runs": 9,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Josh Brown",
+     "dismissal": "c Gareth Severin b Tashkoff",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "James Naylor",
+     "dismissal": "b Logan van Beek",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cooper Rowell",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "James Hartshorn",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Adam Milne",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 32,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Logan van Beek",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Yahya Zeb",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Jesse Tashkoff",
+     "overs": "7.1",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Henry Cooper",
+     "score": 12,
+     "over": "4.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nick Kelly",
+     "score": 12,
+     "over": "5.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Robert ODonnell",
+     "score": 18,
+     "over": "7.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Joe Carter",
+     "score": 28,
+     "over": "10.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Brett Hampton",
+     "score": 84,
+     "over": "18.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Xavier Bell",
+     "score": 131,
+     "over": "30.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Aryan Mann",
+     "score": 148,
+     "over": "33.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Snehith Reddy",
+     "score": 152,
+     "over": "34.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "James Naylor",
+     "score": 152,
+     "over": "34.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Josh Brown",
+     "score": 152,
+     "over": "35.1"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 28
+  }
+ ],
+ "winner": "Wellington",
+ "result": "Wellington won by 202 runs"
+}
