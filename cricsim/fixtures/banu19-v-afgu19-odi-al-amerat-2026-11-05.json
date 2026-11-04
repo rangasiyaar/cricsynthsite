@@ -1,0 +1,119 @@
+{
+  "id": "banu19-v-afgu19-odi-al-amerat-2026-11-05",
+  "title": "Bangladesh U19 v Afghanistan U19",
+  "date": "2026-11-05",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup 2026 · 2nd Match, Group B",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground (Ministry Turf 1), Al Amerat",
+  "venue_search": "al amerat",
+  "city": "Al Amerat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bangladesh U19",
+      "short": "BANU19",
+      "players": [
+        "Farid Hasan Faysal",
+        "Ahsan Al Mumin",
+        "Alamin Hossain Rony",
+        "Robiul Hasan Anik",
+        "SK Jarif Siyam",
+        "Rakibul Hossan",
+        "Rubay Islam Rizon",
+        "Sheikh Atiqur Rahman",
+        "Al Amin Hossen",
+        "Tafiul Alam Tamim",
+        "Abdullah Al Muhi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Farid Hasan Faysal",
+      "squad": [
+        "Farid Hasan Faysal",
+        "Ahsan Al Mumin",
+        "Alamin Hossain Rony",
+        "Robiul Hasan Anik",
+        "Abdullah Al Muhi",
+        "Sheikh Atiqur Rahman",
+        "SK Jarif Siyam",
+        "Rakibul Hossan",
+        "Rubay Islam Rizon",
+        "Shakil Khan",
+        "Al Amin Hossen",
+        "Kawser Ahmed",
+        "Farhan Sadik",
+        "All Rafi",
+        "Tafiul Alam Tamim"
+      ]
+    },
+    {
+      "name": "Afghanistan U19",
+      "short": "AFGU19",
+      "players": [
+        "Noman Salarzai",
+        "Farid Zadran",
+        "Subhan Ali",
+        "Sohail Khan",
+        "Tahir Sarwary",
+        "Amir Hamza",
+        "Sami Mubarez",
+        "Lutfullah Mohammadi",
+        "Abdullah Hamdard",
+        "Hamza Khan",
+        "Faisal Mubariz"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR"
+      ],
+      "captain": "Sohail Khan",
+      "squad": [
+        "Noman Salarzai",
+        "Sohail Khan",
+        "Farid Zadran",
+        "Subhan Ali",
+        "Tahir Sarwary",
+        "Amir Hamza",
+        "Hamza Khan",
+        "Faisal Mubariz",
+        "Abidullah Abid",
+        "Sami Mubarez",
+        "Lutfullah Mohammadi",
+        "Mohammad Ali",
+        "Abdullah Hamdard",
+        "Imran Mohammadi",
+        "Noor Ali Niazi"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175610,
+    "auto": true,
+    "xis": false
+  }
+}
