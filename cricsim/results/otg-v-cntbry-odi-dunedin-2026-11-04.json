@@ -1,0 +1,366 @@
+{
+ "id": "otg-v-cntbry-odi-dunedin-2026-11-04",
+ "innings": [
+  {
+   "team": "Canterbury",
+   "runs": 175,
+   "wickets": 10,
+   "overs": "43.3",
+   "batting": [
+    {
+     "name": "Chad Bowes",
+     "dismissal": "c Luke Georgeson b Luke Georgeson",
+     "runs": 27,
+     "balls": 37,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Scott Janett",
+     "dismissal": "c Jack Boyle b Thomas O Connor",
+     "runs": 51,
+     "balls": 75,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Leo Carter",
+     "dismissal": "c Jack Boyle b Ferns",
+     "runs": 3,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cole McConchie",
+     "dismissal": "c Jacob Cumming b Ben Lockrose",
+     "runs": 42,
+     "balls": 68,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Ethan Holman",
+     "dismissal": "c Thorn Parkes b Thomas O Connor",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jesse Frew",
+     "dismissal": "lbw b Ben Lockrose",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Rowe",
+     "dismissal": "b Luke Georgeson",
+     "runs": 13,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "LLB Harper",
+     "dismissal": "c Jack Boyle b Luke Georgeson",
+     "runs": 1,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Angus McKenzie",
+     "dismissal": "c Tom Jones b Ferns",
+     "runs": 7,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Raunaq Kapur",
+     "dismissal": "not out",
+     "runs": 12,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Travis Muller",
+     "dismissal": "b Bacon",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Thomas O Connor",
+     "overs": "8",
+     "maidens": 2,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Matthew Bacon",
+     "overs": "7.3",
+     "maidens": 1,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Luke Georgeson",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 20,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Danru Ferns",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Ben Lockrose",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Chad Bowes",
+     "score": 62,
+     "over": "13.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Leo Carter",
+     "score": 72,
+     "over": "16.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Scott Janett",
+     "score": 104,
+     "over": "24.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ethan Holman",
+     "score": 104,
+     "over": "24.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jesse Frew",
+     "score": 119,
+     "over": "27.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Matt Rowe",
+     "score": 142,
+     "over": "32.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "LLB Harper",
+     "score": 153,
+     "over": "36.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Cole McConchie",
+     "score": 159,
+     "over": "39.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Angus McKenzie",
+     "score": 174,
+     "over": "42.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Travis Muller",
+     "score": 175,
+     "over": "43.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 5,
+    "w": 12,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 47
+  },
+  {
+   "team": "Otago",
+   "runs": 176,
+   "wickets": 4,
+   "overs": "37",
+   "batting": [
+    {
+     "name": "Jack Boyle",
+     "dismissal": "b Angus McKenzie",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jacob Cumming",
+     "dismissal": "b Raunaq Kapur",
+     "runs": 63,
+     "balls": 88,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Thorn Parkes",
+     "dismissal": "c LLB Harper b Angus McKenzie",
+     "runs": 59,
+     "balls": 62,
+     "fours": 6,
+     "sixes": 3
+    },
+    {
+     "name": "Luke Georgeson",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 47,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Tom Jones",
+     "dismissal": "b Raunaq Kapur",
+     "runs": 20,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Jamal Todd",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Angus McKenzie",
+     "overs": "8",
+     "maidens": 4,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Travis Muller",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "LLB Harper",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matt Rowe",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Cole McConchie",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Raunaq Kapur",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jack Boyle",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Thorn Parkes",
+     "score": 109,
+     "over": "22.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jacob Cumming",
+     "score": 127,
+     "over": "29.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tom Jones",
+     "score": 163,
+     "over": "35.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 0,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 55
+  }
+ ],
+ "winner": "Otago",
+ "result": "Otago won by 6 wickets"
+}
