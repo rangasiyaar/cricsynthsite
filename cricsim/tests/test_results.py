@@ -158,3 +158,8 @@ def test_fantasy_picks_are_scored_on_the_scorecard(tmp_path):
     assert json.loads((out / "results" / "n.json").read_text())["fantasy"]["after"] is True
     idx = json.loads((out / "results" / "index.json").read_text())
     assert idx["fantasy"]["matches"] == 2 and 0 < idx["fantasy"]["single"] <= idx["fantasy"]["best_of_teams"] <= 1
+
+
+def test_abandoned_without_toss_has_no_innings_key():
+    rep = score(doc(), {"id": "x", "abandoned": True, "note": "Match abandoned due to rain (no toss)"}, FIXTURE)
+    assert rep["checks"] == 0 and "abandoned" in rep["note"].lower()

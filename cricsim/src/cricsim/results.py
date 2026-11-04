@@ -156,7 +156,7 @@ def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
             return
         add(tab, label, f"{_fmt(r)} (median {round(float(dist['q']['50']))})", fmt(actual), r[0] <= actual <= r[1])
 
-    inns = card["innings"]
+    inns = card.get("innings") or []          # an abandoned match with no toss has no innings
     # a match cut short (rain) is shown with its result but not scored: the forecast was for the full overs
     reduced = bool(card.get("abandoned")) or (bool(card.get("overs_per_side")) and card["overs_per_side"] < s["meta"]["rules"]["overs"])
     order = [roster.team(i["team"]) for i in inns]           # forecast team index of each innings
