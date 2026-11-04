@@ -539,6 +539,12 @@ def test_publish_adds_fantasy_picks(world, tmp_path):
     assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
     assert all(f["players"][p]["name"] for p in one["players"])
     assert sum(f["players"][p]["role"] == "WK" for p in one["players"]) >= 1
+    # every team comes from the top 15 on expected points (plus a missing role's best, if the 15 lack one)
+    ranked = sorted(f["players"], key=lambda p: -f["players"][p]["expected"])
+    allowed = set(ranked[:f["pool"]]) | {next(p for p in ranked if f["players"][p]["role"] == r) for r in ("WK", "BAT", "AR", "BOWL")}
+    assert 15 <= f["pool"] <= 19 and all(set(t["players"]) <= allowed for t in [one, *f["teams"]])
+    assert all(p in ranked[:15] or f["players"][p]["role"] not in {f["players"][q]["role"] for q in ranked[:15]}
+               for t in [one, *f["teams"]] for p in t["players"])
     pack = json.loads((tmp_path / "matches" / "fx.pack.json").read_text())
     assert all(len(r["fielding"]) == 3 and r["role"] for r in pack["players"].values())
 

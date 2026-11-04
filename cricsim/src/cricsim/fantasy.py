@@ -373,6 +373,24 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
     return teams
 
 
+POOL = 15                # the single team and the five are picked from the top 15 on expected points
+
+
+def top_pool(exp: dict[str, float], team_of: dict[str, int], roles: dict[str, str] | None = None,
+             n: int = POOL) -> list[str]:
+    """The top n players on expected points; when the team rules can't be met from them (no keeper, say, or nobody
+    from one side), the best player of each missing role / side is added, so a legal XI always exists."""
+    ranked = sorted(exp, key=lambda p: -exp[p])
+    pool = ranked[:n]
+    for r in (("WK", "BAT", "AR", "BOWL") if roles else ()):
+        if not any(roles.get(p) == r for p in pool):
+            pool += [p for p in ranked if roles.get(p) == r][:1]
+    for t in (0, 1):
+        if not any(team_of[p] == t for p in pool):
+            pool += [p for p in ranked if team_of[p] == t][:1]
+    return pool
+
+
 def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, form: dict | None = None) -> dict:
     """What the match centre's Fantasy tab shows: one XI with captain and vice-captain, and a set of k teams that
     together cover the likely matches, all as player ids, with each player's expected points and role.
@@ -393,6 +411,9 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, 
         exp = {p: float(np.dot(stack_features({**feats[p], **(form.get(p) or {"n": 0})}), w["weights"])) for p in pids}
         method = "simulations + recent form"
     use_roles = roles if any(r == "WK" for r in roles.values()) else None
+    pool = top_pool(exp, team_of, use_roles)
+    cols = [pids.index(p) for p in pool]
+    exp_pool = {p: exp[p] for p in pool}
 
     def team(t):
         xi, c, vc = t
@@ -403,9 +424,10 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, 
     return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1),
                             "p_solid": round(float(p_solid[i]), 3)} for i, p in enumerate(pids)},
             "solid": solid,
-            "single": team(pick_xi(exp, team_of, use_roles)),
-            "teams": [team(t) for t in portfolio(pids, pts, team_of, k, use_roles, captains=5,
-                                                 first=pick_xi(exp, team_of, use_roles))],
+            "single": team(pick_xi(exp_pool, team_of, use_roles)),
+            "teams": [team(t) for t in portfolio(pool, pts[:, cols], team_of, k, use_roles, captains=5,
+                                                 first=pick_xi(exp_pool, team_of, use_roles))],
+            "pool": len(pool),
             "fielding": fielding, "simulations": int(sims.n), "format": spec.format, "method": method}
 
 

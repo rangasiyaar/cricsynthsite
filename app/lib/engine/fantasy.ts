@@ -186,6 +186,16 @@ function portfolio(pids: string[], pts: Float64Array, n: number, teamOf: Record<
   return teams;
 }
 
+/** The top 15 on expected points (cricsim/fantasy.py top_pool): the single team and the five are picked from them;
+ *  the best player of a role or side missing from the 15 is added so the team rules can be met. */
+export function topPool(exp: Record<string, number>, teamOf: Record<string, number>, roles: Record<string, string> | null, n = 15): string[] {
+  const ranked = Object.keys(exp).sort((a, b) => exp[b] - exp[a]);
+  const pool = ranked.slice(0, n);
+  for (const r of roles ? ROLES : []) if (!pool.some((p) => roles![p] === r)) { const x = ranked.find((p) => roles![p] === r); if (x) pool.push(x); }
+  for (const t of [0, 1]) if (!pool.some((p) => teamOf[p] === t)) { const x = ranked.find((p) => teamOf[p] === t); if (x) pool.push(x); }
+  return pool;
+}
+
 /** The Fantasy tab for a set of simulations: one XI, and five teams that cover the likely matches. */
 export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5): FantasyPicks | null {
   if (!sims.length) return null;
@@ -205,6 +215,11 @@ export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5): FantasyPicks 
     plain[p] = s / n; exp[p] = dm[j];
   });
   const use = haveRoles ? roles : null;
+  const pool = topPool(exp, teamOf, use);
+  const cols = pool.map((p) => pids.indexOf(p)), Q = pool.length;
+  const poolPts = new Float64Array(n * Q);
+  for (let i = 0; i < n; i++) for (let j = 0; j < Q; j++) poolPts[i * Q + j] = pts[i * P + cols[j]];
+  const pick = (o: Record<string, number>) => Object.fromEntries(pool.map((p) => [p, o[p]]));
   const team = ([xi, c, vc]: Team): FantasyTeam => ({
     players: [...xi].sort((a, b) => exp[b] - exp[a]), captain: c, vice_captain: vc,
     expected: Math.round((xi.reduce((a, p) => a + exp[p], 0) + exp[c] + 0.5 * exp[vc]) * 10) / 10,
@@ -212,8 +227,8 @@ export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5): FantasyPicks 
   return {
     players: Object.fromEntries(pids.map((p) => [p, { team: teamOf[p], role: roles[p] || null, name: pack.players[p]?.name ?? p,
                                                        expected: Math.round(exp[p] * 10) / 10 }])),
-    single: team(pickXI(exp, teamOf, use)),
-    teams: portfolio(pids, pts, n, teamOf, k, use, plain).map(team),
+    single: team(pickXI(pick(exp), teamOf, use)),
+    teams: portfolio(pool, poolPts, n, teamOf, k, use, pick(plain)).map(team),
     fielding: pids.every((p) => pack.players[p]?.fielding), simulations: n, format: pack.format,
   };
 }

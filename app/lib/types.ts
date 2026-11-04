@@ -74,6 +74,7 @@ export type FantasyPicks = {
   solid?: number;                            // points that make a decent game (p_solid is the share of simulations at or above it)
   single: FantasyTeam; teams: FantasyTeam[]; fielding?: boolean; simulations?: number; format?: string; after?: boolean;
   scenario?: boolean;                        // rebuilt in MatchSynth Lab from the user's scenario
+  pool?: number;                             // players the teams were picked from (the top 15 on expected points)
 };
 
 export type MatchDoc = {

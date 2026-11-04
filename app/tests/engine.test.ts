@@ -31,4 +31,9 @@ test("fantasy picks from the browser simulations", { skip: !packPath }, async ()
   assert.equal(f.teams.length, 5);
   for (const t of f.teams) assert.equal(new Set(t.players).size, 11);
   assert.ok(Object.values(f.players).every((p) => Number.isFinite(p.expected)));
+  // teams come from the top 15 on expected points (plus the best of a role missing from them)
+  const ranked = Object.keys(f.players).sort((a, b) => f.players[b].expected - f.players[a].expected);
+  const roleOf = (p: string) => f.players[p].role;
+  const top = new Set(ranked.slice(0, 15)), topRoles = new Set(ranked.slice(0, 15).map(roleOf));
+  for (const t of [f.single, ...f.teams]) for (const p of t.players) assert.ok(top.has(p) || !topRoles.has(roleOf(p)), p);
 });
