@@ -334,6 +334,25 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   if (h?.bat_first_won != null && Math.abs(h.bat_first_won - 0.5) > 0.06)
     angle.push(`Teams ${h.bat_first_won > 0.5 ? "batting first" : "chasing"} have won ${pc(h.bat_first_won > 0.5 ? h.bat_first_won : 1 - h.bat_first_won)} of decided matches here; once the toss is known, the side ${h.bat_first_won > 0.5 ? "setting the total" : "chasing"} is worth an extra player.`);
 
+  // the team intro: the match as we see it, then the shape of the team and why it leans the way it does
+  const pA = s.result.win[A] ?? 0, pB = s.result.win[B] ?? 0;
+  const favK = pA >= pB ? 0 : 1, pFav = Math.max(pA, pB);
+  const proj = s.teams.map((t) => t.batting?.score?.q?.["50"]) as (number | undefined)[];
+  const heavy = split[0] === split[1] ? -1 : split[0] > split[1] ? 0 : 1;
+  const nRole = (r: string) => roles.find(([x]) => x === r)?.[1] ?? 0;
+  const med = h?.first_innings?.median;
+  const hi = Math.max(proj[0] ?? 0, proj[1] ?? 0);
+  const scoring = med && hi ? (hi > med + 8 ? ", above what the ground usually sees" : hi < med - 8 ? ", below the ground's usual first-innings score" : ", close to the ground's usual first-innings score") : "";
+  const intro = [
+    `${pFav < 0.53 ? `${A} and ${B} are as close to even as it gets` : `**${s.teams[favK].name}** go in as ${pc(pFav)} favourites against ${s.teams[1 - favK].name}`}${groundShort ? ` at ${groundShort}` : ""}. ` +
+      (proj[0] && proj[1] ? `We have ${short[0]} making about **${r0(proj[0])}** and ${short[1]} about **${r0(proj[1])}**${scoring}.` : ""),
+    `Our team ${heavy < 0 ? `splits evenly, **${split[0]} from each side**` : `leans **${split[heavy]}–${split[1 - heavy]} towards ${short[heavy]}**`}` +
+      (heavy < 0 ? "" : heavy === favK ? `, the side more likely to win: winners' players tend to score the most points.` : `, even though they are the outsiders: their players have more points in them here.`) +
+      ` It has ${list(roles.map(([r, n]) => `${n} ${(ROLE[r] ?? r).toLowerCase()}${n === 1 ? "" : "s"}`))}` +
+      (nRole("AR") >= 5 ? `; all-rounders can score with both bat and ball, which is why so many make it.` : nRole("BOWL") >= 4 ? `; with wickets likely to decide it, the bowlers carry real value.` : nRole("BAT") >= 4 ? `; with runs expected, the top order is where the points are.` : "."),
+    `**${cap.name}** captains and **${vc.name}** is vice-captain (more below). ${m.xis ? "Picked with the confirmed XIs." : "Picked with probable XIs; it updates when the teams are named at the toss."}`,
+  ].filter(Boolean);
+
   const rec = results?.fantasy;
   const table = (players: ReturnType<typeof P>[]) => ({ table: { head: ["Player", "Team", "Role", "Expected points"], rows: [
     ...players.map((p) => [`${p.name}${p.id === f.single.captain ? " (C)" : p.id === f.single.vice_captain ? " (VC)" : ""}`, short[p.team] ?? "",
@@ -346,7 +365,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       ...(m.start_time ? [["Start", `${m.start_time} IST`]] : []), ...(ground ? [["Ground", ground]] : []),
       ["Line-ups", m.xis ? "Confirmed XIs" : "Probable XIs (updates at the toss)"]] } }] },
     { id: "team", heading: "Best fantasy XI", blocks: [
-      { p: `Our team for ${A} vs ${B} with the ${xisWord} XIs: **${split[0]} from ${short[0]}, ${split[1]} from ${short[1]}**, with ${list(roles.map(([r, n]) => `${n} ${(ROLE[r] ?? r).toLowerCase()}${n === 1 ? "" : "s"}`))}.` },
+      ...intro.map((t) => ({ p: t }) as Block),
       table(xi),
       { links: [{ href: tab(id, "Fantasy"), label: "Open the Fantasy tab" }] },
     ] },
