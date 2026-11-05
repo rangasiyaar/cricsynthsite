@@ -1,0 +1,117 @@
+{
+  "id": "rwaw-v-usaw-t20-entebbe-2026-11-06",
+  "title": "Rwanda Women v United States of America Women",
+  "date": "2026-11-06",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Victoria T20I Series, 2026 · 2nd Match",
+  "comp_key": "women-s-victoria-t20i-series",
+  "venue": "Entebbe Cricket Oval, Entebbe",
+  "venue_search": "entebbe",
+  "city": "Entebbe",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Rwanda Women",
+      "short": "RWAW",
+      "players": [
+        "Merveille Uwase",
+        "Shakila Niyomuhoza",
+        "Gisele Ishimwe",
+        "Henriette Ishimwe",
+        "Clarisse Uwase",
+        "Bimenyimana",
+        "Belise Murekatete",
+        "Alice Ikuzwe",
+        "Rosine Irera",
+        "Flora Irakoze",
+        "Georgette Ingabire"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "WK",
+        "WK"
+      ],
+      "captain": "Bimenyimana",
+      "squad": [
+        "Bimenyimana",
+        "Merveille Uwase",
+        "Flora Irakoze",
+        "Shakila Niyomuhoza",
+        "Gisele Ishimwe",
+        "Rosine Irera",
+        "Belise Murekatete",
+        "Henriette Ishimwe",
+        "Clarisse Uwase",
+        "Alice Ikuzwe",
+        "Georgette Ingabire",
+        "Rosette Shimwamana",
+        "Fanny Utagushimaninde",
+        "Ruth Uwimana"
+      ]
+    },
+    {
+      "name": "United States of America Women",
+      "short": "USAW",
+      "players": [
+        "Pooja Ganesh",
+        "Gargi Bhogle",
+        "Taranum Chopra",
+        "Ritu Singh",
+        "Jivana Aras",
+        "Aditiba Chudasama",
+        "Geetika Kodali",
+        "Isani Vaghela",
+        "Maahi Madhavan",
+        "Ella Claridge",
+        "Chetna Pagydyala"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "WK",
+        "BAT"
+      ],
+      "captain": "Aditiba Chudasama",
+      "squad": [
+        "Aditiba Chudasama",
+        "Pooja Ganesh",
+        "Geetika Kodali",
+        "Ella Claridge",
+        "Gargi Bhogle",
+        "Isani Vaghela",
+        "Taranum Chopra",
+        "Ritu Singh",
+        "Jivana Aras",
+        "Chetna Pagydyala",
+        "Lekha Shetty",
+        "Maahi Madhavan",
+        "Nikhar Doshi",
+        "Sainavi Kambalapalli"
+      ]
+    }
+  ],
+  "live": {
+    "id": 177273,
+    "auto": true,
+    "xis": false
+  }
+}
