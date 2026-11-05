@@ -1,0 +1,323 @@
+{
+ "id": "adsw-v-brhw-t20-sydney-2026-11-05",
+ "innings": [
+  {
+   "team": "Brisbane Heat Women",
+   "runs": 184,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Grace Harris",
+     "dismissal": "c Maia Bouchier b Eleanor Larosa",
+     "runs": 22,
+     "balls": 18,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Charli Knott",
+     "dismissal": "run out (Megan Schutt/Bridget Patterson)",
+     "runs": 104,
+     "balls": 61,
+     "fours": 12,
+     "sixes": 4
+    },
+    {
+     "name": "Georgia Redmayne",
+     "dismissal": "lbw b Sophie Ecclestone",
+     "runs": 7,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yastika Bhatia",
+     "dismissal": "run out (Tahlia McGrath)",
+     "runs": 16,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Annie O Neil",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Orla Prendergast",
+     "dismissal": "not out",
+     "runs": 16,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Megan Schutt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Eleanor Larosa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 3
+    },
+    {
+     "name": "Sophie Ecclestone",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amanda-Jade Wellington",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tahlia McGrath",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ella Wilson",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Madeline Penna",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Grace Harris",
+     "score": 57,
+     "over": "7.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Georgia Redmayne",
+     "score": 89,
+     "over": "11.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Charli Knott",
+     "score": 154,
+     "over": "17.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Yastika Bhatia",
+     "score": 156,
+     "over": "18.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 22
+  },
+  {
+   "team": "Adelaide Strikers Women",
+   "runs": 170,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Laura Wolvaardt",
+     "dismissal": "c Charli Knott b Sarah Glenn",
+     "runs": 75,
+     "balls": 48,
+     "fours": 9,
+     "sixes": 0
+    },
+    {
+     "name": "Maia Bouchier",
+     "dismissal": "c Annie O Neil b Lucy Hamilton",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tahlia McGrath",
+     "dismissal": "c Yastika Bhatia b Sarah Glenn",
+     "runs": 13,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Madeline Penna",
+     "dismissal": "c Sianna Ginger b Grace Harris",
+     "runs": 68,
+     "balls": 45,
+     "fours": 7,
+     "sixes": 4
+    },
+    {
+     "name": "Bridget Patterson",
+     "dismissal": "b Grace Harris",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ellie Johnston",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lily Bassingthwaighte",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Charli Knott",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lucy Hamilton",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 2,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Glenn",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Catherine White",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Sianna Ginger",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 2,
+     "wides": 1
+    },
+    {
+     "name": "Grace Harris",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Maia Bouchier",
+     "score": 34,
+     "over": "3.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Tahlia McGrath",
+     "score": 64,
+     "over": "8.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Laura Wolvaardt",
+     "score": 141,
+     "over": "16.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bridget Patterson",
+     "score": 146,
+     "over": "17.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Madeline Penna",
+     "score": 170,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 1,
+    "nb": 5,
+    "p": 0
+   },
+   "powerplay_runs": 36
+  }
+ ],
+ "winner": "Brisbane Heat Women",
+ "result": "Brisbane Heat Women won by 14 runs"
+}
