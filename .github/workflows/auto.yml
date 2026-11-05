@@ -37,6 +37,7 @@ on:
 permissions:
   contents: write                  # commit fixtures and scorecards
   actions: write                   # start the quick publish and the next run
+  id-token: write                  # Google sign-in (no keys) for the time-based app alerts
 
 concurrency: { group: "${{ (inputs.late || inputs.list || inputs.dry_run || inputs.squads) && 'auto-late' || 'auto' }}", cancel-in-progress: false }
 
@@ -70,9 +71,18 @@ jobs:
           git commit -q -m "Late XIs (after the start): $(cat "$RUNNER_TEMP/rerun.txt" | sed 's/\.json//g' | cut -c1-200)"
           for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
           gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt")"
+      - uses: google-github-actions/auth@v2
+        id: gcp
+        if: ${{ vars.GCP_ENABLED == 'true' && vars.ALERTS_ENABLED == 'true' && !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
+        continue-on-error: true            # alerts are extra: the loop runs without them
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+        if: ${{ steps.gcp.outcome == 'success' }}
       - name: Fixtures, XIs, scorecards every 5 minutes
         if: ${{ !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
-        env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}" }
+        env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}", ALERTS: "${{ steps.gcp.outcome == 'success' }}", PROJECT: "${{ secrets.GCP_PROJECT_ID }}" }
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
@@ -81,11 +91,18 @@ jobs:
             git pull --rebase -q origin "$GITHUB_REF_NAME" || git rebase --abort 2>/dev/null || true
             rm -f "$RUNNER_TEMP/rerun.txt"
             uv run python -m cricsim.auto --changed "$RUNNER_TEMP/rerun.txt" || echo "pass failed; retrying next round"
-            git add cricsim/fixtures cricsim/results
+            if [ "$ALERTS" = "true" ]; then          # match starting soon, today's matches (each sent once)
+              FCM_ACCESS_TOKEN="$(gcloud auth print-access-token 2>/dev/null)" \
+                uv run python -m cricsim.notify timed --project "$PROJECT" --state cricsim/alerts/sent.json || echo "timed alerts failed"
+            fi
+            git add cricsim/fixtures cricsim/results cricsim/alerts 2>/dev/null || git add cricsim/fixtures cricsim/results
             if ! git diff --cached --quiet; then
               git commit -q -m "Auto: $(git diff --cached --name-only | sed 's|.*/||; s|\.json||' | paste -sd, - | cut -c1-200)"
               for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
-              gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt" 2>/dev/null)" || true
+              # a site update only when a fixture or scorecard changed (not for the alerts' sent-list alone)
+              if git diff --name-only HEAD~1 HEAD -- cricsim/fixtures cricsim/results | grep -q .; then
+                gh workflow run publish-site.yml --ref "$GITHUB_REF_NAME" -f quick=true -f resimulate="$(cat "$RUNNER_TEMP/rerun.txt" 2>/dev/null)" || true
+              fi
             fi
             [ $(( $(date +%s) + 300 )) -lt "$end" ] || break
             sleep 300

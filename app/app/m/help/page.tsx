@@ -29,7 +29,6 @@ export default function Help() {
       </MenuGroup>
       <MenuGroup label="Still stuck">
         <div className="a-panel" style={{ display: "grid", gap: 12 }}>
-          <p>Tell us what happened and on which match. We read every message.</p>
           <a className="a-btn" href={`${SITE}/contact/`}>Contact us</a>
         </div>
       </MenuGroup>

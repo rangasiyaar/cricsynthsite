@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { appInfo, cmpVersion, hideSplash, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
+import { appInfo, cmpVersion, hideSplash, tap, upgradeAlerts, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
   themeStatusBar, type AppInfo, type Release } from "@/lib/native";
 import { TIERS } from "@/lib/plans";
 import { SITE } from "@/lib/seo";
@@ -55,6 +55,10 @@ export function AppRuntime() {
   }, [router]);
   useEffect(() => {
     hideSplash();
+    upgradeAlerts();
+    // a light tick under every tap on a button, link, row or switch (Android's own controls do this)
+    const tick = (e: Event) => { if ((e.target as Element | null)?.closest?.("button, a, [role=switch], label")) tap(); };
+    document.addEventListener("click", tick, true);
     const html = document.documentElement;
     const paint = () => themeStatusBar(html.getAttribute("data-theme") === "dark");
     paint();
@@ -68,7 +72,7 @@ export function AppRuntime() {
       window.history.back();
       return true;
     }).then((f) => { off = f; });
-    return () => { seen.disconnect(); off(); };
+    return () => { seen.disconnect(); off(); document.removeEventListener("click", tick, true); };
   }, []);
   const later = () => { try { localStorage.setItem(LATER_KEY, `${update?.build}:${Date.now()}`); } catch {} setUpdate(null); };
   return <>
@@ -223,6 +227,60 @@ export function TopBar({ back, right }: { back?: string; right?: React.ReactNode
   );
 }
 
+// ── bottom tabs ───────────────────────────────────────────────────────────────────────────────────────────────────
+// Matches · Results · Lab · Account, like any Android app; hidden on the splash and sign-in screens.
+const NO_TABS = new Set(["/m/", "/m/index.html", "/m/login/", "/"]);
+
+export function TabBar() {
+  const path = usePathname();
+  const params = useSearchParams();
+  const { user } = usePlan();
+  if (NO_TABS.has(path)) return null;
+  const results = path.startsWith("/m/matches") && params.get("f") === "finished";
+  const tabs = [
+    { href: "/m/matches/", label: "Matches", icon: MENU_ICONS.matches, on: (path.startsWith("/m/match") && !results) },
+    { href: "/m/matches/?f=finished", label: "Results", icon: MENU_ICONS.results, on: results },
+    { href: "/m/lab/", label: "Lab", icon: Icon.lab, on: path.startsWith("/m/lab") },
+    { href: user === null ? "/m/login/" : "/m/account/", label: "Account", icon: MENU_ICONS.user,
+      on: ["/m/account", "/m/settings", "/m/help"].some((x) => path.startsWith(x)) },
+  ];
+  return (
+    <nav className="a-tabbar" aria-label="Sections">
+      {tabs.map((t) => (
+        <Link key={t.label} href={t.href} className={`a-tabbar-item${t.on ? " on" : ""}`} aria-current={t.on ? "page" : undefined}
+              onClick={() => tap("medium")}>
+          <span className="a-tabbar-ico">{t.icon}</span><span>{t.label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+/** Swipe left or right on a screen to move to the next or previous one (the match centre's sections). A swipe that
+ *  starts on something that scrolls sideways (a wide table, a chart) is left to it. */
+export function SwipeNav({ prev, next, children }: { prev?: string | null; next?: string | null; children: React.ReactNode }) {
+  const router = useRouter();
+  const start = useRef<{ x: number; y: number; t: number } | null>(null);
+  const scrolls = (el: Element | null) => {
+    for (let e = el; e && e !== document.body; e = e.parentElement) if (e.scrollWidth > e.clientWidth + 4 && getComputedStyle(e).overflowX !== "visible") return true;
+    return false;
+  };
+  return (
+    <div onTouchStart={(e) => { const p = e.touches[0]; start.current = scrolls(e.target as Element) ? null : { x: p.clientX, y: p.clientY, t: Date.now() }; }}
+         onTouchEnd={(e) => {
+           const s = start.current; start.current = null;
+           if (!s) return;
+           const p = e.changedTouches[0], dx = p.clientX - s.x, dy = p.clientY - s.y;
+           if (Math.abs(dx) < 70 || Math.abs(dx) < 2 * Math.abs(dy) || Date.now() - s.t > 600) return;
+           const to = dx < 0 ? next : prev;
+           if (!to) return;
+           tap(); snapScreen(dx > 0); router.replace(to);
+         }}>
+      {children}
+    </div>
+  );
+}
+
 // ── menu ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 // The open menu registers how to close it, so the phone's back button closes the menu before leaving the screen.
 const drawer: { close: (() => void) | null } = { close: null };
@@ -296,7 +354,7 @@ function Drawer({ onClose }: { onClose: () => void }) {
           </button>
         ) : user === null ? (
           <div className="a-drawer-guest">
-            <p>Sign in to open MatchSynth Lab. Pro is free during the beta.</p>
+            <p>Sign in for MatchSynth Lab</p>
             <button type="button" className="a-btn" onClick={() => go("/m/login/")}>Sign in</button>
           </div>
         ) : null}
@@ -358,6 +416,13 @@ export function WinPill({ pa, pb, height = 6 }: { pa: number; pb: number; height
 export const pct0 = (p: number | null | undefined) => (p === null || p === undefined ? "—" : `${Math.round(100 * p)}%`);
 
 /** The top of a match screen: both teams, their chances and the essentials. */
+/** "XIs in · 12:25" once the playing XIs are named (the time the forecast was re-run with them), else "Probable XIs".
+ *  `fresh` flashes it when the XIs arrive while the screen is open. */
+export function XiTag({ xis, at, fresh }: { xis?: boolean; at?: string; fresh?: boolean }) {
+  const t = xis && at ? new Date(at).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false }) : "";
+  return <span className={`a-xi${xis ? " in" : ""}${fresh ? " fresh" : ""}`}>{xis ? `XIs in${t ? ` · ${t}` : ""}` : "Probable XIs"}</span>;
+}
+
 export function MatchHero({ doc, note }: { doc: MatchDoc; note?: React.ReactNode }) {
   const { match, summary: s } = doc;
   const names = s.teams.map((t) => t.name);
@@ -539,8 +604,7 @@ export function ProPaywall({ signedIn }: { signedIn: boolean }) {
         <span className="a-paywall-icon">{Icon.lab}</span>
         <div className="a-eyebrow" style={{ justifyContent: "center" }}>For subscribers <span className="a-pro">Pro</span></div>
         <h1>MatchSynth Lab</h1>
-        <p>Change the toss, the pitch, the dew, a player&apos;s form or who can bowl, or start from any score. The match is
-          re-run on your phone and every section of the match centre is rebuilt from your scenario.</p>
+        <p>Change the match. See what moves.</p>
       </div>
       <ul className="a-paywall-list">
         {pro.lines.filter((l) => !l.startsWith("Everything")).map((l) => <li key={l}><span>{CHECK}</span>{l}</li>)}
@@ -564,12 +628,10 @@ export function ProPaywall({ signedIn }: { signedIn: boolean }) {
         {!signedIn ? (
           <>
             <Link href={`/m/login/?next=${encodeURIComponent(here)}`} className="a-btn">Sign in to get Pro</Link>
-            <p>Pro is free while we&apos;re in beta: sign in or create an account and the Lab opens straight away.</p>
           </>
         ) : (
           <>
             <a href={`${SITE}/pricing/`} className="a-btn">See how to get Pro</a>
-            <p>Your account is on the Free plan.</p>
           </>
         )}
         <button type="button" className="a-btn plain" onClick={() => (window.history.length > 2 ? router.back() : router.replace("/m/matches/"))}>Not now</button>

@@ -31,14 +31,13 @@ function Account() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h2>{plan === "pro" ? "Pro" : "Free"}</h2>{source === "beta" && <span className="a-pro">Beta</span>}
           </div>
-          <p>{source === "beta" ? "Every signed-in account gets the full MatchSynth Lab during the beta."
-            : plan === "pro" ? "MatchSynth Lab is included in your plan." : "Forecasts and the match centre are free. MatchSynth Lab is part of Pro."}</p>
+          <p>{source === "beta" ? "Pro · free in the beta" : plan === "pro" ? "MatchSynth Lab included" : "MatchSynth Lab is part of Pro"}</p>
         </div>
       </MenuGroup>
       <MenuGroup label="On the website">
         <MenuRow icon={KEY} title="API keys and usage" href={`${SITE}/account/`} />
         <MenuRow icon={MAIL} title="Email preferences" href={`${SITE}/account/`} />
-        <MenuRow icon={BIN} title="Delete your account" sub="Write to us and we'll take care of it" href={`${SITE}/contact/`} />
+        <MenuRow icon={BIN} title="Delete your account" href={`${SITE}/contact/`} />
       </MenuGroup>
       <button type="button" className="a-btn soft" onClick={logOut}>Log out</button>
     </>

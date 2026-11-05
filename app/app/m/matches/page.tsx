@@ -2,11 +2,12 @@
 // App home: every published match with its status, a countdown to the start and a way into MatchSynth Lab;
 // finished matches show how the forecast and the fantasy picks did.
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, pct0, useFresh, useNow } from "@/components/App";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, XiTag, pct0, useFresh, useNow } from "@/components/App";
 import { loadIndex, loadResults, peekIndex, peekResults } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
-import { alertChoice, hasAlerts, setAlerts } from "@/lib/native";
+import { ALL_ALERTS, alertChoice, hasAlerts, setAlerts } from "@/lib/native";
 import { countdown, kickoffMs, startLabel, status, type Status } from "@/lib/schedule";
 import type { MatchCard, ResultSummary } from "@/lib/types";
 
@@ -30,6 +31,7 @@ function Forecast({ m, st, now }: { m: MatchCard; st: Status; now: number | null
         <div className="a-mcard-head">
           <StatusPill st={st} />
           <span className="a-mcard-comp">{m.competition ?? FORMAT[m.format] ?? m.format}</span>
+          {st !== "finished" && <XiTag xis={m.xis} at={m.generated_at} />}
           <span style={{ flex: 1 }} />
           {st === "upcoming" && left && <span className="a-countdown" aria-label={`Starts in ${left}`}>{left}</span>}
         </div>
@@ -91,11 +93,11 @@ function AlertsPrompt() {
   const [show, setShow] = useState(false);
   useEffect(() => { setShow(hasAlerts() && alertChoice() === null); }, []);
   if (!show) return null;
-  const answer = async (yes: boolean) => { await setAlerts(yes ? ["forecasts", "xis"] : []); setShow(false); };
+  const answer = async (yes: boolean) => { await setAlerts(yes ? ALL_ALERTS : []); setShow(false); };
   return (
     <section className="a-prompt" aria-label="Match alerts">
       <h2>Get match alerts</h2>
-      <p>We&apos;ll tell you when a new forecast is out and when it&apos;s re-run with the playing XIs. Change it any time in Account.</p>
+      <p>Forecasts and playing XIs, as they land.</p>
       <div className="a-prompt-actions">
         <button type="button" className="a-btn" onClick={() => answer(true)}>Turn on</button>
         <button type="button" className="a-btn soft" onClick={() => answer(false)}>Not now</button>
@@ -104,9 +106,18 @@ function AlertsPrompt() {
   );
 }
 
-export default function Matches() {
+export default function MatchesPage() {
+  return <Suspense fallback={<Loading rows={3} />}><Matches /></Suspense>;
+}
+
+function Matches() {
+  const params = useSearchParams();
   const now = useNow(1000);
   const [filter, setFilter] = useState<Filter>("all");
+  useEffect(() => {                                       // the Results tab opens this list on finished matches
+    const f = params.get("f") as Filter | null;
+    setFilter(f && FILTERS.some(([x]) => x === f) ? f : "all");
+  }, [params]);
   const ix = useFresh("index", peekIndex, loadIndex);
   const rs = useFresh("results", peekResults, loadResults);
   const cards = useMemo(() => ix.data?.matches.filter((m) => m.published) ?? null, [ix.data]);

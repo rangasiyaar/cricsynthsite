@@ -4,10 +4,11 @@
 // across them, and the levers are saved per match on the phone.
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
-import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, TopBar, fromSlug, preview, snapScreen, useFresh } from "@/components/App";
+import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, Title, TopBar, fromSlug, preview, snapScreen, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionName, sectionsFor } from "@/components/MatchCentre";
 import { LabLevers, LabResult, useLab, type Lab } from "@/components/ScenarioLab";
-import { loadMatch, peekMatch } from "@/lib/data";
+import { loadIndex, loadMatch, peekIndex, peekMatch } from "@/lib/data";
+import { status } from "@/lib/schedule";
 import type { MatchDoc } from "@/lib/types";
 
 function Busy({ lab }: { lab: Lab }) {
@@ -79,6 +80,24 @@ function LabScreens({ doc }: { doc: MatchDoc }) {
   );
 }
 
+/** The Lab tab: every upcoming or live match, to open in the Lab. */
+function Pick() {
+  const ix = useFresh("index", peekIndex, loadIndex);
+  const now = Date.now();
+  const list = (ix.data?.matches ?? []).filter((m) => m.published && status(m, now) !== "finished");
+  return (
+    <>
+      <Title eyebrow={<>MatchSynth Lab <span className="a-pro">Pro</span></>}>Pick a match</Title>
+      {!ix.data ? <Loading rows={3} /> : !list.length ? <Empty title="No matches to open">New fixtures appear once their forecast is ready.</Empty> : (
+        <MenuGroup>
+          {list.map((m) => <MenuRow key={m.id} icon={Icon.lab} title={m.teams.map((t) => t.short).join(" v ")}
+                                    sub={m.competition ?? undefined} href={`/m/lab/?id=${encodeURIComponent(m.id)}`} />)}
+        </MenuGroup>
+      )}
+    </>
+  );
+}
+
 function Page() {
   const params = useSearchParams();
   const id = params.get("id") || "";
@@ -91,9 +110,9 @@ function Page() {
   const menu = `/m/lab/?id=${encodeURIComponent(id)}`;
   return (
     <>
-      <TopBar back={slug ? menu : `/m/match/?id=${encodeURIComponent(id)}`} />
+      <TopBar back={!id ? undefined : slug ? menu : `/m/match/?id=${encodeURIComponent(id)}`} />
       <AppGate pro>
-        {err ? <Empty title="Lab unavailable">{err}</Empty> : !doc ? <Loading rows={3} /> : <LabScreens doc={doc} />}
+        {!id ? <Pick /> : err ? <Empty title="Lab unavailable">{err}</Empty> : !doc ? <Loading rows={3} /> : <LabScreens doc={doc} />}
       </AppGate>
     </>
   );

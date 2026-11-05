@@ -104,7 +104,7 @@ export default function LiveProjection({ doc }: { doc: MatchDoc }) {
             {proj.chasing && <> · {names[1 - live.batting!]} reply <b>{proj.chasing[1]}</b> <span className="muted">(likely {proj.chasing[0]}–{proj.chasing[2]})</span></>}
           </p>
           <p className="small muted" style={{ margin: "6px 0 0" }}>
-            {N.toLocaleString()} simulations of the rest of the match in your browser, from the state above.
+            Simulating the rest of the match from here.
           </p>
         </>
       ) : (

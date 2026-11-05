@@ -1,4 +1,11 @@
 [
+  {"version": "0.3.0", "date": "2026-11-05", "notes": [
+    "Tabs along the bottom: Matches, Results, Lab and Account",
+    "Swipe left or right to move between a match's tabs",
+    "An \"XIs in\" tag on every match, which updates by itself when the teams are named",
+    "New alerts: a match starting soon, today's matches, results, and the captain in the XIs alert",
+    "Cleaner screens with less text"
+  ]},
   {"version": "0.2.2", "date": "2026-11-03", "notes": [
     "The menu opens from your profile icon, in place of the three lines",
     "Match screens no longer have a share button at the top",

@@ -13,7 +13,7 @@ def insights(s: dict, model: Model | None = None) -> list[dict]:
     win = s["result"]["win"]
     (a, pa), (b, pb) = list(win.items())
     fav, p = (a, pa) if pa >= pb else (b, pb)
-    out.append({"kind": "result", "text": f"{fav} win {_pct(p)} of {s['meta']['simulations']:,} simulations."
+    out.append({"kind": "result", "text": f"{fav} win {_pct(p)} of our simulations."
                 if abs(pa - pb) > 0.04 else f"Too close to call: {a} {_pct(pa)}, {b} {_pct(pb)}."})
 
     by_toss = s["result"].get("by_toss") or []

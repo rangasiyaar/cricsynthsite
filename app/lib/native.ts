@@ -27,6 +27,13 @@ export async function signOutNative() {
   await FirebaseAuthentication.signOut().catch(() => {});
 }
 
+/** A light tick under the finger (taps, switches); a firmer one for a change of tab. Nothing on the website. */
+export async function tap(kind: "light" | "medium" = "light") {
+  if (!isNative()) return;
+  const { Haptics, ImpactStyle } = await import("@capacitor/haptics");
+  await Haptics.impact({ style: kind === "medium" ? ImpactStyle.Medium : ImpactStyle.Light }).catch(() => {});
+}
+
 export async function hideSplash() {
   if (!isNative()) return;
   const { SplashScreen } = await import("@capacitor/splash-screen");
@@ -100,12 +107,17 @@ export function openExternal(url: string) {
 }
 
 // ── match alerts (Firebase Cloud Messaging topics; sent by the nightly publish, cricsim/notify.py) ─────────────────
-export type AlertTopic = "forecasts" | "xis";
-export const ALERTS: { topic: AlertTopic; title: string; sub: string }[] = [
-  { topic: "forecasts", title: "New forecasts", sub: "When a match's forecast is published" },
-  { topic: "xis", title: "Playing XIs named", sub: "When a forecast is re-run with the confirmed teams" },
+export type AlertTopic = "forecasts" | "xis" | "soon" | "results" | "today";
+export const ALERTS: { topic: AlertTopic; title: string }[] = [
+  { topic: "soon", title: "Match starting soon" },
+  { topic: "xis", title: "Playing XIs named" },
+  { topic: "results", title: "Results" },
+  { topic: "today", title: "Today's matches" },
+  { topic: "forecasts", title: "New forecasts" },
 ];
+export const ALL_ALERTS = ALERTS.map((a) => a.topic);
 const ALERT_KEY = "cs-alerts";
+const ALERT_V = "cs-alerts-v"; // 2: the alert kinds added in 0.3.0 are offered to everyone who had alerts on
 
 /** Alerts need the native messaging plugin, which the app carries once its Firebase config is set up. */
 export const hasAlerts = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseMessaging");
@@ -129,6 +141,17 @@ export async function setAlerts(topics: AlertTopic[]): Promise<AlertTopic[]> {
   }
   try { localStorage.setItem(ALERT_KEY, JSON.stringify(topics)); } catch {}
   return topics;
+}
+
+/** Once per install: someone with alerts on from before 0.3.0 gets the new kinds too (they can switch them off). */
+export async function upgradeAlerts() {
+  if (!hasAlerts()) return;
+  try {
+    if (localStorage.getItem(ALERT_V) === "2") return;
+    const had = alertChoice();
+    localStorage.setItem(ALERT_V, "2");
+    if (had && had.length) await setAlerts([...new Set<AlertTopic>([...had, "soon", "results", "today"])]);
+  } catch {}
 }
 
 /** An alert that arrives while the app is open (Android doesn't show those itself): `show` gets its text and path. */

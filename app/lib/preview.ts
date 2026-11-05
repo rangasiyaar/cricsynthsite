@@ -62,7 +62,6 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
   const favK = pA >= pB ? 0 : 1, fav = favK ? B : A, dog = favK ? A : B, pFav = Math.max(pA, pB);
   const st = strength(pFav);
   const [series, no = ""] = (m.competition ?? "").split(" · ");
-  const sims = s.meta.simulations.toLocaleString("en-IN");
   const ground = m.venue?.replace(/\s+/g, " ").trim();
   const groundShort = ground?.split(",")[0];
   const when = longDate(m.date);
@@ -141,8 +140,8 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
     ] } }] },
     { id: "prediction", heading: "Who will win", blocks: [
       { p: st.tone === "close"
-        ? `This looks like a close contest. **${fav}** edge it, winning **${pc(pFav)}** of ${sims} simulations to ${dog}'s ${pc(1 - pFav - s.result.tie)}, a margin small enough that one good spell or one big innings could settle it.`
-        : `**${fav}** go in as ${st.adj} favourites, winning **${pc(pFav)}** of ${sims} simulations of the match. ${dog} win ${pc(1 - pFav - s.result.tie)}${st.tone === "strong" ? ", so they need something special" : ", enough to keep this interesting"}.` },
+        ? `This looks like a close contest. **${fav}** edge it, winning **${pc(pFav)}** of our simulations to ${dog}'s ${pc(1 - pFav - s.result.tie)}, a margin small enough that one good spell or one big innings could settle it.`
+        : `**${fav}** go in as ${st.adj} favourites, winning **${pc(pFav)}** of our simulations of the match. ${dog} win ${pc(1 - pFav - s.result.tie)}${st.tone === "strong" ? ", so they need something special" : ", enough to keep this interesting"}.` },
       { p: `When the side batting first wins, the typical margin is about ${r0(s.result.margin_runs.q["50"])} runs; when the chasing side wins, it is usually with around ${r0(s.result.margin_wickets.q["50"])} wickets in hand.${s.result.tie > 0.005 ? ` A tie comes up in ${pc(s.result.tie)} of simulations.` : ""}` },
       ...(tossLine ? [{ p: tossLine }] : []),
       { links: [{ href: matchPath(id), label: "Open the match centre" }, { href: tab(id, "Overview"), label: "Win probability in detail" }] },
@@ -199,7 +198,7 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
   const topBat = [...keyBat[0], ...keyBat[1]].sort((a, b) => b.batting!.p_top_scorer - a.batting!.p_top_scorer)[0];
   const topBowl = [...keyBowl[0], ...keyBowl[1]].sort((a, b) => b.bowling!.p_best_bowler - a.bowling!.p_best_bowler)[0];
   const keypoints = [
-    `${fav} win ${pc(pFav)} of ${sims} simulations${st.tone === "close" ? ": a close one" : ""}.`,
+    `${fav} win ${pc(pFav)} of our simulations${st.tone === "close" ? ": a close one" : ""}.`,
     `Projected scores: ${A} ${r0(med[0])}, ${B} ${r0(med[1])}.`,
     ...(venue?.model ? [`${groundShort} plays ${venue.model.character}${h?.first_innings.median != null ? `; median first innings ${r0(h.first_innings.median)}` : ""}.`] : []),
     ...(edge != null && Math.abs(edge) >= 0.02 ? [`${edge > 0 ? "Batting first" : "Chasing"} is worth about ${Math.round(100 * Math.abs(edge))} points of win probability.`] : []),
@@ -208,7 +207,7 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
   ];
 
   const faq = [
-    { q: `Who will win ${A} vs ${B}?`, a: `${fav} are favourites, winning ${pc(pFav)} of ${sims} simulations; ${dog} win ${pc(1 - pFav - s.result.tie)}.` },
+    { q: `Who will win ${A} vs ${B}?`, a: `${fav} are favourites, winning ${pc(pFav)} of our simulations; ${dog} win ${pc(1 - pFav - s.result.tie)}.` },
     { q: `What is the score prediction for ${A} vs ${B}?`, a: `${A} around ${r0(med[0])} (likely ${r0(ta.batting.score.q["25"])}–${r0(ta.batting.score.q["75"])}), ${B} around ${r0(med[1])} (likely ${r0(tb.batting.score.q["25"])}–${r0(tb.batting.score.q["75"])}).` },
     ...(h?.first_innings.median != null ? [{ q: `What is the pitch report for ${groundShort}?`, a: `${venue?.model ? `It plays ${venue.model.character}. ` : ""}The median first-innings score is ${r0(h.first_innings.median)}${h.bat_first_won != null ? ` and teams batting first have won ${pc(h.bat_first_won)} of decided matches` : ""}.` }] : []),
     { q: `What are the ${xisWord} playing XIs?`, a: `${A}: ${ta.players.map((p) => p.name).join(", ")}. ${B}: ${tb.players.map((p) => p.name).join(", ")}.` },
@@ -220,13 +219,13 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
   const words = JSON.stringify(sections).split(/\s+/).length + keypoints.join(" ").split(/\s+/).length;
   const label = [no, shortDate(m.date)].filter(Boolean).join(", ");
   const standfirst = `${st.tone === "close" ? `${A} and ${B} look evenly matched` : `${fav} start as ${st.adj} favourites against ${dog}`}${no ? ` in the ${no}` : ""}${series ? ` of ${series}` : ""}${groundShort ? ` at ${groundShort}` : ""}`
-    + `${when ? ` on ${when}` : ""}. We played the match out ${sims} times with the ${xisWord} XIs: here is what decides it.`;
+    + `${when ? ` on ${when}` : ""}. We simulated it ball by ball with the ${xisWord} XIs: here is what decides it.`;
   return {
     id, path: previewPath(id), teams: [A, B], venue: ground, series, no, xis: !!m.xis,
     start: m.date ? (m.start_time ? `${m.date}T${m.start_time}:00+05:30` : m.date) : undefined,
     title: `${A} vs ${B} Preview & Prediction${label ? `, ${label}` : ""}: Pitch Report, Playing XI, Who Will Win`,
     h1: `${A} vs ${B}: preview and prediction`,
-    description: `${A} vs ${B}${no ? ` ${no}` : ""} preview: ${fav} win ${pc(pFav)} of ${sims} simulations. Pitch report${groundShort ? ` for ${groundShort}` : ""}, ${xisWord} playing XIs, key players, score prediction and toss.`,
+    description: `${A} vs ${B}${no ? ` ${no}` : ""} preview: ${fav} win ${pc(pFav)} of our simulations. Pitch report${groundShort ? ` for ${groundShort}` : ""}, ${xisWord} playing XIs, key players, score prediction and toss.`,
     standfirst, keypoints, sections, faq,
     date: (doc.generated_at ?? now.toISOString()).slice(0, 10), updated: doc.generated_at ?? now.toISOString(),
     minutes: Math.max(3, Math.round(words / 220)),
@@ -270,7 +269,6 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
   const [A, B] = s.teams.map((t) => t.name) as [string, string];
   const short = [m.teams[0]?.short ?? A, m.teams[1]?.short ?? B];
   const [series, no = ""] = (m.competition ?? "").split(" · ");
-  const sims = (f.simulations ?? s.meta.simulations).toLocaleString("en-IN");
   const ground = m.venue?.replace(/\s+/g, " ").trim(), groundShort = ground?.split(",")[0];
   const when = longDate(m.date);
   const xisWord = m.xis ? "confirmed" : "probable";
@@ -446,8 +444,8 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
     start: m.date ? (m.start_time ? `${m.date}T${m.start_time}:00+05:30` : m.date) : undefined,
     title: `${short[0]} vs ${short[1]} Fantasy Prediction${label ? `, ${label}` : ""}: Captain, Vice-Captain & Best XI`,
     h1: `${A} vs ${B}: fantasy prediction`,
-    description: `${A} vs ${B} fantasy team from ${sims} simulations: ${cap.name} captain, ${vc.name} vice-captain, safe picks, differentials and ${f.teams.length} teams for multiple entries.`,
-    standfirst: `Our fantasy team for ${A} vs ${B}${no ? `, ${no}` : ""}${groundShort ? ` at ${groundShort}` : ""}${when ? ` on ${when}` : ""}: captain, vice-captain, safe picks, differentials and punts, from ${sims} simulations with the ${xisWord} XIs.`,
+    description: `${A} vs ${B} fantasy team from our match simulations: ${cap.name} captain, ${vc.name} vice-captain, safe picks, differentials and ${f.teams.length} teams for multiple entries.`,
+    standfirst: `Our fantasy team for ${A} vs ${B}${no ? `, ${no}` : ""}${groundShort ? ` at ${groundShort}` : ""}${when ? ` on ${when}` : ""}: captain, vice-captain, safe picks, differentials and punts, from our match simulations with the ${xisWord} XIs.`,
     keypoints, sections, faq,
     date: (doc.generated_at ?? now.toISOString()).slice(0, 10), updated: doc.generated_at ?? now.toISOString(),
     minutes: Math.max(3, Math.round(words / 220)),

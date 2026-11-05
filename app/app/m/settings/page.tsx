@@ -50,12 +50,11 @@ export default function Settings() {
       </MenuGroup>
       {alerts && (
         <MenuGroup label="Match alerts">
-          {ALERTS.map((a) => <SwitchRow key={a.topic} title={a.title} sub={a.sub} on={alerts.includes(a.topic)} disabled={busy} onChange={(v) => flip(a.topic, v)} />)}
+          {ALERTS.map((a) => <SwitchRow key={a.topic} title={a.title} on={alerts.includes(a.topic)} disabled={busy} onChange={(v) => flip(a.topic, v)} />)}
         </MenuGroup>
       )}
       <MenuGroup label="Saved on this phone">
         <div className="a-panel" style={{ display: "grid", gap: 12 }}>
-          <p>Forecasts are kept so the app opens offline. Lab settings are kept per match.</p>
           <button type="button" className="a-btn soft" disabled={cleared}
                   onClick={async () => { await clearSaved(); setCleared(true); }}>{cleared ? "Cleared" : "Clear saved data"}</button>
         </div>
