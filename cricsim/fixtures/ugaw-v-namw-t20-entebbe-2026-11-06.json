@@ -1,0 +1,115 @@
+{
+  "id": "ugaw-v-namw-t20-entebbe-2026-11-06",
+  "title": "Uganda Women v Namibia Women",
+  "date": "2026-11-06",
+  "start_time": "12:00",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Victoria T20I Series, 2026 · 1st Match",
+  "comp_key": "women-s-victoria-t20i-series",
+  "venue": "Entebbe Cricket Oval, Entebbe",
+  "venue_search": "entebbe",
+  "city": "Entebbe",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uganda Women",
+      "short": "UGAW",
+      "players": [
+        "Kevin Awino",
+        "Janet Mbabazi",
+        "Rita Musamali",
+        "Nakisuuyi",
+        "Stephani Nampiina",
+        "Malisa Ariokot",
+        "Naume Amongin",
+        "Concy Aweko",
+        "Sarah Akiteng",
+        "Sarah Walaza",
+        "Esther Iloku"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Janet Mbabazi",
+      "squad": [
+        "Janet Mbabazi",
+        "Kevin Awino",
+        "Rita Musamali",
+        "Nakisuuyi",
+        "Esther Iloku",
+        "Stephani Nampiina",
+        "Prosscovia Alako",
+        "Malisa Ariokot",
+        "Naume Amongin",
+        "Concy Aweko",
+        "Asumin Akurut",
+        "Sarah Akiteng",
+        "Sarah Walaza"
+      ]
+    },
+    {
+      "name": "Namibia Women",
+      "short": "NAMW",
+      "players": [
+        "Merczerly Gorases",
+        "Sune Wittmann",
+        "Edelle van Zyl",
+        "Mekelaye Mwatile",
+        "Naomi Benjamin",
+        "Saima Tuhadeleni",
+        "Jurriene Diergaardt",
+        "Kayleen Green",
+        "Victoria Hamunyela",
+        "Sarafia Handiba",
+        "Wilka Mwatile"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Sune Wittmann",
+      "squad": [
+        "Sune Wittmann",
+        "Merczerly Gorases",
+        "Wilka Mwatile",
+        "Edelle van Zyl",
+        "Mekelaye Mwatile",
+        "Naomi Benjamin",
+        "Eveleen Kejarukua",
+        "Sylvia Shihepo",
+        "Saima Tuhadeleni",
+        "Jurriene Diergaardt",
+        "Kayleen Green",
+        "Victoria Hamunyela",
+        "Sarafia Handiba"
+      ]
+    }
+  ],
+  "live": {
+    "id": 177262,
+    "auto": true,
+    "xis": false
+  }
+}
