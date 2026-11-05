@@ -1,0 +1,122 @@
+{
+  "id": "estorm-v-dol-t20-benoni-2026-11-06",
+  "title": "Eastern Storm v Dolphins",
+  "date": "2026-11-06",
+  "start_time": "21:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA T20 Challenge 2026 · Super Eights",
+  "comp_key": "csa-t20-challenge",
+  "venue": "Willowmoore Park, Benoni",
+  "venue_search": "benoni",
+  "city": "Benoni",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Eastern Storm",
+      "short": "ESTORM",
+      "players": [
+        "Ronan Herrmann",
+        "Merrick Brett",
+        "Amaan Khan",
+        "Kabelo Sekhukhune",
+        "Jurie Snyman",
+        "Dewan Marais",
+        "Aryan Gopalan",
+        "Chad Classen",
+        "Martin Khumalo",
+        "Christopher Britz",
+        "Brayden Hicks"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "squad": [
+        "Merrick Brett",
+        "Amaan Khan",
+        "Dewan Marais",
+        "Kabelo Sekhukhune",
+        "Jurie Snyman",
+        "Christopher Britz",
+        "Brayden Hicks",
+        "Juan Lubbe",
+        "Aryan Gopalan",
+        "Chad Classen",
+        "Martin Khumalo",
+        "Tumelo Simelane",
+        "Sabelo Mabanga",
+        "Ronan Herrmann",
+        "Thabiso Lekhoana"
+      ]
+    },
+    {
+      "name": "Dolphins",
+      "short": "DOL",
+      "players": [
+        "Romashan Pillay",
+        "Bryce Parsons",
+        "Jason Smith",
+        "Hanu Viljoen",
+        "Gomolemo Phiri",
+        "Andile Simelane",
+        "Prenelan Subrayen",
+        "Ottneil Baartman",
+        "Okuhle Cele",
+        "Marques Ackerman",
+        "Khaya Zondo"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "squad": [
+        "Hanu Viljoen",
+        "Jason Smith",
+        "Marques Ackerman",
+        "Khaya Zondo",
+        "Bryce Parsons",
+        "Romashan Pillay",
+        "Semal Pillay",
+        "Joshua Richards",
+        "David Miller",
+        "Prenelan Subrayen",
+        "Keith Dudgeon",
+        "Grant Roelofsen",
+        "Andile Simelane",
+        "Okuhle Cele",
+        "Nqobani Mokoena",
+        "Sean Gilson",
+        "Gomolemo Phiri",
+        "Tristan Luus",
+        "Bayanda Majola",
+        "Ottneil Baartman"
+      ]
+    }
+  ],
+  "live": {
+    "id": 174265,
+    "auto": true,
+    "xis": false
+  }
+}
