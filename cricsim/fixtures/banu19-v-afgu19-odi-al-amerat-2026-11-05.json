@@ -12,36 +12,36 @@
   "city": "Al Amerat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Afghanistan U19 won the toss and bat first.",
   "teams": [
     {
       "name": "Bangladesh U19",
       "short": "BANU19",
       "players": [
-        "Farid Hasan Faysal",
-        "Ahsan Al Mumin",
-        "Alamin Hossain Rony",
-        "Robiul Hasan Anik",
+        "Abdullah Al Muhi",
         "SK Jarif Siyam",
+        "Alamin Hossain Rony",
+        "Ahsan Al Mumin",
+        "Farid Hasan Faysal",
         "Rakibul Hossan",
+        "Robiul Hasan Anik",
         "Rubay Islam Rizon",
-        "Sheikh Atiqur Rahman",
-        "Al Amin Hossen",
+        "All Rafi",
         "Tafiul Alam Tamim",
-        "Abdullah Al Muhi"
+        "Sheikh Atiqur Rahman"
       ],
       "roles": [
         "WK",
+        "AR",
         "BAT",
         "BAT",
+        "WK",
+        "AR",
         "BAT",
         "AR",
         "AR",
-        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "WK"
+        "BOWL"
       ],
       "captain": "Farid Hasan Faysal",
       "squad": [
@@ -66,30 +66,30 @@
       "name": "Afghanistan U19",
       "short": "AFGU19",
       "players": [
+        "Abidullah Nadarjan",
+        "Faridullah Ihsas",
+        "Subhan Zakhail",
         "Noman Salarzai",
-        "Farid Zadran",
-        "Subhan Ali",
-        "Sohail Khan",
+        "Shah Faisal Rahimi",
         "Tahir Sarwary",
         "Amir Hamza",
-        "Sami Mubarez",
+        "Sohail Khan",
         "Lutfullah Mohammadi",
-        "Abdullah Hamdard",
-        "Hamza Khan",
-        "Faisal Mubariz"
+        "Sami Mubarez",
+        "Noor Ali Niazi"
       ],
       "roles": [
-        "WK",
         "BAT",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
+        "BAT",
         "WK",
-        "AR"
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
       ],
       "captain": "Sohail Khan",
       "squad": [
@@ -114,6 +114,7 @@
   "live": {
     "id": 175610,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
