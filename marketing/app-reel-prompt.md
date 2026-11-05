@@ -35,7 +35,7 @@ on-screen copy, timings, and an export-ready version of each frame. Also give a 
 | Background | `#F2F2F3` (light) / `#111315` (dark) | Frame backgrounds |
 | Ink | `#1D1F20` | Headlines on light |
 | Steel (primary) | `#416180`, accent `#5980A6`, deep `#1D2D3D` | Highlights, CTA button, end card |
-| Team A blue | `#3F5F7F` (as in the app's win bar) | First team |
+| Team A blue | `#416180` (as in the app's win bar) | First team |
 | Team B orange | `#B0613A` | Second team / Live |
 | Lineup green | `#2E8C57` | "Lineup Out" tag |
 | Headline font | **Barlow Condensed** 600, UPPERCASE, tight tracking | All headlines |
@@ -59,7 +59,7 @@ simple modern Android frame (no brand-name device), slightly tilted (5–8°) in
 | 5 | 11.5–15s | `07-players.png`, `08-top-players.png` | **WHO WILL FIRE?** / Runs, wickets and form for every player | Long screenshot (`07-players-full.png`) scrolls inside the phone; one player row lifts out as a floating card. |
 | 6 | 15–18s | `10-matchups.png`, `11-venue.png` | **KNOW THE MATCH-UPS. READ THE GROUND.** / Batter v bowler · venue intelligence | Split screen: two phones side by side slide in from left and right. |
 | 7 | 18–22.5s | `12-fantasy.png` (+ `12-fantasy-full.png`) | **YOUR FANTASY XI, READY.** / Captain, vice-captain and five teams | The C and VC badges pop with a small bounce; the XI list scrolls; a green **Lineup Out** tag stamps onto the top corner. |
-| 8 | 22.5–26s | `14-lab.png` | **CHANGE THE MATCH. SEE WHAT MOVES.** / MatchSynth Lab: pitch, dew, toss, form | Sliders animate (designed overlay, in the app's style: rounded track, steel thumb); the win bar shifts as they move. |
+| 8 | 22.5–26s | `14-lab.png` (the Lab intro; the sliders are a designed overlay) | **CHANGE THE MATCH. SEE WHAT MOVES.** / MatchSynth Lab: pitch, dew, toss, form | Sliders animate (designed overlay, in the app's style: rounded track, steel thumb); the win bar shifts as they move. |
 | 9 | 26–29s | `03-match-menu-dark.png` + small notification mock | **ALERTS WHEN IT MATTERS.** / Starting soon · Lineups out · Results | Theme flips light → dark; an Android-style notification drops in: "Lineup Out: Team A v Team B · Captain: …". |
 | 10 | 29–33s | End card (no screenshot) | Logo large · **FREE ON ANDROID** · cricsynthesis.in/app | Steel `#1D2D3D` background, logo draws in, button "Download the app" with a subtle shine; small line: "Pro is free in the beta". |
 
