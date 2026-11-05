@@ -12,34 +12,34 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Kathmandu Gorkhas won the toss and bowl first.",
   "teams": [
     {
       "name": "Biratnagar Kings",
       "short": "BIK",
       "players": [
-        "Shehan Jayasuriya",
-        "Lokesh Bam",
         "Imran Sheikh",
+        "Lokesh Bam",
+        "Shehan Jayasuriya",
+        "Angelo Mathews",
         "Andre Russell",
         "Shubham Ranjane",
-        "Angelo Mathews",
+        "Basir Ahamad",
         "Narayan Joshi",
         "Rupesh Singh",
         "Sandeep Lamichhane",
-        "Basir Ahamad",
         "Aprajit Poudel"
       ],
       "roles": [
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
         "AR",
-        "BAT",
         "AR",
-        "BAT",
+        "AR",
+        "AR",
         "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -63,27 +63,27 @@
       "short": "KAG",
       "players": [
         "David Warner",
-        "Smit Patel",
-        "Mohammad Aadil Alam",
+        "Sahil Patel",
         "Rashid Khan",
+        "Bosisto",
         "Bhim Sharki",
-        "Karan KC",
+        "Sahan Arachchige",
         "Jahandad Khan",
+        "Karan KC",
         "Santosh Yadav",
-        "Dev Shah",
         "Shahab Alam",
-        "Ripon Mondol"
+        "Dev Shah"
       ],
       "roles": [
         "BAT",
         "WK",
         "BAT",
-        "BAT",
+        "AR",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -106,6 +106,7 @@
   "live": {
     "id": 177710,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
