@@ -1,7 +1,31 @@
 """Plain-English headlines from a match summary — what a fan reads first."""
 from __future__ import annotations
 
+import re
+
 from cricsim.engine.model import Model
+
+_COUNT = re.compile(r" of [\d,]+ simulations")
+
+
+def tidy(doc: dict) -> dict:
+    """Clean a published match doc made by older code: no simulation counts in its headlines and no "new:" id
+    prefix on player names. Changes and returns `doc`."""
+    for it in doc.get("insights") or []:
+        it["text"] = _COUNT.sub(" of our simulations", it.get("text") or "")
+
+    def walk(x):
+        if isinstance(x, dict):
+            for k, v in x.items():
+                if k == "name" and isinstance(v, str) and v.startswith("new:"):
+                    x[k] = v[4:]
+                else:
+                    walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+    walk(doc)
+    return doc
 
 
 def _pct(p: float | None) -> str:

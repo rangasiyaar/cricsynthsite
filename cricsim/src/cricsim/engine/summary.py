@@ -53,7 +53,7 @@ def _top(ids: list[str], idx: np.ndarray, model: Model, n: int, k: int = 5) -> l
     idx = idx[idx >= 0]
     c = np.bincount(idx, minlength=len(ids))
     order = np.argsort(-c)[:k]
-    return [{"id": ids[j], "name": model.names[model.pid(ids[j])] if model.knows(ids[j]) else ids[j],
+    return [{"id": ids[j], "name": model.names[model.pid(ids[j])] if model.knows(ids[j]) else ids[j].removeprefix("new:"),
              "p": _r(c[j] / max(n, 1), 4)} for j in order if c[j] > 0]
 
 
@@ -145,7 +145,7 @@ def _players(sims: MatchSims, model: Model, team: int, mask) -> list[dict]:
             best_bowler.setdefault(p, []).append(share[:, slot])
     for p in players:
         i = model.pid(p)
-        row = {"id": p, "name": model.names[i] if model.knows(p) else p, "known": model.knows(p)}
+        row = {"id": p, "name": model.names[i] if model.knows(p) else p.removeprefix("new:"), "known": model.knows(p)}
         if br.get(p):
             runs = np.concatenate([lg.bat_runs[sel, s] for lg, sel, s in br[p]])
             balls = np.concatenate([lg.bat_balls[sel, s] for lg, sel, s in br[p]])
@@ -166,7 +166,7 @@ def _players(sims: MatchSims, model: Model, team: int, mask) -> list[dict]:
                 "p_at_least": {str(t): _r((runs >= t).mean()) for t in marks},
                 "p_duck": _r(((runs == 0) & out & batted).mean()), "p_out": _r(out.mean()),
                 "how_out": how,
-                "dismissed_by": sorted(({"bowler": b, "name": model.names[model.pid(b)] if model.knows(b) else b,
+                "dismissed_by": sorted(({"bowler": b, "name": model.names[model.pid(b)] if model.knows(b) else b.removeprefix("new:"),
                                          "p": _r(c / n)} for b, c in by.items()), key=lambda d: -d["p"])[:5],
                 "p_top_scorer": _r(np.concatenate(tops[p]).mean()),
             }

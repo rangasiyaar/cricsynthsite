@@ -44,7 +44,7 @@ def engine_pack(model: Model, spec: MatchSpec) -> dict:
     for team in spec.teams:
         for p in team.players:
             i = model.pid(p)
-            players[p] = {"name": model.names[i] if model.knows(p) else p, "known": model.knows(p),
+            players[p] = {"name": model.names[i] if model.knows(p) else p.removeprefix("new:"), "known": model.knows(p),
                           "hand": S.HANDS[model.hand[i]] if model.knows(p) else "unknown"}
     return {
         "version": 1, "format": spec.format, "gender": spec.gender, "rules": rules,

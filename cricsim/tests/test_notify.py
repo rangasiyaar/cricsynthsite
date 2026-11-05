@@ -80,3 +80,4 @@ def test_timed_alerts_go_once():
     assert timed({"matches": [soon, later]}, sent, NOW) == []          # nothing twice
     early = datetime(2026, 10, 23, 2, 0, tzinfo=timezone.utc)          # 7:30 IST: too early for today's list
     assert timed({"matches": [later]}, {}, early) == []
+

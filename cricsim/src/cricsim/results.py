@@ -30,6 +30,7 @@ from pathlib import Path
 import click
 
 from cricsim.fantasy import pick_xi, scorecard_points, team_points
+from cricsim.insights import tidy
 
 IST = timezone(timedelta(hours=5, minutes=30))
 TABS = ("Overview", "Scores", "Wickets", "Players", "Matchups")
@@ -407,7 +408,8 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
         doc_p = out / "matches" / f"{mid}.json"
         if mid in listed or mid in cards or not doc_p.exists() or fx.get(mid, {}).get("date") != today:   # finished: Results page
             continue
-        doc = json.loads(doc_p.read_text())
+        doc = tidy(json.loads(doc_p.read_text()))
+        doc_p.write_text(json.dumps(doc, separators=(",", ":")))       # frozen docs made by older code: cleaned
         m, sm = doc["match"], doc["summary"]
         idx["matches"].append({**{k: m.get(k) for k in ("id", "title", "date", "start_time", "format", "competition", "venue")},
                                "teams": [{"name": t["name"], "short": t.get("short")} for t in m["teams"]],

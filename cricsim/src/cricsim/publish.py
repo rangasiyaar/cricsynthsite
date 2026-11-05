@@ -30,7 +30,7 @@ from cricsim.engine.pack import engine_pack
 from cricsim.engine.simulate import simulate
 from cricsim.engine.summary import summarize
 from cricsim.fantasy import fantasy_picks
-from cricsim.insights import insights
+from cricsim.insights import insights, tidy
 
 log = logging.getLogger(__name__)
 
@@ -98,6 +98,7 @@ def publish_match(model: Model, cov: dict, out: Path, n: int = 20_000, seed: int
     cov = {**cov, "xis": xis_confirmed(cov)}
     if previous and key and previous[0].get("sim_key") == key:
         doc, pack = previous
+        tidy(doc); tidy(pack)
         doc["match"] = {**doc["match"], **{k: cov.get(k) for k in MATCH_FIELDS if k in cov}}
         doc["published"] = bool(cov.get("published", True))
         (out / "matches" / f"{cov['id']}.json").write_text(json.dumps(doc, separators=(",", ":")))
