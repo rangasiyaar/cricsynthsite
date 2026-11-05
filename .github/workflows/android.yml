@@ -147,9 +147,16 @@ jobs:
         if: ${{ steps.gcp.outcome == 'success' }}
       - uses: astral-sh/setup-uv@v5
         if: ${{ steps.gcp.outcome == 'success' }}
-      - name: New version alert
+      - name: New version alert (3 minutes after the site offers this build)
         if: ${{ steps.gcp.outcome == 'success' }}
         continue-on-error: true
+        timeout-minutes: 25
         run: |
+          # wait for the site update to serve this build on /download/app.json (up to 20 minutes), then 3 more minutes
+          for i in $(seq 1 40); do
+            curl -fsS "https://cricsynthesis.in/download/app.json?b=$i" | grep -q "\"build\": *$GITHUB_RUN_NUMBER\b" && break
+            sleep 30
+          done
+          sleep 180
           FCM_ACCESS_TOKEN="$(gcloud auth print-access-token)" uv run python -m cricsim.notify release \
             --version "${{ steps.rel.outputs.version }}" --build "$GITHUB_RUN_NUMBER" --project "${{ secrets.GCP_PROJECT_ID }}"

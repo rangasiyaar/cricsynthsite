@@ -1,4 +1,10 @@
 [
+  {"version": "0.3.4", "date": "2026-11-05", "notes": [
+    "The bottom bar is now a floating rounded strip",
+    "Match screen tags all the same height",
+    "Clearer Pro badge on Open in MatchSynth Lab in dark mode",
+    "Shorter update alerts, sent once the new version is ready to install"
+  ]},
   {"version": "0.3.3", "date": "2026-11-05", "notes": [
     "Matching corners everywhere: tags, buttons, cards and charts follow one style",
     "Captain and vice-captain badges look alike in the fantasy team"

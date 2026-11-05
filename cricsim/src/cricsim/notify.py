@@ -234,23 +234,20 @@ def timed_cmd(project: str, state: Path, dry_run: bool) -> None:
     state.write_text(json.dumps(sent, indent=1, sort_keys=True) + "\n")
 
 
-def release_alert(version: str, build: int, changelog: list[dict]) -> dict:
-    """The "new version" alert for one release: its version and the first line of its changelog entry."""
-    entry = next((c for c in changelog if c.get("version") == version), None)
-    first = (entry or {}).get("notes", [None])[0]
+def release_alert(version: str, build: int) -> dict:
+    """The "new version" alert for one release: short, the same every time (what's new is in the app's prompt)."""
     return {"topic": "updates", "match": f"app-{build}", "path": "/m/matches/",
-            "title": f"CricSynthesis {version} is out", "body": first or "Tap to update the app."}
+            "title": "New update available", "body": f"CricSynthesis {version} is ready. Tap to install."}
 
 
 @main.command("release")
 @click.option("--version", "version", required=True)
 @click.option("--build", type=int, required=True)
-@click.option("--changelog", type=click.Path(exists=True, path_type=Path), default=Path("mobile/changelog.json"))
 @click.option("--project", required=True)
 @click.option("--dry-run", is_flag=True)
-def release_cmd(version: str, build: int, changelog: Path, project: str, dry_run: bool) -> None:
+def release_cmd(version: str, build: int, project: str, dry_run: bool) -> None:
     """Tell phones with app-update alerts on that a new version is out (sent once, by the release job)."""
-    alert = release_alert(version, build, json.loads(changelog.read_text()))
+    alert = release_alert(version, build)
     click.echo(f"[updates] {alert['title']} — {alert['body']}")
     if dry_run:
         return

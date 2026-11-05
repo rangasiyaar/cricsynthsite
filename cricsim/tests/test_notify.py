@@ -83,8 +83,8 @@ def test_timed_alerts_go_once():
 
 
 
-def test_release_alert_names_the_version_and_first_change():
+def test_release_alert_is_short_and_names_the_version():
     from cricsim.notify import release_alert
-    a = release_alert("0.3.2", 80, [{"version": "0.3.2", "notes": ["Material look", "x"]}, {"version": "0.3.1", "notes": ["y"]}])
-    assert a["topic"] == "updates" and a["title"] == "CricSynthesis 0.3.2 is out" and a["body"] == "Material look"
-    assert release_alert("9.9.9", 1, [])["body"] == "Tap to update the app."
+    a = release_alert("0.3.4", 82)
+    assert a["topic"] == "updates" and a["title"] == "New update available"
+    assert a["body"] == "CricSynthesis 0.3.4 is ready. Tap to install." and a["match"] == "app-82"

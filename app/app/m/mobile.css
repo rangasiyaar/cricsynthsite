@@ -469,3 +469,13 @@ html body .a-content .tag { border-radius: 6px; }
 html body .a-content .tag:not(.pro) { background: var(--a-sec); color: var(--a-on-sec); border-color: transparent; }   /* VC: filled, like C */
 html body .a-content .pbar, html body .a-content .winbar { border-radius: 2px; }
 html body .a-content svg rect:not(.hover-band) { rx: 2px; ry: 2px; }
+
+/* ── 0.3.4: match screen tags one height; Pro badge readable on the Lab button in both themes; the bottom bar as a
+   floating rounded strip (16px, like the cards) ── */
+.a-facts .a-xi { height: 30px; padding: 0 12px; font-size: 13px; }
+.a-lab-open .a-pro { background: #f2f2f3; color: #1d2d3d; font-weight: 700; }
+.a-tabbar { left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); height: 72px; padding: 10px 6px 8px;
+  border-radius: var(--a-r, 16px); box-shadow: var(--a-elev-2, 0 2px 8px rgba(0, 0, 0, .12)); max-width: 616px; margin: 0 auto; }
+body:has(.a-tabbar) .app-wrap { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+.a-tabbar-ico { border-radius: 12px; }
