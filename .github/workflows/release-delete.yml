@@ -1,0 +1,20 @@
+# Delete one Android release (and its tag), e.g. a build published with the wrong version. Run by hand only.
+name: Delete release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. android-v0.2.2-build72"
+        required: true
+permissions:
+  contents: write
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          case "$TAG" in android-v*) ;; *) echo "only android-v* tags"; exit 1;; esac
+          gh release delete "$TAG" -R "$GITHUB_REPOSITORY" --cleanup-tag -y
