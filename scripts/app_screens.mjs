@@ -69,7 +69,10 @@ for (const theme of ["light", "dark"]) {
       // whole screen, top to bottom (charts animate in as they scroll into view, so scroll through first)
       await p.evaluate(async () => { for (let y = 0; y < document.documentElement.scrollHeight; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } window.scrollTo(0, 0); });
       await p.waitForTimeout(900);
+      // the floating bottom bar is fixed to the screen: in a whole-page capture it would sit mid-page, so it steps aside
+      await p.addStyleTag({ content: ".a-tabbar{display:none!important}" });
       await p.screenshot({ path: `${file}-full.png`, fullPage: true });
+      await p.evaluate(() => document.querySelectorAll("style").forEach((s) => s.textContent?.includes(".a-tabbar{display:none") && s.remove()));
     }
     console.log(file, tall ? "(+ full)" : "");
   }
