@@ -223,6 +223,17 @@ def _side(fx: dict, name: str) -> str:
     return fx["teams"][k]["name"] if live._team_score(fx["teams"][k], {"teamName": name}) > 0 else name
 
 
+def _over(h: dict) -> bool:
+    state = (h.get("state") or "").lower()
+    return state == "complete" or "abandon" in state
+
+
+def finished_header(scores: dict, card: dict) -> dict | None:
+    """The match header that says the match is over: the scores page's, or the scorecard page's when the scores page
+    lags (seen on 4 Nov: the scores page stuck at "opt to bowl" after the match had finished). None while neither does."""
+    return scores if _over(scores) else card if _over(card) else None
+
+
 def scorecard(fx: dict, card_text: str, head: dict) -> dict | None:
     """Our results file for a finished match, or None while it isn't over."""
     state = (head.get("state") or "").lower()
@@ -435,9 +446,11 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
         if not mid:
             continue
         head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
-        if (head.get("state") or "").lower() not in ("complete",) and "abandon" not in (head.get("state") or "").lower():
+        card_text = live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{mid}") or "")
+        head = finished_header(head, live.first(card_text, "matchHeader", mid) or {})
+        if head is None:
             continue
-        card = scorecard(fx, live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{mid}")), head)
+        card = scorecard(fx, card_text, head)
         if card:
             click.echo(f"scorecard: {name} ({card.get('result') or card.get('note')})")
             if write:

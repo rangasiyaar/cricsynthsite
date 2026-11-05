@@ -297,3 +297,13 @@ def test_short_page_names_take_the_squad_name():
     assert auto._full("Smit", ["JJ Smit", "Gerhard Erasmus"]) == "JJ Smit"
     assert auto._full("Smit", ["JJ Smit", "Ruan Smit"]) == "Smit"                     # two fit: left as is
     assert auto._full("Gerhard Erasmus", ["Gerhard Erasmus"]) == "Gerhard Erasmus"
+
+
+def test_finished_header_falls_back_to_the_scorecard_page():
+    from cricsim.auto import finished_header
+    stale = {"state": "In Progress", "status": "West Indies A opt to bowl"}
+    done = {"state": "Complete", "status": "England Lions won by 5 runs"}
+    assert finished_header(stale, done) is done
+    assert finished_header(done, stale) is done
+    assert finished_header(stale, {}) is None
+    assert finished_header({"state": "Abandon"}, {})["state"] == "Abandon"
