@@ -407,6 +407,8 @@ body .nav .nav-link { white-space: nowrap; }
 /* ── /app/ page: the Android app ── */
 .app-hero { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(40px, 6vw, 72px); }   /* the home hero allows for its overlay nav; here, the same top gap as .page-head */
 .app-hero .cs-hero-ctas .btn svg { flex: none; }
+/* "CricSynthesis" is one long word: keep it on one line, sized to the text column */
+.app-hero h1 { font-size: clamp(40px, 5.6vw, 84px); overflow-wrap: normal; word-break: normal; hyphens: none; }
 .phone { justify-self: center; width: min(300px, 82vw); height: 560px; max-height: 120vw; border-radius: 44px; padding: 12px; background: var(--cs-ink);
   box-shadow: 0 30px 60px -20px rgba(20, 24, 28, .35), 0 0 0 1px var(--cs-line); }
 .phone-screen { height: 100%; border-radius: 34px; overflow: hidden; background: var(--cs-bg); padding: 14px 14px 0; box-sizing: border-box;
@@ -421,9 +423,23 @@ body .nav .nav-link { white-space: nowrap; }
 .phone-eyebrow { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--cs-steel-700); font-weight: 600; margin-top: 4px; }
 .phone-title { font-family: var(--cs-head); font-weight: 600; font-size: 28px; line-height: 1; text-transform: uppercase; color: var(--cs-ink); margin-top: -6px; }
 .phone-chips { display: flex; gap: 6px; overflow: hidden; }
-.phone-chips span { flex: none; font-size: 11px; padding: 5px 11px; border-radius: 999px; background: var(--cs-surface); color: var(--cs-ink-2); }
-.phone-chips span.on { background: var(--cs-ink); color: var(--cs-bg); }
-.phone-card { background: var(--cs-surface); border-radius: 16px; padding: 12px; display: grid; gap: 8px; }
+.phone-chips span { flex: none; font-size: 11px; padding: 4px 10px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--cs-line); color: var(--cs-ink-2); }
+.phone-chips span.on { background: var(--cs-accent-bg); color: var(--cs-steel-800); box-shadow: none; }
+.phone-card { background: var(--cs-paper); border-radius: 14px; padding: 12px; display: grid; gap: 7px; box-shadow: 0 1px 2px rgba(16, 24, 32, .16), 0 1px 3px 1px rgba(16, 24, 32, .07); }
+:root[data-theme="dark"] .phone-card { background: #1c2024; }
+.phone-card-head { justify-content: space-between; }
+.phone-xi { flex: none; font-size: 9.5px; font-weight: 600; padding: 2px 7px; border-radius: 6px; background: rgba(46, 140, 87, .14); color: #2e8c57; }
+.phone-xi.off { background: var(--cs-neutral-bg); color: var(--cs-ink-3); }
+.phone-vs { display: flex; align-items: center; gap: 8px; font-size: 9px; font-weight: 600; text-transform: uppercase; color: var(--cs-ink-3); }
+.phone-vs::before, .phone-vs::after { content: ""; flex: 1; height: 1px; background: var(--cs-line); }
+.phone-venue { font-size: 10px; color: var(--cs-ink-2); line-height: 1.3; }
+.phone-screen { position: relative; }
+.phone-nav { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; padding: 8px 6px 14px;
+  background: color-mix(in srgb, var(--cs-bg) 88%, var(--cs-steel) 12%); font-size: 9px; font-weight: 500; color: var(--cs-ink-2); }
+.phone-nav span { display: grid; justify-items: center; gap: 3px; }
+.phone-nav i { width: 36px; height: 18px; border-radius: 9px; }
+.phone-nav span.on { color: var(--cs-ink); font-weight: 600; }
+.phone-nav span.on i { background: var(--cs-accent-bg); }
 .phone-card-head { display: flex; gap: 8px; align-items: center; font-size: 10px; color: var(--cs-ink-3); white-space: nowrap; overflow: hidden; }
 .phone-pill { padding: 2px 7px; border-radius: 999px; background: var(--cs-bg); color: var(--cs-ink-2); }
 .phone-team { display: flex; align-items: center; gap: 8px; }

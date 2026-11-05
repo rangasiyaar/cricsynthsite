@@ -31,18 +31,19 @@ function Card({ m }: { m: M }) {
   const pa = m.win?.[a.name], pb = m.win?.[b.name];
   return (
     <div className="phone-card">
-      <div className="phone-card-head"><span className="phone-pill">{m.format}</span><span>{m.competition ?? ""}</span></div>
+      <div className="phone-card-head"><span>{m.competition ?? m.format}</span>{m.xis ? <span className="phone-xi">Lineup Out</span> : <span className="phone-xi off">Probable XIs</span>}</div>
       {[a, b].map((t, i) => {
         const p = i === 0 ? pa : pb;
-        return (
+        return [
+          i === 1 && <div key="vs" className="phone-vs"><span>v</span></div>,
           <div key={t.name} className={`phone-team t${i}`}>
             <span className="phone-badge">{t.short}</span><span className="phone-name">{t.name}</span>
             {p != null && <span className="phone-pct">{Math.round(p * 100)}%</span>}
-          </div>
-        );
+          </div>,
+        ];
       })}
       {pa != null && pb != null && <div className="phone-bar"><i style={{ flex: pa }} /><i style={{ flex: pb }} /></div>}
-      <div className="phone-act"><span>MatchSynth Lab</span></div>
+      {m.venue && <div className="phone-venue">{m.venue}</div>}
     </div>
   );
 }
@@ -54,12 +55,12 @@ export function PhonePreview() {
     <div className="phone" aria-hidden="true">
       <div className="phone-screen">
         <div className="phone-top"><span className="phone-brand"><Logo /><span>Cric<b>Synthesis</b></span></span><span className="phone-burger"><i /><i /><i /></span></div>
-        <div className="phone-eyebrow">Match centre</div>
         <div className="phone-title">Matches</div>
-        <div className="phone-chips"><span className="on">All</span><span>Upcoming</span><span>Live</span><span>Finished</span></div>
+        <div className="phone-chips"><span className="on">Upcoming</span><span>Live</span><span>Finished</span></div>
         {matches === null && <div className="phone-card phone-skel" />}
         {matches?.map((m) => <Card key={m.id} m={m} />)}
         {matches?.length === 0 && <div className="phone-card"><div className="phone-name">New forecasts appear here before every match.</div></div>}
+        <div className="phone-nav"><span className="on"><i />Matches</span><span><i />Fantasy</span><span><i />MatchSynth Lab</span></div>
       </div>
     </div>
   );

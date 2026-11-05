@@ -36,7 +36,7 @@ export default function AppPage() {
     <>
       <section className="cs-hero app-hero">
         <div>
-          <h1><span>CricSynthesis for Android</span></h1>
+          <h1><span>CricSynthesis</span><span>for Android</span></h1>
           <p className="cs-lede">Forecasts for every match we cover, alerts when the teams are named, and MatchSynth Lab to re-run any
             match your way. Free on Android.</p>
           <div className="cs-hero-ctas">
