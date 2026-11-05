@@ -1,0 +1,116 @@
+{
+  "id": "paku19-v-uaeu19-odi-al-amerat-2026-11-06",
+  "title": "Pakistan U19 v United Arab Emirates U19",
+  "date": "2026-11-06",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup 2026 · 3rd Match, Group A",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground (Ministry Turf 2), Al Amerat",
+  "venue_search": "al amerat",
+  "city": "Al Amerat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan U19",
+      "short": "PAKU19",
+      "players": [
+        "Hamza Zahoor",
+        "Farhan Yousaf",
+        "Usman Khan",
+        "Huzaifa Ahsan",
+        "Hayam Khan",
+        "Ahmed Hussain",
+        "Niqab Shafiq",
+        "Hasnain Abbas Dar",
+        "Ali Raza",
+        "Abdul Subhan",
+        "Mohammad Huzaifa"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Farhan Yousaf",
+      "squad": [
+        "Farhan Yousaf",
+        "Hamza Zahoor",
+        "Ahmed Hussain",
+        "Ali Raza",
+        "Abdul Subhan",
+        "Mohammad Huzaifa",
+        "Usman Khan",
+        "Huzaifa Ahsan",
+        "Mohammad Sayyam",
+        "Niqab Shafiq",
+        "Rizwanullah",
+        "Hasnain Abbas Dar",
+        "Jahangir Bilal",
+        "Hayam Khan",
+        "Abdul Qadir"
+      ]
+    },
+    {
+      "name": "United Arab Emirates U19",
+      "short": "UAEU19",
+      "players": [
+        "Mohamed Nafees",
+        "Yayin Rai",
+        "Hadayatullah Khan",
+        "Ayaan Misbah",
+        "Noorullah Ayobi",
+        "Ahmed Khudadad",
+        "Uddish Suri",
+        "Zainullah Rehmani",
+        "Raizal Nadir",
+        "Naseem Khan",
+        "Omar Tauqir"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Ayaan Misbah",
+      "squad": [
+        "Ayaan Misbah",
+        "Mohamed Nafees",
+        "Yayin Rai",
+        "Uddish Suri",
+        "Noorullah Ayobi",
+        "Zainullah Rehmani",
+        "Ahmed Khudadad",
+        "Naseem Khan",
+        "Raizal Nadir",
+        "Omar Tauqir",
+        "Umar Faisal",
+        "Hadayatullah Khan"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175617,
+    "auto": true,
+    "xis": false
+  }
+}
