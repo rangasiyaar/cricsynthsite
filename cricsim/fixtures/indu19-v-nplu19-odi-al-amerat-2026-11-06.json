@@ -1,0 +1,119 @@
+{
+  "id": "indu19-v-nplu19-odi-al-amerat-2026-11-06",
+  "title": "India U19 v Nepal U19",
+  "date": "2026-11-06",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup 2026 · 4th Match, Group A",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground (Ministry Turf 1), Al Amerat",
+  "venue_search": "al amerat",
+  "city": "Al Amerat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India U19",
+      "short": "INDU19",
+      "players": [
+        "Rajat Baghel",
+        "Lakshya Raichandani",
+        "Aaryavir Sehwag",
+        "Aryan Savsani",
+        "Yashveer Goud",
+        "Arjun Rajput",
+        "Yashbardhan Chauhan",
+        "VK Vineeth",
+        "Shavin Vinodh",
+        "Kavya Patel",
+        "Anvay Dravid"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Lakshya Raichandani",
+      "squad": [
+        "Lakshya Raichandani",
+        "Rajat Baghel",
+        "Anvay Dravid",
+        "Aaryavir Sehwag",
+        "VK Vineeth",
+        "Yashveer Goud",
+        "Arjun Rajput",
+        "Ishan Sood",
+        "Yashbardhan Chauhan",
+        "Kushagra Ojha",
+        "Shavin Vinodh",
+        "Kavya Patel",
+        "Mohit Ulva",
+        "Manal Chauhan",
+        "Aryan Savsani"
+      ]
+    },
+    {
+      "name": "Nepal U19",
+      "short": "NPLU19",
+      "players": [
+        "Aashish Luhar",
+        "Niraj Kumar Yadav",
+        "Rohit Chand",
+        "Prashiddha Jaishi",
+        "Sohail Kunwar",
+        "Darsh Sonar",
+        "Bipin Sharma",
+        "Nischal Chhetri",
+        "Sushil Rawal",
+        "Sachin Bhatt",
+        "Roshan Shahi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Bipin Sharma",
+      "squad": [
+        "Bipin Sharma",
+        "Aashish Luhar",
+        "Niraj Kumar Yadav",
+        "Rohit Chand",
+        "Prashiddha Jaishi",
+        "Sohail Kunwar",
+        "Darsh Sonar",
+        "Nischal Chhetri",
+        "Sachin Bhatt",
+        "Roshan Shahi",
+        "Suryanshu Koirala",
+        "Abhay Yadav",
+        "Sushil Rawal",
+        "Subham Khanal",
+        "Nitesh Patel"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175620,
+    "auto": true,
+    "xis": false
+  }
+}
