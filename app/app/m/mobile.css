@@ -352,8 +352,9 @@ html.a-locked { overflow: hidden; }
 .a-alert span { font-size: 13px; opacity: .8; }
 @media (prefers-reduced-motion: reduce) { .a-dialog-wrap, .a-alert { animation: none; } }
 
-/* playing-XI tag: probable until the XIs are named, then green with the time; flashes when they land on screen */
-.a-xi { flex: none; display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; font-size: 11.5px;
+/* playing-XI tag, the same shape as the status tag: "Probable XIs" until the XIs are named, then green "Lineup Out";
+   flashes when they land on screen */
+.a-xi { flex: none; display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12px;
   font-weight: 600; background: var(--a-surface-2); color: var(--cs-ink-3); }
 .a-xi.in { background: rgba(46, 140, 87, .14); color: #2e8c57; }
 .a-xi.fresh { animation: a-xi-flash 1.2s ease 3; }
@@ -371,6 +372,8 @@ html.a-locked { overflow: hidden; }
 .a-tabbar-item.on .a-tabbar-ico { background: var(--a-tint, var(--cs-accent-bg)); color: var(--cs-steel-700); }
 .a-tabbar-item:active .a-tabbar-ico { transform: scale(.92); }
 body:has(.a-tabbar) .app-wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+/* the side menu sits over the tab bar, which steps aside while it is open */
+html.a-locked .a-tabbar { display: none; }
 body:has(.a-tabbar) .a-toast { bottom: calc(86px + env(safe-area-inset-bottom)); }
 
 /* ── a phone app, not a web page: no text selection or long-press callouts on controls, no rubber-band scroll ── */

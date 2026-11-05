@@ -46,7 +46,7 @@ export function facts(doc: MatchDoc) {
   return {
     A, B, short: [m.teams[0]?.short ?? A, m.teams[1]?.short ?? B], fav, pFav: s.result.win[fav] ?? 0.5, tie: s.result.tie,
     series, no, date: m.date, when: longDate(m.date), shortWhen: shortDate(m.date), time: m.start_time, venue: m.venue,
-    format: s.meta.format, overs: s.meta.rules.overs, sims: s.meta.simulations, xis: !!m.xis,
+    format: s.meta.format, overs: s.meta.rules.overs, xis: !!m.xis,
     score: s.teams.map((t) => ({ team: t.name, mean: t.batting.score.mean, lo: t.batting.score.q["10"], hi: t.batting.score.q["90"],
                                  wk: t.batting.wickets.mean })),
     pp: pp.map((ph, k) => ph && { team: s.teams[k].name, overs: ph.overs, runs: ph.runs.mean, wk: ph.wickets.mean }),
@@ -72,15 +72,15 @@ export function description(x: Facts, kind: Kind) {
   const [a, b] = x.score;
   if (kind === "fantasy") {
     const f = x.fantasy;
-    return f ? `${vs(x)} fantasy team from ${x.sims.toLocaleString("en-IN")} simulations: ${x.name(f.single.captain)} captain, `
-      + `${x.name(f.single.vice_captain)} vice-captain, plus the top expected-points picks and five-team combinations.`
+    return f ? `${vs(x)} fantasy team: ${x.name(f.single.captain)} captain, `
+      + `${x.name(f.single.vice_captain)} vice-captain, plus the top picks and five-team combinations.`
       : `${vs(x)} fantasy picks: expected points for every player, captain and vice-captain, published once the squads are in.`;
   }
   if (kind === "xi") {
     return `${vs(x)} ${x.xis ? "confirmed playing XIs" : "probable playing XIs"}${x.when ? ` for ${x.when}` : ""}`
       + `${x.venue ? ` at ${x.venue}` : ""}, with each player's projected runs, wickets and batting position.`;
   }
-  return `${vs(x)}${x.no ? ` ${x.no}` : ""} prediction: ${x.fav} win ${pc(x.pFav)} of ${x.sims.toLocaleString("en-IN")} simulations. `
+  return `${vs(x)}${x.no ? ` ${x.no}` : ""} prediction: ${x.fav} are favourites at ${pc(x.pFav)}. `
     + `Projected scores ${a.team} ${r0(a.mean)}, ${b.team} ${r0(b.mean)}${x.venue ? ` at ${x.venue}` : ""}. Top scorer, best bowler and toss.`;
 }
 
@@ -89,8 +89,8 @@ export function faq(x: Facts, kind: Kind): QA[] {
   const out: QA[] = [];
   const where = [x.when, x.time ? `${x.time} IST` : "", x.venue].filter(Boolean).join(", ");
   if (kind === "prediction") {
-    out.push({ q: `Who will win ${vs(x)}?`, a: `${x.fav} are favourites: they win ${pc(x.pFav)} of ${x.sims.toLocaleString("en-IN")} `
-      + `simulations of the match, ${x.fav === x.A ? x.B : x.A} ${pc(1 - x.pFav - x.tie)}.` });
+    out.push({ q: `Who will win ${vs(x)}?`, a: `${x.fav} are favourites at ${pc(x.pFav)}, `
+      + `${x.fav === x.A ? x.B : x.A} ${pc(1 - x.pFav - x.tie)}.` });
     out.push({ q: `What is the score prediction for ${vs(x)}?`, a: `${a.team} project ${r0(a.mean)} (80% range ${r0(a.lo)}–${r0(a.hi)}) `
       + `and ${b.team} ${r0(b.mean)} (${r0(b.lo)}–${r0(b.hi)}).` });
     const [p0, p1] = x.pp;
@@ -104,17 +104,15 @@ export function faq(x: Facts, kind: Kind): QA[] {
     }
   }
   if (kind !== "fantasy" && x.batters.length) out.push({ q: `Who will be the top scorer in ${vs(x)}?`,
-    a: x.batters.map((p) => `${p.name} (${p.team}) ${pc(p.batting?.p_top_scorer)}`).join(", ") + ` of simulations.` });
+    a: x.batters.map((p) => `${p.name} (${p.team}) ${pc(p.batting?.p_top_scorer)}`).join(", ") + `.` });
   if (kind !== "fantasy" && x.bowlers.length) out.push({ q: `Who will take the most wickets?`,
     a: x.bowlers.map((p) => `${p.name} (${p.team}) ${pc(p.bowling?.p_best_bowler)}`).join(", ") + `.` });
   if (kind === "fantasy" && x.fantasy) {
     const f = x.fantasy;
     out.push({ q: `Who should be captain and vice-captain for ${vs(x)}?`, a: `${x.name(f.single.captain)} as captain and `
-      + `${x.name(f.single.vice_captain)} as vice-captain: the two highest expected-points picks that fit the team rules.` });
+      + `${x.name(f.single.vice_captain)} as vice-captain.` });
     out.push({ q: `Which players score the most fantasy points?`, a: x.picks.map((p) => `${p.name} (${p.team}) ${p.expected.toFixed(0)}`).join(", ")
-      + ` expected points.` });
-    out.push({ q: `How are these fantasy picks made?`, a: `Every player's points are counted ball by ball across ${x.sims.toLocaleString("en-IN")} `
-      + `simulations of the match; the team is the XI with the highest expected total that fits the credit and role rules.` });
+      + ` points.` });
   }
   if (kind === "xi") out.push({ q: `${x.xis ? "What are the playing XIs" : "What are the probable XIs"} for ${vs(x)}?`,
     a: x.xi.map((t) => `${t.team}: ${t.players.join(", ")}`).join(". ") + "." });

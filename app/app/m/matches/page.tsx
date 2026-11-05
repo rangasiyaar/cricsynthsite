@@ -12,8 +12,8 @@ import { countdown, kickoffMs, startLabel, status, type Status } from "@/lib/sch
 import type { MatchCard, ResultSummary } from "@/lib/types";
 
 type Item = { kind: "forecast"; m: MatchCard; st: Status } | { kind: "result"; r: ResultSummary };
-type Filter = "all" | Status;
-const FILTERS: [Filter, string][] = [["all", "All"], ["upcoming", "Upcoming"], ["live", "Live"], ["finished", "Finished"]];
+type Filter = Status;
+const FILTERS: [Filter, string][] = [["upcoming", "Upcoming"], ["live", "Live"], ["finished", "Finished"]];
 
 function StatusPill({ st }: { st: Status }) {
   if (st === "live") return <span className="a-status live"><span className="dot" />Live</span>;
@@ -49,7 +49,7 @@ function Forecast({ m, st, now }: { m: MatchCard; st: Status; now: number | null
         {m.headline && <div className="a-mcard-note">{m.headline}</div>}
       </Link>
       <div className="a-mcard-act">
-        <span className="a-row-sub">{st === "live" ? "Forecast locked at the start" : ""}</span>
+        <span />
         <Link href={`/m/lab/?id=${id}`} className="a-pill">{Icon.lab}MatchSynth Lab</Link>
       </div>
     </article>
@@ -113,10 +113,10 @@ export default function MatchesPage() {
 function Matches() {
   const params = useSearchParams();
   const now = useNow(1000);
-  const [filter, setFilter] = useState<Filter>("all");
-  useEffect(() => {                                       // the Results tab opens this list on finished matches
+  const [picked, setPicked] = useState<Filter | null>(null);      // null: Live when a match is live, else Upcoming
+  useEffect(() => {                                                  // ?f=finished (older links) opens on that filter
     const f = params.get("f") as Filter | null;
-    setFilter(f && FILTERS.some(([x]) => x === f) ? f : "all");
+    if (f && FILTERS.some(([x]) => x === f)) setPicked(f);
   }, [params]);
   const ix = useFresh("index", peekIndex, loadIndex);
   const rs = useFresh("results", peekResults, loadResults);
@@ -136,9 +136,10 @@ function Matches() {
     return [...fc, ...rs];
   }, [cards, results, now]);
 
-  const count = (f: Filter) => f === "all" ? items.length
-    : items.filter((it) => (it.kind === "result" ? f === "finished" : it.st === f)).length;
-  const shown = items.filter((it) => filter === "all" || (it.kind === "result" ? filter === "finished" : it.st === filter));
+  const count = (f: Filter) => items.filter((it) => (it.kind === "result" ? f === "finished" : it.st === f)).length;
+  const filter: Filter = picked ?? (count("live") ? "live" : "upcoming");
+  const setFilter = setPicked;
+  const shown = items.filter((it) => (it.kind === "result" ? filter === "finished" : it.st === filter));
 
   return (
     <>
@@ -162,7 +163,7 @@ function Matches() {
             ? <Forecast key={it.m.id} m={it.m} st={it.st} now={now} />
             : <Result key={`r-${it.r.id}`} r={it.r} />)}
           {!shown.length && (
-            <Empty title={filter === "live" ? "Nothing live" : filter === "finished" ? "No results yet" : "No matches yet"}>
+            <Empty title={filter === "live" ? "Nothing live" : filter === "finished" ? "No results yet" : "No upcoming matches"}>
               {filter === "live" ? "No match is under way right now." : "New fixtures appear here once their forecast is ready."}
             </Empty>
           )}

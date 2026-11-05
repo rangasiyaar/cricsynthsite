@@ -1,8 +1,7 @@
 "use client";
-// App settings: appearance, match alerts, and the data kept on this phone.
+// App settings: appearance and the data kept on this phone (match alerts have their own tab).
 import { useEffect, useState } from "react";
 import { MenuGroup, SwitchRow, TopBar, useAppVersion } from "@/components/App";
-import { ALERTS, alertChoice, hasAlerts, setAlerts, type AlertTopic } from "@/lib/native";
 
 type Theme = "light" | "dark" | "system";
 
@@ -21,20 +20,12 @@ async function clearSaved(): Promise<void> {
 export default function Settings() {
   const version = useAppVersion();
   const [theme, setTheme] = useState<Theme>("system");
-  const [alerts, setAlertsOn] = useState<AlertTopic[] | null>(null);
-  const [busy, setBusy] = useState(false);
   const [cleared, setCleared] = useState(false);
   useEffect(() => {
     let t: string | null = null;
     try { t = localStorage.getItem("cs-theme"); } catch {}
     setTheme(t === "light" || t === "dark" ? t : "system");
-    if (hasAlerts()) setAlertsOn(alertChoice() ?? []);
   }, []);
-  const flip = async (t: AlertTopic, on: boolean) => {
-    setBusy(true);
-    setAlertsOn(await setAlerts(on ? [...(alerts ?? []), t] : (alerts ?? []).filter((x) => x !== t)));
-    setBusy(false);
-  };
   return (
     <>
       <TopBar back="/m/matches/" />
@@ -48,11 +39,6 @@ export default function Settings() {
           </div>
         </div>
       </MenuGroup>
-      {alerts && (
-        <MenuGroup label="Match alerts">
-          {ALERTS.map((a) => <SwitchRow key={a.topic} title={a.title} on={alerts.includes(a.topic)} disabled={busy} onChange={(v) => flip(a.topic, v)} />)}
-        </MenuGroup>
-      )}
       <MenuGroup label="Saved on this phone">
         <div className="a-panel" style={{ display: "grid", gap: 12 }}>
           <button type="button" className="a-btn soft" disabled={cleared}

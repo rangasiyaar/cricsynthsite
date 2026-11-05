@@ -4,10 +4,10 @@ import { MenuGroup, TopBar } from "@/components/App";
 import { SITE } from "@/lib/seo";
 
 const FAQ: [string, string][] = [
-  ["Where do the forecasts come from?", "Each match is simulated ball by ball 20,000 times from past matches of the players, the ground and the competition. Win chances and projected scores are counts from those simulations."],
-  ["When does a forecast change?", "When the playing XIs or the toss are announced, the match is simulated again. At the start of play the forecast is locked."],
+  ["Where do the forecasts come from?", "Each match is played out ball by ball from the past matches of the players, the ground and the competition."],
+  ["When does a forecast change?", "When the playing XIs or the toss are announced."],
   ["What is MatchSynth Lab?", "Change the toss, the pitch, the dew, a player's form or who can bowl, or start from any score, and the match is re-run on your phone. It is part of Pro, which is free during the beta."],
-  ["How are the fantasy picks chosen?", "The best single team is the eleven with the most expected points across the simulations. The five-team combo covers different ways the match can go, with different captains."],
+  ["What are the five fantasy teams?", "Five different teams with different captains, for the different ways the match can go."],
   ["Why can't I see a match?", "Forecasts appear once the fixture is published, usually a day or two before the start. Pull down on the match list to refresh."],
   ["How do I delete my account?", "Write to us from the contact page with the email you signed in with, and we'll delete the account and its data."],
 ];

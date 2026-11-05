@@ -1,4 +1,11 @@
 [
+  {"version": "0.3.1", "date": "2026-11-05", "notes": [
+    "New bottom tabs: Matches, Fantasy, Lab and Alerts",
+    "Fantasy tab: every upcoming and live match, straight to its fantasy picks",
+    "Alerts tab: choose which match alerts you get",
+    "\"Lineup Out\" tag once the playing XIs are named",
+    "Matches open on Live or Upcoming; the side menu no longer hides behind the tabs"
+  ]},
   {"version": "0.3.0", "date": "2026-11-05", "notes": [
     "Tabs along the bottom: Matches, Results, Lab and Account",
     "Swipe left or right to move between a match's tabs",
