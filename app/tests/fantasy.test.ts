@@ -1,24 +1,30 @@
 // node --test: the fantasy article's must-haves, in-form and suits-this-ground sections.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { buildFantasy } from "../lib/preview.ts";
 import type { MatchDoc, VenueIntel } from "../lib/types.ts";
 
 function doc(): MatchDoc {
-  const d = JSON.parse(readFileSync(new URL("../public/data/matches/m.json", import.meta.url), "utf8")) as MatchDoc;
-  // the sample document predates some per-player fields: fill the ones the article reads
-  d.summary.teams.forEach((t) => t.players.forEach((p) => {
-    const r = p as unknown as { batting?: Record<string, unknown>; bowling?: Record<string, unknown> };
-    if (r.batting) r.batting.p_at_least ??= { "30": 0.3, "50": 0.1 };
-    if (r.bowling) r.bowling.p_wickets ??= { "2": 0.2, "3": 0.05 };
-  }));
+  // a small made-up match in the published shape (no files needed: CI has no sample data)
+  const row = (id: string, k: number) => ({
+    id, name: id.toUpperCase(),
+    batting: { p_bats: 0.95, runs: { mean: 30 - k }, strike_rate: 130, p_at_least: { "30": 0.3, "50": 0.1 } },
+    bowling: { p_bowls: k > 5 ? 0.9 : 0.1, wickets: { mean: 1 }, p_wickets: { "2": 0.2, "3": 0.05 }, economy: 8, overs: 3 },
+  });
+  const ids = [0, 1].map((t) => Array.from({ length: 11 }, (_, i) => `t${t}p${i}`));
+  const d = {
+    match: { id: "sample", title: "Alpha v Beta", date: "2026-11-01", format: "T20", competition: "Sample League · Match 1",
+             teams: [{ name: "Alpha", short: "ALP", players: ids[0] }, { name: "Beta", short: "BET", players: ids[1] }] },
+    summary: { meta: { simulations: 2000, rules: { overs: 20 } }, result: { win: { Alpha: 0.55, Beta: 0.45 } },
+               teams: [{ name: "Alpha", players: ids[0].map(row) }, { name: "Beta", players: ids[1].map(row) }] },
+    insights: [], generated_at: "2026-11-01T00:00:00Z", model: "test",
+  } as unknown as MatchDoc;
   const players: NonNullable<MatchDoc["fantasy"]>["players"] = {};
   d.summary.teams.forEach((t, k) => t.players.forEach((p, i) => {
     players[p.id] = { team: k, role: i === 0 ? "WK" : i < 5 ? "BAT" : i < 7 ? "AR" : "BOWL", expected: 60 - 2 * i - k, p_solid: 0.4 + 0.02 * i };
   }));
-  const ids = Object.keys(players).slice(0, 11);
-  const team = { players: ids, captain: ids[0], vice_captain: ids[1], expected: 500 };
+  const top = Object.keys(players).slice(0, 11);
+  const team = { players: top, captain: top[0], vice_captain: top[1], expected: 500 };
   return { ...d, fantasy: { players, single: team, teams: [team], solid: 25, simulations: 2000 } };
 }
 
