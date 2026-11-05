@@ -539,12 +539,18 @@ def test_publish_adds_fantasy_picks(world, tmp_path):
     assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
     assert all(f["players"][p]["name"] for p in one["players"])
     assert sum(f["players"][p]["role"] == "WK" for p in one["players"]) >= 1
-    # every team comes from the top 15 on expected points (plus a missing role's best, if the 15 lack one)
+    # the five come from the top 15 on expected points (plus a missing role's best, if the 15 lack one)
     ranked = sorted(f["players"], key=lambda p: -f["players"][p]["expected"])
     allowed = set(ranked[:f["pool"]]) | {next(p for p in ranked if f["players"][p]["role"] == r) for r in ("WK", "BAT", "AR", "BOWL")}
-    assert 15 <= f["pool"] <= 19 and all(set(t["players"]) <= allowed for t in [one, *f["teams"]])
-    assert all(p in ranked[:15] or f["players"][p]["role"] not in {f["players"][q]["role"] for q in ranked[:15]}
-               for t in [one, *f["teams"]] for p in t["players"])
+    assert 15 <= f["pool"] <= 19 and all(set(t["players"]) <= allowed for t in f["teams"])
+    # the single XI and its captaincy follow the 0.7 fantasy / 0.3 MVP rank blend, from the top 15 of that blend
+    from cricsim.engine.mvp_backtest import site_mvp
+    from cricsim.fantasy import blended
+    doc = json.loads((tmp_path / "matches" / "fx.json").read_text())
+    rank = blended({p: r["expected"] for p, r in f["players"].items()}, site_mvp(doc["summary"]))
+    top = sorted(rank, key=lambda p: -rank[p])
+    assert f["blend"] == 0.7 and set(one["players"]) <= set(top[:15]) | allowed
+    assert sorted(one["players"], key=lambda p: -rank[p])[:2] == [one["captain"], one["vice_captain"]]
     pack = json.loads((tmp_path / "matches" / "fx.pack.json").read_text())
     assert all(len(r["fielding"]) == 3 and r["role"] for r in pack["players"].values())
 

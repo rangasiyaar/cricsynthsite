@@ -346,7 +346,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       ...(m.start_time ? [["Start", `${m.start_time} IST`]] : []), ...(ground ? [["Ground", ground]] : []),
       ["Line-ups", m.xis ? "Confirmed XIs" : "Probable XIs (updates at the toss)"]] } }] },
     { id: "team", heading: "Best fantasy XI", blocks: [
-      { p: `Our team for ${A} vs ${B}, built from every player's points across ${sims} simulations of the match with the ${xisWord} XIs. It is the XI with the highest expected total that fits the usual team rules: **${split[0]} from ${short[0]}, ${split[1]} from ${short[1]}**, with ${list(roles.map(([r, n]) => `${n} ${(ROLE[r] ?? r).toLowerCase()}${n === 1 ? "" : "s"}`))}.` },
+      { p: `Our team for ${A} vs ${B}, built from every player's points across ${sims} simulations of the match with the ${xisWord} XIs. ${f.blend ? "Players are ranked mostly on expected fantasy points, with our MVP ratings mixed in, and" : "It is the XI with the highest expected total that"} ${f.blend ? "the team is the best XI on that ranking that fits" : "fits"} the usual team rules: **${split[0]} from ${short[0]}, ${split[1]} from ${short[1]}**, with ${list(roles.map(([r, n]) => `${n} ${(ROLE[r] ?? r).toLowerCase()}${n === 1 ? "" : "s"}`))}.` },
       table(xi),
       { links: [{ href: tab(id, "Fantasy"), label: "Open the Fantasy tab" }] },
     ] },
@@ -417,7 +417,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
     { q: `Who should be captain for ${A} vs ${B}?`, a: `${cap.name}, with ${cap.expected.toFixed(0)} expected points; ${vc.name} as vice-captain.` },
     { q: `What is the best fantasy team for ${A} vs ${B}?`, a: `${xi.map((p) => p.name).join(", ")}.` },
     { q: `Which players are good differentials?`, a: diffs.length ? `${list(diffs.map((p) => p.name))}: close to the best XI on expected points but less obvious picks.` : "Our XI already includes every player close to the top on expected points." },
-    { q: `How are these fantasy picks made?`, a: `Every player's points are counted ball by ball across ${sims} simulations of the match; the team is the XI with the highest expected total that fits the team rules.` },
+    { q: `How are these fantasy picks made?`, a: `Every player's points are counted ball by ball across ${sims} simulations of the match. ${f.blend ? "Players are then ranked on those expected points (70%) and our MVP ratings (30%), a mix that beat expected points alone on the matches we have scored, and the team is the best XI on that ranking" : "The team is the XI with the highest expected total"} that fits the team rules.` },
     { q: `Are these the confirmed playing XIs?`, a: m.xis ? "Yes, the picks use the XIs named at the toss." : "Not yet: the picks use probable XIs and update once the teams are named at the toss." },
   ];
   const words = JSON.stringify(sections).split(/\s+/).length;

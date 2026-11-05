@@ -5,6 +5,7 @@ import { simulateMatches, type Pack, type Scenario } from "./sim.ts";
 import { summarizeFull } from "./full.ts";
 import { summarizeLab } from "./summary.ts";
 import { fantasyPicks } from "./fantasy.ts";
+import { rate } from "../ratings.ts";
 
 type Req = { id: number; pack: Pack; scenario: Scenario; n: number; seed: number; raw?: boolean; full?: boolean };
 
@@ -21,8 +22,12 @@ self.onmessage = (e: MessageEvent<Req>) => {
     const sims = simulateMatches(pack, n, scenario, seed);
     if (full) {
       let fantasy = null;
-      try { fantasy = scenario.start ? null : fantasyPicks(pack, sims); } catch { fantasy = null; }   // picks are pre-match only
-      (self as unknown as Worker).postMessage({ id, full: summarizeFull(pack, sims), fantasy, ms: performance.now() - t0 });
+      const summary = summarizeFull(pack, sims);
+      try {                                                    // picks are pre-match only; the single XI blends in MVP rank
+        const mvp = Object.fromEntries(rate(summary).map((r) => [r.p.id, r.mvp]));
+        fantasy = scenario.start ? null : fantasyPicks(pack, sims, 5, mvp);
+      } catch { fantasy = null; }
+      (self as unknown as Worker).postMessage({ id, full: summary, fantasy, ms: performance.now() - t0 });
       return;
     }
     if (!raw) {

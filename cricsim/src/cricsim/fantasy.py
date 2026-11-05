@@ -373,6 +373,8 @@ def portfolio(pids: list[str], pts: np.ndarray, team_of: dict[str, int], k: int 
     return teams
 
 
+BLEND = 0.7              # single XI: 0.7 × fantasy rank + 0.3 × MVP rank (blend lab, 54 scored matches: 67.0% of the
+                         # best XI v 65.2% on fantasy rank alone, better in 29, worse in 10); the five keep fantasy rank
 POOL = 15                # the single team and the five are picked from the top 15 on expected points
 
 
@@ -391,7 +393,18 @@ def top_pool(exp: dict[str, float], team_of: dict[str, int], roles: dict[str, st
     return pool
 
 
-def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, form: dict | None = None) -> dict:
+def blended(exp: dict[str, float], mvp: dict[str, float] | None, w: float = BLEND) -> dict[str, float]:
+    """Higher is better: minus (w × fantasy rank + (1 − w) × MVP rank), expected points breaking ties. Without MVP
+    ratings, plain expected points."""
+    if not mvp:
+        return dict(exp)
+    rf = {p: i + 1 for i, p in enumerate(sorted(exp, key=lambda p: -exp[p]))}
+    rm = {p: i + 1 for i, p in enumerate(sorted(exp, key=lambda p: -mvp.get(p, 0.0)))}
+    return {p: -(w * rf[p] + (1 - w) * rm[p]) + 1e-6 * exp[p] for p in exp}
+
+
+def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, form: dict | None = None,
+                  mvp: dict[str, float] | None = None) -> dict:
     """What the match centre's Fantasy tab shows: one XI with captain and vice-captain, and a set of k teams that
     together cover the likely matches, all as player ids, with each player's expected points and role.
     With `form` (player id -> fantasy_history features, written into the coverage file by cricsim.resolve) and
@@ -414,6 +427,8 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, 
     pool = top_pool(exp, team_of, use_roles)
     cols = [pids.index(p) for p in pool]
     exp_pool = {p: exp[p] for p in pool}
+    rank = blended(exp, mvp)                             # the single XI (with mvp: the fantasy/MVP rank blend)
+    rank_pool = {p: rank[p] for p in top_pool(rank, team_of, use_roles)}
 
     def team(t):
         xi, c, vc = t
@@ -424,10 +439,10 @@ def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, 
     return {"players": {p: {"team": team_of[p], "role": roles.get(p), "expected": round(float(exp[p]), 1),
                             "p_solid": round(float(p_solid[i]), 3)} for i, p in enumerate(pids)},
             "solid": solid,
-            "single": team(pick_xi(exp_pool, team_of, use_roles)),
+            "single": team(pick_xi(rank_pool, team_of, use_roles)),
             "teams": [team(t) for t in portfolio(pool, pts[:, cols], team_of, k, use_roles, captains=5,
                                                  first=pick_xi(exp_pool, team_of, use_roles))],
-            "pool": len(pool),
+            "pool": len(pool), **({"blend": BLEND} if mvp else {}),
             "fielding": fielding, "simulations": int(sims.n), "format": spec.format, "method": method}
 
 

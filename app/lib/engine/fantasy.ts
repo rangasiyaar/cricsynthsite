@@ -196,8 +196,19 @@ export function topPool(exp: Record<string, number>, teamOf: Record<string, numb
   return pool;
 }
 
+/** The single XI's ranking (cricsim/fantasy.py blended): higher is better, −(0.7 × fantasy rank + 0.3 × MVP rank),
+ *  expected points breaking ties; plain expected points without MVP ratings. The five keep fantasy rank. */
+export const BLEND = 0.7;
+export function blended(exp: Record<string, number>, mvp?: Record<string, number> | null, w = BLEND): Record<string, number> {
+  if (!mvp) return { ...exp };
+  const ids = Object.keys(exp);
+  const rf = new Map([...ids].sort((a, b) => exp[b] - exp[a]).map((p, i) => [p, i + 1]));
+  const rm = new Map([...ids].sort((a, b) => (mvp[b] ?? 0) - (mvp[a] ?? 0)).map((p, i) => [p, i + 1]));
+  return Object.fromEntries(ids.map((p) => [p, -(w * rf.get(p)! + (1 - w) * rm.get(p)!) + 1e-6 * exp[p]]));
+}
+
 /** The Fantasy tab for a set of simulations: one XI, and five teams that cover the likely matches. */
-export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5): FantasyPicks | null {
+export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5, mvp?: Record<string, number> | null): FantasyPicks | null {
   if (!sims.length) return null;
   const roles: Record<string, string> = {};
   pack.teams.flatMap((t) => t.players).forEach((p) => { roles[p] = pack.players[p]?.role ?? ""; });
@@ -227,7 +238,10 @@ export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5): FantasyPicks 
   return {
     players: Object.fromEntries(pids.map((p) => [p, { team: teamOf[p], role: roles[p] || null, name: pack.players[p]?.name ?? p,
                                                        expected: Math.round(exp[p] * 10) / 10 }])),
-    single: team(pickXI(pick(exp), teamOf, use)),
+    single: (() => {
+      const rank = blended(exp, mvp);
+      return team(pickXI(Object.fromEntries(topPool(rank, teamOf, use).map((p) => [p, rank[p]])), teamOf, use));
+    })(),
     teams: portfolio(pool, poolPts, n, teamOf, k, use, pick(plain)).map(team),
     fielding: pids.every((p) => pack.players[p]?.fielding), simulations: n, format: pack.format,
   };
