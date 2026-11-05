@@ -1,0 +1,111 @@
+{
+  "id": "kay-v-spr-t20-kirtipur-2026-11-06",
+  "title": "Karnali Yaks v Sudur Paschim Royals",
+  "date": "2026-11-06",
+  "start_time": "12:15",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League 2026 · 16th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Karnali Yaks",
+      "short": "KAY",
+      "players": [
+        "Ariful Islam",
+        "Jishan Alam",
+        "Mark Watt",
+        "Deepak Dumre",
+        "Pawan Sarraf",
+        "Hussain Talat",
+        "Gulsan Jha",
+        "Sompal Kami",
+        "Nandan Yadav",
+        "Yuvraj Khatri",
+        "Unish Bikram Thakuri"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sompal Kami",
+      "squad": [
+        "Ariful Islam",
+        "Jishan Alam",
+        "Mark Watt",
+        "Deepak Dumre",
+        "Pawan Sarraf",
+        "Hussain Talat",
+        "Gulsan Jha",
+        "Sompal Kami",
+        "Nandan Yadav",
+        "Yuvraj Khatri",
+        "Unish Bikram Thakuri"
+      ]
+    },
+    {
+      "name": "Sudur Paschim Royals",
+      "short": "SPR",
+      "players": [
+        "Saif Zaib",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Ishan Pandey",
+        "Dipendra Singh Airee",
+        "Aarif Sheikh",
+        "Sherfane Rutherford",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Hemant Dhami",
+        "Abinash Bohara"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Dipendra Singh Airee",
+      "squad": [
+        "Saif Zaib",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Ishan Pandey",
+        "Dipendra Singh Airee",
+        "Aarif Sheikh",
+        "Sherfane Rutherford",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Hemant Dhami",
+        "Abinash Bohara"
+      ]
+    }
+  ],
+  "live": {
+    "id": 177711,
+    "auto": true,
+    "xis": false
+  }
+}
