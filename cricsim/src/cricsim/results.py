@@ -50,6 +50,35 @@ def started(fx: dict, now: datetime | None = None) -> bool:
     return k is not None and (now or datetime.now(timezone.utc)) >= k
 
 
+def needs_xi_rerun(fx: dict, live_doc: dict | None, has_result: bool, now: datetime | None = None) -> bool:
+    """A started match whose playing XIs were confirmed after its live forecast was made (the re-run the auto loop
+    asked for was lost, e.g. its site update was cancelled by a newer one): re-simulate it once with the XIs.
+    Only on the match day and before its result is in."""
+    from cricsim.publish import xis_confirmed
+    k = kickoff(fx)
+    now = now or datetime.now(timezone.utc)
+    if has_result or k is None or not (k <= now <= k + timedelta(hours=12)) or not xis_confirmed(fx):
+        return False
+    return live_doc is not None and not (live_doc.get("match") or {}).get("xis")
+
+
+def frozen(fixtures: Path, scorecards: Path, now: datetime | None = None, fetch=None) -> list[str]:
+    """Fixture files whose forecast stays as it was at the start: every started match, except one that still needs
+    its confirmed-XI re-run (needs_xi_rerun)."""
+    fetch = fetch or _fetch
+    out = []
+    for p in sorted(fixtures.glob("*.json")):
+        f = json.loads(p.read_text())
+        if not started(f, now):
+            continue
+        k = kickoff(f)
+        recent = k is not None and (now or datetime.now(timezone.utc)) - k <= timedelta(hours=12)
+        if recent and needs_xi_rerun(f, fetch(f"matches/{f['id']}.json"), (scorecards / p.name).exists(), now):
+            continue
+        out.append(p.name)
+    return out
+
+
 # ── names: scorecard names → forecast player ids ──────────────────────────────────────────────────────────────────
 
 def _tokens(s: str) -> list[str]:
@@ -432,10 +461,8 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
 @click.option("--started", "show_started", is_flag=True, help="Print the ids of fixtures that have started, and exit")
 def main(fixtures: Path, scorecards: Path, out: Path, picks: Path, show_started: bool) -> None:
     if show_started:
-        for p in sorted(fixtures.glob("*.json")):
-            f = json.loads(p.read_text())
-            if started(f):
-                click.echo(p.name)
+        for name in frozen(fixtures, scorecards):
+            click.echo(name)
         return
     r = run(fixtures, scorecards, out, picks=picks)
     click.echo(f"archived {len(r['archived'])}, scored {len(r['scored'])}"

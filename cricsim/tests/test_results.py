@@ -183,3 +183,23 @@ def test_blend_lab_scores_blended_xis():
         (sc / "m.json").write_text(json.dumps(card))
         rep = run(fx, sc, fetch=lambda path, sites=None: d if path == "matches/m.json" else None)
     assert "1 scored matches" in rep and "| 0.50 | 0.50 |" in rep
+
+
+def test_started_match_with_late_xis_is_rerun_once(tmp_path):
+    from cricsim.results import frozen
+    fx_dir, sc = tmp_path / "fx", tmp_path / "sc"
+    fx_dir.mkdir(); sc.mkdir()
+    base = {"date": "2026-11-05", "start_time": "12:15", **FIXTURE}
+    (fx_dir / "a.json").write_text(json.dumps({"id": "a", **base, "live": {"xis": True}}))       # XIs came late
+    (fx_dir / "b.json").write_text(json.dumps({"id": "b", **base, "live": {"xis": False}}))      # still probable
+    (fx_dir / "c.json").write_text(json.dumps({"id": "c", **base, "live": {"xis": True}}))       # already re-run
+    live = {"matches/a.json": {"match": {"xis": False}}, "matches/b.json": {"match": {"xis": False}},
+            "matches/c.json": {"match": {"xis": True}}}
+    now = datetime(2026, 11, 5, 7, 30, tzinfo=timezone.utc)                     # 13:00 IST, under way
+    get = lambda path, sites=None: live.get(path)
+    assert frozen(fx_dir, sc, now, get) == ["b.json", "c.json"]
+    (sc / "a.json").write_text("{}")                                            # result in: frozen for good
+    assert frozen(fx_dir, sc, now, get) == ["a.json", "b.json", "c.json"]
+    later = datetime(2026, 11, 6, 7, 30, tzinfo=timezone.utc)                   # next day: frozen whatever
+    (sc / "a.json").unlink()
+    assert frozen(fx_dir, sc, later, get) == ["a.json", "b.json", "c.json"]
