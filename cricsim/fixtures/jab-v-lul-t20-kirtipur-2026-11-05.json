@@ -12,34 +12,34 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Janakpur Bolts won the toss and bowl first.",
   "teams": [
     {
       "name": "Janakpur Bolts",
       "short": "JAB",
       "players": [
-        "Moeen Ali",
+        "Parvez Hossain Emon",
         "Trit Raj Das",
-        "Saif Hassan",
         "Anil Sah",
+        "Saif Hassan",
         "Bishal Shusling",
         "James Neesham",
         "Harmeet Singh",
         "Abhisekh Tiwari",
-        "Amar Routela",
+        "Aaditya Mahata",
         "Rahul Yadav",
         "Lalit Rajbanshi"
       ],
       "roles": [
-        "AR",
-        "BAT",
+        "WK",
         "BAT",
         "WK",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
-        "BAT",
+        "AR",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -66,16 +66,16 @@
         "D Arcy Short",
         "Rohit Paudel",
         "Niroshan Dickwella",
-        "Shamim Hossain",
-        "Tilak Bhandari",
         "Sundeep Jora",
-        "Abhishesh Gautam",
+        "Shamim Hossain",
+        "Dilip Nath",
         "Ruben Trumpelmann",
         "Kishor Mahato",
-        "Sher Malla"
+        "Sher Malla",
+        "Tilak Bhandari"
       ],
       "roles": [
-        "BAT",
+        "WK",
         "BAT",
         "AR",
         "WK",
@@ -106,6 +106,7 @@
   "live": {
     "id": 177701,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
