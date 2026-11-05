@@ -456,3 +456,16 @@ html:has(.app-wrap), body:has(.app-wrap) { overscroll-behavior: none; }
 .a-tabbar-item:active .a-tabbar-ico { transform: none; background: var(--a-press); }
 .a-tabbar-item.on:active .a-tabbar-ico { background: var(--a-sec); filter: brightness(.95); }
 body:has(.a-tabbar) .app-wrap { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+
+/* ── corners: three sizes across the app (0.3.3). 8px small (tags, chips, badges, small buttons), 12px medium
+   (buttons, fields, messages, segmented switches, tables, icon tiles), 16px large (cards, menus, dialogs: --a-r).
+   Round on purpose: avatars, team badges, switches, the nav indicator, the cards' win bar. Chart bars: 2px. ── */
+.a-fact, .a-pill, .a-status, .a-xi, .a-chip, .a-mvs .a-countdown { border-radius: 8px; }
+.a-pro { border-radius: 5px; }                       /* 18px tall: the same look as an 8px corner on a tag */
+.a-btn, .a-lab-open, html body .a-field input, .a-msg, .a-seg, html body .a-content .seg, html body .a-levers select,
+html body .a-levers input[type=number], .a-paywall-icon, .a-changes, html body .a-content .table-wrap, .a-row-icon { border-radius: 12px; }
+.a-seg button, html body .a-content .seg button { border-radius: 8px; }
+html body .a-content .tag { border-radius: 6px; }
+html body .a-content .tag:not(.pro) { background: var(--a-sec); color: var(--a-on-sec); border-color: transparent; }   /* VC: filled, like C */
+html body .a-content .pbar, html body .a-content .winbar { border-radius: 2px; }
+html body .a-content svg rect:not(.hover-band) { rx: 2px; ry: 2px; }

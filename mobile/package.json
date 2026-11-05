@@ -1,7 +1,7 @@
 {
   "name": "cricsynthesis-android",
   "private": true,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "CricSynthesis for Android: the app's screens (app/app/m) in a Capacitor shell.",
   "scripts": {
     "web": "node scripts/build-web.mjs",

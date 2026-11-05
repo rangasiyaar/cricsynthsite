@@ -1,4 +1,8 @@
 [
+  {"version": "0.3.3", "date": "2026-11-05", "notes": [
+    "Matching corners everywhere: tags, buttons, cards and charts follow one style",
+    "Captain and vice-captain badges look alike in the fantasy team"
+  ]},
   {"version": "0.3.2", "date": "2026-11-05", "notes": [
     "A fresh Material look for match cards, menus and the bottom bar",
     "Three tabs: Matches, Fantasy and MatchSynth Lab, with a new Lab icon",
