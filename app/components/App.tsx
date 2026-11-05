@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, type Section } from "@/components/MatchCentre";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
-import { appInfo, cmpVersion, hideSplash, tap, upgradeAlerts, latestRelease, onAlertTap, onAlertWhileOpen, onBackButton, openExternal, reportError, share, signOutNative,
+import { appInfo, cmpVersion, hideSplash, tap, upgradeAlerts, latestRelease, onAlertTap, onAlertWhileOpen, onResume, onBackButton, openExternal, reportError, share, signOutNative,
   themeStatusBar, type AppInfo, type Release } from "@/lib/native";
 import { TIERS } from "@/lib/plans";
 import { SITE } from "@/lib/seo";
@@ -27,9 +27,10 @@ export function AppRuntime() {
   const [mine, setMine] = useState("");
   const [alert, setAlert] = useState<{ title: string; body: string; path?: string } | null>(null);
   useEffect(() => {
-    // a newer release on the site: offer it once the app is open (Later hides it for a day, per build)
+    // a newer release on the site: offer it when the app opens, and again each time it comes back to the screen
+    // (Later hides it for a day, per build)
     let live = true;
-    Promise.all([appInfo(), latestRelease(SITE)]).then(([me, rel]) => {
+    const check = () => Promise.all([appInfo(), latestRelease(SITE)]).then(([me, rel]) => {
       if (!live || !me || !rel || rel.build <= me.build) return;
       try {
         const [b, t] = (localStorage.getItem(LATER_KEY) ?? "").split(":").map(Number);
@@ -38,9 +39,11 @@ export function AppRuntime() {
       setMine(me.version);
       setUpdate(rel);
     });
-    let offOpen = () => {};
+    check();
+    let offOpen = () => {}, offResume = () => {};
     onAlertWhileOpen(setAlert).then((f) => { offOpen = f; });
-    return () => { live = false; offOpen(); };
+    onResume(check).then((f) => { offResume = f; });
+    return () => { live = false; offOpen(); offResume(); };
   }, []);
   useEffect(() => { if (!alert) return; const t = setTimeout(() => setAlert(null), 8000); return () => clearTimeout(t); }, [alert]);
   useEffect(() => {

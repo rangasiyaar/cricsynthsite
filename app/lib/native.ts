@@ -56,6 +56,14 @@ export async function onBackButton(onBack: () => boolean): Promise<() => void> {
   return () => { h.remove(); };
 }
 
+/** Runs `f` each time the app comes back to the screen (from the background or another app). */
+export async function onResume(f: () => void): Promise<() => void> {
+  if (!isNative()) return () => {};
+  const { App } = await import("@capacitor/app");
+  const h = await App.addListener("resume", f);
+  return () => { h.remove(); };
+}
+
 /** The phone's share sheet (Android's, with suggested apps and contacts), else the browser's, else copy the link. */
 export async function share(title: string, url: string, text?: string): Promise<"shared" | "copied" | "none"> {
   try {
