@@ -14,7 +14,6 @@ read `infra/COSTS.md` before adding any cloud resource.
 
 ```
 cricsynthsite/
-├── index.html, css/, js/, …   ← current static site (replaced by app/ before launch)
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
@@ -90,8 +89,8 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 
 ## App design
 
-- `app/app/site.css` is a verbatim copy of the website's `css/theme.css`; reuse its `cs-*` classes (hero, frames,
-  metrics, steps, API block, nav/footer markup from `js/layout.js`). App-only pieces in `globals.css` use the same tokens.
+- `app/app/site.css` is the site theme; reuse its `cs-*` classes (hero, frames, metrics, steps, API block, nav/footer
+  markup in `components/Shell.tsx`). App-only pieces in `globals.css` use the same tokens.
 
 ## Engine rules
 

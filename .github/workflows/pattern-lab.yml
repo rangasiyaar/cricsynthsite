@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["cricsim/**", "cricdata/**", ".github/workflows/pattern-lab.yml"]
+    paths: ["cricsim/src/cricsim/patterns/**", "cricdata/src/**", ".github/workflows/pattern-lab.yml"]   # its own code; the weekly schedule covers new data
 
 permissions:
   contents: read

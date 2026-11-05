@@ -4,7 +4,7 @@
 //  alike) plus half the runs saved against the match's average economy.
 //  Both are put on 1–100 with the same curve, scaled to the format's length.
 //  MVP: a player's batting percentile plus bowling percentile within the match, scaled so the top player is 10.
-//  Chosen by the rating lab (cricsim/rating_lab.py) against scored matches, with fantasy points as the yardstick.
+//  Chosen by a rating lab against scored matches, with fantasy points as the yardstick.
 import type { PlayerRow, Summary } from "@/lib/types";
 
 export type Rated = {

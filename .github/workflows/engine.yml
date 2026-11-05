@@ -9,7 +9,7 @@ on:
       matches: { description: "Backtest matches", default: "800" }
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["cricsim/src/cricsim/**", "cricsim/demo/**", "app/**", ".github/workflows/engine.yml"]
+    paths: ["cricsim/src/cricsim/engine/**", "cricsim/demo/**", ".github/workflows/engine.yml"]   # the engine; the site build is checked by Publish site and Tests
 
 permissions:
   contents: read

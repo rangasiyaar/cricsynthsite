@@ -12,7 +12,7 @@ the hero. One memorable element: the live engine, where the simulator visibly pl
 
 ## Colour and type
 
-Colours, fonts and type treatments are the website's own (`app/site.css`, from `css/theme.css`): steel blue and copper
+Colours, fonts and type treatments are the website's own (`app/site.css`): steel blue and copper
 team colours on light grey, Barlow Condensed headings and labels in uppercase, Barlow body, JetBrains Mono for code.
 `app/design.css` only adds shape and layout on top.
 

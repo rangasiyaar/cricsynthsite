@@ -1,5 +1,5 @@
 /* App components in the site's design language. Tokens, nav, footer, buttons, frames, metrics and
-   steps come from site.css (a copy of the website's css/theme.css); this file only adds what the
+   steps come from site.css (the site theme); this file only adds what the
    match centre needs, built from the same tokens. */
 
 :root {

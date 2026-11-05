@@ -19,7 +19,7 @@ on:
         default: false
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["mobile/**", "app/**", ".github/workflows/android.yml"]
+    paths: ["mobile/**", "app/app/m/**", "app/components/App.tsx", "app/lib/native.ts", "app/lib/engine/**", ".github/workflows/android.yml"]   # the app shell and its screens
 
 permissions:
   contents: read

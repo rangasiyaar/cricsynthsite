@@ -2,10 +2,7 @@ name: Simulate fixture
 
 # Simulates the fixtures in cricsim/fixtures/ (player names in batting order) with a model fitted on
 # the full archive, and prints the forecast.
-on:
-  push:
-    branches: [claude/cricsynthesis-platform]
-    paths: ["cricsim/fixtures/**", ".github/workflows/simulate-fixture.yml"]
+on:                      # by hand only: the site updates already simulate every fixture
   workflow_dispatch:
 
 permissions:

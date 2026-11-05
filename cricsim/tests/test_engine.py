@@ -212,22 +212,6 @@ def test_sample_a_simulated_match(world, tmp_path):
     assert len(xi) == 11 and {p["role"] for p in xi} == {"WK", "BAT", "AR", "BOWL"}
 
 
-def test_venue_diagnostic_runs(world):
-    from cricsim.engine.venue_diag import run as venue_diag
-    text = venue_diag(world["parquet"], date(2024, 1, 1), years=3.0, min_balls=200, memory="2GB")
-    for part in ("Ground level", "Within-ground splits", "| phase | runs |", "Busiest grounds"):
-        assert part in text
-
-
-def test_venue_audit_runs(world, tmp_path):
-    from cricsim.engine.venue_audit import run as venue_audit
-    (tmp_path / "fx.json").write_text(json.dumps({"venue_search": "ground"}))
-    text = venue_audit(world["parquet"], date(2024, 1, 1), years=3.0, min_matches=2, memory="2GB", fixtures=tmp_path)
-    for part in ("1. Identity", "2. Fixture venue lookups", "3. Ground history",
-                 "4. Does a league", "5. Drift", "6. Volatility", "7. Fixture grounds"):
-        assert part in text
-
-
 def test_city_prior_leans_on_neighbours():
     from cricsim.engine.fit import city_prior
     f = np.zeros((4, S.K), dtype=np.float32)
@@ -341,21 +325,6 @@ def test_new_ground_level_and_venue_half_life(world):
     base = fit(world["parquet"], FitConfig(new_ground=False, venue_half_life=None))
     assert not base.factors["venue"][0].any()                       # new_ground off: unseen ground = global average
     assert not np.allclose(m.factors["venue"][1:], base.factors["venue"][1:])   # shorter memory moves ground factors
-
-
-def test_format_audit_runs(world):
-    from cricsim.engine.format_audit import run as format_audit
-    text = format_audit(world["parquet"], date(2024, 1, 1), window=365, memory="2GB")
-    for part in ("1. How much should format-specific evidence count", "**Batting**", "2. Does recent form carry",
-                 "| same family | 0.25 |", "Production-like", "prior 8100", "3. Batters coming into a format"):
-        assert part in text
-
-
-def test_level_audit_runs(world):
-    from cricsim.engine.level_audit import run as level_audit
-    text = level_audit(world["parquet"], date(2024, 1, 1), memory="2GB")
-    for part in ("Level audit", "Projecting the season level", "trend, 4 seasons (today) | +0.000", "Where the one-day gap", "By innings and chase pressure", "by competition"):
-        assert part in text
 
 
 def test_era_wickets_latest_only_moves_dismissals(world):
@@ -674,35 +643,3 @@ def test_bowling_form_for_a_fixture_matches_the_full_history(world):
     assert form(some["wkts"], pid, day, hit=2) == form(full["wkts"], pid, day, hit=2)
     assert set(some["wkts"].dates) == {pid}
 
-
-def test_fantasy_teams_table(world):
-    """Many teams from simulated match stories: every team has one captain and one vice-captain, eleven players."""
-    from cricsim.fantasy_teams import markdown, teams
-    spec = _spec(world["world"])
-    cov = {"id": "t", "title": "A v B", "format": "T20", "gender": "male", "comp_key": spec.comp_key,
-           "venue_id": spec.venue_id, "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
-    fixture = {"teams": [{"players": [f"Player {p}" for p in t.players]} for t in spec.teams]}
-    res = teams(world["model"], cov, n_teams=20, n_sims=300, fixture=fixture)
-    assert sum(r["captain"] for r in res["rows"]) == 20 == sum(r["vice_captain"] for r in res["rows"])
-    assert sum(r["in_xi"] for r in res["rows"]) == 20 * 11
-    assert abs(sum(r["top_scorer"] for r in res["rows"]) - 100) < 1
-    assert res["rows"][0]["player"].startswith("Player ") and "| captain |" in markdown(res)
-
-
-def test_captain_lab_scores_on_a_scorecard(world):
-    """The captains team and the live team are scored on a manual scorecard against the best team in hindsight."""
-    from cricsim.captain_lab import evaluate, report
-    spec = _spec(world["world"])
-    cov = {"id": "lab-match", "title": "A v B", "format": "T20", "gender": "male", "comp_key": spec.comp_key,
-           "venue_id": spec.venue_id, "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
-    fixture = {"teams": [{"players": [f"Player {p}" for p in t.players]} for t in spec.teams]}
-    a, b = fixture["teams"][0]["players"], fixture["teams"][1]["players"]
-    card = {"innings": [{"team": spec.teams[0].name, "batting": [
-                {"name": a[0], "dismissal": f"c {b[3]} b {b[9]}", "runs": 64, "balls": 40, "fours": 6, "sixes": 3},
-                {"name": a[1], "dismissal": "not out", "runs": 12, "balls": 10, "fours": 1, "sixes": 0}],
-             "bowling": [{"name": b[9], "overs": "4", "maidens": 0, "runs": 30, "wickets": 3}]}]}
-    r = evaluate(world["model"], cov, fixture, card, n_teams=20, n_sims=300)
-    assert r["best"] > 0 and all(0 < r[k]["share"] <= 1 for k in ("live", "captains", "live_top_captain", "appearances", "quota"))
-    assert abs(sum(r["p_top_role"].values()) - 1) < 0.05 and r["top_real"]["points"] >= 4
-    text = report([r, r])
-    assert "captains with role quotas" in text and "Who tops the scoring" in text

@@ -1,5 +1,5 @@
 "use client";
-// Nav and footer: the same markup and classes as the website's js/layout.js, so both look identical.
+// Nav and footer: the cs-* markup and classes the site theme (app/site.css) styles.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

@@ -1,4 +1,4 @@
-/* CricSynthesis site theme — copied verbatim from css/theme.css (the marketing site) so the app is identical.
+/* CricSynthesis site theme (cs-* classes): nav, footer, hero, frames, metrics, steps and the API block.
    Re-maps the legacy tokens (so docs / playground / login inherit the new look)
    and styles the new homepage (cs-* classes), nav and footer. */
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -128,7 +128,7 @@ a:hover { color: var(--cs-steel-800); }
 .cs-brand span { font-family: var(--cs-head); font-weight: 600; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; line-height: 1; }
 .cs-brand b { font-weight: 600; color: var(--cs-steel-700); }
 
-/* ── Nav (markup injected by js/layout.js) ───── */
+/* ── Nav (markup in components/Shell.tsx) ───── */
 body .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: var(--cs-nav-bg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -173,7 +173,7 @@ body .nav .mobile-nav .mobile-nav-cta { padding: 8px 14px; }
   .cs-burger { margin-left: 0; }
 }
 
-/* ── Footer (markup injected by js/layout.js) ── */
+/* ── Footer (markup in components/Shell.tsx) ── */
 body .footer { background: var(--cs-bg); border-top: 1px solid var(--cs-line); padding: 0; margin: 0; }
 body .footer .footer-container { max-width: 1240px; margin: 0 auto; padding: 48px clamp(20px, 4vw, 48px) 28px; }
 body .footer .footer-main { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 32px; padding: 0; border: 0; }
@@ -394,7 +394,7 @@ body .footer .footer-link, body .footer .footer-heading { white-space: normal; o
   body .footer .footer-link { font-size: 13px; }
 }
 
-/* ── Theme toggle (markup injected by js/layout.js) ── */
+/* ── Theme toggle (markup in components/Shell.tsx) ── */
 .cs-theme-toggle { width: 36px; height: 36px; display: grid; place-items: center; padding: 0; background: none; border: 1px solid var(--cs-line); border-radius: 0; color: var(--cs-ink); cursor: pointer; flex: none; transition: background .15s, color .15s; }
 .cs-theme-toggle:hover { background: var(--cs-surface); color: var(--cs-steel-700); }
 .cs-theme-toggle svg { width: 18px; height: 18px; }
