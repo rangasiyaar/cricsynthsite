@@ -32,7 +32,14 @@ export const TAB_ICONS: Record<string, React.ReactNode> = {
   MVP: icon("M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"),
   Fantasy: icon("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"),
   "Venue intelligence": icon("M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"),
-  Lab: icon("M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4a1.5 1.5 0 0 0 1.3-2L14 9V3"),
+  // MatchSynth Lab: a flask whose neck is a bat handle (grip bands), with a ball inside
+  Lab: (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.6 2.5h4.8M10.4 5h3.2M10.4 7.3h3.2" />
+      <path d="M10.4 2.5v7L5.6 18.6a1.6 1.6 0 0 0 1.4 2.4h10a1.6 1.6 0 0 0 1.4-2.4L13.6 9.5v-7" />
+      <circle cx="12" cy="16.4" r="2.5" />
+    </svg>
+  ),
 };
 
 /** The sections of the match centre for one summary (Fantasy only when the match has picks). */

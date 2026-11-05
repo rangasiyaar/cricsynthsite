@@ -21,7 +21,7 @@ export default function FantasyTab() {
     <>
       <TopBar />
       <PullToRefresh onRefresh={ix.refresh} refreshing={ix.refreshing && !!ix.data} />
-      <Title eyebrow="Fantasy">Fantasy picks</Title>
+      <Title>Fantasy picks</Title>
       <OfflineBar show={ix.offline} onRetry={ix.refresh} />
       {ix.error && !ix.data && <Empty title="Couldn't load matches" action={<button type="button" className="a-pill" onClick={ix.refresh}>Try again</button>}>Check your connection.</Empty>}
       {!ix.data && !ix.error && <Loading />}
@@ -33,18 +33,22 @@ export default function FantasyTab() {
               <article key={m.id} className="a-mcard">
                 <Link href={`/m/match/?id=${encodeURIComponent(m.id)}&s=fantasy`} className="a-mcard-main">
                   <div className="a-mcard-head">
-                    {st === "live" ? <span className="a-status live"><span className="dot" />Live</span> : <span className="a-status up">Upcoming</span>}
                     <span className="a-mcard-comp">{m.competition ?? FORMAT[m.format] ?? m.format}</span>
                     <XiTag xis={m.xis} />
-                    <span style={{ flex: 1 }} />
-                    {left && <span className="a-countdown">{left}</span>}
                   </div>
                   <div className="a-mteams">
-                    {m.teams.map((t, k) => (
-                      <div key={t.name} className="a-mteam"><Badge short={t.short} k={k} /><span className="a-mteam-name">{t.name}</span></div>
-                    ))}
+                    {[0, 1].map((k) => [
+                      k === 1 && <div key="vs" className="a-mvs">{left ? <span className="a-countdown">{left}</span> : <span className="a-vs">v</span>}</div>,
+                      <div key={k} className="a-mteam"><Badge short={m.teams[k].short} k={k} /><span className="a-mteam-name">{m.teams[k].name}</span></div>,
+                    ])}
                   </div>
-                  <div className="a-mcard-foot"><span>{m.venue ?? "Venue to be confirmed"}</span><span>{startLabel(m.date, m.start_time)}</span></div>
+                  <div className="a-mcard-where">
+                    <span className="a-mcard-ground">{m.venue ?? "Venue to be confirmed"}</span>
+                    <span className="a-mcard-when">{startLabel(m.date, m.start_time)}</span>
+                  </div>
+                  <div className="a-mcard-status">
+                    {st === "live" ? <span className="a-status live"><span className="dot" />Live</span> : <span className="a-status up">Upcoming</span>}
+                  </div>
                 </Link>
               </article>
             );

@@ -115,17 +115,18 @@ export function openExternal(url: string) {
 }
 
 // ── match alerts (Firebase Cloud Messaging topics; sent by the nightly publish, cricsim/notify.py) ─────────────────
-export type AlertTopic = "forecasts" | "xis" | "soon" | "results" | "today";
+export type AlertTopic = "forecasts" | "xis" | "soon" | "results" | "today" | "updates";
 export const ALERTS: { topic: AlertTopic; title: string }[] = [
   { topic: "soon", title: "Match starting soon" },
   { topic: "xis", title: "Playing XIs named" },
   { topic: "results", title: "Results" },
   { topic: "today", title: "Today's matches" },
   { topic: "forecasts", title: "New forecasts" },
+  { topic: "updates", title: "App updates" },
 ];
 export const ALL_ALERTS = ALERTS.map((a) => a.topic);
 const ALERT_KEY = "cs-alerts";
-const ALERT_V = "cs-alerts-v"; // 2: the alert kinds added in 0.3.0 are offered to everyone who had alerts on
+const ALERT_V = "cs-alerts-v"; // 2: the kinds added in 0.3.0; 3: app updates (0.3.2); each added for everyone who had alerts on
 
 /** Alerts need the native messaging plugin, which the app carries once its Firebase config is set up. */
 export const hasAlerts = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseMessaging");
@@ -151,14 +152,16 @@ export async function setAlerts(topics: AlertTopic[]): Promise<AlertTopic[]> {
   return topics;
 }
 
-/** Once per install: someone with alerts on from before 0.3.0 gets the new kinds too (they can switch them off). */
+/** Once per new kind of alert: someone who had alerts on gets it too (they can switch it off). */
 export async function upgradeAlerts() {
   if (!hasAlerts()) return;
   try {
-    if (localStorage.getItem(ALERT_V) === "2") return;
+    const v = Number(localStorage.getItem(ALERT_V) || "1");
+    if (v >= 3) return;
     const had = alertChoice();
-    localStorage.setItem(ALERT_V, "2");
-    if (had && had.length) await setAlerts([...new Set<AlertTopic>([...had, "soon", "results", "today"])]);
+    localStorage.setItem(ALERT_V, "3");
+    const add: AlertTopic[] = [...(v < 2 ? ["soon", "results", "today"] as AlertTopic[] : []), "updates"];
+    if (had && had.length) await setAlerts([...new Set<AlertTopic>([...had, ...add])]);
   } catch {}
 }
 

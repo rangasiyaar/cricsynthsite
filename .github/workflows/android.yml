@@ -106,6 +106,7 @@ jobs:
     permissions:
       contents: write
       actions: write               # republish the site so /download/app.json shows the new version
+      id-token: write              # Google sign-in for the "new version" alert
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -113,6 +114,7 @@ jobs:
           name: cricsynthesis-android-${{ github.run_number }}
           path: out
       - name: GitHub release
+        id: rel
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -132,3 +134,22 @@ jobs:
               console.log((c ? c.notes.map((x) => "- " + x).join("\n") + "\n\n" : "") + `Android app, ${k} build ${n}. Install the APK on an Android phone (allow installs from this source when asked).`)' "$version" "$kind" "$GITHUB_RUN_NUMBER")"
           # the website's download page serves the latest signed release
           [ "$kind" = release ] && gh workflow run publish-site.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f quick=true || true
+          echo "kind=$kind" >> "$GITHUB_OUTPUT"; echo "version=$version" >> "$GITHUB_OUTPUT"
+      # a push alert to phones with "App updates" on (0.3.2 and later); alerts are extra, the release never waits on them
+      - uses: google-github-actions/auth@v2
+        id: gcp
+        if: ${{ steps.rel.outputs.kind == 'release' && vars.GCP_ENABLED == 'true' && vars.ALERTS_ENABLED == 'true' }}
+        continue-on-error: true
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+        if: ${{ steps.gcp.outcome == 'success' }}
+      - uses: astral-sh/setup-uv@v5
+        if: ${{ steps.gcp.outcome == 'success' }}
+      - name: New version alert
+        if: ${{ steps.gcp.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          FCM_ACCESS_TOKEN="$(gcloud auth print-access-token)" uv run python -m cricsim.notify release \
+            --version "${{ steps.rel.outputs.version }}" --build "$GITHUB_RUN_NUMBER" --project "${{ secrets.GCP_PROJECT_ID }}"

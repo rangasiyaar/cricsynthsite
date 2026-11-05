@@ -234,8 +234,35 @@ def timed_cmd(project: str, state: Path, dry_run: bool) -> None:
     state.write_text(json.dumps(sent, indent=1, sort_keys=True) + "\n")
 
 
+def release_alert(version: str, build: int, changelog: list[dict]) -> dict:
+    """The "new version" alert for one release: its version and the first line of its changelog entry."""
+    entry = next((c for c in changelog if c.get("version") == version), None)
+    first = (entry or {}).get("notes", [None])[0]
+    return {"topic": "updates", "match": f"app-{build}", "path": "/m/matches/",
+            "title": f"CricSynthesis {version} is out", "body": first or "Tap to update the app."}
+
+
+@main.command("release")
+@click.option("--version", "version", required=True)
+@click.option("--build", type=int, required=True)
+@click.option("--changelog", type=click.Path(exists=True, path_type=Path), default=Path("mobile/changelog.json"))
+@click.option("--project", required=True)
+@click.option("--dry-run", is_flag=True)
+def release_cmd(version: str, build: int, changelog: Path, project: str, dry_run: bool) -> None:
+    """Tell phones with app-update alerts on that a new version is out (sent once, by the release job)."""
+    alert = release_alert(version, build, json.loads(changelog.read_text()))
+    click.echo(f"[updates] {alert['title']} — {alert['body']}")
+    if dry_run:
+        return
+    token = os.environ.get("FCM_ACCESS_TOKEN", "")
+    if not token:
+        raise click.ClickException("FCM_ACCESS_TOKEN is not set")
+    if not send([alert], project, token):
+        raise click.ClickException("FCM refused the update alert (see above)")
+
+
 @main.command("test")
-@click.option("--topic", type=click.Choice(["forecasts", "xis", "soon", "results", "today"]), default="forecasts")
+@click.option("--topic", type=click.Choice(["forecasts", "xis", "soon", "results", "today", "updates"]), default="forecasts")
 @click.option("--project", required=True)
 def test_cmd(topic: str, project: str) -> None:
     """Send one test alert to a topic: every phone with that switch on should get it."""

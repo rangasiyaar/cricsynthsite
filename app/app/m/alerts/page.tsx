@@ -16,8 +16,8 @@ export default function Alerts() {
   };
   return (
     <>
-      <TopBar />
-      <Title eyebrow="Alerts">Match alerts</Title>
+      <TopBar back="/m/matches/" />
+      <Title>Match alerts</Title>
       {able === false && <Empty title="Alerts are in the Android app">Install the app to get match alerts on your phone.</Empty>}
       {alerts && (
         <MenuGroup label="Send me">

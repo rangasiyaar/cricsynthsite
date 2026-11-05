@@ -1,10 +1,10 @@
 "use client";
-// App home: every published match with its status, a countdown to the start and a way into MatchSynth Lab;
+// App home: every published match with its status and a countdown to the start;
 // finished matches show how the forecast and the fantasy picks did.
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Badge, Empty, Icon, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, XiTag, pct0, useFresh, useNow } from "@/components/App";
+import { Badge, Empty, Loading, OfflineBar, PullToRefresh, TEAM, Title, TopBar, WinPill, XiTag, pct0, useFresh, useNow } from "@/components/App";
 import { loadIndex, loadResults, peekIndex, peekResults } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { ALL_ALERTS, alertChoice, hasAlerts, setAlerts } from "@/lib/native";
@@ -23,35 +23,36 @@ function StatusPill({ st }: { st: Status }) {
 
 function Forecast({ m, st, now }: { m: MatchCard; st: Status; now: number | null }) {
   const p = m.teams.map((t) => m.win[t.name] ?? 0);
-  const left = now === null ? null : countdown(kickoffMs(m.date, m.start_time), now);
-  const id = encodeURIComponent(m.id);
+  const left = st === "upcoming" && now !== null ? countdown(kickoffMs(m.date, m.start_time), now) : null;
+  const team = (k: number) => {
+    const t = m.teams[k];
+    return (
+      <div className="a-mteam">
+        <Badge short={t.short} k={k} />
+        <span className="a-mteam-name">{t.name}</span>
+        <span className="a-mteam-pct" style={{ color: TEAM[k] }}>{pct0(p[k])}</span>
+      </div>
+    );
+  };
   return (
     <article className="a-mcard">
-      <Link href={`/m/match/?id=${id}`} className="a-mcard-main">
+      <Link href={`/m/match/?id=${encodeURIComponent(m.id)}`} className="a-mcard-main">
         <div className="a-mcard-head">
-          <StatusPill st={st} />
           <span className="a-mcard-comp">{m.competition ?? FORMAT[m.format] ?? m.format}</span>
-          {st !== "finished" && <XiTag xis={m.xis} at={m.generated_at} />}
-          <span style={{ flex: 1 }} />
-          {st === "upcoming" && left && <span className="a-countdown" aria-label={`Starts in ${left}`}>{left}</span>}
+          {st !== "finished" && <XiTag xis={m.xis} />}
         </div>
         <div className="a-mteams">
-          {m.teams.map((t, k) => (
-            <div key={t.name} className="a-mteam">
-              <Badge short={t.short} k={k} />
-              <span className="a-mteam-name">{t.name}</span>
-              <span className="a-mteam-pct" style={{ color: TEAM[k] }}>{pct0(p[k])}</span>
-            </div>
-          ))}
+          {team(0)}
+          <div className="a-mvs">{left ? <span className="a-countdown" aria-label={`Starts in ${left}`}>{left}</span> : <span className="a-vs">v</span>}</div>
+          {team(1)}
         </div>
         <WinPill pa={p[0]} pb={p[1]} />
-        <div className="a-mcard-foot"><span>{m.venue ?? "Venue to be confirmed"}</span><span>{startLabel(m.date, m.start_time)}</span></div>
-        {m.headline && <div className="a-mcard-note">{m.headline}</div>}
+        <div className="a-mcard-where">
+          <span className="a-mcard-ground">{m.venue ?? "Venue to be confirmed"}</span>
+          <span className="a-mcard-when">{startLabel(m.date, m.start_time)}</span>
+        </div>
+        <div className="a-mcard-status"><StatusPill st={st} /></div>
       </Link>
-      <div className="a-mcard-act">
-        <span />
-        <Link href={`/m/lab/?id=${id}`} className="a-pill">{Icon.lab}MatchSynth Lab</Link>
-      </div>
     </article>
   );
 }
@@ -61,12 +62,9 @@ function Result({ r }: { r: ResultSummary }) {
     <article className="a-mcard">
       <Link href={`/m/match/?id=${encodeURIComponent(r.id)}`} className="a-mcard-main">
         <div className="a-mcard-head">
-          <StatusPill st="finished" />
           <span className="a-mcard-comp">{r.competition ?? ""}</span>
-          <span style={{ flex: 1 }} />
-          <span>{startLabel(r.date)}</span>
         </div>
-        <div className="a-mteams" style={{ marginBottom: 4 }}>
+        <div className="a-mteams">
           {r.teams.map((t, k) => {
             const sc = r.scores.find((x) => x.team === t.name);
             return (
@@ -79,10 +77,12 @@ function Result({ r }: { r: ResultSummary }) {
           })}
         </div>
         {r.result && <div className="a-result-line">{r.result}</div>}
-        <div className="a-mcard-foot">
-          <span>{r.favourite_won === true ? "Our favourite won" : r.favourite_won === false ? "An upset" : `${r.hits}/${r.checks} checks hit`}</span>
-          {r.fantasy && <span>Fantasy {pct0(r.fantasy.single)} · best of 5 {pct0(r.fantasy.best_of_teams)}</span>}
+        <div className="a-mcard-where">
+          <span className="a-mcard-ground">{r.favourite_won === true ? "Our favourite won" : r.favourite_won === false ? "An upset" : `${r.hits}/${r.checks} checks hit`}
+            {r.fantasy ? ` · Fantasy ${pct0(r.fantasy.single)}` : ""}</span>
+          <span className="a-mcard-when">{startLabel(r.date)}</span>
         </div>
+        <div className="a-mcard-status"><StatusPill st="finished" /></div>
       </Link>
     </article>
   );
@@ -145,7 +145,7 @@ function Matches() {
     <>
       <TopBar />
       <PullToRefresh onRefresh={load} refreshing={ix.refreshing && !!cards} />
-      <Title eyebrow="Match centre">Matches</Title>
+      <Title>Matches</Title>
       <div className="a-chips" role="tablist" aria-label="Show matches">
         {FILTERS.map(([f, l]) => (
           <button key={f} type="button" className="a-chip" role="tab" aria-selected={filter === f} aria-pressed={filter === f} onClick={() => setFilter(f)}>

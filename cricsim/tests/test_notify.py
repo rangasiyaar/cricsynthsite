@@ -81,3 +81,10 @@ def test_timed_alerts_go_once():
     early = datetime(2026, 10, 23, 2, 0, tzinfo=timezone.utc)          # 7:30 IST: too early for today's list
     assert timed({"matches": [later]}, {}, early) == []
 
+
+
+def test_release_alert_names_the_version_and_first_change():
+    from cricsim.notify import release_alert
+    a = release_alert("0.3.2", 80, [{"version": "0.3.2", "notes": ["Material look", "x"]}, {"version": "0.3.1", "notes": ["y"]}])
+    assert a["topic"] == "updates" and a["title"] == "CricSynthesis 0.3.2 is out" and a["body"] == "Material look"
+    assert release_alert("9.9.9", 1, [])["body"] == "Tap to update the app."

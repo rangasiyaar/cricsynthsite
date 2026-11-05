@@ -1,4 +1,11 @@
 [
+  {"version": "0.3.2", "date": "2026-11-05", "notes": [
+    "A fresh Material look for match cards, menus and the bottom bar",
+    "Three tabs: Matches, Fantasy and MatchSynth Lab, with a new Lab icon",
+    "Match cards: countdown between the teams, full ground names, cleaner layout",
+    "Open in MatchSynth Lab right from the top of each match",
+    "Alerts when a new version of the app is out; Match alerts now in the menu"
+  ]},
   {"version": "0.3.1", "date": "2026-11-05", "notes": [
     "New bottom tabs: Matches, Fantasy, Lab and Alerts",
     "Fantasy tab: every upcoming and live match, straight to its fantasy picks",

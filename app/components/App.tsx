@@ -239,9 +239,8 @@ export function TabBar() {
   if (NO_TABS.has(path)) return null;
   const tabs = [
     { href: "/m/matches/", label: "Matches", icon: MENU_ICONS.matches, on: path.startsWith("/m/match") },
-    { href: "/m/fantasy/", label: "Fantasy", icon: MENU_ICONS.fantasy, on: path.startsWith("/m/fantasy") },
-    { href: "/m/lab/", label: "Lab", icon: Icon.lab, on: path.startsWith("/m/lab") },
-    { href: "/m/alerts/", label: "Alerts", icon: MENU_ICONS.alerts, on: path.startsWith("/m/alerts") },
+    { href: "/m/fantasy/", label: "Fantasy", icon: TAB_ICONS.Fantasy, on: path.startsWith("/m/fantasy") },
+    { href: "/m/lab/", label: "MatchSynth Lab", icon: Icon.lab, on: path.startsWith("/m/lab") },
   ];
   return (
     <nav className="a-tabbar" aria-label="Sections">
@@ -291,7 +290,6 @@ const MENU_ICONS = {
   settings: svg("M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"),
   help: svg("M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"),
   results: svg("M4 20V10M10 20V4M16 20v-7M22 20H2"),
-  fantasy: svg("M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"),
   alerts: svg("M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"),
   share: svg("M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4"),
   privacy: svg("M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"),
@@ -362,6 +360,7 @@ function Drawer({ onClose }: { onClose: () => void }) {
         <div className="a-drawer-list">
           <Item icon={MENU_ICONS.matches} label="Matches" onClick={() => go("/m/matches/")} />
           {user && <Item icon={MENU_ICONS.user} label="Account" onClick={() => go("/m/account/")} />}
+          <Item icon={MENU_ICONS.alerts} label="Match alerts" onClick={() => go("/m/alerts/")} />
           <Item icon={MENU_ICONS.settings} label="App settings" onClick={() => go("/m/settings/")} />
           <Item icon={MENU_ICONS.help} label="Help" onClick={() => go("/m/help/")} />
         </div>
