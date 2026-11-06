@@ -1,0 +1,112 @@
+{
+  "id": "nd-v-ov-odi-whangarei-2026-11-08",
+  "title": "Northern Districts v Otago Volts",
+  "date": "2026-11-08",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 10th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Cobham Ovall, Whangarei",
+  "venue_search": "whangarei",
+  "city": "Whangarei",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Northern Districts",
+      "short": "ND",
+      "players": [
+        "Nick Kelly",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert O Donnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Snehith Reddy",
+        "Aryan Mann",
+        "Joshua Brown",
+        "James Naylor",
+        "Cooper Rowell"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Robert O Donnell",
+      "squad": [
+        "Nick Kelly",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert O Donnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Snehith Reddy",
+        "Aryan Mann",
+        "Joshua Brown",
+        "James Naylor",
+        "Cooper Rowell"
+      ]
+    },
+    {
+      "name": "Otago Volts",
+      "short": "OV",
+      "players": [
+        "Jack Boyle",
+        "Jacob Cumming",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Thomas O'Connor",
+        "Danru Ferns",
+        "Matthew Bacon"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Luke Georgeson",
+      "squad": [
+        "Jack Boyle",
+        "Jacob Cumming",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Thomas O'Connor",
+        "Danru Ferns",
+        "Matthew Bacon"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40557,
+    "url": "https://khelnow.com/live-cricket-score/northern-districts-vs-otago-volts-the-ford-trophy-7th-november-2026-40557",
+    "auto": true,
+    "xis": false
+  }
+}

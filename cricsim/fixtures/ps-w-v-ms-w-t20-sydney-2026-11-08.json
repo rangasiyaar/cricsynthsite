@@ -1,0 +1,112 @@
+{
+  "id": "ps-w-v-ms-w-t20-sydney-2026-11-08",
+  "title": "Perth Scorchers Women v Melbourne Stars Women",
+  "date": "2026-11-08",
+  "start_time": "11:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 16th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "North Sydney Oval, Sydney",
+  "venue_search": "sydney",
+  "city": "Sydney",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PS W",
+      "players": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Fatima Sana",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Lilly Mills",
+        "Amy Edgar"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Beth Mooney",
+      "squad": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Fatima Sana",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Lilly Mills",
+        "Amy Edgar"
+      ]
+    },
+    {
+      "name": "Melbourne Stars Women",
+      "short": "MS-W",
+      "players": [
+        "Meg Lanning",
+        "Rhys McKenna",
+        "Amy Jones",
+        "Annabel Sutherland",
+        "Danielle Gibson",
+        "Naomi Stalenberg",
+        "Charlotte Dean",
+        "Georgia Prestwidge",
+        "Kim Garth",
+        "Maisy Gibson",
+        "Sophie Day"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Meg Lanning",
+      "squad": [
+        "Meg Lanning",
+        "Rhys McKenna",
+        "Amy Jones",
+        "Annabel Sutherland",
+        "Danielle Gibson",
+        "Naomi Stalenberg",
+        "Charlotte Dean",
+        "Georgia Prestwidge",
+        "Kim Garth",
+        "Maisy Gibson",
+        "Sophie Day"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40316,
+    "url": "https://khelnow.com/live-cricket-score/perth-scorchers-women-vs-melbourne-stars-women-women's-big-bash-league-8th-november-2026-40316",
+    "auto": true,
+    "xis": false
+  }
+}

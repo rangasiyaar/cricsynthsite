@@ -1,0 +1,110 @@
+{
+  "id": "yal-v-eme-t10-abu-dhabi-2026-11-08",
+  "title": "Yas Lions v Emirates Eagles",
+  "date": "2026-11-08",
+  "start_time": "17:00",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 4th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Yas Lions",
+      "short": "YAL",
+      "players": [
+        "Andries Gous",
+        "James Vince",
+        "Ansh Tandon",
+        "Kamil Pooran",
+        "Jason Holder",
+        "David Willey",
+        "Dasun Shanaka",
+        "Khuzaima Tanveer",
+        "Haider Ali",
+        "Aryan Dutt",
+        "Karim Janat"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "squad": [
+        "Andries Gous",
+        "James Vince",
+        "Ansh Tandon",
+        "Kamil Pooran",
+        "Jason Holder",
+        "David Willey",
+        "Dasun Shanaka",
+        "Khuzaima Tanveer",
+        "Haider Ali",
+        "Aryan Dutt",
+        "Karim Janat"
+      ]
+    },
+    {
+      "name": "Emirates Eagles",
+      "short": "EME",
+      "players": [
+        "Srikar Bharat",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Alex Hales",
+        "Hasan Nawaz",
+        "David Wiese",
+        "Rehan Ahmed",
+        "Harshit Kaushik",
+        "Trent Boult",
+        "Noor Ahmad",
+        "Akif Javed"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Srikar Bharat",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Alex Hales",
+        "Hasan Nawaz",
+        "David Wiese",
+        "Rehan Ahmed",
+        "Harshit Kaushik",
+        "Trent Boult",
+        "Noor Ahmad",
+        "Akif Javed"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41617,
+    "url": "https://khelnow.com/live-cricket-score/yas-lions-vs-emirates-eagles-abu-dhabi-t10-league-8th-november-2026-41617",
+    "auto": true,
+    "xis": false
+  }
+}

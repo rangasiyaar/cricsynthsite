@@ -1,0 +1,110 @@
+{
+  "id": "unt-v-db-t10-abu-dhabi-2026-11-08",
+  "title": "United Tigers v UAE Bulls",
+  "date": "2026-11-08",
+  "start_time": "19:15",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 5th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Nurul Hasan",
+        "Fakhar Zaman",
+        "Habibur Rahman Sohan",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Zeeshan Naseer",
+        "Sufyan Moqim",
+        "Mahedi Hasan",
+        "Shamim Hossain"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "squad": [
+        "Nurul Hasan",
+        "Fakhar Zaman",
+        "Habibur Rahman Sohan",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Zeeshan Naseer",
+        "Sufyan Moqim",
+        "Mahedi Hasan",
+        "Shamim Hossain"
+      ]
+    },
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Azam Khan",
+        "Max Bryant",
+        "Shadab Khan",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Nuwan Thushara",
+        "Andre Fletcher",
+        "Khushdil Shah",
+        "Mohammad Wasim Jr"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR",
+        "BOWL"
+      ],
+      "squad": [
+        "Azam Khan",
+        "Max Bryant",
+        "Shadab Khan",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Nuwan Thushara",
+        "Andre Fletcher",
+        "Khushdil Shah",
+        "Mohammad Wasim Jr"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41618,
+    "url": "https://khelnow.com/live-cricket-score/united-tigers-vs-uae-bulls-abu-dhabi-t10-league-8th-november-2026-41618",
+    "auto": true,
+    "xis": false
+  }
+}

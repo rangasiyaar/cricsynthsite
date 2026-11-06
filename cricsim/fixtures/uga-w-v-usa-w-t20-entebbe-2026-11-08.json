@@ -1,0 +1,112 @@
+{
+  "id": "uga-w-v-usa-w-t20-entebbe-2026-11-08",
+  "title": "Uganda Women v United States of America Women",
+  "date": "2026-11-08",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Victoria T20I Series · 6th Match",
+  "comp_key": "women-s-victoria-t20i-series",
+  "venue": "Entebbe Cricket Oval, Entebbe",
+  "venue_search": "entebbe",
+  "city": "Entebbe",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uganda Women",
+      "short": "UGA-W",
+      "players": [
+        "Asumin Akurut",
+        "Concylate Aweko",
+        "Esther Iloku",
+        "Immaculate Nakisuuyi",
+        "Janet Mbabazi",
+        "Kevin Awino",
+        "Malisa Ariokot",
+        "Prosscovia Alako",
+        "Rita Musamali",
+        "Sarah Walaza",
+        "Stephani Nampiina"
+      ],
+      "roles": [
+        "BOWL",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Janet Mbabazi",
+      "squad": [
+        "Asumin Akurut",
+        "Concylate Aweko",
+        "Esther Iloku",
+        "Immaculate Nakisuuyi",
+        "Janet Mbabazi",
+        "Kevin Awino",
+        "Malisa Ariokot",
+        "Prosscovia Alako",
+        "Rita Musamali",
+        "Sarah Walaza",
+        "Stephani Nampiina"
+      ]
+    },
+    {
+      "name": "United States of America Women",
+      "short": "USA-W",
+      "players": [
+        "Chetna Pagydyala",
+        "Ella Claridge",
+        "Gargi Bhogle",
+        "Isani Vaghela",
+        "Lekha Shetty",
+        "Maahi Madhavan",
+        "Pooja Ganesh",
+        "Ritu Singh",
+        "Sainavi Kamabalapalli",
+        "Taranum Chopra",
+        "Aditi Chudasama"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Aditi Chudasama",
+      "squad": [
+        "Chetna Pagydyala",
+        "Ella Claridge",
+        "Gargi Bhogle",
+        "Isani Vaghela",
+        "Lekha Shetty",
+        "Maahi Madhavan",
+        "Pooja Ganesh",
+        "Ritu Singh",
+        "Sainavi Kamabalapalli",
+        "Taranum Chopra",
+        "Aditi Chudasama"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41779,
+    "url": "https://khelnow.com/live-cricket-score/uganda-women-vs-united-states-of-america-women-women's-victoria-t20i-series-8th-november-2026-41779",
+    "auto": true,
+    "xis": false
+  }
+}

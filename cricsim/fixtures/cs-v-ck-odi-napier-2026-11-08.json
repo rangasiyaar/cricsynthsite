@@ -1,0 +1,112 @@
+{
+  "id": "cs-v-ck-odi-napier-2026-11-08",
+  "title": "Central Districts v Canterbury Kings",
+  "date": "2026-11-08",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 12th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "McLean Park, Napier",
+  "venue_search": "napier",
+  "city": "Napier",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Central Districts",
+      "short": "CS",
+      "players": [
+        "Brad Schmulian",
+        "Taylor Bettelheim",
+        "Sam Cassidy",
+        "Tom Bruce",
+        "Dane Cleaver",
+        "Josh Clarkson",
+        "Jake Gibson",
+        "Angus Schaw",
+        "Ajaz Patel",
+        "Toby Findlay",
+        "Raymond Toole"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Tom Bruce",
+      "squad": [
+        "Brad Schmulian",
+        "Taylor Bettelheim",
+        "Sam Cassidy",
+        "Tom Bruce",
+        "Dane Cleaver",
+        "Josh Clarkson",
+        "Jake Gibson",
+        "Angus Schaw",
+        "Ajaz Patel",
+        "Toby Findlay",
+        "Raymond Toole"
+      ]
+    },
+    {
+      "name": "Canterbury Kings",
+      "short": "CK",
+      "players": [
+        "Scott Janet",
+        "Chad Bowes",
+        "Leo Carter",
+        "Cole McConchie",
+        "Jesse Frew",
+        "Matt Rowe",
+        "Lachie Harper",
+        "Angus McKenzie",
+        "Raunaq Kapur",
+        "Travis Muller",
+        "Eathan Adam Holman"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Cole McConchie",
+      "squad": [
+        "Scott Janet",
+        "Chad Bowes",
+        "Leo Carter",
+        "Cole McConchie",
+        "Jesse Frew",
+        "Matt Rowe",
+        "Lachie Harper",
+        "Angus McKenzie",
+        "Raunaq Kapur",
+        "Travis Muller",
+        "Eathan Adam Holman"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40563,
+    "url": "https://khelnow.com/live-cricket-score/central-districts-vs-canterbury-kings-the-ford-trophy-7th-november-2026-40563",
+    "auto": true,
+    "xis": false
+  }
+}

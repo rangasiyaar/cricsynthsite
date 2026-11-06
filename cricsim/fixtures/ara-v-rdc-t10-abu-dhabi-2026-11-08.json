@@ -1,0 +1,110 @@
+{
+  "id": "ara-v-rdc-t10-abu-dhabi-2026-11-08",
+  "title": "Arabian Aces v Royal Desert Champions",
+  "date": "2026-11-08",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 6th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Arabian Aces",
+      "short": "ARA",
+      "players": [
+        "Tom Kohler-Cadmore",
+        "Ibrahim Masood",
+        "Moeen Ali",
+        "Andre Russell",
+        "Liam Livingstone",
+        "Richard Gleeson",
+        "Alzarri Joseph",
+        "Imran Tahir",
+        "Alishan Sharafu",
+        "Dwaine Pretorius",
+        "Vriitya Aravind"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR",
+        "WK"
+      ],
+      "squad": [
+        "Tom Kohler-Cadmore",
+        "Ibrahim Masood",
+        "Moeen Ali",
+        "Andre Russell",
+        "Liam Livingstone",
+        "Richard Gleeson",
+        "Alzarri Joseph",
+        "Imran Tahir",
+        "Alishan Sharafu",
+        "Dwaine Pretorius",
+        "Vriitya Aravind"
+      ]
+    },
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Sherfane Rutherford",
+        "Ali Naseer",
+        "Aayan Afzal Khan",
+        "Naseem Shah",
+        "Maheesh Theekshana",
+        "Luke Wood",
+        "Philip Salt",
+        "Keemo Paul"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR"
+      ],
+      "squad": [
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Sherfane Rutherford",
+        "Ali Naseer",
+        "Aayan Afzal Khan",
+        "Naseem Shah",
+        "Maheesh Theekshana",
+        "Luke Wood",
+        "Philip Salt",
+        "Keemo Paul"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41619,
+    "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-royal-desert-champions-abu-dhabi-t10-league-8th-november-2026-41619",
+    "auto": true,
+    "xis": false
+  }
+}

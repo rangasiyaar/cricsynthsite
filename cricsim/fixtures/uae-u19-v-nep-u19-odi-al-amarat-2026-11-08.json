@@ -1,0 +1,112 @@
+{
+  "id": "uae-u19-v-nep-u19-odi-al-amarat-2026-11-08",
+  "title": "United Arab Emirates Under-19s v Nepal Under-19s",
+  "date": "2026-11-08",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Group A",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 2), Al Amarat",
+  "venue_search": "al amarat",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Arab Emirates Under-19s",
+      "short": "UAE-U19",
+      "players": [
+        "Ahmed Khudada",
+        "Ayaan Misbah",
+        "Mohamed Nafees",
+        "Muhammad Ahmed",
+        "Naseem Khan",
+        "Noorullah Ayobi",
+        "Omar Tauqir",
+        "Raizal Nadir",
+        "Yayin Rai",
+        "Uddish Suri",
+        "Zainullah Rahmani"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ayaan Misbah",
+      "squad": [
+        "Ahmed Khudada",
+        "Ayaan Misbah",
+        "Mohamed Nafees",
+        "Muhammad Ahmed",
+        "Naseem Khan",
+        "Noorullah Ayobi",
+        "Omar Tauqir",
+        "Raizal Nadir",
+        "Yayin Rai",
+        "Uddish Suri",
+        "Zainullah Rahmani"
+      ]
+    },
+    {
+      "name": "Nepal Under-19s",
+      "short": "NEP-U19",
+      "players": [
+        "Aashish Luhar",
+        "Abhay Yadav",
+        "Bipin Prasad Sharma",
+        "Darsh Sonar",
+        "Niraj Kumar Yadav",
+        "Nischal Chhetri",
+        "Nitesh Patel ",
+        "Prasiddha Jaishi",
+        "Sachin Bhatt",
+        "Sushil Rawal",
+        "Suryanshu Koirala"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Bipin Prasad Sharma",
+      "squad": [
+        "Aashish Luhar",
+        "Abhay Yadav",
+        "Bipin Prasad Sharma",
+        "Darsh Sonar",
+        "Niraj Kumar Yadav",
+        "Nischal Chhetri",
+        "Nitesh Patel ",
+        "Prasiddha Jaishi",
+        "Sachin Bhatt",
+        "Sushil Rawal",
+        "Suryanshu Koirala"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41652,
+    "url": "https://khelnow.com/live-cricket-score/united-arab-emirates-under-19s-vs-nepal-under-19s-acc-men's-u19-asia-cup-8th-november-2026-41652",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ets-v-war-t20-benoni-2026-11-08",
+  "title": "Eastern Storm v Warriors",
+  "date": "2026-11-08",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · Super 8",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "Willowmoore Park, Benoni",
+  "venue_search": "benoni",
+  "city": "Benoni",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Eastern Storm",
+      "short": "ETS",
+      "players": [
+        "Ronan Hermann",
+        "Kabelo Sekhukhune",
+        "Brayden Hicks",
+        "Christopher Britz",
+        "Jurie Snyman",
+        "Dewan Marais",
+        "Aryan Gopalan",
+        "Tiaan Kuhn",
+        "Amaan Khan",
+        "Thabiso Lekhoana",
+        "Tumelo Simelane"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Christopher Britz",
+      "squad": [
+        "Ronan Hermann",
+        "Kabelo Sekhukhune",
+        "Brayden Hicks",
+        "Christopher Britz",
+        "Jurie Snyman",
+        "Dewan Marais",
+        "Aryan Gopalan",
+        "Tiaan Kuhn",
+        "Amaan Khan",
+        "Thabiso Lekhoana",
+        "Tumelo Simelane"
+      ]
+    },
+    {
+      "name": "Warriors",
+      "short": "WAR",
+      "players": [
+        "Jordan Hermann",
+        "Sibonelo Makhanya",
+        "Tristan Stubbs",
+        "Jp King",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Thomas Kaber",
+        "Beuran Hendricks",
+        "Wesley Bedja",
+        "Kerwin Mungroo",
+        "Senuran Muthusamy"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Tristan Stubbs",
+      "squad": [
+        "Jordan Hermann",
+        "Sibonelo Makhanya",
+        "Tristan Stubbs",
+        "Jp King",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Thomas Kaber",
+        "Beuran Hendricks",
+        "Wesley Bedja",
+        "Kerwin Mungroo",
+        "Senuran Muthusamy"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41789,
+    "url": "https://khelnow.com/live-cricket-score/eastern-storm-vs-warriors-csa-pro-t20-cup-8th-november-2026-41789",
+    "auto": true,
+    "xis": false
+  }
+}

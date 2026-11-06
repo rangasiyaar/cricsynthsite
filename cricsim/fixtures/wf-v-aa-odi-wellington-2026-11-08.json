@@ -1,0 +1,112 @@
+{
+  "id": "wf-v-aa-odi-wellington-2026-11-08",
+  "title": "Wellington Firebirds v Auckland Aces",
+  "date": "2026-11-08",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 11th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Basin Reserve, Wellington",
+  "venue_search": "wellington",
+  "city": "Wellington",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Wellington Firebirds",
+      "short": "WF",
+      "players": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Arslan Abbas",
+        "Oscar Jackson",
+        "Adam Milne",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "James Hartshorn",
+        "Yahya Zeb"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "James Hartshorn",
+      "squad": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Arslan Abbas",
+        "Oscar Jackson",
+        "Adam Milne",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "James Hartshorn",
+        "Yahya Zeb"
+      ]
+    },
+    {
+      "name": "Auckland Aces",
+      "short": "AA",
+      "players": [
+        "Dale Phillips",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Bevon Jacobs",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Samrath Singh",
+        "Harry Cullen Hieatt"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "Adithya Ashok",
+      "squad": [
+        "Dale Phillips",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Bevon Jacobs",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Adithya Ashok",
+        "Angus Olliver",
+        "Samrath Singh",
+        "Harry Cullen Hieatt"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40560,
+    "url": "https://khelnow.com/live-cricket-score/wellington-firebirds-vs-auckland-aces-the-ford-trophy-7th-november-2026-40560",
+    "auto": true,
+    "xis": false
+  }
+}

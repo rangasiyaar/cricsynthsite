@@ -1,0 +1,112 @@
+{
+  "id": "ss-w-v-st-w-t20-sydney-2026-11-08",
+  "title": "Sydney Sixers Women v Sydney Thunder Women",
+  "date": "2026-11-08",
+  "start_time": "08:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 15th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "North Sydney Oval, Sydney",
+  "venue_search": "sydney",
+  "city": "Sydney",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SS-W",
+      "players": [
+        "Sophia Dunkley",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Caoimhe Bray",
+        "Frankie Nicklin"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Ashleigh Gardner",
+      "squad": [
+        "Sophia Dunkley",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Caoimhe Bray",
+        "Frankie Nicklin"
+      ]
+    },
+    {
+      "name": "Sydney Thunder Women",
+      "short": "ST-W",
+      "players": [
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Anika Learoyd",
+        "Heather Knight",
+        "Nadine de Klerk",
+        "Tahlia Wilson",
+        "Laura Harris",
+        "Jemma Barsby",
+        "Hannah Darlington",
+        "Lauren Bell",
+        "Samantha Bates"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Phoebe Litchfield",
+      "squad": [
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Anika Learoyd",
+        "Heather Knight",
+        "Nadine de Klerk",
+        "Tahlia Wilson",
+        "Laura Harris",
+        "Jemma Barsby",
+        "Hannah Darlington",
+        "Lauren Bell",
+        "Samantha Bates"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40315,
+    "url": "https://khelnow.com/live-cricket-score/sydney-sixers-women-vs-sydney-thunder-women-women's-big-bash-league-8th-november-2026-40315",
+    "auto": true,
+    "xis": false
+  }
+}

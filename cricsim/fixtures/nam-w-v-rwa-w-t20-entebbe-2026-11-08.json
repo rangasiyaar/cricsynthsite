@@ -1,0 +1,112 @@
+{
+  "id": "nam-w-v-rwa-w-t20-entebbe-2026-11-08",
+  "title": "Namibia Women v Rwanda Women",
+  "date": "2026-11-08",
+  "start_time": "12:00",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Victoria T20I Series · 5th Match",
+  "comp_key": "women-s-victoria-t20i-series",
+  "venue": "Entebbe Cricket Oval, Entebbe",
+  "venue_search": "entebbe",
+  "city": "Entebbe",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Namibia Women",
+      "short": "NAM-W",
+      "players": [
+        "Jurriene Diergaardt",
+        "Edelle Van Zyl",
+        "Eveleen Kejarukua",
+        "Kayleen Green",
+        "Mekelaye Mwatile",
+        "Mezerly Gorases",
+        "Naomi Benjamin",
+        "Saima Tuhadeleni",
+        "Sune Wittmann",
+        "Victoria Hamunyela",
+        "Wilka Mwatile"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Sune Wittmann",
+      "squad": [
+        "Jurriene Diergaardt",
+        "Edelle Van Zyl",
+        "Eveleen Kejarukua",
+        "Kayleen Green",
+        "Mekelaye Mwatile",
+        "Mezerly Gorases",
+        "Naomi Benjamin",
+        "Saima Tuhadeleni",
+        "Sune Wittmann",
+        "Victoria Hamunyela",
+        "Wilka Mwatile"
+      ]
+    },
+    {
+      "name": "Rwanda Women",
+      "short": "RWA-W",
+      "players": [
+        "Alice Ikuzwe",
+        "Belyse Murekatete",
+        "Clarisse Uwase",
+        "Diane Marie Bimenyimana",
+        "Fanny Utagushimaninde",
+        "Gisele Ishimwe",
+        "Henriette Ishimwe",
+        "Merveille Uwase",
+        "Rosine Irera",
+        "Ruth Uwimana",
+        "Shakila Niyomuhoza"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Diane Marie Bimenyimana",
+      "squad": [
+        "Alice Ikuzwe",
+        "Belyse Murekatete",
+        "Clarisse Uwase",
+        "Diane Marie Bimenyimana",
+        "Fanny Utagushimaninde",
+        "Gisele Ishimwe",
+        "Henriette Ishimwe",
+        "Merveille Uwase",
+        "Rosine Irera",
+        "Ruth Uwimana",
+        "Shakila Niyomuhoza"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41778,
+    "url": "https://khelnow.com/live-cricket-score/namibia-women-vs-rwanda-women-women's-victoria-t20i-series-8th-november-2026-41778",
+    "auto": true,
+    "xis": false
+  }
+}
