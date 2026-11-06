@@ -1,0 +1,42 @@
+name: Bridge check
+
+# Read-only: the nightly bridge on real data (recent finished matches Cricsheet hasn't published yet, in its format)
+# and the data build with them added. Publishes nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      days: { description: "Days back", default: "7" }
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - env: { DAYS: "${{ inputs.days }}" }
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run python -m cricsim.khelnow bridge --cricsheet data/raw/all_json.zip --cache data/khelnow \
+            --out data/raw/extra_json.zip --days "$DAYS"
+          python3 - <<'PY'
+          import json, zipfile
+          from collections import Counter
+          z = zipfile.ZipFile("data/raw/extra_json.zip")
+          ms = [json.loads(z.read(n)) for n in z.namelist()]
+          print(len(ms), "matches:", Counter(m["info"]["event"]["name"] for m in ms).most_common(30))
+          ids = [r for m in ms for r in m["info"]["registry"]["people"].values()]
+          print(f"players linked to the register: {sum(not r.startswith('kn:') for r in ids)}/{len(ids)}")
+          PY
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv --names data/raw/names.csv \
+            --extra data/raw/extra_json.zip --out data/parquet
+          uv run python - <<'PY'
+          import duckdb
+          print(duckdb.sql("select count(*) matches, max(match_date) newest from 'data/parquet/matches/*.parquet'"))
+          print(duckdb.sql("select count(*) kn_matches, min(match_date), max(match_date) from 'data/parquet/matches/*.parquet' where match_id like 'kn%'"))
+          print(duckdb.sql("select format, count(*) from 'data/parquet/deliveries/*.parquet' where match_id like 'kn%' group by 1"))
+          PY
