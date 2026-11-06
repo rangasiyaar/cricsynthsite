@@ -1,0 +1,342 @@
+{
+ "id": "paku19-v-uaeu19-odi-al-amerat-2026-11-06",
+ "innings": [
+  {
+   "team": "United Arab Emirates U19",
+   "runs": 224,
+   "wickets": 10,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Omar Tauqir",
+     "dismissal": "c Hamza Zahoor b Ali Raza",
+     "runs": 1,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ayaan Misbah",
+     "dismissal": "c Hamza Zahoor b Niqab Shafiq",
+     "runs": 13,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ahmed Khudadad",
+     "dismissal": "c Abdul Qadir b Ali Raza",
+     "runs": 16,
+     "balls": 21,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Yayin Rai",
+     "dismissal": "c Hamza Zahoor b Rizwanullah",
+     "runs": 47,
+     "balls": 74,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Zainullah Rehmani",
+     "dismissal": "b Hasnain Abbas Dar",
+     "runs": 28,
+     "balls": 44,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Mohamed Nafees",
+     "dismissal": "c Hamza Zahoor b Hasnain Abbas Dar",
+     "runs": 6,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Uddish Suri",
+     "dismissal": "c Hamza Zahoor b Mohammad Sayyam",
+     "runs": 14,
+     "balls": 43,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Noorullah Ayobi",
+     "dismissal": "c Hamza Zahoor b Rizwanullah",
+     "runs": 70,
+     "balls": 55,
+     "fours": 3,
+     "sixes": 6
+    },
+    {
+     "name": "Raizal Nadir",
+     "dismissal": "c Abdul Qadir b Mohammad Sayyam",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Muhammad Ahmed",
+     "dismissal": "c Abdul Qadir b Mohammad Sayyam",
+     "runs": 12,
+     "balls": 24,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naseem Khan",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ali Raza",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Mohammad Sayyam",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Niqab Shafiq",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rizwanullah",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Ahmed Hussain",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hasnain Abbas Dar",
+     "overs": "6",
+     "maidens": 2,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Omar Tauqir",
+     "score": 6,
+     "over": "2.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ayaan Misbah",
+     "score": 32,
+     "over": "7.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ahmed Khudadad",
+     "score": 36,
+     "over": "8.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Zainullah Rehmani",
+     "score": 98,
+     "over": "21.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Mohamed Nafees",
+     "score": 106,
+     "over": "25.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Yayin Rai",
+     "score": 127,
+     "over": "33.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Uddish Suri",
+     "score": 152,
+     "over": "38.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Raizal Nadir",
+     "score": 160,
+     "over": "40.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Muhammad Ahmed",
+     "score": 222,
+     "over": "48.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Noorullah Ayobi",
+     "score": 224,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 9,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 39
+  },
+  {
+   "team": "Pakistan U19",
+   "runs": 225,
+   "wickets": 1,
+   "overs": "37.3",
+   "batting": [
+    {
+     "name": "Usman Khan",
+     "dismissal": "not out",
+     "runs": 139,
+     "balls": 120,
+     "fours": 21,
+     "sixes": 1
+    },
+    {
+     "name": "Jahangir Bilal",
+     "dismissal": "c (sub)Bilal Khan b Ahmed Khudadad",
+     "runs": 60,
+     "balls": 87,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Abdul Qadir",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Naseem Khan",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Noorullah Ayobi",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Raizal Nadir",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Zainullah Rehmani",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Uddish Suri",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ahmed Khudadad",
+     "overs": "8.3",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ayaan Misbah",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jahangir Bilal",
+     "score": 153,
+     "over": "28.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 5,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 48
+  }
+ ],
+ "winner": "Pakistan U19",
+ "result": "Pakistan U19 won by 9 wickets"
+}
