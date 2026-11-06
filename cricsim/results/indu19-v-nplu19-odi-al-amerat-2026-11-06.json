@@ -1,0 +1,318 @@
+{
+ "id": "indu19-v-nplu19-odi-al-amerat-2026-11-06",
+ "innings": [
+  {
+   "team": "Nepal U19",
+   "runs": 128,
+   "wickets": 10,
+   "overs": "42.3",
+   "batting": [
+    {
+     "name": "Niraj Kumar Yadav",
+     "dismissal": "lbw b Manal Chauhan",
+     "runs": 20,
+     "balls": 48,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Prashiddha Jaishi",
+     "dismissal": "c Arjun Rajput b Ishan Sood",
+     "runs": 1,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Suryanshu Koirala",
+     "dismissal": "c Arjun Rajput b Ishan Sood",
+     "runs": 5,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nischal Chhetri",
+     "dismissal": "c Yashbardhan Chauhan b Ishan Sood",
+     "runs": 0,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Darsh Sonar",
+     "dismissal": "c VK Vineeth b Kavya Patel",
+     "runs": 43,
+     "balls": 93,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Aashish Luhar",
+     "dismissal": "c Arjun Rajput b Yashveer Goud",
+     "runs": 29,
+     "balls": 45,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "dismissal": "lbw b Arjun Rajput",
+     "runs": 6,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Abhay Yadav",
+     "dismissal": "c Mohit Ulva b Yashveer Goud",
+     "runs": 0,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nitesh Patel",
+     "dismissal": "b Arjun Rajput",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bipin Sharma",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sushil Rawal",
+     "dismissal": "b Arjun Rajput",
+     "runs": 0,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ishan Sood",
+     "overs": "10",
+     "maidens": 4,
+     "runs": 18,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Mohit Ulva",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Kavya Patel",
+     "overs": "5",
+     "maidens": 2,
+     "runs": 11,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Manal Chauhan",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yashbardhan Chauhan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Yashveer Goud",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Arjun Rajput",
+     "overs": "5.3",
+     "maidens": 1,
+     "runs": 8,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Prashiddha Jaishi",
+     "score": 3,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Suryanshu Koirala",
+     "score": 18,
+     "over": "4.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nischal Chhetri",
+     "score": 27,
+     "over": "8.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Niraj Kumar Yadav",
+     "score": 51,
+     "over": "17.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Aashish Luhar",
+     "score": 94,
+     "over": "29.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sachin Bhatt",
+     "score": 115,
+     "over": "36.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Abhay Yadav",
+     "score": 116,
+     "over": "37.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Nitesh Patel",
+     "score": 117,
+     "over": "38.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Darsh Sonar",
+     "score": 127,
+     "over": "41.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sushil Rawal",
+     "score": 128,
+     "over": "42.3"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 1,
+    "w": 19,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 30
+  },
+  {
+   "team": "India U19",
+   "runs": 129,
+   "wickets": 0,
+   "overs": "19.1",
+   "batting": [
+    {
+     "name": "Lakshya Rajesh Raichandani",
+     "dismissal": "not out",
+     "runs": 53,
+     "balls": 63,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Aaryavir Sehwag",
+     "dismissal": "not out",
+     "runs": 70,
+     "balls": 52,
+     "fours": 7,
+     "sixes": 4
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sushil Rawal",
+     "overs": "3",
+     "maidens": 1,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nitesh Patel",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Bipin Sharma",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abhay Yadav",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "overs": "4.1",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 61
+  }
+ ],
+ "winner": "India U19",
+ "result": "India U19 won by 10 wickets"
+}
