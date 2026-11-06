@@ -75,13 +75,44 @@ while queue and len(seen_maps) < 40:
     subs = [l for l in locs if re.search(r"sitemap|\.xml", l) and "live-cricket-score/" not in l]
     mats = [l for l in locs if "/live-cricket-score/" in l]
     print(f"  {u}: {len(locs)} locs, {len(subs)} sub-sitemaps, {len(mats)} match pages")
-    # follow only sitemaps that look like cricket / scores / matches, newest first
-    for s in sorted(subs, reverse=True):
-        if re.search(r"cricket|score|match|live", s, re.I) or u.endswith("sitemap.xml"):
+    if subs:
+        kinds = Counter(re.sub(r"[-_]?\d+", "", s.rsplit("/", 1)[-1]) for s in subs)
+        print("    sitemap kinds:", dict(kinds.most_common(60)))
+    # follow only sitemaps that look like match / score pages (not team, player, news, video)
+    def num(s):
+        m = re.search(r"(\d+)\.xml", s)
+        return int(m.group(1)) if m else 0
+    for s in sorted(subs, key=num, reverse=True):
+        name = s.rsplit("/", 1)[-1]
+        if re.search(r"score|match|fixture|live|result|schedule", name, re.I):
             queue.append(s)
+    if mats and len(pages) > 3000:
+        queue = []
     for l in mats:
         pages[l] = slug_date(l)
 print(f"match pages found: {len(pages)}; fetched {fetched} sitemap files")
+if not pages:                                   # fall back to the paged live-score list
+    print("\n== LIST PAGES (fallback) ==")
+    for p in range(1, 4):
+        for u in (f"https://khelnow.com/cricket/live-score?page={p}", f"https://khelnow.com/cricket/live-score/{p}"):
+            try:
+                h = get(u)
+            except Exception as e:
+                print(" ", u, "failed:", e)
+                continue
+            m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', h, re.S)
+            pp = json.loads(m.group(1)).get("props", {}).get("pageProps", {}) if m else {}
+            ms = pp.get("initialMatches") or []
+            hrefs = sorted(set(re.findall(r'href="(/live-cricket-score/[^"]+)"', h)))
+            print(f"  {u}: {len(ms)} items, {len(hrefs)} hrefs, pagination {json.dumps(pp.get('initialPagination'))[:120]}")
+            print("    first ids:", [(x.get('matchId'), x.get('dateStart')) for x in ms[:4]])
+    # does a page answer by id alone?
+    for u in ("https://khelnow.com/live-cricket-score/41339", "https://khelnow.com/live-cricket-score/x-41339"):
+        try:
+            h = get(u)
+            print(" ", u, "->", len(h), "bytes; has match:", '"match_info"' in h)
+        except Exception as e:
+            print(" ", u, "failed:", e)
 dated = {u: d for u, d in pages.items() if d}
 if dated:
     print("date range:", min(dated.values()), "..", max(dated.values()))
