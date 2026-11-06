@@ -1,0 +1,22 @@
+# Read-only scan of Khel Now finished matches against Cricsheet's recent matches. Run by hand only.
+name: Khel Now scan
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "Most Khel Now requests to make"
+        default: "220"
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          PAGES: ${{ inputs.pages }}
+        run: |
+          curl -sS -m 120 -o "$RUNNER_TEMP/recent.zip" https://cricsheet.org/downloads/recently_played_30_json.zip
+          ls -la "$RUNNER_TEMP/recent.zip"
+          python3 scripts/khelnow_scan.py "$RUNNER_TEMP/recent.zip" "$PAGES"
