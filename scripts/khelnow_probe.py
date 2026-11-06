@@ -162,6 +162,17 @@ for list_url in ("https://khelnow.com/cricket/live-score", "https://khelnow.com/
     nd2 = next_data(lh)
     pp = nd2.get("props", {}).get("pageProps", {})
     print("  pageProps keys:", list(pp.keys())[:20])
+    ms = pp.get("initialMatches") or []
+    print(f"  initialMatches: {len(ms)}; pagination: {json.dumps(pp.get('initialPagination'))[:200]}; more: {pp.get('initialHasMoreData')}")
+    if ms:
+        print("  one item:", json.dumps(ms[0], ensure_ascii=False)[:1500])
+    by = Counter()
+    for m in ms:
+        mi = m.get("match_info", m) if isinstance(m, dict) else {}
+        comp = (mi.get("competition") or {}).get("title") if isinstance(mi.get("competition"), dict) else mi.get("competition")
+        by[(comp, mi.get("format_str"), mi.get("status_str"))] += 1
+    for (comp, fmt, st), n in sorted(by.items(), key=lambda x: str(x)):
+        print(f"   {n:3d}  {comp} | {fmt} | {st}")
     comps = Counter()
     for p, v in find(pp, r"competition|series|tournament"):
         if isinstance(v, dict) and v.get("title"):
