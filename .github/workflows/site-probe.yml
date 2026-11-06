@@ -11,6 +11,10 @@ on:
         description: "JSON feed: also check its player ids against the Cricsheet register (cricinfo keys)"
         type: boolean
         default: false
+      cricbuzz:
+        description: "Cricbuzz match ids (space-separated): check their squads pages' player ids against the register instead"
+        required: false
+        default: ""
 permissions:
   contents: read
 jobs:
@@ -18,9 +22,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        if: ${{ inputs.ids }}
+        if: ${{ inputs.ids || inputs.cricbuzz != '' }}
+      - uses: astral-sh/setup-uv@v5
+        if: ${{ inputs.cricbuzz != '' }}
+      - name: Cricbuzz player ids v the Cricsheet register
+        if: ${{ inputs.cricbuzz != '' }}
+        env:
+          IDS: ${{ inputs.cricbuzz }}
+        run: |
+          curl -sS -m 60 -o "$RUNNER_TEMP/people.csv" https://cricsheet.org/register/people.csv
+          uv run python scripts/cricbuzz_id_check.py "$RUNNER_TEMP/people.csv" $IDS
       - name: Player ids v the Cricsheet register
-        if: ${{ inputs.ids }}
+        if: ${{ inputs.ids && inputs.cricbuzz == '' }}
         env:
           URL: ${{ inputs.url }}
         run: |
@@ -28,7 +41,7 @@ jobs:
           curl -sS -m 60 -o "$RUNNER_TEMP/people.csv" https://cricsheet.org/register/people.csv
           head -c 300 "$RUNNER_TEMP/people.csv"; echo
           python3 scripts/feed_id_check.py "$RUNNER_TEMP/feed.json" "$RUNNER_TEMP/people.csv"
-      - if: ${{ !inputs.ids }}
+      - if: ${{ !inputs.ids && inputs.cricbuzz == '' }}
         env:
           URL: ${{ inputs.url }}
         run: |
