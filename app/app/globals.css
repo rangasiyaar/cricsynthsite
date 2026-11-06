@@ -650,3 +650,7 @@ html body .footer a:focus-visible { outline: 2px solid var(--ft-accent); outline
 .snap-phases { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 13px; }
 .snap-phases b { font-family: var(--cs-mono); }
 .snap-axis-b { font-weight: 600; }
+.snap-table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 13px; }
+.snap-table th { text-align: left; font-size: 11px; padding: 4px 6px; }
+.snap-table td { padding: 5px 6px; border-top: 1px solid var(--cs-line); }
+.snap-table td b { font-family: var(--cs-mono); }
