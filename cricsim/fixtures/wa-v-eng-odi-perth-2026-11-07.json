@@ -1,0 +1,117 @@
+{
+  "id": "wa-v-eng-odi-perth-2026-11-07",
+  "title": "Western Australia v England",
+  "date": "2026-11-07",
+  "start_time": "09:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "England tour of Australia, 2026 · Tour Match",
+  "comp_key": "intl-international-OD",
+  "venue": "W.A.C.A. Ground, Perth",
+  "venue_search": "perth",
+  "city": "Perth",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Western Australia",
+      "short": "WA",
+      "players": [
+        "Bancroft",
+        "J Goodwin",
+        "Ashton Turner",
+        "Will Malajczuk",
+        "Corey Wasley",
+        "Agar",
+        "Lance Morris",
+        "Brody Couch",
+        "Whiteman",
+        "Joel Curtis",
+        "Mahli Beardman"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "WK",
+        "BOWL"
+      ],
+      "captain": "Ashton Turner",
+      "squad": [
+        "Ashton Turner",
+        "Bancroft",
+        "J Goodwin",
+        "Whiteman",
+        "Joel Curtis",
+        "Will Malajczuk",
+        "Corey Wasley",
+        "Agar",
+        "Lance Morris",
+        "Brody Couch",
+        "Mahli Beardman",
+        "Jordan Quiggin"
+      ]
+    },
+    {
+      "name": "England",
+      "short": "ENG",
+      "players": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Jordan Cox",
+        "Sam Curran",
+        "Will Jacks",
+        "Jamie Overton",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Henry Crocombe"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Harry Brook",
+      "squad": [
+        "Harry Brook",
+        "Jordan Cox",
+        "Ben Duckett",
+        "Tom Banton",
+        "Joe Root",
+        "Will Jacks",
+        "Sam Curran",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Sonny Baker",
+        "Henry Crocombe",
+        "Jacob Bethell",
+        "Josh Tongue",
+        "Jofra Archer",
+        "Jamie Overton",
+        "Adil Rashid"
+      ]
+    }
+  ],
+  "live": {
+    "id": 178111,
+    "auto": true,
+    "xis": false
+  }
+}
