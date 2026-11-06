@@ -257,7 +257,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
 
   return (
     <div className="snapshot">
-      <Block title="The scores" tab="Scores" open={open} wide>
+      <Block title="Projected Scores" tab="Scores" open={open} wide>
         <div className="snap-split">
           <div>
             <div className="snap-rows">
@@ -289,7 +289,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
         </Block>
       )}
 
-      <Block title="The wickets" tab="Wickets" open={open}>
+      <Block title="Projected Fall of Wickets" tab="Wickets" open={open}>
         {s.teams.map((t, k) => (
           <p key={t.name} className="snap-line" style={{ marginTop: k ? 4 : 0 }}>
             <b style={{ color: COLORS[k] }}>{short[k]}</b> lose the first wicket around over <b><Num value={t.batting.fall_of_wickets[0]?.over?.q["50"]} /></b>
