@@ -1,0 +1,28 @@
+# Read-only check of a Khel Now live-score page: its embedded match JSON, how often it changes, and match coverage.
+# Run by hand only.
+name: Khel Now probe
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Khel Now live-score match page"
+        required: true
+      polls:
+        description: "How many polls"
+        default: "20"
+      gap:
+        description: "Seconds between polls"
+        default: "15"
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          URL: ${{ inputs.url }}
+          POLLS: ${{ inputs.polls }}
+          GAP: ${{ inputs.gap }}
+        run: python3 scripts/khelnow_probe.py "$URL" "$POLLS" "$GAP"
