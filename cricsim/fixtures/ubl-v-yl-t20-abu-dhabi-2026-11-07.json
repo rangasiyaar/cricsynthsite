@@ -1,0 +1,121 @@
+{
+  "id": "ubl-v-yl-t20-abu-dhabi-2026-11-07",
+  "title": "UAE Bulls v Yas Lions",
+  "date": "2026-11-07",
+  "start_time": "17:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League 2026 · 1st Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "UAE Bulls",
+      "short": "UBL",
+      "players": [
+        "Azam Khan",
+        "Max Bryant",
+        "Shadab Khan",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Nuwan Thushara",
+        "Andre Fletcher",
+        "Khushdil Shah",
+        "Mohammad Wasim Jr"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR",
+        "BOWL"
+      ],
+      "squad": [
+        "Shadab Khan",
+        "Romario Shepherd",
+        "Azam Khan",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Nuwan Thushara",
+        "Andre Fletcher",
+        "Khushdil Shah",
+        "Mohammad Wasim Jr",
+        "Brad Currie",
+        "Kieron Pollard",
+        "Aneurin Donald",
+        "Max Bryant",
+        "Uddish Suri",
+        "Khawaja Nafay"
+      ]
+    },
+    {
+      "name": "Yas Lions",
+      "short": "YL",
+      "players": [
+        "Andries Gous",
+        "James Vince",
+        "Ansh Tandon",
+        "Kamil Pooran",
+        "Jason Holder",
+        "David Willey",
+        "Dasun Shanaka",
+        "Khuzaima Tanveer",
+        "Haider Ali",
+        "Aryan Dutt",
+        "Karim Janat"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "squad": [
+        "Jason Holder",
+        "David Willey",
+        "Andries Gous",
+        "James Vince",
+        "Dasun Shanaka",
+        "Karim Janat",
+        "Sanjay Krishnamurthi",
+        "Khuzaima Tanveer",
+        "Haider Ali",
+        "Aryan Dutt",
+        "Akeal Hosein",
+        "Ajay Kumar",
+        "Masood Gurbaz",
+        "Ansh Tandon",
+        "Kamil Pooran",
+        "Eshan Malinga",
+        "Obed McCoy",
+        "Tom Moores"
+      ]
+    }
+  ],
+  "live": {
+    "id": 176085,
+    "auto": true,
+    "xis": false
+  }
+}
