@@ -52,6 +52,8 @@ def test_squads_and_toss():
     assert len(nz["xi"]) == 11 and len(nz["squad"]) == 13
     assert nz["xi"][0]["keeper"] and nz["xi"][0]["role"] == "wk-batter"
     assert [p["name"] for p in nz["squad"] if p["captain"]] == ["Mitchell Santner"]
+    assert [p["name"] for p in nz["squad"] if p["keeper"]] == ["Tim Seifert"]           # Conway (also "wk") bats
+    assert next(p for p in nz["squad"] if p["name"] == "Devon Conway")["role"] == "batter"
     assert kn.toss(d) == (IND_ID, "field")
     people = kn.people(d)
     assert people[pid(NZ_ID, 0)]["name"] == "Tim Seifert" and people[pid(NZ_ID, 0)]["born"]

@@ -157,12 +157,19 @@ def squads(d: dict) -> dict[int, dict[str, list[dict]]]:
         if not tid:
             continue
         t = out.setdefault(tid, {"xi": [], "squad": []})
-        for p in side.get("squads") or []:
+        rows = side.get("squads") or []
+        # every keeper-batter is role "wk"; the match's keeper is the one marked "(WK)" (else the first "wk" in the XI)
+        marked = [p for p in rows if "WK" in (p.get("role_str") or "").upper()]
+        keeper = marked[0] if marked else next((p for p in rows if (p.get("role") or "").lower().startswith("wk")
+                                                and str(p.get("playing11")).lower() == "true"), None)
+        for p in rows:
             role_str = (p.get("role_str") or "").upper()
             role = (p.get("role") or "").lower()
-            row = {"name": p.get("name") or "", "role": ROLE_LABEL.get(role, "allrounder"),
-                   "keeper": role.startswith("wk") or "WK" in role_str, "captain": bool(re.search(r"\bC\b", role_str)),
-                   "teamId": tid, "pid": str(p.get("player_id") or "")}
+            label = ROLE_LABEL.get(role, "allrounder")
+            if role.startswith("wk") and p is not keeper:
+                label = "batter"
+            row = {"name": p.get("name") or "", "role": label, "keeper": p is keeper,
+                   "captain": bool(re.search(r"\bC\b", role_str)), "teamId": tid, "pid": str(p.get("player_id") or "")}
             t["squad"].append(row)
             if str(p.get("playing11")).lower() == "true" and str(p.get("substitute")).lower() != "true":
                 t["xi"].append(row)
