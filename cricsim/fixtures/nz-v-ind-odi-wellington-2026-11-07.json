@@ -1,0 +1,111 @@
+{
+  "id": "nz-v-ind-odi-wellington-2026-11-07",
+  "title": "New Zealand v India",
+  "date": "2026-11-07",
+  "start_time": "07:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "India tour of New Zealand 2026 · 2nd ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Hnry Stadium, Wellington",
+  "venue_search": "wellington",
+  "city": "Wellington",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Will Young",
+        "Tim Seifert",
+        "Henry Nicholls",
+        "Daryl Mitchell",
+        "Tom Latham",
+        "Glenn Phillips",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Kyle Jamieson",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Santner",
+      "squad": [
+        "Will Young",
+        "Tim Seifert",
+        "Henry Nicholls",
+        "Daryl Mitchell",
+        "Tom Latham",
+        "Glenn Phillips",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Kyle Jamieson",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ]
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Rohit Sharma",
+        "Shubman Gill",
+        "Virat Kohli",
+        "Shreyas Iyer",
+        "Axar Patel",
+        "KL Rahul",
+        "Naman Dhir",
+        "Anshul Kamboj",
+        "Auqib Nabi",
+        "Gurnoor Brar",
+        "Arshdeep Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shubman Gill",
+      "squad": [
+        "Rohit Sharma",
+        "Shubman Gill",
+        "Virat Kohli",
+        "Shreyas Iyer",
+        "Axar Patel",
+        "KL Rahul",
+        "Naman Dhir",
+        "Anshul Kamboj",
+        "Auqib Nabi",
+        "Gurnoor Brar",
+        "Arshdeep Singh"
+      ]
+    }
+  ],
+  "live": {
+    "id": 161256,
+    "auto": true,
+    "xis": false
+  }
+}
