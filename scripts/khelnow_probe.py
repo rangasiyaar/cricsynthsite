@@ -12,6 +12,33 @@ from collections import Counter
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 URL = sys.argv[1]
+if URL == "upcoming":                   # when do squads appear? the next matches by start time, and today's live ones
+    import html as _h
+    _sm = urllib.request.urlopen(urllib.request.Request("https://khelnow.com/live-cricket.xml", headers={"User-Agent": UA}), timeout=30).read().decode()
+    _M = {m: i for i, m in enumerate(["january","february","march","april","may","june","july","august","september","october","november","december"], 1)}
+    from datetime import date as _d, timedelta as _td
+    _pick = []
+    for _l in re.findall(r"<loc>\s*([^<\s]+)", _sm):
+        _l = _h.unescape(_l)
+        _m = re.search(r"-(\d{1,2})(?:st|nd|rd|th)-([a-z]+)-(\d{4})", _l)
+        if _m and _m.group(2) in _M:
+            _dd = _d(int(_m.group(3)), _M[_m.group(2)], int(_m.group(1)))
+            if _d.today() <= _dd <= _d.today() + _td(days=2):
+                _pick.append((_dd, _l))
+    _now = time.time()
+    for _dd, _l in sorted(_pick)[:40]:
+        try:
+            _d0 = next_data(get(_l)[0]).get("props", {}).get("pageProps", {}).get("data", {})
+        except Exception as e:
+            print("failed", _l, e); continue
+        _mi = _d0.get("match_info") or {}
+        _sq = _d0.get("squad")
+        _n = [len(((_sq or {}).get(s) or {}).get("squads") or []) for s in ("teama", "teamb")] if _sq else None
+        _x = [sum(p.get("playing11") == "true" for p in ((_sq or {}).get(s) or {}).get("squads") or []) for s in ("teama", "teamb")] if _sq else None
+        _h_to = (float(_mi.get("timestamp_start") or 0) - _now) / 3600
+        print(f"{_h_to:+6.1f}h {_mi.get('status_str'):10} {_mi.get('format_str'):8} squads={_n} xi={_x} toss={(_mi.get('toss') or {}).get('winner')} | {_mi.get('title')} | {(_mi.get('competition') or {}).get('title')}")
+        time.sleep(0.8)
+    sys.exit(0)
 if URL == "next":                       # the soonest upcoming match in the sitemap
     import html as _h
     from datetime import date as _d
