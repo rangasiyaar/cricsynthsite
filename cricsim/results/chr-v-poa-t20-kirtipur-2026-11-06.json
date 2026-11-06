@@ -1,0 +1,412 @@
+{
+ "id": "chr-v-poa-t20-kirtipur-2026-11-06",
+ "innings": [
+  {
+   "team": "Chitwan Rhinos",
+   "runs": 151,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Arjun Saud",
+     "dismissal": "lbw b Bipin Khatri",
+     "runs": 31,
+     "balls": 27,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Dawid Malan",
+     "dismissal": "b Kushal Bhurtel",
+     "runs": 28,
+     "balls": 28,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ravi Bopara",
+     "dismissal": "c Bipin Khatri b Chamika Karunaratne",
+     "runs": 35,
+     "balls": 28,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Dan Mousley",
+     "dismissal": "c Arjun Kumal b Bipin Khatri",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kushal Malla",
+     "dismissal": "c Sagar Dhakal b Kushal Bhurtel",
+     "runs": 11,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sikandar Raza",
+     "dismissal": "c Arjun Kumal b Chamika Karunaratne",
+     "runs": 37,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Bibek Yadav",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kamal Singh Airee",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chamika Karunaratne",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mahedi Hasan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sagar Dhakal",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sudip Aryal",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bipin Khatri",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kushal Bhurtel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arjun Saud",
+     "score": 60,
+     "over": "8.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Dawid Malan",
+     "score": 60,
+     "over": "9.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Dan Mousley",
+     "score": 63,
+     "over": "10.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kushal Malla",
+     "score": 86,
+     "over": "14.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ravi Bopara",
+     "score": 146,
+     "over": "19.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sikandar Raza",
+     "score": 147,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 1,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 44
+  },
+  {
+   "team": "Pokhara Avengers",
+   "runs": 121,
+   "wickets": 10,
+   "overs": "19",
+   "batting": [
+    {
+     "name": "Kushal Bhurtel",
+     "dismissal": "c Mousley b Kamal Singh",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Yuvraj Samra",
+     "dismissal": "b Mousley",
+     "runs": 19,
+     "balls": 14,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Arjun Kumal",
+     "dismissal": "c (sub)Deepak Bohara b Kamal Singh",
+     "runs": 45,
+     "balls": 44,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Sadeera Samarawickrama",
+     "dismissal": "c Arjun Saud b Mousom Dhakal",
+     "runs": 4,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mahedi Hasan",
+     "dismissal": "c Mousley b Kushal Malla",
+     "runs": 7,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kiran Thagunna",
+     "dismissal": "c Kushal Malla b Rijan Dhakal",
+     "runs": 13,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Chamika Karunaratne",
+     "dismissal": "c Arjun Saud b Rijan Dhakal",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Arjun Gharti",
+     "dismissal": "c Mousley b Rijan Dhakal",
+     "runs": 12,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sudip Aryal",
+     "dismissal": "c Arjun Saud b Kamal Singh",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bipin Khatri",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sagar Dhakal",
+     "dismissal": "b Rijan Dhakal",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kamal Singh Airee",
+     "overs": "2",
+     "maidens": 1,
+     "runs": 7,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rijan Dhakal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dan Mousley",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Sikandar Raza",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ranjit Kumar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mousom Dhakal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Kushal Malla",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kushal Bhurtel",
+     "score": 5,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Yuvraj Samra",
+     "score": 40,
+     "over": "4.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sadeera Samarawickrama",
+     "score": 62,
+     "over": "8.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mahedi Hasan",
+     "score": 78,
+     "over": "11.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Kiran Thagunna",
+     "score": 103,
+     "over": "14.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chamika Karunaratne",
+     "score": 107,
+     "over": "16.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Arjun Kumal",
+     "score": 117,
+     "over": "17.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sudip Aryal",
+     "score": 117,
+     "over": "17.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Arjun Gharti",
+     "score": 121,
+     "over": "18.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sagar Dhakal",
+     "score": 121,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 11,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 55
+  }
+ ],
+ "winner": "Chitwan Rhinos",
+ "result": "Chitwan Rhinos won by 30 runs"
+}
