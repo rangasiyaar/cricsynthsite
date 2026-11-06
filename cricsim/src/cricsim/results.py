@@ -46,6 +46,16 @@ def kickoff(fx: dict) -> datetime | None:
     return datetime.fromisoformat(f"{fx['date']}T{t}:00").replace(tzinfo=IST)
 
 
+LIVE_HOURS = {"T10": 2, "T20": 4, "HUNDRED": 3.5, "OD": 9}      # as the app's schedule.ts: surely over by then
+
+
+def still_on(fx: dict, now: datetime | None = None) -> bool:
+    """Started and possibly still being played (the app shows it as live)."""
+    k = kickoff(fx)
+    now = now or datetime.now(timezone.utc)
+    return k is not None and k <= now < k + timedelta(hours=LIVE_HOURS.get(fx.get("format", ""), 8))
+
+
 def started(fx: dict, now: datetime | None = None) -> bool:
     k = kickoff(fx)
     return k is not None and (now or datetime.now(timezone.utc)) >= k
@@ -400,14 +410,16 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
     # a match under way stays on the home page for the rest of its day, with its frozen pre-match forecast
     idx_p = out / "index.json"
     idx = json.loads(idx_p.read_text()) if idx_p.exists() else {"matches": []}
-    # a past match simulated again (resimulate) belongs on the Results page, not with today's fixtures
-    idx["matches"] = [c for c in idx["matches"]
-                      if c["id"] not in cards and (fx.get(c["id"], {}).get("date") or today) >= today]
+    # a past match simulated again (resimulate) belongs on the Results page, not with today's fixtures; one that
+    # started yesterday evening (IST) and is still going stays (a 21:30 start runs past midnight)
+    on = lambda i: (fx.get(i, {}).get("date") or today) >= today or still_on(fx.get(i, {}), now)   # noqa: E731
+    idx["matches"] = [c for c in idx["matches"] if c["id"] not in cards and on(c["id"])]
     listed = {c["id"] for c in idx["matches"]}
     for mid in sorted(want):
         doc_p = out / "matches" / f"{mid}.json"
-        if mid in listed or mid in cards or not doc_p.exists() or fx.get(mid, {}).get("date") != today:   # finished: Results page
-            continue
+        if mid in listed or mid in cards or not doc_p.exists() or not (fx.get(mid, {}).get("date") == today
+                                                                        or still_on(fx.get(mid, {}), now)):
+            continue                                                  # finished: Results page
         doc = tidy(json.loads(doc_p.read_text()))
         doc_p.write_text(json.dumps(doc, separators=(",", ":")))       # frozen docs made by older code: cleaned
         m, sm = doc["match"], doc["summary"]

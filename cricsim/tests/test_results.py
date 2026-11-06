@@ -203,3 +203,18 @@ def test_started_match_with_late_xis_is_rerun_once(tmp_path):
     later = datetime(2026, 11, 6, 7, 30, tzinfo=timezone.utc)                   # next day: frozen whatever
     (sc / "a.json").unlink()
     assert frozen(fx_dir, sc, later, get) == ["a.json", "b.json", "c.json"]
+
+
+def test_evening_match_stays_listed_past_midnight(tmp_path):
+    """A 21:30 IST T20 is still on at 00:30 IST the next day: the home page keeps it (it's live, not yesterday's)."""
+    fx_dir, sc_dir, out = tmp_path / "fx", tmp_path / "sc", tmp_path / "out"
+    fx_dir.mkdir(); sc_dir.mkdir()
+    (fx_dir / "m.json").write_text(json.dumps({"id": "m", "date": "2026-10-11", "start_time": "21:30", "format": "T20",
+                                               **{k: v for k, v in FIXTURE.items() if k != "format"}}))
+    live = {"matches/m.json": doc()}
+    get = lambda path, sites=None: live.get(path)                       # noqa: E731
+    run(fx_dir, sc_dir, out, now=datetime(2026, 10, 11, 19, 0, tzinfo=timezone.utc), fetch=get)   # 00:30 IST, 12 Oct
+    assert [c["id"] for c in json.loads((out / "index.json").read_text())["matches"]] == ["m"]
+    (out / "index.json").unlink()
+    run(fx_dir, sc_dir, out, now=datetime(2026, 10, 11, 21, 0, tzinfo=timezone.utc), fetch=get)   # 02:30 IST: over
+    assert json.loads((out / "index.json").read_text())["matches"] == []
