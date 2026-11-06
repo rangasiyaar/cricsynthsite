@@ -39,8 +39,13 @@ jobs:
           echo "size: $(wc -c < page.html) bytes"
           python3 - <<'PY'
           import re, html
-          import json
+          import json, os
           s = open("page.html", encoding="utf-8", errors="replace").read()
+          if os.environ["URL"].split("?")[0].endswith(".js"):     # a script: the data addresses it uses, with context
+              for m in re.finditer(r"""["'`]([^"'`\s]{0,120}(?:api|json|ajax|commentary|ball|livescore|socket|wss?:|setInterval|refresh)[^"'`\s]{0,120})["'`]""", s, re.I):
+                  print("path:", m.group(1), "|", s[max(0, m.start() - 120): m.end() + 120].replace("\n", " "))
+              print("setInterval/setTimeout:", re.findall(r"set(?:Interval|Timeout)\([^;]{0,160}", s)[:10])
+              raise SystemExit
           try:                                     # a JSON feed: show its shape and one full item
               d = json.loads(s)
               def shape(x, depth=0, key="$"):
