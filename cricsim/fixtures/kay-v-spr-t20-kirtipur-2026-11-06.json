@@ -12,36 +12,36 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Karnali Yaks won the toss and bowl first.",
   "teams": [
     {
       "name": "Karnali Yaks",
       "short": "KAY",
       "players": [
         "Ariful Islam",
-        "Jishan Alam",
-        "Mark Watt",
-        "Deepak Dumre",
         "Pawan Sarraf",
         "Hussain Talat",
+        "Deepak Dumre",
+        "David Miller",
+        "Mark Watt",
         "Gulsan Jha",
         "Sompal Kami",
         "Nandan Yadav",
-        "Yuvraj Khatri",
-        "Unish Bikram Thakuri"
+        "Surya Tamang",
+        "UB Singh Thakuri"
       ],
       "roles": [
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "WK",
+        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "BAT"
+        "AR"
       ],
       "captain": "Sompal Kami",
       "squad": [
@@ -62,28 +62,28 @@
       "name": "Sudur Paschim Royals",
       "short": "SPR",
       "players": [
-        "Saif Zaib",
         "Binod Bhandari",
-        "Brandon McMullen",
-        "Ishan Pandey",
-        "Dipendra Singh Airee",
+        "Saif Zaib",
         "Aarif Sheikh",
-        "Sherfane Rutherford",
-        "Scott Kuggeleijn",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Ishan Pandey",
         "Anil Kharel",
+        "Scott Kuggeleijn",
+        "Tharindu Ratnayake",
         "Hemant Dhami",
         "Abinash Bohara"
       ],
       "roles": [
-        "BAT",
         "WK",
         "AR",
-        "BAT",
+        "AR",
+        "AR",
         "AR",
         "BAT",
-        "BAT",
-        "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -106,6 +106,7 @@
   "live": {
     "id": 177711,
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
