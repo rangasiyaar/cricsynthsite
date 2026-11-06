@@ -110,6 +110,45 @@ for p, v in find(data, r"commentar"):
 print("\nmatch_info:", json.dumps(data.get("match_info", {}), ensure_ascii=False)[:3000])
 
 
+# ── 1b. a finished match: result fields, and whether the ball-by-ball rebuilds every delivery ──
+mi = data.get("match_info", {})
+print("\n== RESULT / OFFICIALS ==")
+for k in ("status_str", "status_note", "result", "result_type", "win_margin", "winning_team_id", "umpires", "referee",
+          "equation", "verified", "verify_time", "man_of_the_match", "man_of_the_series"):
+    print(f"  {k}: {json.dumps(mi.get(k), ensure_ascii=False)[:200]}")
+print("  other match_info keys:", sorted(set(mi) - {"competition", "teama", "teamb", "venue", "weather", "pitch", "toss"}))
+
+print("\n== INNINGS: scorecard v ball-by-ball ==")
+for ins in data.get("matchInsights") or []:
+    sc = ins.get("score_card") or {}
+    for inn in sc.get("innings") or []:
+        if str(inn.get("iid") or inn.get("number")) and inn.get("innings_id", ins.get("innings_id")) is not None:
+            pass
+    comm = ins.get("commentary") or []
+    ev = Counter(c.get("event") for c in comm)
+    balls = [c for c in comm if c.get("event") in ("ball", "wicket")]
+    legal = sum(1 for c in balls if not c.get("wideball") and not c.get("noball"))
+    runs = sum(int(c.get("run") or 0) for c in balls)
+    wk = [c for c in comm if c.get("event") == "wicket"]
+    print(f"\ninnings_id={ins.get('innings_id')}: commentary {len(comm)} events {dict(ev)}; "
+          f"deliveries {len(balls)}, legal {legal} (= {legal // 6}.{legal % 6} ov), runs summed {runs}")
+    if comm:
+        print("  first:", comm[0].get("over"), comm[0].get("ball"), "| last:", comm[-1].get("over"), comm[-1].get("ball"), comm[-1].get("event"))
+        print("  keys on a ball:", sorted({k for c in balls for k in c}))
+    if wk:
+        print("  one wicket event:", json.dumps(wk[0], ensure_ascii=False)[:1200])
+    for inn in sc.get("innings") or []:
+        print(f"  scorecard innings {inn.get('iid') or inn.get('number')}: {inn.get('name')} {inn.get('scores_full') or inn.get('scores')} "
+              f"target={inn.get('target')} result={inn.get('result')} extras={json.dumps(inn.get('extra_runs'))[:160]} "
+              f"equations={json.dumps(inn.get('equations'))[:160]}")
+        print("    innings keys:", sorted(inn))
+        b = (inn.get("batsmen") or [{}])[0]
+        print("    a batter row keys:", sorted(b))
+        print("    a batter row:", json.dumps({k: b.get(k) for k in b if k != "resolved_players"}, ensure_ascii=False)[:500])
+        f = (inn.get("fielder") or [{}])[0]
+        print("    a fielder row:", json.dumps(f, ensure_ascii=False)[:300])
+
+
 # ── 2. how often it changes ──
 def state(d: dict) -> str:
     mi = d.get("match_info", {}) if isinstance(d, dict) else {}
