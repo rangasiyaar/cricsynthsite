@@ -66,6 +66,11 @@ jobs:
           print("score-like strings in text:", re.findall(r"\b\d{1,3}/\d{1,2}\b(?:\s*\(\d{1,2}(?:\.\d)?\s*(?:ov|overs?)?\))?", text)[:15])
           print("__NEXT_DATA__ / embedded JSON:", "__NEXT_DATA__" in s, "application/ld+json" in s, len(re.findall(r"<script[^>]*>\s*[\[{]", s)))
           urls = sorted(set(re.findall(r"https?://[^\s\"'<>]+", s)))
+          for src in re.findall(r'<script[^>]+src="([^"]+)"', s): print("script src:", src)
+          for i, body in enumerate(re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", s, re.S)):
+              if len(body.strip()) < 40: continue
+              hits = sorted(set(re.findall(r"""["'`](/?[\w./-]*(?:api|json|ajax|commentary|ball|score)[\w./?=&-]*)["'`]""", body, re.I)))
+              print(f"inline script {i}: {len(body)} chars; paths: {hits[:20]}; start: {body.strip()[:300]!r}")
           print("data-looking URLs:", [u for u in urls if re.search(r"api|json|feed|score|graphql|ws", u, re.I)][:40])
           print("scorecard links:", sorted(set(re.findall(r'href="([^"]*(?:scorecard|live-score|match)[^"]*)"', s)))[:25])
           for k in ("copyright", "all rights reserved", "terms"):
