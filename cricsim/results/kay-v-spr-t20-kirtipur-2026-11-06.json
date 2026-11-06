@@ -1,0 +1,387 @@
+{
+ "id": "kay-v-spr-t20-kirtipur-2026-11-06",
+ "innings": [
+  {
+   "team": "Sudur Paschim Royals",
+   "runs": 176,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Saif Zaib",
+     "dismissal": "b Surya Tamang",
+     "runs": 35,
+     "balls": 24,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Binod Bhandari",
+     "dismissal": "run out (Ariful Islam/Deepak Dumre)",
+     "runs": 27,
+     "balls": 22,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Brandon McMullen",
+     "dismissal": "c UB Singh Thakuri b Nandan Yadav",
+     "runs": 24,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "dismissal": "st Deepak Dumre b Mark Watt",
+     "runs": 10,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ishan Pandey",
+     "dismissal": "c David Miller b Mark Watt",
+     "runs": 23,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Aarif Sheikh",
+     "dismissal": "c Ariful Islam b Hussain Talat",
+     "runs": 11,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tharindu Ratnayake",
+     "dismissal": "not out",
+     "runs": 22,
+     "balls": 12,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Scott Kuggeleijn",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mark Watt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sompal Kami",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Unish Bikram Thakuri",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nandan Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Hussain Talat",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pawan Sarraf",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Surya Tamang",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Binod Bhandari",
+     "score": 68,
+     "over": "7.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Saif Zaib",
+     "score": 74,
+     "over": "8.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Dipendra Singh Airee",
+     "score": 95,
+     "over": "11.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Brandon McMullen",
+     "score": 104,
+     "over": "13.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ishan Pandey",
+     "score": 136,
+     "over": "16.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aarif Sheikh",
+     "score": 161,
+     "over": "18.2"
+    }
+   ],
+   "extras": {
+    "b": 5,
+    "lb": 1,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 63
+  },
+  {
+   "team": "Karnali Yaks",
+   "runs": 137,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ariful Islam",
+     "dismissal": "c Anil Kharel b Kuggeleijn",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mark Watt",
+     "dismissal": "c Saif Zaib b Hemant Dhami",
+     "runs": 4,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Deepak Dumre",
+     "dismissal": "c Brandon McMullen b Anil Kharel",
+     "runs": 18,
+     "balls": 12,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "David Miller",
+     "dismissal": "not out",
+     "runs": 93,
+     "balls": 55,
+     "fours": 5,
+     "sixes": 7
+    },
+    {
+     "name": "Pawan Sarraf",
+     "dismissal": "b Tharindu Ratnayake",
+     "runs": 5,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hussain Talat",
+     "dismissal": "lbw b Dipendra Singh Airee",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sompal Kami",
+     "dismissal": "c Brandon McMullen b Abinash Bohara",
+     "runs": 8,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gulsan Jha",
+     "dismissal": "c Ishan Pandey b Kuggeleijn",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nandan Yadav",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Scott Kuggeleijn",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hemant Dhami",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anil Kharel",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tharindu Ratnayake",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abinash Bohara",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ishan Pandey",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ariful Islam",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mark Watt",
+     "score": 18,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Deepak Dumre",
+     "score": 26,
+     "over": "4.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Pawan Sarraf",
+     "score": 46,
+     "over": "8.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Hussain Talat",
+     "score": 49,
+     "over": "9.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sompal Kami",
+     "score": 85,
+     "over": "15.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Gulsan Jha",
+     "score": 106,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 0,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  }
+ ],
+ "winner": "Sudur Paschim Royals",
+ "result": "Sudur Paschim Royals won by 39 runs"
+}
