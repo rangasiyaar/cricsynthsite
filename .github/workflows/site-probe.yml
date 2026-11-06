@@ -7,13 +7,29 @@ on:
       url:
         description: "Page to check, e.g. https://www.example.com/live-cricket-score"
         required: true
+      ids:
+        description: "JSON feed: also check its player ids against the Cricsheet register (cricinfo keys)"
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - env:
+      - uses: actions/checkout@v4
+        if: ${{ inputs.ids }}
+      - name: Player ids v the Cricsheet register
+        if: ${{ inputs.ids }}
+        env:
+          URL: ${{ inputs.url }}
+        run: |
+          curl -sS -m 30 -A "Mozilla/5.0" -o "$RUNNER_TEMP/feed.json" "$URL"
+          curl -sS -m 60 -o "$RUNNER_TEMP/people.csv" https://cricsheet.org/register/people.csv
+          head -c 300 "$RUNNER_TEMP/people.csv"; echo
+          python3 scripts/feed_id_check.py "$RUNNER_TEMP/feed.json" "$RUNNER_TEMP/people.csv"
+      - if: ${{ !inputs.ids }}
+        env:
           URL: ${{ inputs.url }}
         run: |
           origin=$(python3 -c "import sys,urllib.parse as u;p=u.urlparse(sys.argv[1]);print(f'{p.scheme}://{p.netloc}')" "$URL")
