@@ -1,0 +1,31 @@
+# Copies a few published matches (index, match docs, venue reads) from the live site into scripts/preview-data, so a
+# UI change can be built and screenshotted with real data before it ships. Run by hand only; changes nothing live.
+name: Preview data
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          d=scripts/preview-data; rm -rf "$d"; mkdir -p "$d/matches" "$d/venue"
+          curl -fsS https://cricsynthesis.in/data/index.json -o "$d/index.json"
+          curl -fsS https://cricsynthesis.in/data/results/index.json -o "$d/results-index.json" || true
+          python3 - "$d" <<'PY'
+          import json, sys, urllib.request
+          d = sys.argv[1]
+          ix = json.load(open(f"{d}/index.json"))
+          ids = [m["id"] for m in sorted(ix["matches"], key=lambda m: (m.get("date") or "", m.get("start_time") or ""))][:6]
+          for i in ids:
+              for sub, path in (("matches", f"matches/{i}.json"), ("venue", f"venue/{i}.json")):
+                  try:
+                      open(f"{d}/{sub}/{i}.json", "wb").write(urllib.request.urlopen(f"https://cricsynthesis.in/data/{path}", timeout=30).read())
+                  except Exception as e:
+                      print("skip", path, e)
+          print("copied", ids)
+          PY
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/preview-data && git commit -qm "Preview data" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
