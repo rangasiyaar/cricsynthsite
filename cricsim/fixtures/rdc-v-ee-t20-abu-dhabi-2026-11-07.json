@@ -1,0 +1,123 @@
+{
+  "id": "rdc-v-ee-t20-abu-dhabi-2026-11-07",
+  "title": "Royal Desert Champions v Emirates Eagles",
+  "date": "2026-11-07",
+  "start_time": "19:15",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League 2026 · 2nd Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Sherfane Rutherford",
+        "Ali Naseer",
+        "Aayan Afzal Khan",
+        "Naseem Shah",
+        "Maheesh Theekshana",
+        "Luke Wood",
+        "Philip Salt",
+        "Keemo Paul"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR"
+      ],
+      "squad": [
+        "Nicholas Pooran",
+        "Philip Salt",
+        "Sherfane Rutherford",
+        "Ali Naseer",
+        "Aayan Afzal Khan",
+        "Muhammad Waseem",
+        "Naseem Shah",
+        "Maheesh Theekshana",
+        "Luke Wood",
+        "Brandon King",
+        "Keemo Paul",
+        "Dhruv Parashar",
+        "Chris Jordan",
+        "Janith Liyanage",
+        "Gulbadin Naib",
+        "Dushmantha Chameera",
+        "Tajinder Dhillon",
+        "Raizal Nadir"
+      ]
+    },
+    {
+      "name": "Emirates Eagles",
+      "short": "EE",
+      "players": [
+        "Srikar Bharat",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Alex Hales",
+        "Hasan Nawaz",
+        "David Wiese",
+        "Rehan Ahmed",
+        "Harshit Kaushik",
+        "Trent Boult",
+        "Noor Ahmad",
+        "Akif Javed"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Trent Boult",
+        "David Wiese",
+        "Noor Ahmad",
+        "Alex Hales",
+        "Srikar Bharat",
+        "Rehan Ahmed",
+        "Harshit Kaushik",
+        "Kusal Perera",
+        "Hasan Nawaz",
+        "Toby Albert",
+        "Akif Javed",
+        "Ali Raza",
+        "Chris Green",
+        "Haider Razzaq",
+        "Hilal Afghan",
+        "Luqman Faisal"
+      ]
+    }
+  ],
+  "live": {
+    "id": 176099,
+    "auto": true,
+    "xis": false
+  }
+}
