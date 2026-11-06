@@ -23,7 +23,26 @@ jobs:
           echo "size: $(wc -c < page.html) bytes"
           python3 - <<'PY'
           import re, html
+          import json
           s = open("page.html", encoding="utf-8", errors="replace").read()
+          try:                                     # a JSON feed: show its shape and one full item
+              d = json.loads(s)
+              def shape(x, depth=0, key="$"):
+                  pad = "  " * depth
+                  if isinstance(x, dict):
+                      print(f"{pad}{key}: {{{len(x)} keys}}")
+                      if depth < 4:
+                          for k, v in list(x.items())[:25]: shape(v, depth + 1, k)
+                  elif isinstance(x, list):
+                      print(f"{pad}{key}: [{len(x)} items]")
+                      if x and depth < 4: shape(x[0], depth + 1, "[0]")
+                  else:
+                      print(f"{pad}{key}: {str(x)[:80]!r}")
+              shape(d)
+              print("first 4000 chars:", json.dumps(d, ensure_ascii=False)[:4000])
+              raise SystemExit
+          except ValueError:
+              pass
           text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", s, flags=re.S)
           text = html.unescape(re.sub(r"<[^>]+>", " ", text)); text = re.sub(r"\s+", " ", text)
           print("title:", re.search(r"<title>(.*?)</title>", s, re.S).group(1).strip() if "<title>" in s else "-")
