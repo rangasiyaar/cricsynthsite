@@ -4,7 +4,6 @@ import RequestAccess from "@/components/RequestAccess";
 import Scoreboard from "@/components/Scoreboard";
 import { useEffect, useState } from "react";
 import { Spotlight } from "@/components/MatchCentre";
-import { Tiles } from "@/components/Tiles";
 import { loadIndex, loadMatch } from "@/lib/data";
 import { useCountdown } from "@/lib/motion";
 import { FixtureCard, kickoff, useNow } from "@/components/MatchCards";
@@ -19,7 +18,6 @@ function Countdown({ date, time }: { date?: string; time?: string }) {
 function Featured({ doc, xis }: { doc: MatchDoc; xis: boolean }) {
   const { match, summary: s } = doc;
   const [a] = s.teams.map((t) => t.name);
-  const short = match.teams.map((t) => t.short) as [string, string];
   const ci = s.result.win_ci95?.[a];
   const href = matchPath(match.id);
   return (
@@ -29,7 +27,6 @@ function Featured({ doc, xis }: { doc: MatchDoc; xis: boolean }) {
         <Link className="cs-btn cs-btn--primary" href={href}>Open match centre</Link>
         <Link className="cs-btn cs-btn--secondary" href={`/lab/?id=${encodeURIComponent(match.id)}`}>Open in MatchSynth Lab</Link>
       </>} />
-      <Tiles s={s} short={short} />
     </section>
   );
 }

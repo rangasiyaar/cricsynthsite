@@ -51,7 +51,8 @@ function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
           {(section === "Fantasy" || section === "Players") && <div style={{ marginTop: 6 }}><XiTag xis={doc.match.xis} at={doc.generated_at} /></div>}</div>
       </div>
       <SwipeNav prev={near(-1)} next={near(1)}>
-        <div className="a-content" key={section}><SectionView doc={doc} section={section} /></div>
+        <div className="a-content" key={section}><SectionView doc={doc} section={section}
+          hrefFor={(t) => `/m/match/?id=${encodeURIComponent(doc.match.id)}&s=${SLUG[t]}`} /></div>
       </SwipeNav>
     </>
   );

@@ -68,8 +68,7 @@ export function WinCurve({ s }: { s: Summary }) {
       <ChartFrame W={W} H={H} top={pad.t} bottom={H - pad.b} label="win probability by first-innings total" columns={c.map((r): Column => ({
         x0: sx(r.from), x1: sx(r.to), title: `First innings ${r.from}–${r.to - 1}`,
         rows: [{ label: "Batting side wins", value: `${(100 * r.p_win).toFixed(0)}%` },
-               { label: "Chasing side wins", value: `${(100 * (1 - r.p_win)).toFixed(0)}%` },
-               { label: "Simulations", value: r.n.toLocaleString("en-IN") }],
+               { label: "Chasing side wins", value: `${(100 * (1 - r.p_win)).toFixed(0)}%` }],
       }))}>
         <g className="grid">{[0, 0.25, 0.5, 0.75, 1].map((f) => <line key={f} x1={pad.l} x2={W - pad.r} y1={sy(f)} y2={sy(f)} />)}</g>
         {[0, 0.5, 1].map((f) => <text key={f} x={pad.l - 6} y={sy(f) + 4} textAnchor="end">{100 * f}%</text>)}

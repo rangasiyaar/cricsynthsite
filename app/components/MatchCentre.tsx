@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
-import LiveEngine from "@/components/LiveEngine";
 import LiveProjection from "@/components/LiveProjection";
+import Snapshot from "@/components/Snapshot";
 import Link from "next/link";
 import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
-import { Tiles } from "@/components/Tiles";
 import VenueIntel from "@/components/VenueIntel";
 import { KIND, num, pct, range } from "@/lib/format";
 import { rate, type Rated } from "@/lib/ratings";
@@ -48,9 +47,11 @@ export const sectionsFor = (doc: MatchDoc): Section[] =>
   [...TABS, ...(doc.match.venue_id ? ["Venue intelligence" as const] : []), ...(doc.fantasy ? ["Fantasy" as const] : [])];
 
 /** One section's content: the website shows it under a tab, the app on a screen of its own. */
-export function SectionView({ doc, section, live = true }: { doc: MatchDoc; section: Section; live?: boolean }) {
+export function SectionView({ doc, section, live = true, onOpen, hrefFor, scoreboard }: { doc: MatchDoc; section: Section; live?: boolean;
+                              onOpen?: (s: Section) => void; hrefFor?: (s: Section) => string; scoreboard?: boolean }) {
   switch (section) {
-    case "Overview": return <Overview doc={doc} live={live} />;
+    case "Overview": return <Overview doc={doc} live={live} onOpen={onOpen as ((s: string) => void) | undefined}
+                                      hrefFor={hrefFor as ((s: string) => string) | undefined} scoreboard={scoreboard} />;
     case "Scores": return <Scores doc={doc} />;
     case "Wickets": return <Wickets doc={doc} />;
     case "Players": return <Players doc={doc} />;
@@ -78,7 +79,8 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
         ))}
         {extra}
       </div>
-      <div key={tab} className="anim-fade"><SectionView doc={doc} section={tab} live={live} /></div>
+      <div key={tab} className="anim-fade"><SectionView doc={doc} section={tab} live={live} scoreboard={live}
+        onOpen={(t) => { if (tabs.includes(t)) { setTab(t); window.scrollTo({ top: 0, behavior: "smooth" }); } }} /></div>
     </>
   );
 }
@@ -144,27 +146,12 @@ function Seg<T extends string>({ value, options, onChange, label }: { value: T; 
   );
 }
 
-function Overview({ doc, live = true }: { doc: MatchDoc; live?: boolean }) {
-  const s = doc.summary;
-  const short = doc.match.teams.map((t) => t.short) as [string, string];
+function Overview({ doc, live = true, onOpen, hrefFor, scoreboard }: { doc: MatchDoc; live?: boolean; onOpen?: (s: string) => void;
+                                                       hrefFor?: (s: string) => string; scoreboard?: boolean }) {
   return (
     <div className="grid">
       {live && <LiveProjection doc={doc} />}
-      <Tiles s={s} short={short} />
-      {live && <LiveEngine doc={doc} />}
-      <div className="grid g2"><RunFan s={s} /><WinCurve s={s} /></div>
-      <div className="grid g2">
-        {s.teams.map((t, k) => (
-          <div key={t.name} className="card">
-            <h3>{t.name}: likely total</h3>
-            <p className="small" style={{ margin: "0 0 10px" }}>Projected <b>{Math.round(t.batting.score.q["50"])}</b>, likely <b>{range(t.batting.score.q, "25", "75")}</b>
-              <span className="muted"> · 80% range {range(t.batting.score.q)}</span></p>
-            <Histogram width={t.batting.score.hist.length > 1 ? t.batting.score.hist[1].from - t.batting.score.hist[0].from : 10}
-                       height={180} xLabel="runs"
-                       series={[{ name: t.name, color: COLORS[k], points: t.batting.score.hist.map((h) => ({ x: h.from, p: h.p })) }]} />
-          </div>
-        ))}
-      </div>
+      <Snapshot doc={doc} onOpen={onOpen} hrefFor={hrefFor} scoreboard={scoreboard} />
     </div>
   );
 }
@@ -454,65 +441,13 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
   );
 }
 
-/** Home-page view of the next match: score ranges, scoring and wicket rhythm, and when wickets fall. */
+/** Home-page view of the next match: the same snapshot as its Overview, each block linking into the match centre. */
 export function Spotlight({ doc }: { doc: MatchDoc }) {
+  const href = (t: string) => `/match/${encodeURIComponent(doc.match.id)}/?tab=${encodeURIComponent(t)}`;
   return (
-    <>
-      <div className="section">
-        <div className="section-head"><div><h2>Innings by innings</h2></div></div>
-        <SpotlightCharts doc={doc} />
-      </div>
-      <div className="section">
-        <div className="section-head"><div><h2>Simulations running</h2></div></div>
-        <LiveEngine doc={doc} heading={false} />
-      </div>
-      <div className="section">
-        <div className="section-head"><div><h2>All results</h2></div></div>
-        <div className="grid">
-          <div className="grid g2"><RunFan s={doc.summary} /><WinCurve s={doc.summary} /></div>
-          <PlayerLadder s={doc.summary} />
-        </div>
-      </div>
-    </>
-  );
-}
-
-function SpotlightCharts({ doc }: { doc: MatchDoc }) {
-  const s = doc.summary;
-  const overs = s.meta.rules.overs;
-  const legend = <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name}</span>)}</div>;
-  return (
-    <>
-    <div className="card anim-rise">
-      <h3>When wickets fall</h3>
-      <div className="grid g2" style={{ marginTop: 8 }}>
-        {s.teams.map((t, k) => (
-          <div key={t.name}>
-            <div className="cs-k" style={{ color: COLORS[k], marginBottom: 2 }}>{t.name} batting</div>
-            <ExpectedWickets t={t} rules={s.meta.rules} />
-            <WicketHeatmap color={COLORS[k]} overs={overs} cell={28}
-                           rows={t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.05).slice(0, 7)
-                             .map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
-          </div>
-        ))}
-      </div>
+    <div className="section">
+      <div className="section-head"><div><h2>Match snapshot</h2></div></div>
+      <Snapshot doc={doc} hrefFor={href} scoreboard />
     </div>
-    <div className="grid g3" style={{ marginTop: 28 }}>
-      <div className="card anim-rise">
-        <h3>Innings totals</h3>{legend}
-        <Histogram width={binWidth(s)} height={220} xLabel="runs" series={histSeries(s)} markers={markers(s)} compact />
-      </div>
-      <div className="card anim-rise" style={{ animationDelay: "80ms" }}>
-        <h3>Runs per over</h3>{legend}
-        <OverBars height={236} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
-                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
-      </div>
-      <div className="card anim-rise" style={{ animationDelay: "160ms" }}>
-        <h3>Wicket chance</h3>{legend}
-        <OverBars height={236} phases={s.meta.rules} average
-                  series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
-      </div>
-    </div>
-    </>
   );
 }
