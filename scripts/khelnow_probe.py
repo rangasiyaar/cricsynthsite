@@ -12,6 +12,21 @@ from collections import Counter
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 URL = sys.argv[1]
+if URL == "next":                       # the soonest upcoming match in the sitemap
+    import html as _h
+    from datetime import date as _d
+    _sm = urllib.request.urlopen(urllib.request.Request("https://khelnow.com/live-cricket.xml", headers={"User-Agent": "Mozilla/5.0"}), timeout=30).read().decode()
+    _M = {m: i for i, m in enumerate(["january","february","march","april","may","june","july","august","september","october","november","december"], 1)}
+    _best = []
+    for _l in re.findall(r"<loc>\s*([^<\s]+)", _sm):
+        _l = _h.unescape(_l)
+        _m = re.search(r"-(\d{1,2})(?:st|nd|rd|th)-([a-z]+)-(\d{4})", _l)
+        if _m and _m.group(2) in _M:
+            _dd = _d(int(_m.group(3)), _M[_m.group(2)], int(_m.group(1)))
+            if _dd > _d.today() and re.search(r"t20|league|bash|super|cup", _l):
+                _best.append((_dd, _l))
+    URL = sorted(_best)[0][1]
+    print("upcoming page:", URL)
 POLLS = int(sys.argv[2]) if len(sys.argv) > 2 else 20
 GAP = int(sys.argv[3]) if len(sys.argv) > 3 else 15
 
@@ -107,6 +122,24 @@ for p, v in find(data, r"commentar"):
         print(f"\nCOMMENTARY at {p}: {len(v)} items; first:", json.dumps(v[0], ensure_ascii=False)[:900])
         print("  last:", json.dumps(v[-1], ensure_ascii=False)[:500])
         break
+sc = ((data.get("matchInsights") or [{}])[-1].get("score_card") or {})
+for inn in sc.get("innings") or []:
+    print("\nBOWLER ROW:", json.dumps({k: v for k, v in (inn.get("bowlers") or [{}])[0].items() if k != "resolved_players"})[:600])
+    print("FOW ROW:", json.dumps({k: v for k, v in (inn.get("fows") or [{}])[0].items() if k != "resolved_players"})[:400])
+    print("DID NOT BAT:", json.dumps(inn.get("did_not_bat"))[:300], "| powerplay:", json.dumps(inn.get("powerplay"))[:300],
+          "| max_over:", inn.get("max_over"), "| status:", inn.get("status"), "| number:", inn.get("number"))
+    break
+ev = Counter(c.get("event") for ins in data.get("matchInsights") or [] for c in ins.get("commentary") or [])
+print("EVENT TYPES:", dict(ev))
+for ins in data.get("matchInsights") or []:
+    for c in ins.get("commentary") or []:
+        if c.get("event") not in ("ball", "wicket", "overend"):
+            print("OTHER EVENT:", json.dumps(c)[:500]); break
+for side in ("teama", "teamb"):
+    sq = ((data.get("squad") or {}).get(side) or {}).get("squads") or []
+    print(f"SQUAD {side}: {len(sq)} players; playing11 {Counter(p.get('playing11') for p in sq)}; roles {Counter(p.get('role') for p in sq)};"
+          f" role_str {Counter(p.get('role_str') for p in sq)}; substitute {Counter(p.get('substitute') for p in sq)}")
+    print("  first entries:", [(p.get("name"), p.get("role"), p.get("role_str"), p.get("playing11")) for p in sq[:4]])
 print("\nmatch_info:", json.dumps(data.get("match_info", {}), ensure_ascii=False)[:3000])
 
 
