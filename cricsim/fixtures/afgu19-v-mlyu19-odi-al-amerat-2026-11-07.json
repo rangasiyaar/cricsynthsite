@@ -1,0 +1,111 @@
+{
+  "id": "afgu19-v-mlyu19-odi-al-amerat-2026-11-07",
+  "title": "Afghanistan U19 v Malaysia U19",
+  "date": "2026-11-07",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup 2026 · 5th Match, Group B",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground (Ministry Turf 2), Al Amerat",
+  "venue_search": "al amerat",
+  "city": "Al Amerat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Afghanistan U19",
+      "short": "AFGU19",
+      "players": [
+        "Abidullah Nadarjan",
+        "Faridullah Ihsas",
+        "Subhan Zakhail",
+        "Noman Salarzai",
+        "Shah Faisal Rahimi",
+        "Tahir Sarwary",
+        "Sohail Khan",
+        "Amir Hamza",
+        "Sami Mubarez",
+        "Noor Ali Niazi",
+        "Lutfullah Mohammadi"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sohail Khan",
+      "squad": [
+        "Abidullah Nadarjan",
+        "Faridullah Ihsas",
+        "Subhan Zakhail",
+        "Noman Salarzai",
+        "Shah Faisal Rahimi",
+        "Tahir Sarwary",
+        "Sohail Khan",
+        "Amir Hamza",
+        "Sami Mubarez",
+        "Noor Ali Niazi",
+        "Lutfullah Mohammadi"
+      ]
+    },
+    {
+      "name": "Malaysia U19",
+      "short": "MLYU19",
+      "players": [
+        "Syamil Aqil",
+        "Asyraf Mikail",
+        "Firash Taqiuddin",
+        "Deeaz Patro",
+        "Alif Haziq",
+        "Aiyadh Iskandar",
+        "Dzul Syahmi",
+        "N Sathnakumaran",
+        "Muhammad Nurhanif",
+        "Arryan Iskandar",
+        "Nur Iman"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Deeaz Patro",
+      "squad": [
+        "Syamil Aqil",
+        "Asyraf Mikail",
+        "Firash Taqiuddin",
+        "Deeaz Patro",
+        "Alif Haziq",
+        "Aiyadh Iskandar",
+        "Dzul Syahmi",
+        "N Sathnakumaran",
+        "Muhammad Nurhanif",
+        "Arryan Iskandar",
+        "Nur Iman"
+      ]
+    }
+  ],
+  "live": {
+    "id": 175630,
+    "auto": true,
+    "xis": false
+  }
+}
