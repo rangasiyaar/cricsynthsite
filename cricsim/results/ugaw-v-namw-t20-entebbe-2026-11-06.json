@@ -1,0 +1,396 @@
+{
+ "id": "ugaw-v-namw-t20-entebbe-2026-11-06",
+ "innings": [
+  {
+   "team": "Namibia Women",
+   "runs": 73,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sune Wittmann",
+     "dismissal": "c Rita Musamali b Sarah Walaza",
+     "runs": 11,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Merczerly Gorases",
+     "dismissal": "b Concy Aweko",
+     "runs": 11,
+     "balls": 4,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mekelaye Mwatile",
+     "dismissal": "c Sarah Walaza b Concy Aweko",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kayleen Green",
+     "dismissal": "b Malisa Ariokot",
+     "runs": 4,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jurriene Diergaardt",
+     "dismissal": "lbw b Malisa Ariokot",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Edelle van Zyl",
+     "dismissal": "c Stephani Nampiina b Janet Mbabazi",
+     "runs": 5,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Wilka Mwatile",
+     "dismissal": "c Rita Musamali b Nakisuuyi",
+     "runs": 6,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naomi Benjamin",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 33,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Victoria Hamunyela",
+     "dismissal": "b Malisa Ariokot",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Eveleen Kejarukua",
+     "dismissal": "run out (Janet Mbabazi)",
+     "runs": 3,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Saima Tuhadeleni",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sarah Walaza",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Concy Aweko",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Malisa Ariokot",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Janet Mbabazi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Asumin Akurut",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Merczerly Gorases",
+     "score": 22,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sune Wittmann",
+     "score": 22,
+     "over": "2.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mekelaye Mwatile",
+     "score": 28,
+     "over": "3.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kayleen Green",
+     "score": 28,
+     "over": "4.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jurriene Diergaardt",
+     "score": 36,
+     "over": "6.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Wilka Mwatile",
+     "score": 47,
+     "over": "9.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Edelle van Zyl",
+     "score": 50,
+     "over": "11.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Victoria Hamunyela",
+     "score": 57,
+     "over": "12.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Eveleen Kejarukua",
+     "score": 67,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 33
+  },
+  {
+   "team": "Uganda Women",
+   "runs": 64,
+   "wickets": 6,
+   "overs": "18",
+   "batting": [
+    {
+     "name": "Janet Mbabazi",
+     "dismissal": "b Wilka Mwatile",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Stephani Nampiina",
+     "dismissal": "c Merczerly Gorases b Wilka Mwatile",
+     "runs": 6,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Prosscovia Alako",
+     "dismissal": "c Jurriene Diergaardt b Wilka Mwatile",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rita Musamali",
+     "dismissal": "not out",
+     "runs": 38,
+     "balls": 51,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Esther Iloku",
+     "dismissal": "c Mekelaye Mwatile b Eveleen Kejarukua",
+     "runs": 1,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "dismissal": "c and b Mekelaye Mwatile",
+     "runs": 3,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kevin Awino",
+     "dismissal": "c Saima Tuhadeleni b Eveleen Kejarukua",
+     "runs": 7,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Malisa Ariokot",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Wilka Mwatile",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Saima Tuhadeleni",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Eveleen Kejarukua",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jurriene Diergaardt",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mekelaye Mwatile",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Victoria Hamunyela",
+     "overs": "0",
+     "maidens": 0,
+     "runs": 0,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Janet Mbabazi",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prosscovia Alako",
+     "score": 3,
+     "over": "0.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Stephani Nampiina",
+     "score": 13,
+     "over": "2.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Esther Iloku",
+     "score": 18,
+     "over": "5.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Immaculate Nakisuuyi",
+     "score": 36,
+     "over": "10.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kevin Awino",
+     "score": 64,
+     "over": "17.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 4,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 18
+  }
+ ],
+ "result": "Match tied"
+}
