@@ -1,0 +1,352 @@
+{
+ "id": "war-v-bol-t20-gqeberha-2026-11-05",
+ "innings": [
+  {
+   "team": "Boland",
+   "runs": 138,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Blayde Capell",
+     "dismissal": "c and b Wesley Bedja",
+     "runs": 23,
+     "balls": 15,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Gavin Kaplan",
+     "dismissal": "st Tristan Stubbs b Thomas Kaber",
+     "runs": 26,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Neil Brand",
+     "dismissal": "b B Hendricks",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lehan Botha",
+     "dismissal": "c Jordan Hermann b B Hendricks",
+     "runs": 50,
+     "balls": 47,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Jhedli van Briesies",
+     "dismissal": "c Sibonelo Makhanya b Senuran Muthusamy",
+     "runs": 9,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ferisco Adams",
+     "dismissal": "not out",
+     "runs": 22,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Imran Manack",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kerwin Mungroo",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Beuran Hendricks",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Wesley Bedja",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Senuran Muthusamy",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Thomas Kaber",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Blayde Capell",
+     "score": 35,
+     "over": "4.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Neil Brand",
+     "score": 44,
+     "over": "5.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Gavin Kaplan",
+     "score": 63,
+     "over": "9"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jhedli van Briesies",
+     "score": 100,
+     "over": "16"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lehan Botha",
+     "score": 134,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   }
+  },
+  {
+   "team": "Warriors",
+   "runs": 138,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Jordan Hermann",
+     "dismissal": "c Blayde Capell b Glenton Stuurman",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sibonelo Makhanya",
+     "dismissal": "c Mahima b Lizaad Williams",
+     "runs": 18,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Senuran Muthusamy",
+     "dismissal": "c Imran Manack b Ferisco Adams",
+     "runs": 25,
+     "balls": 30,
+     "fours": 54,
+     "sixes": 1
+    },
+    {
+     "name": "Tristan Stubbs",
+     "dismissal": "c (sub)Jevano Baron b Lizaad Williams",
+     "runs": 40,
+     "balls": 40,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "JP King",
+     "dismissal": "lbw b Neil Brand",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Patrick Kruger",
+     "dismissal": "c Neil Brand b Glenton Stuurman",
+     "runs": 12,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Andile Mokgakane",
+     "dismissal": "run out (Akhona Mnyaka)",
+     "runs": 19,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Thomas Kaber",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Beuran Hendricks",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Glenton Stuurman",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Imran Manack",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lizaad Williams",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Siyabonga Mahima",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Akhona Mnyaka",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ferisco Adams",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Neil Brand",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jordan Hermann",
+     "score": 15,
+     "over": "2.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sibonelo Makhanya",
+     "score": 33,
+     "over": "3.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Senuran Muthusamy",
+     "score": 90,
+     "over": "12.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "JP King",
+     "score": 91,
+     "over": "13.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tristan Stubbs",
+     "score": 107,
+     "over": "16.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Andile Mokgakane",
+     "score": 129,
+     "over": "18.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Patrick Kruger",
+     "score": 131,
+     "over": "19"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 10,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Match tied"
+}
