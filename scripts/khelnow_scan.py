@@ -116,7 +116,8 @@ if not pages:                                   # fall back to the paged live-sc
 dated = {u: d for u, d in pages.items() if d}
 if dated:
     print("date range:", min(dated.values()), "..", max(dated.values()))
-recent = {u: d for u, d in dated.items() if d >= date.today() - timedelta(days=30)}
+recent = {u: d for u, d in dated.items() if date.today() - timedelta(days=30) <= d < date.today()}
+print(f"future fixtures listed: {sum(1 for d in dated.values() if d >= date.today())}")
 print(f"last 30 days: {len(recent)} match pages")
 comp = Counter()
 for u in recent:
@@ -178,6 +179,8 @@ for url, d0 in todo:
         data = next_data(get(url))
     except Exception as e:
         stats["fetch_failed"] += 1
+        if stats["fetch_failed"] <= 5:
+            print("  fetch failed:", url, e)
         continue
     mi = data.get("match_info") or {}
     if str(mi.get("status")) != "2":          # completed only
