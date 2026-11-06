@@ -1,0 +1,111 @@
+{
+  "id": "mlrw-v-adsw-t20-melbourne-2026-11-07",
+  "title": "Melbourne Renegades Women v Adelaide Strikers Women",
+  "date": "2026-11-07",
+  "start_time": "10:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "WBBL 2026 · 13th Match",
+  "comp_key": "wbbl",
+  "venue": "Junction Oval, Melbourne",
+  "venue_search": "melbourne",
+  "city": "Melbourne",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Melbourne Renegades Women",
+      "short": "MLRW",
+      "players": [
+        "Olivia Porter",
+        "Hayley Matthews",
+        "Courtney Webb",
+        "Sophie Molineux",
+        "Georgia Wareham",
+        "Nicole Faltum",
+        "Chloe Tryon",
+        "Deandra Dottin",
+        "Tess Flintoff",
+        "Milly Illingworth",
+        "Tayla Vlaeminck"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sophie Molineux",
+      "squad": [
+        "Olivia Porter",
+        "Hayley Matthews",
+        "Courtney Webb",
+        "Sophie Molineux",
+        "Georgia Wareham",
+        "Nicole Faltum",
+        "Chloe Tryon",
+        "Deandra Dottin",
+        "Tess Flintoff",
+        "Milly Illingworth",
+        "Tayla Vlaeminck"
+      ]
+    },
+    {
+      "name": "Adelaide Strikers Women",
+      "short": "ADSW",
+      "players": [
+        "Laura Wolvaardt",
+        "Maia Bouchier",
+        "Tahlia McGrath",
+        "Madeline Penna",
+        "Bridget Patterson",
+        "Ellie Johnston",
+        "Eleanor Larosa",
+        "Amanda-Jade Wellington",
+        "Sophie Ecclestone",
+        "Ella Wilson",
+        "Megan Schutt"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Tahlia McGrath",
+      "squad": [
+        "Laura Wolvaardt",
+        "Maia Bouchier",
+        "Tahlia McGrath",
+        "Madeline Penna",
+        "Bridget Patterson",
+        "Ellie Johnston",
+        "Eleanor Larosa",
+        "Amanda-Jade Wellington",
+        "Sophie Ecclestone",
+        "Ella Wilson",
+        "Megan Schutt"
+      ]
+    }
+  ],
+  "live": {
+    "id": 162797,
+    "auto": true,
+    "xis": false
+  }
+}
