@@ -1,4 +1,9 @@
 [
+  {"version": "0.3.5", "date": "2026-11-07", "notes": [
+    "A new Match Overview: projected scores, a runs-per-over chart with expected wickets, when wickets fall, players to watch, the ground and fantasy picks on one screen",
+    "Every chart now has clear axes",
+    "Live matches that run past midnight stay in the Live list"
+  ]},
   {"version": "0.3.4", "date": "2026-11-05", "notes": [
     "The bottom bar is now a floating rounded strip",
     "Match screen tags all the same height",
