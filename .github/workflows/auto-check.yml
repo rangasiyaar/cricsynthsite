@@ -1,11 +1,11 @@
 name: Auto check
 
-# Read-only: what the auto loop sees for some matches (squads page, match header) and what one pass would change.
+# Read-only: what the auto loop reads from some match pages, and what one pass would change.
 # Writes nothing and does not touch the running loop.
 on:
   workflow_dispatch:
     inputs:
-      ids: { description: "Page match ids, comma-separated", default: "" }
+      urls: { description: "Match page URLs, space-separated", default: "" }
 
 permissions:
   contents: read
@@ -18,25 +18,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
-      - name: Squads page and match header
+      - name: What we read from each page
+        if: ${{ inputs.urls != '' }}
         env:
-          IDS: ${{ inputs.ids }}
+          URLS: ${{ inputs.urls }}
         run: |
-          for id in ${IDS//,/ }; do
-            echo "=== $id squads page"; uv run python -m cricsim.auto --squads "$id" | head -40 || true
-            uv run python - "$id" <<'PY'
-          import sys, json
-          from cricsim import live
-          from cricsim.auto import squads
-          mid = int(sys.argv[1])
-          head = live.first(live.flight(live._safe(live.get, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
-          print("=== header:", {k: head.get(k) for k in ("state", "status", "matchFormat")},
-                "team1", (head.get("team1") or {}).get("id"), (head.get("team1") or {}).get("name"),
-                "team2", (head.get("team2") or {}).get("id"), (head.get("team2") or {}).get("name"),
-                "result", json.dumps(head.get("result"))[:200])
-          sq = squads(live.flight(live._safe(live.get, f"{live.BASE}/cricket-match-squads/{mid}")))
-          print("=== squads by team id:", {t: (len(s["xi"]), len(s["squad"])) for t, s in sq.items()})
-          PY
-          done
+          for u in $URLS; do echo "=== $u"; uv run python -m cricsim.khelnow probe "$u" || true; done
+      - name: Upcoming matches and whether we cover them
+        run: uv run python -m cricsim.auto --list | head -80
       - name: One pass, dry run
         run: uv run python -m cricsim.auto --dry-run

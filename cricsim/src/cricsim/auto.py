@@ -1,128 +1,141 @@
-"""Fixtures, playing XIs and scorecards from the public score pages, so matches publish and score themselves.
+"""Fixtures, playing XIs and scorecards from the public match pages (cricsim.khelnow), so matches publish and score
+themselves.
 
 1. Fixtures: upcoming limited-overs matches in the competitions listed in auto.json become cricsim/fixtures/<id>.json
-   (days_ahead before the start) with probable XIs: the side's last XI in our fixtures (same series) where it is
-   still in the squad, else the squad picked by role.
+   (days_ahead before the start) with probable XIs: each side's XI in its last finished match on the pages (squads
+   only appear on a match page once the match is on), else the side's last XI in our fixtures.
 2. Playing XIs: from 75 minutes before the start until the match is due to end, once both XIs are named, the fixture
    gets them, the captains and who bats first, and the forecast is re-run on the real teams (also after the start,
    when the teams are named late).
 3. Scorecards: when a match is over, cricsim/results/<id>.json in our scorecard format (an existing card is never
    replaced), so the results page scores it.
 
-python -m cricsim.auto --fixtures cricsim/fixtures --results cricsim/results [--changed FILE] [--dry-run]
+python -m cricsim.auto --fixtures cricsim/fixtures --results cricsim/results [--changed FILE] [--cache FILE] [--dry-run]
 
 Run by .github/workflows/auto.yml every 5 minutes, which commits what changed and asks for a quick publish.
-Fixtures stay ours to edit: a hand-written fixture is linked (live.id) and gets the confirmed XIs, nothing else.
+Fixtures stay ours to edit: a hand-written fixture is linked (live.kn) and gets the confirmed XIs, nothing else.
 """
 from __future__ import annotations
 
 import json
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import click
 
-from cricsim import live
+from cricsim import khelnow as kn
 from cricsim.results import IST, kickoff
 
 CONFIG = Path(__file__).with_name("auto.json")
-SCHEDULE = f"{live.BASE}/cricket-schedule/upcoming-series/all"
-FMT = {"T20": "T20", "ODI": "OD", "T10": "T10"}
 ROLE = {"batter": "BAT", "batsman": "BAT", "wk-batter": "WK", "wk-batsman": "WK", "bowler": "BOWL",
         "batting allrounder": "AR", "bowling allrounder": "AR", "allrounder": "AR"}
 QUOTA = (("WK", 1), ("BAT", 4), ("AR", 3), ("BOWL", 3))      # a probable XI from a squad, before top-up
 XI_FROM = timedelta(minutes=75)                             # look for named XIs from this long before the start
 RESULT_AFTER = {"T20": 3.0, "T10": 1.5, "HUNDRED": 2.5, "OD": 7.0}
+INFO_TTL = 6 * 3600                                         # re-read an upcoming match's page after this long
+LAST_XI_DAYS = 60                                           # how far back a side's last XI is looked for
 
 
 def _slug(s: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+    return re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")
 
 
-def _ist(ms) -> datetime | None:
-    """A page start time (milliseconds, sometimes as text) in IST; None if it can't be read."""
-    try:
-        return datetime.fromtimestamp(float(ms) / 1000, IST)
-    except (TypeError, ValueError):
-        try:
-            return datetime.fromisoformat(str(ms)).astimezone(IST)
-        except ValueError:
-            return None
+# ── the match list: sitemap + each match page's facts, kept between passes ────────────────────────────────────────
 
+class Index:
+    """The sitemap's match pages and, for those near our window, the facts from each page (cached in a file between
+    passes so a page is read once every few hours, not every 5 minutes)."""
 
-def _overs(x) -> str:
-    f = float(x or 0)
-    return str(int(f)) if f == int(f) else f"{f:.1f}"
+    def __init__(self, page, cache: Path | None):
+        self.page, self.cache = page, cache
+        self.entries = kn.sitemap(kn.safe(page, kn.SITEMAP))
+        self.by_id = {e["id"]: e for e in self.entries}
+        self.saved = json.loads(cache.read_text()) if cache and cache.exists() else {}
+        self.pages: dict[int, dict] = {}
+
+    def data(self, e: dict) -> dict:
+        """The page's data, read at most once per pass."""
+        if e["id"] not in self.pages:
+            self.pages[e["id"]] = kn.match(e["url"], self.page)
+        return self.pages[e["id"]]
+
+    def info(self, e: dict, fresh: bool = False) -> dict | None:
+        s = self.saved.get(str(e["id"]))
+        if s and not fresh and time.time() - s["t"] < INFO_TTL:
+            i = dict(s["i"])
+        else:
+            d = self.data(e)
+            if not d:
+                return None
+            i = kn.info(d)
+            i["start"] = i["start"].isoformat() if i["start"] else None
+            i = {k: v for k, v in i.items() if k != "toss"}
+            self.saved[str(e["id"])] = {"t": time.time(), "i": dict(i)}
+        i["start"] = datetime.fromisoformat(i["start"]) if i.get("start") else None
+        i["url"] = e["url"]
+        return i
+
+    def near(self, lo: datetime, hi: datetime) -> list[dict]:
+        """Sitemap entries whose page date falls within a day of [lo, hi]."""
+        a, b = (lo - timedelta(days=1)).date(), (hi + timedelta(days=1)).date()
+        return [e for e in self.entries if e["date"] and a <= e["date"] <= b]
+
+    def save(self) -> None:
+        if self.cache:
+            keep = {k: v for k, v in self.saved.items() if time.time() - v["t"] < 4 * 86400}
+            self.cache.parent.mkdir(parents=True, exist_ok=True)
+            self.cache.write_text(json.dumps(keep))
 
 
 # ── which matches ─────────────────────────────────────────────────────────────────────────────────────────────────
 
-INTL = re.compile(r"\btour of\b|tri-?series|quadrangular|\bICC\b|world cup|asia cup|champions trophy|\bvs?\b.+\bin\b", re.I)
-
-
-def is_intl(mi: dict) -> bool:
-    """International: tagged so, or (the schedule often leaves the tag out) a tour / ICC event by its series name."""
-    t = (mi.get("matchType") or "").lower()
-    return t == "international" or (not t and bool(INTL.search(mi.get("seriesName") or "")))
-
-
-def wanted(mi: dict, cfg: dict) -> str | None:
-    """Our format for a schedule match we cover, else None."""
-    series = mi.get("seriesName") or ""
+def wanted(i: dict, cfg: dict) -> str | None:
+    """Our format for a match we cover, else None (multi-day, or not in the competitions we cover)."""
+    series = i.get("competition") or ""
     if any(re.search(x, series, re.I) for x in cfg.get("exclude", [])):
         return None
-    fmt = "HUNDRED" if re.search(r"\bhundred\b", series, re.I) else FMT.get((mi.get("matchFormat") or "").upper())
+    fmt = "HUNDRED" if re.search(r"\bhundred\b", series, re.I) else i.get("format")
     if not fmt:
         return None
-    if cfg.get("all") or (is_intl(mi) and cfg.get("international", True)):
+    if cfg.get("all") or (i.get("international") and cfg.get("international", True)):
         return fmt
     return fmt if any(re.search(x, series, re.I) for x in cfg.get("leagues", [])) else None
 
 
-def fixture_id(mi: dict, fmt: str) -> str:
-    t1, t2 = mi.get("team1") or {}, mi.get("team2") or {}
-    intl = is_intl(mi)
-    kind = {"T20": "t20", "OD": "odi", "T10": "t10", "HUNDRED": "hundred"}[fmt] + ("i" if intl and fmt in ("T20", "T10") else "")
-    city = _slug((mi.get("venueInfo") or {}).get("city") or "venue")
-    return "-".join([_slug(t1.get("teamSName") or t1.get("teamName", "a")), "v",
-                     _slug(t2.get("teamSName") or t2.get("teamName", "b")), kind, city,
-                     _ist(mi["startDate"]).date().isoformat()])
+def fixture_id(i: dict, fmt: str) -> str:
+    t1, t2 = i["teams"]
+    kind = {"T20": "t20", "OD": "odi", "T10": "t10", "HUNDRED": "hundred"}[fmt] + \
+        ("i" if i.get("international") and fmt in ("T20", "T10") else "")
+    return "-".join([_slug(t1.get("short") or t1["name"]), "v", _slug(t2.get("short") or t2["name"]), kind,
+                     _slug(i.get("city") or i.get("venue") or "venue"), i["start"].astimezone(IST).date().isoformat()])
 
 
-def linked(fixtures: dict[str, dict], mi: dict) -> str | None:
+def same_teams(fx: dict, i: dict) -> bool:
+    if len(fx.get("teams", [])) != 2:
+        return False
+    a, b = fx["teams"]
+    s = lambda o, t: kn._team_match(o, t["name"], t.get("short", ""))     # noqa: E731
+    t1, t2 = i["teams"]
+    return max(min(s(a, t1), s(b, t2)), min(s(a, t2), s(b, t1))) >= 1
+
+
+def linked(fixtures: dict[str, dict], i: dict) -> str | None:
     """The fixture already covering this match: same page id, or the same two sides on the same day."""
-    day = _ist(mi["startDate"]).date().isoformat()
+    day = i["start"].astimezone(IST).date().isoformat()
     for name, fx in fixtures.items():
-        lid = (fx.get("live") or {}).get("id")
+        lid = (fx.get("live") or {}).get("kn")
         if lid:
-            if str(lid) == str(mi.get("matchId")):
+            if int(lid) == int(i["id"]):
                 return name
             continue
-        if fx.get("date") == day and len(fx.get("teams", [])) == 2 and live.find_match(fx, [mi]) is not None:
+        if fx.get("date") == day and same_teams(fx, i):
             return name
     return None
 
 
 # ── squads and playing XIs ────────────────────────────────────────────────────────────────────────────────────────
-
-def squads(text: str) -> dict[int, dict[str, list[dict]]]:
-    """Per page team id: 'xi' (named playing XI, in order) and 'squad' (everyone listed)."""
-    out: dict[int, dict[str, list[dict]]] = {}
-    for block in live.objects(text, "players"):
-        for kind, players in block.items():
-            if not isinstance(players, list):
-                continue
-            for p in players:
-                if not isinstance(p, dict) or "teamId" not in p:
-                    continue
-                t = out.setdefault(int(p["teamId"]), {"xi": [], "squad": []})
-                if kind.lower() == "playing xi" and p not in t["xi"]:
-                    t["xi"].append(p)
-                if p not in t["squad"]:
-                    t["squad"].append(p)
-    return out
-
 
 def role(p: dict) -> str:
     return "WK" if p.get("keeper") and ROLE.get((p.get("role") or "").lower()) != "BOWL" else ROLE.get((p.get("role") or "").lower(), "AR")
@@ -140,7 +153,7 @@ def probable(squad: list[dict], previous: list[str] | None) -> list[dict]:
 
 
 def _full(name: str, squad: list[str]) -> str:
-    """A name the page shortens ("Smit", "Balbirnie") as it is in the squad ("JJ Smit"), when only one fits."""
+    """A name the page shortens ("Smit") as it is in the squad ("JJ Smit"), when only one fits."""
     if not name or name in squad:
         return name
     fits = [s for s in squad if s.lower().endswith(" " + name.lower())]
@@ -150,181 +163,86 @@ def _full(name: str, squad: list[str]) -> str:
 def _team(fx_team: dict | None, page: dict, players: list[dict]) -> dict:
     squad = (fx_team or {}).get("squad") or []
     cap = next((_full(p["name"], squad) for p in players if p.get("captain")), None)
-    t = {**(fx_team or {}), "name": (fx_team or {}).get("name") or page.get("teamName") or page.get("name"),
-         "short": (fx_team or {}).get("short") or page.get("teamSName") or page.get("shortName"),
+    t = {**(fx_team or {}), "name": (fx_team or {}).get("name") or page.get("name"),
+         "short": (fx_team or {}).get("short") or page.get("short"),
          "players": [_full(p["name"], squad) for p in players], "roles": [role(p) for p in players]}
     if cap:
         t["captain"] = cap
     return t
 
 
-def new_fixture(mi: dict, fmt: str, sq: dict, previous: dict[str, list[str]]) -> dict | None:
-    t1, t2 = mi.get("team1") or {}, mi.get("team2") or {}
+def last_xi(index: Index, i: dict, team: dict) -> list[dict]:
+    """A side's XI in its latest finished match on the pages (match pages only list squads once a match is on)."""
+    slug, before = _slug(team["name"]), i["start"].date()
+    past = [e for e in index.entries if e["date"] and before - timedelta(days=LAST_XI_DAYS) <= e["date"] <= before
+            and e["id"] != i["id"] and (f"/{slug}-vs-" in e["url"] or f"-vs-{slug}-" in e["url"])]
+    for e in sorted(past, key=lambda e: e["date"], reverse=True)[:3]:
+        d = index.data(e)
+        if not d or kn.info(d)["status"] not in (kn.COMPLETED, kn.LIVE):
+            continue
+        sq = kn.squads(d)
+        tid = team.get("id") if team.get("id") in sq else next(
+            (t["id"] for t in kn.info(d)["teams"] if kn._team_match({"name": team["name"]}, t["name"]) >= 2), None)
+        xi = (sq.get(tid) or {}).get("xi") or []
+        if len(xi) >= 11:
+            return xi
+    return []
+
+
+def new_fixture(i: dict, fmt: str, sq: dict, previous: dict[str, list[str]]) -> dict | None:
     sides = []
-    for t in (t1, t2):
-        s = sq.get(int(t.get("teamId", -1)), {})
-        players = s.get("xi") if len(s.get("xi", [])) >= 11 else probable(s.get("squad", []), previous.get(t.get("teamName", "")))
+    for t in i["teams"]:
+        s = sq.get(t["id"], {})
+        players = s.get("xi") if len(s.get("xi", [])) >= 11 else probable(s.get("squad", []), previous.get(t["name"]))
         if len(players) < 11:
-            return None                                       # squads not out yet: try again next run
+            return None                                       # no XI to go on yet: try again next run
         side = _team(None, t, players[:11])
         side["squad"] = [p["name"] for p in s.get("squad", [])]
         sides.append(side)
-    start, venue = _ist(mi["startDate"]), mi.get("venueInfo") or {}
-    women = any("women" in (x or "").lower() for x in (mi.get("seriesName"), t1.get("teamName"), t2.get("teamName")))
-    intl = is_intl(mi)
-    series = re.sub(r",?\s*\d{4}(-\d{2,4})?\s*$", "", mi.get("seriesName") or "").strip()
-    confirmed = all(len(sq.get(int(t.get("teamId", -1)), {}).get("xi", [])) >= 11 for t in (t1, t2))
-    return {"id": fixture_id(mi, fmt), "title": f"{sides[0]['name']} v {sides[1]['name']}",
+    start = i["start"].astimezone(IST)
+    series = re.sub(r",?\s*\d{4}(-\d{2,4})?\s*$", "", i.get("competition") or "").strip()
+    confirmed = all(len(sq.get(t["id"], {}).get("xi", [])) >= 11 and sq[t["id"]].get("named") for t in i["teams"])
+    desc = " · ".join(x for x in (i.get("competition"), i.get("subtitle")) if x)
+    return {"id": fixture_id(i, fmt), "title": f"{sides[0]['name']} v {sides[1]['name']}",
             "date": start.date().isoformat(), "start_time": start.strftime("%H:%M"), "format": fmt,
-            "gender": "female" if women else "male",
-            "competition": f"{mi.get('seriesName', '').strip()} · {mi.get('matchDesc', '').strip()}".strip(" ·"),
-            "comp_key": f"intl-international-{fmt if fmt != 'HUNDRED' else 'T20'}" if intl else _slug(series),
-            "venue": ", ".join(x for x in (venue.get("ground"), venue.get("city")) if x),
-            "venue_search": (venue.get("city") or venue.get("ground") or "").lower(), "city": venue.get("city"),
+            "gender": i.get("gender") or "male", "competition": desc,
+            "comp_key": f"intl-international-{fmt if fmt != 'HUNDRED' else 'T20'}" if i.get("international") else _slug(series),
+            "venue": ", ".join(x for x in (i.get("venue"), i.get("city")) if x),
+            "venue_search": (i.get("city") or i.get("venue") or "").lower(), "city": i.get("city") or None,
             "status": "scheduled", "published": True,
-            "note": "Playing XIs confirmed." if confirmed else "Probable XIs from the squads; updated when the teams are named.",
-            "teams": sides, "live": {"id": int(mi["matchId"]), "auto": True, "xis": confirmed}}
+            "note": "Playing XIs confirmed." if confirmed else "Probable XIs from the last matches; updated when the teams are named.",
+            "teams": sides, "live": {"kn": int(i["id"]), "url": i["url"], "auto": True, "xis": confirmed}}
 
 
-def confirm_xis(fx: dict, sq: dict, head: dict) -> bool:
+def confirm_xis(fx: dict, d: dict) -> bool:
     """Put the named XIs, captains and who bats first into the fixture. True if anything changed.
     XIs put in by hand (live.manual) are replaced by the page's once it names them; the flag is then dropped
     (that alone doesn't count as a change, so identical XIs don't re-run the forecast)."""
-    teams = [head.get("team1") or {}, head.get("team2") or {}]
+    i, sq = kn.info(d), kn.squads(d)
     by_side: list[list[dict] | None] = [None, None]
-    for t in teams:
-        xi = sq.get(int(t.get("id", -1)), {}).get("xi", [])
+    for t in i["teams"]:
+        xi = sq.get(t["id"], {}).get("xi", [])
         if len(xi) < 11:
             return False
-        k = max(range(2), key=lambda i: live._team_score(fx["teams"][i], {"teamName": t.get("name"), "teamSName": t.get("shortName")}))
-        by_side[k] = xi[:11]
+        k = max(range(2), key=lambda j: kn._team_match(fx["teams"][j], t["name"], t["short"]))
+        by_side[k] = xi[:12] if len(xi) == 12 else xi[:11]
     if by_side[0] is None or by_side[1] is None:
         return False
     (fx.get("live") or {}).pop("manual", None)
     before = json.dumps(fx, sort_keys=True)
     for k in (0, 1):
-        fx["teams"][k] = _team(fx["teams"][k], {}, by_side[k])
-    toss = head.get("tossResults") or {}
-    if toss.get("tossWinnerName"):
-        w = max(range(2), key=lambda i: live._team_score(fx["teams"][i], {"teamName": toss["tossWinnerName"]}))
-        fx["batting_first"] = w if (toss.get("decision") or "").lower().startswith("bat") else 1 - w
+        fx["teams"][k] = _team(fx["teams"][k], {}, by_side[k][:11])
+    t = kn.toss(d)
+    if t:
+        name = next((x["name"] for x in i["teams"] if x["id"] == t[0]), "")
+        w = max(range(2), key=lambda j: kn._team_match(fx["teams"][j], name))
+        fx["batting_first"] = w if t[1] == "bat" else 1 - w
         fx["note"] = f"Playing XIs confirmed. {fx['teams'][w]['name']} won the toss and " \
                      f"{'bat' if fx['batting_first'] == w else 'bowl'} first."
     else:
         fx["note"] = "Playing XIs confirmed."
     fx.setdefault("live", {})["xis"] = True
     return json.dumps(fx, sort_keys=True) != before
-
-
-# ── scorecards ────────────────────────────────────────────────────────────────────────────────────────────────────
-
-def _side(fx: dict, name: str) -> str:
-    k = max(range(2), key=lambda i: live._team_score(fx["teams"][i], {"teamName": name}))
-    return fx["teams"][k]["name"] if live._team_score(fx["teams"][k], {"teamName": name}) > 0 else name
-
-
-def _over(h: dict) -> bool:
-    state = (h.get("state") or "").lower()
-    return state == "complete" or "abandon" in state
-
-
-def finished_header(scores: dict, card: dict) -> dict | None:
-    """The match header that says the match is over: the scores page's, or the scorecard page's when the scores page
-    lags (seen on 4 Nov: the scores page stuck at "opt to bowl" after the match had finished). None while neither does."""
-    return scores if _over(scores) else card if _over(card) else None
-
-
-def scorecard(fx: dict, card_text: str, head: dict) -> dict | None:
-    """Our results file for a finished match, or None while it isn't over."""
-    state = (head.get("state") or "").lower()
-    res = head.get("result") or {}
-    rtype = (res.get("resultType") or "").lower()
-    if "abandon" in state or rtype in ("abandon", "noresult", "no result"):
-        return {"id": fx["id"], "abandoned": True, "note": head.get("status") or "No result"}
-    if state != "complete":
-        return None
-    m = re.search(r'"scoreCard":\s*(?=\[)', card_text)
-    cards = json.JSONDecoder().raw_decode(card_text, m.end())[0] if m else []
-    cards = sorted((c for c in cards if c.get("inningsId") in (1, 2)), key=lambda c: c["inningsId"])
-    if not cards:
-        return None
-    innings, revised = [], 0
-    for c in cards:
-        bat, bowl, sd = c.get("batTeamDetails") or {}, c.get("bowlTeamDetails") or {}, c.get("scoreDetails") or {}
-        revised = max(revised, int(sd.get("revisedOvers") or 0))
-        ex = c.get("extrasData") or {}
-        batting = [{"name": b.get("batName"), "dismissal": "not out" if (b.get("outDesc") or "").lower() == "batting" else b.get("outDesc"),
-                    "runs": int(b.get("runs") or 0), "balls": int(b.get("balls") or 0),
-                    "fours": int(b.get("fours") or 0), "sixes": int(b.get("sixes") or 0)}
-                   for b in (bat.get("batsmenData") or {}).values() if (b.get("outDesc") or "").strip() or int(b.get("balls") or 0) > 0]
-        bowling = [{"name": b.get("bowlName"), "overs": _overs(b.get("overs")), "maidens": int(b.get("maidens") or 0),
-                    "runs": int(b.get("runs") or 0), "wickets": int(b.get("wickets") or 0),
-                    "no_balls": int(b.get("no_balls") or 0), "wides": int(b.get("wides") or 0)}
-                   for b in (bowl.get("bowlersData") or {}).values()]
-        fow = [{"wicket": int(w.get("wktNbr") or i + 1), "batter": w.get("batName"), "score": int(w.get("wktRuns") or 0),
-                "over": _overs(w.get("wktOver"))}
-               for i, w in enumerate(sorted((c.get("wicketsData") or {}).values(), key=lambda w: w.get("wktNbr") or 0))]
-        inn = {"team": _side(fx, bat.get("batTeamName") or ""), "runs": int(sd.get("runs") or 0),
-               "wickets": int(sd.get("wickets") or 0), "overs": _overs(sd.get("overs")), "batting": batting,
-               "bowling": bowling, "fall_of_wickets": fow,
-               "extras": {"b": int(ex.get("byes") or 0), "lb": int(ex.get("legByes") or 0), "w": int(ex.get("wides") or 0),
-                          "nb": int(ex.get("noBalls") or 0), "p": int(ex.get("penalty") or 0)}}
-        pp = [p for p in (c.get("ppData") or {}).values() if isinstance(p, dict)]
-        mand = next((p for p in pp if "mandatory" in (p.get("ppType") or "").lower()), pp[0] if pp else None)
-        if mand and mand.get("runsScored") is not None:
-            inn["powerplay_runs"] = int(mand["runsScored"])
-        innings.append(inn)
-    out = {"id": fx["id"], "innings": innings}
-    if revised:
-        out["overs_per_side"] = revised
-    if rtype == "tie":
-        out["result"] = "Match tied"
-    elif res.get("winningTeam"):
-        winner, margin = _side(fx, res["winningTeam"]), int(res.get("winningMargin") or 0)
-        unit = ("run" if res.get("winByRuns") else "wicket") + ("" if margin == 1 else "s")
-        out["winner"], out["result"] = winner, f"{winner} won by {margin} {unit}"
-    return out
-
-
-def card_xi(card_text: str, team: dict) -> list[dict]:
-    """One side's XI from a finished match's scorecard (batting order; who bowled sets the role)."""
-    m = re.search(r'"scoreCard":\s*(?=\[)', card_text)
-    cards = json.JSONDecoder().raw_decode(card_text, m.end())[0] if m else []
-    tid, name = team.get("teamId"), (team.get("teamName") or "").lower()
-    ours = lambda d, k: (tid is not None and d.get(f"{k}TeamId") == tid) or (d.get(f"{k}TeamName") or "").lower() == name
-    batting = next((c["batTeamDetails"] for c in cards if ours(c.get("batTeamDetails") or {}, "bat")), None)
-    if not batting:
-        return []
-    bowled = {b.get("bowlName") for c in cards if ours(c.get("bowlTeamDetails") or {}, "bowl")
-              for b in ((c["bowlTeamDetails"].get("bowlersData") or {}).values())}
-    xi = []
-    for i, b in enumerate((batting.get("batsmenData") or {}).values()):
-        if not b.get("batName"):
-            continue
-        kind = "wk-batter" if b.get("isKeeper") else ("bowler" if i >= 7 else "allrounder") if b.get("batName") in bowled \
-            else "batter"
-        xi.append({"name": b["batName"], "role": kind, "keeper": bool(b.get("isKeeper")),
-                   "captain": bool(b.get("isCaptain")), "teamId": tid})
-    return xi if len(xi) >= 11 else []
-
-
-def last_xi(listing: list[dict], mi: dict, team: dict, page) -> list[dict]:
-    """A side's XI in its latest finished match of the same series (for leagues whose squads page stays empty). The
-    day's schedule only holds recent matches, so the series' own match list is read when it has none for the side."""
-    tid, start = team.get("teamId"), int(mi.get("startDate") or 0)
-
-    def finished(ms):
-        return [m for m in ms if m.get("seriesId") == mi.get("seriesId") and int(m.get("startDate") or 0) < start
-                and (m.get("state") or "").lower() == "complete"
-                and tid in ((m.get("team1") or {}).get("teamId"), (m.get("team2") or {}).get("teamId"))]
-    done = finished(listing)
-    if not done and mi.get("seriesId"):
-        done = finished(live.match_list(live._safe(page, f"{live.BASE}/cricket-series/{mi['seriesId']}/series/matches") or ""))
-    for m in sorted(done, key=lambda m: -int(m.get("startDate") or 0))[:2]:
-        xi = card_xi(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{m['matchId']}")), team)
-        if xi:
-            return xi
-    return []
 
 
 # ── one run ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -346,23 +264,26 @@ def _previous_sides(fixtures: dict[str, dict], before: str) -> dict[str, dict]:
 def _as_squad(side: dict) -> list[dict]:
     """A fixture side as squad entries (with roles, so the probable XI keeps its keeper and balance)."""
     roles = side.get("roles") or []
-    return [{"name": n, "role": LABEL.get(roles[i] if i < len(roles) else "", "allrounder"),
-             "keeper": (roles[i] if i < len(roles) else "") == "WK"} for i, n in enumerate(side["players"])]
+    return [{"name": n, "role": LABEL.get(roles[k] if k < len(roles) else "", "allrounder"),
+             "keeper": (roles[k] if k < len(roles) else "") == "WK"} for k, n in enumerate(side["players"])]
 
 
 def _previous_xis(fixtures: dict[str, dict], before: str) -> dict[str, list[str]]:
     """Each side's most recent XI in our fixtures (dated before the given day)."""
-    last: dict[str, tuple[str, list[str]]] = {}
-    for fx in fixtures.values():
-        for t in fx.get("teams", []):
-            d = fx.get("date") or ""
-            if d < before and (t["name"] not in last or d > last[t["name"]][0]):
-                last[t["name"]] = (d, t.get("players", []))
-    return {k: v for k, (_, v) in last.items()}
+    return {k: v.get("players", []) for k, v in _previous_sides(fixtures, before).items()}
 
 
-def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page=live.get,
-        cfg: dict | None = None, write: bool = True, late: set[str] | None = None) -> list[str]:
+def _url(fx: dict, index: Index | None) -> str | None:
+    lv = fx.get("live") or {}
+    if lv.get("url"):
+        return lv["url"]
+    if lv.get("kn") and index and int(lv["kn"]) in index.by_id:
+        return index.by_id[int(lv["kn"])]["url"]
+    return None
+
+
+def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page=kn.get,
+        cfg: dict | None = None, write: bool = True, late: set[str] | None = None, cache: Path | None = None) -> list[str]:
     """One pass. Returns the fixture files whose forecast should be re-run now (new, or XIs named).
 
     `late` names fixtures whose XIs were missed before the start: their named XIs are fetched whatever the time."""
@@ -370,6 +291,7 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
     paths = {p.name: p for p in sorted(fixtures_dir.glob("*.json"))}
     fixtures = {n: json.loads(p.read_text()) for n, p in paths.items()}
     rerun: list[str] = []
+    index = Index(page, cache)
 
     def save(name: str, fx: dict, why: str) -> None:
         click.echo(f"{why}: {name}")
@@ -377,55 +299,64 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
             (fixtures_dir / name).write_text(json.dumps(fx, indent=2, ensure_ascii=False) + "\n")
         fixtures[name] = fx
 
-    listing = live.match_list(live._safe(page, SCHEDULE)) + live.match_list(live._safe(page, live.LIST))
-    by_id = {int(m["matchId"]): m for m in listing if m.get("matchId")}
-
-    # 1. new fixtures
+    # 1. new fixtures, and pages for our fixtures that have none yet
     horizon = now + timedelta(days=float(cfg.get("days_ahead", 2)))
-    for mi in by_id.values():
-        fmt = wanted(mi, cfg)
-        start = _ist(mi.get("startDate"))
-        if not fmt or not start or not now < start <= horizon:
+    for e in index.near(now - timedelta(hours=12), horizon):
+        i = index.info(e)
+        if not i or not i.get("start") or not i["teams"][0]["name"]:
             continue
-        name = linked(fixtures, mi)
+        fmt = wanted(i, cfg)
+        if not fmt or not now - timedelta(hours=12) < i["start"] <= horizon:
+            continue
+        name = linked(fixtures, i)
         if name:
             fx = fixtures[name]
-            if not (fx.get("live") or {}).get("id"):
-                save(name, {**fx, "live": {**(fx.get("live") or {}), "id": int(mi["matchId"])}}, "linked")
+            if not (fx.get("live") or {}).get("kn"):
+                save(name, {**fx, "live": {**(fx.get("live") or {}), "kn": int(i["id"]), "url": i["url"]}}, "linked")
             continue
-        sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mi['matchId']}")))
-        previous = _previous_xis(fixtures, start.date().isoformat())
-        last_sides = _previous_sides(fixtures, start.date().isoformat())
-        for t in (mi.get("team1") or {}, mi.get("team2") or {}):
-            if len(sq.get(int(t.get("teamId", -1)), {}).get("squad", [])) < 11:      # no squad on the page yet
-                xi = last_xi(listing, mi, t, page)
-                if xi:
-                    sq[int(t["teamId"])] = {"xi": [], "squad": xi}
-                    previous[t.get("teamName", "")] = [p["name"] for p in xi]
-                elif t.get("teamName") in last_sides and len(last_sides[t["teamName"]]["players"]) >= 11:
-                    sq[int(t["teamId"])] = {"xi": [], "squad": _as_squad(last_sides[t["teamName"]])}  # our own last XI
-        fx = new_fixture(mi, fmt, sq, previous)
+        if i["start"] <= now:
+            continue
+        d = index.data(e)
+        sq = kn.squads(d) if d else {}
+        for t in i["teams"]:
+            if len(sq.get(t["id"], {}).get("xi", [])) >= 11:
+                sq[t["id"]]["named"] = True
+        previous = _previous_xis(fixtures, i["start"].astimezone(IST).date().isoformat())
+        last_sides = _previous_sides(fixtures, i["start"].astimezone(IST).date().isoformat())
+        for t in i["teams"]:
+            if len(sq.get(t["id"], {}).get("squad", [])) >= 11:
+                continue                                      # squads listed: the page decides
+            xi = last_xi(index, i, t)
+            if xi:
+                sq[t["id"]] = {"xi": [], "squad": xi}
+                previous[t["name"]] = [p["name"] for p in xi]
+            elif t["name"] in last_sides and len(last_sides[t["name"]]["players"]) >= 11:
+                sq[t["id"]] = {"xi": [], "squad": _as_squad(last_sides[t["name"]])}     # our own last XI
+        fx = new_fixture(i, fmt, sq, previous)
+        if fx and f"{fx['id']}.json" in fixtures:
+            continue                                          # the same match listed twice
         if fx:
             save(f"{fx['id']}.json", fx, "new fixture")
             rerun.append(f"{fx['id']}.json")
         else:
-            click.echo(f"squads not out yet: {mi.get('seriesName')} {mi.get('matchDesc')} ({mi['matchId']})")
+            click.echo(f"no XIs to go on yet: {i['competition']} {i['subtitle']} ({i['id']})")
 
     # 2. named XIs before the start (or, for `late` fixtures, whenever asked)
     for name, fx in list(fixtures.items()):
         lv, k = fx.get("live") or {}, kickoff(fx)
-        mid = lv.get("id")
+        url = _url(fx, index)
         if late is not None:
-            if name not in late or not mid:
+            if name not in late or not url:
                 continue
-        elif not mid or not k or (lv.get("xis") and not lv.get("manual")) \
+        elif not url or not k or (lv.get("xis") and not lv.get("manual")) \
                 or (paths.get(name) and (results_dir / name).exists()) \
                 or not k - XI_FROM <= now <= k + timedelta(hours=RESULT_AFTER.get(fx.get("format", ""), 4.0)):
             continue                     # XIs put in by hand (live.manual) keep being checked: the page's replace them
-        sq = squads(live.flight(live._safe(page, f"{live.BASE}/cricket-match-squads/{mid}")))
-        head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
+        d = kn.match(url, page)
+        if not d:
+            continue
         manual = bool(lv.get("manual"))
-        if confirm_xis(fx, sq, head):
+        if confirm_xis(fx, d):
             save(name, fx, "playing XIs (replacing the hand-entered ones)" if manual else "playing XIs")
             rerun.append(name)
         elif manual and not (fx.get("live") or {}).get("manual"):
@@ -434,27 +365,22 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
             click.echo(f"no named XIs on the page yet: {name}")
 
     if late is not None:
+        index.save()
         return rerun
 
     # 3. scorecards of finished matches
     for name, fx in fixtures.items():
         k, hours = kickoff(fx), RESULT_AFTER.get(fx.get("format", ""))
         out = results_dir / name
-        if not k or not hours or out.exists() or not k + timedelta(hours=hours * 0.5) <= now <= k + timedelta(days=3):
+        url = _url(fx, index)
+        if not url or not k or not hours or out.exists() or not k + timedelta(hours=hours * 0.5) <= now <= k + timedelta(days=3):
             continue
-        mid = (fx.get("live") or {}).get("id") or live.find_match(fx, listing)
-        if not mid:
-            continue
-        head = live.first(live.flight(live._safe(page, f"{live.BASE}/live-cricket-scores/{mid}")), "matchHeader", mid) or {}
-        card_text = live.flight(live._safe(page, f"{live.BASE}/live-cricket-scorecard/{mid}") or "")
-        head = finished_header(head, live.first(card_text, "matchHeader", mid) or {})
-        if head is None:
-            continue
-        card = scorecard(fx, card_text, head)
+        card = kn.scorecard(fx, kn.match(url, page))
         if card:
             click.echo(f"scorecard: {name} ({card.get('result') or card.get('note')})")
             if write:
                 out.write_text(json.dumps(card, indent=1, ensure_ascii=False) + "\n")
+    index.save()
     return rerun
 
 
@@ -463,40 +389,30 @@ def run(fixtures_dir: Path, results_dir: Path, now: datetime | None = None, page
 @click.option("--results", type=click.Path(exists=True, path_type=Path), default=Path("cricsim/results"))
 @click.option("--changed", type=click.Path(path_type=Path), default=None,
               help="Write the fixture files to re-simulate now (comma-separated) here")
+@click.option("--cache", type=click.Path(path_type=Path), default=None,
+              help="File that keeps the match pages' facts between passes")
 @click.option("--dry-run", is_flag=True, help="Report what would change; write nothing")
 @click.option("--list", "show", is_flag=True, help="List the scheduled matches and whether we cover them")
-@click.option("--squads", "squads_id", type=int, default=None, help="Show what we read from one match's squads page")
+@click.option("--probe", "probe_url", default=None, help="Show what we read from one match page")
 @click.option("--late", default="", help="Fixture files (comma-separated) whose missed XIs to fetch now, whatever the time")
-def main(fixtures: Path, results: Path, changed: Path | None, dry_run: bool, show: bool, late: str,
-         squads_id: int | None) -> None:
-    if squads_id:
-        text = live.flight(live._safe(live.get, f"{live.BASE}/cricket-match-squads/{squads_id}"))
-        click.echo(f"page data: {len(text)} chars; 'players' keys: {text.count('\"players\"')}; "
-                   f"'teamId': {text.count('\"teamId\"')}")
-        for block in live.objects(text, "players"):
-            click.echo("block: " + ", ".join(f"{k} ({len(v) if isinstance(v, list) else type(v).__name__})" for k, v in block.items()))
-            for v in block.values():
-                if isinstance(v, list) and v:
-                    click.echo(f"  sample: {json.dumps(v[0])[:300]}")
-                    break
-        for t, s in squads(text).items():
-            click.echo(f"team {t}: xi {len(s['xi'])}, squad {len(s['squad'])}")
-        for k in ("team1", "team2"):
-            o = live.first(text, k)
-            click.echo(f"{k}: {json.dumps(o)[:200] if o else None}")
-        click.echo(f"snippet: {text[max(0, text.find('quad')-200):text.find('quad')+400]!r}")
+def main(fixtures: Path, results: Path, changed: Path | None, cache: Path | None, dry_run: bool, show: bool,
+         late: str, probe_url: str | None) -> None:
+    if probe_url:
+        kn.probe.callback(probe_url)
         return
     if show:
-        cfg = json.loads(CONFIG.read_text())
-        for mi in live.match_list(live._safe(live.get, SCHEDULE)) + live.match_list(live._safe(live.get, live.LIST)):
-            st = _ist(mi.get("startDate"))
-            when = st.strftime("%d %b %H:%M") if st else repr(mi.get("startDate"))
-            click.echo(f"{when} | {wanted(mi, cfg) or '-':7} | {mi.get('matchType')} | {mi.get('matchFormat')} | "
-                       f"{mi.get('seriesName')} | {(mi.get('team1') or {}).get('teamName')} v "
-                       f"{(mi.get('team2') or {}).get('teamName')} | {mi.get('state')}")
+        cfg, now = json.loads(CONFIG.read_text()), datetime.now(timezone.utc)
+        index = Index(kn.get, cache)
+        for e in index.near(now, now + timedelta(days=float(cfg.get("days_ahead", 2)))):
+            i = index.info(e)
+            if not i or not i.get("start"):
+                continue
+            click.echo(f"{i['start'].astimezone(IST):%d %b %H:%M} | {wanted(i, cfg) or '-':7} | {i['format_str']:10} | "
+                       f"{i['competition']} | {i['teams'][0]['name']} v {i['teams'][1]['name']} | {i['state']}")
+        index.save()
         return
     names = {n.strip() for n in late.split(",") if n.strip()}
-    rerun = run(fixtures, results, write=not dry_run, late=names or None)
+    rerun = run(fixtures, results, write=not dry_run, late=names or None, cache=cache)
     if changed:
         changed.write_text(",".join(rerun))
 

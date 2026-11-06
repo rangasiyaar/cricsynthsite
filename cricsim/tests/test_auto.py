@@ -1,179 +1,104 @@
-"""Auto fixtures, playing XIs and scorecards from score-page data (shapes as the pages carry them)."""
+"""Auto fixtures, playing XIs and scorecards from match pages (shapes as Khel Now serves them)."""
 import json
 from datetime import datetime, timezone
 
-from cricsim import auto, live
+from cricsim import auto
+from cricsim import khelnow as kn
 
-NZ = [("Tim Seifert", "WK-Batter", True), ("Finn Allen", "Batter", False), ("Daryl Mitchell", "Batter", False),
-      ("Glenn Phillips", "Batting Allrounder", False), ("Bevon Jacobs", "Batter", False),
-      ("Michael Bracewell", "Batting Allrounder", False), ("Mitchell Santner", "Bowling Allrounder", False),
-      ("Kyle Jamieson", "Bowler", False), ("Adam Milne", "Bowler", False), ("Jacob Duffy", "Bowler", False),
-      ("Matthew Fisher", "Bowler", False), ("Ish Sodhi", "Bowler", False), ("Devon Conway", "WK-Batter", True)]
-IND = [("Sanju Samson", "WK-Batter", True), ("Abhishek Sharma", "Batting Allrounder", False),
-       ("Vaibhav Sooryavanshi", "Batter", False), ("Shreyas Iyer", "Batter", False), ("Tilak Varma", "Batter", False),
-       ("Nitish Kumar Reddy", "Batting Allrounder", False), ("Naman Dhir", "Batter", False),
-       ("Axar Patel", "Bowling Allrounder", False), ("Bhuvneshwar Kumar", "Bowler", False),
-       ("Arshdeep Singh", "Bowler", False), ("Prince Yadav", "Bowler", False), ("Kuldeep Yadav", "Bowler", False)]
-START = datetime(2026, 10, 30, 7, 0, tzinfo=timezone.utc).timestamp() * 1000
-MI = {"matchId": 161223, "seriesName": "India tour of New Zealand, 2026", "matchDesc": "4th T20I", "matchFormat": "T20",
-      "startDate": START, "state": "Preview", "matchType": "International",
-      "team1": {"teamId": 13, "teamName": "New Zealand", "teamSName": "NZ"},
-      "team2": {"teamId": 2, "teamName": "India", "teamSName": "IND"},
-      "venueInfo": {"ground": "Eden Park", "city": "Auckland"}}
+from .khelnow_pages import IND, IND_ID, NZ, NZ_ID, START, URL, innings, names, page, sitemap
+
+NAME = "nz-v-ind-t20i-auckland-2026-10-30.json"
+# each side's last finished match (squads only show on a match page once it's on)
+PREV_NZ = "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-27th-october-2026-at-7-00-am-40090"
+DAY_BEFORE = datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc)
+TOSS = datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc)
 
 
-def _players(team_id, rows, captain=None):
-    return [{"id": i, "name": n, "role": r, "keeper": k, "captain": n == captain, "teamId": team_id}
-            for i, (n, r, k) in enumerate(rows)]
+def _info(**kw):
+    i = kn.info(kn.data_of(page(**kw)))
+    i["url"] = URL
+    return i
 
 
-def _page(*chunks: str) -> str:
-    return "".join(f"<script>self.__next_f.push([1,{json.dumps(c)}])</script>" for c in chunks)
+def _pages(**kw):
+    prev = page(status=2, named=True, match_id=40090, start=START - 3 * 86400)
+    return {kn.SITEMAP: sitemap(PREV_NZ, URL), PREV_NZ: prev, URL: page(**kw)}
 
 
-def _squads(named: bool) -> str:
-    if named:
-        return _page('"players":' + json.dumps({"playing XI": _players(13, NZ[:11], "Mitchell Santner"),
-                                                 "bench": _players(13, NZ[11:])}),
-                     '"players":' + json.dumps({"playing XI": _players(2, IND[:11], "Shreyas Iyer"),
-                                                 "bench": _players(2, IND[11:])}))
-    return _page('"players":' + json.dumps({"Squad": _players(13, NZ, "Mitchell Santner")}),
-                 '"players":' + json.dumps({"Squad": _players(2, IND, "Shreyas Iyer")}))
-
-
-HEAD = {"matchId": 161223, "state": "Toss", "status": "India opt to bowl",
-        "tossResults": {"tossWinnerId": 2, "tossWinnerName": "India", "decision": "Bowling"},
-        "team1": {"id": 13, "name": "New Zealand", "shortName": "NZ"}, "team2": {"id": 2, "name": "India", "shortName": "IND"}}
+def _done():
+    a, ca = innings(1, NZ_ID, IND_ID, [(0, 0, 4, ""), (0, 0, 0, "W:bowled"), (0, 0, 1, "")])
+    b, cb = innings(2, IND_ID, NZ_ID, [(0, 7, 6, "")], target=6)
+    return [(names(a, NZ, IND, NZ_ID, IND_ID), ca), (names(b, IND, NZ, IND_ID, NZ_ID), cb)]
 
 
 def test_wanted_and_ids():
     cfg = {**json.loads(auto.CONFIG.read_text()), "all": False, "exclude": ["Sixes", "Legends"]}
-    assert auto.wanted(MI, cfg) == "T20" and auto.fixture_id(MI, "T20") == "nz-v-ind-t20i-auckland-2026-10-30"
-    assert auto.wanted({**MI, "matchFormat": "TEST"}, cfg) is None
-    league = {**MI, "matchType": "League", "seriesName": "Nepal Premier League 2026"}
+    i = _info()
+    assert auto.wanted(i, cfg) == "T20" and auto.fixture_id(i, "T20") == "nz-v-ind-t20i-auckland-2026-10-30"
+    assert auto.wanted(_info(fmt="First Class"), cfg) is None
+    league = _info(competition="Nepal Premier League", category="domestic", fmt="T20")
     assert auto.wanted(league, cfg) == "T20" and auto.fixture_id(league, "T20").split("-")[3] == "t20"
-    assert auto.wanted({**league, "seriesName": "CSA T20 Challenge 2026"}, cfg) is None
-    assert auto.wanted({**MI, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
-
-
-def test_new_fixture_probable_then_confirmed():
-    sq = auto.squads(live.flight(_squads(False)))
-    fx = auto.new_fixture(MI, "T20", sq, {"India": [n for n, _, _ in IND[:10]] + ["Kuldeep Yadav"]})
-    nz, ind = fx["teams"]
-    assert (fx["date"], fx["start_time"], fx["format"], fx["gender"]) == ("2026-10-30", "12:30", "T20", "male")
-    assert fx["competition"] == "India tour of New Zealand, 2026 · 4th T20I" and fx["comp_key"] == "intl-international-T20"
-    assert len(nz["players"]) == 11 and nz["roles"].count("WK") == 1 and nz["captain"] == "Mitchell Santner"
-    assert "Kuldeep Yadav" in ind["players"] and "Prince Yadav" not in ind["players"]     # last XI where in the squad
-    assert fx["live"] == {"id": 161223, "auto": True, "xis": False} and "Probable" in fx["note"]
-    assert len(ind["squad"]) == 12
-    # at the toss: named XIs, captains and who bats first (India won it and bowl)
-    assert auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)
-    assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]] and fx["batting_first"] == 0
-    assert fx["teams"][1]["captain"] == "Shreyas Iyer" and fx["live"]["xis"] is True
-    assert fx["note"] == "Playing XIs confirmed. India won the toss and bowl first."
-    assert not auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)          # nothing new
-    # XIs entered by hand: the page's replace them; identical ones only drop the flag
-    fx["live"]["manual"] = True
-    assert not auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)
-    assert "manual" not in fx["live"]
-    fx["live"]["manual"] = True
-    fx["teams"][1]["players"] = list(reversed(fx["teams"][1]["players"]))                   # a different hand-entered XI
-    assert auto.confirm_xis(fx, auto.squads(live.flight(_squads(True))), HEAD)
-    assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]] and "manual" not in fx["live"]
-
-
-CARD = {"scoreCard": [
-    {"matchId": 1, "inningsId": 1,
-     "batTeamDetails": {"batTeamName": "New Zealand", "batsmenData": {
-         "bat_1": {"batName": "Tim Seifert", "outDesc": "c Axar Patel b Arshdeep Singh", "runs": 2, "balls": 6, "fours": 0, "sixes": 0},
-         "bat_2": {"batName": "Daryl Mitchell", "outDesc": "not out", "runs": 89, "balls": 52, "fours": 5, "sixes": 5},
-         "bat_3": {"batName": "Kyle Jamieson", "outDesc": "", "runs": 0, "balls": 0, "fours": 0, "sixes": 0}}},
-     "bowlTeamDetails": {"bowlersData": {"bowl_1": {"bowlName": "Arshdeep Singh", "overs": 4, "maidens": 0, "runs": 33,
-                                                     "wickets": 1, "no_balls": 0, "wides": 2}}},
-     "scoreDetails": {"runs": 98, "wickets": 1, "overs": 20, "revisedOvers": 0},
-     "extrasData": {"byes": 0, "legByes": 3, "noBalls": 0, "penalty": 0, "wides": 4},
-     "wicketsData": {"wkt_1": {"batName": "Tim Seifert", "wktOver": 1.2, "wktRuns": 4, "wktNbr": 1}},
-     "ppData": {"pp_1": {"ppType": "mandatory", "runsScored": 58}}},
-    {"matchId": 1, "inningsId": 2,
-     "batTeamDetails": {"batTeamName": "India", "batsmenData": {
-         "bat_1": {"batName": "Abhishek Sharma", "outDesc": "batting", "runs": 99, "balls": 38, "fours": 9, "sixes": 11}}},
-     "bowlTeamDetails": {"bowlersData": {}}, "scoreDetails": {"runs": 99, "wickets": 0, "overs": 8.3},
-     "extrasData": {}, "wicketsData": {}, "ppData": {}}]}
-
-
-def test_scorecard():
-    fx = {"id": "nz-v-ind", "teams": [{"name": "New Zealand", "short": "NZ"}, {"name": "India", "short": "IND"}]}
-    done = {**HEAD, "state": "Complete", "result": {"resultType": "win", "winningTeam": "India", "winningMargin": 10, "winByRuns": False}}
-    text = live.flight(_page(json.dumps(CARD)[1:-1]))
-    assert auto.scorecard(fx, text, {**HEAD, "state": "In Progress"}) is None
-    c = auto.scorecard(fx, text, done)
-    a, b = c["innings"]
-    assert (a["team"], a["runs"], a["overs"], b["overs"]) == ("New Zealand", 98, "20", "8.3")
-    assert [x["name"] for x in a["batting"]] == ["Tim Seifert", "Daryl Mitchell"]          # did-not-bat left out
-    assert b["batting"][0]["dismissal"] == "not out"
-    assert a["extras"] == {"b": 0, "lb": 3, "w": 4, "nb": 0, "p": 0} and a["powerplay_runs"] == 58
-    assert a["fall_of_wickets"] == [{"wicket": 1, "batter": "Tim Seifert", "score": 4, "over": "1.2"}]
-    assert a["bowling"][0] == {"name": "Arshdeep Singh", "overs": "4", "maidens": 0, "runs": 33, "wickets": 1,
-                               "no_balls": 0, "wides": 2}
-    assert c["winner"] == "India" and c["result"] == "India won by 10 wickets" and "powerplay_runs" not in b
-    assert auto.scorecard(fx, "", {"state": "Abandoned", "status": "Match abandoned due to rain"})["abandoned"]
+    assert auto.wanted(_info(competition="CSA Pro T20 Cup", category="domestic", fmt="T20"), cfg) is None
+    assert auto.wanted(_info(competition="Hong Kong Sixes", category="domestic", fmt="T20"), cfg) is None
+    every = json.loads(auto.CONFIG.read_text())                  # the live config: everything but the Sixes
+    assert auto.wanted(_info(competition="CSA Pro T20 Cup", category="domestic", fmt="T20"), every) == "T20"
+    assert auto.wanted(_info(competition="The Ford Trophy", category="domestic", fmt="List A"), every) == "OD"
+    assert auto.wanted(_info(competition="Ranji Trophy Elite", category="domestic", fmt="First Class"), every) is None
 
 
 def test_run_end_to_end(tmp_path):
     fixtures, results = tmp_path / "fixtures", tmp_path / "results"
     fixtures.mkdir()
     results.mkdir()
-    sched = _page('"matchInfo":' + json.dumps(MI))
-    pages = {auto.SCHEDULE: sched, live.LIST: "", f"{live.BASE}/cricket-match-squads/161223": _squads(False)}
-    day_before = datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc)
-    assert auto.run(fixtures, results, now=day_before, page=pages.get) == ["nz-v-ind-t20i-auckland-2026-10-30.json"]
-    assert auto.run(fixtures, results, now=day_before, page=pages.get) == []                 # already there
-    # an hour before the start the XIs are named
-    pages[f"{live.BASE}/cricket-match-squads/161223"] = _squads(True)
-    pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(HEAD))
-    toss = datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc)
-    assert auto.run(fixtures, results, now=toss, page=pages.get) == ["nz-v-ind-t20i-auckland-2026-10-30.json"]
-    fx = json.loads((fixtures / "nz-v-ind-t20i-auckland-2026-10-30.json").read_text())
-    assert fx["batting_first"] == 0 and fx["live"]["xis"]
+    pages = _pages()
+    assert auto.run(fixtures, results, now=DAY_BEFORE, page=pages.get) == [NAME]
+    fx = json.loads((fixtures / NAME).read_text())
+    nz, ind = fx["teams"]
+    assert (fx["date"], fx["start_time"], fx["format"], fx["gender"]) == ("2026-10-30", "12:30", "T20", "male")
+    assert fx["competition"] == "India tour of New Zealand · 4th T20I" and fx["comp_key"] == "intl-international-T20"
+    assert nz["players"] == [n for n, *_ in NZ[:11]] and nz["roles"][0] == "WK" and nz["captain"] == "Mitchell Santner"
+    assert fx["live"] == {"kn": 40100, "url": URL, "auto": True, "xis": False} and "Probable" in fx["note"]
+    assert auto.run(fixtures, results, now=DAY_BEFORE, page=pages.get) == []          # already there
+    # at the toss: the page names the XIs, India won it and bowl
+    pages[URL] = page(named=True, toss=(IND_ID, "field"))
+    assert auto.run(fixtures, results, now=TOSS, page=pages.get) == [NAME]
+    fx = json.loads((fixtures / NAME).read_text())
+    assert fx["batting_first"] == 0 and fx["live"]["xis"] and fx["teams"][1]["captain"] == "Shreyas Iyer"
+    assert fx["note"] == "Playing XIs confirmed. India won the toss and bowl first."
+    assert auto.run(fixtures, results, now=TOSS, page=pages.get) == []                # nothing new
     # after the match: the scorecard
-    done = {**HEAD, "state": "Complete", "result": {"resultType": "win", "winningTeam": "India", "winningMargin": 10}}
-    pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(done))
-    pages[f"{live.BASE}/live-cricket-scorecard/161223"] = _page(json.dumps(CARD)[1:-1])
+    pages[URL] = page(status=2, inns=_done(), result="IND won by 10 wickets", winner=IND_ID, margin="10 wickets")
     auto.run(fixtures, results, now=datetime(2026, 10, 30, 11, 0, tzinfo=timezone.utc), page=pages.get)
-    card = json.loads((results / "nz-v-ind-t20i-auckland-2026-10-30.json").read_text())
-    assert card["winner"] == "India" and card["id"] == "nz-v-ind-t20i-auckland-2026-10-30"
+    card = json.loads((results / NAME).read_text())
+    assert card["winner"] == "India" and card["result"] == "India won by 10 wickets" and card["id"] == NAME[:-5]
 
 
-def test_late_xis_after_the_start(tmp_path):
+def test_page_facts_are_cached_between_passes(tmp_path):
     fixtures, results = tmp_path / "fixtures", tmp_path / "results"
     fixtures.mkdir()
     results.mkdir()
-    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(MI)), live.LIST: "",
-             f"{live.BASE}/cricket-match-squads/161223": _squads(False)}
-    auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc), page=pages.get)
-    name = "nz-v-ind-t20i-auckland-2026-10-30.json"
-    pages[f"{live.BASE}/cricket-match-squads/161223"] = _squads(True)
-    pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(HEAD))
-    later = datetime(2026, 10, 30, 10, 30, tzinfo=timezone.utc)               # 3.5 hours after the start: T20 over
-    assert auto.run(fixtures, results, now=later, page=pages.get) == []      # outside the normal window
-    assert auto.run(fixtures, results, now=later, page=pages.get, late={name}) == [name]
+    pages, asked = _pages(), []
+    get = lambda u: asked.append(u) or pages.get(u)                                    # noqa: E731
+    auto.run(fixtures, results, now=DAY_BEFORE, page=get, cache=tmp_path / "index.json")
+    asked.clear()
+    (fixtures / NAME).unlink()
+    auto.run(fixtures, results, now=DAY_BEFORE, page=get, cache=tmp_path / "index.json")
+    assert asked.count(URL) == 1                     # read again only to build the fixture, not for its facts
 
 
-def test_xis_named_after_the_start(tmp_path):
+def test_xis_late_and_after_the_start(tmp_path):
     fixtures, results = tmp_path / "fixtures", tmp_path / "results"
     fixtures.mkdir()
     results.mkdir()
-    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(MI)), live.LIST: "",
-             f"{live.BASE}/cricket-match-squads/161223": _squads(False)}
-    auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc), page=pages.get)
-    name = "nz-v-ind-t20i-auckland-2026-10-30.json"
-    pages[f"{live.BASE}/cricket-match-squads/161223"] = _squads(True)
-    pages[f"{live.BASE}/live-cricket-scores/161223"] = _page('"matchHeader":' + json.dumps(HEAD))
-    mid_match = datetime(2026, 10, 30, 8, 30, tzinfo=timezone.utc)            # 1.5 hours after the start
-    assert auto.run(fixtures, results, now=mid_match, page=pages.get) == [name]
-    assert json.loads((fixtures / name).read_text())["live"]["xis"]
-    fx = json.loads((fixtures / name).read_text())
-    assert fx["live"]["xis"] and fx["batting_first"] == 0
+    pages = _pages()
+    auto.run(fixtures, results, now=DAY_BEFORE, page=pages.get)
+    pages[URL] = page(status=3, named=True, toss=(IND_ID, "field"))
+    mid_match = datetime(2026, 10, 30, 8, 30, tzinfo=timezone.utc)                     # 1.5 hours after the start
+    assert auto.run(fixtures, results, now=mid_match, page=pages.get) == [NAME]
+    (fixtures / NAME).write_text(json.dumps({**json.loads((fixtures / NAME).read_text()), "live": {"url": URL}}))
+    later = datetime(2026, 10, 30, 10, 30, tzinfo=timezone.utc)                        # T20 over: outside the window
+    assert auto.run(fixtures, results, now=later, page=pages.get) == []
+    assert auto.run(fixtures, results, now=later, page=pages.get, late={NAME}) == [NAME]
 
 
 def test_hand_written_fixture_is_linked_and_page_xis_replace_mine(tmp_path):
@@ -181,116 +106,45 @@ def test_hand_written_fixture_is_linked_and_page_xis_replace_mine(tmp_path):
     fixtures.mkdir()
     results.mkdir()
     mine = {"id": "nz-v-ind-t20i-auckland-2026-10-30", "date": "2026-10-30", "start_time": "12:30", "format": "T20",
-            "note": "Playing XIs confirmed.", "teams": [{"name": "New Zealand", "short": "NZ", "players": ["x"] * 11},
-                                                        {"name": "India", "short": "IND", "players": ["y"] * 11}]}
+            "note": "Playing XIs confirmed.", "live": {"id": 161223},             # an older page id: relinked
+            "teams": [{"name": "New Zealand", "short": "NZ", "players": ["x"] * 11},
+                      {"name": "India", "short": "IND", "players": ["y"] * 11}]}
     (fixtures / "mine.json").write_text(json.dumps(mine))
-    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(MI)), live.LIST: "",
-             f"{live.BASE}/cricket-match-squads/161223": _squads(True),
-             f"{live.BASE}/live-cricket-scores/161223": _page('"matchHeader":' + json.dumps(HEAD))}
-    assert auto.run(fixtures, results, now=datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc), page=pages.get) == ["mine.json"]
+    pages = _pages(named=True, toss=(IND_ID, "field"))
+    assert auto.run(fixtures, results, now=TOSS, page=pages.get) == ["mine.json"]
     got = json.loads((fixtures / "mine.json").read_text())
-    assert got["live"]["id"] == 161223 and got["live"]["xis"] is True                     # linked, then the page's
-    assert got["teams"][1]["players"] == [n for n, _, _ in IND[:11]]                      # named XIs replace mine
+    assert got["live"]["kn"] == 40100 and got["live"]["xis"] is True                      # linked, then the page's
+    assert got["teams"][1]["players"] == [n for n, *_ in IND[:11]]                        # named XIs replace mine
     assert len(list(fixtures.glob("*.json"))) == 1
-
-
-def test_schedule_without_match_type():
-    cfg = {**json.loads(auto.CONFIG.read_text()), "all": False}
-    bare = {k: v for k, v in MI.items() if k != "matchType"}
-    assert auto.wanted({**bare, "seriesName": "Ireland tour of Namibia, 2026", "matchFormat": "ODI"}, cfg) == "OD"
-    assert auto.wanted({**bare, "seriesName": "Afghanistan vs Zimbabwe in UAE, 2026"}, cfg) == "T20"
-    assert auto.wanted({**bare, "seriesName": "WBBL 2026"}, cfg) == "T20"
-    assert auto.wanted({**bare, "seriesName": "CSA T20 Challenge 2026"}, cfg) is None
-    assert auto.wanted({**bare, "seriesName": "ICC CWC Challenge League A, 2024-26", "matchFormat": "ODI"}, cfg) == "OD"
-    assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
-    assert auto.fixture_id({**bare, "seriesName": "WBBL 2026"}, "T20").split("-")[3] == "t20"
-
-
-def test_all_limited_overs():
-    cfg = json.loads(auto.CONFIG.read_text())                  # the live config: everything but the Sixes
-    bare = {k: v for k, v in MI.items() if k != "matchType"}
-    assert auto.wanted({**bare, "seriesName": "CSA T20 Challenge 2026"}, cfg) == "T20"
-    assert auto.wanted({**bare, "seriesName": "The Ford Trophy 2026-27", "matchFormat": "ODI"}, cfg) == "OD"
-    assert auto.wanted({**bare, "seriesName": "Hong Kong Sixes 2026"}, cfg) is None
-    assert auto.wanted({**bare, "seriesName": "Ranji Trophy Elite 2026-27", "matchFormat": "TEST"}, cfg) is None
-
-
-def test_xis_confirmed_flag():
-    from cricsim.publish import xis_confirmed
-    assert xis_confirmed({"live": {"xis": True}})
-    assert xis_confirmed({"note": "Playing XIs confirmed. India won the toss and bowl first."})
-    assert not xis_confirmed({"live": {"xis": False}, "note": "Probable XIs from the squads; updated when the teams are named."})
-
-
-def test_empty_squads_page_takes_last_xi_in_the_series(tmp_path):
-    """Leagues whose squads page stays empty until the toss: each side's XI from its latest finished match."""
-    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
-    fixtures.mkdir()
-    results.mkdir()
-    mi = {**MI, "seriesId": 9, "seriesName": "Nepal Premier League 2026", "matchType": None}
-    prev = [{**mi, "matchId": 100 + t["teamId"], "state": "Complete", "startDate": START - 86_400_000,
-             "team1": t, "team2": {"teamId": 77, "teamName": "Other"}} for t in (MI["team1"], MI["team2"])]
-
-    def card(team, rows):
-        bat = {str(i): {"batName": n, "isKeeper": k, "isCaptain": i == 0, "outDesc": ""} for i, (n, _, k) in enumerate(rows)}
-        bowl = {str(i): {"bowlName": n} for i, (n, r, _) in enumerate(rows) if "Bowl" in r}
-        return _page('"scoreCard":' + json.dumps([
-            {"inningsId": 1, "batTeamDetails": {"batTeamId": team["teamId"], "batTeamName": team["teamName"], "batsmenData": bat}},
-            {"inningsId": 2, "bowlTeamDetails": {"bowlTeamId": team["teamId"], "bowlTeamName": team["teamName"], "bowlersData": bowl}}]))
-
-    pages = {auto.SCHEDULE: _page(*('"matchInfo":' + json.dumps(m) for m in [mi, *prev])), live.LIST: "",
-             f"{live.BASE}/cricket-match-squads/161223": _page("{}"),
-             f"{live.BASE}/live-cricket-scorecard/113": card(MI["team1"], NZ[:11]),
-             f"{live.BASE}/live-cricket-scorecard/102": card(MI["team2"], IND[:11])}
-    day_before = datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc)
-    [name] = auto.run(fixtures, results, now=day_before, page=pages.get)
-    fx = json.loads((fixtures / name).read_text())
-    assert fx["teams"][0]["players"] == [n for n, _, _ in NZ[:11]]                       # batting order kept
-    assert fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]]
-    assert fx["teams"][0]["roles"][0] == "WK" and fx["teams"][1]["roles"][-1] == "BOWL"
-    assert fx["teams"][0]["captain"] == "Tim Seifert" and not fx["live"]["xis"]
-
-
-def test_series_page_gives_the_last_xi_when_the_schedule_has_dropped_it(tmp_path):
-    """The day's schedule only holds recent matches: the side's last finished match comes from the series' list."""
-    fixtures, results = tmp_path / "fixtures", tmp_path / "results"
-    fixtures.mkdir()
-    results.mkdir()
-    mi = {**MI, "seriesId": 9, "seriesName": "Nepal Premier League 2026", "matchType": None}
-    prev = [{**mi, "matchId": 100 + t["teamId"], "state": "Complete", "startDate": START - 5 * 86_400_000,
-             "team1": t, "team2": {"teamId": 77, "teamName": "Other"}} for t in (MI["team1"], MI["team2"])]
-
-    def card(team, rows):
-        bat = {str(i): {"batName": n, "isKeeper": k, "isCaptain": i == 0, "outDesc": ""} for i, (n, _, k) in enumerate(rows)}
-        return _page('"scoreCard":' + json.dumps([
-            {"inningsId": 1, "batTeamDetails": {"batTeamId": team["teamId"], "batTeamName": team["teamName"], "batsmenData": bat}}]))
-
-    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(mi)), live.LIST: "",           # past matches not on it
-             f"{live.BASE}/cricket-match-squads/161223": _page("{}"),
-             f"{live.BASE}/cricket-series/9/series/matches": _page(*('"matchInfo":' + json.dumps(m) for m in prev)),
-             f"{live.BASE}/live-cricket-scorecard/113": card(MI["team1"], NZ[:11]),
-             f"{live.BASE}/live-cricket-scorecard/102": card(MI["team2"], IND[:11])}
-    [name] = auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc), page=pages.get)
-    fx = json.loads((fixtures / name).read_text())
-    assert fx["teams"][0]["players"] == [n for n, _, _ in NZ[:11]] and fx["teams"][1]["players"] == [n for n, _, _ in IND[:11]]
+    # XIs entered by hand: identical ones only drop the flag
+    got["live"]["manual"] = True
+    assert not auto.confirm_xis(got, kn.data_of(pages[URL]))
+    assert "manual" not in got["live"]
 
 
 def test_our_own_last_fixture_gives_the_xi_when_nothing_else_does(tmp_path):
-    """No squads, nothing on the schedule or the series page: each side's XI (and roles) from our last fixture for it."""
     fixtures, results = tmp_path / "fixtures", tmp_path / "results"
     fixtures.mkdir()
     results.mkdir()
-    sides = [{"name": MI["team1"]["teamName"], "players": [n for n, _, _ in NZ[:11]], "roles": ["WK"] + ["BAT"] * 4 + ["AR"] * 3 + ["BOWL"] * 3},
-             {"name": MI["team2"]["teamName"], "players": [n for n, _, _ in IND[:11]], "roles": ["BAT"] * 4 + ["WK"] + ["AR"] * 3 + ["BOWL"] * 3}]
+    sides = [{"name": "New Zealand", "players": [n for n, *_ in NZ[:11]], "roles": ["WK"] + ["BAT"] * 4 + ["AR"] * 3 + ["BOWL"] * 3},
+             {"name": "India", "players": [n for n, *_ in IND[:11]], "roles": ["BAT"] * 4 + ["WK"] + ["AR"] * 3 + ["BOWL"] * 3}]
     (fixtures / "old.json").write_text(json.dumps({"id": "old", "date": "2026-10-20", "format": "T20", "teams": sides}))
-    mi = {**MI, "seriesId": 9, "seriesName": "The Ford Trophy 2026-27", "matchType": None}
-    pages = {auto.SCHEDULE: _page('"matchInfo":' + json.dumps(mi)), live.LIST: "",
-             f"{live.BASE}/cricket-match-squads/161223": _page("{}")}
-    [name] = auto.run(fixtures, results, now=datetime(2026, 10, 29, 10, 0, tzinfo=timezone.utc),
-                      page=lambda u: pages.get(u, ""))
+    pages = {kn.SITEMAP: sitemap(URL), URL: page()}                                     # no earlier match page
+    [name] = auto.run(fixtures, results, now=DAY_BEFORE, page=pages.get)
     fx = json.loads((fixtures / name).read_text())
-    assert set(fx["teams"][0]["players"]) == set(sides[0]["players"]) and set(fx["teams"][1]["players"]) == set(sides[1]["players"])
-    assert fx["teams"][0]["roles"].count("WK") == 1 and not fx["live"]["xis"]
+    assert set(fx["teams"][0]["players"]) == set(sides[0]["players"]) and fx["teams"][0]["roles"].count("WK") == 1
+    assert not fx["live"]["xis"]
+
+
+def test_no_xi_to_go_on_waits():
+    fixtures_pages = {kn.SITEMAP: sitemap(URL), URL: page()}
+    import tempfile
+    from pathlib import Path
+    with tempfile.TemporaryDirectory() as t:
+        f, r = Path(t) / "f", Path(t) / "r"
+        f.mkdir()
+        r.mkdir()
+        assert auto.run(f, r, now=DAY_BEFORE, page=fixtures_pages.get) == [] and not list(f.glob("*.json"))
 
 
 def test_short_page_names_take_the_squad_name():
@@ -299,11 +153,8 @@ def test_short_page_names_take_the_squad_name():
     assert auto._full("Gerhard Erasmus", ["Gerhard Erasmus"]) == "Gerhard Erasmus"
 
 
-def test_finished_header_falls_back_to_the_scorecard_page():
-    from cricsim.auto import finished_header
-    stale = {"state": "In Progress", "status": "West Indies A opt to bowl"}
-    done = {"state": "Complete", "status": "England Lions won by 5 runs"}
-    assert finished_header(stale, done) is done
-    assert finished_header(done, stale) is done
-    assert finished_header(stale, {}) is None
-    assert finished_header({"state": "Abandon"}, {})["state"] == "Abandon"
+def test_xis_confirmed_flag():
+    from cricsim.publish import xis_confirmed
+    assert xis_confirmed({"live": {"xis": True}})
+    assert xis_confirmed({"note": "Playing XIs confirmed. India won the toss and bowl first."})
+    assert not xis_confirmed({"live": {"xis": False}, "note": "Probable XIs from the last matches; updated when the teams are named."})

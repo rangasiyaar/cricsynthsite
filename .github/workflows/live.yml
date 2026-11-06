@@ -1,7 +1,7 @@
 name: Live
 
 # Live match state for the match centre's live projection (cricsim.live): every 30 minutes, and each run keeps
-# polling (one page a minute per match) while one of our published matches is on, writing Firestore live/{id}
+# polling (the match page every 30 seconds) while one of our published matches is on, writing Firestore live/{id}
 # when an over ends or a wicket falls. One run at a time; the next scheduled run waits and takes over.
 # Free: Actions minutes cost nothing on a public repository; Firestore writes are ~50 per T20 (infra/COSTS.md).
 on:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       probe:
-        description: "Page match id to check the page format (prints what we read; writes nothing)"
+        description: "Match page URL to check the page format (prints what we read; writes nothing)"
         required: false
         default: ""
       dry_run:
@@ -37,7 +37,8 @@ jobs:
       - run: uv sync --all-extras
       - name: Page check
         if: inputs.probe != ''
-        run: uv run python -m cricsim.live --probe "${{ inputs.probe }}"
+        env: { URL: "${{ inputs.probe }}" }
+        run: uv run python -m cricsim.live --probe "$URL"
       - uses: google-github-actions/auth@v2
         if: inputs.probe == '' && env.GCP == 'true' && !inputs.dry_run
         with:

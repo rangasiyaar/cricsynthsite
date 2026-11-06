@@ -65,13 +65,22 @@ jobs:
           restore-keys: |
             ${{ steps.day.outputs.prev }}
             ${{ steps.day.outputs.prev2 }}
+      # recent matches Cricsheet hasn't added yet (cricsim.khelnow bridge): pages already read are kept here
+      - uses: actions/cache/restore@v4
+        if: steps.cache.outputs.cache-hit != 'true' && !(inputs.quick && steps.cache.outputs.cache-matched-key != '')
+        with:
+          path: data/khelnow
+          key: khelnow-${{ github.run_id }}
+          restore-keys: khelnow-
       - name: Data
         id: data
         if: steps.cache.outputs.cache-hit != 'true' && !(inputs.quick && steps.cache.outputs.cache-matched-key != '')
         run: |
           if uv run cricdata download --kind all --dest data/raw \
+             && { uv run python -m cricsim.khelnow bridge --cricsheet data/raw/all_json.zip --cache data/khelnow \
+                    --out data/raw/extra_json.zip --days 21 || echo "::warning::Recent-match bridge failed; Cricsheet only"; } \
              && uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
-                  --names data/raw/names.csv --out data/parquet.new \
+                  --names data/raw/names.csv --extra data/raw/extra_json.zip --out data/parquet.new \
              && uv run cricdata attributes --out data/parquet.new; then
             rm -rf data/parquet && mv data/parquet.new data/parquet
             echo "fresh=true" >> "$GITHUB_OUTPUT"
@@ -85,6 +94,11 @@ jobs:
       - name: Fit (all data)
         if: steps.data.outputs.fresh == 'true'
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
+      - uses: actions/cache/save@v4
+        if: steps.data.outputs.fresh == 'true'
+        with:
+          path: data/khelnow
+          key: khelnow-${{ github.run_id }}
       - uses: actions/cache/save@v4          # only a fresh day's data and model is saved, so a failed download is retried
         if: steps.data.outputs.fresh == 'true'
         with:

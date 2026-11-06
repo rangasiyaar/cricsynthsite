@@ -17,7 +17,7 @@ changes its pricing pages.
 | **Artifact Registry** | 0.5 GB | Only the two newest images kept |
 | **Cloud Scheduler** | 3 jobs | Weekly ingest, nightly simulate refresh, nightly accuracy scoring |
 | **Secret Manager** | 6 active versions | `cricapi-admin-key` (one version) |
-| **GitHub Actions** (not Google) | Free on public repos; 2,000 min/month on private | Nightly publish ≈ 12–15 min (data + fit + simulate + build), weekly Pattern Lab; the live job (`live.yml`) runs every 30 min and keeps polling only while one of our matches is on (repo must stay public, or it needs those minutes); the heavy batch work never runs on Google |
+| **GitHub Actions** (not Google) | Free on public repos; 2,000 min/month on private | Nightly publish ≈ 12–15 min (data + fit + simulate + build), weekly Pattern Lab; the live job (`live.yml`) runs every 30 min and keeps polling (one match page every 30 s) only while one of our matches is on; the nightly data step also reads recently finished match pages Cricsheet hasn't added yet (≤ 400 pages, cached between nights in the Actions cache, ≈ 2–6 min) (repo must stay public, or it needs those minutes); the heavy batch work never runs on Google |
 | **Firebase Auth** | Google / email sign-in | No phone (SMS) auth — SMS is billed |
 | **Firebase Cloud Messaging** (Android app alerts) | Free, no message quota for topics | Two topics; at most 6 alerts per nightly publish (`cricsim/notify.py`), off until the repo variable `ALERTS_ENABLED=true` |
 | **Firebase Crashlytics** (Android app crash reports) | Free | Only in builds with the Firebase Android config; no Analytics or BigQuery export |

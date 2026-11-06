@@ -1,91 +1,45 @@
-"""Live state from a score page: page data decoding, finding our fixture, the engine start state and when to write."""
+"""Live loop: finding a fixture's match page, when to write, the Firestore encoding, one dry pass end to end."""
 import json
 from datetime import datetime, timezone
 
+from cricsim import khelnow as kn
 from cricsim import live
-from cricsim.results import Roster
 
-ENG = ["Tom Banton", "Ben Duckett", "Harry Brook", "Joe Root", "Jos Buttler", "Will Jacks", "Sam Curran",
-       "Adil Rashid", "Brydon Carse", "Saqib Mahmood", "Jofra Archer"]
-SL = ["Pathum Nissanka", "Kusal Mendis", "Kusal Perera", "Charith Asalanka", "Kamindu Mendis", "Dasun Shanaka",
-      "Dunith Wellalage", "Wanindu Hasaranga", "Maheesh Theekshana", "Matheesha Pathirana", "Dilshan Madushanka"]
+from .khelnow_pages import IND, IND_ID, NZ, NZ_ID, URL, innings, names, page, sitemap
+
+FX = {"id": "nz-v-ind", "date": "2026-10-30", "start_time": "12:30", "format": "T20", "published": True,
+      "teams": [{"name": "New Zealand", "short": "NZ", "players": [n for n, *_ in NZ[:11]]},
+                {"name": "India", "short": "IND", "players": [n for n, *_ in IND[:11]]}]}
 
 
 def _doc():
-    ids = [[f"e{i}" for i in range(11)], [f"s{i}" for i in range(11)]]
-    return {"summary": {"teams": [{"players": [{"id": p, "name": n} for p, n in zip(ids[0], ENG)]},
-                                  {"players": [{"id": p, "name": n} for p, n in zip(ids[1], SL)]}]},
-            "match": {"teams": [{"name": "England", "players": ids[0]}, {"name": "Sri Lanka", "players": ids[1]}]}}
+    ids = [[f"n{k}" for k in range(11)], [f"i{k}" for k in range(11)]]
+    return {"summary": {"teams": [{"players": [{"id": p, "name": n} for p, (n, *_) in zip(ids[0], NZ)]},
+                                  {"players": [{"id": p, "name": n} for p, (n, *_) in zip(ids[1], IND)]}]},
+            "match": {"teams": [{"name": "New Zealand", "players": ids[0]}, {"name": "India", "players": ids[1]}]}}
 
 
-def _page(*chunks: str) -> str:
-    return "".join(f"<script>self.__next_f.push([1,{json.dumps(c)}])</script>" for c in chunks)
+def test_find_page():
+    other = "https://khelnow.com/live-cricket-score/australia-vs-england-ashes-30th-october-2026-at-1-00-am-40101"
+    later = "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-2nd-november-2026-at-7-00-am-40102"
+    entries = kn.sitemap(sitemap(other, URL, later))
+    assert live.find_page(FX, entries) == URL
+    assert live.find_page({**FX, "live": {"kn": 40102}}, entries) == later
+    assert live.find_page({**FX, "live": {"url": "x"}}, []) == "x"
+    npl = {"date": "2026-10-28", "start_time": "16:45", "teams": [{"name": "Pokhara Avengers"}, {"name": "Sudurpaschim Royals"}]}
+    u = "https://khelnow.com/live-cricket-score/sudurpaschim-royals-vs-pokhara-avengers-nepal-premier-league-28th-october-2026-at-11-15-am-41300"
+    assert live.find_page(npl, kn.sitemap(sitemap(u))) == u
 
 
-OTHER = {"matchId": 1, "inningsId": 1, "batTeam": {"teamId": 4, "teamScore": 300, "teamWkts": 9}}
-MINI = {"inningsId": 2, "batTeam": {"teamId": 5, "teamScore": 46, "teamWkts": 1}, "status": "Sri Lanka need 147",
-        "batsmanStriker": {"id": 1, "name": "Kusal Mendis", "runs": 5}, "batsmanNonStriker": {"id": 2, "name": "Pathum Nissanka"},
-        "overs": 4.2, "target": 193,
-        "matchScoreDetails": {"matchId": 170751, "inningsScoreList": [
-            {"inningsId": 1, "batTeamId": 9, "batTeamName": "ENG", "score": 192, "wickets": 4, "overs": 20},
-            {"inningsId": 2, "batTeamId": 5, "batTeamName": "SL", "score": 46, "wickets": 1, "overs": 4.2}]}}
-HEAD = {"matchId": 170751, "state": "In Progress", "status": "Sri Lanka need 147",
-        "team1": {"id": 5, "name": "Sri Lanka", "shortName": "SL"}, "team2": {"id": 9, "name": "England", "shortName": "ENG"}}
-CARD = {"scoreCard": [{"matchId": 170751, "inningsId": 2, "batTeamDetails": {"batsmenData": {
-    "bat_1": {"batName": "Charith Asalanka", "outDesc": "b Archer"},
-    "bat_2": {"batName": "Kusal Mendis", "outDesc": "batting"},
-    "bat_3": {"batName": "Pathum Nissanka", "outDesc": "not out"},
-    "bat_4": {"batName": "Kusal Perera", "outDesc": "retired hurt"}}}}]}
-
-
-def test_page_data_and_objects():
-    text = live.flight(_page('x"miniscore":' + json.dumps(OTHER) + ",", '"miniscore":' + json.dumps(MINI) + ',"matchHeader":'
-                             + json.dumps(HEAD)))
-    assert len(live.objects(text, "miniscore")) == 2
-    assert live.first(text, "miniscore", 170751)["batTeam"]["teamScore"] == 46     # not the other match on the page
-    assert live.first(text, "matchHeader")["state"] == "In Progress"
-
-
-def test_state_in_our_ids():
-    text = live.flight(_page('"miniscore":' + json.dumps(MINI) + ',"matchHeader":' + json.dumps(HEAD)))
-    card = live.flight(_page(json.dumps(CARD)[1:-1]))
-    out = live.out_batters(card, 2, 170751)
-    assert out == ["Charith Asalanka"]                                            # retired hurt is not out
-    s = live.state(text, Roster(_doc(), None), "T20", out, 170751)
-    assert s["innings"] == 2 and s["batting"] == 1 and s["battingFirst"] == 0
-    assert (s["runs"], s["wickets"], s["balls"], s["firstInningsTotal"], s["target"]) == (46, 1, 26, 192, 193)
-    assert s["striker"] == "s1" and s["nonStriker"] == "s0" and s["out"] == ["s3"]
-    assert live.balls_of(19.6, 6) == 120 and live.balls_of("7", 6) == 42 and live.balls_of(12.4, 5) == 64
-
-
-def test_before_the_start_and_change_key():
-    text = live.flight(_page('"matchHeader":' + json.dumps({**HEAD, "state": "Toss", "status": "England opt to bat"})))
-    assert live.state(text, Roster(_doc(), None), "T20") == {"state": "Toss", "status": "England opt to bat"}
+def test_change_key_and_window():
     a = {"state": "In Progress", "innings": 1, "wickets": 2, "balls": 37}
     assert live.change_key(a, 6) == live.change_key({**a, "balls": 41}, 6)         # same over: no write
     assert live.change_key(a, 6) != live.change_key({**a, "balls": 42}, 6)         # over ended
     assert live.change_key(a, 6) != live.change_key({**a, "wickets": 3}, 6)        # wicket
-
-
-def test_find_match_and_window():
-    fx = {"date": "2026-10-29", "start_time": "13:30", "format": "OD",
-          "teams": [{"name": "England", "short": "ENG"}, {"name": "Sri Lanka", "short": "SL"}]}
-    start = datetime(2026, 10, 29, 8, 0, tzinfo=timezone.utc).timestamp() * 1000
-    listing = [{"matchId": 1, "startDate": start, "team1": {"teamName": "South Africa"}, "team2": {"teamName": "Australia"}},
-               {"matchId": 170751, "startDate": start, "team1": {"teamName": "England", "teamSName": "ENG"},
-                "team2": {"teamName": "Sri Lanka", "teamSName": "SL"}},
-               {"matchId": 9, "startDate": start + 3 * 86400e3, "team1": {"teamName": "England"},
-                "team2": {"teamName": "Sri Lanka"}}]
-    assert live.find_match(fx, listing) == 170751
-    assert live.find_match({**fx, "live": {"id": 42}}, listing) == 42
-    npl = {"date": "2026-10-28", "start_time": "16:45", "teams": [{"name": "Pokhara Avengers"}, {"name": "Sudur Paschim Royals"}]}
-    t = datetime(2026, 10, 28, 11, 15, tzinfo=timezone.utc).timestamp() * 1000
-    assert live.find_match(npl, [{"matchId": 7, "startDate": t, "team1": {"teamName": "Sudurpaschim Royals"},
-                                  "team2": {"teamName": "Pokhara Avengers"}}]) == 7
-    assert live.window(fx, datetime(2026, 10, 29, 7, 50, tzinfo=timezone.utc)) == "on"     # toss time
-    assert live.window(fx, datetime(2026, 10, 29, 7, 30, tzinfo=timezone.utc)) == "soon"
-    assert live.window(fx, datetime(2026, 10, 29, 18, 0, tzinfo=timezone.utc)) == "off"
-    assert live.window({**fx, "format": "MULTIDAY"}, datetime(2026, 10, 29, 9, 0, tzinfo=timezone.utc)) == "off"
+    assert live.window(FX, datetime(2026, 10, 30, 6, 50, tzinfo=timezone.utc)) == "on"     # toss time
+    assert live.window(FX, datetime(2026, 10, 30, 6, 30, tzinfo=timezone.utc)) == "soon"
+    assert live.window(FX, datetime(2026, 10, 30, 18, 0, tzinfo=timezone.utc)) == "off"
+    assert live.window({**FX, "format": "MULTIDAY"}, datetime(2026, 10, 30, 8, 0, tzinfo=timezone.utc)) == "off"
 
 
 def test_firestore_values():
@@ -96,22 +50,18 @@ def test_firestore_values():
 
 
 def test_run_once_dry(tmp_path, capsys, monkeypatch):
-    fx = {"id": "eng-v-sl", "date": "2026-10-29", "start_time": "13:30", "format": "T20", "published": True,
-          "teams": [{"name": "England", "short": "ENG", "players": ENG}, {"name": "Sri Lanka", "short": "SL", "players": SL}]}
-    (tmp_path / "eng-v-sl.json").write_text(json.dumps(fx))
-    listing = _page('"matchInfo":' + json.dumps({"matchId": 170751, "team1": {"teamName": "England"},
-                                                 "team2": {"teamName": "Sri Lanka"}}))
-    pages = {live.LIST: listing, f"{live.BASE}/live-cricket-scores/170751": _page('"miniscore":' + json.dumps(MINI)
-                                                                                  + ',"matchHeader":' + json.dumps(HEAD)),
-             f"{live.BASE}/live-cricket-scorecard/170751": _page(json.dumps(CARD)[1:-1])}
+    (tmp_path / "nz-v-ind.json").write_text(json.dumps(FX))
+    card, comm = innings(1, NZ_ID, IND_ID, [(0, 0, 4, ""), (0, 0, 1, ""), (0, 0, 0, "W:bowled")])
+    pages = {kn.SITEMAP: sitemap(URL), URL: page(status=3, inns=[(names(card, NZ, IND, NZ_ID, IND_ID), comm)], live_inning=1)}
 
     class Now(datetime):
         @classmethod
         def now(cls, tz=None):
-            return datetime(2026, 10, 29, 9, 0, tzinfo=timezone.utc)
+            return datetime(2026, 10, 30, 7, 30, tzinfo=timezone.utc)
     monkeypatch.setattr(live, "datetime", Now)
     live.run(tmp_path, dry=True, once=True, max_minutes=1, fetch=lambda path: _doc(), page=pages.__getitem__)
     out = capsys.readouterr().out
-    line = next(ln for ln in out.splitlines() if ln.startswith("eng-v-sl: {"))
+    line = next(ln for ln in out.splitlines() if ln.startswith("nz-v-ind: {"))
     doc = json.loads(line.split(": ", 1)[1])
-    assert doc["published"] is True and doc["runs"] == 46 and doc["out"] == ["s3"] and "cricbuzz" not in line
+    assert doc["published"] is True and (doc["runs"], doc["wickets"], doc["balls"]) == (5, 1, 3) and doc["out"] == ["n1"]
+    assert "khelnow" not in line

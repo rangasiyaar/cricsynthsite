@@ -55,12 +55,19 @@ def _write(rows: list[dict], table: str, out: Path, part: int) -> None:
     pq.write_table(tbl, out / table / f"part-{part:05d}.parquet", compression="zstd")
 
 
-def build(zip_path: Path, out: Path, chunk_matches: int = 500, limit: int | None = None) -> dict[str, int]:
-    """Parse every match and write Parquet. Returns row counts per table."""
+def build(zip_path: Path, out: Path, chunk_matches: int = 500, limit: int | None = None,
+          extra: list[Path] | None = None) -> dict[str, int]:
+    """Parse every match and write Parquet. Returns row counts per table. `extra` zips (same format) add matches
+    Cricsheet hasn't published yet; their files are named so their ids can't clash with Cricsheet's (e.g. kn123)."""
     counts = {t: 0 for t in TABLES}
     buf: dict[str, list[dict]] = {t: [] for t in TABLES}
     part, n, failed = 1, 0, 0
-    for match_id, data in iter_matches(zip_path):
+
+    def every():
+        yield from iter_matches(zip_path)
+        for z in extra or []:
+            yield from iter_matches(z)
+    for match_id, data in every():
         try:
             parsed = parse_match(data, match_id)
         except (KeyError, ValueError, TypeError) as e:

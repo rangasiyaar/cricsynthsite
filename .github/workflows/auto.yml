@@ -1,6 +1,6 @@
 name: Auto
 
-# Fixtures, playing XIs and scorecards from the public score pages (cricsim.auto, competitions in
+# Fixtures, playing XIs and scorecards from the public match pages (cricsim.auto + cricsim.khelnow, competitions in
 # cricsim/src/cricsim/auto.json): new fixtures two days out, the named XIs and toss before the start, the scorecard
 # once a match is over. What changed is committed and a quick publish is asked for (a bot push alone doesn't start
 # one). Free: Actions minutes cost nothing on a public repository.
@@ -22,7 +22,7 @@ on:
         type: boolean
         default: false
       squads:
-        description: "Debug: show what we read from this match id's squads page; change nothing"
+        description: "Debug: show what we read from this match page URL; change nothing"
         type: string
         default: ""
       minutes:
@@ -58,7 +58,7 @@ jobs:
       - name: Squads page
         if: ${{ inputs.squads }}
         env: { ID: "${{ inputs.squads }}" }
-        run: uv run python -m cricsim.auto --squads "$ID"
+        run: uv run python -m cricsim.auto --probe "$ID"
       - name: Missed XIs, re-run after the start
         if: ${{ inputs.late }}
         env: { GH_TOKEN: "${{ github.token }}", LATE: "${{ inputs.late }}" }
@@ -90,7 +90,7 @@ jobs:
           while :; do
             git pull --rebase -q origin "$GITHUB_REF_NAME" || git rebase --abort 2>/dev/null || true
             rm -f "$RUNNER_TEMP/rerun.txt"
-            uv run python -m cricsim.auto --changed "$RUNNER_TEMP/rerun.txt" || echo "pass failed; retrying next round"
+            uv run python -m cricsim.auto --changed "$RUNNER_TEMP/rerun.txt" --cache "$RUNNER_TEMP/match-index.json" || echo "pass failed; retrying next round"
             if [ "$ALERTS" = "true" ]; then          # match starting soon, today's matches (each sent once)
               FCM_ACCESS_TOKEN="$(gcloud auth print-access-token 2>/dev/null)" \
                 uv run python -m cricsim.notify timed --project "$PROJECT" --state cricsim/alerts/sent.json || echo "timed alerts failed"
