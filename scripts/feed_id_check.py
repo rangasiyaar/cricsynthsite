@@ -58,3 +58,19 @@ for m in feed:
 print(f"\nTOTAL: {tot['hit']}/{tot['players']} feed players found in the register by id "
       f"({100 * tot['hit'] / max(1, tot['players']):.0f}%), names agree for {tot['agree']}/{tot['hit']}; "
       f"{tot['no_ids']} matches without player ids yet")
+
+# ── what else the feed carries: date range, statuses, and one live limited-overs match in full ──
+from datetime import datetime
+ds = sorted(datetime.strptime(m["date"], "%d.%m.%Y").date() for m in feed if m.get("date"))
+print(f"\nmatch dates: {ds[0]} .. {ds[-1]}; statuses: {dict(Counter(m.get('status') for m in feed))}")
+print("types:", dict(Counter(m.get("type") for m in feed)))
+keys = Counter(k for m in feed for k in m)
+print("match keys:", dict(keys))
+live = next((m for m in feed if m.get("status") == "In Progress" and m.get("type") in ("T20", "ODI", "List A")), None) \
+    or next((m for m in feed if m.get("type") in ("T20",) and m.get("items")), None)
+if live:
+    print(f"\nFULL ITEM ({live.get('name')} {live['team_a']['name']} v {live['team_b']['name']}, {live.get('status')}):")
+    print(json.dumps(live, ensure_ascii=False)[:7000])
+up = next((m for m in feed if m.get("status") == "Not Started"), None)
+if up:
+    print("\nUPCOMING ITEM:", json.dumps(up, ensure_ascii=False)[:1500])
