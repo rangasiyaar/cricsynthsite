@@ -464,6 +464,16 @@ def to_cricsheet(d: dict, register: dict[str, str] | None = None) -> dict | None
 
 # ── the bridge: recent finished matches Cricsheet hasn't added yet ────────────────────────────────────────────────
 
+TEAM_NOISE = {"women", "woman", "men", "the", "cc", "club", "team", "cricket"}
+
+
+def team_key(name: str, gender: str) -> str:
+    """A side as gender + its name's words (digits kept: "India Under-19s" isn't "India"; "Women" dropped, the gender
+    says it)."""
+    s = unicodedata.normalize("NFKD", name or "").encode("ascii", "ignore").decode().lower()
+    return gender + "|" + " ".join(sorted(set(re.sub(r"[^a-z0-9 ]", " ", s).split()) - TEAM_NOISE))
+
+
 def _cricsheet_index(zip_path: Path, since: date) -> tuple[list[tuple[date, set[str], set[str]]], dict[str, dict[str, str]]]:
     """From the Cricsheet zip: (date, team tokens A, team tokens B) for every match since `since` (to skip matches it
     has), and per team name the register id of every player who played for it in the last three years."""
@@ -486,7 +496,7 @@ def _cricsheet_index(zip_path: Path, since: date) -> tuple[list[tuple[date, set[
                 have.append((day, set(tokens(teams[0])) - GENERIC, set(tokens(teams[1])) - GENERIC))
             reg = (inf.get("registry") or {}).get("people") or {}
             for team, names in (inf.get("players") or {}).items():
-                r = roster.setdefault(" ".join(tokens(team)), {})
+                r = roster.setdefault(team_key(team, inf.get("gender") or "male"), {})
                 for nm in names:
                     if nm in reg:
                         r[nm] = reg[nm]
@@ -510,16 +520,19 @@ def _same_person(kn_name: str, cs_name: str) -> bool:
     return a[-1] == b[-1] and (a[0][0] == b[0][0] or (len(b[0]) <= 4 and a[0][0] in b[0]))
 
 
+def covered(i: dict, roster: dict[str, dict[str, str]]) -> bool:
+    """A match the bridge fills in: both sides played in Cricsheet's matches of the last three years (the bridge
+    fills Cricsheet's delay; it doesn't add teams or competitions Cricsheet doesn't cover)."""
+    return all(team_key(t["name"], i["gender"]) in roster for t in i["teams"])
+
+
 def link_players(d: dict, roster: dict[str, dict[str, str]], known: dict[str, str]) -> dict[str, str]:
     """Khel Now player id → Cricsheet register id for this match's XIs: the saved links, else the one player of the
     same name (surname + initial) who played for that team in the last three years."""
     i, out = info(d), {}
-    team_names = {t["id"]: " ".join(tokens(t["name"])) for t in i["teams"]}
+    keys = {t["id"]: team_key(t["name"], i["gender"]) for t in i["teams"]}
     for tid, s in squads(d).items():
-        cand = roster.get(team_names.get(tid, ""), {})
-        if not cand:                                            # the team under another name: any listed side sharing a word
-            words = set(team_names.get(tid, "").split()) - GENERIC
-            cand = {nm: rid for team, r in roster.items() if words & set(team.split()) for nm, rid in r.items()}
+        cand = roster.get(keys.get(tid, ""), {})
         for p in s["xi"]:
             if p["pid"] in known:
                 out[p["pid"]] = known[p["pid"]]
@@ -542,7 +555,8 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
     since = (now - timedelta(days=days)).date()
     have, roster = _cricsheet_index(cricsheet_zip, since)
     entries = [e for e in sitemap(safe(page, SITEMAP)) if e["date"] and since <= e["date"] < now.date()]
-    stats = {"pages": len(entries), "fetched": 0, "in_cricsheet": 0, "written": 0, "skipped": 0}
+    stats = {"pages": len(entries), "fetched": 0, "not_covered": 0, "in_cricsheet": 0, "written": 0, "skipped": 0}
+    exclude = json.loads((Path(__file__).with_name("auto.json")).read_text()).get("exclude", [])
     written: dict[str, dict] = {}
     for e in sorted(entries, key=lambda e: e["date"], reverse=True):
         f = cache / f"{e['id']}.json"
@@ -558,6 +572,9 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
             continue
         i = info(d)
         if i["status"] != COMPLETED or not i["format"]:
+            continue
+        if any(re.search(x, i["competition"], re.I) for x in exclude) or not covered(i, roster):
+            stats["not_covered"] += 1
             continue
         if _in_cricsheet(i, have):
             stats["in_cricsheet"] += 1

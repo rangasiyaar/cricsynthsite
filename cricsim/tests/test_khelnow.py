@@ -114,8 +114,8 @@ def test_cricsheet_format_parses():
 def test_bridge(tmp_path):
     cs_zip = tmp_path / "all.zip"
     other = {"info": {"dates": ["2026-10-29"], "teams": ["Australia", "England"],
-                      "players": {"New Zealand": ["T Seifert", "FH Allen"]},
-                      "registry": {"people": {"T Seifert": "abc12345", "FH Allen": "def67890"}}}}
+                      "players": {"New Zealand": ["T Seifert", "FH Allen"], "India": ["SV Samson"]},
+                      "registry": {"people": {"T Seifert": "abc12345", "FH Allen": "def67890", "SV Samson": "aaa11111"}}}}
     with zipfile.ZipFile(cs_zip, "w") as zf:
         zf.writestr("1.json", json.dumps(other))
     done = page(status=2, inns=_inns(), result="IND won by 9 wickets", winner=IND_ID, margin="9 wickets")
@@ -135,3 +135,11 @@ def test_bridge(tmp_path):
     stats = kn.bridge(cs_zip, tmp_path / "cache", tmp_path / "extra.zip", days=10, page=pages.__getitem__,
                       now=datetime(2026, 11, 2, tzinfo=timezone.utc))
     assert stats["written"] == 0 and stats["in_cricsheet"] == 1 and stats["fetched"] == 0     # read from the cache
+    # a side Cricsheet doesn't know (another competition): not added
+    with zipfile.ZipFile(cs_zip, "w") as zf:
+        zf.writestr("1.json", json.dumps({"info": {**other["info"], "players": {"New Zealand": ["T Seifert"]}}}))
+    stats = kn.bridge(cs_zip, tmp_path / "cache", tmp_path / "extra.zip", days=10, page=pages.__getitem__,
+                      now=datetime(2026, 11, 2, tzinfo=timezone.utc))
+    assert stats["written"] == 0 and stats["not_covered"] == 1
+    assert kn.team_key("India Under-19s", "male") != kn.team_key("India", "male")
+    assert kn.team_key("Sydney Sixers Women", "female") == kn.team_key("Sydney Sixers", "female")
