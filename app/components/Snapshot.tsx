@@ -3,7 +3,7 @@
 // fall, who to watch, the key duel, the ground and the fantasy picks — each with a small chart and a link to its tab.
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Num, Pct, WinBar } from "@/components/charts";
+import { Num, Pct } from "@/components/charts";
 import { loadVenue } from "@/lib/data";
 import type { MatchDoc, Summary, TeamSummary, VenueIntel } from "@/lib/types";
 
@@ -23,21 +23,6 @@ function Block({ title, tab, open, children, wide = false }: { title: string; ta
   );
 }
 const label = (tab: string) => ({ "Venue intelligence": "Venue", Matchups: "Batter v bowler", "Top players": "Players" } as Record<string, string>)[tab] ?? tab;
-
-function verdict(s: Summary): string {
-  const [a, b] = s.teams.map((t) => s.result.win[t.name] ?? 0);
-  const gap = Math.abs(a - b), fav = a >= b ? s.teams[0].name : s.teams[1].name;
-  if (gap < 0.06) return "Too close to call";
-  if (gap < 0.16) return `${fav} slight favourites`;
-  if (gap < 0.32) return `${fav} favourites`;
-  return `${fav} strong favourites`;
-}
-
-/** The side batting first's chance of winning, averaged over both ways the toss can go. */
-function battingFirstWins(s: Summary): number | null {
-  if (s.result.by_toss.length !== 2) return null;
-  return s.result.by_toss.reduce((a, bt) => a + (bt.win[bt.batting_first] ?? 0), 0) / 2;
-}
 
 function par(s: Summary): number | null {
   const c = s.result.win_by_first_innings ?? [];
@@ -72,38 +57,84 @@ function Ranges({ s, short, parRuns }: { s: Summary; short: string[]; parRuns: n
   );
 }
 
-/** Both sides' typical score through the innings. */
-function Worm({ s, short }: { s: Summary; short: string[] }) {
-  const lines = s.teams.map((t) => t.batting.fan?.map((f) => f.q50)
-    ?? t.batting.per_over.reduce<number[]>((acc, o) => [...acc, (acc[acc.length - 1] ?? 0) + o.runs], []));
-  const overs = Math.max(...lines.map((l) => l.length), 1);
-  const top = Math.max(...lines.flat(), 1);
-  const W = 420, H = 120, pad = 16, x = (i: number) => pad + (i / overs) * (W - 2 * pad), y = (v: number) => H - 14 - (v / top) * (H - 26);
+/** The over in which each side is expected to lose each wicket (median over of the 1st, 2nd, … wicket), for the
+ *  wickets more likely than not to fall. */
+function wicketOvers(t: TeamSummary, overs: number): number[] {
+  return t.batting.fall_of_wickets.filter((f) => f.p >= 0.5 && f.over?.q["50"] != null)
+    .map((f) => Math.min(overs, Math.max(1, Math.ceil(f.over!.q["50"]))));
+}
+
+/** Manhattan: each side's runs in every over side by side, with a dot for each wicket in the over it's expected. */
+function Manhattan({ s, short }: { s: Summary; short: string[] }) {
+  const per = s.teams.map((t) => t.batting.per_over.map((o) => o.runs));
+  const overs = Math.max(...per.map((p) => p.length), 1);
+  const wk = s.teams.map((t) => wicketOvers(t, overs));
+  const top = Math.max(...per.flat(), 1);
+  const W = 420, H = 150, pad = 18, base = H - 16, topY = 30, slot = (W - pad - 4) / overs, bw = Math.max(1.5, slot / 2 - 0.6);
+  const y = (v: number) => base - (v / top) * (base - topY);
+  const tick = overs > 20 ? 10 : 5;
   return (
-    <svg className="snap-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="score through the innings">
-      <line x1={pad} x2={W - pad} y1={H - 14} y2={H - 14} stroke="var(--cs-line)" />
-      {lines.map((l, k) => (
-        <polyline key={k} fill="none" stroke={COLORS[k]} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round"
-                  strokeDasharray={k ? "6 4" : undefined}
-                  points={[`${x(0)},${y(0)}`, ...l.map((v, i) => `${x(i + 1)},${y(v)}`)].join(" ")} />
+    <svg className="snap-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="runs per over and expected wickets">
+      {[0.5, 1].map((f) => <line key={f} x1={pad} x2={W - 4} y1={y(top * f)} y2={y(top * f)} stroke="var(--cs-line)" strokeDasharray="2 3" />)}
+      <text x={pad - 4} y={y(top) + 4} textAnchor="end" className="snap-axis">{Math.round(top)}</text>
+      {per.map((p, k) => p.map((v, i) => {
+        const x = pad + i * slot + k * (bw + 0.6);
+        const n = wk[k].filter((o) => o === i + 1).length;
+        return (
+          <g key={`${k}-${i}`}>
+            <rect x={x} y={y(v)} width={bw} height={base - y(v)} rx={0.8} fill={COLORS[k]} fillOpacity={0.85}>
+              <title>{short[k]} over {i + 1}: {v.toFixed(1)} runs{n ? `, ${n} wicket${n > 1 ? "s" : ""} expected` : ""}</title>
+            </rect>
+            {Array.from({ length: n }, (_, j) => (
+              <circle key={j} cx={x + bw / 2} cy={y(v) - 5 - j * 8} r={3.2} fill="var(--cs-bg)" stroke={COLORS[k]} strokeWidth={2} />
+            ))}
+          </g>
+        );
+      }))}
+      <line x1={pad} x2={W - 4} y1={base} y2={base} stroke="var(--cs-ink-3)" />
+      {Array.from({ length: Math.floor(overs / tick) }, (_, i) => (i + 1) * tick).map((o) => (
+        <text key={o} x={pad + (o - 0.5) * slot} y={H - 3} textAnchor="middle" className="snap-axis">{o}</text>
       ))}
-      {short.map((n, k) => <text key={n} x={pad + 4} y={14 + k * 14} className="snap-axis" style={{ fill: COLORS[k] }}>{k ? "- - " : "—— "}{n}</text>)}
-      <text x={pad} y={H - 2} className="snap-axis">0</text>
-      <text x={W - pad} y={H - 2} textAnchor="end" className="snap-axis">{overs} ov</text>
+      {short.map((n, k) => (
+        <g key={n} transform={`translate(${pad + k * 70}, 10)`}>
+          <rect width={10} height={10} rx={2} fill={COLORS[k]} /><text x={14} y={9} className="snap-axis">{n}</text>
+        </g>
+      ))}
+      <g transform={`translate(${pad + 140}, 10)`}>
+        <circle cx={5} cy={5} r={3.2} fill="var(--cs-bg)" stroke="var(--cs-ink-3)" strokeWidth={2} />
+        <text x={14} y={9} className="snap-axis">wicket expected</text>
+      </g>
     </svg>
   );
 }
 
-/** One row of squares per side: darker where a wicket is likelier in that over; the likeliest over is outlined. */
-function WicketStrip({ t, color }: { t: TeamSummary; color: string }) {
-  const v = t.batting.per_over.map((o) => o.p_wicket);
-  const max = Math.max(...v, 1e-9), best = v.indexOf(Math.max(...v));
-  const n = v.length, W = 420, cell = Math.min(14, (W - (n - 1) * 2) / n);
+/** One bar per side split into the innings' phases (width = overs), shaded by how fast wickets fall in each, with the
+ *  expected wickets written in and the over each wicket is expected marked along the top. */
+function PhaseTimeline({ t, color, overs }: { t: TeamSummary; color: string; overs: number }) {
+  const ph = t.batting.phases;
+  const rate = ph.map((p) => (p.wickets.mean ?? 0) / Math.max(1, p.overs[1] - p.overs[0] + 1));
+  const max = Math.max(...rate, 1e-9);
+  const W = 420, H = 58, barY = 18, barH = 30, x = (o: number) => ((o - 1) / overs) * W;
+  const marks = wicketOvers(t, overs);
   return (
-    <svg className="snap-chart" viewBox={`0 0 ${W} ${cell + 2}`} role="img" aria-label={`wicket chance by over, likeliest over ${best + 1}`}>
-      {v.map((p, i) => (
-        <rect key={i} x={i * (cell + 2)} y={1} width={cell} height={cell} rx={2} fill={color} fillOpacity={0.12 + 0.88 * (p / max)}
-              stroke={i === best ? "var(--cs-ink)" : "none"} strokeWidth={1.5}><title>Over {i + 1}: {(100 * p).toFixed(0)}%</title></rect>
+    <svg className="snap-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="wickets by phase">
+      {ph.map((p, i) => {
+        const x0 = x(p.overs[0]), x1 = x(p.overs[1] + 1);
+        return (
+          <g key={p.phase}>
+            <rect x={x0 + 1} y={barY} width={Math.max(0, x1 - x0 - 2)} height={barH} rx={6} fill={color} fillOpacity={0.15 + 0.75 * (rate[i] / max)} />
+            <text x={(x0 + x1) / 2} y={barY + 13} textAnchor="middle" className="snap-axis" style={{ fill: rate[i] / max > 0.6 ? "#fff" : "var(--cs-ink)" }}>{p.phase}</text>
+            <text x={(x0 + x1) / 2} y={barY + 25} textAnchor="middle" className="snap-axis snap-axis-b" style={{ fill: rate[i] / max > 0.6 ? "#fff" : "var(--cs-ink)" }}>
+              {(p.wickets.mean ?? 0).toFixed(1)} wkts
+            </text>
+          </g>
+        );
+      })}
+      {marks.map((o, i) => (
+        <g key={i}>
+          <line x1={x(o + 0.5)} x2={x(o + 0.5)} y1={10} y2={barY} stroke={color} strokeWidth={1.5} />
+          <circle cx={x(o + 0.5)} cy={8} r={3.5} fill="var(--cs-bg)" stroke={color} strokeWidth={2}><title>Wicket {i + 1}: around over {o}</title></circle>
+        </g>
       ))}
     </svg>
   );
@@ -141,8 +172,7 @@ function Sparkline({ runs, avg }: { runs: number[]; avg: number | null }) {
 
 // ── the snapshot ──────────────────────────────────────────────────────────────────────────────────────────────
 
-/** `scoreboard`: the page already shows the win bar above (the website), so Who wins keeps only its verdict line. */
-export default function Snapshot({ doc, scoreboard = false, ...open }: { doc: MatchDoc } & Open) {
+export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { doc: MatchDoc } & Open) {
   const s = doc.summary;
   const short = doc.match.teams.map((t) => t.short);
   const names = new Map<string, string>();
@@ -152,8 +182,6 @@ export default function Snapshot({ doc, scoreboard = false, ...open }: { doc: Ma
     if (doc.match.venue_id) loadVenue(doc.match.id).then(setV).catch(() => setV(null));
   }, [doc.match.id, doc.match.venue_id]);
 
-  const [wa, wb] = s.teams.map((t) => s.result.win[t.name] ?? 0);
-  const bf = battingFirstWins(s);
   const parRuns = par(s);
   const pp = s.teams.map((t) => t.batting.phases.find((ph) => ph.phase === "Powerplay"));
   const duel = s.matchups[0];
@@ -167,22 +195,6 @@ export default function Snapshot({ doc, scoreboard = false, ...open }: { doc: Ma
 
   return (
     <div className="snapshot">
-      <Block title="Who wins" open={open} wide>
-        {scoreboard ? <p className="snap-duel"><b>{verdict(s)}</b></p> : <>
-          <div className="snap-win">
-            <span style={{ color: COLORS[0] }}><b className="snap-big"><Pct p={wa} /></b> {short[0]}</span>
-            <span className="snap-verdict">{verdict(s)}</span>
-            <span style={{ color: COLORS[1] }}>{short[1]} <b className="snap-big"><Pct p={wb} /></b></span>
-          </div>
-          <WinBar a={s.teams[0].name} b={s.teams[1].name} pa={wa} pb={wb} big />
-        </>}
-        <p className="snap-line">
-          <span className="tag">{doc.match.xis ? "Lineup Out" : "Probable XIs"}</span>
-          {bf != null && <> Batting first wins <b><Pct p={bf} /></b></>}
-          {s.result.margin_runs.q["50"] != null && <> · typical margin <b><Num value={s.result.margin_runs.q["50"]} /></b> runs or <b><Num value={s.result.margin_wickets.q["50"]} /></b> wickets</>}
-        </p>
-      </Block>
-
       <Block title="The scores" tab="Scores" open={open} wide>
         <div className="snap-split">
           <div>
@@ -202,8 +214,8 @@ export default function Snapshot({ doc, scoreboard = false, ...open }: { doc: Ma
             </p>
           </div>
           <div>
-            <div className="cs-k">Score through the innings</div>
-            <Worm s={s} short={short} />
+            <div className="cs-k">Runs per over · wickets</div>
+            <Manhattan s={s} short={short} />
           </div>
         </div>
       </Block>
@@ -227,12 +239,7 @@ export default function Snapshot({ doc, scoreboard = false, ...open }: { doc: Ma
                 {" "}· <b><Num value={t.batting.wickets.mean} digits={1} /></b> wickets
                 {ph && <> · fastest in the <b>{ph.phase.toLowerCase()}</b> (overs {ph.overs[0]}–{ph.overs[1]})</>}
               </p>
-              <WicketStrip t={t} color={COLORS[k]} />
-              <div className="snap-phases">
-                {t.batting.phases.map((p) => (
-                  <span key={p.phase}><span className="snap-sub">{p.phase}</span> <b><Num value={p.wickets.mean} digits={1} /></b></span>
-                ))}
-              </div>
+              <PhaseTimeline t={t} color={COLORS[k]} overs={s.meta.rules.overs} />
             </div>
           );
         })}

@@ -43,9 +43,10 @@ def download(kind: str, dest: Path) -> None:
 @click.option("--extra", "extra", type=click.Path(path_type=Path), multiple=True,
               help="More zips of matches in Cricsheet's format (recent matches it hasn't added yet); skipped if missing.")
 def build(zip_path: Path, people: Path, names: Path | None, out: Path, limit: int | None, extra: tuple[Path, ...]) -> None:
-    from cricdata.build import build as run_build, build_players
-    counts = run_build(zip_path, out, limit=limit, extra=[p for p in extra if p.exists()])
-    counts["players"] = build_players(people, names, out)
+    from cricdata.build import build as run_build, build_players, extra_people
+    extras = [p for p in extra if p.exists()]
+    counts = run_build(zip_path, out, limit=limit, extra=extras)
+    counts["players"] = build_players(people, names, out, extra_people(extras))
     click.echo(json.dumps(counts, indent=2))
 
 

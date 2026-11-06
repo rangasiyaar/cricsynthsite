@@ -94,8 +94,20 @@ def build(zip_path: Path, out: Path, chunk_matches: int = 500, limit: int | None
     return counts
 
 
-def build_players(people_csv: Path, names_csv: Path | None, out: Path) -> int:
-    """Cricsheet register: people.csv (IDs + cross-site keys) and names.csv (alternate names)."""
+def extra_people(zips: list[Path]) -> dict[str, str]:
+    """Players in the extra zips who aren't in Cricsheet's register yet (ids like "kn:123"), with their names."""
+    out: dict[str, str] = {}
+    for z in zips:
+        for _, data in iter_matches(z):
+            for name, pid in ((data.get("info") or {}).get("registry") or {}).get("people", {}).items():
+                if ":" in pid:
+                    out.setdefault(pid, name)
+    return out
+
+
+def build_players(people_csv: Path, names_csv: Path | None, out: Path, extra: dict[str, str] | None = None) -> int:
+    """Cricsheet register: people.csv (IDs + cross-site keys) and names.csv (alternate names), plus `extra` players
+    from recent matches it hasn't registered yet (id → name)."""
     aliases: dict[str, list[str]] = {}
     if names_csv and names_csv.exists():
         with names_csv.open(newline="", encoding="utf-8") as fh:
@@ -110,6 +122,9 @@ def build_players(people_csv: Path, names_csv: Path | None, out: Path) -> int:
                          "key_cricbuzz": row.get("key_cricbuzz") or None,
                          "key_bcci": row.get("key_bcci") or None,
                          "aliases": sorted(set(aliases.get(pid, [])) - {row.get("name")})})
+    for pid, name in (extra or {}).items():
+        rows.append({"player_id": pid, "name": name, "unique_name": name, "key_cricinfo": None, "key_cricbuzz": None,
+                     "key_bcci": None, "aliases": []})
     _write(rows, "players", out, 1)
     return len(rows)
 

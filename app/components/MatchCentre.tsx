@@ -446,7 +446,7 @@ export function Spotlight({ doc }: { doc: MatchDoc }) {
   const href = (t: string) => `/match/${encodeURIComponent(doc.match.id)}/?tab=${encodeURIComponent(t)}`;
   return (
     <div className="section">
-      <div className="section-head"><div><h2>Match snapshot</h2></div></div>
+      <div className="section-head"><div><h2>Match Overview</h2></div></div>
       <Snapshot doc={doc} hrefFor={href} scoreboard />
     </div>
   );

@@ -649,3 +649,4 @@ html body .footer a:focus-visible { outline: 2px solid var(--ft-accent); outline
 .snap-chart { max-width: 560px; }
 .snap-phases { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; font-size: 13px; }
 .snap-phases b { font-family: var(--cs-mono); }
+.snap-axis-b { font-weight: 600; }
