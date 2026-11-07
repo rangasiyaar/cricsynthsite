@@ -67,8 +67,8 @@ export class Analytics {
       hits.push([rank, -rec.balls, rec]);
     }
     // an exact namesake with little data gives way to an established player the query also fits ("Rohit Sharma")
-    const top = Math.max(0, ...hits.filter((h) => h[0] >= 2).map((h) => -h[1]));
-    for (const h of hits) if (h[0] === 1 && top >= 2000 && -h[1] * 10 < top) h[0] = 2;
+    const top = hits.filter((h) => h[0] >= 2).reduce<[number, number] | null>((t, h) => (!t || -h[1] > t[0] ? [-h[1], h[0]] : t), null);
+    if (top) for (const h of hits) if (h[0] === 1 && top[0] >= 2000 && -h[1] * 10 < top[0]) h[0] = top[1];
     hits.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
     return hits.slice(0, limit).map((h) => { const { aka: _aka, ...rest } = h[2]; return rest; });
   }

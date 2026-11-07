@@ -148,4 +148,7 @@ test("player search: full names, initials and namesakes", async () => {
   assert.equal(await first("a1cbdeeb"), "a1cbdeeb");             // an id is exact
   assert.equal(await first("kohli"), "ba607b88");
   assert.ok(!("aka" in (await a.findPlayers("Kohli"))[0]));
+  players.players[1][6] = [];                                     // no alias yet: initials only
+  const b = new Analytics({ get: async (p: string) => { if (p === "analytics/players.json") return players; throw new Error(p); } });
+  assert.equal((await b.findPlayers("Rohit Sharma", 3))[0].id, "740742ef");
 });
