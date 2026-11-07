@@ -1,0 +1,372 @@
+{
+ "id": "ugaw-v-rwaw-t20-entebbe-2026-11-07",
+ "innings": [
+  {
+   "team": "Uganda Women",
+   "runs": 99,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Janet Mbabazi",
+     "dismissal": "lbw b R Irera",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Stephani Nampiina",
+     "dismissal": "c B Murekatete b DM Bimenyimana",
+     "runs": 14,
+     "balls": 24,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Prosscovia Alako",
+     "dismissal": "b DM Bimenyimana",
+     "runs": 8,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rita Musamali",
+     "dismissal": "lbw b DM Bimenyimana",
+     "runs": 23,
+     "balls": 31,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Esther Iloku",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "dismissal": "b DM Bimenyimana",
+     "runs": 11,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Malisa Ariokot",
+     "dismissal": "runout (H Ishimwe / G Ishimwe)",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Belyse Murekatete",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rosine Irera",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Diane Marie Bimenyimana",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henriette Ishimwe",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ruth Uwimana",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Alice Ikuzwe",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Janet Mbabazi",
+     "score": 8,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prosscovia Alako",
+     "score": 25,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Stephani Nampiina",
+     "score": 32,
+     "over": "6.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rita Musamali",
+     "score": 66,
+     "over": "14.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Immaculate Nakisuuyi",
+     "score": 88,
+     "over": "18.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Malisa Ariokot",
+     "score": 99,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 3,
+    "lb": 5,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 29
+  },
+  {
+   "team": "Rwanda Women",
+   "runs": 93,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Fanny Utagushimaninde",
+     "dismissal": "b C Aweko",
+     "runs": 17,
+     "balls": 29,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Gisele Ishimwe",
+     "dismissal": "c S Walaza b J Mbabazi",
+     "runs": 10,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Clarisse Uwase",
+     "dismissal": "c S Nampiina b I Nakisuuyi",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Merveille Uwase",
+     "dismissal": "runout (K Awino / S Nampiina)",
+     "runs": 5,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shakila Niyomuhoza",
+     "dismissal": "runout (C Aweko / I Nakisuuyi)",
+     "runs": 21,
+     "balls": 20,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Alice Ikuzwe",
+     "dismissal": "lbw b A Akurut",
+     "runs": 6,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Henriette Ishimwe",
+     "dismissal": "st K Awino b I Nakisuuyi",
+     "runs": 6,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Diane Marie Bimenyimana",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Belyse Murekatete",
+     "dismissal": "c K Awino b S Walaza",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rosine Irera",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sarah Walaza",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Concylate Aweko",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Malisa Ariokot",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Janet Mbabazi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Asumin Akurut",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Gisele Ishimwe",
+     "score": 29,
+     "over": "5.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Clarisse Uwase",
+     "score": 39,
+     "over": "9.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Fanny Utagushimaninde",
+     "score": 43,
+     "over": "10.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Merveille Uwase",
+     "score": 47,
+     "over": "11.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Alice Ikuzwe",
+     "score": 61,
+     "over": "14.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Henriette Ishimwe",
+     "score": 80,
+     "over": "17.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Shakila Niyomuhoza",
+     "score": 85,
+     "over": "18.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Belyse Murekatete",
+     "score": 90,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 8,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
