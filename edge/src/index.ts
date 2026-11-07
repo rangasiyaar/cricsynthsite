@@ -85,7 +85,8 @@ export default {
     if (path === "/health") return json(req, env, { ok: true });
     if (path === "/" || path === "/v1") return json(req, env, { ...ABOUT, ...catalog() });
 
-    if (path === "/mcp") return mcp(req, env, url);
+    // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in
+    if (path === "/mcp" || (path === "/" && url.hostname.startsWith("mcp."))) return mcp(req, env, url);
 
     const m = match(req.method, path);
     if (!m) return fail(req, env, 404, "Not found");

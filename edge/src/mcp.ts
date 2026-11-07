@@ -82,9 +82,18 @@ function findInMatch(d: Row, query: string): [number, Row] {
   throw new ToolError(`No player '${query}' in this match. Players: ` + rows.map(([, p]) => p.name).join(", "));
 }
 
+/** The named match's prepared answers; with no match named, the next match that has them (one already under way may
+ * not, if its answers weren't prepared before the start). */
 async function prep(a: Analytics, match?: string | null): Promise<[Row, Row]> {
-  const card = await findMatch(a, match);
-  return [card, await P.prepared(a.edge, card.id)];
+  if (match) {
+    const card = await findMatch(a, match);
+    return [card, await P.prepared(a.edge, card.id)];
+  }
+  const cs = (await cards(a)).sort((x, y) => `${x.date || "9999"} ${x.start_time || ""}`.localeCompare(`${y.date || "9999"} ${y.start_time || ""}`));
+  for (const card of cs.slice(0, 12)) {
+    try { return [card, await P.prepared(a.edge, card.id)]; } catch (e) { if (!(e instanceof P.Unavailable)) throw e; }
+  }
+  throw new P.Unavailable(P.LATER);
 }
 
 const sortDesc = <T>(xs: T[], k: (x: T) => number) => xs.map((x, i) => [x, i] as [T, number]).sort((a, b) => k(b[0]) - k(a[0]) || a[1] - b[1]).map((x) => x[0]);
