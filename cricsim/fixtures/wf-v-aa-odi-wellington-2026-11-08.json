@@ -12,7 +12,7 @@
   "city": "Wellington",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Auckland Aces won the toss and bowl first.",
   "teams": [
     {
       "name": "Wellington Firebirds",
@@ -24,21 +24,21 @@
         "Jesse Tashkoff",
         "Muhammad Arslan Abbas",
         "Oscar Jackson",
-        "Adam Milne",
         "Callum McLachlan",
         "Logan van Beek",
+        "Henry Shipley",
         "James Hartshorn",
-        "Yahya Zeb"
+        "Liam Dudding"
       ],
       "roles": [
         "BAT",
         "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
         "BOWL",
-        "BAT",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -62,14 +62,14 @@
       "name": "Auckland Aces",
       "short": "AA",
       "players": [
-        "Dale Phillips",
+        "Sean Solia",
         "Luke Watson",
         "Cam Fletcher",
         "Bevon Jacobs",
         "Lachlan Stackpole",
         "Ryan Harrison",
         "Jaskaran Sandhu",
-        "Adithya Ashok",
+        "Siddesh Dixit",
         "Angus Olliver",
         "Samrath Singh",
         "Harry Cullen Hieatt"
@@ -82,12 +82,12 @@
         "BAT",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BAT"
       ],
-      "captain": "Adithya Ashok",
+      "captain": "Sean Solia",
       "squad": [
         "Dale Phillips",
         "Luke Watson",
@@ -107,6 +107,7 @@
     "kn": 40560,
     "url": "https://khelnow.com/live-cricket-score/wellington-firebirds-vs-auckland-aces-the-ford-trophy-7th-november-2026-40560",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
