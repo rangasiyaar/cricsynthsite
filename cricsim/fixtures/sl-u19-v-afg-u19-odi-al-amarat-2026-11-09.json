@@ -1,0 +1,112 @@
+{
+  "id": "sl-u19-v-afg-u19-odi-al-amarat-2026-11-09",
+  "title": "Sri Lanka Under-19s v Afghanistan Under-19s",
+  "date": "2026-11-09",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Group B",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 1), Al Amarat",
+  "venue_search": "al amarat",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka Under-19s",
+      "short": "SL-U19",
+      "players": [
+        "Viran Chamuditha",
+        "Rehan Peiris",
+        "Senuja Wekunagoda",
+        "Gimhan Rasanjana",
+        "Sanul Weeraratne",
+        "Chaniru Senaratne",
+        "Lithma Perera",
+        "Sethmika Seneviratne",
+        "Vigneshwaran Akash",
+        "Lathendra Akash",
+        "Kaushika Kumarasinghe"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Viran Chamuditha",
+      "squad": [
+        "Viran Chamuditha",
+        "Rehan Peiris",
+        "Senuja Wekunagoda",
+        "Gimhan Rasanjana",
+        "Sanul Weeraratne",
+        "Chaniru Senaratne",
+        "Lithma Perera",
+        "Sethmika Seneviratne",
+        "Vigneshwaran Akash",
+        "Lathendra Akash",
+        "Kaushika Kumarasinghe"
+      ]
+    },
+    {
+      "name": "Afghanistan Under-19s",
+      "short": "AFG-U19",
+      "players": [
+        "Amir Hamza",
+        "Lutfullah Mohammadi",
+        "Noman Salarzai",
+        "Noor Ali Niazi",
+        "Sami Mubarez",
+        "Sohail Khan",
+        "Subhan Ali",
+        "Tahir Sarwary",
+        "Abidullah Nadarjan",
+        "Faridullah Ihsas",
+        "Shah Faisal Rahimi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Sohail Khan",
+      "squad": [
+        "Amir Hamza",
+        "Lutfullah Mohammadi",
+        "Noman Salarzai",
+        "Noor Ali Niazi",
+        "Sami Mubarez",
+        "Sohail Khan",
+        "Subhan Ali",
+        "Tahir Sarwary",
+        "Abidullah Nadarjan",
+        "Faridullah Ihsas",
+        "Shah Faisal Rahimi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41655,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-under-19s-vs-afghanistan-under-19s-acc-men's-u19-asia-cup-9th-november-2026-41655",
+    "auto": true,
+    "xis": false
+  }
+}

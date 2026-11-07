@@ -12,35 +12,35 @@
   "city": "Al Amerat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Afghanistan U19 won the toss and bowl first.",
   "teams": [
     {
       "name": "Afghanistan U19",
       "short": "AFGU19",
       "players": [
         "Abidullah Nadarjan",
-        "Faridullah Ihsas",
-        "Subhan Zakhail",
-        "Noman Salarzai",
-        "Shah Faisal Rahimi",
-        "Tahir Sarwary",
-        "Sohail Khan",
         "Amir Hamza",
-        "Sami Mubarez",
+        "Faridullah Ihsas",
+        "Noman Salarzai",
         "Noor Ali Niazi",
-        "Lutfullah Mohammadi"
+        "Sami Mubarez",
+        "Shah Faisal Rahimi",
+        "Sohail Khan",
+        "Subhan Ali",
+        "Tahir Sarwary",
+        "Bilal Sulimankhil"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
+        "AR",
+        "AR",
+        "AR",
         "WK",
+        "BOWL",
+        "AR",
+        "AR",
         "BAT",
         "BAT",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
         "BOWL"
       ],
       "captain": "Sohail Khan",
@@ -62,30 +62,30 @@
       "name": "Malaysia U19",
       "short": "MLYU19",
       "players": [
-        "Syamil Aqil",
+        "Harith Naufal",
+        "Deeaz Patro",
+        "Dzul Syahmi",
+        "Aiyadh Iskandar",
+        "Alif Haziq",
+        "Arryan Iskandar",
         "Asyraf Mikail",
         "Firash Taqiuddin",
-        "Deeaz Patro",
-        "Alif Haziq",
-        "Aiyadh Iskandar",
-        "Dzul Syahmi",
-        "N Sathnakumaran",
-        "Muhammad Nurhanif",
-        "Arryan Iskandar",
-        "Nur Iman"
+        "Nur Iman",
+        "Syamil Aqil",
+        "Nagineswaran Sathnakumaran"
       ],
       "roles": [
-        "BAT",
+        "AR",
         "BAT",
         "BAT",
         "BAT",
         "WK",
-        "BAT",
+        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Deeaz Patro",
       "squad": [
@@ -106,8 +106,9 @@
   "live": {
     "id": 175630,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41650,
     "url": "https://khelnow.com/live-cricket-score/afghanistan-under-19s-vs-malaysia-under-19s-acc-men's-u19-asia-cup-7th-november-2026-41650"
-  }
+  },
+  "batting_first": 1
 }
