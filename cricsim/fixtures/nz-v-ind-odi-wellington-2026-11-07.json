@@ -12,7 +12,7 @@
   "city": "Wellington",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. India won the toss and bowl first.",
   "teams": [
     {
       "name": "New Zealand",
@@ -34,11 +34,11 @@
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BOWL",
+        "AR",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -66,12 +66,12 @@
         "Shubman Gill",
         "Virat Kohli",
         "Shreyas Iyer",
-        "Axar Patel",
         "KL Rahul",
+        "Axar Patel",
         "Naman Dhir",
         "Anshul Kamboj",
-        "Auqib Nabi",
-        "Gurnoor Brar",
+        "Auqib Nabi Dar",
+        "Gurnoor Singh Brar",
         "Arshdeep Singh"
       ],
       "roles": [
@@ -79,10 +79,10 @@
         "BAT",
         "BAT",
         "BAT",
-        "AR",
         "WK",
+        "AR",
         "BAT",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -106,8 +106,9 @@
   "live": {
     "id": 161256,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 40295,
     "url": "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-7th-november-2026-40295"
-  }
+  },
+  "batting_first": 0
 }
