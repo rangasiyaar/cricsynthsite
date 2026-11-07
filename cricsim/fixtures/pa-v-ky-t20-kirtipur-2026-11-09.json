@@ -1,0 +1,112 @@
+{
+  "id": "pa-v-ky-t20-kirtipur-2026-11-09",
+  "title": "Pokhara Avengers v Karnali Yaks",
+  "date": "2026-11-09",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League · 19th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pokhara Avengers",
+      "short": "PA",
+      "players": [
+        "Arjun Kumal",
+        "Arjun Gharti",
+        "Bipin Khatri",
+        "Chamika Karunaratne",
+        "Kiran Thagunna",
+        "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sagar Dhakal",
+        "Sudip Aryal",
+        "Sadeera Samarawickrama",
+        "Yuvraj Samra"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Kushal Bhurtel",
+      "squad": [
+        "Arjun Kumal",
+        "Arjun Gharti",
+        "Bipin Khatri",
+        "Chamika Karunaratne",
+        "Kiran Thagunna",
+        "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sagar Dhakal",
+        "Sudip Aryal",
+        "Sadeera Samarawickrama",
+        "Yuvraj Samra"
+      ]
+    },
+    {
+      "name": "Karnali Yaks",
+      "short": "KY",
+      "players": [
+        "Ariful Islam",
+        "David Miller",
+        "Deepak Dumre",
+        "Gulshan Jha",
+        "Mark Watt",
+        "Hussain Talat",
+        "Nandan Yadav",
+        "Pawan Sarraf",
+        "Sompal Kami",
+        "Surya Tamang",
+        "Unish Bikram Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Sompal Kami",
+      "squad": [
+        "Ariful Islam",
+        "David Miller",
+        "Deepak Dumre",
+        "Gulshan Jha",
+        "Mark Watt",
+        "Hussain Talat",
+        "Nandan Yadav",
+        "Pawan Sarraf",
+        "Sompal Kami",
+        "Surya Tamang",
+        "Unish Bikram Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41341,
+    "url": "https://khelnow.com/live-cricket-score/pokhara-avengers-vs-karnali-yaks-nepal-premier-league-9th-november-2026-41341",
+    "auto": true,
+    "xis": false
+  }
+}
