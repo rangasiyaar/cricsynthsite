@@ -29,6 +29,16 @@ def safe_id(pid: str) -> str:
     return re.sub(r"[^A-Za-z0-9_.-]", "_", pid)
 
 
+def _norm(s: str) -> str:
+    return " ".join(re.sub(r"[.,'\-]", " ", s.lower()).split())
+
+
+def _initials(name: str, words: list[str]) -> bool:
+    """'v kohli' for 'virat kohli', 'rg sharma' for 'rohit sharma': same surname, first initial matches."""
+    t = name.split()
+    return len(t) >= 2 and t[-1] == words[-1] and t[0][0] == words[0][0]
+
+
 class Store:
     def __init__(self, base: str | None = None):
         self.base = (base or os.environ.get("CRICSYNTHESIS_DATA_URL") or DEFAULT_URL).rstrip("/")
@@ -86,26 +96,33 @@ class Store:
         return self.kit_file(f"players/{safe_id(pid)}.json")
 
     def find_players(self, query: str, limit: int = 10) -> list[dict]:
-        """Players whose name contains every word of the query; exact and prefix matches first, then experience."""
+        """Players matching the query by name or another name they're known by ("Virat Kohli" finds Cricsheet's
+        "V Kohli"): an id, then an exact name, then prefix or every word, then surname plus first initial; the most
+        experienced first. An exact namesake with little data gives way to an established player the query also fits."""
         idx = self.kit_file("players.json")
         fields = idx["fields"]
-        q = query.strip().lower()
+        q = _norm(query)
         words = q.split()
         hits = []
         for row in idx["players"]:
             r = dict(zip(fields, row))
-            name = (r["name"] or "").lower()
-            if r["id"].lower() == q or name == q:
+            names = [_norm(n) for n in [r["name"] or "", *(r.get("aka") or [])]]
+            if r["id"].lower() == q:
                 rank = 0
-            elif name.startswith(q):
+            elif q in names:
                 rank = 1
-            elif words and all(w in name for w in words):
+            elif any(n.startswith(q) for n in names) or (words and any(all(w in n for w in words) for n in names)):
                 rank = 2
+            elif len(words) >= 2 and any(_initials(n, words) for n in names):
+                rank = 3
             else:
                 continue
             hits.append((rank, -r["balls"], r))
+        # an exact namesake with little data gives way to an established player the query also fits ("Rohit Sharma")
+        top = max((-b for k, b, _ in hits if k >= 2), default=0)
+        hits = [(2 if k == 1 and top >= 2000 and -b * 10 < top else k, b, r) for k, b, r in hits]
         hits.sort(key=lambda h: (h[0], h[1]))
-        return [h[2] for h in hits[:limit]]
+        return [{k: v for k, v in h[2].items() if k != "aka"} for h in hits[:limit]]
 
     def resolve_player(self, query: str) -> dict:
         hits = self.find_players(query, 5)

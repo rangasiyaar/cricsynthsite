@@ -141,7 +141,7 @@ jobs:
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh workflow run edge-data.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f publish_run=${{ github.run_id }}
       - name: Analytics kit (static files the MCP server computes analytics from)
-        run: uv run python -m cricsim.kit --model data/models/latest --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
+        run: uv run python -m cricsim.kit --model data/models/latest --out data/publish --parquet data/parquet | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Venue intelligence (the match centre's Venue tab; a failure leaves the tab empty, never blocks publishing)
         continue-on-error: true
         run: |

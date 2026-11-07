@@ -31,6 +31,7 @@ SCHEMA = pa.schema([
     ("batting_style_raw", pa.string()),
     ("bowling_style_raw", pa.string()),
     ("source", pa.string()),
+    ("full_name", pa.string()),           # "Virat Kohli" for Cricsheet's "V Kohli": player search by full name
 ])
 
 _PACE = (("fast medium", "fast_medium"), ("fast-medium", "fast_medium"), ("medium fast", "medium_fast"),
@@ -79,7 +80,7 @@ def normalise(rows: Iterable[dict], source: str = SOURCE) -> pa.Table:
         for k, v in (("player_id", pid), ("batting_hand", batting_hand(r.get("batting_style"))),
                      ("bowling_arm", arm), ("bowling_kind", kind), ("bowling_pace", pace),
                      ("batting_style_raw", r.get("batting_style")), ("bowling_style_raw", r.get("bowling_style")),
-                     ("source", source)):
+                     ("source", source), ("full_name", r.get("full_name"))):
             out[k].append(v)
     return pa.table(out, schema=SCHEMA)
 
@@ -105,7 +106,7 @@ def read_player_meta(rda: Path) -> list[dict]:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")          # rdata warns about R classes it doesn't need (Date, tibble)
         df = rdata.read_rda(str(rda))["player_meta"]
-    cols = ["cricsheet_id", "batting_style", "bowling_style"]
+    cols = [c for c in ("cricsheet_id", "batting_style", "bowling_style", "full_name") if c in df.columns]
     df = df[cols].astype(object)
     return df.where(df.notna(), None).to_dict("records")
 

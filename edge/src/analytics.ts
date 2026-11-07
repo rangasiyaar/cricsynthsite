@@ -7,6 +7,13 @@ type Row = Record<string, any>;
 
 export class NotFound extends Error {}
 
+const norm = (s: string) => s.toLowerCase().replace(/[.,'\-]/g, " ").split(/\s+/).filter(Boolean).join(" ");
+/** 'v kohli' for 'virat kohli', 'rg sharma' for 'rohit sharma': same surname, first initial matches. */
+const initials = (name: string, words: string[]) => {
+  const t = name.split(" ");
+  return t.length >= 2 && t[t.length - 1] === words[words.length - 1] && t[0][0] === words[0][0];
+};
+
 /** Where published files come from: R2 in production, the website or local files elsewhere. */
 export interface Source { get(path: string): Promise<any> }
 
@@ -27,26 +34,43 @@ export class Analytics {
     try { return await this.player(pid); } catch (e) { if (e instanceof NotFound) return Kit.stub(pid); throw e; }
   }
 
-  /** Players whose name contains every word of the query; exact and prefix matches first, then experience. */
-  async findPlayers(query: string, limit = 10): Promise<Row[]> {
+  private search: { idx: any; rows: { rec: Row; names: string[] }[] } | null = null;
+  /** The search index with names normalised once per isolate (it's re-read when the published file changes). */
+  private async searchRows(): Promise<{ rec: Row; names: string[] }[]> {
     const idx = await this.file("players.json");
+    if (this.search && this.search.idx === idx) return this.search.rows;
     const fields: string[] = idx.fields;
-    const q = query.trim().toLowerCase();
-    const words = q.split(/\s+/).filter(Boolean);
-    const hits: [number, number, Row][] = [];
-    for (const row of idx.players as any[][]) {
+    const rows = (idx.players as any[][]).map((row) => {
       const rec: Row = {};
       fields.forEach((f, i) => { rec[f] = row[i]; });
-      const name = (rec.name || "").toLowerCase();
+      return { rec, names: [rec.name || "", ...(rec.aka || [])].map(norm) };
+    });
+    this.search = { idx, rows };
+    return rows;
+  }
+
+  /** Players matching the query by name or another name they're known by ("Virat Kohli" finds Cricsheet's
+   * "V Kohli"): an id, then an exact name, then prefix or every word, then surname plus first initial; the most
+   * experienced first. An exact namesake with little data gives way to an established player the query also fits. */
+  async findPlayers(query: string, limit = 10): Promise<Row[]> {
+    const rows = await this.searchRows();
+    const q = norm(query);
+    const words = q.split(" ").filter(Boolean);
+    const hits: [number, number, Row][] = [];
+    for (const { rec, names } of rows) {
       let rank: number;
-      if (rec.id.toLowerCase() === q || name === q) rank = 0;
-      else if (name.startsWith(q)) rank = 1;
-      else if (words.length && words.every((w) => name.includes(w))) rank = 2;
+      if (rec.id.toLowerCase() === q) rank = 0;
+      else if (names.includes(q)) rank = 1;
+      else if (names.some((n) => n.startsWith(q)) || (words.length > 0 && names.some((n) => words.every((w) => n.includes(w))))) rank = 2;
+      else if (words.length >= 2 && names.some((n) => initials(n, words))) rank = 3;
       else continue;
       hits.push([rank, -rec.balls, rec]);
     }
+    // an exact namesake with little data gives way to an established player the query also fits ("Rohit Sharma")
+    const top = Math.max(0, ...hits.filter((h) => h[0] >= 2).map((h) => -h[1]));
+    for (const h of hits) if (h[0] === 1 && top >= 2000 && -h[1] * 10 < top) h[0] = 2;
     hits.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-    return hits.slice(0, limit).map((h) => h[2]);
+    return hits.slice(0, limit).map((h) => { const { aka: _aka, ...rest } = h[2]; return rest; });
   }
 
   /** A player by id first, else by name (the MCP tools accept either). */

@@ -129,3 +129,23 @@ test("prepared answers for covered matches", async () => {
   assert.ok(pa[0] >= pa[1] && pa[1] >= pa[2]);
   assert.equal((await post("/v1/simulate", {})).status, 501);
 });
+
+test("player search: full names, initials and namesakes", async () => {
+  const { Analytics } = await import("../src/analytics.ts");
+  const players = { fields: ["id", "name", "gender", "hand", "bowling_kind", "balls", "aka"], players: [
+    ["ba607b88", "V Kohli", "male", "right", "pace_right", 7289, ["Virat Kohli"]],
+    ["740742ef", "RG Sharma", "male", "right", "off_spin", 9100, ["Rohit Gurunath Sharma"]],
+    ["a1cbdeeb", "Rohit Sharma", "male", "unknown", "unknown", 105, []],
+    ["8a75e999", "Babar Azam", "male", "right", "off_spin", 3861, []],
+    ["40caa465", "T Kohli", "male", "right", "unknown", 300, []],
+    ["d1d1d1d1", "DA Warner", "male", "left", "leg_spin", 8000, []] ] };
+  const a = new Analytics({ get: async (p: string) => { if (p === "analytics/players.json") return players; throw new Error(p); } });
+  const first = async (q: string) => (await a.findPlayers(q, 3))[0]?.id;
+  assert.equal(await first("Virat Kohli"), "ba607b88");          // full name (alias)
+  assert.equal(await first("Rohit Sharma"), "740742ef");         // the established player, not the 105-ball namesake
+  assert.equal(await first("Babar Azam"), "8a75e999");
+  assert.equal(await first("David Warner"), "d1d1d1d1");         // no alias: surname + first initial
+  assert.equal(await first("a1cbdeeb"), "a1cbdeeb");             // an id is exact
+  assert.equal(await first("kohli"), "ba607b88");
+  assert.ok(!("aka" in (await a.findPlayers("Kohli"))[0]));
+});

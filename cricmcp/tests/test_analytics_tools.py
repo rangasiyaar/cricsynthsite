@@ -98,3 +98,22 @@ def test_graphics_copy_matches_api():
     api = root / "cricapi" / "src" / "cricapi" / "graphics.py"
     if api.exists():
         assert (root / "cricmcp" / "src" / "cricmcp" / "graphics.py").read_text() == api.read_text()
+
+
+def test_player_search_full_names_and_namesakes(tmp_path):
+    """'Virat Kohli' finds Cricsheet's 'V Kohli'; 'Rohit Sharma' means the established player, not a namesake."""
+    import json
+    from cricmcp.data import Store
+    (tmp_path / "analytics").mkdir()
+    (tmp_path / "analytics" / "players.json").write_text(json.dumps({
+        "fields": ["id", "name", "gender", "hand", "bowling_kind", "balls", "aka"], "players": [
+            ["ba607b88", "V Kohli", "male", "right", "pace_right", 7289, ["Virat Kohli"]],
+            ["740742ef", "RG Sharma", "male", "right", "off_spin", 9100, ["Rohit Gurunath Sharma"]],
+            ["a1cbdeeb", "Rohit Sharma", "male", "unknown", "unknown", 105, []],
+            ["d1d1d1d1", "DA Warner", "male", "left", "leg_spin", 8000, []]]}))
+    st = Store(str(tmp_path))
+    first = lambda q: st.find_players(q, 3)[0]["id"]  # noqa: E731
+    assert first("Virat Kohli") == "ba607b88"
+    assert first("Rohit Sharma") == "740742ef"
+    assert first("David Warner") == "d1d1d1d1"
+    assert "aka" not in st.find_players("Kohli")[0]

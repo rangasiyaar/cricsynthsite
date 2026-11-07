@@ -127,19 +127,40 @@ def player_doc(model: Model, i: int, similar: dict) -> dict:
     }
 
 
-def export(model: Model, out: Path, min_balls: float = 30) -> dict:
+def aliases(parquet: Path | None) -> dict[str, list[str]]:
+    """Other names a player is known by (Cricsheet's alternative names, the full name from the attributes data), so
+    'Virat Kohli' finds Cricsheet's 'V Kohli'."""
+    out: dict[str, set[str]] = {}
+    if not parquet:
+        return {}
+    import pyarrow.parquet as pq
+    pl = parquet / "players"
+    if pl.exists() and any(pl.glob("*.parquet")):
+        for r in pq.read_table(pl, columns=["player_id", "unique_name", "aliases"]).to_pylist():
+            out.setdefault(r["player_id"], set()).update(x for x in [r.get("unique_name"), *(r.get("aliases") or [])] if x)
+    at = parquet / "attributes" / "attributes.parquet"
+    if at.exists() and "full_name" in pq.read_schema(at).names:
+        for r in pq.read_table(at, columns=["player_id", "full_name"]).to_pylist():
+            if r["full_name"]:
+                out.setdefault(r["player_id"], set()).add(r["full_name"])
+    return {k: sorted(v) for k, v in out.items()}
+
+
+def export(model: Model, out: Path, min_balls: float = 30, parquet: Path | None = None) -> dict:
     root = out / "analytics"
     _write(root / "context.json", context(model))
     sim = _similar_tables(model)
     rows = player_rows(model, min_balls)
+    aka = aliases(parquet)
     index = []
     for i in rows:
         doc = player_doc(model, i, sim)
         _write(root / "players" / f"{safe_id(doc['id'])}.json", doc)
         index.append([doc["id"], doc["name"], doc["gender"], doc["hand"], doc["bowling_kind"],
-                      round(float(model.balls_faced[i].sum() + model.balls_bowled[i].sum()))])
+                      round(float(model.balls_faced[i].sum() + model.balls_bowled[i].sum())),
+                      [a for a in aka.get(doc["id"], []) if a != doc["name"]][:6]])
     index.sort(key=lambda r: -r[5])
-    _write(root / "players.json", {"fields": ["id", "name", "gender", "hand", "bowling_kind", "balls"], "players": index})
+    _write(root / "players.json", {"fields": ["id", "name", "gender", "hand", "bowling_kind", "balls", "aka"], "players": index})
     n_rank = 0
     for fmt in FAMILY_FORMATS:
         for g in GENDERS:
@@ -166,8 +187,9 @@ def export(model: Model, out: Path, min_balls: float = 30) -> dict:
 @click.option("--model", "model_dir", type=click.Path(path_type=Path), required=True)
 @click.option("--out", type=click.Path(path_type=Path), required=True)
 @click.option("--min-balls", type=float, default=30)
-def main(model_dir: Path, out: Path, min_balls: float) -> None:
-    stats = export(Model.load(model_dir), out, min_balls)
+@click.option("--parquet", type=click.Path(path_type=Path), default=None, help="Data build, for players' other names")
+def main(model_dir: Path, out: Path, min_balls: float, parquet: Path | None) -> None:
+    stats = export(Model.load(model_dir), out, min_balls, parquet if parquet and parquet.exists() else None)
     size = sum(p.stat().st_size for p in (out / "analytics").rglob("*.json"))
     click.echo(f"analytics kit: {stats}, {size / 1e6:.1f} MB")
 

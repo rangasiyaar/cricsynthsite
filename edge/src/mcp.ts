@@ -9,7 +9,7 @@ import * as P from "./prepared.ts";
 
 type Row = Record<string, any>;
 const SITE = "https://cricsynthesis.in";
-export const VERSION = "0.3.1";
+export const VERSION = "0.3.2";
 const PROTOCOLS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 
 export const INSTRUCTIONS = `CricSynthesis: cricket analytics and forecasts from a ball-by-ball model of every recorded delivery.
