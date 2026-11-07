@@ -1,0 +1,73 @@
+name: Worker check
+
+# Read-only smoke test of the hosted API on real data. Makes a throwaway Pro test key (its hash goes in the Worker's
+# STATIC_KEYS secret for the length of the run), calls each kind of endpoint, then deletes the key. Run by hand.
+on:
+  workflow_dispatch:
+    inputs:
+      url: { description: "Worker URL", default: "https://cricsynthesis-api.rangasiyaar.workers.dev" }
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BASE: ${{ inputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Test key
+        working-directory: edge
+        run: |
+          npm ci --no-audit --no-fund >/dev/null
+          KEY="cs_live_$(openssl rand -hex 16)"
+          echo "::add-mask::$KEY"
+          echo "KEY=$KEY" >> "$GITHUB_ENV"
+          HASH=$(printf '%s' "$KEY" | sha256sum | cut -d' ' -f1)
+          printf '{"%s":"pro"}' "$HASH" | npx wrangler secret put STATIC_KEYS
+          sleep 15
+      - name: Calls
+        run: |
+          call() {  # path, then what to show
+            out=$(curl -s -o /tmp/r -w "%{http_code} %{time_total}s" -H "X-API-Key: $KEY" "$BASE$1")
+            echo "$out  $1"
+            head -c "${2:-300}" /tmp/r; echo; echo
+          }
+          curl -s "$BASE/health"; echo
+          curl -s "$BASE/v1" | head -c 400; echo; echo
+          echo "no key: $(curl -s -o /dev/null -w '%{http_code}' "$BASE/v1/venues")"
+          call "/v1/players?q=kohli"
+          PID=$(curl -s -H "X-API-Key: $KEY" "$BASE/v1/players?q=kohli" | python3 -c "import json,sys; print(json.load(sys.stdin)['players'][0]['id'])")
+          B=$(curl -s -H "X-API-Key: $KEY" "$BASE/v1/players?q=bumrah" | python3 -c "import json,sys; print(json.load(sys.stdin)['players'][0]['id'])")
+          call "/v1/players/$PID"
+          call "/v1/players/$PID/phases" 200
+          call "/v1/players/$PID/vs-bowling" 200
+          call "/v1/players/$PID/similar" 200
+          call "/v1/matchups?batter=$PID&bowler=$B" 400
+          call "/v1/matchups/grid?batters=$PID&bowlers=$B" 200
+          call "/v1/rankings/batting?limit=3" 400
+          call "/v1/rankings/bowling?phase=death&sort=economy&limit=3" 300
+          call "/v1/venues?q=wankhede" 300
+          call "/v1/competitions?q=premier&limit=3" 300
+          call "/v1/teams?q=india&limit=3" 300
+          call "/v1/trends/scoring" 200
+          call "/v1/patterns" 200
+          call "/v1/matches" 300
+          MID=$(curl -s -H "X-API-Key: $KEY" "$BASE/v1/matches" | python3 -c "import json,sys; print(json.load(sys.stdin)['matches'][0]['id'])")
+          call "/v1/matches/$MID" 200
+          call "/v1/matches/$MID/fantasy" 200
+          call "/v1/graphics/matches/$MID/win.svg" 150
+          call "/v1/graphics/players/$PID/profile.svg" 150
+          call "/v1/teams/india" 300
+          echo "again (warm):"; call "/v1/players/$PID/phases" 0; call "/v1/rankings/batting?limit=3" 0
+          echo "not hosted: $(curl -s -o /dev/null -w '%{http_code}' -X POST -H "X-API-Key: $KEY" "$BASE/v1/simulate")"
+      - name: Remove the test key
+        if: always()
+        working-directory: edge
+        run: npx wrangler secret delete STATIC_KEYS --force || true
