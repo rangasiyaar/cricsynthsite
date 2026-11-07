@@ -67,13 +67,17 @@ export class Firestore {
     const usage = `projects/${this.project}/databases/(default)/documents/users/${uid}/usage/${day}`;
     const key = `projects/${this.project}/databases/(default)/documents/users/${uid}/keys/${slot}`;
     const inc = (fieldPath: string, n: number) => ({ fieldPath, increment: { integerValue: String(n) } });
-    await this.call(":commit", { writes: [
+    const writes: unknown[] = [
       { update: { name: usage, fields: { day: { stringValue: day } } }, updateMask: { fieldPaths: ["day"] },
         updateTransforms: [inc("total", total), inc(`keys.${slot}`, total),
                            ...Object.entries(cats).map(([c, n]) => inc(`cats.${c}`, n)),
                            { fieldPath: "updated", setToServerValue: "REQUEST_TIME" }] },
-      { update: { name: key, fields: { lastUsed: { timestampValue: last } } }, updateMask: { fieldPaths: ["lastUsed"] },
-        currentDocument: { exists: true } },
-    ] });
+    ];
+    // a dashboard key's lastUsed; the MCP connector's sign-in (slot "mcp") has no key document
+    if (slot !== "mcp") {
+      writes.push({ update: { name: key, fields: { lastUsed: { timestampValue: last } } }, updateMask: { fieldPaths: ["lastUsed"] },
+                    currentDocument: { exists: true } });
+    }
+    await this.call(":commit", { writes });
   }
 }

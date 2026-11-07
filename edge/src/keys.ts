@@ -19,6 +19,8 @@ export interface Env {
   DATA_URL?: string;
   USAGE: DurableObjectNamespace;
   GOOGLE_SA?: string;                 // secret: service-account JSON key with Firestore access
+  OAUTH_SECRET?: string;              // optional: signs the MCP connector's client ids, codes and tokens (else derived from GOOGLE_SA)
+  CONNECT_URL?: string;               // optional: the website's connect page (default cricsynthesis.in/connect/)
   FIRESTORE_PROJECT?: string;
   STATIC_KEYS?: string;               // optional JSON {sha256: plan} for keys not in the dashboard (tests, partners)
   CORS?: string;

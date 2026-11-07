@@ -70,10 +70,11 @@ export default function Mcp() {
         <pre className="req">{CLAUDE_CODE_REMOTE}</pre></div></div>
       <div className="cs-api" style={{ padding: 0, marginTop: 12 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>MCP config</span><span>JSON</span></div>
         <pre className="req">{REMOTE}</pre></div></div>
-      <p className="small muted" style={{ maxWidth: "64ch", marginTop: 14 }}>{HOSTED} of the {COUNT} tools. Free for 100 tool calls a
-        day; for more, add your API key to the URL (<span className="mono">{HOSTED_URL}/?key=cs_live_…</span>, free from your{" "}
-        <Link href="/account/">account</Link>) and calls count against its plan. Decision and fantasy tools answer for
-        the matches we cover, from 3 days before the start. Custom what-ifs need the local server.</p>
+      <p className="small muted" style={{ maxWidth: "64ch", marginTop: 14 }}>When you add it, your assistant asks you to sign in
+        with your CricSynthesis account (free) and allow it: 200 tool calls a day. Or put an API key from your{" "}
+        <Link href="/account/">account</Link> in the URL (<span className="mono">{HOSTED_URL}/?key=cs_live_…</span>) and calls
+        count against its plan. {HOSTED} of the {COUNT} tools; decision and fantasy tools answer for the matches we cover,
+        from 3 days before the start. Custom what-ifs need the local server.</p>
 
       <h2 style={{ marginTop: 56 }}>On your machine</h2>
       <p className="muted" style={{ maxWidth: "62ch" }}>All {COUNT} tools, including what-if simulations with your own
