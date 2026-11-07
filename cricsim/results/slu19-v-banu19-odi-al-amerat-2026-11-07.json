@@ -1,0 +1,448 @@
+{
+ "id": "slu19-v-banu19-odi-al-amerat-2026-11-07",
+ "innings": [
+  {
+   "team": "Bangladesh U19",
+   "runs": 245,
+   "wickets": 10,
+   "overs": "49.4",
+   "batting": [
+    {
+     "name": "Abdullah Al Muhi",
+     "dismissal": "b Kaushika Kumarasinghe",
+     "runs": 30,
+     "balls": 25,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Jarif Siyam",
+     "dismissal": "c Lithma Perera b G Mendis",
+     "runs": 59,
+     "balls": 83,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Alamin Hossain",
+     "dismissal": "b S Seneviratne",
+     "runs": 13,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ahsan Al Mumin",
+     "dismissal": "c G Rasanjana b S Seneviratne",
+     "runs": 82,
+     "balls": 98,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Farid Hasan Faysal",
+     "dismissal": "c G Rasanjana b Kaushika Kumarasinghe",
+     "runs": 17,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rakibul Hossan",
+     "dismissal": "c K Withanapathirana b G Mendis",
+     "runs": 11,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Robiul Anik",
+     "dismissal": "c S Wekunagoda b G Mendis",
+     "runs": 15,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Shakil Khan",
+     "dismissal": "b S Seneviratne",
+     "runs": 5,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rubay Islam",
+     "dismissal": "c Kaushika Kumarasinghe b S Seneviratne",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sheikh Atiqur Rahman",
+     "dismissal": "runout (Lithma Perera / K Withanapathirana)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tafiul Alam Tamim",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sethmika Seneviratne",
+     "overs": "9.4",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Gimhan Mendis",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 55,
+     "wickets": 3,
+     "no_balls": 2,
+     "wides": 1
+    },
+    {
+     "name": "Kaushika Kumarasinghe",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Viran Chamuditha",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Vigneshwaran Akash",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kithma Withanapathirana",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Abdullah Al Muhi",
+     "score": 41,
+     "over": "6.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Alamin Hossain",
+     "score": 63,
+     "over": "9.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jarif Siyam",
+     "score": 131,
+     "over": "27.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Farid Hasan Faysal",
+     "score": 173,
+     "over": "37.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rakibul Hossan",
+     "score": 208,
+     "over": "42.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ahsan Al Mumin",
+     "score": 224,
+     "over": "45.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Robiul Anik",
+     "score": 237,
+     "over": "46.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Rubay Islam",
+     "score": 238,
+     "over": "47.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Sheikh Atiqur Rahman",
+     "score": 240,
+     "over": "47.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Shakil Khan",
+     "score": 245,
+     "over": "49.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 63
+  },
+  {
+   "team": "Sri Lanka U19",
+   "runs": 200,
+   "wickets": 10,
+   "overs": "46.1",
+   "batting": [
+    {
+     "name": "Viran Chamuditha",
+     "dismissal": "c R Hossan b S Rahman",
+     "runs": 12,
+     "balls": 27,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Rehan Peiris",
+     "dismissal": "c (sub A Rafi) b R Islam",
+     "runs": 19,
+     "balls": 40,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Senuja Wekunagoda",
+     "dismissal": "c R Hossan b T Tamim",
+     "runs": 85,
+     "balls": 95,
+     "fours": 10,
+     "sixes": 2
+    },
+    {
+     "name": "Kithma Withanapathirana",
+     "dismissal": "lbw b J Siyam",
+     "runs": 5,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gimhan Rasanjana",
+     "dismissal": "runout (S Khan / R Hossan)",
+     "runs": 16,
+     "balls": 27,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chaniru Senaratne",
+     "dismissal": "c A Mumin b R Anik",
+     "runs": 13,
+     "balls": 21,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Lithma Perera",
+     "dismissal": "c S Rahman b T Tamim",
+     "runs": 19,
+     "balls": 26,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Kaushika Kumarasinghe",
+     "dismissal": "c R Hossan b R Islam",
+     "runs": 9,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Sethmika Seneviratne",
+     "dismissal": "c A Muhi b R Anik",
+     "runs": 6,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gimhan Mendis",
+     "dismissal": "c R Hossan b S Rahman",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Vigneshwaran Akash",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Tafiul Alam Tamim",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 32,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sheikh Atiqur Rahman",
+     "overs": "8.1",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rubay Islam",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Jarif Siyam",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Shakil Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Robiul Anik",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Viran Chamuditha",
+     "score": 16,
+     "over": "5.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rehan Peiris",
+     "score": 62,
+     "over": "17.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kithma Withanapathirana",
+     "score": 76,
+     "over": "20.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Gimhan Rasanjana",
+     "score": 120,
+     "over": "29.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Senuja Wekunagoda",
+     "score": 158,
+     "over": "36.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chaniru Senaratne",
+     "score": 160,
+     "over": "37.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Kaushika Kumarasinghe",
+     "score": 178,
+     "over": "40.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sethmika Seneviratne",
+     "score": 195,
+     "over": "43.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Lithma Perera",
+     "score": 195,
+     "over": "44.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Gimhan Mendis",
+     "score": 200,
+     "over": "46.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 7,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
