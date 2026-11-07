@@ -1,0 +1,387 @@
+{
+ "id": "nz-v-ind-odi-wellington-2026-11-07",
+ "innings": [
+  {
+   "team": "New Zealand",
+   "runs": 134,
+   "wickets": 10,
+   "overs": "41",
+   "batting": [
+    {
+     "name": "Will Young",
+     "dismissal": "c KL Rahul b AN Dar",
+     "runs": 6,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tim Seifert",
+     "dismissal": "c A Kamboj b AN Dar",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Henry Nicholls",
+     "dismissal": "b A Kamboj",
+     "runs": 11,
+     "balls": 26,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Daryl Mitchell",
+     "dismissal": "c A Kamboj b Axar Patel",
+     "runs": 55,
+     "balls": 104,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Tom Latham",
+     "dismissal": "c Naman Dhir b GS Brar",
+     "runs": 7,
+     "balls": 22,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Glenn Phillips",
+     "dismissal": "c A Kamboj b GS Brar",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Santner",
+     "dismissal": "c KL Rahul b GS Brar",
+     "runs": 31,
+     "balls": 38,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Nathan Smith",
+     "dismissal": "c RG Sharma b GS Brar",
+     "runs": 3,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kyle Jamieson",
+     "dismissal": "b Axar Patel",
+     "runs": 7,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Blair Tickner",
+     "dismissal": "b A Kamboj",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jacob Duffy",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Arshdeep Singh",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Anshul Kamboj",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gurnoor Singh Brar",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 30,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Axar Patel",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Seifert",
+     "score": 0,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Will Young",
+     "score": 11,
+     "over": "5.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Henry Nicholls",
+     "score": 23,
+     "over": "8.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tom Latham",
+     "score": 53,
+     "over": "19.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Glenn Phillips",
+     "score": 53,
+     "over": "19.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Daryl Mitchell",
+     "score": 112,
+     "over": "34.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mitchell Santner",
+     "score": 119,
+     "over": "35.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kyle Jamieson",
+     "score": 127,
+     "over": "38.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Nathan Smith",
+     "score": 132,
+     "over": "39.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Blair Tickner",
+     "score": 134,
+     "over": "40.6"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 2,
+    "w": 6,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 29
+  },
+  {
+   "team": "India",
+   "runs": 113,
+   "wickets": 7,
+   "overs": "26",
+   "batting": [
+    {
+     "name": "Rohit Sharma",
+     "dismissal": "c H Nicholls b KA Jamieson",
+     "runs": 23,
+     "balls": 28,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Shubman Gill",
+     "dismissal": "c H Nicholls b JA Duffy",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Virat Kohli",
+     "dismissal": "c W Young b JA Duffy",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Shreyas Iyer",
+     "dismissal": "c T Latham b KA Jamieson",
+     "runs": 30,
+     "balls": 46,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Axar Patel",
+     "dismissal": "c JA Duffy b M Fisher",
+     "runs": 7,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "KL Rahul",
+     "dismissal": "not out",
+     "runs": 26,
+     "balls": 38,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Naman Dhir",
+     "dismissal": "c TL Seifert b JA Duffy",
+     "runs": 12,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Anshul Kamboj",
+     "dismissal": "c JA Duffy b KA Jamieson",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kyle Jamieson",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jacob Duffy",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Nathan Smith",
+     "overs": "5",
+     "maidens": 1,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Matthew Fisher",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Shubman Gill",
+     "score": 4,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Virat Kohli",
+     "score": 17,
+     "over": "3.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rohit Sharma",
+     "score": 39,
+     "over": "8.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Axar Patel",
+     "score": 47,
+     "over": "12.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shreyas Iyer",
+     "score": 86,
+     "over": "19.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Naman Dhir",
+     "score": 108,
+     "over": "24.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Anshul Kamboj",
+     "score": 111,
+     "over": "25.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
