@@ -4,9 +4,15 @@ main = "src/index.ts"
 compatibility_date = "2025-10-01"
 workers_dev = true
 
+# Our own domains (the zone is on this Cloudflare account; Cloudflare makes the DNS records and certificates).
+routes = [
+  { pattern = "api.cricsynthesis.in", custom_domain = true },
+  { pattern = "mcp.cricsynthesis.in", custom_domain = true },
+]
+
 [vars]
 DATA_URL = "https://cricsynthesis.in/data"     # the published files (forecasts, packs, analytics kit)
-CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000"
+CORS = "https://cricsynthesis.in,https://www.cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000"
 
 # Prepared per-match answers (cricsim/edge.py via .github/workflows/edge-data.yml). run_worker_first: every request
 # goes to the Worker, which reads these through env.ASSETS; they are never served directly.
