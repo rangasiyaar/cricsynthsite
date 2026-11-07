@@ -12,25 +12,26 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Royal Desert Champions won the toss and bowl first.",
   "teams": [
     {
       "name": "Royal Desert Champions",
       "short": "RDC",
       "players": [
-        "Nicholas Pooran",
         "Muhammad Waseem",
-        "Brandon King",
+        "Phil Salt",
+        "Nicholas Pooran",
         "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Janith Liyanage",
         "Ali Naseer",
-        "Aayan Afzal Khan",
-        "Naseem Shah",
+        "Chris Jordan",
         "Maheesh Theekshana",
-        "Luke Wood",
-        "Philip Salt",
-        "Keemo Paul"
+        "Dushmantha Chameera",
+        "Luke Wood"
       ],
       "roles": [
+        "BAT",
         "WK",
         "BAT",
         "BAT",
@@ -40,8 +41,7 @@
         "BOWL",
         "BOWL",
         "BOWL",
-        "BAT",
-        "AR"
+        "BOWL"
       ],
       "squad": [
         "Nicholas Pooran",
@@ -62,33 +62,34 @@
         "Dushmantha Chameera",
         "Tajinder Dhillon",
         "Raizal Nadir"
-      ]
+      ],
+      "captain": "Nicholas Pooran"
     },
     {
       "name": "Emirates Eagles",
       "short": "EE",
       "players": [
-        "Srikar Bharat",
-        "Rovman Powell",
-        "Shimron Hetmyer",
         "Alex Hales",
-        "Hasan Nawaz",
-        "David Wiese",
-        "Rehan Ahmed",
-        "Harshit Kaushik",
+        "Kusal Perera",
+        "Shimron Hetmyer",
+        "Rovman Powell",
+        "Kyle Mayers",
+        "Kona Srikar Bharat",
+        "Chris Green",
         "Trent Boult",
-        "Noor Ahmad",
-        "Akif Javed"
+        "Tymal Mills",
+        "Haider Razzaq",
+        "Hardus Viljoen"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
-        "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -112,14 +113,16 @@
         "Haider Razzaq",
         "Hilal Afghan",
         "Luqman Faisal"
-      ]
+      ],
+      "captain": "Rovman Powell"
     }
   ],
   "live": {
     "id": 176099,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41615,
     "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-emirates-eagles-abu-dhabi-t10-league-7th-november-2026-41615"
-  }
+  },
+  "batting_first": 1
 }
