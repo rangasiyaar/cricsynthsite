@@ -12,35 +12,35 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. UAE Bulls won the toss and bowl first.",
   "teams": [
     {
       "name": "UAE Bulls",
       "short": "UBL",
       "players": [
-        "Azam Khan",
-        "Max Bryant",
+        "Aneurin Donald",
+        "Khawaja Nafay",
+        "Andre Fletcher",
         "Shadab Khan",
+        "Kieron Pollard",
         "Romario Shepherd",
         "Sunil Narine",
+        "Tahir Zaman",
         "Mohammad Amir",
-        "Muhammad Rohid Khan",
-        "Nuwan Thushara",
-        "Andre Fletcher",
-        "Khushdil Shah",
-        "Mohammad Wasim Jr"
+        "Mohammad Wasim Jr",
+        "Muhammad Rohid Khan"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "BAT",
-        "AR",
         "BOWL"
       ],
       "squad": [
@@ -60,36 +60,37 @@
         "Max Bryant",
         "Uddish Suri",
         "Khawaja Nafay"
-      ]
+      ],
+      "captain": "Kieron Pollard"
     },
     {
       "name": "Yas Lions",
       "short": "YL",
       "players": [
-        "Andries Gous",
         "James Vince",
+        "Tom Moores",
         "Ansh Tandon",
-        "Kamil Pooran",
+        "Andries Gous",
+        "Dasun Shanaka",
         "Jason Holder",
         "David Willey",
-        "Dasun Shanaka",
-        "Khuzaima Tanveer",
-        "Haider Ali",
-        "Aryan Dutt",
-        "Karim Janat"
+        "Karim Janat",
+        "Akeal Hosein",
+        "Khuzaima Bin Tanvir",
+        "Fazalhaq Farooqi"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "squad": [
         "Jason Holder",
@@ -110,14 +111,16 @@
         "Eshan Malinga",
         "Obed McCoy",
         "Tom Moores"
-      ]
+      ],
+      "captain": "Jason Holder"
     }
   ],
   "live": {
     "id": 176085,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41614,
     "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-yas-lions-abu-dhabi-t10-league-7th-november-2026-41614"
-  }
+  },
+  "batting_first": 1
 }
