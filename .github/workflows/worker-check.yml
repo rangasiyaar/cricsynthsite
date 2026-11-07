@@ -67,6 +67,22 @@ jobs:
           call "/v1/graphics/matches/$MID/win.svg" 150
           call "/v1/graphics/players/$PID/profile.svg" 150
           call "/v1/teams/india" 300
+          echo "prepared (first match with answers):"
+          post() { curl -s -o /tmp/r -w "%{http_code} %{time_total}s" -X POST -H "X-API-Key: $KEY" -H "Content-Type: application/json" "$BASE$1" -d "$2"; echo "  $1"; head -c "${3:-250}" /tmp/r; echo; }
+          for M in $(curl -s -H "X-API-Key: $KEY" "$BASE/v1/matches" | python3 -c "import json,sys; print(' '.join(m['id'] for m in json.load(sys.stdin)['matches']))"); do
+            [ "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H "X-API-Key: $KEY" -H 'Content-Type: application/json' "$BASE/v1/par-score" -d "{\"match_id\":\"$M\"}")" = 200 ] && break
+          done
+          echo "match: $M"
+          post /v1/par-score "{\"match_id\":\"$M\"}"
+          post /v1/chase-curve "{\"match_id\":\"$M\",\"chasing\":1}"
+          post /v1/toss "{\"match_id\":\"$M\"}"
+          post /v1/lineups/batting-order "{\"match_id\":\"$M\",\"team\":0}"
+          post /v1/lineups/bowling-plan "{\"match_id\":\"$M\",\"bowling_team\":1}"
+          post /v1/fantasy/team "{\"match_id\":\"$M\"}"
+          post /v1/fantasy/portfolio "{\"match_id\":\"$M\",\"teams_count\":3}"
+          post /v1/win-probability "{\"match_id\":\"$M\",\"state\":{\"innings\":1,\"batting\":0,\"runs\":80,\"wickets\":2,\"overs\":10.0}}" 400
+          post /v1/innings/projection "{\"match_id\":\"$M\",\"state\":{\"runs\":50,\"wickets\":1,\"overs\":6.0}}" 400
+          call "/v1/matches/$M/win-probability?innings=2&batting=1&runs=100&wickets=3&overs=15.0&target=160" 400
           echo "again (warm):"; call "/v1/players/$PID/phases" 0; call "/v1/rankings/batting?limit=3" 0
           echo "not hosted: $(curl -s -o /dev/null -w '%{http_code}' -X POST -H "X-API-Key: $KEY" "$BASE/v1/simulate")"
           mcp() { curl -s -w "  [%{http_code} %{time_total}s]" -X POST -H "Content-Type: application/json" \
@@ -80,6 +96,8 @@ jobs:
           mcp '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"matchup","arguments":{"batter":"Kohli","bowler":"Bumrah"}}}' 300
           mcp '{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"venue_profile","arguments":{"venue":"Wankhede"}}}' 300
           mcp '{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"toss_decision","arguments":{}}}' 300
+          mcp '{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"par_score","arguments":{}}}' 300
+          mcp '{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"fantasy_team","arguments":{}}}' 300
       - name: Remove the test key
         if: always()
         working-directory: edge
