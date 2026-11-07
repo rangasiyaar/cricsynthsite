@@ -12,31 +12,31 @@
   "city": "Paarl",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Boland won the toss and bowl first.",
   "teams": [
     {
       "name": "Boland",
       "short": "BOL",
       "players": [
-        "Blayde Capell",
         "Gavin Kaplan",
+        "Blayde Capell",
+        "Gysbert Wege",
         "Neil Brand",
-        "Lehan Botha",
-        "Jhedli van Briesies",
         "Ferisco Adams",
-        "Glenton Stuurman",
+        "Jhedli van Briesies",
         "Imran Manack",
+        "Glenton Stuurman",
         "Lizaad Williams",
         "Akhona Mnyaka",
         "Siyabonga Mahima"
       ],
       "roles": [
+        "BAT",
         "WK",
         "BAT",
         "AR",
-        "BOWL",
-        "BAT",
         "AR",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -62,36 +62,37 @@
         "Jason Muirhead",
         "Gysbert Wege",
         "Akhona Mnyaka"
-      ]
+      ],
+      "captain": "Glenton Stuurman"
     },
     {
       "name": "South Western Districts",
       "short": "SWD",
       "players": [
-        "Nathan Engelbrecht",
-        "Yaseen Valli",
-        "Heath Richards",
+        "Yaseen Vallie",
         "Janneman Malan",
-        "Slade van Staden",
-        "Andile Phehlukwayo",
-        "Rayyaan Rhode",
+        "Slade Van Staden",
+        "Bennie Hansen",
+        "Leo Sadler",
         "Liam Alder",
-        "Pheko Moletsane",
-        "Jade Richter",
-        "Modise Maloka"
+        "Zack Momberg",
+        "Regan Rhode",
+        "Banele Cele",
+        "Liabona Malife",
+        "Andile Phehlukwayo"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
+        "AR",
         "BOWL",
-        "BAT"
+        "BAT",
+        "AR",
+        "AR"
       ],
       "captain": "Janneman Malan",
       "squad": [
@@ -122,8 +123,9 @@
   "live": {
     "id": 174276,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41082,
     "url": "https://khelnow.com/live-cricket-score/boland-vs-south-western-districts-csa-pro-t20-cup-7th-november-2026-41082"
-  }
+  },
+  "batting_first": 1
 }
