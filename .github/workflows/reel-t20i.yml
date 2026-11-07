@@ -62,5 +62,8 @@ jobs:
             "fow": [w["by_over"] for w in T[0]["batting"]["fall_of_wickets"][:5]],
             "phases": [[p["phase"], p["overs"], p["runs"]["mean"]] for p in T[0]["batting"]["phases"]],
           }
+          nm = {p["id"]: p["name"] for t in T for p in t["players"]}
+          print("DUELS " + json.dumps([[nm.get(m["batter"]), nm.get(m["bowler"]), m["p"]] for m in s["matchups"][:8]]))
+          print("INSIGHTS " + json.dumps([i["text"] for i in d["insights"]]))
           print("REELDATA " + json.dumps(out, separators=(",", ":")))
           PY
