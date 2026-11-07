@@ -53,6 +53,8 @@ jobs:
             "win": [s["result"]["win"][t["name"]] for t in T],
             "score": [round(t["batting"]["score"]["mean"]) for t in T],
             "range": [[t["batting"]["score"]["q"]["10"], t["batting"]["score"]["q"]["90"]] for t in T],
+            "lk": [[t["batting"]["score"]["q"]["25"], t["batting"]["score"]["q"]["75"]] for t in T],
+            "med": [t["batting"]["score"]["q"]["50"] for t in T],
             "runs": [o["runs"] for o in T[0]["batting"]["per_over"]],
             "runs2": [o["runs"] for o in T[1]["batting"]["per_over"]],
             "pw": [o["p_wicket"] for o in T[0]["batting"]["per_over"]],
