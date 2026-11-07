@@ -14,7 +14,8 @@ permissions:
   contents: read
   actions: read
 
-concurrency: { group: edge-data, cancel-in-progress: true }
+# a running build finishes (and saves its answers for reuse); only the newest waiting one is kept
+concurrency: { group: edge-data, cancel-in-progress: false }
 
 jobs:
   edge:
