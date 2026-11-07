@@ -16,12 +16,16 @@ const bucket = {
     } catch { return null; }
   },
 };
+const EDGE = new URL("./fixtures/", import.meta.url);
+const assets = { fetch: async (r: Request) => {
+  try { return new Response(await readFile(new URL(new URL(r.url).pathname.slice(1), EDGE), "utf8")); }
+  catch { return new Response("not found", { status: 404 }); } } };
 const counts = new Map<string, number>();
 const usage = {
   idFromName: (n: string) => n,
   get: (id: string) => ({ fetch: async () => { counts.set(id, (counts.get(id) || 0) + 1); return Response.json({ n: counts.get(id) }); } }),
 };
-const env: any = { DATA: bucket, USAGE: usage, CORS: "https://cricsynthesis.in",
+const env: any = { DATA: bucket, ASSETS: assets, USAGE: usage, CORS: "https://cricsynthesis.in",
                    STATIC_KEYS: JSON.stringify({ [await sha256(KEY)]: "free", [await sha256(PRO)]: "pro" }) };
 
 const call = (path: string, init: RequestInit & { key?: string | null } = {}) => {
@@ -34,8 +38,8 @@ test("catalog, health and keys", async () => {
   assert.equal((await call("/health", { key: null })).status, 200);
   const cat: any = await (await call("/v1", { key: null })).json();
   const n = Object.values<any[]>(cat.endpoints).reduce((s, x) => s + x.length, 0);
-  assert.equal(n, 40);
-  assert.equal(cat.not_hosted.length, 16);
+  assert.equal(n, 53);
+  assert.equal(cat.not_hosted.length, 3);
   assert.equal((await call("/v1/players?q=P0", { key: null })).status, 401);
   assert.equal((await call("/v1/players?q=P0", { key: "cs_live_" + "z".repeat(32) })).status, 401);
   assert.equal((await call("/v1/players?q=P0", { key: "nonsense" })).status, 401);
@@ -91,4 +95,37 @@ test("daily limit and CORS", async () => {
   assert.equal(r.headers.get("Access-Control-Allow-Origin"), "https://cricsynthesis.in");
   const x = await call("/v1/venues", { headers: { Origin: "https://evil.example" } });
   assert.equal(x.headers.get("Access-Control-Allow-Origin"), null);
+});
+
+test("prepared answers for covered matches", async () => {
+  const post = (path: string, body: any) => call(path, { method: "POST", body: JSON.stringify(body) });
+  const par: any = await (await post("/v1/par-score", { match_id: "m1" })).json();
+  assert.equal(par.teams.length, 2);
+  assert.doesNotMatch(JSON.stringify(par), /simulations/);
+  assert.equal((await post("/v1/par-score", {})).status, 422);                      // needs a covered match
+  assert.equal((await post("/v1/par-score", { match_id: "nope" })).status, 404);
+  const cc: any = await (await post("/v1/chase-curve", { match_id: "m1", chasing: 1, target_from: 120, target_to: 180, step: 20 })).json();
+  assert.deepEqual(cc.curve.map((r: any) => r.target), [120, 140, 160, 180]);
+  assert.ok((await (await post("/v1/toss", { match_id: "m1" })).json() as any).teams);
+  assert.equal((await post("/v1/players/P0-1/impact", { match_id: "m1" })).status, 200);
+  assert.equal((await post("/v1/players/Nobody/impact", { match_id: "m1" })).status, 404);
+  const bo: any = await (await post("/v1/lineups/batting-order", { match_id: "m1", team: 0 })).json();
+  assert.ok(bo.best && bo.candidates.length > 3);
+  assert.equal((await post("/v1/lineups/bowling-plan", { match_id: "m1", bowling_team: 1 })).status, 200);
+  assert.equal((await post("/v1/lineups/bowling-plan", { match_id: "m1", bowlers: ["P1-9", "P1-10"] })).status, 501);
+  assert.equal((await post("/v1/fantasy/team", { match_id: "m1", captain_rule: "upside" })).status, 200);
+  const pf: any = await (await post("/v1/fantasy/portfolio", { match_id: "m1", teams_count: 3 })).json();
+  assert.equal(pf.teams.length, 3);
+  const wp: any = await (await post("/v1/win-probability", { match_id: "m1", state: { innings: 1, batting: 0, runs: 80, wickets: 2, overs: 10.0 } })).json();
+  const s = Object.values<number>(wp.win).reduce((a, b) => a + b, 0);
+  assert.ok(s > 0.9 && s <= 1.0001 && wp.final_total.q["50"] > 80);
+  const worse: any = await (await post("/v1/win-probability", { match_id: "m1", state: { innings: 1, batting: 0, runs: 80, wickets: 7, overs: 10.0 } })).json();
+  assert.ok(worse.final_total.q["50"] < wp.final_total.q["50"]);              // more wickets down, lower total
+  const ch: any = await (await call("/v1/matches/m1/win-probability?innings=2&batting=1&runs=100&wickets=3&overs=15.0&target=150")).json();
+  assert.equal(ch.required.runs, 50);
+  assert.equal((await post("/v1/win-probability", { match_id: "m1", state: { innings: 1, overs: 10.7 } })).status, 404);  // 7 balls
+  const ip: any = await (await post("/v1/innings/projection", { match_id: "m1", state: { runs: 50, wickets: 1, overs: 6.0 }, thresholds: [120, 160, 200] })).json();
+  const pa = Object.values<number>(ip.p_at_least);
+  assert.ok(pa[0] >= pa[1] && pa[1] >= pa[2]);
+  assert.equal((await post("/v1/simulate", {})).status, 501);
 });

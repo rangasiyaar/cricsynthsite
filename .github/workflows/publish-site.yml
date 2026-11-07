@@ -25,7 +25,7 @@ on:
 
 permissions:
   contents: read
-  actions: read                    # latest Pattern Lab report artifact
+  actions: write                   # latest Pattern Lab report artifact; starts the hosted API's prepared answers
   id-token: write                  # keyless auth to Google Cloud (Workload Identity Federation)
 
 concurrency: { group: publish-site, cancel-in-progress: true }
@@ -123,6 +123,13 @@ jobs:
         run: uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
       - name: Results (keep started matches' pre-match forecasts; score finished ones against their scorecards)
         run: uv run python -m cricsim.results --fixtures cricsim/fixtures --scorecards cricsim/results --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4          # inputs for the hosted API's prepared answers (edge-data.yml)
+        with:
+          name: edge-inputs
+          path: |
+            data/coverage
+            data/publish/index.json
+          retention-days: 2
       - name: Analytics kit (static files the MCP server computes analytics from)
         run: uv run python -m cricsim.kit --model data/models/latest --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Venue intelligence (the match centre's Venue tab; a failure leaves the tab empty, never blocks publishing)
@@ -239,6 +246,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: env.GCP != 'true'
         with: { name: site, path: app/out, retention-days: 7 }
+      - name: Hosted API answers for these matches (edge-data.yml, its own run so the site isn't held up)
+        if: env.GCP == 'true'
+        continue-on-error: true
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh workflow run edge-data.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f publish_run=${{ github.run_id }}
       - name: Summary
         run: |
           python3 - >> "$GITHUB_STEP_SUMMARY" <<'PY'

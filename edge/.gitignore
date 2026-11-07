@@ -1,3 +1,5 @@
 node_modules/
 .wrangler/
 .dev.vars
+assets/edge/
+assets/edge.new/

@@ -41,3 +41,24 @@ export class EdgeSource implements Source {
     return r.json();
   }
 }
+
+/** The Worker's own static files (wrangler.toml [assets], served only through the Worker): prepared answers. */
+export class AssetSource implements Source {
+  assets: Fetcher;
+  private cache = new Map<string, { t: number; v: Promise<any> }>();
+  constructor(assets: Fetcher) { this.assets = assets; }
+  get(path: string): Promise<any> {
+    const now = Date.now();
+    const hit = this.cache.get(path);
+    if (hit && now - hit.t < TTL_MS) return hit.v;
+    const v = this.assets.fetch(new Request(`https://assets.local/${path}`)).then(async (r) => {
+      if (r.status === 404) throw new NotFound(`404 loading ${path}`);
+      if (!r.ok) throw new Error(`${r.status} loading ${path}`);
+      return r.json();
+    });
+    v.catch(() => this.cache.delete(path));
+    if (this.cache.size >= 60) this.cache.delete(this.cache.keys().next().value!);
+    this.cache.set(path, { t: now, v });
+    return v;
+  }
+}

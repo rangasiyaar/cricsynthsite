@@ -4,7 +4,7 @@ import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
 import { type Account, type Env, hit, keyFrom, lookup, PLANS, sha256, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
-import { EdgeSource } from "./source.ts";
+import { AssetSource, EdgeSource } from "./source.ts";
 
 export { Usage };
 
@@ -19,7 +19,8 @@ const ABOUT = {
 };
 
 let analytics: Analytics | null = null;
-const getAnalytics = (env: Env) => (analytics ??= new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data")));
+const getAnalytics = (env: Env) => (analytics ??= new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data"),
+                                                                  env.ASSETS ? new AssetSource(env.ASSETS) : null));
 
 function headers(req: Request, env: Env, extra: Record<string, string> = {}): Headers {
   const h = new Headers({ "X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",

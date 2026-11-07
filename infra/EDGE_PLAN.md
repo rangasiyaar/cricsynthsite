@@ -106,3 +106,13 @@ matches (which is what fans and most API users ask about). The local `uvx` MCP k
   `X-API-Key` / `Authorization: Bearer`, or `?key=` in the connector URL): with one, calls count against its plan;
   without, 100 tool calls a day per IP. Only `tools/call` counts. Parity with the Python tools is in
   `test_edge_parity.py`; `edge/tests/mcp.test.ts` covers the protocol.
+- **Step 4 (prepared answers).** `cricsim/edge.py` runs in `.github/workflows/edge-data.yml`, started by Publish
+  site when it finishes (its own run, so the site isn't held up). For each covered match starting within 3 days:
+  par score, chase curve (every 10 runs over the likely range), player impact for all 22, batting order and
+  bowling plan for both sides, fantasy projections / team (mean and upside) / portfolios of 2–10 teams; within 36
+  hours also a live-state grid (both sides batting first × innings × 7 ball counts × wickets 0–9 × 3 run levels)
+  that the Worker interpolates for live win probability and innings projection. Files ship as the Worker's own
+  static assets (`run_worker_first`, never served directly), no simulation counts in them; unchanged matches
+  reuse their last file (Actions cache `edge-assets-*`, also restored by `deploy-worker.yml`). The API's 13
+  endpoints take `match_id` (a covered match); custom XIs, roles or bowlers answer 501. Hosted now: 53 of 56 API
+  endpoints and 41 MCP tools (all but `simulate_scenario`; `api_request` isn't needed hosted).

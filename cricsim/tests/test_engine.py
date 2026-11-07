@@ -643,3 +643,30 @@ def test_bowling_form_for_a_fixture_matches_the_full_history(world):
     assert form(some["wkts"], pid, day, hit=2) == form(full["wkts"], pid, day, hit=2)
     assert set(some["wkts"].dates) == {pid}
 
+
+
+def test_edge_prepares_answers_without_counts(world, tmp_path, monkeypatch):
+    """cricsim.edge: per-match answers for the hosted API, no simulation counts, reused when nothing changed."""
+    from datetime import datetime, timedelta, timezone
+    from cricsim import edge
+    monkeypatch.setattr(edge, "N", {"par": 400, "chase": 100, "impact": 100, "order": 100, "fantasy": 300, "live": 40})
+    spec = _spec(world["world"])
+    now = datetime(2026, 11, 7, 6, 0, tzinfo=timezone.utc)
+    cov = {"id": "fx", "date": "2026-11-07", "start_time": "19:30", "format": "T20", "gender": "male",
+           "venue_id": spec.venue_id, "comp_key": spec.comp_key,
+           "teams": [{"name": t.name, "players": list(t.players)} for t in spec.teams]}
+    far = {**cov, "id": "far", "date": "2026-11-20"}
+    (tmp_path / "cov" / "matches").mkdir(parents=True)
+    for c in (cov, far):
+        (tmp_path / "cov" / "matches" / f"{c['id']}.json").write_text(json.dumps(c))
+    mdir = world["tmp"] / "model"
+    st = edge.build_all(world["model"], mdir, tmp_path / "cov", None, tmp_path / "a", None, now=now)
+    assert st["built"] == 1 and st["skipped"] == 1                       # 13 days out: not yet
+    d = json.loads((tmp_path / "a" / "fx.json").read_text())
+    assert {"par", "chase", "impact", "batting_order", "bowling_plan", "fantasy", "live"} <= set(d)
+    assert len(d["impact"]) == 22 and set(d["fantasy"]["portfolio"]) == {str(k) for k in range(2, 11)}
+    assert "simulations" not in json.dumps(d) and '"n":' not in json.dumps(d)
+    s = d["live"]["states"]
+    assert {x["inn"] for x in s} == {1, 2} and all(0 <= x["win"][0] + x["win"][1] <= 1.0001 for x in s)
+    again = edge.build_all(world["model"], mdir, tmp_path / "cov", None, tmp_path / "b", tmp_path / "a", now=now)
+    assert again["kept"] == 1 and again["built"] == 0

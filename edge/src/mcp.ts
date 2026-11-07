@@ -5,6 +5,7 @@ import { Analytics, NotFound, BadRequest } from "./analytics.ts";
 import * as G from "./graphics.ts";
 import { Kit, type Player } from "./insight.ts";
 import { fixed, round } from "./py.ts";
+import * as P from "./prepared.ts";
 
 type Row = Record<string, any>;
 const SITE = "https://cricsynthesis.in";
@@ -79,6 +80,11 @@ function findInMatch(d: Row, query: string): [number, Row] {
   const loose = rows.filter(([, p]) => q.split(/\s+/).filter(Boolean).every((w) => p.name.toLowerCase().includes(w)));
   if (loose.length) return loose[0];
   throw new ToolError(`No player '${query}' in this match. Players: ` + rows.map(([, p]) => p.name).join(", "));
+}
+
+async function prep(a: Analytics, match?: string | null): Promise<[Row, Row]> {
+  const card = await findMatch(a, match);
+  return [card, await P.prepared(a.edge, card.id)];
 }
 
 const sortDesc = <T>(xs: T[], k: (x: T) => number) => xs.map((x, i) => [x, i] as [T, number]).sort((a, b) => k(b[0]) - k(a[0]) || a[1] - b[1]).map((x) => x[0]);
@@ -194,22 +200,7 @@ export const TOOLS: Tool[] = [
     } },
   { name: "toss_decision", category: SM, input: obj({ match: MATCH }),
     description: "Bat or bowl: each side's win chance batting first and chasing, the better choice and by how much.",
-    run: async (a, x) => {
-      const [card, d] = await doc(a, x.match);
-      const by: Row[] = d.summary.result.by_toss || [];
-      const names: string[] = d.summary.teams.map((t: Row) => t.name);
-      if (by.length === 1) {
-        return { match: card.id, decided: true, batting_first: by[0].batting_first,
-                 note: `The toss is done: ${by[0].batting_first} bat first. The forecast already assumes it.` };
-      }
-      if (by.length < 2) throw new ToolError("No toss split published for this match.");
-      const win = (bf: string, t: string) => by.find((y) => y.batting_first === bf)?.win?.[t];
-      return { match: card.id, teams: names.map((t, i) => {
-        const bat = win(t, t), chase = win(names[1 - i], t);
-        return { team: t, win_batting_first: round(bat, 3), win_chasing: round(chase, 3), choose: bat > chase ? "bat" : "bowl",
-                 edge: round(Math.abs(bat - chase), 3) };
-      }) };
-    } },
+    run: async (a, x) => { const [card, d] = await doc(a, x.match); return { match: card.id, ...P.toss(d) }; } },
   { name: "fantasy_picks", category: SM, input: obj({ match: MATCH }),
     description: "Published fantasy projections for a covered match: each player's expected points and role, with the suggested team, captain and vice-captain.",
     run: async (a, x) => {
@@ -225,6 +216,65 @@ export const TOOLS: Tool[] = [
                        "situation effects. Each match is simulated in full many times; every number is a share of those simulations.",
                format: d.summary.meta.format, model_version: d.model ?? null, generated_at: d.generated_at ?? null };
     } },
+  // prepared per covered match in GitHub Actions (cricsim/edge.py)
+  { name: "live_win_probability", category: SM,
+    input: obj({ batting_team: S.str("Team batting now"), runs: { type: "integer", minimum: 0 }, wickets: { type: "integer", minimum: 0, maximum: 9 },
+                 overs: { type: "number", minimum: 0, description: "Overs bowled as overs.balls, e.g. 12.3" },
+                 target: { type: "integer", minimum: 1, description: "Target in the second innings (first-innings total + 1). Empty = first innings." },
+                 match: MATCH }, ["batting_team", "runs", "wickets", "overs"]),
+    description: "Win probability from any point in a covered match (from 36 hours before the start): each side's chance and the projected final total, from the current score, wickets and overs.",
+    run: async (a, x) => {
+      const [card, p] = await prep(a, x.match);
+      const s = P.liveState(p, P.team(p, x.batting_team, "batting team"), x.runs, x.wickets, P.balls(x.overs, p.live?.bpo ?? 6), x.target);
+      return { match: card.id, ...s, win: Object.fromEntries(Object.entries<number>(s.win).map(([k, v]) => [k, pct(v)])), tie: pct(s.tie) };
+    } },
+  { name: "innings_projection", category: SM,
+    input: obj({ batting_team: S.str("Team batting now"), runs: { type: "integer", minimum: 0 }, wickets: { type: "integer", minimum: 0, maximum: 9 },
+                 overs: { type: "number", minimum: 0, description: "Overs bowled as overs.balls, e.g. 12.3" },
+                 target: { type: "integer", minimum: 1, description: "Target in the second innings; empty = first innings" },
+                 thresholds: { type: "array", items: { type: "integer" }, maxItems: 20, description: "Totals to give the chance of reaching" },
+                 match: MATCH }, ["batting_team", "runs", "wickets", "overs"]),
+    description: "Where an innings ends from its current score in a covered match: final total with ranges, wickets, chance of reaching given totals and of being bowled out.",
+    run: async (a, x) => {
+      const [card, p] = await prep(a, x.match);
+      const s = P.liveState(p, P.team(p, x.batting_team, "batting team"), x.runs, x.wickets, P.balls(x.overs, p.live?.bpo ?? 6), x.target);
+      const lo = Math.floor(s.final_total.q["5"] / 10) * 10;
+      const th: number[] = x.thresholds?.length ? x.thresholds : Array.from({ length: 9 }, (_, i) => lo + 10 * i);
+      return { match: card.id, team: s.batting, from: s.from, final_total: s.final_total, final_wickets_mean: s.final_wickets_mean,
+               chance_at_least: Object.fromEntries(Object.entries(P.chanceAtLeast(s.final_total, th)).map(([k, v]) => [k, pct(v)])),
+               chance_all_out: pct(s.p_all_out), note: s.note };
+    } },
+  { name: "par_score", category: SM, input: obj({ match: MATCH }),
+    description: "Par first-innings score for each side batting first, its chance of winning, and the totals that make it 50%, 60% and 70% to win.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match); return { match: card.id, ...p.par }; } },
+  { name: "chase_curve", category: SM,
+    input: obj({ chasing_team: S.str("Team in this match"), match: MATCH, target_from: { type: "integer", minimum: 1 },
+                 target_to: { type: "integer", minimum: 1 }, step: { type: "integer", minimum: 10, maximum: 50, default: 10 } }, ["chasing_team"]),
+    description: "Chance of a successful chase for each target (every 10 runs over the likely range), the coin-flip target and balls to spare when the chase succeeds.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match);
+      return { match: card.id, ...P.chase(p, P.team(p, x.chasing_team, "chasing team"), x.target_from, x.target_to, x.step) }; } },
+  { name: "player_impact", category: SM, input: obj({ player: PLAYER, match: MATCH }, ["player"]),
+    description: "How much a player moves the result: their team's win chance with them and with a replacement-level player in the same slot, and the runs they add.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match); return { match: card.id, ...p.impact[P.player(p, x.player)] }; } },
+  { name: "batting_order", category: SM, input: obj({ team: S.str("Team in this match"), match: MATCH }, ["team"]),
+    description: "Batting-order optimiser: the given order, every adjacent swap in the top eight and each batter promoted to No. 3, ranked by win chance and score.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match); return { match: card.id, ...p.batting_order[p.teams[P.team(p, x.team)]] }; } },
+  { name: "bowling_plan", category: SM, input: obj({ bowling_team: S.str("Team in this match"), match: MATCH }, ["bowling_team"]),
+    description: "Over-by-over bowling plan: each over to the bowler with the best expected value against the batters likely to be in, within quotas and without consecutive overs.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match);
+      const plan = p.bowling_plan[p.teams[P.team(p, x.bowling_team, "bowling team")]];
+      if (!plan) throw new ToolError("No bowling plan for this side (fewer than two usual bowlers).");
+      return { match: card.id, ...plan }; } },
+  { name: "fantasy_projections", category: SM, input: obj({ match: MATCH }),
+    description: "Fantasy points (Dream11-style table) for all 22 players: mean, median, 10th and 90th percentiles and the chance of being the top scorer.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match);
+      if (!p.fantasy) throw new ToolError("No fantasy projections for this format."); return { match: card.id, ...p.fantasy.projections }; } },
+  { name: "fantasy_team", category: SM, input: obj({ match: MATCH, captain_rule: S.one(["mean", "upside"], "mean") }),
+    description: "Best fantasy XI by expected points, with captain and vice-captain by expected points ('mean') or by 90th-percentile upside ('upside'). Check the announced XIs before locking a team.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match); return { match: card.id, ...P.fantasyTeam(p, x.captain_rule) }; } },
+  { name: "fantasy_portfolio", category: SM, input: obj({ match: MATCH, teams_count: S.int(2, 10, 5) }),
+    description: "Several fantasy teams that together cover the likely matches (for multi-entry contests): each added team is the one that most raises the expected score of the portfolio's best team.",
+    run: async (a, x) => { const [card, p] = await prep(a, x.match); return { match: card.id, ...P.portfolio(p, x.teams_count ?? 5) }; } },
   // analytics
   { name: "search_players", category: A, input: obj({ query: S.str("Part of a name, e.g. 'Kohli' or 'Smith'"), limit: S.int(1, 50, 10) }, ["query"]),
     description: "Find players by name: ids, gender, batting hand, bowling type and how much data the model has on them.",
@@ -365,7 +415,9 @@ function check(t: Tool, args: Row): Row {
     if (s.type === "integer" && (!Number.isInteger(v) || (s.minimum != null && v < s.minimum) || (s.maximum != null && v > s.maximum))) {
       throw new ToolError(`'${k}' must be a whole number${s.minimum != null ? ` from ${s.minimum}` : ""}${s.maximum != null ? ` to ${s.maximum}` : ""}.`);
     }
-    if (s.type === "array" && (!Array.isArray(v) || v.length < (s.minItems ?? 0) || v.length > (s.maxItems ?? 1e9) || v.some((y) => typeof y !== "string"))) {
+    if (s.type === "number" && (typeof v !== "number" || !Number.isFinite(v) || (s.minimum != null && v < s.minimum))) throw new ToolError(`'${k}' must be a number.`);
+    if (s.type === "array" && (!Array.isArray(v) || v.length < (s.minItems ?? 0) || v.length > (s.maxItems ?? 1e9)
+        || v.some((y) => typeof y !== (s.items?.type === "integer" ? "number" : "string")))) {
       throw new ToolError(`'${k}' must be a list of ${s.minItems}–${s.maxItems} names.`);
     }
   }
@@ -385,7 +437,7 @@ export async function callTool(a: Analytics, name: string, args: Row): Promise<R
     const out = await t.run(a, check(t, args || {}));
     return { content: [{ type: "text", text: JSON.stringify(out) }], structuredContent: out };
   } catch (e) {
-    if (e instanceof ToolError || e instanceof NotFound || e instanceof BadRequest) {
+    if (e instanceof ToolError || e instanceof NotFound || e instanceof BadRequest || e instanceof P.Unavailable) {
       const msg = e instanceof NotFound && e.message.startsWith("404") ? "Not found in the published data." : e.message;
       return { content: [{ type: "text", text: msg }], isError: true };
     }

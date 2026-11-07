@@ -15,8 +15,9 @@ export const safeId = (pid: string): string => pid.replace(/[^A-Za-z0-9_.-]/g, "
 
 export class Analytics {
   src: Source;
+  edge: Source | null;              // prepared per-match answers (cricsim/edge.py), private to the Worker
   private kitP: Promise<Kit> | null = null;
-  constructor(src: Source) { this.src = src; }
+  constructor(src: Source, edge: Source | null = null) { this.src = src; this.edge = edge; }
 
   file(path: string): Promise<any> { return this.src.get(`analytics/${path}`); }
   kit(): Promise<Kit> { return (this.kitP ??= this.file("context.json").then((c) => new Kit(c))); }

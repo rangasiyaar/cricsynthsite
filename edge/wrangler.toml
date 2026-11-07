@@ -8,6 +8,13 @@ workers_dev = true
 DATA_URL = "https://cricsynthesis.in/data"     # the published files (forecasts, packs, analytics kit)
 CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000"
 
+# Prepared per-match answers (cricsim/edge.py via .github/workflows/edge-data.yml). run_worker_first: every request
+# goes to the Worker, which reads these through env.ASSETS; they are never served directly.
+[assets]
+directory = "./assets"
+binding = "ASSETS"
+run_worker_first = true
+
 # No R2 bucket: enabling R2 needs a payment method on the Cloudflare account. The code reads env.DATA when bound.
 
 # Per-key daily usage (SQLite-backed Durable Objects are on the free plan).

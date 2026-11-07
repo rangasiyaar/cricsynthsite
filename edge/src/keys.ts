@@ -15,6 +15,7 @@ export const CATEGORY_SLUGS: Record<string, string> = { Analytics: "analytics", 
 
 export interface Env {
   DATA?: R2Bucket;
+  ASSETS?: Fetcher;                   // prepared per-match answers (edge/assets/edge/<id>.json), private
   DATA_URL?: string;
   USAGE: DurableObjectNamespace;
   GOOGLE_SA?: string;                 // secret: service-account JSON key with Firestore access

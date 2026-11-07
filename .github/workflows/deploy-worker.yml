@@ -31,6 +31,11 @@ jobs:
         run: |
           (cd edge && npm ci && npx tsc --noEmit && npm test)
           uv sync --all-extras && uv run pytest cricmcp/tests/test_edge_parity.py -q
+      - uses: actions/cache/restore@v4               # the prepared answers (edge-data.yml), so a code deploy keeps them
+        with:
+          path: edge/assets/edge
+          key: edge-assets-${{ github.run_id }}
+          restore-keys: edge-assets-
       - name: Deploy
         if: env.HAS_CF == 'true'
         working-directory: edge

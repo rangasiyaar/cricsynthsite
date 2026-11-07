@@ -3,6 +3,7 @@
 import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import * as G from "./graphics.ts";
 import { Kit, type Player } from "./insight.ts";
+import * as P from "./prepared.ts";
 import type { Account } from "./keys.ts";
 
 type Row = Record<string, any>;
@@ -225,24 +226,119 @@ route("GET", "/v1/graphics/trends/scoring.svg", GR, "Scoring trend card", async 
   return G.trend_card(await nf(c.a.scoringTrend(f, g), "format"), theme(c), wm(c));
 }, true);
 
-/** Endpoints of the full API that need a fresh simulation; prepared per covered match later, or local only. */
+// ── simulation & modelling for covered matches: prepared in Actions (cricsim/edge.py), read here ──
+async function covered(c: Ctx): Promise<{ mid: string; p: Row; doc: Row }> {
+  const b = c.body || {};
+  const mid = b.match_id ?? c.params.match_id;
+  if (!mid) {
+    throw new HttpError(422, "Give match_id: a covered match from GET /v1/matches. The hosted API answers for covered " +
+                             "matches; your own XIs need the local CricSynthesis engine (MCP server) or MatchSynth Lab.");
+  }
+  const doc = await published(c, String(mid));
+  return { mid: String(mid), doc, p: await P.prepared(c.a.edge, String(mid)) };
+}
+const teamArg = (p: Row, v: any, what: string) => P.team(p, v, what);
+const unav = async <T>(f: () => Promise<T>): Promise<T> => {
+  try { return await f(); } catch (e) { if (e instanceof P.Unavailable) throw new HttpError(404, e.message); throw e; }
+};
+const noCustom = (b: Row, ...keys: string[]) => {
+  for (const k of keys) {
+    if (b[k] != null && !(Array.isArray(b[k]) && !b[k].length) && !(typeof b[k] === "object" && !Array.isArray(b[k]) && !Object.keys(b[k]).length)) {
+      throw new HttpError(501, `'${k}' needs a fresh simulation, which the hosted API doesn't run. Use the local MCP server or MatchSynth Lab.`);
+    }
+  }
+};
+
+function stateFrom(c: Ctx, p: Row, s: Row): Row {
+  const inn = Number(s.innings ?? 1), bat = Number(s.batting ?? 0);
+  if (![1, 2].includes(inn) || ![0, 1].includes(bat)) throw new HttpError(422, "state.innings is 1 or 2, state.batting is 0 or 1");
+  if (inn === 2 && !s.target) throw new HttpError(422, "state.target is required in the second innings");
+  const runs = Number(s.runs ?? 0), wk = Number(s.wickets ?? 0), overs = Number(s.overs ?? 0);
+  if (!(runs >= 0) || !(wk >= 0 && wk <= 9) || !(overs >= 0)) throw new HttpError(422, "runs ≥ 0, wickets 0–9, overs ≥ 0");
+  return P.liveState(p, bat, runs, wk, P.balls(overs, p.live?.bpo ?? 6), inn === 2 ? Number(s.target) : null);
+}
+
+route("POST", "/v1/par-score", SM, "Par score", async (c) => unav(async () => {
+  noCustom(c.body || {}, "teams");
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...p.par };
+}));
+route("POST", "/v1/chase-curve", SM, "Chase curve", async (c) => unav(async () => {
+  const b = c.body || {};
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...P.chase(p, teamArg(p, b.chasing ?? 1, "chasing team"), b.target_from, b.target_to, b.step) };
+}));
+route("POST", "/v1/toss", SM, "Toss decision", async (c) => unav(async () => {
+  const { mid, doc } = await covered(c);
+  return { match_id: mid, ...P.toss(doc) };
+}));
+route("POST", "/v1/players/{pid}/impact", SM, "Player impact", async (c) => unav(async () => {
+  const { mid, p } = await covered(c);
+  const row = p.impact[c.params.pid];
+  if (!row) throw new HttpError(404, `${c.params.pid} isn't in either XI`);
+  return { match_id: mid, ...row };
+}));
+route("POST", "/v1/players/{pid}/projection", SM, "Player projection", async (c) => unav(async () => {
+  noCustom(c.body || {}, "opposition", "position");
+  const { mid, doc } = await covered(c);
+  for (const t of doc.summary.teams) for (const pl of t.players) {
+    if (pl.id === c.params.pid) return { match_id: mid, team: t.name, id: pl.id, name: pl.name, batting: pl.batting ?? null, bowling: pl.bowling ?? null };
+  }
+  throw new HttpError(404, `${c.params.pid} isn't in either XI`);
+}));
+route("POST", "/v1/lineups/batting-order", SM, "Batting order optimiser", async (c) => unav(async () => {
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...p.batting_order[p.teams[teamArg(p, (c.body || {}).team ?? 0, "team")]] };
+}));
+route("POST", "/v1/lineups/bowling-plan", SM, "Bowling plan", async (c) => unav(async () => {
+  noCustom(c.body || {}, "bowlers");
+  const { mid, p } = await covered(c);
+  const plan = p.bowling_plan[p.teams[teamArg(p, (c.body || {}).bowling_team ?? 1, "bowling team")]];
+  if (!plan) throw new HttpError(404, "No bowling plan for this side (fewer than two usual bowlers)");
+  return { match_id: mid, ...plan };
+}));
+route("POST", "/v1/fantasy/projections", SM, "Fantasy projections", async (c) => unav(async () => {
+  noCustom(c.body || {}, "roles");
+  const { mid, p } = await covered(c);
+  if (!p.fantasy) throw new HttpError(404, "No fantasy projections for this format");
+  return { match_id: mid, ...p.fantasy.projections };
+}));
+route("POST", "/v1/fantasy/team", SM, "Fantasy team", async (c) => unav(async () => {
+  noCustom(c.body || {}, "roles");
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...P.fantasyTeam(p, (c.body || {}).captain_rule) };
+}));
+route("POST", "/v1/fantasy/portfolio", SM, "Fantasy portfolio", async (c) => unav(async () => {
+  noCustom(c.body || {}, "roles");
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...P.portfolio(p, Number((c.body || {}).teams_count ?? 5)) };
+}));
+route("POST", "/v1/win-probability", SM, "Win probability from any state", async (c) => unav(async () => {
+  const { mid, p } = await covered(c);
+  return { match_id: mid, ...stateFrom(c, p, (c.body || {}).state || {}) };
+}));
+route("POST", "/v1/innings/projection", SM, "Innings projection", async (c) => unav(async () => {
+  const b = c.body || {};
+  const { mid, p } = await covered(c);
+  const s = stateFrom(c, p, b.state || {});
+  const lo = Math.floor(s.final_total.q["5"] / 10) * 10;
+  const th: number[] = Array.isArray(b.thresholds) && b.thresholds.length ? b.thresholds.slice(0, 20).map(Number)
+    : Array.from({ length: 9 }, (_, i) => lo + 10 * i);
+  return { match_id: mid, team: s.batting, innings: s.innings, from: s.from, final_total: s.final_total,
+           final_wickets_mean: s.final_wickets_mean, p_at_least: P.chanceAtLeast(s.final_total, th), p_all_out: s.p_all_out, note: s.note };
+}));
+route("GET", "/v1/matches/{match_id}/win-probability", SM, "Live win probability for a covered match", async (c) => unav(async () => {
+  const { mid, p } = await covered(c);
+  const innings = c.q.int("innings", 1, 1, 2), target = c.q.p.get("target");
+  return { match_id: mid, ...stateFrom(c, p, { innings, batting: c.q.int("batting", 0, 0, 1), runs: c.q.int("runs", 0, 0),
+    wickets: c.q.int("wickets", 0, 0, 9), overs: Number(c.q.str("overs", "0")), target: target ? Number(target) : undefined }) };
+}));
+
+/** Endpoints of the full API that need a fresh simulation with the caller's own inputs: local only. */
 export const NOT_HOSTED: { method: string; path: string; tag: string; summary: string; local_only?: boolean }[] = [
   { method: "POST", path: "/v1/simulate", tag: SM, summary: "Simulate a match", local_only: true },
   { method: "POST", path: "/v1/scenarios/compare", tag: SM, summary: "Compare scenarios", local_only: true },
   { method: "POST", path: "/v1/lineups/swap", tag: SM, summary: "Swap a player", local_only: true },
-  { method: "POST", path: "/v1/players/{pid}/projection", tag: SM, summary: "Player projection" },
-  { method: "POST", path: "/v1/win-probability", tag: SM, summary: "Win probability from any state" },
-  { method: "POST", path: "/v1/innings/projection", tag: SM, summary: "Innings projection" },
-  { method: "POST", path: "/v1/par-score", tag: SM, summary: "Par score" },
-  { method: "POST", path: "/v1/chase-curve", tag: SM, summary: "Chase curve" },
-  { method: "POST", path: "/v1/toss", tag: SM, summary: "Toss decision" },
-  { method: "POST", path: "/v1/players/{pid}/impact", tag: SM, summary: "Player impact" },
-  { method: "POST", path: "/v1/lineups/batting-order", tag: SM, summary: "Batting order optimiser" },
-  { method: "POST", path: "/v1/lineups/bowling-plan", tag: SM, summary: "Bowling plan" },
-  { method: "POST", path: "/v1/fantasy/projections", tag: SM, summary: "Fantasy projections" },
-  { method: "POST", path: "/v1/fantasy/team", tag: SM, summary: "Fantasy team" },
-  { method: "POST", path: "/v1/fantasy/portfolio", tag: SM, summary: "Fantasy portfolio" },
-  { method: "GET", path: "/v1/matches/{match_id}/win-probability", tag: SM, summary: "Live win probability for a covered match" },
 ];
 const notHostedRe = NOT_HOSTED.map((n) => ({ ...n, re: new RegExp("^" + n.path.replace(/\{\w+\}/g, "[^/]+") + "$") }));
 

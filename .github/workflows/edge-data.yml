@@ -1,0 +1,75 @@
+name: Edge data
+
+# Prepared answers for the hosted API and MCP server (cricsim/edge.py): par score, chase curve, player impact,
+# batting order, bowling plan, fantasy team and portfolios and a live-state grid for each covered match in the next
+# few days. They ship with the Worker as private files (never on the public site), then the Worker is redeployed.
+# Started by Publish site when it finishes; unchanged matches reuse their last answers.
+on:
+  workflow_dispatch:
+    inputs:
+      publish_run: { description: "Publish site run id (default: the latest successful one)", default: "" }
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency: { group: edge-data, cancel-in-progress: true }
+
+jobs:
+  edge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: edge/package-lock.json }
+      - run: uv sync --all-extras
+      - name: Day key (the same model the publish used)
+        id: day
+        run: |
+          h="${{ hashFiles('cricsim/src/cricsim/engine/**', '!cricsim/src/cricsim/engine/backtest.py', '!cricsim/src/cricsim/engine/mvp_backtest.py', '!cricsim/src/cricsim/engine/__main__.py', 'cricdata/src/**', 'cricsim/src/cricsim/khelnow.py') }}"
+          echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+          echo "prev2=engine-$(date -u -d '2 days ago' +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/restore@v4
+        id: model
+        with:
+          path: |
+            data/parquet
+            data/models/latest
+          key: ${{ steps.day.outputs.key }}
+          restore-keys: |
+            ${{ steps.day.outputs.prev }}
+            ${{ steps.day.outputs.prev2 }}
+      - name: The publish run's match specs
+        env: { GH_TOKEN: "${{ github.token }}", RUN: "${{ inputs.publish_run }}" }
+        run: |
+          [ -d data/models/latest ] || { echo "::error::No model in the cache"; exit 1; }
+          id="${RUN:-$(gh run list -R "$GITHUB_REPOSITORY" --workflow publish-site.yml --status success -L 1 --json databaseId -q '.[0].databaseId')}"
+          gh run download "$id" -R "$GITHUB_REPOSITORY" -n edge-inputs -D data
+          ls data/coverage/matches | wc -l
+      - uses: actions/cache/restore@v4               # last run's answers, reused for unchanged matches
+        with:
+          path: edge/assets/edge
+          key: edge-assets-${{ github.run_id }}
+          restore-keys: edge-assets-
+      - name: Prepare
+        run: |
+          uv run python -m cricsim.edge --model data/models/latest --coverage data/coverage \
+            --index data/publish/index.json --out edge/assets/edge.new --previous edge/assets/edge | tee -a "$GITHUB_STEP_SUMMARY"
+          rm -rf edge/assets/edge && mv edge/assets/edge.new edge/assets/edge
+          du -sh edge/assets/edge; ls edge/assets/edge | wc -l
+      - uses: actions/cache/save@v4
+        with:
+          path: edge/assets/edge
+          key: edge-assets-${{ github.run_id }}
+      - name: Deploy the Worker with them
+        if: env.HAS_CF == 'true'
+        working-directory: edge
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npm ci --no-audit --no-fund && npx wrangler deploy
