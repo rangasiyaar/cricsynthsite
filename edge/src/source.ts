@@ -5,6 +5,10 @@ import { NotFound, type Source } from "./analytics.ts";
 
 const TTL_MS = 10 * 60_000;
 const MAX_ENTRIES = 400;
+// The match list and match files change when XIs are named or a toss is in: re-read them every minute. The analytics
+// kit changes once a night, so it keeps the longer cache.
+const FRESH = /^(index\.json|matches\/)/;
+const ttl = (path: string) => (FRESH.test(path) ? 60_000 : TTL_MS);
 
 export class EdgeSource implements Source {
   bucket: R2Bucket | undefined;
@@ -19,7 +23,7 @@ export class EdgeSource implements Source {
   get(path: string): Promise<any> {
     const now = Date.now();
     const hit = this.cache.get(path);
-    if (hit && now - hit.t < TTL_MS) return hit.v;
+    if (hit && now - hit.t < ttl(path)) return hit.v;
     const v = this.load(path);
     v.catch(() => this.cache.delete(path));
     if (this.cache.size >= MAX_ENTRIES) {
@@ -35,7 +39,7 @@ export class EdgeSource implements Source {
       if (!obj) throw new NotFound(`404 loading ${path}`);
       return obj.json();
     }
-    const r = await fetch(`${this.base}/${path}`, { cf: { cacheTtl: 300, cacheEverything: true } } as RequestInit);
+    const r = await fetch(`${this.base}/${path}`, { cf: { cacheTtl: FRESH.test(path) ? 60 : 300, cacheEverything: true } } as RequestInit);
     if (r.status === 404) throw new NotFound(`404 loading ${path}`);
     if (!r.ok) throw new Error(`${r.status} loading ${path}`);
     return r.json();

@@ -3,7 +3,8 @@ name: Edge data
 # Prepared answers for the hosted API and MCP server (cricsim/edge.py): par score, chase curve, player impact,
 # batting order, bowling plan, fantasy team and portfolios and a live-state grid for each covered match in the next
 # few days. They ship with the Worker as private files (never on the public site), then the Worker is redeployed.
-# Started by Publish site when it finishes; unchanged matches reuse their last answers.
+# Started by Publish site as soon as its match specs are ready (alongside the site build), so confirmed XIs reach the
+# hosted fantasy team within minutes; unchanged matches reuse their last answers.
 on:
   workflow_dispatch:
     inputs:
@@ -34,8 +35,16 @@ jobs:
           echo "key=engine-$(date -u +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
           echo "prev=engine-$(date -u -d yesterday +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
           echo "prev2=engine-$(date -u -d '2 days ago' +%Y-%m-%d)-$h" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4               # the model alone (small), saved by Publish site after a fit
         id: model
+        with:
+          path: data/models/latest
+          key: model-${{ steps.day.outputs.key }}
+          restore-keys: |
+            model-${{ steps.day.outputs.prev }}
+            model-${{ steps.day.outputs.prev2 }}
+      - uses: actions/cache/restore@v4               # until then: the day's full data and model
+        if: steps.model.outputs.cache-matched-key == ''
         with:
           path: |
             data/parquet
@@ -49,7 +58,7 @@ jobs:
         run: |
           [ -d data/models/latest ] || { echo "::error::No model in the cache"; exit 1; }
           id="${RUN:-$(gh run list -R "$GITHUB_REPOSITORY" --workflow publish-site.yml --status success -L 1 --json databaseId -q '.[0].databaseId')}"
-          gh run download "$id" -R "$GITHUB_REPOSITORY" -n edge-inputs -D data
+          for i in 1 2 3; do gh run download "$id" -R "$GITHUB_REPOSITORY" -n edge-inputs -D data && break; sleep 10; done
           ls data/coverage/matches | wc -l
       - uses: actions/cache/restore@v4               # last run's answers, reused for unchanged matches
         with:
