@@ -1,0 +1,278 @@
+{
+ "id": "rdc-v-ee-t20-abu-dhabi-2026-11-07",
+ "innings": [
+  {
+   "team": "Emirates Eagles",
+   "runs": 125,
+   "wickets": 2,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Alex Hales",
+     "dismissal": "c & b C Jordan",
+     "runs": 22,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Kyle Mayers",
+     "dismissal": "not out",
+     "runs": 39,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Rovman Powell",
+     "dismissal": "not out",
+     "runs": 41,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 4
+    },
+    {
+     "name": "Shimron Hetmyer",
+     "dismissal": "not out",
+     "runs": 15,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Luke Wood",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Maheesh Theekshana",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ali Naseer",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Chris Jordan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dushmantha Chameera",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 2,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Alex Hales",
+     "score": 65,
+     "over": "5.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 4,
+    "nb": 3,
+    "p": 0
+   },
+   "powerplay_runs": 65
+  },
+  {
+   "team": "Royal Desert Champions",
+   "runs": 109,
+   "wickets": 7,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Phil Salt",
+     "dismissal": "c S Hetmyer b T Boult",
+     "runs": 4,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Muhammad Waseem",
+     "dismissal": "b Haider Razzaq",
+     "runs": 13,
+     "balls": 9,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Nicholas Pooran",
+     "dismissal": "c KR Mayers b GC Viljoen",
+     "runs": 14,
+     "balls": 7,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "dismissal": "b CJ Green",
+     "runs": 33,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Janith Liyanage",
+     "dismissal": "b GC Viljoen",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gulbadin Naib",
+     "dismissal": "b T Boult",
+     "runs": 5,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chris Jordan",
+     "dismissal": "c S Hetmyer b Haider Razzaq",
+     "runs": 27,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Ali Naseer",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Trent Boult",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Chris Green",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Haider Razzaq",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tymal Mills",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Phil Salt",
+     "score": 4,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nicholas Pooran",
+     "score": 32,
+     "over": "2.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Muhammad Waseem",
+     "score": 40,
+     "over": "3.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sherfane Rutherford",
+     "score": 69,
+     "over": "5.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Janith Liyanage",
+     "score": 79,
+     "over": "6.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Gulbadin Naib",
+     "score": 83,
+     "over": "7.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Chris Jordan",
+     "score": 109,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ]
+}
