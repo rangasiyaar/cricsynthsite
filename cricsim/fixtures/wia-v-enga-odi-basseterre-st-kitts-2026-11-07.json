@@ -12,30 +12,30 @@
   "city": "Basseterre, St Kitts",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "West Indies A",
       "short": "WIA",
       "players": [
-        "Kamil Pooran",
-        "Zachary Carter",
+        "Kirk McKenzie",
         "Alick Athanaze",
-        "Karima Gore",
+        "Keacy Carty",
+        "Shaqkere Parris",
         "Jewel Andrew",
-        "Quentin Sampson",
-        "Sadrack Descarte",
-        "Joshua James",
-        "Keon Gaston",
+        "Jyd Goolie",
+        "Sadrack Descartes",
+        "Jediah Blades",
         "Vitel Lawes",
-        "Zishan Motara"
+        "Oshane Thomas",
+        "Jakeem Pollard"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "AR",
-        "BAT",
         "BAT",
         "AR",
         "BOWL",
@@ -62,32 +62,32 @@
       "name": "England Lions",
       "short": "ENGA",
       "players": [
-        "Ben McKinney",
         "Thomas Rew",
+        "Ben McKinney",
         "Rehan Ahmed",
+        "Dan Lawrence",
+        "James Coles",
         "James Rew",
         "Jack Haynes",
-        "Ben Mayes",
         "Liam Patterson-White",
-        "Calvin Harrison",
-        "Ekansh Singh",
-        "Scott Currie",
-        "Adam Finch"
+        "Adam Finch",
+        "Mason Crane",
+        "Naavya Sharma"
       ],
       "roles": [
-        "BAT",
         "WK",
+        "BAT",
+        "AR",
+        "AR",
         "AR",
         "BAT",
         "BAT",
-        "BAT",
         "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Thomas Rew",
+      "captain": "Dan Lawrence",
       "squad": [
         "Ben McKinney",
         "Thomas Rew",
@@ -106,8 +106,9 @@
   "live": {
     "id": 176496,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41769,
     "url": "https://khelnow.com/live-cricket-score/west-indies-a-vs-england-lions-england-lions-tour-of-west-indies-7th-november-2026-41769"
-  }
+  },
+  "batting_first": 0
 }
