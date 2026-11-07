@@ -1,0 +1,51 @@
+name: Deploy Worker
+
+# The hosted API on Cloudflare Workers (free plan, see infra/EDGE_PLAN.md): tests, then `wrangler deploy`.
+# Deploys only once the repo secrets CLOUDFLARE_API_TOKEN (Workers edit, this account only) and CLOUDFLARE_ACCOUNT_ID
+# are set; until then it just runs the tests. FIRESTORE_SA_KEY (a service-account JSON key that can read
+# users/*/keys and write users/*/usage) turns on dashboard API keys; it's copied to the Worker as the GOOGLE_SA secret.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["edge/**", "cricmcp/src/cricmcp/insight.py", "cricmcp/src/cricmcp/graphics.py", ".github/workflows/deploy-worker.yml"]
+
+permissions:
+  contents: read
+
+concurrency: { group: deploy-worker, cancel-in-progress: true }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+      HAS_SA: ${{ secrets.FIRESTORE_SA_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: edge/package-lock.json }
+      - uses: astral-sh/setup-uv@v5
+      - name: Tests (Worker, and its parity with the MCP server's Python)
+        run: |
+          (cd edge && npm ci && npx tsc --noEmit && npm test)
+          uv sync --all-extras && uv run pytest cricmcp/tests/test_edge_parity.py -q
+      - name: Deploy
+        if: env.HAS_CF == 'true'
+        working-directory: edge
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Dashboard keys (Firestore service account → Worker secret)
+        if: env.HAS_CF == 'true' && env.HAS_SA == 'true'
+        working-directory: edge
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SA: ${{ secrets.FIRESTORE_SA_KEY }}
+        run: printf '%s' "$SA" | npx wrangler secret put GOOGLE_SA
+      - name: Not deployed
+        if: env.HAS_CF != 'true'
+        run: echo "::notice::Tests passed. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets to deploy."

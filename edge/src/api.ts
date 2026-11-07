@@ -1,0 +1,270 @@
+// The hosted API: the same paths, parameters and response shapes as cricapi (so the docs, playground and examples stay
+// valid), answered from the published files. Endpoints that need a fresh simulation are listed in NOT_HOSTED.
+import { Analytics, BadRequest, NotFound } from "./analytics.ts";
+import * as G from "./graphics.ts";
+import { Kit, type Player } from "./insight.ts";
+import type { Account } from "./keys.ts";
+
+type Row = Record<string, any>;
+export const A = "Analytics", SM = "Simulation & modelling", GR = "Graphics";
+
+export class HttpError extends Error {
+  status: number;
+  constructor(status: number, detail: string) { super(detail); this.status = status; }
+}
+
+export type Ctx = { params: Record<string, string>; q: Query; body: any; acct: Account; a: Analytics };
+type Handler = (c: Ctx) => Promise<Row | string | null>;
+export type Route = { method: string; path: string; tag: string; summary: string; re: RegExp; keys: string[]; run: Handler; svg?: boolean };
+
+const FORMATS = ["T20", "T10", "HUNDRED", "OD"], GENDERS = ["male", "female"], PHASES = ["powerplay", "middle", "death"];
+const THEMES = ["dark", "light"];
+
+/** Query-string reading with FastAPI-style 422s. */
+export class Query {
+  p: URLSearchParams;
+  constructor(p: URLSearchParams) { this.p = p; }
+  str(name: string, def?: string | null): string | null {
+    const v = this.p.get(name);
+    if (v == null || v === "") {
+      if (def === undefined) throw new HttpError(422, `Query parameter '${name}' is required`);
+      return def;
+    }
+    if (v.length > 200) throw new HttpError(422, `'${name}' is too long`);
+    return v;
+  }
+  need(name: string): string { return this.str(name) as string; }
+  one(name: string, options: string[], def: string): string {
+    const v = this.str(name, def) as string;
+    if (!options.includes(v)) throw new HttpError(422, `'${name}' must be one of: ${options.join(", ")}`);
+    return v;
+  }
+  int(name: string, def: number, lo: number, hi: number = Number.MAX_SAFE_INTEGER): number {
+    const raw = this.str(name, String(def)) as string;
+    const n = Number(raw);
+    if (!Number.isInteger(n) || n < lo || n > hi) throw new HttpError(422, `'${name}' must be a whole number from ${lo}${hi < 1e15 ? ` to ${hi}` : ""}`);
+    return n;
+  }
+  ids(name: string, lo: number, hi: number): string[] {
+    const ids = this.need(name).split(",").map((x) => x.trim()).filter(Boolean);
+    if (ids.length < lo || ids.length > hi) throw new HttpError(422, `Give ${lo}–${hi} comma-separated player ids`);
+    return ids;
+  }
+}
+
+const routes: Route[] = [];
+function route(method: string, path: string, tag: string, summary: string, run: Handler, svg = false) {
+  const keys: string[] = [];
+  const re = new RegExp("^" + path.replace(/\{(\w+)\}/g, (_, k) => { keys.push(k); return "([^/]+)"; }).replace(/\./g, "\\.") + "$");
+  routes.push({ method, path, tag, summary, re, keys, run, svg });
+}
+
+// ── helpers ──
+const SAFE_ID = /^[A-Za-z0-9_.:-]{1,80}$/;
+async function known(c: Ctx, pid: string): Promise<Player> {
+  if (!SAFE_ID.test(pid)) throw new HttpError(404, `Unknown player ${pid}`);
+  try { return await c.a.player(pid); } catch (e) { if (e instanceof NotFound) throw new HttpError(404, `Unknown player ${pid}`); throw e; }
+}
+const fmt = (c: Ctx, def = "T20") => c.q.one("format", FORMATS, def);
+const gender = (c: Ctx) => c.q.one("gender", GENDERS, "male");
+const phase = (c: Ctx) => c.q.one("phase", PHASES, "middle");
+const theme = (c: Ctx) => c.q.one("theme", THEMES, "dark");
+const wm = (c: Ctx) => c.acct.limits.watermark;
+
+async function published(c: Ctx, mid: string): Promise<Row> {
+  if (!SAFE_ID.test(mid)) throw new HttpError(404, "Match not found");
+  let d: Row;
+  try { d = await c.a.src.get(`matches/${encodeURIComponent(mid)}.json`); } catch (e) {
+    if (e instanceof NotFound) throw new HttpError(404, "Match not found");
+    throw e;
+  }
+  if (d.published === false) throw new HttpError(404, "Match not found");
+  return d;
+}
+
+// ── analytics: players ──
+route("GET", "/v1/players", A, "Search players", async (c) => {
+  const q = c.q.need("q");
+  if (q.length < 2) throw new HttpError(422, "'q' needs at least 2 characters");
+  return c.a.searchPlayers(q, c.q.int("limit", 20, 1, 50));
+});
+route("GET", "/v1/players/compare", A, "Compare players side by side", async (c) => {
+  const ps = await Promise.all(c.q.ids("ids", 2, 5).map((p) => known(c, p)));
+  return (await c.a.kit()).compare(ps, fmt(c), gender(c));
+});
+route("GET", "/v1/players/{pid}", A, "Player rating", async (c) => (await c.a.kit()).rating(await known(c, c.params.pid), fmt(c)));
+route("GET", "/v1/players/{pid}/phases", A, "Phase profile", async (c) =>
+  (await c.a.kit()).phase_profile(await known(c, c.params.pid), fmt(c), gender(c)));
+route("GET", "/v1/players/{pid}/vs-bowling", A, "Batter v bowling types", async (c) =>
+  (await c.a.kit()).vs_bowling(await known(c, c.params.pid), fmt(c), gender(c), phase(c)));
+route("GET", "/v1/players/{pid}/vs-batting-hand", A, "Bowler v left- and right-handers", async (c) =>
+  (await c.a.kit()).vs_batting_hand(await known(c, c.params.pid), fmt(c), gender(c), phase(c)));
+route("GET", "/v1/players/{pid}/situations", A, "Situational batting", async (c) =>
+  (await c.a.kit()).situations(await known(c, c.params.pid), fmt(c), gender(c)));
+route("GET", "/v1/players/{pid}/formats", A, "Format split", async (c) =>
+  (await c.a.kit()).format_split(await known(c, c.params.pid), gender(c)));
+route("GET", "/v1/players/{pid}/role", A, "Role and workload", async (c) =>
+  (await c.a.kit()).role(await known(c, c.params.pid), fmt(c)));
+route("GET", "/v1/players/{pid}/similar", A, "Similar players", async (c) => {
+  const p = await known(c, c.params.pid);
+  const f = fmt(c), side = c.q.one("side", ["batting", "bowling"], "batting");
+  gender(c);
+  return c.a.similar(p, f, side, c.q.int("limit", 10, 1, 25));
+});
+
+// ── analytics: rankings, match-ups ──
+const BAT_SORTS = ["impact", "strike_rate", "balls_per_dismissal", "runs_per_dismissal", "boundary_pct", "dot_pct"];
+const BOWL_SORTS = ["impact", "economy", "balls_per_wicket", "dot_pct", "boundary_pct"];
+for (const side of ["batting", "bowling"]) {
+  route("GET", `/v1/rankings/${side}`, A, `${side[0].toUpperCase()}${side.slice(1)} rankings`, async (c) => {
+    const f = fmt(c);
+    if (f === "T10" || f === "HUNDRED") throw new HttpError(422, "Rankings are for T20 and OD");
+    return c.a.rankings(side, f, gender(c), phase(c), c.q.one("sort", side === "batting" ? BAT_SORTS : BOWL_SORTS, "impact"),
+                        c.q.int("limit", 25, 1, 100), c.q.int("min_balls", 500, 50));
+  });
+}
+route("GET", "/v1/matchups", A, "Batter v bowler", async (c) => {
+  const [b, w] = await Promise.all([known(c, c.q.need("batter")), known(c, c.q.need("bowler"))]);
+  return (await c.a.kit()).matchup(b, w, fmt(c), gender(c), phase(c));
+});
+route("GET", "/v1/matchups/grid", A, "Match-up grid", async (c) => {
+  const bs = await Promise.all(c.q.ids("batters", 1, 11).map((p) => known(c, p)));
+  const ws = await Promise.all(c.q.ids("bowlers", 1, 11).map((p) => known(c, p)));
+  return (await c.a.kit()).matchup_grid(bs, ws, fmt(c), gender(c), phase(c));
+});
+route("GET", "/v1/matchups/counter", A, "Best bowler for a batter", async (c) => {
+  const b = await known(c, c.q.need("batter"));
+  const ws = await Promise.all(c.q.ids("candidates", 2, 11).map((p) => known(c, p)));
+  return (await c.a.kit()).counter(b, ws, fmt(c), gender(c), phase(c));
+});
+
+// ── analytics: venues, competitions, trends, teams ──
+const nf = async <T>(p: Promise<T>, what: string): Promise<T> => {
+  try { return await p; } catch (e) { if (e instanceof NotFound) throw new HttpError(404, `Unknown ${what}`); throw e; }
+};
+route("GET", "/v1/venues", A, "Venues", async (c) => c.a.venues(c.q.str("q", null), c.q.int("limit", 50, 1, 200)));
+route("GET", "/v1/venues/{vid}", A, "Venue profile", async (c) => {
+  if (!SAFE_ID.test(c.params.vid)) throw new HttpError(404, "Unknown venue");
+  const f = fmt(c);
+  return nf(c.a.venueProfile(c.params.vid, f, gender(c), true), "venue");
+});
+route("GET", "/v1/competitions", A, "Competitions", async (c) => c.a.competitions(c.q.str("q", null), c.q.int("limit", 50, 1, 200)));
+route("GET", "/v1/competitions/{key}", A, "Competition profile", async (c) => {
+  if (!SAFE_ID.test(c.params.key)) throw new HttpError(404, "Unknown competition");
+  return nf(c.a.competitionProfile(c.params.key, true), "competition");
+});
+route("GET", "/v1/trends/scoring", A, "Scoring trend", async (c) => {
+  const f = fmt(c);
+  return nf(c.a.scoringTrend(f, gender(c)), "format");
+});
+route("GET", "/v1/teams", A, "Teams", async (c) =>
+  c.a.teams(c.q.str("q", null), c.q.p.get("gender") ? gender(c) : null, c.q.int("limit", 50, 1, 200)));
+route("GET", "/v1/teams/{tid}", A, "Team profile", async (c) => {
+  if (!SAFE_ID.test(c.params.tid)) throw new HttpError(404, "Unknown team");
+  return nf(c.a.teamProfile({ team: c.params.tid, fmt: fmt(c), exact: true }), "team");
+});
+route("POST", "/v1/teams/profile", A, "Profile any XI", async (c) => {
+  const b = c.body || {};
+  const f = b.format ?? "T20", g = b.gender ?? "male";
+  if (!FORMATS.includes(f) || !GENDERS.includes(g)) throw new HttpError(422, "format / gender not recognised");
+  if (!Array.isArray(b.players) || b.players.length !== 11) throw new HttpError(422, "players: give 11 player ids");
+  const xi = await Promise.all(b.players.map((p: string) => c.a.playerOrStub(String(p))));
+  const bowlers = Array.isArray(b.bowlers) && b.bowlers.length
+    ? await Promise.all(b.bowlers.slice(0, 11).map((p: string) => c.a.playerOrStub(String(p)))) : null;
+  return (await c.a.kit()).team_profile(xi, f, g, bowlers);
+});
+
+// ── analytics: Pattern Lab ──
+const patterns = async (c: Ctx) => nf(c.a.src.get("patterns.json"), "report: Pattern Lab report not published yet");
+route("GET", "/v1/patterns", A, "Pattern Lab", async (c) => patterns(c));
+route("GET", "/v1/patterns/{pattern_id}", A, "Pattern detail", async (c) => {
+  const hit = ((await patterns(c)).patterns || []).find((x: Row) => x.id === c.params.pattern_id);
+  if (!hit) throw new HttpError(404, "Unknown pattern");
+  return hit;
+});
+
+// ── covered matches (published forecasts) ──
+route("GET", "/v1/matches", SM, "Covered matches", async (c) =>
+  ({ matches: ((await c.a.src.get("index.json")).matches || []).filter((m: Row) => m.published !== false) }));
+route("GET", "/v1/matches/{match_id}", SM, "Match forecast", async (c) => published(c, c.params.match_id));
+route("GET", "/v1/matches/{match_id}/pack", SM, "Engine pack", async (c) => {
+  await published(c, c.params.match_id);
+  return nf(c.a.src.get(`matches/${encodeURIComponent(c.params.match_id)}.pack.json`), "pack");
+});
+route("GET", "/v1/matches/{match_id}/fantasy", SM, "Fantasy projections for a covered match", async (c) => {
+  const d = await published(c, c.params.match_id);
+  if (!d.fantasy) throw new HttpError(404, "No fantasy projections for this match");
+  return d.fantasy;
+});
+
+// ── graphics ──
+for (const [card, title] of [["win", "Win probability card"], ["scores", "Score distribution card"], ["worm", "Run worm card"],
+                             ["phases", "Phase card"], ["duels", "Key duels card"]]) {
+  route("GET", `/v1/graphics/matches/{match_id}/${card}.svg`, GR, title, async (c) =>
+    G.CARDS[card](await published(c, c.params.match_id), theme(c), wm(c)), true);
+}
+route("GET", "/v1/graphics/matches/{match_id}/wickets/{team}.svg", GR, "Wicket timing card", async (c) => {
+  if (!["0", "1"].includes(c.params.team)) throw new HttpError(404, "team is 0 or 1");
+  return G.wickets_card(await published(c, c.params.match_id), Number(c.params.team), theme(c), wm(c));
+}, true);
+route("GET", "/v1/graphics/matches/{match_id}/players/{pid}.svg", GR, "Player match card", async (c) =>
+  G.player_card(await published(c, c.params.match_id), decodeURIComponent(c.params.pid), theme(c), wm(c)), true);
+route("GET", "/v1/graphics/players/{pid}/profile.svg", GR, "Player profile card", async (c) =>
+  G.player_profile_card((await c.a.kit()).phase_profile(await known(c, c.params.pid), fmt(c), gender(c)), theme(c), wm(c)), true);
+route("GET", "/v1/graphics/matchups.svg", GR, "Match-up card", async (c) => {
+  const [b, w] = await Promise.all([known(c, c.q.need("batter")), known(c, c.q.need("bowler"))]);
+  return G.matchup_card((await c.a.kit()).matchup(b, w, fmt(c), gender(c), phase(c)), theme(c), wm(c));
+}, true);
+route("GET", "/v1/graphics/venues/{vid}.svg", GR, "Venue card", async (c) => {
+  if (!SAFE_ID.test(c.params.vid)) throw new HttpError(404, "Not found");
+  const f = fmt(c), g = gender(c);
+  return G.venue_card(await nf(c.a.venueProfile(c.params.vid, f, g, true), "venue"), theme(c), wm(c));
+}, true);
+route("GET", "/v1/graphics/trends/scoring.svg", GR, "Scoring trend card", async (c) => {
+  const f = fmt(c), g = gender(c);
+  return G.trend_card(await nf(c.a.scoringTrend(f, g), "format"), theme(c), wm(c));
+}, true);
+
+/** Endpoints of the full API that need a fresh simulation; prepared per covered match later, or local only. */
+export const NOT_HOSTED: { method: string; path: string; tag: string; summary: string; local_only?: boolean }[] = [
+  { method: "POST", path: "/v1/simulate", tag: SM, summary: "Simulate a match", local_only: true },
+  { method: "POST", path: "/v1/scenarios/compare", tag: SM, summary: "Compare scenarios", local_only: true },
+  { method: "POST", path: "/v1/lineups/swap", tag: SM, summary: "Swap a player", local_only: true },
+  { method: "POST", path: "/v1/players/{pid}/projection", tag: SM, summary: "Player projection" },
+  { method: "POST", path: "/v1/win-probability", tag: SM, summary: "Win probability from any state" },
+  { method: "POST", path: "/v1/innings/projection", tag: SM, summary: "Innings projection" },
+  { method: "POST", path: "/v1/par-score", tag: SM, summary: "Par score" },
+  { method: "POST", path: "/v1/chase-curve", tag: SM, summary: "Chase curve" },
+  { method: "POST", path: "/v1/toss", tag: SM, summary: "Toss decision" },
+  { method: "POST", path: "/v1/players/{pid}/impact", tag: SM, summary: "Player impact" },
+  { method: "POST", path: "/v1/lineups/batting-order", tag: SM, summary: "Batting order optimiser" },
+  { method: "POST", path: "/v1/lineups/bowling-plan", tag: SM, summary: "Bowling plan" },
+  { method: "POST", path: "/v1/fantasy/projections", tag: SM, summary: "Fantasy projections" },
+  { method: "POST", path: "/v1/fantasy/team", tag: SM, summary: "Fantasy team" },
+  { method: "POST", path: "/v1/fantasy/portfolio", tag: SM, summary: "Fantasy portfolio" },
+  { method: "GET", path: "/v1/matches/{match_id}/win-probability", tag: SM, summary: "Live win probability for a covered match" },
+];
+const notHostedRe = NOT_HOSTED.map((n) => ({ ...n, re: new RegExp("^" + n.path.replace(/\{\w+\}/g, "[^/]+") + "$") }));
+
+export function match(method: string, path: string): { route: Route; params: Record<string, string> } | { notHosted: typeof NOT_HOSTED[number] } | null {
+  for (const r of routes) {
+    if (r.method !== method) continue;
+    const m = r.re.exec(path);
+    if (m) {
+      const params: Record<string, string> = {};
+      r.keys.forEach((k, i) => { params[k] = decodeURIComponent(m[i + 1]); });
+      return { route: r, params };
+    }
+  }
+  const nh = notHostedRe.find((n) => n.method === method && n.re.test(path));
+  return nh ? { notHosted: nh } : null;
+}
+
+export function catalog(): Row {
+  const eps: Record<string, Row[]> = { [A]: [], [SM]: [], [GR]: [] };
+  for (const r of routes) eps[r.tag].push({ method: r.method, path: r.path, summary: r.summary });
+  return { endpoints: eps, not_hosted: NOT_HOSTED.map(({ method, path, summary, local_only }) =>
+    ({ method, path, summary, where: local_only ? "local MCP server or MatchSynth Lab" : "coming to the hosted API" })) };
+}
+
+export { BadRequest, Kit, NotFound, routes };

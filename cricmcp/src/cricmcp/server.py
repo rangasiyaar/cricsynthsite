@@ -39,7 +39,7 @@ Three kinds of tools:
 Numbers are model expectations or shares of simulations, not certainties; quote ranges where given. Ratings are
 relative to an average player in the same format (1.00 = average). Data is rebuilt nightly."""
 
-mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.3.0")
+mcp = MCPServer("CricSynthesis", instructions=INSTRUCTIONS, website_url=SITE, version="0.3.1")
 store = Store()
 READ = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
 

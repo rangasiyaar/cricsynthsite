@@ -86,3 +86,17 @@ matches (which is what fans and most API users ask about). The local `uvx` MCP k
 4. `cricsim/edge.py` scenario files and the C endpoints / tools.
 5. Point the docs, playground, MCP page and examples at the Worker; retire the Cloud Run deploy workflow.
 6. Add the Cloudflare free limits and our guards to `infra/COSTS.md`.
+
+## Status (built)
+
+- `edge/` — the Worker (TypeScript): `insight.ts` and `analytics.ts` (port of `cricmcp/insight.py` and the MCP
+  server's catalog tools), `graphics.ts` (port of `graphics.py`), `api.ts` (40 endpoints: all of A + B, same paths,
+  parameters and shapes as `cricapi`), `keys.ts` (dashboard API keys via Firestore REST, plan limits, usage in a
+  Durable Object per key, written to `users/{uid}/usage/{day}` once a minute). `cricmcp/tests/test_edge_parity.py`
+  checks every analytics answer and card against the Python; `edge/tests/api.test.ts` runs the Worker end to end.
+- **No R2.** Enabling R2 needs a payment method on the Cloudflare account, so the Worker reads the published files
+  from the site's `/data` (the same files the local MCP server reads). The C files (step 4) can ship privately as
+  Worker static assets (free, up to 20,000 files) read through the Worker.
+- `.github/workflows/deploy-worker.yml` — tests, then `wrangler deploy` once `CLOUDFLARE_API_TOKEN` and
+  `CLOUDFLARE_ACCOUNT_ID` are set; `FIRESTORE_SA_KEY` (service-account JSON) turns on dashboard keys.
+- The 16 C/D endpoints answer 501 with where to go instead (`/v1` lists them under `not_hosted`).

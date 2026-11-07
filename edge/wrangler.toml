@@ -1,0 +1,23 @@
+# CricSynthesis hosted API (Cloudflare Workers, free plan). Deployed by .github/workflows/deploy-worker.yml.
+name = "cricsynthesis-api"
+main = "src/index.ts"
+compatibility_date = "2025-10-01"
+workers_dev = true
+
+[vars]
+DATA_URL = "https://cricsynthesis.in/data"     # the published files (forecasts, packs, analytics kit)
+CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000"
+
+# No R2 bucket: enabling R2 needs a payment method on the Cloudflare account. The code reads env.DATA when bound.
+
+# Per-key daily usage (SQLite-backed Durable Objects are on the free plan).
+[[durable_objects.bindings]]
+name = "USAGE"
+class_name = "Usage"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Usage"]
+
+[observability]
+enabled = true

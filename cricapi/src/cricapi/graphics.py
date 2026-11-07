@@ -27,8 +27,7 @@ def _frame(t: dict, title: str, subtitle: str, body: str, watermark: bool) -> st
 
 def _sub(doc: dict) -> str:
     m = doc["match"]
-    sims = doc["summary"]["meta"]["simulations"]
-    return " · ".join(x for x in (m.get("competition"), m.get("venue"), m.get("date"), f"{sims:,} simulations") if x)
+    return " · ".join(x for x in (m.get("competition"), m.get("venue"), m.get("date")) if x)
 
 
 def win_card(doc: dict, theme: str = "dark", watermark: bool = False) -> str:

@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches: [claude/cricsynthesis-platform, main]
-    paths: ["cricdata/**", "cricsim/**", "cricapi/**", "cricmcp/**", "infra/billing_guard/**", "app/**", ".github/workflows/tests.yml"]
+    paths: ["cricdata/**", "cricsim/**", "cricapi/**", "cricmcp/**", "edge/**", "infra/billing_guard/**", "app/**", ".github/workflows/tests.yml"]
 
 permissions:
   contents: read
