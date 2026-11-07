@@ -1,0 +1,28 @@
+name: Reel voice timing
+
+# One-off: transcribes the reel's voice-over with word timestamps (faster-whisper) and prints them in the log.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  words:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install faster-whisper
+      - name: Transcribe
+        run: |
+          python - <<'PY'
+          from faster_whisper import WhisperModel
+          m = WhisperModel("small.en", device="cpu", compute_type="int8")
+          segs, _ = m.transcribe("scripts/tmp-reel/voice.ogg", word_timestamps=True, vad_filter=False, language="en")
+          for s in segs:
+              print(f"SEG {s.start:6.2f}-{s.end:6.2f} {s.text.strip()}")
+              print("WORDS " + " ".join(f"{w.word.strip()}@{w.start:.2f}" for w in s.words))
+          PY
