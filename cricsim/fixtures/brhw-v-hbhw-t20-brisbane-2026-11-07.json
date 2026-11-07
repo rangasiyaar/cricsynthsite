@@ -12,7 +12,7 @@
   "city": "Brisbane",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Brisbane Heat Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Brisbane Heat Women",
@@ -20,11 +20,11 @@
       "players": [
         "Grace Harris",
         "Charli Knott",
-        "Georgia Redmayne",
         "Yastika Bhatia",
-        "Annie O Neil",
+        "Georgia Redmayne",
         "Orla Prendergast",
         "Lucy Hamilton",
+        "Annie O'Neil",
         "Sianna Ginger",
         "Sarah Glenn",
         "Lily Bassingthwaighte",
@@ -33,12 +33,12 @@
       "roles": [
         "AR",
         "AR",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -63,22 +63,22 @@
       "short": "HBHW",
       "players": [
         "Lizelle Lee",
+        "Kate Pelle",
         "Chamari Athapaththu",
         "Rachel Trenaman",
-        "Nicola Carey",
         "Heather Graham",
         "Maddy Green",
         "Chinelle Henry",
-        "Hayley Silver-holmes",
-        "Lauren Smith",
+        "Hayley Silver holmes",
         "Molly Strano",
+        "Lauren Smith",
         "Isabella Malgioglio"
       ],
       "roles": [
         "WK",
-        "AR",
         "BAT",
         "AR",
+        "BAT",
         "AR",
         "BAT",
         "AR",
@@ -87,7 +87,7 @@
         "BOWL",
         "BOWL"
       ],
-      "captain": "Nicola Carey",
+      "captain": "Heather Graham",
       "squad": [
         "Lizelle Lee",
         "Chamari Athapaththu",
@@ -106,8 +106,9 @@
   "live": {
     "id": 162801,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 40314,
     "url": "https://khelnow.com/live-cricket-score/brisbane-heat-women-vs-hobart-hurricanes-women-women's-big-bash-league-7th-november-2026-40314"
-  }
+  },
+  "batting_first": 1
 }
