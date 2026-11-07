@@ -12,35 +12,35 @@
   "city": "Perth",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England won the toss and bat first.",
   "teams": [
     {
       "name": "Western Australia",
       "short": "WA",
       "players": [
-        "Bancroft",
-        "J Goodwin",
+        "Cameron Bancroft",
+        "Joel Curtis",
+        "Sam Whiteman",
+        "Jayden Goodwin",
         "Ashton Turner",
         "Will Malajczuk",
-        "Corey Wasley",
-        "Agar",
-        "Lance Morris",
         "Brody Couch",
-        "Whiteman",
-        "Joel Curtis",
-        "Mahli Beardman"
+        "Ashton Agar",
+        "Lance Morris",
+        "Mahli Beardman",
+        "Jordan Quiggin"
       ],
       "roles": [
+        "BAT",
         "WK",
         "BAT",
+        "BAT",
+        "BAT",
         "AR",
-        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "WK",
-        "WK",
         "BOWL"
       ],
       "captain": "Ashton Turner",
@@ -67,25 +67,25 @@
         "Ben Duckett",
         "Joe Root",
         "Harry Brook",
-        "Jordan Cox",
         "Sam Curran",
+        "Jordan Cox",
         "Will Jacks",
         "Jamie Overton",
         "Liam Dawson",
         "Gus Atkinson",
-        "Henry Crocombe"
+        "Jofra Archer"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "WK",
         "AR",
         "AR",
         "AR",
-        "AR",
-        "AR",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Harry Brook",
@@ -112,8 +112,9 @@
   "live": {
     "id": 178111,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41821,
     "url": "https://khelnow.com/live-cricket-score/western-australia-vs-england-england-tour-of-australia-7th-november-2026-41821"
-  }
+  },
+  "batting_first": 1
 }
