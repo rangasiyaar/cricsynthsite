@@ -198,6 +198,10 @@ export const TOOLS: Tool[] = [
       const [card, d] = await doc(a, x.match);
       const by: Row[] = d.summary.result.by_toss || [];
       const names: string[] = d.summary.teams.map((t: Row) => t.name);
+      if (by.length === 1) {
+        return { match: card.id, decided: true, batting_first: by[0].batting_first,
+                 note: `The toss is done: ${by[0].batting_first} bat first. The forecast already assumes it.` };
+      }
       if (by.length < 2) throw new ToolError("No toss split published for this match.");
       const win = (bf: string, t: string) => by.find((y) => y.batting_first === bf)?.win?.[t];
       return { match: card.id, teams: names.map((t, i) => {

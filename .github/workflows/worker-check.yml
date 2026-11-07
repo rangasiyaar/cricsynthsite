@@ -83,4 +83,4 @@ jobs:
       - name: Remove the test key
         if: always()
         working-directory: edge
-        run: npx wrangler secret delete STATIC_KEYS --force || true
+        run: echo y | npx wrangler secret delete STATIC_KEYS || true
