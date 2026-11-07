@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Lumbini Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "Kathmandu Gorkhas",
@@ -24,26 +24,26 @@
         "Rashid Khan",
         "Bhim Sharki",
         "Sahan Arachchige",
-        "Jahandad Khan",
-        "Karan KC",
         "Santosh Yadav",
+        "KC Karan",
+        "Jahandad Khan",
         "Shahab Alam",
-        "Dev Shah"
+        "Aadil Ansari"
       ],
       "roles": [
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
+        "BOWL",
+        "BOWL",
         "BAT",
         "AR",
         "AR",
+        "AR",
+        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR"
       ],
-      "captain": "Karan KC",
+      "captain": "KC Karan",
       "squad": [
         "Sahil Patel",
         "David Warner",
@@ -62,32 +62,32 @@
       "name": "Lumbini Lions",
       "short": "LUL",
       "players": [
-        "D Arcy Short",
+        "D'Arcy Short",
         "Aasif Sheikh",
+        "Rohit Kumar Paudel",
         "Niroshan Dickwella",
-        "Rohit Paudel",
-        "Dilip Nath",
-        "Shamim Hossain",
-        "Ruben Trumpelmann",
         "Sundeep Jora",
         "Sher Malla",
-        "Kishor Mahato",
-        "Tilak Bhandari"
+        "Ruben Trumpelmann",
+        "Tilak Bhandari",
+        "Grant Stewart",
+        "Kishore Mahato",
+        "Shamim Hossain Patwari"
       ],
       "roles": [
         "AR",
         "BAT",
+        "BAT",
         "WK",
-        "AR",
-        "BAT",
         "BAT",
         "AR",
-        "BAT",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "AR",
+        "BOWL",
+        "AR"
       ],
-      "captain": "Rohit Paudel",
+      "captain": "Rohit Kumar Paudel",
       "squad": [
         "D Arcy Short",
         "Aasif Sheikh",
@@ -106,8 +106,9 @@
   "live": {
     "id": 177730,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41340,
     "url": "https://khelnow.com/live-cricket-score/kathmandu-gorkhas-vs-lumbini-lions-nepal-premier-league-7th-november-2026-41340"
-  }
+  },
+  "batting_first": 0
 }
