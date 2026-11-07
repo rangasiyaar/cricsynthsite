@@ -12,7 +12,7 @@
   "city": "Melbourne",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Adelaide Strikers Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Melbourne Renegades Women",
@@ -22,11 +22,11 @@
         "Hayley Matthews",
         "Courtney Webb",
         "Sophie Molineux",
+        "Tess Flintoff",
         "Georgia Wareham",
         "Nicole Faltum",
         "Chloe Tryon",
         "Deandra Dottin",
-        "Tess Flintoff",
         "Milly Illingworth",
         "Tayla Vlaeminck"
       ],
@@ -36,10 +36,10 @@
         "BAT",
         "AR",
         "AR",
+        "AR",
         "WK",
         "AR",
-        "BAT",
-        "BAT",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -62,26 +62,26 @@
       "name": "Adelaide Strikers Women",
       "short": "ADSW",
       "players": [
-        "Laura Wolvaardt",
         "Maia Bouchier",
+        "Emma de Broughe",
+        "Laura Wolvaardt",
         "Tahlia McGrath",
         "Madeline Penna",
-        "Bridget Patterson",
-        "Ellie Johnston",
         "Eleanor Larosa",
-        "Amanda-Jade Wellington",
+        "Bridget Patterson",
+        "Amanda Wellington",
         "Sophie Ecclestone",
-        "Ella Wilson",
-        "Megan Schutt"
+        "Megan Schutt",
+        "Anesu Mushangwe"
       ],
       "roles": [
         "BAT",
         "BAT",
-        "AR",
-        "AR",
-        "WK",
         "BAT",
         "AR",
+        "BAT",
+        "AR",
+        "WK",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -106,8 +106,9 @@
   "live": {
     "id": 162797,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 40313,
     "url": "https://khelnow.com/live-cricket-score/melbourne-renegades-women-vs-adelaide-strikers-women-women's-big-bash-league-7th-november-2026-40313"
-  }
+  },
+  "batting_first": 0
 }
