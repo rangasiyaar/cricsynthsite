@@ -12,7 +12,7 @@
   "city": "Cape Town",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the squads; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "Western Province",
@@ -20,15 +20,15 @@
       "players": [
         "Jiveshan Pillay",
         "Kashief Joseph",
-        "Joshua van Heerden",
+        "Kyle Verreynne",
         "Daniel Smith",
         "Valentine Kitime",
-        "Oliver Whitehead",
         "George Linde",
-        "Raeeq Daniels",
-        "Josh Breed",
-        "Tshepo Lebohang Moreki",
-        "Edward Moore"
+        "Oliver Whitehead",
+        "Sinalo Gobeni",
+        "Joshua van Heerden",
+        "Tshepo Moreki",
+        "Dane Paterson"
       ],
       "roles": [
         "BAT",
@@ -39,9 +39,9 @@
         "AR",
         "AR",
         "AR",
+        "BAT",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "squad": [
         "Daniel Smith",
@@ -65,36 +65,37 @@
         "Asakhe Tsaka",
         "Sinalo Gobeni",
         "Waco Bassick"
-      ]
+      ],
+      "captain": "George Linde"
     },
     {
       "name": "Lions",
       "short": "LIONS",
       "players": [
-        "Zubayr Hamza",
         "Neil Timmers",
-        "Rassie van der Dussen",
+        "Onkgomoditse Seletswane",
         "Connor Esterhuizen",
         "Mitchell Van Buuren",
-        "Onkgomoditse R Seletswane",
+        "Morteza Manack",
         "Bjorn Fortuin",
+        "Gerald Coetzee",
+        "Rassie van der Dussen",
         "Nqabayomzi Peter",
         "Codi Yusuf",
-        "Siya Plaatjie",
-        "JJ Basson"
+        "Siya Plaatjie"
       ],
       "roles": [
         "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BOWL",
-        "BOWL",
         "AR",
         "BOWL",
-        "AR"
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL"
       ],
       "squad": [
         "Mitchell Van Buuren",
@@ -115,14 +116,16 @@
         "JJ Basson",
         "Neil Timmers",
         "Morteza Manack"
-      ]
+      ],
+      "captain": "Bjorn Fortuin"
     }
   ],
   "live": {
     "id": 174284,
     "auto": true,
-    "xis": false,
+    "xis": true,
     "kn": 41788,
     "url": "https://khelnow.com/live-cricket-score/western-province-vs-lions-csa-pro-t20-cup-7th-november-2026-41788"
-  }
+  },
+  "batting_first": 0
 }
