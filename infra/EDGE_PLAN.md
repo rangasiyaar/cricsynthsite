@@ -100,3 +100,9 @@ matches (which is what fans and most API users ask about). The local `uvx` MCP k
 - `.github/workflows/deploy-worker.yml` — tests, then `wrangler deploy` once `CLOUDFLARE_API_TOKEN` and
   `CLOUDFLARE_ACCOUNT_ID` are set; `FIRESTORE_SA_KEY` (service-account JSON) turns on dashboard keys.
 - The 16 C/D endpoints answer 501 with where to go instead (`/v1` lists them under `not_hosted`).
+- `/mcp` on the same Worker (`edge/src/mcp.ts`): Streamable HTTP, JSON responses, no sessions. 31 tools: the A + B
+  tools, `toss_decision` from the published who-bats-first split, and `fantasy_picks` (the published fantasy block).
+  No simulation counts or engine details (the local package still shows them). A key is optional (header
+  `X-API-Key` / `Authorization: Bearer`, or `?key=` in the connector URL): with one, calls count against its plan;
+  without, 100 tool calls a day per IP. Only `tools/call` counts. Parity with the Python tools is in
+  `test_edge_parity.py`; `edge/tests/mcp.test.ts` covers the protocol.

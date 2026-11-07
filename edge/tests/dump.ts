@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { Analytics } from "../src/analytics.ts";
 import { FileSource } from "../src/files.ts";
 import * as G from "../src/graphics.ts";
+import { callTool } from "../src/mcp.ts";
 
 const [callsFile, dir] = process.argv.slice(2);
 const calls: { fn: string; args: any[] }[] = JSON.parse(readFileSync(callsFile, "utf8"));
@@ -14,6 +15,7 @@ const P = (q: string) => a.resolvePlayer(q);
 async function run(fn: string, args: any[]): Promise<any> {
   const k = await a.kit();
   switch (fn) {
+    case "mcp": { const r = await callTool(a, args[0], args[1]); if (r.isError) throw new Error(r.content[0].text); return r.structuredContent; }
     case "search_players": return a.searchPlayers(args[0], args[1]);
     case "player_rating": return k.rating(await P(args[0]), args[1]);
     case "player_phases": { const p = await P(args[0]); return k.phase_profile(p, args[1], args[2] || p.gender || "male"); }

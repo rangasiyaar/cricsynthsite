@@ -63,6 +63,29 @@ CALLS = [
 ]
 
 
+def _hosted(out):
+    """The hosted server leaves out simulation counts and engine details."""
+    return {k: v for k, v in out.items() if k not in ("simulations", "engine")}
+
+
+# MCP tools through the hosted endpoint's own dispatcher (argument names as an AI assistant sends them)
+TOOLS = [
+    ("list_matches", {}, lambda: server.list_matches()),
+    ("match_forecast", {"match": "Premier"}, lambda: _hosted(server.match_forecast("Premier"))),
+    ("player_outlook", {"player": "P0-1"}, lambda: server.player_outlook("P0-1")),
+    ("key_matchups", {"limit": 5}, lambda: server.key_matchups(None, 5)),
+    ("innings_shape", {}, lambda: server.innings_shape()),
+    ("about_the_model", {}, lambda: _hosted(server.about_the_model())),
+    ("player_vs_bowling", {"player": "P0-2", "phase": "death"}, lambda: server.player_vs_bowling("P0-2", phase="death")),
+    ("rankings", {"side": "bowling", "sort": "economy", "limit": 5}, lambda: server.rankings("bowling", sort="economy", limit=5)),
+    ("team_profile", {"team": "shield"}, lambda: server.team_profile("shield")),
+    ("best_bowler_against", {"batter": "P0-1", "candidates": ["P1-9", "P1-10"]},
+     lambda: server.best_bowler_against("P0-1", ["P1-9", "P1-10"])),
+    ("competition_profile", {"competition": "shield"}, lambda: server.competition_profile("shield")),
+    ("player_outlook", {"player": "Nobody"}, lambda: server.player_outlook("Nobody")),
+]
+
+
 def _doc():
     return json.loads((DATA / "matches" / "m1.json").read_text())
 
@@ -116,7 +139,7 @@ def _close(a, b, path="$"):
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 def test_worker_matches_mcp(tmp_path):
-    calls = CALLS + CARDS
+    calls = CALLS + CARDS + [("mcp", [name, args], py) for name, args, py in TOOLS]
     pid0 = _team_pid(0)
     spec = [{"fn": fn, "args": [pid0 if a == "@0" else a for a in args]} for fn, args, _ in calls]
     f = tmp_path / "calls.json"

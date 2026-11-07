@@ -2,12 +2,14 @@
 // website's /data), does light arithmetic, never simulates. See infra/EDGE_PLAN.md.
 import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
-import { type Env, hit, keyFrom, lookup, PLANS, Usage } from "./keys.ts";
+import { type Account, type Env, hit, keyFrom, lookup, PLANS, sha256, Usage } from "./keys.ts";
+import { handle, toolCategory } from "./mcp.ts";
 import { EdgeSource } from "./source.ts";
 
 export { Usage };
 
 const MAX_BODY = 256 * 1024;
+const ANON_DAILY = 100;            // MCP tool calls a day per IP without a key
 const DEFAULT_CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000";
 const ABOUT = {
   name: "CricSynthesis API", version: "1",
@@ -28,7 +30,7 @@ function headers(req: Request, env: Env, extra: Record<string, string> = {}): He
     h.set("Access-Control-Allow-Origin", origin);
     h.set("Vary", "Origin");
     h.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    h.set("Access-Control-Allow-Headers", "X-API-Key, Authorization, Content-Type");
+    h.set("Access-Control-Allow-Headers", "X-API-Key, Authorization, Content-Type, Mcp-Protocol-Version, Mcp-Session-Id");
     h.set("Access-Control-Max-Age", "86400");
   }
   return h;
@@ -38,6 +40,42 @@ const json = (req: Request, env: Env, body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: headers(req, env, { "Content-Type": "application/json" }) });
 const fail = (req: Request, env: Env, status: number, detail: string) => json(req, env, { detail }, status);
 
+/** Remote MCP (Streamable HTTP, JSON responses, no sessions). A key is optional: with one, tool calls count against
+ * its plan; without, each IP gets ANON_DAILY tool calls a day. Only tools/call is counted. */
+async function mcp(req: Request, env: Env, url: URL): Promise<Response> {
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ detail: "This MCP endpoint takes JSON-RPC over POST (Streamable HTTP)." }),
+                        { status: 405, headers: headers(req, env, { Allow: "POST", "Content-Type": "application/json" }) });
+  }
+  const text = await req.text();
+  if (text.length > MAX_BODY) return fail(req, env, 413, "Request body too large");
+  let body: any;
+  try { body = JSON.parse(text); } catch {
+    return json(req, env, { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, 400);
+  }
+  const key = keyFrom(req) || url.searchParams.get("key");
+  let acct: Account | null = null;
+  if (key) {
+    acct = await lookup(env, key);
+    if (!acct) return json(req, env, { jsonrpc: "2.0", id: null, error: { code: -32001, message: "Invalid API key" } }, 401);
+  }
+  const allow = async (tool: string): Promise<string | null> => {
+    if (acct) {
+      const n = await hit(env, acct, toolCategory(tool));
+      return n > acct.limits.daily_requests ? `Daily limit of ${acct.limits.daily_requests} calls reached for the ${acct.plan} plan.` : null;
+    }
+    const ip = req.headers.get("CF-Connecting-IP") || "unknown";
+    const anon: Account = { hash: "anon:" + (await sha256(ip)), plan: "anonymous", owner: null, slot: null, limits: PLANS.free };
+    const n = await hit(env, anon, toolCategory(tool));
+    return n > ANON_DAILY ? `Free hosted use is ${ANON_DAILY} tool calls a day. Add an API key (free from your account at cricsynthesis.in) for more.` : null;
+  };
+  const a = getAnalytics(env);
+  const msgs = Array.isArray(body) ? body.slice(0, 20) : [body];
+  const out = (await Promise.all(msgs.map((m) => handle(a, m, allow)))).filter((x) => x !== null);
+  if (!out.length) return new Response(null, { status: 202, headers: headers(req, env) });
+  return json(req, env, Array.isArray(body) ? out : out[0]);
+}
+
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
@@ -45,6 +83,8 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: headers(req, env) });
     if (path === "/health") return json(req, env, { ok: true });
     if (path === "/" || path === "/v1") return json(req, env, { ...ABOUT, ...catalog() });
+
+    if (path === "/mcp") return mcp(req, env, url);
 
     const m = match(req.method, path);
     if (!m) return fail(req, env, 404, "Not found");
