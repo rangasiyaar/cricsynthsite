@@ -8,12 +8,42 @@ export type Field = { name: string; type: string; required: boolean; description
                       enum?: unknown[]; fields?: Field[] };
 export type Param = Field & { in: string };
 export type Endpoint = { id: string; category: string; method: string; path: string; summary: string; description: string;
-                         returns: "json" | "svg"; params: Param[]; body: Field[] | null };
+                         returns: "json" | "svg"; params: Param[]; body: Field[] | null;
+                         hosted: "yes" | "covered" | "local" };
 export type Example = { path: string; query: Record<string, unknown>; body: unknown; status: number; response: unknown };
 
 export const ENDPOINTS = ref.endpoints as Endpoint[];
 export const CATEGORIES = ref.categories as string[];
-export const EXAMPLES = (examples as { examples: Record<string, Example> }).examples;
+
+// Samples as the hosted API takes and gives them: covered-match endpoints take a match_id and their own options,
+// and simulation counts are neither a parameter nor in the answers (the nightly samples already are; older ones
+// are shown this way too).
+const RAW = (examples as { examples: Record<string, Example> }).examples;
+const SAMPLE_MATCH = Object.values(RAW).map((x) => /^\/v1\/matches\/([^/]+)$/.exec(x.path)?.[1]).find(Boolean);
+const noCounts = (x: unknown): unknown => Array.isArray(x) ? x.map(noCounts)
+  : x && typeof x === "object" ? Object.fromEntries(Object.entries(x).filter(([k]) => !k.startsWith("simulations") && k !== "n")
+      .map(([k, v]) => [k, noCounts(v)])) : x;
+function hostedSample(ep: Endpoint, ex: Example): Example {
+  let body = noCounts(ex.body) as Record<string, unknown> | null;
+  if (ep.hosted === "covered" && ep.body && body && !("match_id" in body)) {
+    const keep = new Set(ep.body.map((f) => f.name));
+    body = { match_id: SAMPLE_MATCH ?? "<from /v1/matches>", ...Object.fromEntries(Object.entries(body).filter(([k]) => keep.has(k))) };
+  }
+  return { ...ex, query: noCounts(ex.query) as Record<string, unknown>, body, response: typeof ex.response === "string" ? ex.response : noCounts(ex.response) };
+}
+export const EXAMPLES: Record<string, Example> = Object.fromEntries(
+  ENDPOINTS.filter((e) => RAW[e.id]).map((e) => [e.id, hostedSample(e, RAW[e.id])]));
+
+/** How the hosted API serves an endpoint, as a short tag and a sentence (null: served as documented). */
+export function hostedNote(ep: Endpoint): { tag: string; text: string } | null {
+  if (ep.hosted === "covered") {
+    return { tag: "Covered matches", text: "Answers for a covered match (from /v1/matches), ready from 3 days before the start; give its match_id." };
+  }
+  if (ep.hosted === "local") {
+    return { tag: "Local engine", text: "Needs a fresh simulation with your own inputs, so it isn't on the hosted API: use the CricSynthesis MCP server (it runs the engine on your machine) or MatchSynth Lab." };
+  }
+  return null;
+}
 
 // descriptions for parameters shared by many endpoints
 export const COMMON: Record<string, string> = {

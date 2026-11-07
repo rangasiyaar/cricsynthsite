@@ -10,6 +10,38 @@ import json
 
 CATEGORIES = ("Analytics", "Simulation & modelling", "Graphics")
 
+# The hosted API (Cloudflare Worker, edge/) answers most endpoints as they are; these take a covered match's
+# match_id (answers prepared in Actions) with only the listed options, and these three stay local (the MCP server's
+# engine, MatchSynth Lab). Simulation counts aren't a parameter of the hosted API.
+PREPARED = {
+    "POST /v1/par-score": [], "POST /v1/toss": [], "POST /v1/players/{pid}/impact": [],
+    "POST /v1/players/{pid}/projection": [], "POST /v1/fantasy/projections": [],
+    "POST /v1/chase-curve": ["chasing", "target_from", "target_to", "step"],
+    "POST /v1/lineups/batting-order": ["team"], "POST /v1/lineups/bowling-plan": ["bowling_team"],
+    "POST /v1/fantasy/team": ["captain_rule"], "POST /v1/fantasy/portfolio": ["teams_count"],
+    "POST /v1/win-probability": ["state"], "POST /v1/innings/projection": ["state", "thresholds"],
+}
+LOCAL = {"POST /v1/simulate", "POST /v1/scenarios/compare", "POST /v1/lineups/swap"}
+MATCH_ID = {"name": "match_id", "type": "string", "required": True,
+            "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"}
+
+
+def hosted(ep: dict) -> dict:
+    """The endpoint as the hosted API serves it."""
+    key = f"{ep['method']} {ep['path']}"
+    ep = {**ep, "params": [p for p in ep["params"] if p["name"] != "n"]}
+    if ep["body"]:
+        ep["body"] = [f for f in ep["body"] if f["name"] != "n"]
+    if key in LOCAL:
+        return {**ep, "hosted": "local"}
+    if key == "GET /v1/matches/{match_id}/win-probability":
+        return {**ep, "hosted": "covered"}
+    if key in PREPARED:
+        keep = PREPARED[key]
+        body = [MATCH_ID] + [f for f in (ep["body"] or []) if f["name"] in keep]
+        return {**ep, "hosted": "covered", "body": body}
+    return {**ep, "hosted": "yes"}
+
 
 def _resolve(s: dict, schemas: dict) -> dict:
     return schemas[s["$ref"].rsplit("/", 1)[-1]] if "$ref" in s else s
@@ -91,7 +123,7 @@ def build() -> dict:
                               "returns": "svg" if path.endswith(".svg") else "json",
                               "params": params, "body": _fields(ref.rsplit("/", 1)[-1], schemas) if ref else None})
     order = {c: i for i, c in enumerate(CATEGORIES)}
-    endpoints.sort(key=lambda e: order[e["category"]])
+    endpoints = [hosted(e) for e in sorted(endpoints, key=lambda e: order[e["category"]])]
     return {"title": spec["info"]["title"], "version": spec["info"]["version"], "categories": list(CATEGORIES),
             "endpoints": endpoints}
 

@@ -15,7 +15,8 @@ const ABOUT = {
   name: "CricSynthesis API", version: "1",
   about: "Analytics and projections from ball-by-ball simulation. We don't sell live scores or raw data.",
   auth: "Send your key as X-API-Key (or Authorization: Bearer).",
-  plans: PLANS, data_credits: "https://cricsynthesis.in/credits/",
+  plans: Object.fromEntries(Object.entries(PLANS).map(([k, v]) => [k, { daily_requests: v.daily_requests, watermark: v.watermark }])),
+  data_credits: "https://cricsynthesis.in/credits/",
 };
 
 let analytics: Analytics | null = null;

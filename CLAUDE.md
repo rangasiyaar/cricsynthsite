@@ -17,7 +17,8 @@ cricsynthsite/
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
-├── cricmcp/                   ← MCP server (41 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
+├── cricmcp/                   ← MCP server (42 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
+├── edge/                      ← Hosted API + remote MCP on Cloudflare Workers (api. / mcp.cricsynthesis.in; infra/EDGE_PLAN.md)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 │                                 (app/app/m/ = the Android app's screens: splash, sign-in, matches, match, Lab, account)
 ├── mobile/                    ← Android app: Capacitor shell around app/app/m (see mobile/README.md; APK built in CI)
@@ -34,7 +35,7 @@ cricsynthsite/
 | Auth | Firebase Auth (`app/lib/firebase.ts`) | Google + email; no SMS (billed). Pro = any signed-in account during the beta (`BETA_PRO`); a `plan` custom claim overrides |
 | Account dashboard | `/account/` (`components/Dashboard.tsx`) | Overview, usage (`users/{uid}/usage/{day}`, written by the API in batches), API keys (read by the API when `CRICAPI_FIRESTORE_PROJECT` is set), subscription + upgrade requests (`users/{uid}/requests/{plan}`, approved server-side), profile + email preferences |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
-| API + admin | Cloud Run service `cricapi` | Served through the `api` Hosting site (Cloud Run has only 1 GB free egress) |
+| API + remote MCP | Cloudflare Worker `edge/` (free plan) at api.cricsynthesis.in and mcp.cricsynthesis.in | Reads the site's `/data` and its own prepared per-match files (`cricsim/edge.py`, built by `edge-data.yml`); never simulates. Same paths and shapes as `cricapi` (kept as the reference implementation and docs generator); dashboard keys checked in Firestore; parity with the MCP server's Python is tested |
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |

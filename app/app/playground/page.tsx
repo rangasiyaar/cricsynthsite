@@ -2,7 +2,7 @@
 // Pick an endpoint, set its inputs, run it. With an API key the request goes to the live API; without one the
 // playground shows the recorded sample response for the example inputs.
 import { useEffect, useMemo, useState } from "react";
-import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, type Endpoint } from "@/lib/apiref";
+import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, hostedNote, type Endpoint } from "@/lib/apiref";
 
 type Result = { status: number; ms: number | null; mode: "sample" | "live"; body: unknown; svg?: string; error?: string };
 
@@ -71,7 +71,7 @@ export default function Playground() {
   async function run() {
     if (bodyError) { setRes({ status: 422, ms: null, mode: "live", body: { detail: `Invalid JSON: ${bodyError}` } }); return; }
     setBusy(true);
-    if (!key) {
+    if (!key || ep.hosted === "local") {
       const ex = EXAMPLES[ep.id];
       await new Promise((r) => setTimeout(r, 250));
       setRes(ex ? { status: ex.status, ms: null, mode: "sample", body: ep.returns === "svg" ? null : ex.response,
@@ -171,7 +171,10 @@ export default function Playground() {
               <span className="pg-block-title">{ep.summary}</span>
               <span className="mono small muted">{ep.method} {ep.path}</span>
             </div>
-            <div className="pg-block-body"><p className="small" style={{ margin: 0 }}>{ep.description}</p></div>
+            <div className="pg-block-body"><p className="small" style={{ margin: 0 }}>{ep.description}</p>
+              {hostedNote(ep) && <p className="small muted" style={{ margin: "8px 0 0" }}>
+                <span className="tag" style={{ marginRight: 8 }}>{hostedNote(ep)!.tag}</span>{hostedNote(ep)!.text}
+                {ep.hosted === "local" && " Run shows a sample."}</p>}</div>
           </div>
 
           <div className="pg-params-bar">

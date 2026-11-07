@@ -9,22 +9,23 @@ export const metadata: Metadata = seo("/developers/", "Cricket analytics API | C
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
 const PLANS = [
-  { name: "Free", price: "₹0", lines: ["200 requests a day", "Up to 2,000 simulations per request", "Graphics carry a watermark"] },
-  { name: "Pro", price: "Contact us", lines: ["5,000 requests a day", "Up to 20,000 simulations per request", "Clean graphics"] },
-  { name: "Business", price: "Contact us", lines: ["50,000 requests a day", "Up to 50,000 simulations per request", "Priority support"] },
+  { name: "Free", price: "₹0", lines: ["200 requests a day", "Every hosted endpoint", "Graphics carry a watermark"] },
+  { name: "Pro", price: "Contact us", lines: ["5,000 requests a day", "Every hosted endpoint", "Clean graphics"] },
+  { name: "Business", price: "Contact us", lines: ["50,000 requests a day", "Every hosted endpoint", "Priority support"] },
 ];
 
-const EXAMPLE = `curl -X POST ${API}/v1/simulate \\
+const EXAMPLE = `# Batter v bowler, ball by ball
+curl "${API}/v1/matchups?batter=ba607b88&bowler=462411b3&phase=death" \\
+  -H "X-API-Key: cs_live_…"
+
+# Win chances from the current score of a covered match
+curl -X POST ${API}/v1/win-probability \\
   -H "X-API-Key: cs_live_…" -H "Content-Type: application/json" \\
-  -d '{
-    "format": "T20",
-    "teams": [{"name": "Team A", "players": ["<11 player ids, batting order>"]},
-              {"name": "Team B", "players": ["…"]}],
-    "venue_id": "wankhede-stadium",
-    "scenario": {"dew": 0.7, "boundary_mult": 1.1},
-    "conditions": [{"type": "team_score", "team": 0, "at_least": 180}],
-    "n": 10000
-  }'`;
+  -d '{"match_id": "<from /v1/matches>",
+       "state": {"innings": 2, "batting": 1, "runs": 92, "wickets": 3, "overs": 11.2, "target": 181}}'`;
+
+const HOSTED = ENDPOINTS.filter((e) => e.hosted !== "local").length;
+const COVERED = ENDPOINTS.filter((e) => e.hosted === "covered").length;
 
 const PER_CARD = 8;
 
@@ -33,6 +34,10 @@ export default function Developers() {
     <div className="page-head">
       <h1><span>CricSynthesis API</span></h1>
       <p className="cs-lede">{ENDPOINTS.length} endpoints for player and venue analytics, match simulation and broadcast graphics.</p>
+      <p className="muted" style={{ maxWidth: "68ch", marginTop: 12 }}>
+        {HOSTED} are on the hosted API at <span className="mono">{API}</span>, {COVERED} of them for the matches we cover
+        (answers ready from 3 days before the start). The other {ENDPOINTS.length - HOSTED}, simulations with your own XIs
+        and conditions, run in the <Link href="/mcp/">MCP server</Link>&apos;s engine on your machine.</p>
       <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
         <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>
         <Link className="cs-btn cs-btn--secondary" href="/playground/">Open the playground</Link>

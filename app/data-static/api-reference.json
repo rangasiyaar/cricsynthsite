@@ -50,7 +50,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-phases",
@@ -95,7 +96,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-vs-bowling",
@@ -153,7 +155,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-vs-batting-hand",
@@ -211,7 +214,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-situations",
@@ -256,7 +260,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-formats",
@@ -287,7 +292,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-role",
@@ -320,7 +326,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid-similar",
@@ -393,7 +400,8 @@
      "default": 300
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-rankings-batting",
@@ -484,7 +492,8 @@
      "default": 25
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-rankings-bowling",
@@ -574,7 +583,8 @@
      "default": 25
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-matchups-grid",
@@ -639,7 +649,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-matchups-counter",
@@ -704,7 +715,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-venues",
@@ -731,7 +743,8 @@
      "default": 50
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-venues-vid",
@@ -776,7 +789,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-competitions",
@@ -803,7 +817,8 @@
      "default": 50
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-competitions-key",
@@ -833,7 +848,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-trends-scoring",
@@ -871,7 +887,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-teams",
@@ -909,7 +926,8 @@
      "default": 50
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-teams-tid",
@@ -942,7 +960,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "post-v1-teams-profile",
@@ -990,7 +1009,8 @@
      "required": false,
      "description": ""
     }
-   ]
+   ],
+   "hosted": "yes"
   },
   {
    "id": "get-v1-patterns-pattern_id",
@@ -1009,7 +1029,8 @@
      "description": ""
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players",
@@ -1036,7 +1057,8 @@
      "default": 20
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-players-pid",
@@ -1069,7 +1091,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-matchups",
@@ -1134,7 +1157,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-patterns",
@@ -1145,7 +1169,8 @@
    "description": "Which cricket beliefs hold up in ball-by-ball data, and by how much.",
    "returns": "json",
    "params": [],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "post-v1-win-probability",
@@ -1158,85 +1183,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "state",
@@ -1295,7 +1245,8 @@
       }
      ]
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-innings-projection",
@@ -1308,85 +1259,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "state",
@@ -1451,7 +1327,8 @@
      "required": false,
      "description": ""
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-par-score",
@@ -1464,87 +1341,13 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-chase-curve",
@@ -1557,85 +1360,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "chasing",
@@ -1669,7 +1397,8 @@
      "description": "",
      "default": 10
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-toss",
@@ -1682,87 +1411,13 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-scenarios-compare",
@@ -1847,13 +1502,6 @@
      "type": "integer",
      "required": false,
      "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
     },
     {
      "name": "base",
@@ -2013,7 +1661,8 @@
       }
      ]
     }
-   ]
+   ],
+   "hosted": "local"
   },
   {
    "id": "post-v1-players-pid-impact",
@@ -2034,87 +1683,13 @@
    ],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-lineups-swap",
@@ -2201,13 +1776,6 @@
      "description": "Reduced-overs match"
     },
     {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
-    },
-    {
      "name": "out_player",
      "type": "string",
      "required": true,
@@ -2219,7 +1787,8 @@
      "required": true,
      "description": ""
     }
-   ]
+   ],
+   "hosted": "local"
   },
   {
    "id": "post-v1-lineups-batting-order",
@@ -2232,85 +1801,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "",
-     "default": 1500
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "team",
@@ -2323,7 +1817,8 @@
       1
      ]
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-lineups-bowling-plan",
@@ -2336,85 +1831,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "bowling_team",
@@ -2426,14 +1846,9 @@
       0,
       1
      ]
-    },
-    {
-     "name": "bowlers",
-     "type": "string[]",
-     "required": false,
-     "description": ""
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-fantasy-projections",
@@ -2446,112 +1861,13 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
-    },
-    {
-     "name": "roles",
-     "type": "object",
-     "required": false,
-     "description": "Player id \u2192 role; inferred if omitted",
-     "default": {}
-    },
-    {
-     "name": "captain_rule",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "mean",
-     "enum": [
-      "mean",
-      "upside"
-     ]
-    },
-    {
-     "name": "teams_count",
-     "type": "integer",
-     "required": false,
-     "description": "Portfolio size",
-     "default": 5
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-fantasy-team",
@@ -2564,92 +1880,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
-    },
-    {
-     "name": "roles",
-     "type": "object",
-     "required": false,
-     "description": "Player id \u2192 role; inferred if omitted",
-     "default": {}
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "captain_rule",
@@ -2661,15 +1895,9 @@
       "mean",
       "upside"
      ]
-    },
-    {
-     "name": "teams_count",
-     "type": "integer",
-     "required": false,
-     "description": "Portfolio size",
-     "default": 5
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-fantasy-portfolio",
@@ -2682,103 +1910,10 @@
    "params": [],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "teams",
-     "type": "object[]",
+     "name": "match_id",
+     "type": "string",
      "required": true,
-     "description": "",
-     "fields": [
-      {
-       "name": "name",
-       "type": "string",
-       "required": false,
-       "description": ""
-      },
-      {
-       "name": "team_id",
-       "type": "string",
-       "required": false,
-       "description": "Team id from /v1/teams; its latest XI is used when players are omitted"
-      },
-      {
-       "name": "players",
-       "type": "string[]",
-       "required": false,
-       "description": "Player ids, batting order"
-      },
-      {
-       "name": "bowlers",
-       "type": "string[]",
-       "required": false,
-       "description": "Who may bowl (default: anyone, by usual workload)"
-      }
-     ]
-    },
-    {
-     "name": "venue_id",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "overs",
-     "type": "integer",
-     "required": false,
-     "description": "Reduced-overs match"
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "Simulations (capped by plan)",
-     "default": 4000
-    },
-    {
-     "name": "roles",
-     "type": "object",
-     "required": false,
-     "description": "Player id \u2192 role; inferred if omitted",
-     "default": {}
-    },
-    {
-     "name": "captain_rule",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "mean",
-     "enum": [
-      "mean",
-      "upside"
-     ]
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     },
     {
      "name": "teams_count",
@@ -2787,7 +1922,8 @@
      "description": "Portfolio size",
      "default": 5
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "get-v1-matches-match_id-win-probability",
@@ -2851,17 +1987,10 @@
      "type": "integer",
      "required": false,
      "description": ""
-    },
-    {
-     "name": "n",
-     "in": "query",
-     "type": "integer",
-     "required": false,
-     "description": "",
-     "default": 3000
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "covered"
   },
   {
    "id": "get-v1-matches-match_id-fantasy",
@@ -2878,17 +2007,10 @@
      "type": "string",
      "required": true,
      "description": ""
-    },
-    {
-     "name": "n",
-     "in": "query",
-     "type": "integer",
-     "required": false,
-     "description": "",
-     "default": 3000
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "post-v1-players-pid-projection",
@@ -2909,61 +2031,13 @@
    ],
    "body": [
     {
-     "name": "format",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "T20",
-     "enum": [
-      "T20",
-      "T10",
-      "HUNDRED",
-      "OD"
-     ]
-    },
-    {
-     "name": "gender",
-     "type": "enum",
-     "required": false,
-     "description": "",
-     "default": "male",
-     "enum": [
-      "male",
-      "female"
-     ]
-    },
-    {
-     "name": "position",
-     "type": "integer",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "opposition",
-     "type": "string[]",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "venue_id",
+     "name": "match_id",
      "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "comp_key",
-     "type": "string",
-     "required": false,
-     "description": ""
-    },
-    {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "",
-     "default": 4000
+     "required": true,
+     "description": "A covered match (from /v1/matches); its answers are prepared from 3 days before the start"
     }
-   ]
+   ],
+   "hosted": "covered"
   },
   {
    "id": "post-v1-simulate",
@@ -3063,13 +2137,6 @@
      "description": "Pitch, dew, form, start state \u2026 see /v1 catalog"
     },
     {
-     "name": "n",
-     "type": "integer",
-     "required": false,
-     "description": "",
-     "default": 10000
-    },
-    {
      "name": "conditions",
      "type": "object[]",
      "required": false,
@@ -3126,7 +2193,8 @@
       }
      ]
     }
-   ]
+   ],
+   "hosted": "local"
   },
   {
    "id": "get-v1-matches",
@@ -3137,7 +2205,8 @@
    "description": "Upcoming matches with published forecasts.",
    "returns": "json",
    "params": [],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-matches-match_id",
@@ -3156,7 +2225,8 @@
      "description": ""
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-matches-match_id-pack",
@@ -3175,7 +2245,8 @@
      "description": ""
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-win-svg",
@@ -3206,7 +2277,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-scores-svg",
@@ -3237,7 +2309,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-worm-svg",
@@ -3268,7 +2341,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-phases-svg",
@@ -3299,7 +2373,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-duels-svg",
@@ -3330,7 +2405,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-players-pid-profile-svg",
@@ -3387,7 +2463,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matchups-svg",
@@ -3464,7 +2541,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-venues-vid-svg",
@@ -3521,7 +2599,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-trends-scoring-svg",
@@ -3571,7 +2650,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-wickets-team-svg",
@@ -3609,7 +2689,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   },
   {
    "id": "get-v1-graphics-matches-match_id-players-pid-svg",
@@ -3647,7 +2728,8 @@
      ]
     }
    ],
-   "body": null
+   "body": null,
+   "hosted": "yes"
   }
  ]
 }

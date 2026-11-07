@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, urlFor, type Endpoint, type Field } from "@/lib/apiref";
+import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, hostedNote, urlFor, type Endpoint, type Field } from "@/lib/apiref";
 
 const PLANS = [
   ["Free", "200", "2,000", "Watermarked graphics"],
@@ -46,6 +46,7 @@ function Params({ rows, title }: { rows: (Field & { label?: string; in?: string 
 
 function EndpointSection({ ep }: { ep: Endpoint }) {
   const ex = EXAMPLES[ep.id];
+  const note = hostedNote(ep);
   return (
     <section id={ep.id} className="docs-section">
       <h2 className="docs-section-title">{ep.summary}</h2>
@@ -53,9 +54,11 @@ function EndpointSection({ ep }: { ep: Endpoint }) {
         <summary className="endpoint-header">
           <span className={ep.method === "GET" ? "method-get" : "method-post"}>{ep.method}</span>
           <span className="endpoint-path">{ep.path}</span>
+          {note && <span className="tag" style={{ marginLeft: 10 }}>{note.tag}</span>}
         </summary>
         <div className="endpoint-body">
           <p>{ep.description}</p>
+          {note && <p className="small muted" style={{ marginTop: -4 }}>{note.text}</p>}
           <Params rows={ep.params} title="Parameters" />
           {ep.body && <Params rows={flat(ep.body)} title="JSON body" />}
           {ex && (<>
@@ -66,7 +69,7 @@ function EndpointSection({ ep }: { ep: Endpoint }) {
               {ep.returns === "svg" && typeof ex.response === "string" ? <Svg markup={ex.response} /> : <Json value={ex.response} />}
             </div>
           </>)}
-          <p className="small" style={{ marginTop: 12 }}><a href={`/playground/#${ep.id}`}>Try it in the playground →</a></p>
+          {ep.hosted !== "local" && <p className="small" style={{ marginTop: 12 }}><a href={`/playground/#${ep.id}`}>Try it in the playground →</a></p>}
         </div>
       </details>
     </section>

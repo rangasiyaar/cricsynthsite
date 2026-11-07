@@ -2,9 +2,16 @@ import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = seo("/mcp/", "MCP server | CricSynthesis", "Bring CricSynthesis cricket analytics and match simulations into Claude and other AI assistants with our MCP server. Runs on your own machine.");
+export const metadata: Metadata = seo("/mcp/", "MCP server | CricSynthesis", "Bring CricSynthesis cricket analytics, match forecasts and fantasy picks into Claude and other AI assistants: add our hosted MCP connector by URL, or run the server on your own machine.");
 
 const INDEX = "https://cricsynthesis.in/pypi/simple/";
+const HOSTED_URL = "https://mcp.cricsynthesis.in";
+
+const REMOTE = `{
+  "mcpServers": {
+    "cricsynthesis": { "type": "http", "url": "${HOSTED_URL}" }
+  }
+}`;
 
 const CONFIG = `{
   "mcpServers": {
@@ -16,6 +23,7 @@ const CONFIG = `{
 }`;
 
 const CLAUDE_CODE = `claude mcp add cricsynthesis -- uvx --index ${INDEX} cricsynthesis-mcp`;
+const CLAUDE_CODE_REMOTE = `claude mcp add --transport http cricsynthesis ${HOSTED_URL}`;
 
 const GROUPS: { title: string; text: string; tools: string[] }[] = [
   { title: "Players", text: "Ratings, phase splits, bowling types, batting hands, situations, formats, roles, similar players and side-by-side comparisons.",
@@ -25,13 +33,15 @@ const GROUPS: { title: string; text: string; tools: string[] }[] = [
   { title: "Venues, leagues and teams", text: "How grounds and competitions play, scoring trends by season, and the profile of any side or XI.",
     tools: ["venues", "venue_profile", "competitions", "competition_profile", "scoring_trend", "teams", "team_profile"] },
   { title: "Match forecasts", text: "Win chances, projected scores, phases, wicket timing, key duels and player outlooks for upcoming matches.",
-    tools: ["list_matches", "match_forecast", "innings_shape", "key_matchups", "player_outlook", "about_the_model"] },
+    tools: ["list_matches", "match_forecast", "innings_shape", "key_matchups", "player_outlook", "fantasy_picks", "about_the_model"] },
   { title: "Decisions", text: "What-ifs, win probability and projections from any score, par score, chase curve, toss call, batting order, bowling plan and player impact.",
     tools: ["simulate_scenario", "live_win_probability", "innings_projection", "par_score", "chase_curve", "toss_decision", "batting_order", "bowling_plan", "player_impact"] },
   { title: "Fantasy and graphics", text: "Fantasy projections, a best XI with captain and vice-captain, multi-entry portfolios, and shareable SVG cards.",
     tools: ["fantasy_projections", "fantasy_team", "fantasy_portfolio", "match_graphic", "analytics_graphic"] },
 ];
+const LOCAL_ONLY = new Set(["simulate_scenario"]);
 const COUNT = GROUPS.reduce((n, g) => n + g.tools.length, 0);
+const HOSTED = COUNT - LOCAL_ONLY.size;
 
 const ASK = [
   "Who's favourite for India v West Indies, and does the toss matter?",
@@ -47,11 +57,27 @@ export default function Mcp() {
     <div className="page-head">
       <p className="cs-eyebrow">Model Context Protocol</p>
       <h1><span>CricSynthesis for AI assistants</span></h1>
-      <p className="cs-lede">Ask Claude, ChatGPT desktop, Cursor or any MCP client about a player, ground, league or upcoming match.
-        Free, and it runs on your own machine.</p>
+      <p className="cs-lede">Ask Claude, ChatGPT, Cursor or any MCP client about a player, ground, league or upcoming match.
+        Free to use: add the hosted connector by URL, or run the server on your own machine.</p>
 
-      <h2 style={{ marginTop: 48 }}>Install</h2>
-      <p className="muted" style={{ maxWidth: "62ch" }}>Needs <a href="https://docs.astral.sh/uv/">uv</a>. In Claude Desktop open
+      <h2 style={{ marginTop: 48 }}>Hosted connector</h2>
+      <p className="muted" style={{ maxWidth: "64ch" }}>Nothing to install. In claude.ai or the Claude apps open Settings,
+        Connectors, Add custom connector, and paste:</p>
+      <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Connector URL</span><span>URL</span></div>
+        <pre className="req">{HOSTED_URL}</pre></div></div>
+      <p className="muted" style={{ marginTop: 20 }}>Claude Code, or any client that takes a config file:</p>
+      <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Terminal</span><span>shell</span></div>
+        <pre className="req">{CLAUDE_CODE_REMOTE}</pre></div></div>
+      <div className="cs-api" style={{ padding: 0, marginTop: 12 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>MCP config</span><span>JSON</span></div>
+        <pre className="req">{REMOTE}</pre></div></div>
+      <p className="small muted" style={{ maxWidth: "64ch", marginTop: 14 }}>{HOSTED} of the {COUNT} tools. Free for 100 tool calls a
+        day; for more, add your API key to the URL (<span className="mono">{HOSTED_URL}/?key=cs_live_…</span>, free from your{" "}
+        <Link href="/account/">account</Link>) and calls count against its plan. Decision and fantasy tools answer for
+        the matches we cover, from 3 days before the start. Custom what-ifs need the local server.</p>
+
+      <h2 style={{ marginTop: 56 }}>On your machine</h2>
+      <p className="muted" style={{ maxWidth: "62ch" }}>All {COUNT} tools, including what-if simulations with your own
+        conditions. Needs <a href="https://docs.astral.sh/uv/">uv</a>. In Claude Desktop open
         Settings, Developer, Edit config, and add:</p>
       <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>claude_desktop_config.json</span><span>JSON</span></div>
         <pre className="req">{CONFIG}</pre></div></div>
@@ -65,7 +91,8 @@ export default function Mcp() {
           <div key={g.title} className="card">
             <h3>{g.title}</h3>
             <p className="small muted" style={{ margin: "6px 0 12px" }}>{g.text}</p>
-            <div className="card-foot mono small" style={{ lineHeight: 1.7, color: "var(--cs-ink-2)" }}>{g.tools.join(" · ")}</div>
+            <div className="card-foot mono small" style={{ lineHeight: 1.7, color: "var(--cs-ink-2)" }}>
+              {g.tools.map((t, i) => <span key={t}>{i ? " · " : ""}{t}{LOCAL_ONLY.has(t) ? " (local)" : ""}</span>)}</div>
           </div>
         ))}
       </div>

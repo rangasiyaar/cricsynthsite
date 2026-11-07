@@ -30,6 +30,15 @@ def _short(x, depth=0):
     return x
 
 
+def _hosted(x):
+    """Responses as the hosted API gives them: no simulation counts."""
+    if isinstance(x, dict):
+        return {k: _hosted(v) for k, v in x.items() if not k.startswith("simulations") and k != "n"}
+    if isinstance(x, list):
+        return [_hosted(v) for v in x]
+    return x
+
+
 def context(model, client, headers) -> dict:
     from cricsim.engine import insight as I
     name_to = {}
@@ -149,6 +158,7 @@ def build(model_dir: Path, publish: Path, coverage: Path, patterns: Path) -> dic
     model = app.state.cs.model
     ctx = context(model, client, headers)
     reqs = requests_for(ctx)
+    doc = None
     if ctx["match_id"]:
         doc = client.get(f"/v1/matches/{ctx['match_id']}", headers=headers).json()
         first = doc["summary"]["teams"][0]["players"][0]["id"]
@@ -160,6 +170,27 @@ def build(model_dir: Path, publish: Path, coverage: Path, patterns: Path) -> dic
         f = info["formats"].get("T20") or next(iter(info["formats"].values()))
         simulate_teams.append({"name": info["name"], "players": f["last_xi"]})
     reqs["POST /v1/simulate"] = {"body": {"teams": simulate_teams, "venue_id": ctx["venue"]["id"], "n": 2000}}
+    # the hosted API answers these from a covered match's prepared answers: run them on that match's XIs here and
+    # show the request as the hosted API takes it (match_id plus the endpoint's options)
+    from cricapi.reference import PREPARED
+    cov_file = coverage / "matches" / f"{ctx['match_id']}.json" if ctx["match_id"] else None
+    covered = None
+    if cov_file and cov_file.exists():
+        cov = json.loads(cov_file.read_text())
+        covered = {"format": cov.get("format", "T20"), "gender": cov.get("gender", "male"), "venue_id": cov.get("venue_id"),
+                   "teams": [{"name": t["name"], "players": t["players"]} for t in cov["teams"]], "n": 2000}
+        if doc:
+            reqs["POST /v1/players/{pid}/impact"]["path"] = {"pid": first}
+            reqs["POST /v1/players/{pid}/projection"]["path"] = {"pid": first}
+    shown: dict[str, dict] = {}
+    for k, keep in PREPARED.items():
+        r = reqs.get(k)
+        if r is None:
+            continue
+        extra = {f: v for f, v in (r.get("body") or {}).items() if f in keep}
+        if covered:
+            reqs[k] = {**r, "body": {**covered, **extra}}
+        shown[k] = {"match_id": ctx["match_id"], **extra}
     out, failed = {}, []
     for ep in reference()["endpoints"]:
         key_ = f"{ep['method']} {ep['path']}"
@@ -177,8 +208,15 @@ def build(model_dir: Path, publish: Path, coverage: Path, patterns: Path) -> dic
         if resp.status_code != 200:
             failed.append(f"{key_} → {resp.status_code}")
             continue
-        body = resp.text if ep["returns"] == "svg" else _short(resp.json())
-        out[ep["id"]] = {"path": path, "query": q, "body": r.get("body"), "status": 200, "response": body}
+        body = resp.text if ep["returns"] == "svg" else _short(_hosted(resp.json()))
+        q = {k: v for k, v in q.items() if k != "n"}
+        shown_body = shown.get(key_, r.get("body"))
+        if isinstance(shown_body, dict):
+            shown_body = {k: v for k, v in shown_body.items() if k != "n"}
+        if key_ in shown and isinstance(body, dict):
+            body = {"match_id": ctx["match_id"], **body}
+        out[ep["id"]] = {"path": path, "query": q, "body": shown_body, "status": 200,
+                         "response": body}
     return {"generated_from": model.meta.get("cutoff") or "latest model", "examples": out, "failed": failed}
 
 
