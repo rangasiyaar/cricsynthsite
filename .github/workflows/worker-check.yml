@@ -42,6 +42,8 @@ jobs:
           curl -s "$BASE/health"; echo
           curl -s "$BASE/v1" | head -c 400; echo; echo
           echo "no key: $(curl -s -o /dev/null -w '%{http_code}' "$BASE/v1/venues")"
+          # a well-formed key that isn't in the dashboard: looked up in Firestore, refused (500 = the lookup failed)
+          echo "unknown dashboard key: $(curl -s -o /tmp/u -w '%{http_code}' -H "X-API-Key: cs_live_$(openssl rand -hex 16)" "$BASE/v1/venues") $(cat /tmp/u)"
           call "/v1/players?q=kohli"
           PID=$(curl -s -H "X-API-Key: $KEY" "$BASE/v1/players?q=kohli" | python3 -c "import json,sys; print(json.load(sys.stdin)['players'][0]['id'])")
           B=$(curl -s -H "X-API-Key: $KEY" "$BASE/v1/players?q=bumrah" | python3 -c "import json,sys; print(json.load(sys.stdin)['players'][0]['id'])")
