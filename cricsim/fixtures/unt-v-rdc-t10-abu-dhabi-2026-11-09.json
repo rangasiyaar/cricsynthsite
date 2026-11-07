@@ -1,0 +1,111 @@
+{
+  "id": "unt-v-rdc-t10-abu-dhabi-2026-11-09",
+  "title": "United Tigers v Royal Desert Champions",
+  "date": "2026-11-09",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 8th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Nurul Hasan",
+        "Fakhar Zaman",
+        "Habibur Rahman Sohan",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Zeeshan Naseer",
+        "Sufyan Moqim",
+        "Mahedi Hasan",
+        "Shamim Hossain"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "squad": [
+        "Nurul Hasan",
+        "Fakhar Zaman",
+        "Habibur Rahman Sohan",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Zeeshan Naseer",
+        "Sufyan Moqim",
+        "Mahedi Hasan",
+        "Shamim Hossain"
+      ]
+    },
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Muhammad Waseem",
+        "Phil Salt",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Janith Liyanage",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Luke Wood"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Muhammad Waseem",
+        "Phil Salt",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Janith Liyanage",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Luke Wood"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41621,
+    "url": "https://khelnow.com/live-cricket-score/united-tigers-vs-royal-desert-champions-abu-dhabi-t10-league-9th-november-2026-41621",
+    "auto": true,
+    "xis": false
+  }
+}
