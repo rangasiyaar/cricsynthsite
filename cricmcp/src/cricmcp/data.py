@@ -119,8 +119,8 @@ class Store:
                 continue
             hits.append((rank, -r["balls"], r))
         # an exact namesake with little data gives way to an established player the query also fits ("Rohit Sharma")
-        top = max((-b for k, b, _ in hits if k >= 2), default=0)
-        hits = [(2 if k == 1 and top >= 2000 and -b * 10 < top else k, b, r) for k, b, r in hits]
+        top = min(((b, k) for k, b, _ in hits if k >= 2), default=(0, 0))      # (-balls, tier) of the most experienced
+        hits = [(top[1] if k == 1 and -top[0] >= 2000 and -b * 10 < -top[0] else k, b, r) for k, b, r in hits]
         hits.sort(key=lambda h: (h[0], h[1]))
         return [{k: v for k, v in h[2].items() if k != "aka"} for h in hits[:limit]]
 

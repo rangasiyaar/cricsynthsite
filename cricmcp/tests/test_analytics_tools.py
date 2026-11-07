@@ -117,3 +117,7 @@ def test_player_search_full_names_and_namesakes(tmp_path):
     assert first("Rohit Sharma") == "740742ef"
     assert first("David Warner") == "d1d1d1d1"
     assert "aka" not in st.find_players("Kohli")[0]
+    data = json.loads((tmp_path / "analytics" / "players.json").read_text())
+    data["players"][1][6] = []                                    # no alias yet: initials only
+    (tmp_path / "analytics" / "players.json").write_text(json.dumps(data))
+    assert Store(str(tmp_path)).find_players("Rohit Sharma", 3)[0]["id"] == "740742ef"
