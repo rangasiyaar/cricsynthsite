@@ -12,7 +12,7 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Melbourne Stars Women won the toss and bat first.",
   "teams": [
     {
       "name": "Perth Scorchers Women",
@@ -23,8 +23,8 @@
         "Sophie Devine",
         "Freya Kemp",
         "Mikayla Hinkley",
-        "Chloe Piparo",
         "Fatima Sana",
+        "Chloe Piparo",
         "Chloe Ainsworth",
         "Alana King",
         "Lilly Mills",
@@ -36,8 +36,8 @@
         "AR",
         "AR",
         "BAT",
-        "BAT",
         "AR",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -66,8 +66,8 @@
         "Rhys McKenna",
         "Amy Jones",
         "Annabel Sutherland",
-        "Danielle Gibson",
         "Naomi Stalenberg",
+        "Danielle Gibson",
         "Charlotte Dean",
         "Georgia Prestwidge",
         "Kim Garth",
@@ -79,8 +79,8 @@
         "AR",
         "WK",
         "AR",
-        "AR",
         "BAT",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 40316,
     "url": "https://khelnow.com/live-cricket-score/perth-scorchers-women-vs-melbourne-stars-women-women's-big-bash-league-8th-november-2026-40316",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
