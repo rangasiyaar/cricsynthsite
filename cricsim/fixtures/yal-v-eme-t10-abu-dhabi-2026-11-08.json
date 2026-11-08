@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Yas Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "Yas Lions",
@@ -20,28 +20,28 @@
       "players": [
         "Andries Gous",
         "James Vince",
-        "Ansh Tandon",
-        "Kamil Pooran",
-        "Jason Holder",
-        "David Willey",
         "Dasun Shanaka",
-        "Khuzaima Tanveer",
-        "Haider Ali",
-        "Aryan Dutt",
-        "Karim Janat"
+        "Karim Janat",
+        "Jason Holder",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey",
+        "Khuzaima Bin Tanvir",
+        "Akeal Hosein",
+        "Fazalhaq Farooqi"
       ],
       "roles": [
         "WK",
         "BAT",
+        "AR",
+        "AR",
+        "AR",
         "BAT",
         "BAT",
         "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "squad": [
         "Andries Gous",
@@ -55,31 +55,32 @@
         "Haider Ali",
         "Aryan Dutt",
         "Karim Janat"
-      ]
+      ],
+      "captain": "Jason Holder"
     },
     {
       "name": "Emirates Eagles",
       "short": "EME",
       "players": [
-        "Srikar Bharat",
-        "Rovman Powell",
-        "Shimron Hetmyer",
         "Alex Hales",
-        "Hasan Nawaz",
-        "David Wiese",
-        "Rehan Ahmed",
-        "Harshit Kaushik",
+        "Kyle Mayers",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Rovman Powell",
+        "Kona Srikar Bharat",
+        "Haider Razzaq",
+        "Chris Green",
+        "Tymal Mills",
         "Trent Boult",
-        "Noor Ahmad",
-        "Akif Javed"
+        "Hardus Viljoen"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "AR",
         "AR",
         "BOWL",
@@ -98,13 +99,15 @@
         "Trent Boult",
         "Noor Ahmad",
         "Akif Javed"
-      ]
+      ],
+      "captain": "Rovman Powell"
     }
   ],
   "live": {
     "kn": 41617,
     "url": "https://khelnow.com/live-cricket-score/yas-lions-vs-emirates-eagles-abu-dhabi-t10-league-8th-november-2026-41617",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

@@ -1,0 +1,112 @@
+{
+  "id": "sr-v-jb-t20-kirtipur-2026-11-10",
+  "title": "Sudurpaschim Royals v Janakpur Bolts",
+  "date": "2026-11-10",
+  "start_time": "17:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League · 21st Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "kirtipur",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sudurpaschim Royals",
+      "short": "SR",
+      "players": [
+        "Aarif Sheikh",
+        "Abhinash Bohara",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Hemant Dhami",
+        "Ishan Pandey",
+        "Saif Zaib",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Tharindu Ratnayake"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Dipendra Singh Airee",
+      "squad": [
+        "Aarif Sheikh",
+        "Abhinash Bohara",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Hemant Dhami",
+        "Ishan Pandey",
+        "Saif Zaib",
+        "Scott Kuggeleijn",
+        "Anil Kharel",
+        "Tharindu Ratnayake"
+      ]
+    },
+    {
+      "name": "Janakpur Bolts",
+      "short": "JB",
+      "players": [
+        "Harmeet Singh",
+        "Anil Kumar Sah",
+        "Rahul Yadav",
+        "Lalit Rajbanshi",
+        "Aaditya Mahata",
+        "Trit Raj Das",
+        "Abhisekh Tiwari",
+        "Jimmy Neesham",
+        "Saif Hassan",
+        "Parvez Hossain Emon",
+        "Bishal Shusling"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Harmeet Singh",
+      "squad": [
+        "Harmeet Singh",
+        "Anil Kumar Sah",
+        "Rahul Yadav",
+        "Lalit Rajbanshi",
+        "Aaditya Mahata",
+        "Trit Raj Das",
+        "Abhisekh Tiwari",
+        "Jimmy Neesham",
+        "Saif Hassan",
+        "Parvez Hossain Emon",
+        "Bishal Shusling"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41343,
+    "url": "https://khelnow.com/live-cricket-score/sudurpaschim-royals-vs-janakpur-bolts-nepal-premier-league-10th-november-2026-41343",
+    "auto": true,
+    "xis": false
+  }
+}
