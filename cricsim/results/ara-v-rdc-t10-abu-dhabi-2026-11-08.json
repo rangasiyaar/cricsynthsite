@@ -1,0 +1,265 @@
+{
+ "id": "ara-v-rdc-t10-abu-dhabi-2026-11-08",
+ "innings": [
+  {
+   "team": "Royal Desert Champions",
+   "runs": 112,
+   "wickets": 6,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Phil Salt",
+     "dismissal": "c S Billings b A Joseph",
+     "runs": 55,
+     "balls": 26,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Muhammad Waseem",
+     "dismissal": "c A Russell b PI Walter",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nicholas Pooran",
+     "dismissal": "c A Sharafu b RJ Gleeson",
+     "runs": 17,
+     "balls": 8,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "dismissal": "c A Joseph b Muhammad Arfan",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Janith Liyanage",
+     "dismissal": "b S Irshad",
+     "runs": 20,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Keemo Paul",
+     "dismissal": "c RJ Gleeson b S Irshad",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chris Jordan",
+     "dismissal": "not out",
+     "runs": 14,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Paul Walter",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Richard Gleeson",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Muhammad Arfan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Alzarri Joseph",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Salman Irshad",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Muhammad Waseem",
+     "score": 1,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nicholas Pooran",
+     "score": 22,
+     "over": "1.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sherfane Rutherford",
+     "score": 24,
+     "over": "2.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Janith Liyanage",
+     "score": 58,
+     "over": "6.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Keemo Paul",
+     "score": 58,
+     "over": "6.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Phil Salt",
+     "score": 112,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 23
+  },
+  {
+   "team": "Arabian Aces",
+   "runs": 114,
+   "wickets": 1,
+   "overs": "9",
+   "batting": [
+    {
+     "name": "Paul Walter",
+     "dismissal": "not out",
+     "runs": 62,
+     "balls": 26,
+     "fours": 5,
+     "sixes": 5
+    },
+    {
+     "name": "Tom Kohler-Cadmore",
+     "dismissal": "c C Jordan b L Wood",
+     "runs": 42,
+     "balls": 27,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Liam Livingstone",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Luke Wood",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dushmantha Chameera",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Maheesh Theekshana",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Chris Jordan",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ali Naseer",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Keemo Paul",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tom Kohler-Cadmore",
+     "score": 103,
+     "over": "8.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
