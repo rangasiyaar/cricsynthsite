@@ -1,0 +1,287 @@
+{
+ "id": "yal-v-eme-t10-abu-dhabi-2026-11-08",
+ "innings": [
+  {
+   "team": "Emirates Eagles",
+   "runs": 115,
+   "wickets": 4,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Kyle Mayers",
+     "dismissal": "c J Vince b AJ Hosein",
+     "runs": 20,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Alex Hales",
+     "dismissal": "c D Shanaka b J Holder",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shimron Hetmyer",
+     "dismissal": "not out",
+     "runs": 65,
+     "balls": 30,
+     "fours": 4,
+     "sixes": 4
+    },
+    {
+     "name": "Rovman Powell",
+     "dismissal": "c J Vince b KB Tanvir",
+     "runs": 14,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kusal Perera",
+     "dismissal": "c J Holder b KB Tanvir",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chris Green",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Fazalhaq Farooqi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Akeal Hosein",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jason Holder",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "David Willey",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Khuzaima Bin Tanvir",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Karim Janat",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kyle Mayers",
+     "score": 22,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Alex Hales",
+     "score": 30,
+     "over": "2.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rovman Powell",
+     "score": 71,
+     "over": "7.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kusal Perera",
+     "score": 77,
+     "over": "7.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 28
+  },
+  {
+   "team": "Yas Lions",
+   "runs": 117,
+   "wickets": 4,
+   "overs": "8.4",
+   "batting": [
+    {
+     "name": "James Vince",
+     "dismissal": "b T Boult",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Andries Gous",
+     "dismissal": "c S Hetmyer b Haider Razzaq",
+     "runs": 14,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ansh Tandon",
+     "dismissal": "c R Powell b GC Viljoen",
+     "runs": 12,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Dasun Shanaka",
+     "dismissal": "c GC Viljoen b Haider Razzaq",
+     "runs": 60,
+     "balls": 25,
+     "fours": 4,
+     "sixes": 6
+    },
+    {
+     "name": "Karim Janat",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Jason Holder",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Trent Boult",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Chris Green",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Haider Razzaq",
+     "overs": "1.4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tymal Mills",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "James Vince",
+     "score": 7,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ansh Tandon",
+     "score": 33,
+     "over": "2.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Andries Gous",
+     "score": 43,
+     "over": "3.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Dasun Shanaka",
+     "score": 107,
+     "over": "8.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
