@@ -1,0 +1,112 @@
+{
+  "id": "db-v-eme-t10-abu-dhabi-2026-11-10",
+  "title": "UAE Bulls v Emirates Eagles",
+  "date": "2026-11-10",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 10th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Khawaja Nafay",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Tahir Zaman",
+        "Mohammad Amir",
+        "Mohammad Wasim Jr",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Khawaja Nafay",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Tahir Zaman",
+        "Mohammad Amir",
+        "Mohammad Wasim Jr",
+        "Muhammad Rohid Khan"
+      ]
+    },
+    {
+      "name": "Emirates Eagles",
+      "short": "EME",
+      "players": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Rovman Powell",
+        "Kona Srikar Bharat",
+        "Haider Razzaq",
+        "Chris Green",
+        "Tymal Mills",
+        "Trent Boult",
+        "Hardus Viljoen"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Rovman Powell",
+      "squad": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Rovman Powell",
+        "Kona Srikar Bharat",
+        "Haider Razzaq",
+        "Chris Green",
+        "Tymal Mills",
+        "Trent Boult",
+        "Hardus Viljoen"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41623,
+    "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-emirates-eagles-abu-dhabi-t10-league-10th-november-2026-41623",
+    "auto": true,
+    "xis": false
+  }
+}

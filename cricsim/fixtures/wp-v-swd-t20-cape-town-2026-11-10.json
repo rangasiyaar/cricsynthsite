@@ -1,0 +1,113 @@
+{
+  "id": "wp-v-swd-t20-cape-town-2026-11-10",
+  "title": "Western Province v South Western Districts",
+  "date": "2026-11-10",
+  "start_time": "21:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · Super 8",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "Newlands, Cape Town",
+  "venue_search": "cape town",
+  "city": "Cape Town",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Western Province",
+      "short": "WP",
+      "players": [
+        "Jiveshan Pillay",
+        "Kashief Joseph",
+        "Kyle Verreynne",
+        "Daniel Smith",
+        "Valentine Kitime",
+        "George Linde",
+        "Oliver Whitehead",
+        "Sinalo Gobeni",
+        "Joshua van Heerden",
+        "Tshepo Moreki",
+        "Dane Paterson"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "George Linde",
+      "squad": [
+        "Jiveshan Pillay",
+        "Kashief Joseph",
+        "Kyle Verreynne",
+        "Daniel Smith",
+        "Valentine Kitime",
+        "George Linde",
+        "Oliver Whitehead",
+        "Sinalo Gobeni",
+        "Joshua van Heerden",
+        "Tshepo Moreki",
+        "Dane Paterson",
+        "Josh Breed"
+      ]
+    },
+    {
+      "name": "South Western Districts",
+      "short": "SWD",
+      "players": [
+        "Yaseen Vallie",
+        "Janneman Malan",
+        "Slade Van Staden",
+        "Bennie Hansen",
+        "Leo Sadler",
+        "Liam Alder",
+        "Zack Momberg",
+        "Regan Rhode",
+        "Banele Cele",
+        "Liabona Malife",
+        "Andile Phehlukwayo"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR"
+      ],
+      "captain": "Janneman Malan",
+      "squad": [
+        "Yaseen Vallie",
+        "Janneman Malan",
+        "Slade Van Staden",
+        "Bennie Hansen",
+        "Leo Sadler",
+        "Liam Alder",
+        "Zack Momberg",
+        "Regan Rhode",
+        "Banele Cele",
+        "Liabona Malife",
+        "Andile Phehlukwayo"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41791,
+    "url": "https://khelnow.com/live-cricket-score/western-province-vs-south-western-districts-csa-pro-t20-cup-10th-november-2026-41791",
+    "auto": true,
+    "xis": false
+  }
+}
