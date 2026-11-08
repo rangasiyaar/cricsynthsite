@@ -12,35 +12,35 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sydney Thunder Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Sydney Sixers Women",
       "short": "SS-W",
       "players": [
         "Sophia Dunkley",
+        "Eva Ragg",
         "Ellyse Perry",
         "Amelia Kerr",
+        "Erin Burns",
         "Ashleigh Gardner",
         "Alice Capsey",
-        "Eva Ragg",
-        "Erin Burns",
+        "Caoimhe Bray",
         "Lauren Cheatle",
         "Sarah Coyte",
-        "Caoimhe Bray",
         "Frankie Nicklin"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "AR",
         "AR",
         "AR",
         "AR",
         "WK",
-        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "AR",
         "BOWL"
       ],
       "captain": "Ashleigh Gardner",
@@ -62,26 +62,26 @@
       "name": "Sydney Thunder Women",
       "short": "ST-W",
       "players": [
+        "Tahlia Wilson",
+        "Heather Knight",
         "Phoebe Litchfield",
         "Georgia Voll",
-        "Anika Learoyd",
-        "Heather Knight",
-        "Nadine de Klerk",
-        "Tahlia Wilson",
         "Laura Harris",
+        "Anika Learoyd",
+        "Nadine de Klerk",
         "Jemma Barsby",
-        "Hannah Darlington",
         "Lauren Bell",
-        "Samantha Bates"
+        "Samantha Bates",
+        "Hannah Darlington"
       ],
       "roles": [
+        "WK",
+        "BAT",
         "BAT",
         "BAT",
         "BAT",
         "BAT",
         "AR",
-        "WK",
-        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 40315,
     "url": "https://khelnow.com/live-cricket-score/sydney-sixers-women-vs-sydney-thunder-women-women's-big-bash-league-8th-november-2026-40315",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
