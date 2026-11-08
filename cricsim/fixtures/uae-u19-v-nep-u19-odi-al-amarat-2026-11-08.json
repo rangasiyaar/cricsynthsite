@@ -12,7 +12,7 @@
   "city": "Al Amarat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Arab Emirates Under-19s won the toss and bowl first.",
   "teams": [
     {
       "name": "United Arab Emirates Under-19s",
@@ -21,26 +21,26 @@
         "Ahmed Khudada",
         "Ayaan Misbah",
         "Mohamed Nafees",
-        "Muhammad Ahmed",
         "Naseem Khan",
+        "Muhammad Ahmed",
         "Noorullah Ayobi",
         "Omar Tauqir",
-        "Raizal Nadir",
-        "Yayin Rai",
         "Uddish Suri",
+        "Umar Faisal",
+        "Yayin Rai",
         "Zainullah Rahmani"
       ],
       "roles": [
         "AR",
+        "AR",
         "BAT",
-        "BAT",
+        "AR",
         "WK",
-        "BOWL",
         "AR",
+        "BOWL",
+        "BOWL",
         "AR",
         "BAT",
-        "AR",
-        "BOWL",
         "BOWL"
       ],
       "captain": "Ayaan Misbah",
@@ -62,30 +62,30 @@
       "name": "Nepal Under-19s",
       "short": "NEP-U19",
       "players": [
-        "Aashish Luhar",
-        "Abhay Yadav",
         "Bipin Prasad Sharma",
+        "Aashish Luhar",
         "Darsh Sonar",
         "Niraj Kumar Yadav",
         "Nischal Chhetri",
-        "Nitesh Patel ",
         "Prasiddha Jaishi",
-        "Sachin Bhatt",
+        "Nitesh Patel ",
+        "Sohail Kunwar",
         "Sushil Rawal",
-        "Suryanshu Koirala"
+        "Sachin Bhatt",
+        "Subham Khanal"
       ],
       "roles": [
+        "BOWL",
         "WK",
         "AR",
-        "BOWL",
-        "AR",
         "BAT",
-        "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
         "AR",
         "BOWL",
         "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Bipin Prasad Sharma",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41652,
     "url": "https://khelnow.com/live-cricket-score/united-arab-emirates-under-19s-vs-nepal-under-19s-acc-men's-u19-asia-cup-8th-november-2026-41652",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
