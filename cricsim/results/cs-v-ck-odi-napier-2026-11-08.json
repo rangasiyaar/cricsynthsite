@@ -1,0 +1,412 @@
+{
+ "id": "cs-v-ck-odi-napier-2026-11-08",
+ "innings": [
+  {
+   "team": "Central Districts",
+   "runs": 129,
+   "wickets": 10,
+   "overs": "41.2",
+   "batting": [
+    {
+     "name": "Brad Schmulian",
+     "dismissal": "c Mitchell Hay b A McKenzie",
+     "runs": 17,
+     "balls": 33,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Taylor Bettelheim",
+     "dismissal": "runout (S Janet)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Cassidy",
+     "dismissal": "c Mitchell Hay b A McKenzie",
+     "runs": 6,
+     "balls": 21,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tom Bruce",
+     "dismissal": "c Mitchell Hay b M Rowe",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dane Cleaver",
+     "dismissal": "c Mitchell Hay b M Rowe",
+     "runs": 13,
+     "balls": 33,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Josh Clarkson",
+     "dismissal": "c C Samson b M Rowe",
+     "runs": 14,
+     "balls": 22,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Jake Gibson",
+     "dismissal": "c E A Holman b C Samson",
+     "runs": 4,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Angus Schaw",
+     "dismissal": "c A McKenzie b MD Rae",
+     "runs": 35,
+     "balls": 59,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ajaz Patel",
+     "dismissal": "lbw b R Kapur",
+     "runs": 9,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Oscar Mabin",
+     "dismissal": "c H Chamberlain b R Kapur",
+     "runs": 15,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Raymond Toole",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Angus McKenzie",
+     "overs": "8",
+     "maidens": 2,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Callum Samson",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Michael Rae",
+     "overs": "8.2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Matt Rowe",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Raunaq Kapur",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Taylor Bettelheim",
+     "score": 1,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sam Cassidy",
+     "score": 24,
+     "over": "8.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Brad Schmulian",
+     "score": 29,
+     "over": "10.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tom Bruce",
+     "score": 35,
+     "over": "13.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Josh Clarkson",
+     "score": 53,
+     "over": "17.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Dane Cleaver",
+     "score": 64,
+     "over": "21.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jake Gibson",
+     "score": 78,
+     "over": "27.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Ajaz Patel",
+     "score": 89,
+     "over": "30.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Oscar Mabin",
+     "score": 121,
+     "over": "38.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Angus Schaw",
+     "score": 129,
+     "over": "41.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 27
+  },
+  {
+   "team": "Canterbury Kings",
+   "runs": 130,
+   "wickets": 8,
+   "overs": "33.2",
+   "batting": [
+    {
+     "name": "Chad Bowes",
+     "dismissal": "c B Schmulian b JA Clarkson",
+     "runs": 10,
+     "balls": 24,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Scott Janet",
+     "dismissal": "c D Cleaver b JA Clarkson",
+     "runs": 8,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Chamberlain",
+     "dismissal": "b JA Clarkson",
+     "runs": 10,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Hay",
+     "dismissal": "c JA Clarkson b Jake Gibson",
+     "runs": 28,
+     "balls": 32,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Eathan Adam Holman",
+     "dismissal": "c O Mabin b JA Clarkson",
+     "runs": 17,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jesse Frew",
+     "dismissal": "c S Cassidy b AY Patel",
+     "runs": 13,
+     "balls": 33,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Rowe",
+     "dismissal": "c R Toole b JA Clarkson",
+     "runs": 5,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Angus McKenzie",
+     "dismissal": "not out",
+     "runs": 17,
+     "balls": 27,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Raunaq Kapur",
+     "dismissal": "c TC Bruce b AY Patel",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Callum Samson",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Raymond Toole",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Josh Clarkson",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 30,
+     "wickets": 5,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Oscar Mabin",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 3,
+     "wides": 0
+    },
+    {
+     "name": "Jake Gibson",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ajaz Patel",
+     "overs": "6.2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Scott Janet",
+     "score": 18,
+     "over": "5.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Chad Bowes",
+     "score": 24,
+     "over": "7.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harry Chamberlain",
+     "score": 41,
+     "over": "9.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mitchell Hay",
+     "score": 73,
+     "over": "16.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Eathan Adam Holman",
+     "score": 91,
+     "over": "22.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Matt Rowe",
+     "score": 101,
+     "over": "24.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jesse Frew",
+     "score": 105,
+     "over": "27.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Raunaq Kapur",
+     "score": 105,
+     "over": "27.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 5,
+    "w": 5,
+    "nb": 4,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Canterbury Kings won",
+ "winner": "Canterbury Kings"
+}
