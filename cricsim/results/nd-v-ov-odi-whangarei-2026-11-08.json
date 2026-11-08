@@ -1,0 +1,419 @@
+{
+ "id": "nd-v-ov-odi-whangarei-2026-11-08",
+ "innings": [
+  {
+   "team": "Otago Volts",
+   "runs": 258,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Jacob Cumming",
+     "dismissal": "c X Bell b Kristian Clarke",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jack Boyle",
+     "dismissal": "c Ben Pomare b S Reddy",
+     "runs": 25,
+     "balls": 53,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Thorn Parkes",
+     "dismissal": "c RR O Donnell b J Naylor",
+     "runs": 42,
+     "balls": 63,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Luke Georgeson",
+     "dismissal": "c RR O Donnell b H Cooper",
+     "runs": 7,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tom Jones",
+     "dismissal": "c Joshua Brown b H Cooper",
+     "runs": 65,
+     "balls": 76,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Jamal Todd",
+     "dismissal": "c X Bell b H Cooper",
+     "runs": 77,
+     "balls": 66,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Troy Johnson",
+     "dismissal": "c J Naylor b Joshua Brown",
+     "runs": 9,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ben Lockrose",
+     "dismissal": "c Joe Carter b H Cooper",
+     "runs": 13,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Zac Cumming",
+     "dismissal": "c Brett Hampton b Joshua Brown",
+     "runs": 5,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Thomas O'Connor",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Matthew Bacon",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kristian Clarke",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "James Naylor",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Brett Hampton",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Joshua Brown",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 54,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Snehith Reddy",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henry Cooper",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mike Schlanders",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jacob Cumming",
+     "score": 2,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jack Boyle",
+     "score": 51,
+     "over": "15.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Luke Georgeson",
+     "score": 65,
+     "over": "18.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Thorn Parkes",
+     "score": 92,
+     "over": "24.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tom Jones",
+     "score": 202,
+     "over": "43.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Troy Johnson",
+     "score": 231,
+     "over": "46.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jamal Todd",
+     "score": 236,
+     "over": "47.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Zac Cumming",
+     "score": 245,
+     "over": "48.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ben Lockrose",
+     "score": 255,
+     "over": "49.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 5,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 37
+  },
+  {
+   "team": "Northern Districts",
+   "runs": 259,
+   "wickets": 7,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Henry Cooper",
+     "dismissal": "st T Parkes b BNJ Lockrose",
+     "runs": 45,
+     "balls": 69,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Mike Schlanders",
+     "dismissal": "lbw b L Georgeson",
+     "runs": 71,
+     "balls": 100,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Joe Carter",
+     "dismissal": "c J Cumming b Z Cumming",
+     "runs": 22,
+     "balls": 30,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Robert O Donnell",
+     "dismissal": "c Z Cumming b BNJ Lockrose",
+     "runs": 52,
+     "balls": 50,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Brett Hampton",
+     "dismissal": "c T Johnson b M Bacon",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Xavier Bell",
+     "dismissal": "not out",
+     "runs": 37,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Kristian Clarke",
+     "dismissal": "b BNJ Lockrose",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Snehith Reddy",
+     "dismissal": "st T Parkes b BNJ Lockrose",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ben Pomare",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Thomas O'Connor",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Matthew Bacon",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 64,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Luke Georgeson",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Zac Cumming",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ben Lockrose",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Troy Johnson",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Henry Cooper",
+     "score": 88,
+     "over": "21.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Joe Carter",
+     "score": 119,
+     "over": "28.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mike Schlanders",
+     "score": 170,
+     "over": "38.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Brett Hampton",
+     "score": 193,
+     "over": "42.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Robert O Donnell",
+     "score": 227,
+     "over": "45.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kristian Clarke",
+     "score": 230,
+     "over": "45.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Snehith Reddy",
+     "score": 246,
+     "over": "47.5"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 3,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Northern Districts won",
+ "winner": "Northern Districts"
+}
