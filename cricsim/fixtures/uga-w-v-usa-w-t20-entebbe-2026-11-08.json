@@ -12,7 +12,7 @@
   "city": "Entebbe",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United States of America Women won the toss and bat first.",
   "teams": [
     {
       "name": "Uganda Women",
@@ -32,11 +32,11 @@
       ],
       "roles": [
         "BOWL",
-        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "BAT",
         "BAT",
@@ -62,19 +62,20 @@
       "name": "United States of America Women",
       "short": "USA-W",
       "players": [
+        "Aditi Chudasama",
         "Chetna Pagydyala",
         "Ella Claridge",
         "Gargi Bhogle",
         "Isani Vaghela",
         "Lekha Shetty",
         "Maahi Madhavan",
-        "Pooja Ganesh",
+        "Nikhar Doshi",
         "Ritu Singh",
         "Sainavi Kamabalapalli",
-        "Taranum Chopra",
-        "Aditi Chudasama"
+        "Taranum Chopra"
       ],
       "roles": [
+        "AR",
         "BAT",
         "WK",
         "BAT",
@@ -84,8 +85,7 @@
         "BAT",
         "AR",
         "AR",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "captain": "Aditi Chudasama",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41779,
     "url": "https://khelnow.com/live-cricket-score/uganda-women-vs-united-states-of-america-women-women's-victoria-t20i-series-8th-november-2026-41779",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
