@@ -1,0 +1,344 @@
+{
+ "id": "ss-w-v-st-w-t20-sydney-2026-11-08",
+ "innings": [
+  {
+   "team": "Sydney Sixers Women",
+   "runs": 162,
+   "wickets": 2,
+   "overs": "16",
+   "batting": [
+    {
+     "name": "Ellyse Perry",
+     "dismissal": "not out",
+     "runs": 59,
+     "balls": 41,
+     "fours": 11,
+     "sixes": 0
+    },
+    {
+     "name": "Sophia Dunkley",
+     "dismissal": "c T Wilson b LK Bell",
+     "runs": 15,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Amelia Kerr",
+     "dismissal": "Retired out",
+     "runs": 14,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "dismissal": "not out",
+     "runs": 64,
+     "balls": 25,
+     "fours": 5,
+     "sixes": 5
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Samantha Bates",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Lauren Bell",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Hannah Darlington",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Georgia Voll",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nadine de Klerk",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Jemma Barsby",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sophia Dunkley",
+     "score": 22,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Amelia Kerr",
+     "score": 65,
+     "over": "9.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 4,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  },
+  {
+   "team": "Sydney Thunder Women",
+   "runs": 158,
+   "wickets": 10,
+   "overs": "15.3",
+   "batting": [
+    {
+     "name": "Phoebe Litchfield",
+     "dismissal": "b C Bray",
+     "runs": 8,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Georgia Voll",
+     "dismissal": "c AC Kerr b C Bray",
+     "runs": 8,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Anika Learoyd",
+     "dismissal": "runout (EA Perry)",
+     "runs": 14,
+     "balls": 9,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Heather Knight",
+     "dismissal": "c A Gardner b SJ Coyte",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nadine de Klerk",
+     "dismissal": "c A Capsey b C Bray",
+     "runs": 30,
+     "balls": 24,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Harris",
+     "dismissal": "c SJ Coyte b C Bray",
+     "runs": 35,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Tahlia Wilson",
+     "dismissal": "c C Bray b A Gardner",
+     "runs": 12,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Jemma Barsby",
+     "dismissal": "c L Cheatle b A Gardner",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hannah Darlington",
+     "dismissal": "b SJ Coyte",
+     "runs": 14,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Lauren Bell",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Samantha Bates",
+     "dismissal": "runout (SJ Coyte / A Gardner)",
+     "runs": 10,
+     "balls": 7,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lauren Cheatle",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Caoimhe Bray",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Amelia Kerr",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Frankie Nicklin",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "overs": "2.3",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Phoebe Litchfield",
+     "score": 12,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Anika Learoyd",
+     "score": 34,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Georgia Voll",
+     "score": 34,
+     "over": "3.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Heather Knight",
+     "score": 56,
+     "over": "7.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Nadine de Klerk",
+     "score": 108,
+     "over": "10.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Laura Harris",
+     "score": 115,
+     "over": "10.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Tahlia Wilson",
+     "score": 121,
+     "over": "11.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Jemma Barsby",
+     "score": 128,
+     "over": "11.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Hannah Darlington",
+     "score": 137,
+     "over": "13.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Samantha Bates",
+     "score": 158,
+     "over": "15.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
