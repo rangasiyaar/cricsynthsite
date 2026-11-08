@@ -1,0 +1,112 @@
+{
+  "id": "yal-v-unt-t10-abu-dhabi-2026-11-10",
+  "title": "Yas Lions v United Tigers",
+  "date": "2026-11-10",
+  "start_time": "19:15",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 9th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "abu dhabi",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Yas Lions",
+      "short": "YAL",
+      "players": [
+        "Andries Gous",
+        "James Vince",
+        "Dasun Shanaka",
+        "Karim Janat",
+        "Jason Holder",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey",
+        "Khuzaima Bin Tanvir",
+        "Akeal Hosein",
+        "Fazalhaq Farooqi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "Andries Gous",
+        "James Vince",
+        "Dasun Shanaka",
+        "Karim Janat",
+        "Jason Holder",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey",
+        "Khuzaima Bin Tanvir",
+        "Akeal Hosein",
+        "Fazalhaq Farooqi"
+      ]
+    },
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Avishka Fernando",
+        "Joe Clarke",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Usman Tariq",
+        "Zeeshan Naseer"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Fakhar Zaman",
+      "squad": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Avishka Fernando",
+        "Joe Clarke",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Odean Smith",
+        "Abbas Afridi",
+        "Usman Tariq",
+        "Zeeshan Naseer"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41622,
+    "url": "https://khelnow.com/live-cricket-score/yas-lions-vs-united-tigers-abu-dhabi-t10-league-10th-november-2026-41622",
+    "auto": true,
+    "xis": false
+  }
+}
