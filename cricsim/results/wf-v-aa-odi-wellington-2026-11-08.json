@@ -1,0 +1,459 @@
+{
+ "id": "wf-v-aa-odi-wellington-2026-11-08",
+ "innings": [
+  {
+   "team": "Wellington Firebirds",
+   "runs": 205,
+   "wickets": 10,
+   "overs": "44.3",
+   "batting": [
+    {
+     "name": "Sam Morgan",
+     "dismissal": "c & b A Olliver",
+     "runs": 5,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nick Greenwood",
+     "dismissal": "c S Singh b A Olliver",
+     "runs": 26,
+     "balls": 23,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Gareth Severin",
+     "dismissal": "c L Watson b S Singh",
+     "runs": 8,
+     "balls": 24,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jesse Tashkoff",
+     "dismissal": "c L Stackpole b A Olliver",
+     "runs": 7,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Muhammad Arslan Abbas",
+     "dismissal": "c R Harrison b SM Solia",
+     "runs": 11,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Oscar Jackson",
+     "dismissal": "c HC Hieatt b S Dixit",
+     "runs": 31,
+     "balls": 56,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Callum McLachlan",
+     "dismissal": "c L Watson b S Dixit",
+     "runs": 55,
+     "balls": 59,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Logan van Beek",
+     "dismissal": "b S Dixit",
+     "runs": 23,
+     "balls": 27,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Henry Shipley",
+     "dismissal": "c R Harrison b S Singh",
+     "runs": 13,
+     "balls": 26,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "James Hartshorn",
+     "dismissal": "b A Olliver",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Dudding",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Angus Olliver",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 42,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Harry Cullen Hieatt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Samrath Singh",
+     "overs": "9.3",
+     "maidens": 1,
+     "runs": 30,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Sean Solia",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jaskaran Sandhu",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ryan Harrison",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Siddesh Dixit",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 26,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sam Morgan",
+     "score": 21,
+     "over": "4.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nick Greenwood",
+     "score": 47,
+     "over": "8.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jesse Tashkoff",
+     "score": 59,
+     "over": "10.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Gareth Severin",
+     "score": 61,
+     "over": "11.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Muhammad Arslan Abbas",
+     "score": 75,
+     "over": "16.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Oscar Jackson",
+     "score": 147,
+     "over": "29.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Callum McLachlan",
+     "score": 186,
+     "over": "35.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Logan van Beek",
+     "score": 197,
+     "over": "39.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "James Hartshorn",
+     "score": 198,
+     "over": "40.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Henry Shipley",
+     "score": 205,
+     "over": "44.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 19,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 59
+  },
+  {
+   "team": "Auckland Aces",
+   "runs": 177,
+   "wickets": 10,
+   "overs": "43.4",
+   "batting": [
+    {
+     "name": "Sean Solia",
+     "dismissal": "c C McLachlan b LR Dudding",
+     "runs": 35,
+     "balls": 21,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Luke Watson",
+     "dismissal": "c J Tashkoff b HB Shipley",
+     "runs": 8,
+     "balls": 26,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cam Fletcher",
+     "dismissal": "lbw b L Beek",
+     "runs": 28,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Bevon Jacobs",
+     "dismissal": "runout (HB Shipley)",
+     "runs": 7,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Lachlan Stackpole",
+     "dismissal": "c L Beek b HB Shipley",
+     "runs": 16,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Ryan Harrison",
+     "dismissal": "b J Tashkoff",
+     "runs": 22,
+     "balls": 35,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Jaskaran Sandhu",
+     "dismissal": "b L Beek",
+     "runs": 1,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Siddesh Dixit",
+     "dismissal": "c C McLachlan b LR Dudding",
+     "runs": 39,
+     "balls": 64,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Angus Olliver",
+     "dismissal": "runout (M Abbas)",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Samrath Singh",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 36,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Cullen Hieatt",
+     "dismissal": "b LR Dudding",
+     "runs": 3,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Liam Dudding",
+     "overs": "7.4",
+     "maidens": 1,
+     "runs": 28,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "James Hartshorn",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henry Shipley",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Logan van Beek",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 36,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Oscar Jackson",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Jesse Tashkoff",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sean Solia",
+     "score": 39,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Luke Watson",
+     "score": 56,
+     "over": "10.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Bevon Jacobs",
+     "score": 67,
+     "over": "12.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Cam Fletcher",
+     "score": 92,
+     "over": "15.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lachlan Stackpole",
+     "score": 96,
+     "over": "16.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Jaskaran Sandhu",
+     "score": 104,
+     "over": "19.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ryan Harrison",
+     "score": 144,
+     "over": "28.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Angus Olliver",
+     "score": 153,
+     "over": "31.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Siddesh Dixit",
+     "score": 169,
+     "over": "39.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Harry Cullen Hieatt",
+     "score": 177,
+     "over": "43.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Wellington Firebirds won",
+ "winner": "Wellington Firebirds"
+}

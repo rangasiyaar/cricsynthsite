@@ -1,0 +1,112 @@
+{
+  "id": "pak-u19-v-nep-u19-odi-al-amarat-2026-11-10",
+  "title": "Pakistan Under-19s v Nepal Under-19s",
+  "date": "2026-11-10",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Group A",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 1), Al Amarat",
+  "venue_search": "al amarat",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Under-19s",
+      "short": "PAK-U19",
+      "players": [
+        "Usman Khan",
+        "Jahangir Bilal",
+        "Abdul Qadir",
+        "Ahmed Hussain",
+        "Ali Raza",
+        "Hamza Zahoor",
+        "Hasnain Abbas Dar",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR"
+      ],
+      "captain": "Farhan Yousaf",
+      "squad": [
+        "Usman Khan",
+        "Jahangir Bilal",
+        "Abdul Qadir",
+        "Ahmed Hussain",
+        "Ali Raza",
+        "Hamza Zahoor",
+        "Hasnain Abbas Dar",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah"
+      ]
+    },
+    {
+      "name": "Nepal Under-19s",
+      "short": "NEP-U19",
+      "players": [
+        "Bipin Prasad Sharma",
+        "Aashish Luhar",
+        "Darsh Sonar",
+        "Niraj Kumar Yadav",
+        "Nischal Chhetri",
+        "Prasiddha Jaishi",
+        "Nitesh Patel ",
+        "Sohail Kunwar",
+        "Sushil Rawal",
+        "Sachin Bhatt",
+        "Subham Khanal"
+      ],
+      "roles": [
+        "BOWL",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Bipin Prasad Sharma",
+      "squad": [
+        "Bipin Prasad Sharma",
+        "Aashish Luhar",
+        "Darsh Sonar",
+        "Niraj Kumar Yadav",
+        "Nischal Chhetri",
+        "Prasiddha Jaishi",
+        "Nitesh Patel ",
+        "Sohail Kunwar",
+        "Sushil Rawal",
+        "Sachin Bhatt",
+        "Subham Khanal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41657,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-under-19s-vs-nepal-under-19s-acc-men's-u19-asia-cup-10th-november-2026-41657",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ind-u19-v-uae-u19-odi-al-amarat-2026-11-10",
+  "title": "India Under-19s v United Arab Emirates Under-19s",
+  "date": "2026-11-10",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Group A",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 2), Al Amarat",
+  "venue_search": "al amarat",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India Under-19s",
+      "short": "IND-U19",
+      "players": [
+        "Aaryavir Sehwag",
+        "Anvay Dravid",
+        "Arjun Rajput",
+        "Ishan Sood",
+        "Kavya Paresh Patel",
+        "Lakshya Rajesh Raichandani",
+        "Manal Chauhan",
+        "Mohit Ulva",
+        "Yashveer Goud",
+        "VK Vineeth",
+        "Yashbardhan Singh Chauhan"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Lakshya Rajesh Raichandani",
+      "squad": [
+        "Aaryavir Sehwag",
+        "Anvay Dravid",
+        "Arjun Rajput",
+        "Ishan Sood",
+        "Kavya Paresh Patel",
+        "Lakshya Rajesh Raichandani",
+        "Manal Chauhan",
+        "Mohit Ulva",
+        "Yashveer Goud",
+        "VK Vineeth",
+        "Yashbardhan Singh Chauhan"
+      ]
+    },
+    {
+      "name": "United Arab Emirates Under-19s",
+      "short": "UAE-U19",
+      "players": [
+        "Ahmed Khudada",
+        "Ayaan Misbah",
+        "Mohamed Nafees",
+        "Naseem Khan",
+        "Muhammad Ahmed",
+        "Noorullah Ayobi",
+        "Omar Tauqir",
+        "Uddish Suri",
+        "Umar Faisal",
+        "Yayin Rai",
+        "Zainullah Rahmani"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ayaan Misbah",
+      "squad": [
+        "Ahmed Khudada",
+        "Ayaan Misbah",
+        "Mohamed Nafees",
+        "Naseem Khan",
+        "Muhammad Ahmed",
+        "Noorullah Ayobi",
+        "Omar Tauqir",
+        "Uddish Suri",
+        "Umar Faisal",
+        "Yayin Rai",
+        "Zainullah Rahmani"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41656,
+    "url": "https://khelnow.com/live-cricket-score/india-under-19s-vs-united-arab-emirates-under-19s-acc-men's-u19-asia-cup-10th-november-2026-41656",
+    "auto": true,
+    "xis": false
+  }
+}
