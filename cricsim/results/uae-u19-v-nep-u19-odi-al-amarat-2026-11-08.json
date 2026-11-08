@@ -1,0 +1,358 @@
+{
+ "id": "uae-u19-v-nep-u19-odi-al-amarat-2026-11-08",
+ "innings": [
+  {
+   "team": "Nepal Under-19s",
+   "runs": 153,
+   "wickets": 10,
+   "overs": "41",
+   "batting": [
+    {
+     "name": "Niraj Kumar Yadav",
+     "dismissal": "lbw b N Khan",
+     "runs": 16,
+     "balls": 20,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Sohail Kunwar",
+     "dismissal": "c A Khudada b N Ayobi",
+     "runs": 33,
+     "balls": 71,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Prasiddha Jaishi",
+     "dismissal": "lbw b N Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nischal Chhetri",
+     "dismissal": "c Z Rahmani b N Ayobi",
+     "runs": 9,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Darsh Sonar",
+     "dismissal": "c U Suri b A Misbah",
+     "runs": 16,
+     "balls": 22,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Aashish Luhar",
+     "dismissal": "c Y Rai b A Misbah",
+     "runs": 11,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "dismissal": "b N Khan",
+     "runs": 32,
+     "balls": 55,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Subham Khanal",
+     "dismissal": "lbw b A Misbah",
+     "runs": 9,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bipin Prasad Sharma",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nitesh Patel ",
+     "dismissal": "c A Khudada b N Khan",
+     "runs": 5,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sushil Rawal",
+     "dismissal": "c M Ahmed b N Khan",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Naseem Khan",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 43,
+     "wickets": 5,
+     "no_balls": 4,
+     "wides": 1
+    },
+    {
+     "name": "Noorullah Ayobi",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ayaan Misbah",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 22,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ahmed Khudada",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Uddish Suri",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Umar Faisal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Zainullah Rahmani",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Niraj Kumar Yadav",
+     "score": 18,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prasiddha Jaishi",
+     "score": 18,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nischal Chhetri",
+     "score": 36,
+     "over": "9.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Darsh Sonar",
+     "score": 58,
+     "over": "15.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Aashish Luhar",
+     "score": 74,
+     "over": "19.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sohail Kunwar",
+     "score": 103,
+     "over": "25.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Subham Khanal",
+     "score": 128,
+     "over": "33.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sachin Bhatt",
+     "score": 143,
+     "over": "38.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Nitesh Patel ",
+     "score": 150,
+     "over": "40.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sushil Rawal",
+     "score": 153,
+     "over": "40.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 5,
+    "nb": 4,
+    "p": 0
+   },
+   "powerplay_runs": 41
+  },
+  {
+   "team": "United Arab Emirates Under-19s",
+   "runs": 158,
+   "wickets": 3,
+   "overs": "34.4",
+   "batting": [
+    {
+     "name": "Omar Tauqir",
+     "dismissal": "c N Chhetri b B P Sharma",
+     "runs": 11,
+     "balls": 30,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Ayaan Misbah",
+     "dismissal": "not out",
+     "runs": 75,
+     "balls": 104,
+     "fours": 11,
+     "sixes": 0
+    },
+    {
+     "name": "Ahmed Khudada",
+     "dismissal": "c A Luhar b S Rawal",
+     "runs": 24,
+     "balls": 42,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Yayin Rai",
+     "dismissal": "b N Patel",
+     "runs": 32,
+     "balls": 25,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Naseem Khan",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sushil Rawal",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Nitesh Patel ",
+     "overs": "5.4",
+     "maidens": 1,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Bipin Prasad Sharma",
+     "overs": "6",
+     "maidens": 1,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Subham Khanal",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Omar Tauqir",
+     "score": 41,
+     "over": "8.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ahmed Khudada",
+     "score": 102,
+     "over": "23.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Yayin Rai",
+     "score": 148,
+     "over": "32.5"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
