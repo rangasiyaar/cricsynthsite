@@ -12,36 +12,36 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Arabian Aces won the toss and bowl first.",
   "teams": [
     {
       "name": "Arabian Aces",
       "short": "ARA",
       "players": [
         "Tom Kohler-Cadmore",
-        "Ibrahim Masood",
+        "Paul Walter",
+        "Liam Livingstone",
         "Moeen Ali",
         "Andre Russell",
-        "Liam Livingstone",
+        "Sam Billings",
+        "Alishan Sharafu",
         "Richard Gleeson",
         "Alzarri Joseph",
-        "Imran Tahir",
-        "Alishan Sharafu",
-        "Dwaine Pretorius",
-        "Vriitya Aravind"
+        "Salman Irshad",
+        "Muhammad Arfan"
       ],
       "roles": [
         "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
         "BAT",
         "AR",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "AR",
-        "AR",
-        "BAT"
+        "BOWL"
       ],
       "squad": [
         "Tom Kohler-Cadmore",
@@ -55,23 +55,24 @@
         "Alishan Sharafu",
         "Dwaine Pretorius",
         "Vriitya Aravind"
-      ]
+      ],
+      "captain": "Moeen Ali"
     },
     {
       "name": "Royal Desert Champions",
       "short": "RDC",
       "players": [
-        "Nicholas Pooran",
+        "Phil Salt",
         "Muhammad Waseem",
-        "Brandon King",
+        "Nicholas Pooran",
         "Sherfane Rutherford",
+        "Janith Liyanage",
         "Ali Naseer",
-        "Aayan Afzal Khan",
-        "Naseem Shah",
+        "Keemo Paul",
+        "Chris Jordan",
         "Maheesh Theekshana",
-        "Luke Wood",
-        "Philip Salt",
-        "Keemo Paul"
+        "Dushmantha Chameera",
+        "Luke Wood"
       ],
       "roles": [
         "WK",
@@ -80,11 +81,11 @@
         "AR",
         "AR",
         "AR",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "BAT",
-        "AR"
+        "BOWL"
       ],
       "squad": [
         "Nicholas Pooran",
@@ -98,13 +99,15 @@
         "Luke Wood",
         "Philip Salt",
         "Keemo Paul"
-      ]
+      ],
+      "captain": "Nicholas Pooran"
     }
   ],
   "live": {
     "kn": 41619,
     "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-royal-desert-champions-abu-dhabi-t10-league-8th-november-2026-41619",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
