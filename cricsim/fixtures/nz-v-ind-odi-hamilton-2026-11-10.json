@@ -1,0 +1,112 @@
+{
+  "id": "nz-v-ind-odi-hamilton-2026-11-10",
+  "title": "New Zealand v India",
+  "date": "2026-11-10",
+  "start_time": "07:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "India tour of New Zealand · 3rd ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Seddon Park, Hamilton",
+  "venue_search": "hamilton",
+  "city": "Hamilton",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Will Young",
+        "Tim Seifert",
+        "Henry Nicholls",
+        "Daryl Mitchell",
+        "Tom Latham",
+        "Glenn Phillips",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Kyle Jamieson",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Santner",
+      "squad": [
+        "Will Young",
+        "Tim Seifert",
+        "Henry Nicholls",
+        "Daryl Mitchell",
+        "Tom Latham",
+        "Glenn Phillips",
+        "Mitchell Santner",
+        "Nathan Smith",
+        "Kyle Jamieson",
+        "Jacob Duffy",
+        "Blair Tickner"
+      ]
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Rohit Sharma",
+        "Shubman Gill",
+        "Virat Kohli",
+        "Shreyas Iyer",
+        "KL Rahul",
+        "Axar Patel",
+        "Naman Dhir",
+        "Anshul Kamboj",
+        "Auqib Nabi Dar",
+        "Gurnoor Singh Brar",
+        "Arshdeep Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shubman Gill",
+      "squad": [
+        "Rohit Sharma",
+        "Shubman Gill",
+        "Virat Kohli",
+        "Shreyas Iyer",
+        "KL Rahul",
+        "Axar Patel",
+        "Naman Dhir",
+        "Anshul Kamboj",
+        "Auqib Nabi Dar",
+        "Gurnoor Singh Brar",
+        "Arshdeep Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40296,
+    "url": "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-10th-november-2026-40296",
+    "auto": true,
+    "xis": false
+  }
+}
