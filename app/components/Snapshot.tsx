@@ -11,12 +11,12 @@ const COLORS = ["var(--team-a)", "var(--team-b)"];
 type Open = { onOpen?: (section: string) => void; hrefFor?: (section: string) => string; scoreboard?: boolean };
 
 /** A block: title, its figures and chart, and "More ›" into the tab it summarises. */
-function Block({ title, tab, open, children, wide = false }: { title: string; tab?: string; open: Open; children: React.ReactNode; wide?: boolean }) {
+function Block({ title, tab, open, children, wide = false, className = "" }: { title: string; tab?: string; open: Open; children: React.ReactNode; wide?: boolean; className?: string }) {
   const more = tab && (open.hrefFor
     ? <Link className="snap-more" href={open.hrefFor(tab)}>{label(tab)} ›</Link>
     : open.onOpen ? <button type="button" className="snap-more" onClick={() => open.onOpen!(tab)}>{label(tab)} ›</button> : null);
   return (
-    <section className={`card snap${wide ? " snap-wide" : ""} anim-rise`}>
+    <section className={`card snap${wide ? " snap-wide" : ""}${className ? ` ${className}` : ""} anim-rise`}>
       <div className="snap-head"><h3>{title}</h3>{more}</div>
       {children}
     </section>
@@ -190,6 +190,9 @@ function WicketCurve({ s, short }: { s: Summary; short: string[] }) {
   );
 }
 
+/** A player we know by name (a brand-new player can arrive as only an id, e.g. "kn:96533", until named). */
+const named = (n: string) => !/^(kn:\d+|new:.*|[0-9a-f]{8})$/.test(n);
+
 /** Horizontal bars for a few players' expected runs or wickets. */
 function MiniBars({ rows, color, digits = 0 }: { rows: { name: string; v: number }[]; color: string; digits?: number }) {
   const max = Math.max(...rows.map((r) => r.v), 1e-9);
@@ -306,18 +309,22 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
         </table>
       </Block>
 
-      <Block title="Players to watch" tab="Top players" open={open}>
+      <Block title="Players to watch" tab="Top players" open={open} className="snap-players">
         <div className="snap-two">
           {s.teams.map((t, k) => {
-            const bats = t.players.filter((p) => p.batting).sort((a, b) => (b.batting!.runs.mean ?? 0) - (a.batting!.runs.mean ?? 0)).slice(0, 3);
-            const bowls = t.players.filter((p) => p.bowling && p.bowling.p_bowls > 0.5)
-              .sort((a, b) => (b.bowling!.wickets.mean ?? 0) - (a.bowling!.wickets.mean ?? 0)).slice(0, 3);
+            const bats = t.players.filter((p) => p.batting && named(p.name)).sort((a, b) => (b.batting!.runs.mean ?? 0) - (a.batting!.runs.mean ?? 0)).slice(0, 5);
+            const bowls = t.players.filter((p) => p.bowling && p.bowling.p_bowls > 0.5 && named(p.name))
+              .sort((a, b) => (b.bowling!.wickets.mean ?? 0) - (a.bowling!.wickets.mean ?? 0)).slice(0, 5);
             return (
-              <div key={t.name}>
+              <div key={t.name} className="snap-team">
+                <div>
                 <div className="cs-k" style={{ color: COLORS[k] }}>{short[k]} · runs</div>
                 <MiniBars color={COLORS[k]} rows={bats.map((p) => ({ name: p.name, v: p.batting!.runs.mean ?? 0 }))} />
-                <div className="cs-k" style={{ color: COLORS[k], marginTop: 8 }}>{short[k]} · wickets</div>
+                </div>
+                <div>
+                <div className="cs-k" style={{ color: COLORS[k] }}>{short[k]} · wickets</div>
                 <MiniBars color={COLORS[k]} digits={1} rows={bowls.map((p) => ({ name: p.name, v: p.bowling!.wickets.mean ?? 0 }))} />
+                </div>
               </div>
             );
           })}
