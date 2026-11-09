@@ -1,0 +1,414 @@
+{
+ "id": "cr-v-kg-t20-kirtipur-2026-11-09",
+ "innings": [
+  {
+   "team": "Kathmandu Gorkhas",
+   "runs": 180,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sahil Patel",
+     "dismissal": "c D Mousley b R Dhakal",
+     "runs": 8,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "David Warner",
+     "dismissal": "b KS Airee",
+     "runs": 1,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "William Bosisto",
+     "dismissal": "c Bibek Kumar Yadav b S Raza",
+     "runs": 27,
+     "balls": 22,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Rashid Khan",
+     "dismissal": "c K Malla b S Raza",
+     "runs": 52,
+     "balls": 30,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Sahan Arachchige",
+     "dismissal": "c K Mishara b R Dhakal",
+     "runs": 33,
+     "balls": 20,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Jahandad Khan",
+     "dismissal": "c S Raza b KS Airee",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "KC Karan",
+     "dismissal": "lbw b D Mousley",
+     "runs": 20,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Aadil Ansari",
+     "dismissal": "b R Dhakal",
+     "runs": 9,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Bhim Sharki",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Santosh Yadav",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kamal Singh Airee",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Rijan Dhakal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ranjit Kumar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kushal Malla",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Sikandar Raza",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 0
+    },
+    {
+     "name": "Shyam Mousom Dhakal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dan Mousley",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ravi Bopara",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "David Warner",
+     "score": 9,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sahil Patel",
+     "score": 13,
+     "over": "3.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "William Bosisto",
+     "score": 75,
+     "over": "9.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sahan Arachchige",
+     "score": 128,
+     "over": "14.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rashid Khan",
+     "score": 137,
+     "over": "15.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "KC Karan",
+     "score": 159,
+     "over": "17.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Aadil Ansari",
+     "score": 168,
+     "over": "18.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Jahandad Khan",
+     "score": 172,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 5,
+    "lb": 1,
+    "w": 8,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 42
+  },
+  {
+   "team": "Chitwan Rhinos",
+   "runs": 170,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Kamil Mishara",
+     "dismissal": "c Aadil Ansari b S Arachchige",
+     "runs": 28,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Arjun Saud",
+     "dismissal": "b S Yadav",
+     "runs": 23,
+     "balls": 21,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Ravi Bopara",
+     "dismissal": "c B Sharki b K Karan",
+     "runs": 55,
+     "balls": 35,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Dan Mousley",
+     "dismissal": "c S Yadav b S Arachchige",
+     "runs": 29,
+     "balls": 32,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Sikandar Raza",
+     "dismissal": "b G Gautam",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kushal Malla",
+     "dismissal": "c D Warner b J Khan",
+     "runs": 13,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bibek Kumar Yadav",
+     "dismissal": "runout (J Khan / S Patel)",
+     "runs": 4,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kamal Singh Airee",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rijan Dhakal",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jahandad Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "KC Karan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Santosh Yadav",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sahan Arachchige",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ganesh Gautam",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rashid Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arjun Saud",
+     "score": 48,
+     "over": "4.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kamil Mishara",
+     "score": 52,
+     "over": "5.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Dan Mousley",
+     "score": 107,
+     "over": "13.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sikandar Raza",
+     "score": 114,
+     "over": "14.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Kushal Malla",
+     "score": 153,
+     "over": "18.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Bibek Kumar Yadav",
+     "score": 157,
+     "over": "18.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ravi Bopara",
+     "score": 164,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 6,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Kathmandu Gorkhas won by 10 runs",
+ "winner": "Kathmandu Gorkhas"
+}
