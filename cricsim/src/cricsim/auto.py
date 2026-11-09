@@ -208,7 +208,7 @@ def new_fixture(i: dict, fmt: str, sq: dict, previous: dict[str, list[str]]) -> 
             "gender": i.get("gender") or "male", "competition": desc,
             "comp_key": f"intl-international-{fmt if fmt != 'HUNDRED' else 'T20'}" if i.get("international") else _slug(series),
             "venue": ", ".join(x for x in (i.get("venue"), i.get("city")) if x),
-            "venue_search": (i.get("city") or i.get("venue") or "").lower(), "city": i.get("city") or None,
+            "venue_search": (i.get("venue") or i.get("city") or "").lower(), "city": i.get("city") or None,
             "status": "scheduled", "published": True,
             "note": "Playing XIs confirmed." if confirmed else "Probable XIs from the last matches; updated when the teams are named.",
             "teams": sides, "live": {"kn": int(i["id"]), "url": i["url"], "auto": True, "xis": confirmed}}
