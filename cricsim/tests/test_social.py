@@ -4,7 +4,7 @@ from pathlib import Path
 
 from cricsim.notify import IST
 
-from cricsim.social import caption, carousel_data, due, league
+from cricsim.social import caption, carousel_data, due, email, league
 
 DATA = Path(__file__).resolve().parents[2] / "app" / "public" / "data"
 
@@ -43,6 +43,10 @@ def test_due_two_hours_before():
     assert due(idx, {c["id"]: {"at": "x"}}, at) == []               # posted already
     assert due({"matches": [{**c, "status": "started"}]}, {}, at) == []
     assert due({"matches": [card("Titans", "Dolphins", start="2026-11-10T19:30")]}, {}, at) == []
+    # email mode: due 20 minutes before the posting time, still reporting the posting time
+    ahead = timedelta(minutes=20)
+    assert due(idx, {}, at - timedelta(minutes=30), ahead) == []
+    assert [x[1] for x in due(idx, {}, at - ahead, ahead)] == [at]
 
 
 def test_carousel_data_and_caption():
@@ -58,3 +62,31 @@ def test_carousel_data_and_caption():
     assert "MLRW 46% · ADSW 54%" in text and "#WBBL" in text and len(text) < 2200
     for word in ("bet", "odds", "tips", "sure win"):
         assert word not in text.lower()
+
+
+def test_email(monkeypatch, tmp_path):
+    sent = {}
+
+    class Resp:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return b'{"id": "em_1"}'
+
+    def fake(req, timeout=0):
+        sent["url"], sent["auth"], sent["body"] = req.full_url, req.headers["Authorization"], json.loads(req.data)
+        return Resp()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake)
+    mid = "mlrw-v-adsw-t20-melbourne-2026-11-07"
+    d = carousel_data(json.loads((DATA / "matches" / f"{mid}.json").read_text()), None)
+    slides = []
+    for i in range(1, 7):
+        (tmp_path / f"{i}.jpg").write_bytes(b"\xff\xd8jpeg")
+        slides.append(tmp_path / f"{i}.jpg")
+    at = datetime(2026, 11, 7, 8, 10, tzinfo=IST)
+    assert email(d, "caption <here>", slides, at, "re_key", "a@x.in, b@x.in", "CS <s@cricsynthesis.in>") == "em_1"
+    b = sent["body"]
+    assert sent["url"] == "https://api.resend.com/emails" and sent["auth"] == "Bearer re_key"
+    assert b["to"] == ["a@x.in", "b@x.in"] and b["subject"].startswith("Post at 8:10 AM IST: MLRW v ADSW")
+    assert [a["filename"] for a in b["attachments"]] == [f"mlrwvadsw-{i}.jpg" for i in range(1, 7)]
+    assert "caption &lt;here&gt;" in b["html"]

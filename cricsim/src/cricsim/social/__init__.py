@@ -1,4 +1,4 @@
-"""Instagram carousels for covered matches, posted two hours before the start.
+"""Instagram carousels for covered matches, to be posted two hours before the start.
 
 Run from the auto loop every few minutes (`run`, remembering what it posted in cricsim/social/posted.json):
 
@@ -7,16 +7,20 @@ Run from the auto loop every few minutes (`run`, remembering what it posted in c
 - Two hours before each covered match's start (with or without the playing XIs), the match's published Overview is
   drawn as six 1080x1350 slides, one per Overview block (carousel.html, rendered by render.mjs): projected scores
   (with the win chance), key duel, fall of wickets, players to watch, the ground, fantasy picks.
-- Instagram fetches images from public URLs, so the slides are pushed to the repository's `social` branch (a single
-  commit, replaced each time) and read back from raw.githubusercontent.com.
-- Posting uses the Instagram Graph API (IG_ACCESS_TOKEN, IG_USER_ID; optional IG_GRAPH for the API base URL).
-  The containers are prepared a few minutes early and published at exactly start minus two hours.
+- Email (the default, for posting by hand): when RESEND_API_KEY and SOCIAL_EMAIL_TO are set, the six JPEGs and the
+  caption are emailed 20 minutes before the posting time (SOCIAL_FROM sets the sender; the domain must be verified
+  in Resend).
+- Direct posting (optional): with IG_ACCESS_TOKEN and IG_USER_ID instead, the slides are pushed to the repository's
+  `social` branch (Instagram fetches images from public URLs) and published through the Instagram Graph API at
+  exactly start minus two hours.
 
-    python -m cricsim.social run --state cricsim/social/posted.json        # post whatever is due
+    python -m cricsim.social run --state cricsim/social/posted.json        # email or post whatever is due
     python -m cricsim.social preview --match <id> --out <dir>               # slides + caption only
 """
 from __future__ import annotations
 
+import base64
+import html
 import json
 import math
 import os
@@ -33,13 +37,14 @@ from pathlib import Path
 
 import click
 
-from cricsim.notify import kickoff
+from cricsim.notify import IST, kickoff
 from cricsim.results import _fetch
 
 HERE = Path(__file__).parent
 LEAD = timedelta(hours=2)            # post this long before the start
 EARLY = timedelta(minutes=6)         # prepare a due post this early (the loop passes every 5 minutes)
 LATE = timedelta(minutes=25)         # still post if the loop was this late; after that, skip the match
+EMAIL_AHEAD = timedelta(minutes=20)  # email the slides this long before the posting time
 BRANCH = "social"
 
 TEST_NATIONS = {"India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka",
@@ -75,9 +80,9 @@ def league(card: dict) -> str | None:
     return "intl" if women[0] == women[1] and all(b in TEST_NATIONS for b in base) else None
 
 
-def due(index: dict, posted: dict, now: datetime) -> list[tuple[dict, datetime]]:
-    """Covered, published, not yet started matches whose post time (start minus two hours) is within the next few
-    minutes or only just passed, and that haven't been posted."""
+def due(index: dict, posted: dict, now: datetime, ahead: timedelta = timedelta(0)) -> list[tuple[dict, datetime]]:
+    """Covered, published, not yet started matches whose time to act (start minus two hours, minus `ahead`) is within
+    the next few minutes or only just passed, and that haven't been handled. Returns (card, posting time)."""
     out = []
     for c in index.get("matches", []):
         k = kickoff(c) if c.get("start_time") else None
@@ -86,7 +91,7 @@ def due(index: dict, posted: dict, now: datetime) -> list[tuple[dict, datetime]]
         if c.get("status") in ("started", "finished", "result", "abandoned"):
             continue
         at = k - LEAD
-        if -LATE <= at - now <= EARLY:
+        if -LATE <= at - ahead - now <= EARLY:
             out.append((c, at))
     return sorted(out, key=lambda x: x[1])
 
@@ -252,6 +257,31 @@ class Instagram:
         return self._call("POST", f"{self.user}/media_publish", creation_id=cid)["id"]
 
 
+def email(data: dict, text: str, slides: list[Path], post_at: datetime, key: str, to: str, sender: str) -> str:
+    """Send the slides (attached in order) and the caption, for posting by hand; returns the Resend email id."""
+    a, b = data["teams"]
+    when = post_at.astimezone(IST).strftime("%-I:%M %p")
+    comp = re.sub(r"\s*\b\d{4}\b\s*", " ", data["match"]["competition"] or "").strip()
+    tag = f"{a['short']}v{b['short']}".lower()
+    body = (f"<p>Post this carousel at <b>{when} IST</b>, two hours before the start.</p>"
+            f"<p>The six slides are attached in order ({tag}-1.jpg to {tag}-6.jpg). Caption to paste:</p>"
+            f"<pre style=\"font:15px/1.5 system-ui,sans-serif;white-space:pre-wrap;background:#f2f2f3;padding:16px;"
+            f"border-radius:6px\">{html.escape(text)}</pre>")
+    msg = {"from": sender, "to": [x.strip() for x in to.split(",") if x.strip()],
+           "subject": f"Post at {when} IST: {a['short']} v {b['short']} · {comp}",
+           "html": body, "text": f"Post at {when} IST.\n\n{text}",
+           "attachments": [{"filename": f"{tag}-{i}.jpg", "content": base64.b64encode(p.read_bytes()).decode()}
+                           for i, p in enumerate(slides, 1)]}
+    req = urllib.request.Request("https://api.resend.com/emails", data=json.dumps(msg).encode(), method="POST",
+                                 headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+                                          "User-Agent": "cricsynthesis-ci"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.loads(r.read()).get("id", "")
+    except urllib.error.HTTPError as e:
+        raise click.ClickException(f"email: HTTP {e.code} {e.read().decode(errors='replace')[:300]}")
+
+
 # ── commands ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 @click.group()
@@ -282,23 +312,41 @@ def preview(mid: str, out: Path) -> None:
 @click.option("--state", type=click.Path(path_type=Path), required=True, help="what was posted (kept in the repo)")
 @click.option("--dry-run", is_flag=True, help="list what is due; post nothing")
 def run(state: Path, dry_run: bool) -> None:
-    """Post the carousels that are due (start minus two hours)."""
+    """Email (or post) the carousels that are due: posting time is start minus two hours."""
+    key, to = os.environ.get("RESEND_API_KEY", ""), os.environ.get("SOCIAL_EMAIL_TO", "")
+    mode = "email" if key and to else "instagram"
     index = _fetch("index.json")
     if not index:
         click.echo("No live index"); return
     posted = json.loads(state.read_text()) if state.exists() else {}
     now = datetime.now(timezone.utc)
-    todo = due(index, posted, now)
+    todo = due(index, posted, now, EMAIL_AHEAD if mode == "email" else timedelta(0))
     if not todo:
         click.echo("No Instagram posts due"); return
     for c, at in todo:
-        click.echo(f"- {c['id']} ({league(c)}) at {at.isoformat(timespec='minutes')}")
+        click.echo(f"- {c['id']} ({league(c)}): {mode}, post at {at.isoformat(timespec='minutes')}")
     if dry_run:
+        return
+    if mode == "email":
+        sender = os.environ.get("SOCIAL_FROM") or "CricSynthesis <social@cricsynthesis.in>"
+        work = Path(tempfile.mkdtemp())
+        for c, at in todo:
+            try:
+                doc, venue = _match(c["id"])
+                data = carousel_data(doc, venue)
+                sent = email(data, caption(data, league(c)), render(data, work / c["id"]), at, key, to, sender)
+            except (click.ClickException, subprocess.CalledProcessError, OSError, KeyError, IndexError, TypeError, ValueError) as e:
+                click.echo(f"  {c['id']}: not emailed ({e})"); continue
+            posted[c["id"]] = {"at": datetime.now(timezone.utc).isoformat(timespec="minutes"), "email": sent}
+            state.parent.mkdir(parents=True, exist_ok=True)
+            state.write_text(json.dumps(posted, indent=1, sort_keys=True) + "\n")
+            click.echo(f"  {c['id']}: emailed ({sent})")
+        _prune(state, posted, now)
         return
     user, token = os.environ.get("IG_USER_ID", ""), os.environ.get("IG_ACCESS_TOKEN", "")
     gh, repo = os.environ.get("GH_TOKEN", ""), os.environ.get("GITHUB_REPOSITORY", "")
     if not (user and token and gh and repo):
-        raise click.ClickException("IG_USER_ID, IG_ACCESS_TOKEN, GH_TOKEN and GITHUB_REPOSITORY are needed")
+        raise click.ClickException("set RESEND_API_KEY + SOCIAL_EMAIL_TO (email) or IG_USER_ID + IG_ACCESS_TOKEN (posting)")
     ig = Instagram(user, token, os.environ.get("IG_GRAPH") or "https://graph.facebook.com/v21.0")
     work = Path(tempfile.mkdtemp())
     ready = []
@@ -326,8 +374,13 @@ def run(state: Path, dry_run: bool) -> None:
         state.parent.mkdir(parents=True, exist_ok=True)
         state.write_text(json.dumps(posted, indent=1, sort_keys=True) + "\n")
         click.echo(f"  {c['id']}: posted ({media})")
-    state.parent.mkdir(parents=True, exist_ok=True)
+    _prune(state, posted, now)
+
+
+def _prune(state: Path, posted: dict, now: datetime) -> None:
+    """Forget matches handled over two weeks ago, and save."""
     cutoff = (now - timedelta(days=14)).isoformat()
     for k in [k for k, v in posted.items() if v["at"] < cutoff]:
         del posted[k]
+    state.parent.mkdir(parents=True, exist_ok=True)
     state.write_text(json.dumps(posted, indent=1, sort_keys=True) + "\n")
