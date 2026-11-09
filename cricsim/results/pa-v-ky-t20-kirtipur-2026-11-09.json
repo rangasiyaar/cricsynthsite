@@ -1,0 +1,387 @@
+{
+ "id": "pa-v-ky-t20-kirtipur-2026-11-09",
+ "innings": [
+  {
+   "team": "Pokhara Avengers",
+   "runs": 217,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Yuvraj Samra",
+     "dismissal": "c A Islam b M Watt",
+     "runs": 102,
+     "balls": 48,
+     "fours": 10,
+     "sixes": 6
+    },
+    {
+     "name": "Mahedi Hasan",
+     "dismissal": "c J Alam b S Kami",
+     "runs": 5,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kushal Bhurtel",
+     "dismissal": "c D Dumre b S Kami",
+     "runs": 62,
+     "balls": 39,
+     "fours": 0,
+     "sixes": 7
+    },
+    {
+     "name": "Sunny BK",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chamika Karunaratne",
+     "dismissal": "not out",
+     "runs": 35,
+     "balls": 11,
+     "fours": 3,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Pawan Sarraf",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sompal Kami",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nandan Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mark Watt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jishan Alam",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yuvraj Khatri",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Surya Tamang",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Gulshan Jha",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 4
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Mahedi Hasan",
+     "score": 27,
+     "over": "4.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Yuvraj Samra",
+     "score": 163,
+     "over": "15.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kushal Bhurtel",
+     "score": 179,
+     "over": "17.5"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 1,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 42
+  },
+  {
+   "team": "Karnali Yaks",
+   "runs": 154,
+   "wickets": 10,
+   "overs": "18.3",
+   "batting": [
+    {
+     "name": "Ariful Islam",
+     "dismissal": "c C Karunaratne b K Bhurtel",
+     "runs": 24,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Jishan Alam",
+     "dismissal": "c A Kumal b D Lakshan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mark Watt",
+     "dismissal": "c K Thagunna b M Hasan",
+     "runs": 8,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Deepak Dumre",
+     "dismissal": "b M Hasan",
+     "runs": 22,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "David Miller",
+     "dismissal": "c C Karunaratne b M Hasan",
+     "runs": 7,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pawan Sarraf",
+     "dismissal": "c K Bhurtel b D Lakshan",
+     "runs": 32,
+     "balls": 31,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Gulshan Jha",
+     "dismissal": "c K Thagunna b B Khatri",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sompal Kami",
+     "dismissal": "Obstructing The Field",
+     "runs": 21,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nandan Yadav",
+     "dismissal": "c M Hasan b K Bhurtel",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Surya Tamang",
+     "dismissal": "c K Bhurtel b B Magar",
+     "runs": 13,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Yuvraj Khatri",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chamika Karunaratne",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Dhananjaya Lakshan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 1
+    },
+    {
+     "name": "Kushal Bhurtel",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mahedi Hasan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bipin Khatri",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Sunny BK",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bibek Magar",
+     "overs": "0.3",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jishan Alam",
+     "score": 19,
+     "over": "1.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ariful Islam",
+     "score": 25,
+     "over": "2.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mark Watt",
+     "score": 55,
+     "over": "5.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Deepak Dumre",
+     "score": 56,
+     "over": "5.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "David Miller",
+     "score": 69,
+     "over": "7.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Gulshan Jha",
+     "score": 72,
+     "over": "8.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sompal Kami",
+     "score": 130,
+     "over": "14.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Pawan Sarraf",
+     "score": 137,
+     "over": "16.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Nandan Yadav",
+     "score": 143,
+     "over": "17.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Surya Tamang",
+     "score": 154,
+     "over": "18.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 17,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Pokhara Avengers won by 63 runs",
+ "winner": "Pokhara Avengers"
+}
