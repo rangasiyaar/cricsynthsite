@@ -1,0 +1,112 @@
+{
+  "id": "ara-v-yal-t10-abu-dhabi-2026-11-11",
+  "title": "Arabian Aces v Yas Lions",
+  "date": "2026-11-11",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 12th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Arabian Aces",
+      "short": "ARA",
+      "players": [
+        "Moeen Ali",
+        "Liam Livingstone",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Tom Kohler-Cadmore",
+        "Muhammad Arfan",
+        "Richard Gleeson",
+        "Sam Billings",
+        "Paul Walter",
+        "Alzarri Joseph",
+        "Salman Irshad"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Moeen Ali",
+      "squad": [
+        "Moeen Ali",
+        "Liam Livingstone",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Tom Kohler-Cadmore",
+        "Muhammad Arfan",
+        "Richard Gleeson",
+        "Sam Billings",
+        "Paul Walter",
+        "Alzarri Joseph",
+        "Salman Irshad"
+      ]
+    },
+    {
+      "name": "Yas Lions",
+      "short": "YAL",
+      "players": [
+        "Andries Gous",
+        "James Vince",
+        "Dasun Shanaka",
+        "Karim Janat",
+        "Jason Holder",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey",
+        "Khuzaima Bin Tanvir",
+        "Akeal Hosein",
+        "Fazalhaq Farooqi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "Andries Gous",
+        "James Vince",
+        "Dasun Shanaka",
+        "Karim Janat",
+        "Jason Holder",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey",
+        "Khuzaima Bin Tanvir",
+        "Akeal Hosein",
+        "Fazalhaq Farooqi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41625,
+    "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-yas-lions-abu-dhabi-t10-league-11th-november-2026-41625",
+    "auto": true,
+    "xis": false
+  }
+}

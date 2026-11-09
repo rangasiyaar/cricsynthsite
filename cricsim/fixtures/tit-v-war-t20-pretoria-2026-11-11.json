@@ -1,0 +1,112 @@
+{
+  "id": "tit-v-war-t20-pretoria-2026-11-11",
+  "title": "Titans v Warriors",
+  "date": "2026-11-11",
+  "start_time": "21:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · Super 8",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "LC de Villiers Oval, Pretoria",
+  "venue_search": "lc de villiers oval",
+  "city": "Pretoria",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Titans",
+      "short": "TIT",
+      "players": [
+        "Lhuan dre Pretorius",
+        "Lethabo Phahlamohlaka",
+        "Dewald Brevis",
+        "Donovan Ferreira",
+        "Dayyaan Galiem",
+        "Eathan Bosch",
+        "Rivaldo Moonsamy",
+        "Junior Dala",
+        "Tsepo Ndwandwa",
+        "Tabraiz Shamsi",
+        "Beyers Swanepoel"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Donovan Ferreira",
+      "squad": [
+        "Lhuan dre Pretorius",
+        "Lethabo Phahlamohlaka",
+        "Dewald Brevis",
+        "Donovan Ferreira",
+        "Dayyaan Galiem",
+        "Eathan Bosch",
+        "Rivaldo Moonsamy",
+        "Junior Dala",
+        "Tsepo Ndwandwa",
+        "Tabraiz Shamsi",
+        "Beyers Swanepoel"
+      ]
+    },
+    {
+      "name": "Warriors",
+      "short": "WAR",
+      "players": [
+        "Jp King",
+        "Jordan Hermann",
+        "Senuran Muthusamy",
+        "Tristan Stubbs",
+        "Sibonelo Makhanya",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Beuran Hendricks",
+        "Kerwin Mungroo",
+        "Wesley Bedja",
+        "Thomas Kaber"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Tristan Stubbs",
+      "squad": [
+        "Jp King",
+        "Jordan Hermann",
+        "Senuran Muthusamy",
+        "Tristan Stubbs",
+        "Sibonelo Makhanya",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Beuran Hendricks",
+        "Kerwin Mungroo",
+        "Wesley Bedja",
+        "Thomas Kaber"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41793,
+    "url": "https://khelnow.com/live-cricket-score/titans-vs-warriors-csa-pro-t20-cup-11th-november-2026-41793",
+    "auto": true,
+    "xis": false
+  }
+}
