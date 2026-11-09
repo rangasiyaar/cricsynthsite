@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pokhara Avengers won the toss and bat first.",
   "teams": [
     {
       "name": "Pokhara Avengers",
@@ -20,27 +20,27 @@
       "players": [
         "Arjun Kumal",
         "Arjun Gharti",
+        "Bibek Magar",
         "Bipin Khatri",
         "Chamika Karunaratne",
+        "Dhananjaya Lakshan",
         "Kiran Thagunna",
         "Kushal Bhurtel",
         "Mahedi Hasan",
-        "Sagar Dhakal",
-        "Sudip Aryal",
-        "Sadeera Samarawickrama",
+        "Sunny BK",
         "Yuvraj Samra"
       ],
       "roles": [
         "AR",
         "WK",
+        "BAT",
+        "AR",
         "AR",
         "AR",
         "BAT",
         "BAT",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BAT",
+        "AR",
         "BAT"
       ],
       "captain": "Kushal Bhurtel",
@@ -66,26 +66,26 @@
         "David Miller",
         "Deepak Dumre",
         "Gulshan Jha",
+        "Jishan Alam",
         "Mark Watt",
-        "Hussain Talat",
         "Nandan Yadav",
         "Pawan Sarraf",
         "Sompal Kami",
         "Surya Tamang",
-        "Unish Bikram Singh"
+        "Yuvraj Khatri"
       ],
       "roles": [
         "BAT",
         "BAT",
         "WK",
         "AR",
-        "AR",
-        "AR",
-        "BOWL",
+        "BAT",
         "AR",
         "BOWL",
+        "AR",
         "BOWL",
-        "AR"
+        "BOWL",
+        "BOWL"
       ],
       "captain": "Sompal Kami",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41341,
     "url": "https://khelnow.com/live-cricket-score/pokhara-avengers-vs-karnali-yaks-nepal-premier-league-9th-november-2026-41341",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
