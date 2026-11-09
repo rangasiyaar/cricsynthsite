@@ -1,0 +1,112 @@
+{
+  "id": "nam-w-v-usa-w-t20-entebbe-2026-11-11",
+  "title": "Namibia Women v United States of America Women",
+  "date": "2026-11-11",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Victoria T20I Series · 10th Match",
+  "comp_key": "women-s-victoria-t20i-series",
+  "venue": "Entebbe Cricket Oval, Entebbe",
+  "venue_search": "entebbe cricket oval",
+  "city": "Entebbe",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Namibia Women",
+      "short": "NAM-W",
+      "players": [
+        "Jurriene Diergaardt",
+        "Edelle Van Zyl",
+        "Eveleen Kejarukua",
+        "Kayleen Green",
+        "Mezerly Gorases",
+        "Mekelaye Mwatile",
+        "Naomi Benjamin",
+        "Sune Wittmann",
+        "Wilka Mwatile",
+        "Sylvia Shihepo",
+        "Victoria Hamunyela"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Sune Wittmann",
+      "squad": [
+        "Jurriene Diergaardt",
+        "Edelle Van Zyl",
+        "Eveleen Kejarukua",
+        "Kayleen Green",
+        "Mezerly Gorases",
+        "Mekelaye Mwatile",
+        "Naomi Benjamin",
+        "Sune Wittmann",
+        "Wilka Mwatile",
+        "Sylvia Shihepo",
+        "Victoria Hamunyela"
+      ]
+    },
+    {
+      "name": "United States of America Women",
+      "short": "USA-W",
+      "players": [
+        "Aditi Chudasama",
+        "Chetna Pagydyala",
+        "Ella Claridge",
+        "Gargi Bhogle",
+        "Isani Vaghela",
+        "Lekha Shetty",
+        "Maahi Madhavan",
+        "Nikhar Doshi",
+        "Ritu Singh",
+        "Sainavi Kamabalapalli",
+        "Taranum Chopra"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Aditi Chudasama",
+      "squad": [
+        "Aditi Chudasama",
+        "Chetna Pagydyala",
+        "Ella Claridge",
+        "Gargi Bhogle",
+        "Isani Vaghela",
+        "Lekha Shetty",
+        "Maahi Madhavan",
+        "Nikhar Doshi",
+        "Ritu Singh",
+        "Sainavi Kamabalapalli",
+        "Taranum Chopra"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41783,
+    "url": "https://khelnow.com/live-cricket-score/namibia-women-vs-united-states-of-america-women-women's-victoria-t20i-series-11th-november-2026-41783",
+    "auto": true,
+    "xis": false
+  }
+}

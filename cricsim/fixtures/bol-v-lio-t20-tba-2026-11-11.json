@@ -1,0 +1,112 @@
+{
+  "id": "bol-v-lio-t20-tba-2026-11-11",
+  "title": "Boland v Lions",
+  "date": "2026-11-11",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · Super 8",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Boland",
+      "short": "BOL",
+      "players": [
+        "Gavin Kaplan",
+        "Blayde Capell",
+        "Gysbert Wege",
+        "Neil Brand",
+        "Ferisco Adams",
+        "Jhedli van Briesies",
+        "Imran Manack",
+        "Glenton Stuurman",
+        "Lizaad Williams",
+        "Akhona Mnyaka",
+        "Siyabonga Mahima"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Glenton Stuurman",
+      "squad": [
+        "Gavin Kaplan",
+        "Blayde Capell",
+        "Gysbert Wege",
+        "Neil Brand",
+        "Ferisco Adams",
+        "Jhedli van Briesies",
+        "Imran Manack",
+        "Glenton Stuurman",
+        "Lizaad Williams",
+        "Akhona Mnyaka",
+        "Siyabonga Mahima"
+      ]
+    },
+    {
+      "name": "Lions",
+      "short": "LIO",
+      "players": [
+        "Neil Timmers",
+        "Onkgomoditse Seletswane",
+        "Connor Esterhuizen",
+        "Mitchell Van Buuren",
+        "Morteza Manack",
+        "Bjorn Fortuin",
+        "Gerald Coetzee",
+        "Rassie van der Dussen",
+        "Nqabayomzi Peter",
+        "Codi Yusuf",
+        "Siya Plaatjie"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Bjorn Fortuin",
+      "squad": [
+        "Neil Timmers",
+        "Onkgomoditse Seletswane",
+        "Connor Esterhuizen",
+        "Mitchell Van Buuren",
+        "Morteza Manack",
+        "Bjorn Fortuin",
+        "Gerald Coetzee",
+        "Rassie van der Dussen",
+        "Nqabayomzi Peter",
+        "Codi Yusuf",
+        "Siya Plaatjie"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41792,
+    "url": "https://khelnow.com/live-cricket-score/boland-vs-lions-csa-pro-t20-cup-11th-november-2026-41792",
+    "auto": true,
+    "xis": false
+  }
+}
