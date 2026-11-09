@@ -12,36 +12,36 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Arabian Aces won the toss and bowl first.",
   "teams": [
     {
       "name": "Emirates Eagles",
       "short": "EME",
       "players": [
-        "Srikar Bharat",
-        "Rovman Powell",
-        "Shimron Hetmyer",
         "Alex Hales",
-        "Hasan Nawaz",
-        "David Wiese",
-        "Rehan Ahmed",
-        "Harshit Kaushik",
+        "Kyle Mayers",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Rovman Powell",
+        "Kona Srikar Bharat",
+        "Chris Green",
+        "Tymal Mills",
         "Trent Boult",
-        "Noor Ahmad",
-        "Akif Javed"
+        "Hardus Viljoen",
+        "Haider Razzaq"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "AR"
       ],
       "squad": [
         "Srikar Bharat",
@@ -55,36 +55,37 @@
         "Trent Boult",
         "Noor Ahmad",
         "Akif Javed"
-      ]
+      ],
+      "captain": "Rovman Powell"
     },
     {
       "name": "Arabian Aces",
       "short": "ARA",
       "players": [
-        "Tom Kohler-Cadmore",
-        "Ibrahim Masood",
         "Moeen Ali",
-        "Andre Russell",
         "Liam Livingstone",
-        "Richard Gleeson",
-        "Alzarri Joseph",
-        "Imran Tahir",
+        "Andre Russell",
         "Alishan Sharafu",
-        "Dwaine Pretorius",
-        "Vriitya Aravind"
+        "Tom Kohler-Cadmore",
+        "Muhammad Arfan",
+        "Richard Gleeson",
+        "Sam Billings",
+        "Paul Walter",
+        "Alzarri Joseph",
+        "Salman Irshad"
       ],
       "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
         "WK",
+        "BOWL",
+        "BOWL",
         "BAT",
         "AR",
-        "AR",
-        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "AR",
-        "AR",
-        "BAT"
+        "BOWL"
       ],
       "squad": [
         "Tom Kohler-Cadmore",
@@ -98,13 +99,15 @@
         "Alishan Sharafu",
         "Dwaine Pretorius",
         "Vriitya Aravind"
-      ]
+      ],
+      "captain": "Moeen Ali"
     }
   ],
   "live": {
     "kn": 41620,
     "url": "https://khelnow.com/live-cricket-score/emirates-eagles-vs-arabian-aces-abu-dhabi-t10-league-9th-november-2026-41620",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
