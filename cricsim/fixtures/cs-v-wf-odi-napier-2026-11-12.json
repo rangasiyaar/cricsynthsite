@@ -1,0 +1,112 @@
+{
+  "id": "cs-v-wf-odi-napier-2026-11-12",
+  "title": "Central Districts v Wellington Firebirds",
+  "date": "2026-11-12",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 14th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "McLean Park, Napier",
+  "venue_search": "mclean park",
+  "city": "Napier",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Central Districts",
+      "short": "CS",
+      "players": [
+        "Brad Schmulian",
+        "Taylor Bettelheim",
+        "Tom Bruce",
+        "Sam Cassidy",
+        "Dane Cleaver",
+        "Josh Clarkson",
+        "Jake Gibson",
+        "Ajaz Patel",
+        "Angus Schaw",
+        "Oscar Mabin",
+        "Raymond Toole"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Tom Bruce",
+      "squad": [
+        "Brad Schmulian",
+        "Taylor Bettelheim",
+        "Tom Bruce",
+        "Sam Cassidy",
+        "Dane Cleaver",
+        "Josh Clarkson",
+        "Jake Gibson",
+        "Ajaz Patel",
+        "Angus Schaw",
+        "Oscar Mabin",
+        "Raymond Toole"
+      ]
+    },
+    {
+      "name": "Wellington Firebirds",
+      "short": "WF",
+      "players": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Arslan Abbas",
+        "Oscar Jackson",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "Henry Shipley",
+        "James Hartshorn",
+        "Liam Dudding"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "James Hartshorn",
+      "squad": [
+        "Sam Morgan",
+        "Nick Greenwood",
+        "Gareth Severin",
+        "Jesse Tashkoff",
+        "Muhammad Arslan Abbas",
+        "Oscar Jackson",
+        "Callum McLachlan",
+        "Logan van Beek",
+        "Henry Shipley",
+        "James Hartshorn",
+        "Liam Dudding"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40568,
+    "url": "https://khelnow.com/live-cricket-score/central-districts-vs-wellington-firebirds-the-ford-trophy-11th-november-2026-40568",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ck-v-nd-odi-christchurch-2026-11-12",
+  "title": "Canterbury Kings v Northern Districts",
+  "date": "2026-11-12",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 15th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Hagley Oval, Christchurch",
+  "venue_search": "hagley oval",
+  "city": "Christchurch",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Canterbury Kings",
+      "short": "CK",
+      "players": [
+        "Scott Janet",
+        "Chad Bowes",
+        "Harry Chamberlain",
+        "Mitchell Hay",
+        "Eathan Adam Holman",
+        "Jesse Frew",
+        "Matt Rowe",
+        "Angus McKenzie",
+        "Raunaq Kapur",
+        "Michael Rae",
+        "Callum Samson"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Angus McKenzie",
+      "squad": [
+        "Scott Janet",
+        "Chad Bowes",
+        "Harry Chamberlain",
+        "Mitchell Hay",
+        "Eathan Adam Holman",
+        "Jesse Frew",
+        "Matt Rowe",
+        "Angus McKenzie",
+        "Raunaq Kapur",
+        "Michael Rae",
+        "Callum Samson"
+      ]
+    },
+    {
+      "name": "Northern Districts",
+      "short": "ND",
+      "players": [
+        "Mike Schlanders",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert O Donnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Kristian Clarke",
+        "Snehith Reddy",
+        "Ben Pomare",
+        "Joshua Brown",
+        "James Naylor"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Robert O Donnell",
+      "squad": [
+        "Mike Schlanders",
+        "Henry Cooper",
+        "Joe Carter",
+        "Robert O Donnell",
+        "Brett Hampton",
+        "Xavier Bell",
+        "Kristian Clarke",
+        "Snehith Reddy",
+        "Ben Pomare",
+        "Joshua Brown",
+        "James Naylor"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40571,
+    "url": "https://khelnow.com/live-cricket-score/canterbury-kings-vs-northern-districts-the-ford-trophy-11th-november-2026-40571",
+    "auto": true,
+    "xis": false
+  }
+}

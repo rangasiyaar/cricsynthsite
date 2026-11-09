@@ -1,0 +1,112 @@
+{
+  "id": "aa-v-ov-odi-auckland-2026-11-12",
+  "title": "Auckland Aces v Otago Volts",
+  "date": "2026-11-12",
+  "start_time": "03:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "The Ford Trophy · 13th Match",
+  "comp_key": "the-ford-trophy",
+  "venue": "Eden Park Outer Oval, Auckland",
+  "venue_search": "eden park outer oval",
+  "city": "Auckland",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Auckland Aces",
+      "short": "AA",
+      "players": [
+        "Sean Solia",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Bevon Jacobs",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Siddesh Dixit",
+        "Angus Olliver",
+        "Samrath Singh",
+        "Harry Cullen Hieatt"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sean Solia",
+      "squad": [
+        "Sean Solia",
+        "Luke Watson",
+        "Cam Fletcher",
+        "Bevon Jacobs",
+        "Lachlan Stackpole",
+        "Ryan Harrison",
+        "Jaskaran Sandhu",
+        "Siddesh Dixit",
+        "Angus Olliver",
+        "Samrath Singh",
+        "Harry Cullen Hieatt"
+      ]
+    },
+    {
+      "name": "Otago Volts",
+      "short": "OV",
+      "players": [
+        "Jack Boyle",
+        "Jacob Cumming",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Zac Cumming",
+        "Thomas O'Connor",
+        "Matthew Bacon"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Luke Georgeson",
+      "squad": [
+        "Jack Boyle",
+        "Jacob Cumming",
+        "Thorn Parkes",
+        "Luke Georgeson",
+        "Tom Jones",
+        "Jamal Todd",
+        "Troy Johnson",
+        "Ben Lockrose",
+        "Zac Cumming",
+        "Thomas O'Connor",
+        "Matthew Bacon"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40565,
+    "url": "https://khelnow.com/live-cricket-score/auckland-aces-vs-otago-volts-the-ford-trophy-11th-november-2026-40565",
+    "auto": true,
+    "xis": false
+  }
+}
