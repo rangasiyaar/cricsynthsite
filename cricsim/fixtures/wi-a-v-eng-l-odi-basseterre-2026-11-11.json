@@ -1,0 +1,112 @@
+{
+  "id": "wi-a-v-eng-l-odi-basseterre-2026-11-11",
+  "title": "West Indies A v England Lions",
+  "date": "2026-11-11",
+  "start_time": "19:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "England Lions tour of West Indies · 3rd Unofficial ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Conaree Sports Club, St Kitts, Basseterre",
+  "venue_search": "conaree sports club, st kitts",
+  "city": "Basseterre",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "West Indies A",
+      "short": "WI-A",
+      "players": [
+        "Alick Athanaze",
+        "Kirk McKenzie",
+        "Keacy Carty",
+        "Shaqkere Parris",
+        "Jewel Andrew",
+        "Jyd Goolie",
+        "Sadrack Descartes",
+        "Jediah Blades",
+        "Vitel Lawes",
+        "Oshane Thomas",
+        "Jakeem Pollard"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Alick Athanaze",
+      "squad": [
+        "Alick Athanaze",
+        "Kirk McKenzie",
+        "Keacy Carty",
+        "Shaqkere Parris",
+        "Jewel Andrew",
+        "Jyd Goolie",
+        "Sadrack Descartes",
+        "Jediah Blades",
+        "Vitel Lawes",
+        "Oshane Thomas",
+        "Jakeem Pollard"
+      ]
+    },
+    {
+      "name": "England Lions",
+      "short": "ENG-L",
+      "players": [
+        "Thomas Rew",
+        "Ben McKinney",
+        "Rehan Ahmed",
+        "Dan Lawrence",
+        "James Coles",
+        "James Rew",
+        "Jack Haynes",
+        "Adam Finch",
+        "Mason Crane",
+        "Naavya Sharma",
+        "Eddie Jack"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Dan Lawrence",
+      "squad": [
+        "Thomas Rew",
+        "Ben McKinney",
+        "Rehan Ahmed",
+        "Dan Lawrence",
+        "James Coles",
+        "James Rew",
+        "Jack Haynes",
+        "Adam Finch",
+        "Mason Crane",
+        "Naavya Sharma",
+        "Eddie Jack"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41771,
+    "url": "https://khelnow.com/live-cricket-score/west-indies-a-vs-england-lions-england-lions-tour-of-west-indies-11th-november-2026-41771",
+    "auto": true,
+    "xis": false
+  }
+}
