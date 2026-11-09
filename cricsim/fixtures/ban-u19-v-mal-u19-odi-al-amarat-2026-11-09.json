@@ -12,7 +12,7 @@
   "city": "Al Amarat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bangladesh Under-19s won the toss and bat first.",
   "teams": [
     {
       "name": "Bangladesh Under-19s",
@@ -20,27 +20,27 @@
       "players": [
         "Abdullah Al Muhi",
         "Al Amin Hossen",
+        "Alamin Hossain",
         "All Rafi",
+        "Farhan Sadik",
         "Ahsan Al Mumin",
         "Farid Hasan Faysal",
-        "Rakibul Hossan",
-        "Robiul Anik",
         "Rubay Islam",
+        "Robiul Anik",
         "Tafiul Alam Tamim",
-        "Sheikh Atiqur Rahman",
         "Jarif Siyam"
       ],
       "roles": [
         "BAT",
         "BOWL",
+        "BAT",
+        "BOWL",
         "BOWL",
         "BAT",
         "WK",
-        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "BAT",
         "BAT"
       ],
       "captain": "Farid Hasan Faysal",
@@ -62,30 +62,30 @@
       "name": "Malaysia Under-19s",
       "short": "MAL-U19",
       "players": [
-        "Harith Naufal",
         "Deeaz Patro",
         "Dzul Syahmi",
-        "Aiyadh Iskandar",
+        "Aulga Gunawan",
         "Alif Haziq",
         "Arryan Iskandar",
         "Asyraf Mikail",
         "Firash Taqiuddin",
-        "Nur Iman",
+        "Muhamad Nurhanif Maliki",
+        "Syahir Asyraf",
         "Syamil Aqil",
         "Nagineswaran Sathnakumaran"
       ],
       "roles": [
+        "BAT",
         "AR",
-        "BAT",
-        "BAT",
-        "BAT",
+        "BOWL",
         "WK",
-        "AR",
         "BOWL",
-        "AR",
+        "BAT",
+        "BAT",
         "BOWL",
         "BOWL",
-        "AR"
+        "BAT",
+        "BOWL"
       ],
       "captain": "Deeaz Patro",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41654,
     "url": "https://khelnow.com/live-cricket-score/bangladesh-under-19s-vs-malaysia-under-19s-acc-men's-u19-asia-cup-9th-november-2026-41654",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
