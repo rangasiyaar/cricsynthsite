@@ -1,0 +1,448 @@
+{
+ "id": "sl-u19-v-afg-u19-odi-al-amarat-2026-11-09",
+ "innings": [
+  {
+   "team": "Afghanistan Under-19s",
+   "runs": 275,
+   "wickets": 10,
+   "overs": "49.5",
+   "batting": [
+    {
+     "name": "Abidullah Nadarjan",
+     "dismissal": "lbw b K Withanapathirana",
+     "runs": 55,
+     "balls": 64,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Faridullah Ihsas",
+     "dismissal": "lbw b G Mendis",
+     "runs": 10,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Subhan Ali",
+     "dismissal": "c R Peiris b V Akash",
+     "runs": 107,
+     "balls": 111,
+     "fours": 13,
+     "sixes": 1
+    },
+    {
+     "name": "Noman Salarzai",
+     "dismissal": "c G Rasanjana b V Chamuditha",
+     "runs": 12,
+     "balls": 25,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shah Faisal Rahimi",
+     "dismissal": "lbw b V Akash",
+     "runs": 33,
+     "balls": 43,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Tahir Sarwary",
+     "dismissal": "c G Rasanjana b S Seneviratne",
+     "runs": 32,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Amir Hamza",
+     "dismissal": "c S Wekunagoda b S Seneviratne",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sohail Khan",
+     "dismissal": "c Lithma Perera b S Seneviratne",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Ali",
+     "dismissal": "not out",
+     "runs": 16,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Abdullah Hamdard",
+     "dismissal": "runout (G Rasanjana)",
+     "runs": 5,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Noor Ali Niazi",
+     "dismissal": "runout (S Seneviratne / Lithma Perera)",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sethmika Seneviratne",
+     "overs": "9.5",
+     "maidens": 1,
+     "runs": 44,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gimhan Mendis",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 1,
+     "no_balls": 2,
+     "wides": 0
+    },
+    {
+     "name": "Viran Chamuditha",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kaushika Kumarasinghe",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Vigneshwaran Akash",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kithma Withanapathirana",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gimhan Rasanjana",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Faridullah Ihsas",
+     "score": 22,
+     "over": "5.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abidullah Nadarjan",
+     "score": 93,
+     "over": "19.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Noman Salarzai",
+     "score": 124,
+     "over": "26.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shah Faisal Rahimi",
+     "score": 210,
+     "over": "40.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Subhan Ali",
+     "score": 235,
+     "over": "44.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Amir Hamza",
+     "score": 244,
+     "over": "45.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sohail Khan",
+     "score": 244,
+     "over": "45.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Tahir Sarwary",
+     "score": 259,
+     "over": "47.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Abdullah Hamdard",
+     "score": 270,
+     "over": "49.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Noor Ali Niazi",
+     "score": 275,
+     "over": "49.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 0,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 44
+  },
+  {
+   "team": "Sri Lanka Under-19s",
+   "runs": 169,
+   "wickets": 10,
+   "overs": "34.1",
+   "batting": [
+    {
+     "name": "Rehan Peiris",
+     "dismissal": "c & b N Niazi",
+     "runs": 12,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Lithma Perera",
+     "dismissal": "c SF Rahimi b N Niazi",
+     "runs": 0,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Senuja Wekunagoda",
+     "dismissal": "c N Salarzai b N Niazi",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kithma Withanapathirana",
+     "dismissal": "c A Hamdard b M Ali",
+     "runs": 58,
+     "balls": 48,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Gimhan Rasanjana",
+     "dismissal": "c N Salarzai b N Niazi",
+     "runs": 6,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chaniru Senaratne",
+     "dismissal": "c M Ali b S Khan",
+     "runs": 9,
+     "balls": 30,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Viran Chamuditha",
+     "dismissal": "lbw b A Hamza",
+     "runs": 17,
+     "balls": 24,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Kaushika Kumarasinghe",
+     "dismissal": "b A Hamza",
+     "runs": 8,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Sethmika Seneviratne",
+     "dismissal": "b S Khan",
+     "runs": 23,
+     "balls": 34,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Gimhan Mendis",
+     "dismissal": "st N Salarzai b M Ali",
+     "runs": 16,
+     "balls": 25,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Vigneshwaran Akash",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Noor Ali Niazi",
+     "overs": "9",
+     "maidens": 2,
+     "runs": 35,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Amir Hamza",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Abdullah Hamdard",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Sohail Khan",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mohammad Ali",
+     "overs": "9.1",
+     "maidens": 1,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Lithma Perera",
+     "score": 5,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Senuja Wekunagoda",
+     "score": 5,
+     "over": "2.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rehan Peiris",
+     "score": 15,
+     "over": "4.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Gimhan Rasanjana",
+     "score": 41,
+     "over": "6.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Chaniru Senaratne",
+     "score": 94,
+     "over": "17.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kithma Withanapathirana",
+     "score": 108,
+     "over": "20.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Viran Chamuditha",
+     "score": 122,
+     "over": "23.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kaushika Kumarasinghe",
+     "score": 126,
+     "over": "23.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Sethmika Seneviratne",
+     "score": 159,
+     "over": "31.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Gimhan Mendis",
+     "score": 169,
+     "over": "34.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 16,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
