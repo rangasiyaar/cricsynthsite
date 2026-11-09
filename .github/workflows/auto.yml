@@ -80,9 +80,29 @@ jobs:
           service_account: ${{ secrets.GCP_DEPLOYER_SA }}
       - uses: google-github-actions/setup-gcloud@v2
         if: ${{ steps.gcp.outcome == 'success' }}
+      # Instagram carousels two hours before covered matches (cricsim.social): only once the account is connected
+      - uses: actions/setup-node@v4
+        if: ${{ vars.SOCIAL_ENABLED == 'true' && !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
+        with: { node-version: 20 }
+      - name: Browser for the Instagram slides
+        id: social
+        if: ${{ vars.SOCIAL_ENABLED == 'true' && !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
+        continue-on-error: true            # posting is extra: the loop runs without it
+        run: |
+          npm install --silent --no-save --prefix "$RUNNER_TEMP/pw" playwright@1.63.0
+          npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium > /dev/null
       - name: Fixtures, XIs, scorecards every 5 minutes
         if: ${{ !inputs.dry_run && !inputs.late && !inputs.list && !inputs.squads }}
-        env: { GH_TOKEN: "${{ github.token }}", MINUTES: "${{ inputs.minutes || 330 }}", ALERTS: "${{ steps.gcp.outcome == 'success' }}", PROJECT: "${{ secrets.GCP_PROJECT_ID }}" }
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          MINUTES: "${{ inputs.minutes || 330 }}"
+          ALERTS: "${{ steps.gcp.outcome == 'success' }}"
+          PROJECT: "${{ secrets.GCP_PROJECT_ID }}"
+          SOCIAL: "${{ steps.social.outcome == 'success' }}"
+          PLAYWRIGHT_DIR: "${{ runner.temp }}/pw"
+          IG_ACCESS_TOKEN: "${{ secrets.IG_ACCESS_TOKEN }}"
+          IG_USER_ID: "${{ secrets.IG_USER_ID }}"
+          IG_GRAPH: "${{ vars.IG_GRAPH }}"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
@@ -95,7 +115,10 @@ jobs:
               FCM_ACCESS_TOKEN="$(gcloud auth print-access-token 2>/dev/null)" \
                 uv run python -m cricsim.notify timed --project "$PROJECT" --state cricsim/alerts/sent.json || echo "timed alerts failed"
             fi
-            git add cricsim/fixtures cricsim/results cricsim/alerts 2>/dev/null || git add cricsim/fixtures cricsim/results
+            if [ "$SOCIAL" = "true" ]; then          # Instagram carousel two hours before covered matches (each posted once)
+              uv run python -m cricsim.social run --state cricsim/social/posted.json || echo "instagram post failed"
+            fi
+            git add cricsim/fixtures cricsim/results cricsim/alerts cricsim/social 2>/dev/null || git add cricsim/fixtures cricsim/results
             if ! git diff --cached --quiet; then
               git commit -q -m "Auto: $(git diff --cached --name-only | sed 's|.*/||; s|\.json||' | paste -sd, - | cut -c1-200)"
               for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done

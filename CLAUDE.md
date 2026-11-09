@@ -16,6 +16,7 @@ read `infra/COSTS.md` before adding any cloud resource.
 cricsynthsite/
 ├── cricdata/                  ← Cricsheet ingest: JSON → Parquet → BigQuery (Cloud Run Job)
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
+│                                 (cricsim/social = Instagram carousels, 2 h before WBBL / NPL / Test-nation internationals)
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
 ├── cricmcp/                   ← MCP server (42 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
 ├── edge/                      ← Hosted API + remote MCP on Cloudflare Workers (api. / mcp.cricsynthesis.in; infra/EDGE_PLAN.md)
