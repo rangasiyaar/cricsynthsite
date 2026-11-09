@@ -513,7 +513,9 @@ def main(fixtures: Path, scorecards: Path, out: Path, picks: Path, show_started:
             click.echo(f"- {mid}: not scored ({rep.get('note', 'no checks')})")
             continue
         fz = rep.get("fantasy")
-        click.echo(f"- {mid}: {rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}"
+        fav = next((c for c in rep["items"] if c["check"] == "Favourite wins"), None)
+        fav_txt = f"favourite {fav['projected']}: {'won' if fav['hit'] else 'lost'} ({fav['actual']}); " if fav else ""
+        click.echo(f"- {mid}: {fav_txt}{rep['hits']}/{rep['checks']} came true ({rep['accuracy']:.0%}); {tabs}"
                    + (f"; fantasy XI {fz['single']['share']:.0%} of the best, best of 5 teams {fz['best_of_teams']:.0%}"
                       if fz and fz["single"]["share"] is not None else ""))
 
