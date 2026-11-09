@@ -179,10 +179,35 @@ def _pct(p: float) -> str:
     return f"{100 * p:.0f}%"
 
 
+def _balls(overs, bpo: int) -> int:
+    o, _, b = str(overs or "0").partition(".")
+    return int(o or 0) * bpo + int(b or 0)
+
+
+def fill_result(card: dict, overs: int, bpo: int = 6) -> dict:
+    """The result from the two innings when the scorecard came without one (the source sometimes leaves the winner
+    out). Only when it is certain: the chase passed the total, or the chasing side was bowled out or used all its
+    overs. A match with revised overs (rain, a target set by the rain rules) or an unfinished chase is left as it is."""
+    inns = card.get("innings") or []
+    if card.get("winner") or card.get("result") or card.get("abandoned") or card.get("overs_per_side") or len(inns) != 2:
+        return card
+    a, b = inns
+    if b["runs"] > a["runs"]:
+        n = 10 - b["wickets"]
+        return {**card, "winner": b["team"], "result": f"{b['team']} won by {n} wicket{'' if n == 1 else 's'}"}
+    if b["wickets"] < 10 and _balls(b.get("overs"), bpo) < overs * bpo:
+        return card                                    # the chase didn't finish: no result we can be sure of
+    if a["runs"] > b["runs"]:
+        n = a["runs"] - b["runs"]
+        return {**card, "winner": a["team"], "result": f"{a['team']} won by {n} run{'' if n == 1 else 's'}"}
+    return {**card, "result": "Match tied"}
+
+
 # ── scoring ───────────────────────────────────────────────────────────────────────────────────────────────────────
 
 def score(doc: dict, card: dict, fixture: dict | None = None) -> dict:
     s, roster = doc["summary"], Roster(doc, fixture)
+    card = fill_result(card, s["meta"]["rules"]["overs"], s["meta"]["rules"].get("bpo", 6))
     names = {p["id"]: p["name"].removeprefix("new:") for t in s["teams"] for p in t["players"]}
     checks: list[dict] = []
 

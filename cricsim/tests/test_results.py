@@ -218,3 +218,25 @@ def test_evening_match_stays_listed_past_midnight(tmp_path):
     (out / "index.json").unlink()
     run(fx_dir, sc_dir, out, now=datetime(2026, 10, 11, 21, 0, tzinfo=timezone.utc), fetch=get)   # 02:30 IST: over
     assert json.loads((out / "index.json").read_text())["matches"] == []
+
+
+def test_fill_result_from_innings():
+    from cricsim.results import fill_result
+    inn = lambda t, r, w, o: {"team": t, "runs": r, "wickets": w, "overs": o}
+    # chase passed the total
+    c = fill_result({"innings": [inn("A", 112, 6, "10"), inn("B", 114, 1, "9")], "result": ""}, 10)
+    assert c["winner"] == "B" and c["result"] == "B won by 9 wickets"
+    # batting first defended: chasing side used all its overs, or was bowled out
+    c = fill_result({"innings": [inn("A", 169, 5, "20"), inn("B", 150, 7, "20")]}, 20)
+    assert c["winner"] == "A" and c["result"] == "A won by 19 runs"
+    c = fill_result({"innings": [inn("A", 275, 10, "49.5"), inn("B", 169, 10, "34.1")]}, 50)
+    assert c["winner"] == "A" and c["result"] == "A won by 106 runs"
+    assert fill_result({"innings": [inn("A", 138, 5, "20"), inn("B", 138, 7, "20")]}, 20)["result"] == "Match tied"
+    # not certain: the chase stopped short (rain), the overs were revised, or the source already said
+    short = {"innings": [inn("A", 134, 10, "41"), inn("B", 113, 7, "26")]}
+    assert fill_result(short, 50) == short
+    revised = {"innings": [inn("A", 120, 4, "12"), inn("B", 110, 3, "12")], "overs_per_side": 12}
+    assert fill_result(revised, 20) == revised
+    given = {"innings": [inn("A", 73, 9, "20"), inn("B", 64, 6, "18")], "result": "Match tied"}
+    assert fill_result(given, 20) == given
+    assert fill_result({"innings": []}, 20) == {"innings": []}
