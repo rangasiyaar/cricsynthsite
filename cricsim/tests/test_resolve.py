@@ -77,3 +77,52 @@ def test_find_venue_prefers_the_fixture_city_even_for_a_common_word(tmp_path):
     con = duckdb.connect()
     assert find_venue(con, tmp_path, "stadium", "Wellington") == ("sky", "Sky Stadium")
     assert find_venue(con, tmp_path, "stadium", None)[0].startswith("v")
+
+
+def _venues(tmp_path, rows):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    (tmp_path / "matches").mkdir()
+    pq.write_table(pa.table({"venue_id": [r[0] for r in rows], "venue": [r[1] for r in rows],
+                             "venue_raw": [r[2] for r in rows], "city": [r[3] for r in rows]}),
+                   tmp_path / "matches" / "m.parquet")
+
+
+MELBOURNE = ([("melbourne-cricket-ground", "Melbourne Cricket Ground", "Melbourne Cricket Ground", "Melbourne")] * 153
+             + [("junction-oval", "Junction Oval", "Junction Oval, Melbourne", "Melbourne")] * 91
+             + [("marvel-stadium", "Marvel Stadium", "Marvel Stadium, Melbourne", "Melbourne")] * 45
+             + [("bellerive-oval", "Bellerive Oval", "Bellerive Oval, Hobart", "Hobart")] * 60)
+
+
+def test_a_city_search_does_not_pick_the_busiest_ground(tmp_path):
+    """"melbourne" is in "Melbourne Cricket Ground", but a WBBL match at the Junction Oval is not at the MCG."""
+    import duckdb
+
+    from cricsim.resolve import find_ground, find_venue
+    _venues(tmp_path, MELBOURNE)
+    con = duckdb.connect()
+    assert find_venue(con, tmp_path, "melbourne", "Melbourne") == (None, None)
+    assert find_venue(con, tmp_path, "hobart", "Hobart") == ("bellerive-oval", "Bellerive Oval")   # one ground
+    assert find_ground(con, tmp_path, "Junction Oval", "Melbourne") == ("junction-oval", "Junction Oval")
+    assert find_ground(con, tmp_path, "Junction Oval", "Hobart") == (None, None)
+    assert find_ground(con, tmp_path, "CitiPower Centre", "Melbourne") == (None, None)
+
+
+def test_junction_oval_fixture_resolves_to_its_own_ground(tmp_path, monkeypatch):
+    import json
+
+    from cricsim import resolve
+    _venues(tmp_path, MELBOURNE)
+    monkeypatch.setattr(resolve, "candidates", lambda *a: [])
+    fx = {"id": "mlrw-v-adsw", "gender": "female", "venue": "Junction Oval, Melbourne", "venue_search": "melbourne",
+          "city": "Melbourne", "teams": [{"name": "Melbourne Renegades", "players": []},
+                                         {"name": "Adelaide Strikers", "players": []}]}
+    (tmp_path / "fx.json").write_text(json.dumps(fx))
+    resolve.main.callback(tmp_path, tmp_path / "fx.json", tmp_path / "out.json")
+    out = json.loads((tmp_path / "out.json").read_text())
+    assert out["venue_id"] == "junction-oval" and out["venue"] == "Junction Oval, Melbourne"
+
+    fx["venue"] = "CitiPower Centre, Melbourne"      # a ground the records don't know: unknown, never the MCG
+    (tmp_path / "fx.json").write_text(json.dumps(fx))
+    resolve.main.callback(tmp_path, tmp_path / "fx.json", tmp_path / "out.json")
+    assert "venue_id" not in json.loads((tmp_path / "out.json").read_text())

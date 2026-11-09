@@ -3,7 +3,7 @@
     python -m cricsim.resolve --parquet data/parquet --fixture fixture.json --out coverage/matches/<id>.json
 
 The fixture is a coverage document whose team "players" are names in batting order, plus an optional
-"venue_search" (text matched against known venue names). Each name is matched against players who have
+"venue_search" (text matched against known venue names; the ground named in "venue" is tried first). Each name is matched against players who have
 played for that team (same gender), by full name, registry aliases, then surname + initials; the most
 recent appearance wins ties. A name not found in the team falls back to every player of that gender
 (same rules), so league records count for players not yet capped. A name that matches nobody is kept as a new player (simulated as a
@@ -96,11 +96,49 @@ def match_name(name: str, cands: list[dict], taken: set[str] = frozenset(), shor
     return None, "unresolved"
 
 
+def _words(s: str) -> set[str]:
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower().replace(".", "")
+    return set(re.sub(r"[^a-z0-9 ]", " ", s).split()) - {"the"}
+
+
+def find_ground(con, parquet: Path, name: str, city: str | None = None) -> tuple[str | None, str | None]:
+    """The ground the fixture names ("Junction Oval" of "Junction Oval, Melbourne"): every word of the name in a known
+    venue name (so "Al Amerat Cricket Ground (Ministry Turf 2)" finds "Al Amerat Cricket Ground Oman Cricket
+    (Ministry Turf 2)"), only grounds in the fixture's city when it has one; most matches first. None if no ground
+    fits: a renamed or new ground is better unknown than guessed."""
+    want = _words(name)
+    if not want:
+        return None, None
+    m = (parquet / "matches" / "*.parquet").as_posix()
+    c = (canonical_city(city.strip()) or city.strip()).lower() if city else None
+    rows = con.execute(f"""SELECT venue_id, any_value(venue), list(DISTINCT venue_raw), count(*) n FROM read_parquet('{m}')
+                           WHERE venue_id IS NOT NULL AND (? IS NULL OR lower(city) = ?)
+                           GROUP BY 1 ORDER BY n DESC""", [c, c]).fetchall()
+    for vid, venue, raws, _ in rows:
+        if any(want <= _words(x) for x in [venue, *(raws or [])] if x):
+            return vid, venue
+    return None, None
+
+
+def _city_grounds(con, parquet: Path, text: str) -> int:
+    """How many grounds the city called `text` has (0 if `text` isn't a city)."""
+    m = (parquet / "matches" / "*.parquet").as_posix()
+    t = text.strip()
+    c = (canonical_city(t) or t).lower()
+    return con.execute(f"SELECT count(DISTINCT venue_id) FROM read_parquet('{m}') WHERE lower(city) IN (?, ?)",
+                       [c, t.lower()]).fetchone()[0]
+
+
 def find_venue(con, parquet: Path, text: str, city: str | None = None) -> tuple[str | None, str | None]:
     """The ground whose name contains `text`, most matches first. With a city (the fixture's own, or the part of its
     venue after the last comma) only grounds in that city count, so a name several cities share can't pick the wrong
-    one; without a usable city, a search matching grounds in several cities is reported."""
+    one; without a usable city, a search matching grounds in several cities is reported.
+    A search that is only a city name says nothing about the ground: it resolves only when the city has one ground
+    (else "melbourne" would pick the Melbourne Cricket Ground for a match at the Junction Oval)."""
     m = (parquet / "matches" / "*.parquet").as_posix()
+    if _city_grounds(con, parquet, text) > 1:
+        click.echo(f"  warning: venue search {text!r} is a city with several grounds; ground left unknown")
+        return None, None
     like = f"%{text.lower()}%"
     if city:       # the city's own grounds first: a common word ("stadium") must not lose them below the top 20
         c = (canonical_city(city.strip()) or city.strip()).lower()
@@ -175,9 +213,13 @@ def main(parquet: Path, fixture: Path, out: Path) -> None:
             if len(listed) >= 5:     # a full attack, else leave it to the players' records
                 team["bowlers"] = listed
         team["players"] = ids
-    if fx.get("venue_search") and not fx.get("venue_id"):        # a pinned ground ID wins over the search
+    if (fx.get("venue_search") or fx.get("venue")) and not fx.get("venue_id"):   # a pinned ground ID wins over the search
         city = fx.get("city") or (fx["venue"].rsplit(",", 1)[1] if "," in (fx.get("venue") or "") else None)
-        vid, vname = find_venue(con, parquet, fx["venue_search"], city)
+        vid = vname = None
+        if fx.get("venue"):           # the ground the fixture names, before any looser search
+            vid, vname = find_ground(con, parquet, fx["venue"].split(",")[0], city)
+        if not vid and fx.get("venue_search"):
+            vid, vname = find_venue(con, parquet, fx["venue_search"], city)
         click.echo(f"  venue → {vid} ({vname})")
         if vid:
             fx["venue_id"], fx["venue"] = vid, fx.get("venue") or vname
