@@ -1,0 +1,289 @@
+{
+ "id": "unt-v-rdc-t10-abu-dhabi-2026-11-09",
+ "innings": [
+  {
+   "team": "Royal Desert Champions",
+   "runs": 81,
+   "wickets": 9,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Nicholas Pooran",
+     "dismissal": "c S Farhan b A Ali",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Phil Salt",
+     "dismissal": "b A Ali",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Muhammad Waseem",
+     "dismissal": "lbw b F Ashraf",
+     "runs": 24,
+     "balls": 17,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "dismissal": "c F Zaman b MA Afridi",
+     "runs": 9,
+     "balls": 4,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Janith Liyanage",
+     "dismissal": "c I Ahmed b MA Afridi",
+     "runs": 11,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tajinder Singh",
+     "dismissal": "c MA Afridi b F Ashraf",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Keemo Paul",
+     "dismissal": "c A Ali b A Omarzai",
+     "runs": 8,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chris Jordan",
+     "dismissal": "c I Ahmed b MA Afridi",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ali Naseer",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naseem Shah",
+     "dismissal": "runout (S Farhan)",
+     "runs": 18,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Awais Ali",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abbas Afridi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Usman Tariq",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Faheem Ashraf",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Nicholas Pooran",
+     "score": 0,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Phil Salt",
+     "score": 12,
+     "over": "2.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sherfane Rutherford",
+     "score": 26,
+     "over": "3.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Muhammad Waseem",
+     "score": 43,
+     "over": "5.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tajinder Singh",
+     "score": 43,
+     "over": "5.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Janith Liyanage",
+     "score": 58,
+     "over": "7.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Chris Jordan",
+     "score": 62,
+     "over": "7.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Keemo Paul",
+     "score": 62,
+     "over": "8.1"
+    },
+    {
+     "wicket": 9,
+     "batter": "Naseem Shah",
+     "score": 81,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 12
+  },
+  {
+   "team": "United Tigers",
+   "runs": 84,
+   "wickets": 1,
+   "overs": "7",
+   "batting": [
+    {
+     "name": "Sahibzada Farhan",
+     "dismissal": "c C Jordan b K Paul",
+     "runs": 12,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Fakhar Zaman",
+     "dismissal": "not out",
+     "runs": 45,
+     "balls": 21,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Joe Clarke",
+     "dismissal": "not out",
+     "runs": 25,
+     "balls": 12,
+     "fours": 5,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Luke Wood",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Naseem Shah",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Keemo Paul",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ali Naseer",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sahibzada Farhan",
+     "score": 28,
+     "over": "2.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
