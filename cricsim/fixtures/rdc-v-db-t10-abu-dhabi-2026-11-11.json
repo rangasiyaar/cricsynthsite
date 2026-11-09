@@ -1,0 +1,112 @@
+{
+  "id": "rdc-v-db-t10-abu-dhabi-2026-11-11",
+  "title": "Royal Desert Champions v UAE Bulls",
+  "date": "2026-11-11",
+  "start_time": "19:15",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 11th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Janith Liyanage",
+        "Ali Naseer",
+        "Keemo Paul",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Luke Wood"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Janith Liyanage",
+        "Ali Naseer",
+        "Keemo Paul",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Dushmantha Chameera",
+        "Luke Wood"
+      ]
+    },
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Khawaja Nafay",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Tahir Zaman",
+        "Mohammad Amir",
+        "Mohammad Wasim Jr",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Khawaja Nafay",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Tahir Zaman",
+        "Mohammad Amir",
+        "Mohammad Wasim Jr",
+        "Muhammad Rohid Khan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41624,
+    "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-uae-bulls-abu-dhabi-t10-league-11th-november-2026-41624",
+    "auto": true,
+    "xis": false
+  }
+}
