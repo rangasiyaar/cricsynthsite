@@ -1,0 +1,434 @@
+{
+ "id": "ind-u19-v-uae-u19-odi-al-amarat-2026-11-10",
+ "innings": [
+  {
+   "team": "India Under-19s",
+   "runs": 309,
+   "wickets": 7,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Lakshya Rajesh Raichandani",
+     "dismissal": "c H Khan b N Ayobi",
+     "runs": 17,
+     "balls": 32,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Aaryavir Sehwag",
+     "dismissal": "c U Suri b N Khan",
+     "runs": 160,
+     "balls": 168,
+     "fours": 17,
+     "sixes": 7
+    },
+    {
+     "name": "VK Vineeth",
+     "dismissal": "c U Suri b N Khan",
+     "runs": 67,
+     "balls": 69,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Arjun Rajput",
+     "dismissal": "c B Khan b H Khan",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yashbardhan Singh Chauhan",
+     "dismissal": "c M Nafees b A Misbah",
+     "runs": 17,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Anvay Dravid",
+     "dismissal": "c H Khan b N Khan",
+     "runs": 12,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Manal Chauhan",
+     "dismissal": "b N Khan",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohit Ulva",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Aryan Savsani",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Naseem Khan",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 48,
+     "wickets": 4,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Hadayatullah Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 9
+    },
+    {
+     "name": "Noorullah Ayobi",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 59,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Zainullah Rahmani",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bilal Khan",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ayaan Misbah",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Uddish Suri",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Lakshya Rajesh Raichandani",
+     "score": 62,
+     "over": "13.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Aaryavir Sehwag",
+     "score": 255,
+     "over": "44.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Arjun Rajput",
+     "score": 261,
+     "over": "45.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "VK Vineeth",
+     "score": 276,
+     "over": "46.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Anvay Dravid",
+     "score": 294,
+     "over": "48.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Manal Chauhan",
+     "score": 299,
+     "over": "48.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Yashbardhan Singh Chauhan",
+     "score": 299,
+     "over": "49.1"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 4,
+    "w": 15,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 42
+  },
+  {
+   "team": "United Arab Emirates Under-19s",
+   "runs": 239,
+   "wickets": 10,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Ayaan Misbah",
+     "dismissal": "b Kavya Paresh Patel",
+     "runs": 27,
+     "balls": 53,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Zainullah Rahmani",
+     "dismissal": "c A Rajput b Mohit Ulva",
+     "runs": 16,
+     "balls": 28,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Yayin Rai",
+     "dismissal": "c VK Vineeth b Y S Chauhan",
+     "runs": 29,
+     "balls": 44,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Ahmed Khudada",
+     "dismissal": "b I Sood",
+     "runs": 74,
+     "balls": 74,
+     "fours": 6,
+     "sixes": 3
+    },
+    {
+     "name": "Mohamed Nafees",
+     "dismissal": "c & b A Rajput",
+     "runs": 14,
+     "balls": 32,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Bilal Khan",
+     "dismissal": "c Manal Chauhan b A Savsani",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Uddish Suri",
+     "dismissal": "c Y S Chauhan b Manal Chauhan",
+     "runs": 13,
+     "balls": 25,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Noorullah Ayobi",
+     "dismissal": "c & b I Sood",
+     "runs": 39,
+     "balls": 25,
+     "fours": 1,
+     "sixes": 4
+    },
+    {
+     "name": "Muhammad Saad",
+     "dismissal": "c A Rajput b I Sood",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naseem Khan",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hadayatullah Khan",
+     "dismissal": "b I Sood",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ishan Sood",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 4,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Mohit Ulva",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Manal Chauhan",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kavya Paresh Patel",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Yashbardhan Singh Chauhan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aryan Savsani",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Arjun Rajput",
+     "overs": "6",
+     "maidens": 2,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Zainullah Rahmani",
+     "score": 36,
+     "over": "7.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ayaan Misbah",
+     "score": 61,
+     "over": "17.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Yayin Rai",
+     "score": 86,
+     "over": "23.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mohamed Nafees",
+     "score": 116,
+     "over": "31.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Bilal Khan",
+     "score": 117,
+     "over": "32.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Uddish Suri",
+     "score": 141,
+     "over": "38.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Noorullah Ayobi",
+     "score": 231,
+     "over": "47.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Ahmed Khudada",
+     "score": 232,
+     "over": "47.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Muhammad Saad",
+     "score": 239,
+     "over": "49.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Hadayatullah Khan",
+     "score": 239,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 10,
+    "w": 10,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "India Under-19s won by 70 runs",
+ "winner": "India Under-19s"
+}
