@@ -1,0 +1,112 @@
+{
+  "id": "bk-v-pa-t20-kirtipur-2026-11-12",
+  "title": "Biratnagar Kings v Pokhara Avengers",
+  "date": "2026-11-12",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League · 22nd Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "tribhuvan university international cricket ground",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Biratnagar Kings",
+      "short": "BK",
+      "players": [
+        "Imran Sheikh",
+        "Lokesh Bam",
+        "Shehan Jayasuriya",
+        "Angelo Mathews",
+        "Andre Russell",
+        "Shubham Ranjane",
+        "Basir Ahamad",
+        "Narayan Joshi",
+        "Rupesh Singh",
+        "Sandeep Lamichhane",
+        "Aprajit Poudel"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sandeep Lamichhane",
+      "squad": [
+        "Imran Sheikh",
+        "Lokesh Bam",
+        "Shehan Jayasuriya",
+        "Angelo Mathews",
+        "Andre Russell",
+        "Shubham Ranjane",
+        "Basir Ahamad",
+        "Narayan Joshi",
+        "Rupesh Singh",
+        "Sandeep Lamichhane",
+        "Aprajit Poudel"
+      ]
+    },
+    {
+      "name": "Pokhara Avengers",
+      "short": "PA",
+      "players": [
+        "Arjun Kumal",
+        "Arjun Gharti",
+        "Bibek Magar",
+        "Bipin Khatri",
+        "Chamika Karunaratne",
+        "Dhananjaya Lakshan",
+        "Kiran Thagunna",
+        "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sunny BK",
+        "Yuvraj Samra"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Kushal Bhurtel",
+      "squad": [
+        "Arjun Kumal",
+        "Arjun Gharti",
+        "Bibek Magar",
+        "Bipin Khatri",
+        "Chamika Karunaratne",
+        "Dhananjaya Lakshan",
+        "Kiran Thagunna",
+        "Kushal Bhurtel",
+        "Mahedi Hasan",
+        "Sunny BK",
+        "Yuvraj Samra"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41344,
+    "url": "https://khelnow.com/live-cricket-score/biratnagar-kings-vs-pokhara-avengers-nepal-premier-league-12th-november-2026-41344",
+    "auto": true,
+    "xis": false
+  }
+}
