@@ -12,7 +12,7 @@
   "city": "Al Amarat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Arab Emirates Under-19s won the toss and bowl first.",
   "teams": [
     {
       "name": "India Under-19s",
@@ -21,12 +21,12 @@
         "Aaryavir Sehwag",
         "Anvay Dravid",
         "Arjun Rajput",
+        "Aryan Savsani",
         "Ishan Sood",
         "Kavya Paresh Patel",
         "Lakshya Rajesh Raichandani",
         "Manal Chauhan",
         "Mohit Ulva",
-        "Yashveer Goud",
         "VK Vineeth",
         "Yashbardhan Singh Chauhan"
       ],
@@ -34,12 +34,12 @@
         "BAT",
         "WK",
         "AR",
+        "BOWL",
         "BAT",
         "BOWL",
         "BAT",
         "AR",
         "BAT",
-        "AR",
         "BAT",
         "AR"
       ],
@@ -64,13 +64,13 @@
       "players": [
         "Ahmed Khudada",
         "Ayaan Misbah",
+        "Bilal Khan",
+        "Hadayatullah Khan",
         "Mohamed Nafees",
+        "Muhammad Saad",
         "Naseem Khan",
-        "Muhammad Ahmed",
         "Noorullah Ayobi",
-        "Omar Tauqir",
         "Uddish Suri",
-        "Umar Faisal",
         "Yayin Rai",
         "Zainullah Rahmani"
       ],
@@ -78,12 +78,12 @@
         "AR",
         "AR",
         "BAT",
-        "AR",
+        "BAT",
+        "BAT",
         "WK",
         "AR",
-        "BOWL",
-        "BOWL",
         "AR",
+        "BOWL",
         "BAT",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41656,
     "url": "https://khelnow.com/live-cricket-score/india-under-19s-vs-united-arab-emirates-under-19s-acc-men's-u19-asia-cup-10th-november-2026-41656",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
