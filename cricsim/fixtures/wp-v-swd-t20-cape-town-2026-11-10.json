@@ -12,7 +12,7 @@
   "city": "Cape Town",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Western Province won the toss and bowl first.",
   "teams": [
     {
       "name": "Western Province",
@@ -20,28 +20,28 @@
       "players": [
         "Jiveshan Pillay",
         "Kashief Joseph",
-        "Kyle Verreynne",
         "Daniel Smith",
-        "Valentine Kitime",
         "George Linde",
+        "Mihlali Mpongwana",
         "Oliver Whitehead",
+        "Josh Breed",
         "Sinalo Gobeni",
-        "Joshua van Heerden",
         "Tshepo Moreki",
-        "Dane Paterson"
+        "Dane Paterson",
+        "Kyle Verreynne"
       ],
       "roles": [
         "BAT",
         "BOWL",
-        "BAT",
         "WK",
-        "BAT",
         "AR",
         "AR",
         "AR",
-        "BAT",
         "BOWL",
-        "BOWL"
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
       ],
       "captain": "George Linde",
       "squad": [
@@ -63,30 +63,30 @@
       "name": "South Western Districts",
       "short": "SWD",
       "players": [
-        "Yaseen Vallie",
         "Janneman Malan",
+        "Yaseen Vallie",
         "Slade Van Staden",
+        "Andile Phehlukwayo",
         "Bennie Hansen",
         "Leo Sadler",
         "Liam Alder",
         "Zack Momberg",
-        "Regan Rhode",
         "Banele Cele",
         "Liabona Malife",
-        "Andile Phehlukwayo"
+        "Regan Rhode"
       ],
       "roles": [
         "BAT",
         "BAT",
         "AR",
+        "AR",
         "WK",
         "AR",
         "BOWL",
         "AR",
-        "BOWL",
         "BAT",
         "AR",
-        "AR"
+        "BOWL"
       ],
       "captain": "Janneman Malan",
       "squad": [
@@ -108,6 +108,7 @@
     "kn": 41791,
     "url": "https://khelnow.com/live-cricket-score/western-province-vs-south-western-districts-csa-pro-t20-cup-10th-november-2026-41791",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

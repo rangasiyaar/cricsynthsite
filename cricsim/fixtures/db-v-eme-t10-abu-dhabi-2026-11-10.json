@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. UAE Bulls won the toss and bowl first.",
   "teams": [
     {
       "name": "UAE Bulls",
@@ -64,15 +64,15 @@
       "players": [
         "Alex Hales",
         "Kyle Mayers",
+        "Rovman Powell",
         "Shimron Hetmyer",
         "Kusal Perera",
-        "Rovman Powell",
         "Kona Srikar Bharat",
-        "Haider Razzaq",
         "Chris Green",
-        "Tymal Mills",
         "Trent Boult",
-        "Hardus Viljoen"
+        "Hardus Viljoen",
+        "Haider Razzaq",
+        "Zahir Khan"
       ],
       "roles": [
         "BAT",
@@ -82,9 +82,9 @@
         "BAT",
         "WK",
         "AR",
+        "BOWL",
+        "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
         "BOWL"
       ],
       "captain": "Rovman Powell",
@@ -107,6 +107,7 @@
     "kn": 41623,
     "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-emirates-eagles-abu-dhabi-t10-league-10th-november-2026-41623",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
