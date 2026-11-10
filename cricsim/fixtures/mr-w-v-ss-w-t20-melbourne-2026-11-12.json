@@ -1,0 +1,112 @@
+{
+  "id": "mr-w-v-ss-w-t20-melbourne-2026-11-12",
+  "title": "Melbourne Renegades Women v Sydney Sixers Women",
+  "date": "2026-11-12",
+  "start_time": "13:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 20th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "Junction Oval, Melbourne",
+  "venue_search": "junction oval",
+  "city": "Melbourne",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Melbourne Renegades Women",
+      "short": "MR W",
+      "players": [
+        "Olivia Porter",
+        "Hayley Matthews",
+        "Courtney Webb",
+        "Sophie Molineux",
+        "Tess Flintoff",
+        "Georgia Wareham",
+        "Nicole Faltum",
+        "Chloe Tryon",
+        "Deandra Dottin",
+        "Milly Illingworth",
+        "Tayla Vlaeminck"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sophie Molineux",
+      "squad": [
+        "Olivia Porter",
+        "Hayley Matthews",
+        "Courtney Webb",
+        "Sophie Molineux",
+        "Tess Flintoff",
+        "Georgia Wareham",
+        "Nicole Faltum",
+        "Chloe Tryon",
+        "Deandra Dottin",
+        "Milly Illingworth",
+        "Tayla Vlaeminck"
+      ]
+    },
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SS-W",
+      "players": [
+        "Sophia Dunkley",
+        "Eva Ragg",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Erin Burns",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Caoimhe Bray",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Frankie Nicklin"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ashleigh Gardner",
+      "squad": [
+        "Sophia Dunkley",
+        "Eva Ragg",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Erin Burns",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Caoimhe Bray",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Frankie Nicklin"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40320,
+    "url": "https://khelnow.com/live-cricket-score/melbourne-renegades-women-vs-sydney-sixers-women-women's-big-bash-league-12th-november-2026-40320",
+    "auto": true,
+    "xis": false
+  }
+}
