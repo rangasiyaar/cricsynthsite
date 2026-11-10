@@ -1,0 +1,112 @@
+{
+  "id": "pak-u19-v-ban-u19-odi-al-amarat-2026-11-12",
+  "title": "Pakistan Under-19s v Bangladesh Under-19s",
+  "date": "2026-11-12",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Semi Final 1",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 2), Al Amarat",
+  "venue_search": "al amerat cricket ground oman cricket (ministry turf 2)",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Under-19s",
+      "short": "PAK-U19",
+      "players": [
+        "Abdul Qadir",
+        "Ahmed Hussain",
+        "Hamza Zahoor",
+        "Hasnain Abbas Dar",
+        "Jahangir Bilal",
+        "Mohammad Huzaifa",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah",
+        "Usman Khan"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Farhan Yousaf",
+      "squad": [
+        "Abdul Qadir",
+        "Ahmed Hussain",
+        "Hamza Zahoor",
+        "Hasnain Abbas Dar",
+        "Jahangir Bilal",
+        "Mohammad Huzaifa",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah",
+        "Usman Khan"
+      ]
+    },
+    {
+      "name": "Bangladesh Under-19s",
+      "short": "BAN-U19",
+      "players": [
+        "Abdullah Al Muhi",
+        "Al Amin Hossen",
+        "Alamin Hossain",
+        "All Rafi",
+        "Farhan Sadik",
+        "Ahsan Al Mumin",
+        "Farid Hasan Faysal",
+        "Rubay Islam",
+        "Robiul Anik",
+        "Tafiul Alam Tamim",
+        "Jarif Siyam"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Farid Hasan Faysal",
+      "squad": [
+        "Abdullah Al Muhi",
+        "Al Amin Hossen",
+        "Alamin Hossain",
+        "All Rafi",
+        "Farhan Sadik",
+        "Ahsan Al Mumin",
+        "Farid Hasan Faysal",
+        "Rubay Islam",
+        "Robiul Anik",
+        "Tafiul Alam Tamim",
+        "Jarif Siyam"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41658,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-u19-asia-cup-12th-november-2026-41658",
+    "auto": true,
+    "xis": false
+  }
+}
