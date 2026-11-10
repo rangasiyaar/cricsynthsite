@@ -1,0 +1,395 @@
+{
+ "id": "wp-v-swd-t20-cape-town-2026-11-10",
+ "innings": [
+  {
+   "team": "South Western Districts",
+   "runs": 99,
+   "wickets": 10,
+   "overs": "19.3",
+   "batting": [
+    {
+     "name": "Yaseen Vallie",
+     "dismissal": "b Dane Paterson",
+     "runs": 18,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Janneman Malan",
+     "dismissal": "c GF Linde b J Breed",
+     "runs": 38,
+     "balls": 42,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Slade Van Staden",
+     "dismissal": "c J Pillay b Dane Paterson",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Andile Phehlukwayo",
+     "dismissal": "c & b S Gobeni",
+     "runs": 6,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bennie Hansen",
+     "dismissal": "c K Verreynne b TL Moreki",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Leo Sadler",
+     "dismissal": "b GF Linde",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Alder",
+     "dismissal": "c S Gobeni b TL Moreki",
+     "runs": 7,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Zack Momberg",
+     "dismissal": "c Daniel Smith b M Mpongwana",
+     "runs": 10,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Banele Cele",
+     "dismissal": "b O Whitehead",
+     "runs": 4,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liabona Malife",
+     "dismissal": "runout (S Gobeni)",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Regan Rhode",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "George Linde",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dane Paterson",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Josh Breed",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sinalo Gobeni",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 3,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tshepo Moreki",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Oliver Whitehead",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mihlali Mpongwana",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Yaseen Vallie",
+     "score": 20,
+     "over": "3.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Slade Van Staden",
+     "score": 37,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Andile Phehlukwayo",
+     "score": 47,
+     "over": "7.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bennie Hansen",
+     "score": 51,
+     "over": "9.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Leo Sadler",
+     "score": 56,
+     "over": "10.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Liam Alder",
+     "score": 65,
+     "over": "11.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Janneman Malan",
+     "score": 78,
+     "over": "15.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Zack Momberg",
+     "score": 90,
+     "over": "17.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Banele Cele",
+     "score": 91,
+     "over": "18.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Liabona Malife",
+     "score": 99,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 37
+  },
+  {
+   "team": "Western Province",
+   "runs": 105,
+   "wickets": 5,
+   "overs": "14.3",
+   "batting": [
+    {
+     "name": "Jiveshan Pillay",
+     "dismissal": "c R Rhode b L Alder",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kashief Joseph",
+     "dismissal": "c Zack Momberg b L Sadler",
+     "runs": 5,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kyle Verreynne",
+     "dismissal": "not out",
+     "runs": 35,
+     "balls": 34,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Daniel Smith",
+     "dismissal": "st Bennie Hansen b R Rhode",
+     "runs": 15,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "George Linde",
+     "dismissal": "c Y Vallie b Banele Cele",
+     "runs": 27,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Mihlali Mpongwana",
+     "dismissal": "c L Sadler b L Alder",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Oliver Whitehead",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Liam Alder",
+     "overs": "4.1",
+     "maidens": 1,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Leo Sadler",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Banele Cele",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Regan Rhode",
+     "overs": "3.2",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Liabona Malife",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Zack Momberg",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jiveshan Pillay",
+     "score": 14,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kashief Joseph",
+     "score": 14,
+     "over": "3.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Daniel Smith",
+     "score": 37,
+     "over": "6.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "George Linde",
+     "score": 86,
+     "over": "11.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Mihlali Mpongwana",
+     "score": 96,
+     "over": "13.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 6,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
