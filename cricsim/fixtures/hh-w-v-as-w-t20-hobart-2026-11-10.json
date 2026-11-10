@@ -12,16 +12,16 @@
   "city": "Hobart",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Adelaide Strikers Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Hobart Hurricanes Women",
       "short": "HH-W",
       "players": [
         "Lizelle Lee",
-        "Kate Pelle",
         "Chamari Athapaththu",
         "Rachel Trenaman",
+        "Nicola Carey",
         "Heather Graham",
         "Maddy Green",
         "Chinelle Henry",
@@ -32,9 +32,9 @@
       ],
       "roles": [
         "WK",
-        "BAT",
         "AR",
         "BAT",
+        "AR",
         "AR",
         "BAT",
         "AR",
@@ -43,7 +43,7 @@
         "BOWL",
         "BOWL"
       ],
-      "captain": "Heather Graham",
+      "captain": "Nicola Carey",
       "squad": [
         "Lizelle Lee",
         "Kate Pelle",
@@ -67,12 +67,12 @@
         "Laura Wolvaardt",
         "Tahlia McGrath",
         "Madeline Penna",
-        "Eleanor Larosa",
-        "Bridget Patterson",
+        "Ellie Johnston",
         "Amanda Wellington",
         "Sophie Ecclestone",
-        "Megan Schutt",
-        "Anesu Mushangwe"
+        "Eleanor Larosa",
+        "Ella Wilson",
+        "Megan Schutt"
       ],
       "roles": [
         "BAT",
@@ -80,10 +80,10 @@
         "BAT",
         "AR",
         "BAT",
-        "AR",
         "WK",
         "BOWL",
         "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 40317,
     "url": "https://khelnow.com/live-cricket-score/hobart-hurricanes-women-vs-adelaide-strikers-women-women's-big-bash-league-10th-november-2026-40317",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
