@@ -1,0 +1,432 @@
+{
+ "id": "pak-u19-v-nep-u19-odi-al-amarat-2026-11-10",
+ "innings": [
+  {
+   "team": "Pakistan Under-19s",
+   "runs": 275,
+   "wickets": 7,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Usman Khan",
+     "dismissal": "c R Chand b B P Sharma",
+     "runs": 19,
+     "balls": 34,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jahangir Bilal",
+     "dismissal": "c R Chand b S Bhatt",
+     "runs": 22,
+     "balls": 49,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Abdul Qadir",
+     "dismissal": "b B P Sharma",
+     "runs": 6,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Farhan Yousaf",
+     "dismissal": "c B P Sharma b S Rawal",
+     "runs": 74,
+     "balls": 95,
+     "fours": 6,
+     "sixes": 3
+    },
+    {
+     "name": "Ahmed Hussain",
+     "dismissal": "c B P Sharma b S Rawal",
+     "runs": 89,
+     "balls": 73,
+     "fours": 7,
+     "sixes": 2
+    },
+    {
+     "name": "Hasnain Abbas Dar",
+     "dismissal": "b B P Sharma",
+     "runs": 25,
+     "balls": 23,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Hamza Zahoor",
+     "dismissal": "b A Yadav",
+     "runs": 11,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Sayyam",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rizwanullah",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sushil Rawal",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Abhay Yadav",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Bipin Prasad Sharma",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 58,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Darsh Sonar",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rohit Chand",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Suryanshu Koirala",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Usman Khan",
+     "score": 45,
+     "over": "12.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jahangir Bilal",
+     "score": 57,
+     "over": "15.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Abdul Qadir",
+     "score": 64,
+     "over": "18.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Farhan Yousaf",
+     "score": 199,
+     "over": "40.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ahmed Hussain",
+     "score": 256,
+     "over": "47.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Hasnain Abbas Dar",
+     "score": 264,
+     "over": "48.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hamza Zahoor",
+     "score": 270,
+     "over": "49.3"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 7,
+    "w": 11,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 38
+  },
+  {
+   "team": "Nepal Under-19s",
+   "runs": 174,
+   "wickets": 10,
+   "overs": "43.4",
+   "batting": [
+    {
+     "name": "Niraj Kumar Yadav",
+     "dismissal": "st H Zahoor b A Hussain",
+     "runs": 29,
+     "balls": 59,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Sohail Kunwar",
+     "dismissal": "lbw b A Hussain",
+     "runs": 14,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Suryanshu Koirala",
+     "dismissal": "c Usman Khan b J Bilal",
+     "runs": 22,
+     "balls": 50,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rohit Chand",
+     "dismissal": "c H Zahoor b Rizwanullah",
+     "runs": 37,
+     "balls": 54,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Darsh Sonar",
+     "dismissal": "c H Abbas Dar b A Hussain",
+     "runs": 20,
+     "balls": 30,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Aashish Luhar",
+     "dismissal": "lbw b Mohammad Huzaifa",
+     "runs": 6,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Roshan Shahi",
+     "dismissal": "lbw b A Hussain",
+     "runs": 7,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sachin Bhatt",
+     "dismissal": "c H Abbas Dar b Mohammad Huzaifa",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhay Yadav",
+     "dismissal": "c Usman Khan b M Sayyam",
+     "runs": 23,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Bipin Prasad Sharma",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sushil Rawal",
+     "dismissal": "b M Sayyam",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammad Sayyam",
+     "overs": "5.4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Hasnain Abbas Dar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rizwanullah",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Niqab Shafiq",
+     "overs": "7",
+     "maidens": 2,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ahmed Hussain",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 35,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Mohammad Huzaifa",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jahangir Bilal",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sohail Kunwar",
+     "score": 48,
+     "over": "10.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Niraj Kumar Yadav",
+     "score": 60,
+     "over": "16.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Suryanshu Koirala",
+     "score": 104,
+     "over": "26.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Darsh Sonar",
+     "score": 137,
+     "over": "34.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rohit Chand",
+     "score": 141,
+     "over": "35.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aashish Luhar",
+     "score": 146,
+     "over": "37.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sachin Bhatt",
+     "score": 150,
+     "over": "39.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Roshan Shahi",
+     "score": 156,
+     "over": "40.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Abhay Yadav",
+     "score": 174,
+     "over": "43.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sushil Rawal",
+     "score": 174,
+     "over": "43.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 15,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
