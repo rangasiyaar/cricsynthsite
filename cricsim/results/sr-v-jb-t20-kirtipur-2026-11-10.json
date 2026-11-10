@@ -1,0 +1,451 @@
+{
+ "id": "sr-v-jb-t20-kirtipur-2026-11-10",
+ "innings": [
+  {
+   "team": "Sudurpaschim Royals",
+   "runs": 120,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Saif Zaib",
+     "dismissal": "b R Mahesh Yadav",
+     "runs": 10,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Binod Bhandari",
+     "dismissal": "runout (L Rajbanshi)",
+     "runs": 10,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Brandon McMullen",
+     "dismissal": "b HT Tector",
+     "runs": 33,
+     "balls": 23,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Ishan Pandey",
+     "dismissal": "b HM Singh",
+     "runs": 3,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "dismissal": "c & b AD Mahata",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tharindu Ratnayake",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Aarif Sheikh",
+     "dismissal": "c A Kumar Sah b A Tiwari",
+     "runs": 11,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Scott Kuggeleijn",
+     "dismissal": "c Bishal Patel b HM Singh",
+     "runs": 6,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Anil Kharel",
+     "dismissal": "c T R Das b HM Singh",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hemant Dhami",
+     "dismissal": "b HM Singh",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhinash Bohara",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lalit Rajbanshi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Harry Tector",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rahul Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Harmeet Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ryan Burl",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Aaditya Mahata",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abhisekh Tiwari",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Binod Bhandari",
+     "score": 22,
+     "over": "3.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Saif Zaib",
+     "score": 35,
+     "over": "5.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ishan Pandey",
+     "score": 55,
+     "over": "8.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Dipendra Singh Airee",
+     "score": 56,
+     "over": "9.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Brandon McMullen",
+     "score": 70,
+     "over": "11.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aarif Sheikh",
+     "score": 91,
+     "over": "15.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Scott Kuggeleijn",
+     "score": 98,
+     "over": "16.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Anil Kharel",
+     "score": 107,
+     "over": "18.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Hemant Dhami",
+     "score": 107,
+     "over": "18.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 4,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  },
+  {
+   "team": "Janakpur Bolts",
+   "runs": 93,
+   "wickets": 10,
+   "overs": "19.5",
+   "batting": [
+    {
+     "name": "Anil Kumar Sah",
+     "dismissal": "c Binod Bhandari b SC Kuggeleijn",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aaditya Mahata",
+     "dismissal": "c A Kharel b H Dhami",
+     "runs": 10,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Trit Raj Das",
+     "dismissal": "runout (Binod Bhandari / AR Sheikh)",
+     "runs": 21,
+     "balls": 29,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Harry Tector",
+     "dismissal": "c DS Airee b SC Kuggeleijn",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ryan Burl",
+     "dismissal": "b DS Airee",
+     "runs": 8,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bishal Patel",
+     "dismissal": "runout (Binod Bhandari / SA Zaib)",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jimmy Neesham",
+     "dismissal": "c B McMullen b SC Kuggeleijn",
+     "runs": 20,
+     "balls": 25,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Harmeet Singh",
+     "dismissal": "c empty & b KTH Ratnayake",
+     "runs": 4,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhisekh Tiwari",
+     "dismissal": "c SC Kuggeleijn b I Pandey",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalit Rajbanshi",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rahul Yadav",
+     "dismissal": "b A Kharel",
+     "runs": 11,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Scott Kuggeleijn",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hemant Dhami",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Tharindu Ratnayake",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dipendra Singh Airee",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anil Kharel",
+     "overs": "1.5",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ishan Pandey",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Anil Kumar Sah",
+     "score": 11,
+     "over": "2.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Aaditya Mahata",
+     "score": 15,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harry Tector",
+     "score": 25,
+     "over": "4.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ryan Burl",
+     "score": 42,
+     "over": "9.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Trit Raj Das",
+     "score": 46,
+     "over": "10.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Bishal Patel",
+     "score": 47,
+     "over": "11.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Harmeet Singh",
+     "score": 57,
+     "over": "13.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Abhisekh Tiwari",
+     "score": 61,
+     "over": "14.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jimmy Neesham",
+     "score": 82,
+     "over": "18.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Rahul Yadav",
+     "score": 93,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
