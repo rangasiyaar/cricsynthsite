@@ -12,38 +12,38 @@
   "city": "Christchurch",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Northern Districts won the toss and bat first.",
   "teams": [
     {
       "name": "Canterbury Kings",
       "short": "CK",
       "players": [
-        "Scott Janet",
+        "Rhys Mariu",
         "Chad Bowes",
-        "Harry Chamberlain",
-        "Mitchell Hay",
-        "Eathan Adam Holman",
+        "Matt Boyle",
+        "Leo Carter",
+        "Cole McConchie",
         "Jesse Frew",
         "Matt Rowe",
+        "Lachie Harper",
         "Angus McKenzie",
         "Raunaq Kapur",
-        "Michael Rae",
-        "Callum Samson"
+        "Michael Rae"
       ],
       "roles": [
-        "AR",
         "BAT",
         "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
         "WK",
-        "BAT",
-        "BAT",
         "BOWL",
+        "BAT",
         "BOWL",
         "AR",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Angus McKenzie",
+      "captain": "Cole McConchie",
       "squad": [
         "Scott Janet",
         "Chad Bowes",
@@ -68,10 +68,10 @@
         "Robert O Donnell",
         "Brett Hampton",
         "Xavier Bell",
-        "Kristian Clarke",
-        "Snehith Reddy",
         "Ben Pomare",
+        "Tim Pringle",
         "Joshua Brown",
+        "Flynn Morey",
         "James Naylor"
       ],
       "roles": [
@@ -81,10 +81,10 @@
         "BAT",
         "AR",
         "BAT",
+        "WK",
+        "AR",
         "BOWL",
         "AR",
-        "WK",
-        "BOWL",
         "BOWL"
       ],
       "captain": "Robert O Donnell",
@@ -107,6 +107,7 @@
     "kn": 40571,
     "url": "https://khelnow.com/live-cricket-score/canterbury-kings-vs-northern-districts-the-ford-trophy-11th-november-2026-40571",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
