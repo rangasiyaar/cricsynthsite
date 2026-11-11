@@ -12,38 +12,38 @@
   "city": "Basseterre",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. West Indies A won the toss and bat first.",
   "teams": [
     {
       "name": "West Indies A",
       "short": "WI-A",
       "players": [
-        "Alick Athanaze",
-        "Kirk McKenzie",
-        "Keacy Carty",
-        "Shaqkere Parris",
         "Jewel Andrew",
+        "Rivaldo Clarke",
+        "Alick Athanaze",
+        "Kevlon Anderson",
+        "Shaqkere Parris",
         "Jyd Goolie",
+        "Keacy Carty",
+        "Kirk McKenzie",
         "Sadrack Descartes",
-        "Jediah Blades",
-        "Vitel Lawes",
-        "Oshane Thomas",
-        "Jakeem Pollard"
+        "Shamar Springer",
+        "Micah Mckenzie"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
         "WK",
         "BAT",
+        "BAT",
         "AR",
-        "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Alick Athanaze",
+      "captain": "Rivaldo Clarke",
       "squad": [
         "Alick Athanaze",
         "Kirk McKenzie",
@@ -66,23 +66,23 @@
         "Ben McKinney",
         "Rehan Ahmed",
         "Dan Lawrence",
-        "James Coles",
         "James Rew",
-        "Jack Haynes",
+        "Ben Mayes",
+        "Ekansh Singh",
+        "Liam Patterson-White",
         "Adam Finch",
         "Mason Crane",
-        "Naavya Sharma",
-        "Eddie Jack"
+        "Naavya Sharma"
       ],
       "roles": [
         "WK",
         "BAT",
         "AR",
         "AR",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
-        "BAT",
-        "BAT",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41771,
     "url": "https://khelnow.com/live-cricket-score/west-indies-a-vs-england-lions-england-lions-tour-of-west-indies-11th-november-2026-41771",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

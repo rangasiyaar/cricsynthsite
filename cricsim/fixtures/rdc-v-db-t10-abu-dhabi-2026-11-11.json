@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Royal Desert Champions won the toss and bowl first.",
   "teams": [
     {
       "name": "Royal Desert Champions",
@@ -20,25 +20,25 @@
       "players": [
         "Phil Salt",
         "Muhammad Waseem",
+        "Brandon King",
         "Nicholas Pooran",
         "Sherfane Rutherford",
-        "Janith Liyanage",
-        "Ali Naseer",
+        "Gulbadin Naib",
         "Keemo Paul",
+        "Ali Naseer",
         "Chris Jordan",
-        "Maheesh Theekshana",
-        "Dushmantha Chameera",
-        "Luke Wood"
+        "Naseem Shah",
+        "Maheesh Theekshana"
       ],
       "roles": [
         "WK",
         "BAT",
         "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "AR",
         "AR",
-        "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -64,25 +64,25 @@
       "players": [
         "Andre Fletcher",
         "Aneurin Donald",
-        "Khawaja Nafay",
+        "Nuwan Thushara",
         "Shadab Khan",
         "Kieron Pollard",
+        "Khawaja Nafay",
         "Romario Shepherd",
         "Sunil Narine",
-        "Tahir Zaman",
         "Mohammad Amir",
-        "Mohammad Wasim Jr",
+        "Tahir Zaman",
         "Muhammad Rohid Khan"
       ],
       "roles": [
         "WK",
         "BAT",
+        "BOWL",
+        "AR",
+        "AR",
         "BAT",
         "AR",
         "AR",
-        "AR",
-        "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41624,
     "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-uae-bulls-abu-dhabi-t10-league-11th-november-2026-41624",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
