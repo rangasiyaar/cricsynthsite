@@ -1,0 +1,112 @@
+{
+  "id": "ara-v-db-t10-abu-dhabi-2026-11-13",
+  "title": "Arabian Aces v UAE Bulls",
+  "date": "2026-11-13",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 15th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Arabian Aces",
+      "short": "ARA",
+      "players": [
+        "Moeen Ali",
+        "Liam Livingstone",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Tom Kohler-Cadmore",
+        "Muhammad Arfan",
+        "Richard Gleeson",
+        "Sam Billings",
+        "Paul Walter",
+        "Alzarri Joseph",
+        "Salman Irshad"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Moeen Ali",
+      "squad": [
+        "Moeen Ali",
+        "Liam Livingstone",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Tom Kohler-Cadmore",
+        "Muhammad Arfan",
+        "Richard Gleeson",
+        "Sam Billings",
+        "Paul Walter",
+        "Alzarri Joseph",
+        "Salman Irshad"
+      ]
+    },
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Nuwan Thushara",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Khawaja Nafay",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Tahir Zaman",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Nuwan Thushara",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Khawaja Nafay",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Tahir Zaman",
+        "Muhammad Rohid Khan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41628,
+    "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-uae-bulls-abu-dhabi-t10-league-13th-november-2026-41628",
+    "auto": true,
+    "xis": false
+  }
+}
