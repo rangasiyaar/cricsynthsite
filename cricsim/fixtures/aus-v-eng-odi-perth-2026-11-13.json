@@ -1,0 +1,111 @@
+{
+  "id": "aus-v-eng-odi-perth-2026-11-13",
+  "title": "Australia v England",
+  "date": "2026-11-13",
+  "start_time": "09:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "England tour of Australia · 1st ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Perth Stadium, Perth",
+  "venue_search": "perth stadium",
+  "city": "Perth",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Australia",
+      "short": "AUS",
+      "players": [
+        "Travis Head",
+        "Matt Renshaw",
+        "Marnus Labuschagne",
+        "Cameron Green",
+        "Josh Inglis",
+        "Alex Carey",
+        "Cooper Connolly",
+        "Pat Cummins",
+        "Mitchell Starc",
+        "Nathan Lyon",
+        "Josh Hazlewood"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Pat Cummins",
+      "squad": [
+        "Travis Head",
+        "Matt Renshaw",
+        "Marnus Labuschagne",
+        "Cameron Green",
+        "Josh Inglis",
+        "Alex Carey",
+        "Cooper Connolly",
+        "Pat Cummins",
+        "Mitchell Starc",
+        "Nathan Lyon",
+        "Josh Hazlewood"
+      ]
+    },
+    {
+      "name": "England",
+      "short": "ENG",
+      "players": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Sam Curran",
+        "Jordan Cox",
+        "Will Jacks",
+        "Jamie Overton",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Jofra Archer"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "squad": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Sam Curran",
+        "Jordan Cox",
+        "Will Jacks",
+        "Jamie Overton",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Jofra Archer"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 38642,
+    "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-13th-november-2026-38642",
+    "auto": true,
+    "xis": false
+  }
+}
