@@ -12,34 +12,34 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Arabian Aces won the toss and bowl first.",
   "teams": [
     {
       "name": "Arabian Aces",
       "short": "ARA",
       "players": [
-        "Moeen Ali",
+        "Tom Kohler-Cadmore",
         "Liam Livingstone",
+        "Paul Walter",
+        "Moeen Ali",
+        "Sam Billings",
         "Andre Russell",
         "Alishan Sharafu",
-        "Tom Kohler-Cadmore",
-        "Muhammad Arfan",
-        "Richard Gleeson",
-        "Sam Billings",
-        "Paul Walter",
         "Alzarri Joseph",
+        "Richard Gleeson",
+        "Muhammad Arfan",
         "Salman Irshad"
       ],
       "roles": [
-        "AR",
-        "AR",
-        "AR",
-        "AR",
         "WK",
-        "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
+        "AR",
         "BAT",
         "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
         "BOWL",
         "BOWL"
       ],
@@ -62,30 +62,30 @@
       "name": "Yas Lions",
       "short": "YAL",
       "players": [
-        "Andries Gous",
         "James Vince",
-        "Dasun Shanaka",
+        "Andries Gous",
+        "Fazalhaq Farooqi",
+        "Akeal Hosein",
         "Karim Janat",
+        "Khuzaima Bin Tanvir",
         "Jason Holder",
+        "Dasun Shanaka",
         "Tom Moores",
         "Ansh Tandon",
-        "David Willey",
-        "Khuzaima Bin Tanvir",
-        "Akeal Hosein",
-        "Fazalhaq Farooqi"
+        "David Willey"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
         "WK",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
-        "BAT",
-        "BAT",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Jason Holder",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41625,
     "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-yas-lions-abu-dhabi-t10-league-11th-november-2026-41625",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
