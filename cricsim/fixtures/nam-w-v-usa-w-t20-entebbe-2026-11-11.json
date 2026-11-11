@@ -12,7 +12,7 @@
   "city": "Entebbe",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United States of America Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Namibia Women",
@@ -22,26 +22,26 @@
         "Edelle Van Zyl",
         "Eveleen Kejarukua",
         "Kayleen Green",
-        "Mezerly Gorases",
         "Mekelaye Mwatile",
+        "Mezerly Gorases",
         "Naomi Benjamin",
         "Sune Wittmann",
-        "Wilka Mwatile",
         "Sylvia Shihepo",
-        "Victoria Hamunyela"
+        "Victoria Hamunyela",
+        "Wilka Mwatile"
       ],
       "roles": [
         "AR",
         "BAT",
         "BOWL",
         "AR",
-        "WK",
         "AR",
+        "WK",
         "BOWL",
         "BAT",
-        "AR",
         "BAT",
-        "BOWL"
+        "BOWL",
+        "AR"
       ],
       "captain": "Sune Wittmann",
       "squad": [
@@ -65,10 +65,10 @@
         "Aditi Chudasama",
         "Chetna Pagydyala",
         "Ella Claridge",
-        "Gargi Bhogle",
+        "Geetika Kodali",
         "Isani Vaghela",
+        "Jivana Aras",
         "Lekha Shetty",
-        "Maahi Madhavan",
         "Nikhar Doshi",
         "Ritu Singh",
         "Sainavi Kamabalapalli",
@@ -78,7 +78,7 @@
         "AR",
         "BAT",
         "WK",
-        "BAT",
+        "BOWL",
         "BOWL",
         "AR",
         "AR",
@@ -107,6 +107,7 @@
     "kn": 41783,
     "url": "https://khelnow.com/live-cricket-score/namibia-women-vs-united-states-of-america-women-women's-victoria-t20i-series-11th-november-2026-41783",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
