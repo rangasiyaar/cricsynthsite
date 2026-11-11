@@ -1,0 +1,112 @@
+{
+  "id": "kg-v-sr-t20-kirtipur-2026-11-13",
+  "title": "Kathmandu Gorkhas v Sudurpaschim Royals",
+  "date": "2026-11-13",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League · 24th Match",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "tribhuvan university international cricket ground",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kathmandu Gorkhas",
+      "short": "KG",
+      "players": [
+        "Bhim Sharki",
+        "David Warner",
+        "Jahandad Khan",
+        "KC Karan",
+        "Sahan Arachchige",
+        "Sahil Patel",
+        "Santosh Yadav",
+        "Rashid Khan",
+        "William Bosisto",
+        "Aadil Ansari",
+        "Ganesh Gautam"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "KC Karan",
+      "squad": [
+        "Bhim Sharki",
+        "David Warner",
+        "Jahandad Khan",
+        "KC Karan",
+        "Sahan Arachchige",
+        "Sahil Patel",
+        "Santosh Yadav",
+        "Rashid Khan",
+        "William Bosisto",
+        "Aadil Ansari",
+        "Ganesh Gautam"
+      ]
+    },
+    {
+      "name": "Sudurpaschim Royals",
+      "short": "SR",
+      "players": [
+        "Aarif Sheikh",
+        "Abhinash Bohara",
+        "Anil Kharel",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Hemant Dhami",
+        "Ishan Pandey",
+        "Saif Zaib",
+        "Scott Kuggeleijn",
+        "Tharindu Ratnayake"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Dipendra Singh Airee",
+      "squad": [
+        "Aarif Sheikh",
+        "Abhinash Bohara",
+        "Anil Kharel",
+        "Binod Bhandari",
+        "Brandon McMullen",
+        "Dipendra Singh Airee",
+        "Hemant Dhami",
+        "Ishan Pandey",
+        "Saif Zaib",
+        "Scott Kuggeleijn",
+        "Tharindu Ratnayake"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41346,
+    "url": "https://khelnow.com/live-cricket-score/kathmandu-gorkhas-vs-sudurpaschim-royals-nepal-premier-league-13th-november-2026-41346",
+    "auto": true,
+    "xis": false
+  }
+}
