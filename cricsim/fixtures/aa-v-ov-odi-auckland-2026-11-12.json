@@ -12,14 +12,14 @@
   "city": "Auckland",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Auckland Aces won the toss and bat first.",
   "teams": [
     {
       "name": "Auckland Aces",
       "short": "AA",
       "players": [
         "Sean Solia",
-        "Luke Watson",
+        "Dale Phillips",
         "Cam Fletcher",
         "Bevon Jacobs",
         "Lachlan Stackpole",
@@ -32,7 +32,7 @@
       ],
       "roles": [
         "BAT",
-        "BOWL",
+        "BAT",
         "WK",
         "BAT",
         "BAT",
@@ -66,9 +66,9 @@
         "Jacob Cumming",
         "Thorn Parkes",
         "Luke Georgeson",
+        "Max Chu",
         "Tom Jones",
         "Jamal Todd",
-        "Troy Johnson",
         "Ben Lockrose",
         "Zac Cumming",
         "Thomas O'Connor",
@@ -79,9 +79,9 @@
         "BOWL",
         "BOWL",
         "AR",
+        "WK",
         "BAT",
         "BAT",
-        "AR",
         "BOWL",
         "AR",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 40565,
     "url": "https://khelnow.com/live-cricket-score/auckland-aces-vs-otago-volts-the-ford-trophy-11th-november-2026-40565",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
