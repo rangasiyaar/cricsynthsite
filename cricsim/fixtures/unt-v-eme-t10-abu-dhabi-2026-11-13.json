@@ -1,0 +1,112 @@
+{
+  "id": "unt-v-eme-t10-abu-dhabi-2026-11-13",
+  "title": "United Tigers v Emirates Eagles",
+  "date": "2026-11-13",
+  "start_time": "17:00",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 13th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Usman Tariq",
+        "Joe Clarke",
+        "Sahibzada Farhan",
+        "Avishka Fernando",
+        "Abbas Afridi",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Zeeshan Naseer"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Fakhar Zaman",
+      "squad": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Usman Tariq",
+        "Joe Clarke",
+        "Sahibzada Farhan",
+        "Avishka Fernando",
+        "Abbas Afridi",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Zeeshan Naseer"
+      ]
+    },
+    {
+      "name": "Emirates Eagles",
+      "short": "EME",
+      "players": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Kona Srikar Bharat",
+        "Chris Green",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq",
+        "Zahir Khan"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Rovman Powell",
+      "squad": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "Kona Srikar Bharat",
+        "Chris Green",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq",
+        "Zahir Khan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41626,
+    "url": "https://khelnow.com/live-cricket-score/united-tigers-vs-emirates-eagles-abu-dhabi-t10-league-13th-november-2026-41626",
+    "auto": true,
+    "xis": false
+  }
+}
