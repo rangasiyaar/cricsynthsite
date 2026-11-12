@@ -1,0 +1,367 @@
+{
+ "id": "png-w-v-sco-w-t20-ajman-2026-11-12",
+ "innings": [
+  {
+   "team": "Papua New Guinea Women",
+   "runs": 93,
+   "wickets": 10,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Hollan Doriga",
+     "dismissal": "c KE Bryce b AM Maqsood",
+     "runs": 9,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Naoani Vare",
+     "dismissal": "runout (SJ Bryce / AM Maqsood)",
+     "runs": 4,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Brenda Tau",
+     "dismissal": "lbw b KL Gordon",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sibona Jimmy",
+     "dismissal": "c D Carter b K Fraser",
+     "runs": 8,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tanya Ruma",
+     "dismissal": "b KL Gordon",
+     "runs": 22,
+     "balls": 31,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Pauke Siaka",
+     "dismissal": "c P Sproul b K Fraser",
+     "runs": 24,
+     "balls": 28,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Henao Thomas",
+     "dismissal": "c AM Maqsood b PA Chatterji",
+     "runs": 9,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hane Tau",
+     "dismissal": "b K Fraser",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Geua Tom",
+     "dismissal": "c D Carter b KE Bryce",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dika Lohia",
+     "dismissal": "runout (SJ Bryce / K Fraser)",
+     "runs": 5,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Buruka Vicky",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kathryn Bryce",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hannah Rainey",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Katherine Fraser",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kirstie Gordon",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abtaha Maqsood",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Priyanaz Chatterji",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Naoani Vare",
+     "score": 10,
+     "over": "2.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Brenda Tau",
+     "score": 14,
+     "over": "4.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Hollan Doriga",
+     "score": 22,
+     "over": "6.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sibona Jimmy",
+     "score": 29,
+     "over": "7.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tanya Ruma",
+     "score": 73,
+     "over": "16.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Pauke Siaka",
+     "score": 77,
+     "over": "17.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hane Tau",
+     "score": 77,
+     "over": "17.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Geua Tom",
+     "score": 82,
+     "over": "18.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Dika Lohia",
+     "score": 88,
+     "over": "19.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Henao Thomas",
+     "score": 93,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 21
+  },
+  {
+   "team": "Scotland Women",
+   "runs": 95,
+   "wickets": 3,
+   "overs": "13.1",
+   "batting": [
+    {
+     "name": "Darcey Carter",
+     "dismissal": "b H Thomas",
+     "runs": 8,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Katherine Fraser",
+     "dismissal": "c H Doriga b P Siaka",
+     "runs": 45,
+     "balls": 29,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Kathryn Bryce",
+     "dismissal": "c N Vare b H Tau",
+     "runs": 14,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sarah Bryce",
+     "dismissal": "not out",
+     "runs": 12,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Pippa Sproul",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Geua Tom",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Buruka Vicky",
+     "overs": "1.1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henao Thomas",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sibona Jimmy",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hane Tau",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Pauke Siaka",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Dika Lohia",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Darcey Carter",
+     "score": 38,
+     "over": "4.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kathryn Bryce",
+     "score": 58,
+     "over": "7.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Katherine Fraser",
+     "score": 70,
+     "over": "8.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
