@@ -1,0 +1,112 @@
+{
+  "id": "pun-v-har-t20-tba-2026-11-14",
+  "title": "Punjab v Haryana",
+  "date": "2026-11-14",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 4th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Vihaan Malhotra",
+        "Prabhsimran Singh",
+        "Jashanpreet Singh Sidhu",
+        "Salil Arora",
+        "Ramandeep Singh",
+        "Harpreet Brar",
+        "Emanjot Singh Chahal",
+        "Uday Saharan",
+        "Sanvir Singh",
+        "Sukhdeep Singh Bajwa",
+        "Gursimran Singh"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Uday Saharan",
+      "squad": [
+        "Vihaan Malhotra",
+        "Prabhsimran Singh",
+        "Jashanpreet Singh Sidhu",
+        "Salil Arora",
+        "Ramandeep Singh",
+        "Harpreet Brar",
+        "Emanjot Singh Chahal",
+        "Uday Saharan",
+        "Sanvir Singh",
+        "Sukhdeep Singh Bajwa",
+        "Gursimran Singh"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Himanshu Rana",
+        "Nishant Sindhu",
+        "Dheeru Singh",
+        "Yashvardhan Dalal",
+        "Parth Vats",
+        "Kanishk Chouhan",
+        "Tanmay Baloda",
+        "Aman Kumar",
+        "Arsh Ranga",
+        "Ajit Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Himanshu Rana",
+        "Nishant Sindhu",
+        "Dheeru Singh",
+        "Yashvardhan Dalal",
+        "Parth Vats",
+        "Kanishk Chouhan",
+        "Tanmay Baloda",
+        "Aman Kumar",
+        "Arsh Ranga",
+        "Ajit Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41846,
+    "url": "https://khelnow.com/live-cricket-score/punjab-vs-haryana-syed-mushtaq-ali-trophy-elite-14th-november-2026-41846",
+    "auto": true,
+    "xis": false
+  }
+}

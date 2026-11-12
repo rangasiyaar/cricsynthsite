@@ -1,0 +1,112 @@
+{
+  "id": "maha-v-pdy-t20-tba-2026-11-14",
+  "title": "Maharashtra v Puducherry",
+  "date": "2026-11-14",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 3rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Maharashtra",
+      "short": "MAHA",
+      "players": [
+        "Prithvi Shaw",
+        "Siddhesh Veer",
+        "Ankit Bawne",
+        "Digvijay Patil",
+        "Sachin Dhas",
+        "Saurabh Nawale",
+        "Harshal Kate",
+        "Hitesh Walunj",
+        "Tanay Sanghvi",
+        "Rajvardhan  Hangargekar",
+        "Pradeep Dadhe"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Prithvi Shaw",
+      "squad": [
+        "Prithvi Shaw",
+        "Siddhesh Veer",
+        "Ankit Bawne",
+        "Digvijay Patil",
+        "Sachin Dhas",
+        "Saurabh Nawale",
+        "Harshal Kate",
+        "Hitesh Walunj",
+        "Tanay Sanghvi",
+        "Rajvardhan  Hangargekar",
+        "Pradeep Dadhe"
+      ]
+    },
+    {
+      "name": "Puducherry",
+      "short": "PDY",
+      "players": [
+        "Neyan Shyam Kangayan",
+        "Ritesh Gudge",
+        "Nikhil Gangta",
+        "Mohit Kale",
+        "Prasad Pawar",
+        "Tahir Bhat",
+        "Aman Khan",
+        "Sagar Trivedi",
+        "Sagar Udeshi",
+        "Ankit Sharma",
+        "Gaurav Yadav"
+      ],
+      "roles": [
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Neyan Shyam Kangayan",
+      "squad": [
+        "Neyan Shyam Kangayan",
+        "Ritesh Gudge",
+        "Nikhil Gangta",
+        "Mohit Kale",
+        "Prasad Pawar",
+        "Tahir Bhat",
+        "Aman Khan",
+        "Sagar Trivedi",
+        "Sagar Udeshi",
+        "Ankit Sharma",
+        "Gaurav Yadav"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41844,
+    "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-puducherry-syed-mushtaq-ali-trophy-elite-14th-november-2026-41844",
+    "auto": true,
+    "xis": false
+  }
+}
