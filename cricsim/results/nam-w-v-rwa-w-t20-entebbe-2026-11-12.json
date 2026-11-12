@@ -1,0 +1,411 @@
+{
+ "id": "nam-w-v-rwa-w-t20-entebbe-2026-11-12",
+ "innings": [
+  {
+   "team": "Namibia Women",
+   "runs": 58,
+   "wickets": 10,
+   "overs": "17",
+   "batting": [
+    {
+     "name": "Kayleen Green",
+     "dismissal": "b H Ishimwe",
+     "runs": 12,
+     "balls": 23,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mezerly Gorases",
+     "dismissal": "b DM Bimenyimana",
+     "runs": 3,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sune Wittmann",
+     "dismissal": "c S Niyomuhoza b R Uwimana",
+     "runs": 10,
+     "balls": 22,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mekelaye Mwatile",
+     "dismissal": "c M Uwase b DM Bimenyimana",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Wilka Mwatile",
+     "dismissal": "c M Uwase b R Uwimana",
+     "runs": 6,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jurriene Diergaardt",
+     "dismissal": "c R Irera b R Uwimana",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naomi Benjamin",
+     "dismissal": "b A Ikuzwe",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sylvia Shihepo",
+     "dismissal": "c H Ishimwe b B Murekatete",
+     "runs": 8,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Victoria Hamunyela",
+     "dismissal": "lbw b A Ikuzwe",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Eveleen Kejarukua",
+     "dismissal": "c S Niyomuhoza b A Ikuzwe",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Saima Tuhadeleni",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Belyse Murekatete",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rosine Irera",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Diane Marie Bimenyimana",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henriette Ishimwe",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ruth Uwimana",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Alice Ikuzwe",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 10,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Mezerly Gorases",
+     "score": 13,
+     "over": "4.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kayleen Green",
+     "score": 19,
+     "over": "5.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mekelaye Mwatile",
+     "score": 22,
+     "over": "6.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Wilka Mwatile",
+     "score": 34,
+     "over": "8.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jurriene Diergaardt",
+     "score": 42,
+     "over": "10.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Naomi Benjamin",
+     "score": 43,
+     "over": "11.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sune Wittmann",
+     "score": 49,
+     "over": "14.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Victoria Hamunyela",
+     "score": 52,
+     "over": "15.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Eveleen Kejarukua",
+     "score": 52,
+     "over": "15.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sylvia Shihepo",
+     "score": 58,
+     "over": "16.6"
+    }
+   ],
+   "extras": {
+    "b": 8,
+    "lb": 1,
+    "w": 0,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 21
+  },
+  {
+   "team": "Rwanda Women",
+   "runs": 59,
+   "wickets": 6,
+   "overs": "15.5",
+   "batting": [
+    {
+     "name": "Fanny Utagushimaninde",
+     "dismissal": "runout (M Gorases / W Mwatile)",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gisele Ishimwe",
+     "dismissal": "c S Shihepo b E Kejarukua",
+     "runs": 8,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Clarisse Uwase",
+     "dismissal": "b W Mwatile",
+     "runs": 8,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shakila Niyomuhoza",
+     "dismissal": "c S Wittmann b W Mwatile",
+     "runs": 6,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Merveille Uwase",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 30,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Diane Marie Bimenyimana",
+     "dismissal": "c & b V Hamunyela",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Henriette Ishimwe",
+     "dismissal": "c & b K Green",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alice Ikuzwe",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Wilka Mwatile",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Saima Tuhadeleni",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Victoria Hamunyela",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Eveleen Kejarukua",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jurriene Diergaardt",
+     "overs": "1.5",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mekelaye Mwatile",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kayleen Green",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 3,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Fanny Utagushimaninde",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Gisele Ishimwe",
+     "score": 16,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Shakila Niyomuhoza",
+     "score": 24,
+     "over": "6.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Clarisse Uwase",
+     "score": 27,
+     "over": "8.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Diane Marie Bimenyimana",
+     "score": 35,
+     "over": "10.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Henriette Ishimwe",
+     "score": 38,
+     "over": "11.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 5,
+    "nb": 0,
+    "p": 5
+   }
+  }
+ ],
+ "result": "Rwanda Women won",
+ "winner": "Rwanda Women"
+}
