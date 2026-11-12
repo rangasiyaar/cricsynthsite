@@ -12,7 +12,7 @@
   "city": "Melbourne",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sydney Sixers Women won the toss and bat first.",
   "teams": [
     {
       "name": "Melbourne Renegades Women",
@@ -63,28 +63,28 @@
       "short": "SS-W",
       "players": [
         "Sophia Dunkley",
-        "Eva Ragg",
         "Ellyse Perry",
         "Amelia Kerr",
-        "Erin Burns",
         "Ashleigh Gardner",
         "Alice Capsey",
-        "Caoimhe Bray",
+        "Eva Ragg",
+        "Erin Burns",
         "Lauren Cheatle",
         "Sarah Coyte",
+        "Caoimhe Bray",
         "Frankie Nicklin"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "AR",
         "AR",
         "AR",
         "AR",
         "WK",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Ashleigh Gardner",
@@ -107,6 +107,7 @@
     "kn": 40320,
     "url": "https://khelnow.com/live-cricket-score/melbourne-renegades-women-vs-sydney-sixers-women-women's-big-bash-league-12th-november-2026-40320",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
