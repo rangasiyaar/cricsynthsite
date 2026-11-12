@@ -12,38 +12,38 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Karnali Yaks won the toss and bat first.",
   "teams": [
     {
       "name": "Karnali Yaks",
       "short": "KY",
       "players": [
         "Ariful Islam",
+        "Bipin Sharma",
         "David Miller",
         "Deepak Dumre",
+        "Dipendra Rawat",
         "Gulshan Jha",
-        "Jishan Alam",
         "Mark Watt",
+        "Hussain Talat",
         "Nandan Yadav",
         "Pawan Sarraf",
-        "Sompal Kami",
-        "Surya Tamang",
-        "Yuvraj Khatri"
+        "Sompal Kami"
       ],
       "roles": [
         "BAT",
+        "AR",
         "BAT",
         "WK",
+        "BOWL",
         "AR",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
         "BOWL"
       ],
-      "captain": "Sompal Kami",
+      "captain": "David Miller",
       "squad": [
         "Ariful Islam",
         "David Miller",
@@ -62,30 +62,30 @@
       "name": "Lumbini Lions",
       "short": "LL",
       "players": [
-        "D'Arcy Short",
         "Aasif Sheikh",
-        "Rohit Kumar Paudel",
-        "Niroshan Dickwella",
-        "Grant Stewart",
+        "Abhishesh Gautam",
+        "D'Arcy Short",
         "Dilip Nath",
-        "Sundeep Jora",
-        "Sher Malla",
+        "Kishore Mahato",
+        "Niroshan Dickwella",
+        "Rohit Kumar Paudel",
         "Ruben Trumpelmann",
-        "Tilak Bhandari",
-        "Abhishesh Gautam"
+        "Shamim Hossain Patwari",
+        "Sher Malla",
+        "Sundeep Jora"
       ],
       "roles": [
+        "BAT",
+        "BOWL",
         "AR",
         "BAT",
-        "BAT",
+        "BOWL",
         "WK",
-        "AR",
         "BAT",
-        "BAT",
+        "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR",
+        "BAT"
       ],
       "captain": "Rohit Kumar Paudel",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41345,
     "url": "https://khelnow.com/live-cricket-score/karnali-yaks-vs-lumbini-lions-nepal-premier-league-12th-november-2026-41345",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
