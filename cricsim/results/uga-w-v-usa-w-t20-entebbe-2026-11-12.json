@@ -1,0 +1,396 @@
+{
+ "id": "uga-w-v-usa-w-t20-entebbe-2026-11-12",
+ "innings": [
+  {
+   "team": "Uganda Women",
+   "runs": 105,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Janet Mbabazi",
+     "dismissal": "lbw b L Shetty",
+     "runs": 2,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Stephani Nampiina",
+     "dismissal": "c Chetna Pagydyala b G Kodali",
+     "runs": 53,
+     "balls": 51,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Prosscovia Alako",
+     "dismissal": "c Ritu Singh b S Kamabalapalli",
+     "runs": 3,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rita Musamali",
+     "dismissal": "b G Kodali",
+     "runs": 22,
+     "balls": 28,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Malisa Ariokot",
+     "dismissal": "c S Kamabalapalli b A Chudasama",
+     "runs": 7,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "dismissal": "c I Vaghela b Ritu Singh",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Esther Iloku",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kevin Awino",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Geetika Kodali",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Taranum Chopra",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ritu Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lekha Shetty",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sainavi Kamabalapalli",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aditi Chudasama",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Janet Mbabazi",
+     "score": 23,
+     "over": "4.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prosscovia Alako",
+     "score": 36,
+     "over": "7.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Stephani Nampiina",
+     "score": 86,
+     "over": "16.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rita Musamali",
+     "score": 87,
+     "over": "16.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Immaculate Nakisuuyi",
+     "score": 88,
+     "over": "17.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Malisa Ariokot",
+     "score": 101,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 28
+  },
+  {
+   "team": "United States of America Women",
+   "runs": 91,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Chetna Pagydyala",
+     "dismissal": "c C Aweko b I Nakisuuyi",
+     "runs": 11,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sainavi Kamabalapalli",
+     "dismissal": "c & b A Akurut",
+     "runs": 25,
+     "balls": 31,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Isani Vaghela",
+     "dismissal": "st K Awino b J Mbabazi",
+     "runs": 5,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ella Claridge",
+     "dismissal": "runout (C Aweko / J Mbabazi)",
+     "runs": 24,
+     "balls": 27,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pooja Ganesh",
+     "dismissal": "b A Akurut",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nikhar Doshi",
+     "dismissal": "c & b A Akurut",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Taranum Chopra",
+     "dismissal": "st K Awino b J Mbabazi",
+     "runs": 4,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ritu Singh",
+     "dismissal": "c P Alako b J Mbabazi",
+     "runs": 6,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aditi Chudasama",
+     "dismissal": "c I Nakisuuyi b C Aweko",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Geetika Kodali",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lekha Shetty",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sarah Walaza",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Concylate Aweko",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Asumin Akurut",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Malisa Ariokot",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Immaculate Nakisuuyi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Janet Mbabazi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Chetna Pagydyala",
+     "score": 35,
+     "over": "5.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Isani Vaghela",
+     "score": 45,
+     "over": "8.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sainavi Kamabalapalli",
+     "score": 55,
+     "over": "9.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Pooja Ganesh",
+     "score": 55,
+     "over": "9.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Nikhar Doshi",
+     "score": 63,
+     "over": "11.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Taranum Chopra",
+     "score": 74,
+     "over": "14.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ritu Singh",
+     "score": 85,
+     "over": "17.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Ella Claridge",
+     "score": 88,
+     "over": "18.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Aditi Chudasama",
+     "score": 88,
+     "over": "18.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 10,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Uganda Women won",
+ "winner": "Uganda Women"
+}
