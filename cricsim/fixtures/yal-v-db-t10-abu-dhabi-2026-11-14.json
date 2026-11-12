@@ -1,0 +1,112 @@
+{
+  "id": "yal-v-db-t10-abu-dhabi-2026-11-14",
+  "title": "Yas Lions v UAE Bulls",
+  "date": "2026-11-14",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 18th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Yas Lions",
+      "short": "YAL",
+      "players": [
+        "James Vince",
+        "Andries Gous",
+        "Fazalhaq Farooqi",
+        "Akeal Hosein",
+        "Karim Janat",
+        "Khuzaima Bin Tanvir",
+        "Jason Holder",
+        "Dasun Shanaka",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "James Vince",
+        "Andries Gous",
+        "Fazalhaq Farooqi",
+        "Akeal Hosein",
+        "Karim Janat",
+        "Khuzaima Bin Tanvir",
+        "Jason Holder",
+        "Dasun Shanaka",
+        "Tom Moores",
+        "Ansh Tandon",
+        "David Willey"
+      ]
+    },
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Nuwan Thushara",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Khawaja Nafay",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Tahir Zaman",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Aneurin Donald",
+        "Nuwan Thushara",
+        "Shadab Khan",
+        "Kieron Pollard",
+        "Khawaja Nafay",
+        "Romario Shepherd",
+        "Sunil Narine",
+        "Mohammad Amir",
+        "Tahir Zaman",
+        "Muhammad Rohid Khan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41631,
+    "url": "https://khelnow.com/live-cricket-score/yas-lions-vs-uae-bulls-abu-dhabi-t10-league-14th-november-2026-41631",
+    "auto": true,
+    "xis": false
+  }
+}
