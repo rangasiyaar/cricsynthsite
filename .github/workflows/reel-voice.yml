@@ -18,12 +18,8 @@ jobs:
           from chatterbox.tts import ChatterboxTTS
           from faster_whisper import WhisperModel
           LINES = [
-            "Your cricket app is ready. Your stats aren't.",
-            "Skip months of number-crunching. Twenty-five analytics endpoints: every player, venue and match-up, already worked out.",
-            "Then look ahead. Twenty forecast endpoints: win chances, par scores, the toss call, a full fantasy eleven, before every covered match.",
-            "No designer? No problem. Eleven endpoints return graphics, ready to post.",
-            "Plug it into Claude or Chat G P T, and fans can just ask.",
-            "One key. Fifty-six endpoints. Free to start. Crick Synthesis.",
+            "Then look ahead: forecasts. Twenty endpoints. Win chances, par scores, the toss call, a full fantasy eleven, before every covered match.",
+            "Then look ahead. Forecasts: twenty endpoints. Win chances, par scores, the toss call, a full fantasy eleven, before every covered match.",
           ]
           TAKES = [(0.5, 0.5), (0.65, 0.45), (0.8, 0.4)]   # (emotion exaggeration, pacing cfg)
           tts = ChatterboxTTS.from_pretrained(device="cpu")
