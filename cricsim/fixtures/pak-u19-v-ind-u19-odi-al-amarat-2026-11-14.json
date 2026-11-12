@@ -1,0 +1,112 @@
+{
+  "id": "pak-u19-v-ind-u19-odi-al-amarat-2026-11-14",
+  "title": "Pakistan Under-19s v India Under-19s",
+  "date": "2026-11-14",
+  "start_time": "10:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's U19 Asia Cup · Final ",
+  "comp_key": "intl-international-OD",
+  "venue": "Al Amerat Cricket Ground Oman Cricket (Ministry Turf 2), Al Amarat",
+  "venue_search": "al amerat cricket ground oman cricket (ministry turf 2)",
+  "city": "Al Amarat",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Under-19s",
+      "short": "PAK-U19",
+      "players": [
+        "Hamza Zahoor",
+        "Abdul Qadir",
+        "Ali Raza",
+        "Ahmed Hussain",
+        "Hayam Khan",
+        "Hasnain Abbas Dar",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah",
+        "Usman Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Farhan Yousaf",
+      "squad": [
+        "Hamza Zahoor",
+        "Abdul Qadir",
+        "Ali Raza",
+        "Ahmed Hussain",
+        "Hayam Khan",
+        "Hasnain Abbas Dar",
+        "Mohammad Sayyam",
+        "Farhan Yousaf",
+        "Niqab Shafiq",
+        "Rizwanullah",
+        "Usman Khan"
+      ]
+    },
+    {
+      "name": "India Under-19s",
+      "short": "IND-U19",
+      "players": [
+        "Aaryavir Sehwag",
+        "Anvay Dravid",
+        "Arjun Rajput",
+        "Aryan Savsani",
+        "Ishan Sood",
+        "Kavya Paresh Patel",
+        "Lakshya Rajesh Raichandani",
+        "Manal Chauhan",
+        "Mohit Ulva",
+        "VK Vineeth",
+        "Yashbardhan Singh Chauhan"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Aaryavir Sehwag",
+      "squad": [
+        "Aaryavir Sehwag",
+        "Anvay Dravid",
+        "Arjun Rajput",
+        "Aryan Savsani",
+        "Ishan Sood",
+        "Kavya Paresh Patel",
+        "Lakshya Rajesh Raichandani",
+        "Manal Chauhan",
+        "Mohit Ulva",
+        "VK Vineeth",
+        "Yashbardhan Singh Chauhan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41660,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-u19-asia-cup-14th-november-2026-41660",
+    "auto": true,
+    "xis": false
+  }
+}
