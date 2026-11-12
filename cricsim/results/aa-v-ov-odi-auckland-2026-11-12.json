@@ -1,0 +1,393 @@
+{
+ "id": "aa-v-ov-odi-auckland-2026-11-12",
+ "innings": [
+  {
+   "team": "Auckland Aces",
+   "runs": 334,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Sean Solia",
+     "dismissal": "c MW Chu b T O'Connor",
+     "runs": 4,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Dale Phillips",
+     "dismissal": "c MW Chu b M Bacon",
+     "runs": 14,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Cam Fletcher",
+     "dismissal": "c J Todd b L Georgeson",
+     "runs": 9,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bevon Jacobs",
+     "dismissal": "not out",
+     "runs": 202,
+     "balls": 137,
+     "fours": 7,
+     "sixes": 21
+    },
+    {
+     "name": "Lachlan Stackpole",
+     "dismissal": "b J Todd",
+     "runs": 46,
+     "balls": 45,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Ryan Harrison",
+     "dismissal": "c JCT Boyle b BNJ Lockrose",
+     "runs": 32,
+     "balls": 39,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Siddesh Dixit",
+     "dismissal": "c J Cumming b L Georgeson",
+     "runs": 3,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jaskaran Sandhu",
+     "dismissal": "c J Todd b M Bacon",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Angus Olliver",
+     "dismissal": "c T Parkes b BNJ Lockrose",
+     "runs": 11,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Samrath Singh",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Thomas O'Connor",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 74,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Matthew Bacon",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Luke Georgeson",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Ben Lockrose",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 54,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Zac Cumming",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 75,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jamal Todd",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Jack Boyle",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sean Solia",
+     "score": 18,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Dale Phillips",
+     "score": 24,
+     "over": "5.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Cam Fletcher",
+     "score": 39,
+     "over": "11.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Lachlan Stackpole",
+     "score": 139,
+     "over": "27.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ryan Harrison",
+     "score": 233,
+     "over": "40.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Siddesh Dixit",
+     "score": 248,
+     "over": "43.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jaskaran Sandhu",
+     "score": 249,
+     "over": "44.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Angus Olliver",
+     "score": 275,
+     "over": "46.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 10,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 35
+  },
+  {
+   "team": "Otago Volts",
+   "runs": 338,
+   "wickets": 5,
+   "overs": "49.1",
+   "batting": [
+    {
+     "name": "Jack Boyle",
+     "dismissal": "c A Olliver b R Harrison",
+     "runs": 62,
+     "balls": 61,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Jacob Cumming",
+     "dismissal": "c J Sandhu b S Singh",
+     "runs": 43,
+     "balls": 41,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Thorn Parkes",
+     "dismissal": "c DN Phillips b J Sandhu",
+     "runs": 55,
+     "balls": 63,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Luke Georgeson",
+     "dismissal": "c A Olliver b R Harrison",
+     "runs": 32,
+     "balls": 50,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Max Chu",
+     "dismissal": "not out",
+     "runs": 75,
+     "balls": 55,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Tom Jones",
+     "dismissal": "c SM Solia b HC Hieatt",
+     "runs": 31,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Jamal Todd",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Angus Olliver",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 75,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Harry Cullen Hieatt",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Samrath Singh",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sean Solia",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Siddesh Dixit",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Ryan Harrison",
+     "overs": "7.1",
+     "maidens": 0,
+     "runs": 68,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Lachlan Stackpole",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jaskaran Sandhu",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jacob Cumming",
+     "score": 63,
+     "over": "9.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jack Boyle",
+     "score": 141,
+     "over": "24.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Thorn Parkes",
+     "score": 175,
+     "over": "30.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Luke Georgeson",
+     "score": 237,
+     "over": "40.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tom Jones",
+     "score": 280,
+     "over": "45.1"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 7,
+    "w": 8,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ]
+}
