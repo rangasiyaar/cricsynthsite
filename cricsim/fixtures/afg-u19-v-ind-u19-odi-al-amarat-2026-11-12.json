@@ -12,15 +12,15 @@
   "city": "Al Amarat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Afghanistan Under-19s won the toss and bat first.",
   "teams": [
     {
       "name": "Afghanistan Under-19s",
       "short": "AFG-U19",
       "players": [
-        "Abdullah Hamdard",
         "Abidullah Nadarjan",
         "Amir Hamza",
+        "Bilal Sulimankhil",
         "Faridullah Ihsas",
         "Mohammad Ali",
         "Noman Salarzai",
@@ -31,9 +31,9 @@
         "Tahir Sarwary"
       ],
       "roles": [
-        "BAT",
         "AR",
         "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "WK",
@@ -87,7 +87,7 @@
         "BAT",
         "AR"
       ],
-      "captain": "Lakshya Rajesh Raichandani",
+      "captain": "Aaryavir Sehwag",
       "squad": [
         "Aaryavir Sehwag",
         "Anvay Dravid",
@@ -107,6 +107,7 @@
     "kn": 41659,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-u19-asia-cup-12th-november-2026-41659",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
