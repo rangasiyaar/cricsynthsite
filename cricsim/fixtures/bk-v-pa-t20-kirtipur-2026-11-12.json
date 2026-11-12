@@ -12,36 +12,36 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pokhara Avengers won the toss and bat first.",
   "teams": [
     {
       "name": "Biratnagar Kings",
       "short": "BK",
       "players": [
-        "Imran Sheikh",
         "Lokesh Bam",
+        "Charith Asalanka",
         "Shehan Jayasuriya",
         "Angelo Mathews",
-        "Andre Russell",
-        "Shubham Ranjane",
         "Basir Ahamad",
-        "Narayan Joshi",
         "Rupesh Singh",
+        "Imran Sheikh",
         "Sandeep Lamichhane",
-        "Aprajit Poudel"
+        "Aprajit Poudel",
+        "Pratis GC",
+        "Isuru Udana"
       ],
       "roles": [
-        "AR",
         "WK",
+        "BAT",
         "BAT",
         "AR",
         "AR",
         "AR",
         "AR",
-        "AR",
-        "AR",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BOWL",
+        "AR"
       ],
       "captain": "Sandeep Lamichhane",
       "squad": [
@@ -62,32 +62,32 @@
       "name": "Pokhara Avengers",
       "short": "PA",
       "players": [
-        "Arjun Kumal",
-        "Arjun Gharti",
-        "Bibek Magar",
-        "Bipin Khatri",
         "Chamika Karunaratne",
-        "Dhananjaya Lakshan",
-        "Kiran Thagunna",
+        "Arjun Gharti",
         "Kushal Bhurtel",
-        "Mahedi Hasan",
+        "Yuvraj Samra",
+        "Kiran Thagunna",
         "Sunny BK",
-        "Yuvraj Samra"
+        "Dhananjaya Lakshan",
+        "Bipin Khatri",
+        "Sagar Dhakal",
+        "Arjun Kumal",
+        "Ramesh Mendis"
       ],
       "roles": [
         "AR",
         "WK",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
         "BAT",
         "BAT",
         "AR",
         "AR",
-        "BAT"
+        "AR",
+        "BOWL",
+        "AR",
+        "AR"
       ],
-      "captain": "Kushal Bhurtel",
+      "captain": "Chamika Karunaratne",
       "squad": [
         "Arjun Kumal",
         "Arjun Gharti",
@@ -107,6 +107,7 @@
     "kn": 41344,
     "url": "https://khelnow.com/live-cricket-score/biratnagar-kings-vs-pokhara-avengers-nepal-premier-league-12th-november-2026-41344",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
