@@ -1,0 +1,112 @@
+{
+  "id": "rai-v-tn-t20-tba-2026-11-14",
+  "title": "Railways v Tamil Nadu",
+  "date": "2026-11-14",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 10th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Bhargav Merai",
+        "Eshaan Goyal",
+        "Vivek Singh",
+        "Toufik Uddin Mondal",
+        "Mohammad Saif",
+        "Adarsh Singh",
+        "Ravi Singh",
+        "Zubair Ali Khan",
+        "Sahab Yuvraj Singh",
+        "Raj Choudhary",
+        "Himanshu Sangwan"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Bhargav Merai",
+      "squad": [
+        "Bhargav Merai",
+        "Eshaan Goyal",
+        "Vivek Singh",
+        "Toufik Uddin Mondal",
+        "Mohammad Saif",
+        "Adarsh Singh",
+        "Ravi Singh",
+        "Zubair Ali Khan",
+        "Sahab Yuvraj Singh",
+        "Raj Choudhary",
+        "Himanshu Sangwan"
+      ]
+    },
+    {
+      "name": "Tamil Nadu",
+      "short": "TN",
+      "players": [
+        "R Vimal Khumar",
+        "Narayan Jagadeesan",
+        "Sai Kishore",
+        "Andre Siddarth",
+        "Baba Indrajith",
+        "Pradosh Ranjan Paul",
+        "Sonu Yadav",
+        "S Ajith Ram",
+        "Gurjapneet Singh",
+        "P Saravana Kumar",
+        "Guruswamy Ajitesh"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sai Kishore",
+      "squad": [
+        "R Vimal Khumar",
+        "Narayan Jagadeesan",
+        "Sai Kishore",
+        "Andre Siddarth",
+        "Baba Indrajith",
+        "Pradosh Ranjan Paul",
+        "Sonu Yadav",
+        "S Ajith Ram",
+        "Gurjapneet Singh",
+        "P Saravana Kumar",
+        "Guruswamy Ajitesh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41859,
+    "url": "https://khelnow.com/live-cricket-score/railways-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-14th-november-2026-41859",
+    "auto": true,
+    "xis": false
+  }
+}

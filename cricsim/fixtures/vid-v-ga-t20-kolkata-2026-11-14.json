@@ -1,0 +1,112 @@
+{
+  "id": "vid-v-ga-t20-kolkata-2026-11-14",
+  "title": "Vidarbha v Goa",
+  "date": "2026-11-14",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 12th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Vidarbha",
+      "short": "VID",
+      "players": [
+        "Akshay Wadkar",
+        "Ravikumar Samarth",
+        "Danish Malewar",
+        "Aman Mokhade",
+        "Dhruv Shorey",
+        "Satyam Bhoyar",
+        "Harsh Dubey",
+        "Parth Rekhade",
+        "Darshan Nalkande",
+        "Nachiket Bhute",
+        "Rajneesh Gurbani"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Akshay Wadkar",
+      "squad": [
+        "Akshay Wadkar",
+        "Ravikumar Samarth",
+        "Danish Malewar",
+        "Aman Mokhade",
+        "Dhruv Shorey",
+        "Satyam Bhoyar",
+        "Harsh Dubey",
+        "Parth Rekhade",
+        "Darshan Nalkande",
+        "Nachiket Bhute",
+        "Rajneesh Gurbani"
+      ]
+    },
+    {
+      "name": "Goa",
+      "short": "GA",
+      "players": [
+        "Suyash Prabhudessai",
+        "Manthan Khutkar",
+        "Shivendra Bhujbal",
+        "Abhinav Tejrana",
+        "Snehal Kauthankar",
+        "Lalit Yadav",
+        "Darshan Misal",
+        "Yash Kasvankar",
+        "V Koushik",
+        "Ruthvik Naik",
+        "Heramb Parab"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Abhinav Tejrana",
+      "squad": [
+        "Suyash Prabhudessai",
+        "Manthan Khutkar",
+        "Shivendra Bhujbal",
+        "Abhinav Tejrana",
+        "Snehal Kauthankar",
+        "Lalit Yadav",
+        "Darshan Misal",
+        "Yash Kasvankar",
+        "V Koushik",
+        "Ruthvik Naik",
+        "Heramb Parab"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41863,
+    "url": "https://khelnow.com/live-cricket-score/vidarbha-vs-goa-syed-mushtaq-ali-trophy-elite-14th-november-2026-41863",
+    "auto": true,
+    "xis": false
+  }
+}
