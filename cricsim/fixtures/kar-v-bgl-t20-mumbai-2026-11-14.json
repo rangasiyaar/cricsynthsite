@@ -1,0 +1,112 @@
+{
+  "id": "kar-v-bgl-t20-mumbai-2026-11-14",
+  "title": "Karnataka v Bengal",
+  "date": "2026-11-14",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 14th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Karnataka",
+      "short": "KAR",
+      "players": [
+        "Mayank Agarwal",
+        "Rohan Patil",
+        "Aneeshwar Gautam",
+        "Karun Nair",
+        "Vidhwath Kaverappa",
+        "KV Aneesh",
+        "Shreyas Gopal",
+        "Shrijith Krishnan",
+        "Rithesh Bhatkal",
+        "Manvanth Kumar",
+        "Shikhar shetty"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "WK",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Shreyas Gopal",
+      "squad": [
+        "Mayank Agarwal",
+        "Rohan Patil",
+        "Aneeshwar Gautam",
+        "Karun Nair",
+        "Vidhwath Kaverappa",
+        "KV Aneesh",
+        "Shreyas Gopal",
+        "Shrijith Krishnan",
+        "Rithesh Bhatkal",
+        "Manvanth Kumar",
+        "Shikhar shetty"
+      ]
+    },
+    {
+      "name": "Bengal",
+      "short": "BGL",
+      "players": [
+        "Abhimanyu Easwaran",
+        "Sudip Kumar Gharami",
+        "Abishek Porel",
+        "Ankur Paul",
+        "Sudip Chatterjee",
+        "Sumanta Gupta",
+        "Pradipta Pramanik",
+        "Shahbaz Ahamad",
+        "Mohammad Shami",
+        "Mohammed Kaif",
+        "Suraj Sindhu Jaiswal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Abhimanyu Easwaran",
+      "squad": [
+        "Abhimanyu Easwaran",
+        "Sudip Kumar Gharami",
+        "Abishek Porel",
+        "Ankur Paul",
+        "Sudip Chatterjee",
+        "Sumanta Gupta",
+        "Pradipta Pramanik",
+        "Shahbaz Ahamad",
+        "Mohammad Shami",
+        "Mohammed Kaif",
+        "Suraj Sindhu Jaiswal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41866,
+    "url": "https://khelnow.com/live-cricket-score/karnataka-vs-bengal-syed-mushtaq-ali-trophy-elite-14th-november-2026-41866",
+    "auto": true,
+    "xis": false
+  }
+}

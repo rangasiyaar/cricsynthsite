@@ -1,0 +1,112 @@
+{
+  "id": "mp-v-ker-t20-chandigarh-2026-11-14",
+  "title": "Madhya Pradesh v Kerala",
+  "date": "2026-11-14",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 15th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Madhya Pradesh",
+      "short": "MP",
+      "players": [
+        "Yash Dubey",
+        "Saksham Purohit",
+        "Shubham Sharma",
+        "Rajat Patidar",
+        "Atharv Mahajan",
+        "Chanchal Rathore",
+        "Saransh Jain",
+        "Kumar Kartikeya",
+        "Avesh Khan",
+        "Ravi Kiran",
+        "Arshad Khan"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Rajat Patidar",
+      "squad": [
+        "Yash Dubey",
+        "Saksham Purohit",
+        "Shubham Sharma",
+        "Rajat Patidar",
+        "Atharv Mahajan",
+        "Chanchal Rathore",
+        "Saransh Jain",
+        "Kumar Kartikeya",
+        "Avesh Khan",
+        "Ravi Kiran",
+        "Arshad Khan"
+      ]
+    },
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Vishnu Vinod",
+        "Rohan  Kunnummal",
+        "Abhishek Pratap Nair",
+        "Sachin Baby",
+        "Mohammed Azharuddeen",
+        "Varun Nayanar",
+        "Jalaj Saxena",
+        "Aditya Sarvate",
+        "Vaisakh Chandran",
+        "Nedumankuzhy Basil",
+        "MD Nidheesh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Vishnu Vinod",
+      "squad": [
+        "Vishnu Vinod",
+        "Rohan  Kunnummal",
+        "Abhishek Pratap Nair",
+        "Sachin Baby",
+        "Mohammed Azharuddeen",
+        "Varun Nayanar",
+        "Jalaj Saxena",
+        "Aditya Sarvate",
+        "Vaisakh Chandran",
+        "Nedumankuzhy Basil",
+        "MD Nidheesh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41867,
+    "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-kerala-syed-mushtaq-ali-trophy-elite-14th-november-2026-41867",
+    "auto": true,
+    "xis": false
+  }
+}

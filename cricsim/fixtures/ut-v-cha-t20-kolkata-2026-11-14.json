@@ -1,0 +1,112 @@
+{
+  "id": "ut-v-cha-t20-kolkata-2026-11-14",
+  "title": "Uttarakhand v Chhattisgarh",
+  "date": "2026-11-14",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 16th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uttarakhand",
+      "short": "UT",
+      "players": [
+        "Kunal Chandela",
+        "Aarav Mahajan",
+        "Avneesh Sudha",
+        "Dega Nischal",
+        "Jagadeesha Suchith",
+        "Mayank Mishra",
+        "Devendra Singh Bora",
+        "Vaibhav Kandpal",
+        "Sanskar Rawat",
+        "Agnivesh Ayachi",
+        "Deepak Dhapola"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Kunal Chandela",
+      "squad": [
+        "Kunal Chandela",
+        "Aarav Mahajan",
+        "Avneesh Sudha",
+        "Dega Nischal",
+        "Jagadeesha Suchith",
+        "Mayank Mishra",
+        "Devendra Singh Bora",
+        "Vaibhav Kandpal",
+        "Sanskar Rawat",
+        "Agnivesh Ayachi",
+        "Deepak Dhapola"
+      ]
+    },
+    {
+      "name": "Chhattisgarh",
+      "short": "CHA",
+      "players": [
+        "Aayush Pandey",
+        "Anuj Tiwary",
+        "Mayank Verma",
+        "Sanjeet Desai",
+        "Amandeep Khare",
+        "Vikalp Tiwari",
+        "Ajay Mandal",
+        "Prateek Yadav",
+        "Dharmendrasinh Jadeja",
+        "Jayant Yadav",
+        "Dev Aditya Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Anuj Tiwary",
+      "squad": [
+        "Aayush Pandey",
+        "Anuj Tiwary",
+        "Mayank Verma",
+        "Sanjeet Desai",
+        "Amandeep Khare",
+        "Vikalp Tiwari",
+        "Ajay Mandal",
+        "Prateek Yadav",
+        "Dharmendrasinh Jadeja",
+        "Jayant Yadav",
+        "Dev Aditya Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41868,
+    "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-chhattisgarh-syed-mushtaq-ali-trophy-elite-14th-november-2026-41868",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -12,35 +12,35 @@
   "city": "Entebbe",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Namibia Women won the toss and bat first.",
   "teams": [
     {
       "name": "Namibia Women",
       "short": "NAM-W",
       "players": [
         "Jurriene Diergaardt",
-        "Edelle Van Zyl",
         "Eveleen Kejarukua",
         "Kayleen Green",
-        "Mezerly Gorases",
         "Mekelaye Mwatile",
+        "Mezerly Gorases",
         "Naomi Benjamin",
+        "Saima Tuhadeleni",
         "Sune Wittmann",
-        "Wilka Mwatile",
         "Sylvia Shihepo",
+        "Wilka Mwatile",
         "Victoria Hamunyela"
       ],
       "roles": [
         "AR",
-        "BAT",
         "BOWL",
+        "AR",
         "AR",
         "WK",
-        "AR",
+        "BOWL",
         "BOWL",
         "BAT",
-        "AR",
         "BAT",
+        "AR",
         "BOWL"
       ],
       "captain": "Sune Wittmann",
@@ -79,10 +79,10 @@
         "AR",
         "BAT",
         "AR",
-        "WK",
+        "BAT",
         "BAT",
         "AR",
-        "BAT",
+        "WK",
         "BOWL",
         "BOWL",
         "BAT"
@@ -107,6 +107,7 @@
     "kn": 41785,
     "url": "https://khelnow.com/live-cricket-score/namibia-women-vs-rwanda-women-women's-victoria-t20i-series-12th-november-2026-41785",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
