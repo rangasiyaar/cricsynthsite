@@ -1,0 +1,118 @@
+{
+  "id": "png-w-v-sco-w-t20-ajman-2026-11-12",
+  "title": "Papua New Guinea Women v Scotland Women",
+  "date": "2026-11-12",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 2nd Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "Papua New Guinea Women",
+      "short": "PNG-W",
+      "players": [
+        "Naoani Vare",
+        "Hollan Doriga",
+        "Brenda Tau",
+        "Sibona Jimmy",
+        "Tanya Ruma",
+        "Pauke Siaka",
+        "Henao Thomas",
+        "Geua Tom",
+        "Hane Tau",
+        "Dika Lohia",
+        "Buruka Vicky"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Brenda Tau",
+      "squad": [
+        "Naoani Vare",
+        "Hollan Doriga",
+        "Brenda Tau",
+        "Sibona Jimmy",
+        "Tanya Ruma",
+        "Pauke Siaka",
+        "Henao Thomas",
+        "Geua Tom",
+        "Hane Tau",
+        "Dika Lohia",
+        "Buruka Vicky",
+        "Lakshmi Rajadurai",
+        "Erani Pokana",
+        "Kevau Gabe"
+      ]
+    },
+    {
+      "name": "Scotland Women",
+      "short": "SCO-W",
+      "players": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kathryn Bryce",
+      "squad": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel",
+        "Nayma Sheikh",
+        "Isabella Watson",
+        "Gabriella Fontenla"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41802,
+    "url": "https://khelnow.com/live-cricket-score/papua-new-guinea-women-vs-scotland-women-icc-women's-emerging-nations-trophy-12th-november-2026-41802",
+    "auto": true,
+    "xis": true
+  }
+}

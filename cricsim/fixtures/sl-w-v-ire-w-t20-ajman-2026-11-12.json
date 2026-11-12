@@ -1,0 +1,118 @@
+{
+  "id": "sl-w-v-ire-w-t20-ajman-2026-11-12",
+  "title": "Sri Lanka Women v Ireland Women",
+  "date": "2026-11-12",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 1st Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Playing XIs confirmed.",
+  "teams": [
+    {
+      "name": "Sri Lanka Women",
+      "short": "SL-W",
+      "players": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Malki Madara"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Harshitha Samarawickrama",
+      "squad": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Malki Madara",
+        "Sanjana Kavindi",
+        "Rashmika Sewwandi",
+        "Chamudi Praboda"
+      ]
+    },
+    {
+      "name": "Ireland Women",
+      "short": "IRE-W",
+      "players": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Alana Dalzell",
+        "Abbi Harrison",
+        "Cara Murray",
+        "Kia Mccartney",
+        "Jane Maguire",
+        "Aimee Maguire"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Gaby Lewis",
+      "squad": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Alana Dalzell",
+        "Abbi Harrison",
+        "Cara Murray",
+        "Kia Mccartney",
+        "Jane Maguire",
+        "Aimee Maguire",
+        "Georgina Dempsey",
+        "Zara Craig",
+        "Lara McBride"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41801,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-women-vs-ireland-women-icc-women's-emerging-nations-trophy-12th-november-2026-41801",
+    "auto": true,
+    "xis": true
+  }
+}
