@@ -1,0 +1,112 @@
+{
+  "id": "zim-w-v-ban-w-t20-ajman-2026-11-13",
+  "title": "Zimbabwe Women v Bangladesh Women",
+  "date": "2026-11-13",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 8th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Zimbabwe Women",
+      "short": "ZIM-W",
+      "players": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Josephine Nkomo",
+      "squad": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare"
+      ]
+    },
+    {
+      "name": "Bangladesh Women",
+      "short": "BAN-W",
+      "players": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Fahima Khatun",
+        "Rabeya Khan",
+        "Nahida Akter",
+        "Disha Biswas"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Nahida Akter",
+      "squad": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Fahima Khatun",
+        "Rabeya Khan",
+        "Nahida Akter",
+        "Disha Biswas"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41807,
+    "url": "https://khelnow.com/live-cricket-score/zimbabwe-women-vs-bangladesh-women-icc-women's-emerging-nations-trophy-13th-november-2026-41807",
+    "auto": true,
+    "xis": false
+  }
+}
