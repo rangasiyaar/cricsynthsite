@@ -1,0 +1,112 @@
+{
+  "id": "lio-v-wp-t20-cape-town-2026-11-14",
+  "title": "Lions v Western Province",
+  "date": "2026-11-14",
+  "start_time": "17:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · 2nd Semi-Final",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "Newlands, Cape Town",
+  "venue_search": "newlands",
+  "city": "Cape Town",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Lions",
+      "short": "LIO",
+      "players": [
+        "Neil Timmers",
+        "Onkgomoditse Seletswane",
+        "Rassie van der Dussen",
+        "Connor Esterhuizen",
+        "Mitchell Van Buuren",
+        "Morteza Manack",
+        "Bjorn Fortuin",
+        "Gerald Coetzee",
+        "Nqabayomzi Peter",
+        "Codi Yusuf",
+        "Siya Plaatjie"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Bjorn Fortuin",
+      "squad": [
+        "Neil Timmers",
+        "Onkgomoditse Seletswane",
+        "Rassie van der Dussen",
+        "Connor Esterhuizen",
+        "Mitchell Van Buuren",
+        "Morteza Manack",
+        "Bjorn Fortuin",
+        "Gerald Coetzee",
+        "Nqabayomzi Peter",
+        "Codi Yusuf",
+        "Siya Plaatjie"
+      ]
+    },
+    {
+      "name": "Western Province",
+      "short": "WP",
+      "players": [
+        "Jiveshan Pillay",
+        "Kashief Joseph",
+        "Daniel Smith",
+        "George Linde",
+        "Mihlali Mpongwana",
+        "Oliver Whitehead",
+        "Josh Breed",
+        "Sinalo Gobeni",
+        "Tshepo Moreki",
+        "Dane Paterson",
+        "Kyle Verreynne"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "WK"
+      ],
+      "captain": "George Linde",
+      "squad": [
+        "Jiveshan Pillay",
+        "Kashief Joseph",
+        "Daniel Smith",
+        "George Linde",
+        "Mihlali Mpongwana",
+        "Oliver Whitehead",
+        "Josh Breed",
+        "Sinalo Gobeni",
+        "Tshepo Moreki",
+        "Dane Paterson",
+        "Kyle Verreynne"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41084,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-csa-pro-t20-cup-14th-november-2026-41084",
+    "auto": true,
+    "xis": false
+  }
+}

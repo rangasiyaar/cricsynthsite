@@ -1,0 +1,112 @@
+{
+  "id": "war-v-bol-t20-cape-town-2026-11-14",
+  "title": "Warriors v Boland",
+  "date": "2026-11-14",
+  "start_time": "13:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "CSA Pro T20 Cup · 1st Semi-Final",
+  "comp_key": "csa-pro-t20-cup",
+  "venue": "Newlands, Cape Town",
+  "venue_search": "newlands",
+  "city": "Cape Town",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Warriors",
+      "short": "WAR",
+      "players": [
+        "Jordan Hermann",
+        "Matthew De Villiers",
+        "Tristan Stubbs",
+        "Jp King",
+        "Sibonelo Makhanya",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Beuran Hendricks",
+        "Kerwin Mungroo",
+        "Matthew Boast",
+        "Senuran Muthusamy"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Matthew De Villiers",
+      "squad": [
+        "Jordan Hermann",
+        "Matthew De Villiers",
+        "Tristan Stubbs",
+        "Jp King",
+        "Sibonelo Makhanya",
+        "Patrick Kruger",
+        "Andile Mokgakane",
+        "Beuran Hendricks",
+        "Kerwin Mungroo",
+        "Matthew Boast",
+        "Senuran Muthusamy"
+      ]
+    },
+    {
+      "name": "Boland",
+      "short": "BOL",
+      "players": [
+        "Blayde Capell",
+        "Ruan Terblanche",
+        "Kaden Solomons",
+        "Neil Brand",
+        "Ferisco Adams",
+        "Jhedli van Briesies",
+        "Imran Manack",
+        "Glenton Stuurman",
+        "Lizaad Williams",
+        "Yves Kamanzi",
+        "Siyabonga Mahima"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Glenton Stuurman",
+      "squad": [
+        "Blayde Capell",
+        "Ruan Terblanche",
+        "Kaden Solomons",
+        "Neil Brand",
+        "Ferisco Adams",
+        "Jhedli van Briesies",
+        "Imran Manack",
+        "Glenton Stuurman",
+        "Lizaad Williams",
+        "Yves Kamanzi",
+        "Siyabonga Mahima"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41083,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-csa-pro-t20-cup-14th-november-2026-41083",
+    "auto": true,
+    "xis": false
+  }
+}
