@@ -1,0 +1,112 @@
+{
+  "id": "miz-v-jha-t20-mumbai-2026-11-14",
+  "title": "Mizoram v Jharkhand",
+  "date": "2026-11-14",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 6th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Mizoram",
+      "short": "MIZ",
+      "players": [
+        "Lalhruaizela-M",
+        "Sahil Reza",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Jehu Anderson",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "Bobby Zothansanga",
+        "Lalrempuia",
+        "R Lalnuntluanga"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Jehu Anderson",
+      "squad": [
+        "Lalhruaizela-M",
+        "Sahil Reza",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Jehu Anderson",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "Bobby Zothansanga",
+        "Lalrempuia",
+        "R Lalnuntluanga"
+      ]
+    },
+    {
+      "name": "Jharkhand",
+      "short": "JHA",
+      "players": [
+        "Virat Singh",
+        "Anukul Roy",
+        "Aryaman Sen",
+        "Sharandeep Singh",
+        "Utkarsh Singh",
+        "Robin Minz",
+        "Aditya Chandresh Singh",
+        "Shubh Sharma",
+        "Manishi",
+        "Saurabh Shekhar",
+        "Pratyush Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Virat Singh",
+      "squad": [
+        "Virat Singh",
+        "Anukul Roy",
+        "Aryaman Sen",
+        "Sharandeep Singh",
+        "Utkarsh Singh",
+        "Robin Minz",
+        "Aditya Chandresh Singh",
+        "Shubh Sharma",
+        "Manishi",
+        "Saurabh Shekhar",
+        "Pratyush Kumar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41850,
+    "url": "https://khelnow.com/live-cricket-score/mizoram-vs-jharkhand-syed-mushtaq-ali-trophy-elite-14th-november-2026-41850",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "nag-v-meg-t20-tba-2026-11-14",
+  "title": "Nagaland v Meghalaya",
+  "date": "2026-11-14",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 1st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Nagaland",
+      "short": "NAG",
+      "players": [
+        "Joshua Ozukum",
+        "Sedezhalie Rupero",
+        "Yugandhar Singh",
+        "Rongsen Jonathan",
+        "Hokaito Zhimomi",
+        "Saurav Kumar",
+        "Anil Gupta",
+        "Chetan Bist",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Chopise Hopongkyu"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Hokaito Zhimomi",
+      "squad": [
+        "Joshua Ozukum",
+        "Sedezhalie Rupero",
+        "Yugandhar Singh",
+        "Rongsen Jonathan",
+        "Hokaito Zhimomi",
+        "Saurav Kumar",
+        "Anil Gupta",
+        "Chetan Bist",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Chopise Hopongkyu"
+      ]
+    },
+    {
+      "name": "Meghalaya",
+      "short": "MEG",
+      "players": [
+        "Raj Biswa",
+        "Bamanbha Shangpliang",
+        "Jiwanjot Singh",
+        "Srinivas Sharath",
+        "Akshay Karnewar",
+        "Dippu Sangma",
+        "Akash Choudhary",
+        "Swarajeet Das",
+        "Nafees Siddique",
+        "Manish Sharma",
+        "Josiah Momin"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Jiwanjot Singh",
+      "squad": [
+        "Raj Biswa",
+        "Bamanbha Shangpliang",
+        "Jiwanjot Singh",
+        "Srinivas Sharath",
+        "Akshay Karnewar",
+        "Dippu Sangma",
+        "Akash Choudhary",
+        "Swarajeet Das",
+        "Nafees Siddique",
+        "Manish Sharma",
+        "Josiah Momin"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41837,
+    "url": "https://khelnow.com/live-cricket-score/nagaland-vs-meghalaya-syed-mushtaq-ali-trophy-plate-14th-november-2026-41837",
+    "auto": true,
+    "xis": false
+  }
+}

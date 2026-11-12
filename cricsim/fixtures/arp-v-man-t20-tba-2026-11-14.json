@@ -1,0 +1,112 @@
+{
+  "id": "arp-v-man-t20-tba-2026-11-14",
+  "title": "Arunachal Pradesh v Manipur",
+  "date": "2026-11-14",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 2nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Arunachal Pradesh",
+      "short": "ARP",
+      "players": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Nabam Kama",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Kamsha Yangfo",
+        "Biki Kumar",
+        "Nabam Dol",
+        "Yab Niya",
+        "Likha Sonia",
+        "Mibom Mosu"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Neelam Obi",
+      "squad": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Nabam Kama",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Kamsha Yangfo",
+        "Biki Kumar",
+        "Nabam Dol",
+        "Yab Niya",
+        "Likha Sonia",
+        "Mibom Mosu"
+      ]
+    },
+    {
+      "name": "Manipur",
+      "short": "MAN",
+      "players": [
+        "Langlonyamba Keishangbam",
+        "Pheiroijam Jotin Singh",
+        "Al Bashid Muhammed",
+        "Karnajit Yumnam",
+        "Ronald Longjam",
+        "Kangabam Priyojit Singh",
+        "Johnson Singh",
+        "Rex Rajkumar Singh",
+        "L Kishan Singha",
+        "Lamabam Ajay Singh",
+        "Bishworjit Konthoujam"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Langlonyamba Keishangbam",
+      "squad": [
+        "Langlonyamba Keishangbam",
+        "Pheiroijam Jotin Singh",
+        "Al Bashid Muhammed",
+        "Karnajit Yumnam",
+        "Ronald Longjam",
+        "Kangabam Priyojit Singh",
+        "Johnson Singh",
+        "Rex Rajkumar Singh",
+        "L Kishan Singha",
+        "Lamabam Ajay Singh",
+        "Bishworjit Konthoujam"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41838,
+    "url": "https://khelnow.com/live-cricket-score/arunachal-pradesh-vs-manipur-syed-mushtaq-ali-trophy-plate-14th-november-2026-41838",
+    "auto": true,
+    "xis": false
+  }
+}

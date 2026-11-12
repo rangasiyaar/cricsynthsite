@@ -1,0 +1,112 @@
+{
+  "id": "tri-v-and-t20-chandigarh-2026-11-14",
+  "title": "Tripura v Andhra",
+  "date": "2026-11-14",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 8th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Bikramkumar Das",
+        "Babul Dey",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Manisankar  Murasingh",
+        "Bikramjit Debnath",
+        "Sandip Sarkar",
+        "Pravez Sultan",
+        "Abhijit Sarkar",
+        "Sentu Sarkar",
+        "Lakshay Thareja"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BAT"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Bikramkumar Das",
+        "Babul Dey",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Manisankar  Murasingh",
+        "Bikramjit Debnath",
+        "Sandip Sarkar",
+        "Pravez Sultan",
+        "Abhijit Sarkar",
+        "Sentu Sarkar",
+        "Lakshay Thareja"
+      ]
+    },
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "M Hemanth Reddy",
+        "Abhishek Reddy",
+        "Shaik Rasheed",
+        "Karan Shinde",
+        "Ricky Bhui",
+        "Seeram Venkata Rahul",
+        "Revanth Reddy",
+        "KV Sasikanth",
+        "Saurabh Kumar",
+        "Tripurana Vijay",
+        "Lalith Mohan"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "M Hemanth Reddy",
+        "Abhishek Reddy",
+        "Shaik Rasheed",
+        "Karan Shinde",
+        "Ricky Bhui",
+        "Seeram Venkata Rahul",
+        "Revanth Reddy",
+        "KV Sasikanth",
+        "Saurabh Kumar",
+        "Tripurana Vijay",
+        "Lalith Mohan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41854,
+    "url": "https://khelnow.com/live-cricket-score/tripura-vs-andhra-syed-mushtaq-ali-trophy-elite-14th-november-2026-41854",
+    "auto": true,
+    "xis": false
+  }
+}

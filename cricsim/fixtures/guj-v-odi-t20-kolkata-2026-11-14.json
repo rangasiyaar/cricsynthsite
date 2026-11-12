@@ -1,0 +1,112 @@
+{
+  "id": "guj-v-odi-t20-kolkata-2026-11-14",
+  "title": "Gujarat v Odisha",
+  "date": "2026-11-14",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 5th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Abhishek Desai",
+        "Aarya Desai",
+        "Vedant Trivedi",
+        "Manan Hingrajia",
+        "Urvil Patel",
+        "Jaymeet Patel",
+        "Vishal Jayswal",
+        "Chintan Gaja",
+        "Arzan Nagwaswalla",
+        "Siddharth Desai",
+        "Amit Desai"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Chintan Gaja",
+      "squad": [
+        "Abhishek Desai",
+        "Aarya Desai",
+        "Vedant Trivedi",
+        "Manan Hingrajia",
+        "Urvil Patel",
+        "Jaymeet Patel",
+        "Vishal Jayswal",
+        "Chintan Gaja",
+        "Arzan Nagwaswalla",
+        "Siddharth Desai",
+        "Amit Desai"
+      ]
+    },
+    {
+      "name": "Odisha",
+      "short": "ODI",
+      "players": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Sandeep Pattnaik",
+        "Subhranshu Senapati",
+        "Ninad Rathva",
+        "Anil Parida",
+        "Rajesh Dhuper",
+        "Rajesh Mohanty",
+        "Lalit Yadav",
+        "Badal Biswal",
+        "Prasanta Rana"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Subhranshu Senapati",
+      "squad": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Sandeep Pattnaik",
+        "Subhranshu Senapati",
+        "Ninad Rathva",
+        "Anil Parida",
+        "Rajesh Dhuper",
+        "Rajesh Mohanty",
+        "Lalit Yadav",
+        "Badal Biswal",
+        "Prasanta Rana"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41848,
+    "url": "https://khelnow.com/live-cricket-score/gujarat-vs-odisha-syed-mushtaq-ali-trophy-elite-14th-november-2026-41848",
+    "auto": true,
+    "xis": false
+  }
+}
