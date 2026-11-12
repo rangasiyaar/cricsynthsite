@@ -1,0 +1,112 @@
+{
+  "id": "rdc-v-unt-t10-abu-dhabi-2026-11-14",
+  "title": "Royal Desert Champions v United Tigers",
+  "date": "2026-11-14",
+  "start_time": "17:00",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 16th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Naseem Shah",
+        "Maheesh Theekshana"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Naseem Shah",
+        "Maheesh Theekshana"
+      ]
+    },
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Usman Tariq",
+        "Joe Clarke",
+        "Sahibzada Farhan",
+        "Avishka Fernando",
+        "Abbas Afridi",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Zeeshan Naseer"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Fakhar Zaman",
+      "squad": [
+        "Fakhar Zaman",
+        "Iftikhar Ahmed",
+        "Usman Tariq",
+        "Joe Clarke",
+        "Sahibzada Farhan",
+        "Avishka Fernando",
+        "Abbas Afridi",
+        "Faheem Ashraf",
+        "Azmatullah Omarzai",
+        "Awais Ali",
+        "Zeeshan Naseer"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41629,
+    "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-united-tigers-abu-dhabi-t10-league-14th-november-2026-41629",
+    "auto": true,
+    "xis": false
+  }
+}
