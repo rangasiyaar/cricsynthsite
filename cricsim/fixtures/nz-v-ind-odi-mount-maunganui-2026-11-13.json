@@ -12,33 +12,33 @@
   "city": "Mount Maunganui",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. India won the toss and bowl first.",
   "teams": [
     {
       "name": "New Zealand",
       "short": "NZ",
       "players": [
-        "Will Young",
         "Tim Seifert",
-        "Henry Nicholls",
-        "Daryl Mitchell",
-        "Tom Latham",
-        "Glenn Phillips",
+        "Will Young",
+        "Nick Kelly",
+        "Dean Foxcroft",
+        "Finn Allen",
+        "Michael Bracewell",
         "Mitchell Santner",
-        "Nathan Smith",
+        "Kristian Clarke",
         "Kyle Jamieson",
-        "Jacob Duffy",
-        "Blair Tickner"
+        "Matt Henry",
+        "Matthew Fisher"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
         "AR",
         "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -63,14 +63,14 @@
       "short": "IND",
       "players": [
         "Rohit Sharma",
-        "Shubman Gill",
+        "Ruturaj Gaikwad",
         "Virat Kohli",
+        "Ishan Kishan",
         "Shreyas Iyer",
-        "KL Rahul",
         "Axar Patel",
         "Naman Dhir",
-        "Anshul Kamboj",
         "Auqib Nabi Dar",
+        "Kuldeep Yadav",
         "Gurnoor Singh Brar",
         "Arshdeep Singh"
       ],
@@ -78,16 +78,16 @@
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
         "WK",
-        "AR",
         "BAT",
         "AR",
+        "BAT",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Shubman Gill",
+      "captain": "Shreyas Iyer",
       "squad": [
         "Rohit Sharma",
         "Shubman Gill",
@@ -107,6 +107,7 @@
     "kn": 40297,
     "url": "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-13th-november-2026-40297",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
