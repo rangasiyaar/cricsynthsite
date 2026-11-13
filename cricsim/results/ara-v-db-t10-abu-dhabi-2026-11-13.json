@@ -1,0 +1,378 @@
+{
+ "id": "ara-v-db-t10-abu-dhabi-2026-11-13",
+ "innings": [
+  {
+   "team": "Arabian Aces",
+   "runs": 92,
+   "wickets": 8,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Tom Kohler-Cadmore",
+     "dismissal": "b MD R Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Paul Walter",
+     "dismissal": "b M Amir",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Livingstone",
+     "dismissal": "c K Nafay b Tahir Zaman",
+     "runs": 4,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alishan Sharafu",
+     "dismissal": "lbw b M Amir",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Moeen Ali",
+     "dismissal": "c K Nafay b R Shepherd",
+     "runs": 3,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Billings",
+     "dismissal": "b Tahir Zaman",
+     "runs": 10,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Andre Russell",
+     "dismissal": "c S Narine b R Shepherd",
+     "runs": 46,
+     "balls": 18,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Dwaine Pretorius",
+     "dismissal": "c A Donald b R Shepherd",
+     "runs": 12,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Muhammad Arfan",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alzarri Joseph",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Muhammad Rohid Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mohammad Amir",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tahir Zaman",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 3,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Romario Shepherd",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Nuwan Thushara",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tom Kohler-Cadmore",
+     "score": 0,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Paul Walter",
+     "score": 12,
+     "over": "1.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Alishan Sharafu",
+     "score": 12,
+     "over": "1.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Liam Livingstone",
+     "score": 17,
+     "over": "3.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Moeen Ali",
+     "score": 27,
+     "over": "4.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sam Billings",
+     "score": 29,
+     "over": "5.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Dwaine Pretorius",
+     "score": 89,
+     "over": "9.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Andre Russell",
+     "score": 90,
+     "over": "9.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 12
+  },
+  {
+   "team": "UAE Bulls",
+   "runs": 84,
+   "wickets": 7,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Andre Fletcher",
+     "dismissal": "c L Livingstone b Muhammad Arfan",
+     "runs": 19,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Aneurin Donald",
+     "dismissal": "c Muhammad Arfan b A Russell",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Khawaja Nafay",
+     "dismissal": "c A Russell b D Pretorius",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kieron Pollard",
+     "dismissal": "c L Livingstone b A Russell",
+     "runs": 27,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 4
+    },
+    {
+     "name": "Romario Shepherd",
+     "dismissal": "c Muhammad Arfan b D Pretorius",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shadab Khan",
+     "dismissal": "c S Billings b Muhammad Arfan",
+     "runs": 22,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Sunil Narine",
+     "dismissal": "c TK Cadmore b A Russell",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tahir Zaman",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Amir",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Richard Gleeson",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Alzarri Joseph",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Andre Russell",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dwaine Pretorius",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Muhammad Arfan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aneurin Donald",
+     "score": 12,
+     "over": "2.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Khawaja Nafay",
+     "score": 24,
+     "over": "3.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Andre Fletcher",
+     "score": 28,
+     "over": "4.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Romario Shepherd",
+     "score": 37,
+     "over": "5.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Kieron Pollard",
+     "score": 78,
+     "over": "8.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sunil Narine",
+     "score": 78,
+     "over": "8.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Shadab Khan",
+     "score": 83,
+     "over": "9.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Arabian Aces won by 8 runs",
+ "winner": "Arabian Aces"
+}
