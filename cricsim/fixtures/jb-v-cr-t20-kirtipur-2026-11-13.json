@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Janakpur Bolts won the toss and bat first.",
   "teams": [
     {
       "name": "Janakpur Bolts",
@@ -20,8 +20,8 @@
       "players": [
         "Aaditya Mahata",
         "Abhisekh Tiwari",
-        "Anil Kumar Sah",
-        "Bishal Patel",
+        "Bishal Shusling",
+        "Santosh Karki",
         "Harmeet Singh",
         "Harry Tector",
         "Jimmy Neesham",
@@ -33,10 +33,10 @@
       "roles": [
         "BAT",
         "AR",
+        "BOWL",
         "WK",
+        "AR",
         "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
         "BAT",
@@ -64,28 +64,28 @@
       "players": [
         "Arjun Saud",
         "Bibek Kumar Yadav",
-        "Dan Mousley",
+        "Dawid Malan",
         "Kamal Singh Airee",
+        "Sikandar Raza",
         "Kamil Mishara",
         "Kushal Malla",
-        "Shyam Mousom Dhakal",
         "Ranjit Kumar",
+        "Shyam Mousom Dhakal",
         "Ravi Bopara",
-        "Rijan Dhakal",
-        "Sikandar Raza"
+        "Rijan Dhakal"
       ],
       "roles": [
         "WK",
         "AR",
-        "AR",
+        "BAT",
         "BOWL",
+        "AR",
         "BAT",
         "AR",
         "BOWL",
         "BOWL",
         "AR",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "captain": "Sikandar Raza",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41347,
     "url": "https://khelnow.com/live-cricket-score/janakpur-bolts-vs-chitwan-rhinos-nepal-premier-league-13th-november-2026-41347",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
