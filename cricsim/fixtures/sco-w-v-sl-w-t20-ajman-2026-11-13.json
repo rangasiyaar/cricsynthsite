@@ -12,7 +12,7 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sri Lanka Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Scotland Women",
@@ -37,7 +37,7 @@
         "AR",
         "BAT",
         "BAT",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -72,7 +72,7 @@
         "Sathya Sandeepani",
         "Sugandika Kumari",
         "Chethana Vimukthi",
-        "Malki Madara"
+        "Nimasha Madushani Meepage"
       ],
       "roles": [
         "BAT",
@@ -80,11 +80,11 @@
         "BAT",
         "BAT",
         "AR",
-        "BAT",
+        "AR",
         "WK",
         "AR",
         "BOWL",
-        "AR",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Harshitha Samarawickrama",
@@ -107,6 +107,7 @@
     "kn": 41805,
     "url": "https://khelnow.com/live-cricket-score/scotland-women-vs-sri-lanka-women-icc-women's-emerging-nations-trophy-13th-november-2026-41805",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
