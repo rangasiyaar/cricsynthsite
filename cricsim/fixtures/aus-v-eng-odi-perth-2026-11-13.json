@@ -12,38 +12,38 @@
   "city": "Perth",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Australia won the toss and bowl first.",
   "teams": [
     {
       "name": "Australia",
       "short": "AUS",
       "players": [
         "Travis Head",
-        "Matt Renshaw",
-        "Marnus Labuschagne",
-        "Cameron Green",
-        "Josh Inglis",
-        "Alex Carey",
+        "Mitchell Marsh",
         "Cooper Connolly",
-        "Pat Cummins",
-        "Mitchell Starc",
-        "Nathan Lyon",
-        "Josh Hazlewood"
+        "Josh Inglis",
+        "Matt Renshaw",
+        "Cameron Green",
+        "Jack Edwards",
+        "Xavier Bartlett",
+        "Adam Zampa",
+        "Spencer Johnson",
+        "Mahli Beardman"
       ],
       "roles": [
         "BAT",
         "AR",
-        "BAT",
         "AR",
-        "BAT",
         "WK",
+        "AR",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Pat Cummins",
+      "captain": "Mitchell Marsh",
       "squad": [
         "Travis Head",
         "Matt Renshaw",
@@ -62,15 +62,15 @@
       "name": "England",
       "short": "ENG",
       "players": [
-        "Tom Banton",
         "Ben Duckett",
+        "Tom Banton",
         "Joe Root",
         "Harry Brook",
-        "Sam Curran",
         "Jordan Cox",
+        "Sam Curran",
         "Will Jacks",
-        "Jamie Overton",
         "Liam Dawson",
+        "Jamie Overton",
         "Gus Atkinson",
         "Jofra Archer"
       ],
@@ -79,8 +79,8 @@
         "BAT",
         "BAT",
         "BAT",
-        "AR",
         "WK",
+        "AR",
         "AR",
         "AR",
         "AR",
@@ -99,13 +99,15 @@
         "Liam Dawson",
         "Gus Atkinson",
         "Jofra Archer"
-      ]
+      ],
+      "captain": "Harry Brook"
     }
   ],
   "live": {
     "kn": 38642,
     "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-13th-november-2026-38642",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
