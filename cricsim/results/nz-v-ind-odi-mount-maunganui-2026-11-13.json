@@ -1,0 +1,439 @@
+{
+ "id": "nz-v-ind-odi-mount-maunganui-2026-11-13",
+ "innings": [
+  {
+   "team": "New Zealand",
+   "runs": 333,
+   "wickets": 10,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Will Young",
+     "dismissal": "c (sub K Kushagra) b Naman Dhir",
+     "runs": 125,
+     "balls": 108,
+     "fours": 14,
+     "sixes": 4
+    },
+    {
+     "name": "Tim Seifert",
+     "dismissal": "c I Kishan b GS Brar",
+     "runs": 58,
+     "balls": 48,
+     "fours": 6,
+     "sixes": 3
+    },
+    {
+     "name": "Nick Kelly",
+     "dismissal": "st I Kishan b Axar Patel",
+     "runs": 4,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dean Foxcroft",
+     "dismissal": "c GS Brar b AN Dar",
+     "runs": 8,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Finn Allen",
+     "dismissal": "c RG Sharma b Axar Patel",
+     "runs": 41,
+     "balls": 30,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Michael Bracewell",
+     "dismissal": "c Naman Dhir b GS Brar",
+     "runs": 15,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Santner",
+     "dismissal": "c I Kishan b Arshdeep Singh",
+     "runs": 24,
+     "balls": 29,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Kristian Clarke",
+     "dismissal": "lbw b AN Dar",
+     "runs": 22,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Kyle Jamieson",
+     "dismissal": "not out",
+     "runs": 19,
+     "balls": 21,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Henry",
+     "dismissal": "runout (AN Dar)",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Matthew Fisher",
+     "dismissal": "runout (I Kishan / V Kohli)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Arshdeep Singh",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 59,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Gurnoor Singh Brar",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 69,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Axar Patel",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kuldeep Yadav",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 73,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Naman Dhir",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Seifert",
+     "score": 85,
+     "over": "11.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nick Kelly",
+     "score": 96,
+     "over": "14.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Dean Foxcroft",
+     "score": 125,
+     "over": "19.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Finn Allen",
+     "score": 215,
+     "over": "30.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Will Young",
+     "score": 256,
+     "over": "36.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Michael Bracewell",
+     "score": 258,
+     "over": "37.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mitchell Santner",
+     "score": 293,
+     "over": "44.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kristian Clarke",
+     "score": 318,
+     "over": "47.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Matt Henry",
+     "score": 332,
+     "over": "49.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Matthew Fisher",
+     "score": 333,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 5,
+    "w": 3,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 72
+  },
+  {
+   "team": "India",
+   "runs": 89,
+   "wickets": 10,
+   "overs": "26.4",
+   "batting": [
+    {
+     "name": "Rohit Sharma",
+     "dismissal": "c F Allen b M Henry",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ruturaj Gaikwad",
+     "dismissal": "c MG Bracewell b KA Jamieson",
+     "runs": 5,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Virat Kohli",
+     "dismissal": "b M Henry",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shreyas Iyer",
+     "dismissal": "lbw b M Henry",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ishan Kishan",
+     "dismissal": "b M Henry",
+     "runs": 27,
+     "balls": 53,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Axar Patel",
+     "dismissal": "c F Allen b M Fisher",
+     "runs": 21,
+     "balls": 36,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Naman Dhir",
+     "dismissal": "c M Santner b M Fisher",
+     "runs": 21,
+     "balls": 24,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "dismissal": "c TL Seifert b M Fisher",
+     "runs": 5,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kuldeep Yadav",
+     "dismissal": "b M Henry",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gurnoor Singh Brar",
+     "dismissal": "b M Henry",
+     "runs": 2,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Arshdeep Singh",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Matt Henry",
+     "overs": "9.4",
+     "maidens": 2,
+     "runs": 27,
+     "wickets": 6,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Kyle Jamieson",
+     "overs": "6",
+     "maidens": 2,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kristian Clarke",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matthew Fisher",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 31,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Michael Bracewell",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Rohit Sharma",
+     "score": 0,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Virat Kohli",
+     "score": 0,
+     "over": "0.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Shreyas Iyer",
+     "score": 0,
+     "over": "0.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ruturaj Gaikwad",
+     "score": 9,
+     "over": "5.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Axar Patel",
+     "score": 53,
+     "over": "17.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ishan Kishan",
+     "score": 61,
+     "over": "20.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Auqib Nabi Dar",
+     "score": 66,
+     "over": "21.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kuldeep Yadav",
+     "score": 69,
+     "over": "22.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Naman Dhir",
+     "score": 83,
+     "over": "23.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Gurnoor Singh Brar",
+     "score": 89,
+     "over": "26.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
