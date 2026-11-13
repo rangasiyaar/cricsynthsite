@@ -1,0 +1,112 @@
+{
+  "id": "rdc-v-ara-t10-abu-dhabi-2026-11-15",
+  "title": "Royal Desert Champions v Arabian Aces",
+  "date": "2026-11-15",
+  "start_time": "17:00",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 19th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Naseem Shah",
+        "Maheesh Theekshana"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Phil Salt",
+        "Muhammad Waseem",
+        "Brandon King",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Naseem Shah",
+        "Maheesh Theekshana"
+      ]
+    },
+    {
+      "name": "Arabian Aces",
+      "short": "ARA",
+      "players": [
+        "Tom Kohler-Cadmore",
+        "Liam Livingstone",
+        "Paul Walter",
+        "Moeen Ali",
+        "Sam Billings",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Alzarri Joseph",
+        "Richard Gleeson",
+        "Muhammad Arfan",
+        "Salman Irshad"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Moeen Ali",
+      "squad": [
+        "Tom Kohler-Cadmore",
+        "Liam Livingstone",
+        "Paul Walter",
+        "Moeen Ali",
+        "Sam Billings",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Alzarri Joseph",
+        "Richard Gleeson",
+        "Muhammad Arfan",
+        "Salman Irshad"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41632,
+    "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-arabian-aces-abu-dhabi-t10-league-15th-november-2026-41632",
+    "auto": true,
+    "xis": false
+  }
+}

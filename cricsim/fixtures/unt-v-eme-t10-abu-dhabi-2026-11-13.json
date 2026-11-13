@@ -12,36 +12,36 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Emirates Eagles won the toss and bowl first.",
   "teams": [
     {
       "name": "United Tigers",
       "short": "UNT",
       "players": [
-        "Fakhar Zaman",
-        "Iftikhar Ahmed",
-        "Usman Tariq",
-        "Joe Clarke",
         "Sahibzada Farhan",
-        "Avishka Fernando",
+        "Fakhar Zaman",
+        "Joe Clarke",
+        "Azmatullah Omarzai",
+        "Iftikhar Ahmed",
         "Abbas Afridi",
         "Faheem Ashraf",
-        "Azmatullah Omarzai",
+        "Avishka Fernando",
         "Awais Ali",
-        "Zeeshan Naseer"
+        "Usman Tariq",
+        "Noorullah Ayobi"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "WK",
+        "AR",
         "AR",
         "BOWL",
-        "WK",
         "AR",
         "BAT",
         "BOWL",
-        "AR",
-        "AR",
         "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Fakhar Zaman",
       "squad": [
@@ -62,15 +62,15 @@
       "name": "Emirates Eagles",
       "short": "EME",
       "players": [
-        "Alex Hales",
         "Kyle Mayers",
-        "Rovman Powell",
         "Shimron Hetmyer",
-        "Kusal Perera",
+        "Rovman Powell",
+        "Alex Hales",
+        "David Wiese",
         "Kona Srikar Bharat",
         "Chris Green",
-        "Trent Boult",
         "Hardus Viljoen",
+        "Trent Boult",
         "Haider Razzaq",
         "Zahir Khan"
       ],
@@ -79,7 +79,7 @@
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "WK",
         "AR",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41626,
     "url": "https://khelnow.com/live-cricket-score/united-tigers-vs-emirates-eagles-abu-dhabi-t10-league-13th-november-2026-41626",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
