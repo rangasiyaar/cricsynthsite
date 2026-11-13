@@ -1,0 +1,112 @@
+{
+  "id": "pak-w-v-ned-w-t20-ajman-2026-11-15",
+  "title": "Pakistan Women v Netherlands Women",
+  "date": "2026-11-15",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 10th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Women",
+      "short": "PAK-W",
+      "players": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Waheeda Akhtar",
+        "Momina Riasat"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Muneeba Ali",
+      "squad": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Waheeda Akhtar",
+        "Momina Riasat"
+      ]
+    },
+    {
+      "name": "Netherlands Women",
+      "short": "NED-W",
+      "players": [
+        "Sterre Kalis",
+        "Heather Siegers",
+        "Phebe Molkenboer",
+        "Babette de Leede",
+        "Sanya Khurana",
+        "Carlijn van Koolwijk",
+        "Iris Zwilling",
+        "Frederique Overdijk",
+        "Robine Rijke",
+        "Hannah Landheer",
+        "Silver Siegers"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Babette de Leede",
+      "squad": [
+        "Sterre Kalis",
+        "Heather Siegers",
+        "Phebe Molkenboer",
+        "Babette de Leede",
+        "Sanya Khurana",
+        "Carlijn van Koolwijk",
+        "Iris Zwilling",
+        "Frederique Overdijk",
+        "Robine Rijke",
+        "Hannah Landheer",
+        "Silver Siegers"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41810,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-15th-november-2026-41810",
+    "auto": true,
+    "xis": false
+  }
+}

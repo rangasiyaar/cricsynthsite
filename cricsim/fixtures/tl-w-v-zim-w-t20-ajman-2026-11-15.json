@@ -1,0 +1,112 @@
+{
+  "id": "tl-w-v-zim-w-t20-ajman-2026-11-15",
+  "title": "Thailand Women v Zimbabwe Women",
+  "date": "2026-11-15",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 9th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Thailand Women",
+      "short": "TL-W",
+      "players": [
+        "Aphisara Suwanchonrathi",
+        "Chanida Sutthiruang",
+        "Nannapat Koncharoenkai",
+        "Naruemol Chaiwai",
+        "Natthakan Chantham",
+        "Onnicha Kamchomphu",
+        "Phannita Maya",
+        "Sarnsiree Rosaline Plant",
+        "Suleeporn Laomi",
+        "Sunida Chaturongrattana",
+        "Thipatcha Putthawong"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Naruemol Chaiwai",
+      "squad": [
+        "Aphisara Suwanchonrathi",
+        "Chanida Sutthiruang",
+        "Nannapat Koncharoenkai",
+        "Naruemol Chaiwai",
+        "Natthakan Chantham",
+        "Onnicha Kamchomphu",
+        "Phannita Maya",
+        "Sarnsiree Rosaline Plant",
+        "Suleeporn Laomi",
+        "Sunida Chaturongrattana",
+        "Thipatcha Putthawong"
+      ]
+    },
+    {
+      "name": "Zimbabwe Women",
+      "short": "ZIM-W",
+      "players": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Josephine Nkomo",
+      "squad": [
+        "Modester Mupachikwa",
+        "Loryn Phiri",
+        "Chipo Mugeri Tiripano",
+        "Beloved Biza",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Michelle Mavunga",
+        "Nomvelo Sibanda",
+        "Francisca Chipare",
+        "Olinder Chare"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41809,
+    "url": "https://khelnow.com/live-cricket-score/thailand-women-vs-zimbabwe-women-icc-women's-emerging-nations-trophy-15th-november-2026-41809",
+    "auto": true,
+    "xis": false
+  }
+}
