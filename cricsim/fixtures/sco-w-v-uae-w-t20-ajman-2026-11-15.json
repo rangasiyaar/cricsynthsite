@@ -1,0 +1,112 @@
+{
+  "id": "sco-w-v-uae-w-t20-ajman-2026-11-15",
+  "title": "Scotland Women v United Arab Emirates Women",
+  "date": "2026-11-15",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 11th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Scotland Women",
+      "short": "SCO-W",
+      "players": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kathryn Bryce",
+      "squad": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel"
+      ]
+    },
+    {
+      "name": "United Arab Emirates Women",
+      "short": "UAE-W",
+      "players": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Simran Sheth",
+        "Suraksha Kotte"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Esha Rohit",
+      "squad": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Simran Sheth",
+        "Suraksha Kotte"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41811,
+    "url": "https://khelnow.com/live-cricket-score/scotland-women-vs-united-arab-emirates-women-icc-women's-emerging-nations-trophy-15th-november-2026-41811",
+    "auto": true,
+    "xis": false
+  }
+}

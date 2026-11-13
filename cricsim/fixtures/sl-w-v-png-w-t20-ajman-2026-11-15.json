@@ -1,0 +1,112 @@
+{
+  "id": "sl-w-v-png-w-t20-ajman-2026-11-15",
+  "title": "Sri Lanka Women v Papua New Guinea Women",
+  "date": "2026-11-15",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 12th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka Women",
+      "short": "SL-W",
+      "players": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Nimasha Madushani Meepage"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harshitha Samarawickrama",
+      "squad": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Nimasha Madushani Meepage"
+      ]
+    },
+    {
+      "name": "Papua New Guinea Women",
+      "short": "PNG-W",
+      "players": [
+        "Naoani Vare",
+        "Hollan Doriga",
+        "Brenda Tau",
+        "Sibona Jimmy",
+        "Tanya Ruma",
+        "Pauke Siaka",
+        "Henao Thomas",
+        "Geua Tom",
+        "Hane Tau",
+        "Dika Lohia",
+        "Buruka Vicky"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Brenda Tau",
+      "squad": [
+        "Naoani Vare",
+        "Hollan Doriga",
+        "Brenda Tau",
+        "Sibona Jimmy",
+        "Tanya Ruma",
+        "Pauke Siaka",
+        "Henao Thomas",
+        "Geua Tom",
+        "Hane Tau",
+        "Dika Lohia",
+        "Buruka Vicky"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41812,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-women-vs-papua-new-guinea-women-icc-women's-emerging-nations-trophy-15th-november-2026-41812",
+    "auto": true,
+    "xis": false
+  }
+}
