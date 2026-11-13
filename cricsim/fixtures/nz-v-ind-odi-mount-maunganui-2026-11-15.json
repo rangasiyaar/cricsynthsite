@@ -1,0 +1,112 @@
+{
+  "id": "nz-v-ind-odi-mount-maunganui-2026-11-15",
+  "title": "New Zealand v India",
+  "date": "2026-11-15",
+  "start_time": "07:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "India tour of New Zealand · 5th ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Bay Oval, Mount Maunganui",
+  "venue_search": "bay oval",
+  "city": "Mount Maunganui",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "New Zealand",
+      "short": "NZ",
+      "players": [
+        "Tim Seifert",
+        "Will Young",
+        "Nick Kelly",
+        "Dean Foxcroft",
+        "Finn Allen",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Kristian Clarke",
+        "Kyle Jamieson",
+        "Matt Henry",
+        "Matthew Fisher"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Santner",
+      "squad": [
+        "Tim Seifert",
+        "Will Young",
+        "Nick Kelly",
+        "Dean Foxcroft",
+        "Finn Allen",
+        "Michael Bracewell",
+        "Mitchell Santner",
+        "Kristian Clarke",
+        "Kyle Jamieson",
+        "Matt Henry",
+        "Matthew Fisher"
+      ]
+    },
+    {
+      "name": "India",
+      "short": "IND",
+      "players": [
+        "Rohit Sharma",
+        "Ruturaj Gaikwad",
+        "Virat Kohli",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Axar Patel",
+        "Naman Dhir",
+        "Auqib Nabi Dar",
+        "Kuldeep Yadav",
+        "Gurnoor Singh Brar",
+        "Arshdeep Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shreyas Iyer",
+      "squad": [
+        "Rohit Sharma",
+        "Ruturaj Gaikwad",
+        "Virat Kohli",
+        "Ishan Kishan",
+        "Shreyas Iyer",
+        "Axar Patel",
+        "Naman Dhir",
+        "Auqib Nabi Dar",
+        "Kuldeep Yadav",
+        "Gurnoor Singh Brar",
+        "Arshdeep Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40298,
+    "url": "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-15th-november-2026-40298",
+    "auto": true,
+    "xis": false
+  }
+}
