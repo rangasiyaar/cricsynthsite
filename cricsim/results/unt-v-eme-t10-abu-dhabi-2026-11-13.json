@@ -1,0 +1,275 @@
+{
+ "id": "unt-v-eme-t10-abu-dhabi-2026-11-13",
+ "innings": [
+  {
+   "team": "United Tigers",
+   "runs": 141,
+   "wickets": 5,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Sahibzada Farhan",
+     "dismissal": "c KS Bharat b T Boult",
+     "runs": 8,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Fakhar Zaman",
+     "dismissal": "c A Hales b GC Viljoen",
+     "runs": 26,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Joe Clarke",
+     "dismissal": "Retired out",
+     "runs": 33,
+     "balls": 20,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Avishka Fernando",
+     "dismissal": "b Haider Razzaq",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "dismissal": "c GC Viljoen b D Wiese",
+     "runs": 33,
+     "balls": 9,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Iftikhar Ahmed",
+     "dismissal": "not out",
+     "runs": 14,
+     "balls": 5,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Abbas Afridi",
+     "dismissal": "not out",
+     "runs": 18,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Trent Boult",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chris Green",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Zahir Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Haider Razzaq",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "David Wiese",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sahibzada Farhan",
+     "score": 9,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Fakhar Zaman",
+     "score": 49,
+     "over": "4.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Avishka Fernando",
+     "score": 70,
+     "over": "6.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Azmatullah Omarzai",
+     "score": 106,
+     "over": "7.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Joe Clarke",
+     "score": 121,
+     "over": "8.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 5,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 22
+  },
+  {
+   "team": "Emirates Eagles",
+   "runs": 119,
+   "wickets": 2,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Kyle Mayers",
+     "dismissal": "c MA Afridi b A Omarzai",
+     "runs": 13,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Alex Hales",
+     "dismissal": "not out",
+     "runs": 67,
+     "balls": 31,
+     "fours": 3,
+     "sixes": 6
+    },
+    {
+     "name": "Shimron Hetmyer",
+     "dismissal": "c JM Clarke b MA Afridi",
+     "runs": 22,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Rovman Powell",
+     "dismissal": "not out",
+     "runs": 12,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Awais Ali",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Azmatullah Omarzai",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Faheem Ashraf",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Usman Tariq",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Abbas Afridi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kyle Mayers",
+     "score": 21,
+     "over": "1.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Shimron Hetmyer",
+     "score": 95,
+     "over": "7.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "United Tigers won by 22 runs",
+ "winner": "United Tigers"
+}
