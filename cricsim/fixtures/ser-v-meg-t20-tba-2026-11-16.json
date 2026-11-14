@@ -1,0 +1,112 @@
+{
+  "id": "ser-v-meg-t20-tba-2026-11-16",
+  "title": "Services v Meghalaya",
+  "date": "2026-11-16",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 6th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Services",
+      "short": "SER",
+      "players": [
+        "Shubham Rohilla",
+        "Mohit Ahlawat",
+        "Ravi Chauhan",
+        "Rajat Paliwal",
+        "Nitin Tanwar",
+        "Vineet Dhankhar",
+        "Pulkit Narang",
+        "Jayant Goyat",
+        "Nakul Sharma",
+        "Arjun Sharma",
+        "Virender"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Rajat Paliwal",
+      "squad": [
+        "Shubham Rohilla",
+        "Mohit Ahlawat",
+        "Ravi Chauhan",
+        "Rajat Paliwal",
+        "Nitin Tanwar",
+        "Vineet Dhankhar",
+        "Pulkit Narang",
+        "Jayant Goyat",
+        "Nakul Sharma",
+        "Arjun Sharma",
+        "Virender"
+      ]
+    },
+    {
+      "name": "Meghalaya",
+      "short": "MEG",
+      "players": [
+        "Raj Biswa",
+        "Bamanbha Shangpliang",
+        "Jiwanjot Singh",
+        "Srinivas Sharath",
+        "Akshay Karnewar",
+        "Dippu Sangma",
+        "Akash Choudhary",
+        "Swarajeet Das",
+        "Nafees Siddique",
+        "Manish Sharma",
+        "Josiah Momin"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Jiwanjot Singh",
+      "squad": [
+        "Raj Biswa",
+        "Bamanbha Shangpliang",
+        "Jiwanjot Singh",
+        "Srinivas Sharath",
+        "Akshay Karnewar",
+        "Dippu Sangma",
+        "Akash Choudhary",
+        "Swarajeet Das",
+        "Nafees Siddique",
+        "Manish Sharma",
+        "Josiah Momin"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41845,
+    "url": "https://khelnow.com/live-cricket-score/services-vs-meghalaya-syed-mushtaq-ali-trophy-plate-16th-november-2026-41845",
+    "auto": true,
+    "xis": false
+  }
+}

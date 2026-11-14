@@ -1,0 +1,112 @@
+{
+  "id": "nag-v-man-t20-tba-2026-11-16",
+  "title": "Nagaland v Manipur",
+  "date": "2026-11-16",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 5th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Nagaland",
+      "short": "NAG",
+      "players": [
+        "Joshua Ozukum",
+        "Sedezhalie Rupero",
+        "Yugandhar Singh",
+        "Rongsen Jonathan",
+        "Hokaito Zhimomi",
+        "Saurav Kumar",
+        "Anil Gupta",
+        "Chetan Bist",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Chopise Hopongkyu"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Hokaito Zhimomi",
+      "squad": [
+        "Joshua Ozukum",
+        "Sedezhalie Rupero",
+        "Yugandhar Singh",
+        "Rongsen Jonathan",
+        "Hokaito Zhimomi",
+        "Saurav Kumar",
+        "Anil Gupta",
+        "Chetan Bist",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Chopise Hopongkyu"
+      ]
+    },
+    {
+      "name": "Manipur",
+      "short": "MAN",
+      "players": [
+        "Langlonyamba Keishangbam",
+        "Pheiroijam Jotin Singh",
+        "Al Bashid Muhammed",
+        "Karnajit Yumnam",
+        "Ronald Longjam",
+        "Kangabam Priyojit Singh",
+        "Johnson Singh",
+        "Rex Rajkumar Singh",
+        "L Kishan Singha",
+        "Lamabam Ajay Singh",
+        "Bishworjit Konthoujam"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Langlonyamba Keishangbam",
+      "squad": [
+        "Langlonyamba Keishangbam",
+        "Pheiroijam Jotin Singh",
+        "Al Bashid Muhammed",
+        "Karnajit Yumnam",
+        "Ronald Longjam",
+        "Kangabam Priyojit Singh",
+        "Johnson Singh",
+        "Rex Rajkumar Singh",
+        "L Kishan Singha",
+        "Lamabam Ajay Singh",
+        "Bishworjit Konthoujam"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41843,
+    "url": "https://khelnow.com/live-cricket-score/nagaland-vs-manipur-syed-mushtaq-ali-trophy-plate-16th-november-2026-41843",
+    "auto": true,
+    "xis": false
+  }
+}
