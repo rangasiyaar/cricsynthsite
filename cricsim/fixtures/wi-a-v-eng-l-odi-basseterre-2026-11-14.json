@@ -12,33 +12,33 @@
   "city": "Basseterre",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England Lions won the toss and bat first.",
   "teams": [
     {
       "name": "West Indies A",
       "short": "WI-A",
       "players": [
-        "Mikyle Louis",
-        "Kirk McKenzie",
-        "Keacy Carty",
-        "Alick Athanaze",
-        "Jyd Goolie",
         "Jewel Andrew",
         "Rivaldo Clarke",
+        "Alick Athanaze",
+        "Mikyle Louis",
+        "Kevlon Anderson",
+        "Jyd Goolie",
+        "Keacy Carty",
+        "Kirk McKenzie",
+        "Micah Mckenzie",
         "Jediah Blades",
-        "Vitel Lawes",
-        "Oshane Thomas",
-        "Micah Mckenzie"
+        "Vitel Lawes"
       ],
       "roles": [
         "BAT",
-        "AR",
-        "AR",
-        "BAT",
-        "BAT",
         "WK",
         "BAT",
-        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -62,26 +62,26 @@
       "name": "England Lions",
       "short": "ENG-L",
       "players": [
-        "Thomas Rew",
-        "Ben McKinney",
-        "Rehan Ahmed",
         "Dan Lawrence",
         "James Rew",
+        "Thomas Rew",
         "Ben Mayes",
+        "Ben McKinney",
         "Ekansh Singh",
+        "Rehan Ahmed",
         "Liam Patterson-White",
-        "Adam Finch",
         "Mason Crane",
-        "Naavya Sharma"
+        "Naavya Sharma",
+        "Adam Finch"
       ],
       "roles": [
+        "AR",
         "WK",
         "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
-        "AR",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41772,
     "url": "https://khelnow.com/live-cricket-score/west-indies-a-vs-england-lions-england-lions-tour-of-west-indies-14th-november-2026-41772",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
