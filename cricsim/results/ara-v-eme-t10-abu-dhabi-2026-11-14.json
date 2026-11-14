@@ -1,0 +1,345 @@
+{
+ "id": "ara-v-eme-t10-abu-dhabi-2026-11-14",
+ "innings": [
+  {
+   "team": "Arabian Aces",
+   "runs": 131,
+   "wickets": 4,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Paul Walter",
+     "dismissal": "c T Boult b CJ Green",
+     "runs": 19,
+     "balls": 7,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Tom Kohler-Cadmore",
+     "dismissal": "c & b D Wiese",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Billings",
+     "dismissal": "lbw b CJ Green",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alishan Sharafu",
+     "dismissal": "c & b D Wiese",
+     "runs": 9,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Livingstone",
+     "dismissal": "not out",
+     "runs": 55,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 7
+    },
+    {
+     "name": "Andre Russell",
+     "dismissal": "not out",
+     "runs": 36,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Trent Boult",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chris Green",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "David Wiese",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Zahir Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Paul Walter",
+     "score": 19,
+     "over": "1.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sam Billings",
+     "score": 21,
+     "over": "1.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Tom Kohler-Cadmore",
+     "score": 38,
+     "over": "4.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Alishan Sharafu",
+     "score": 39,
+     "over": "4.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 23
+  },
+  {
+   "team": "Emirates Eagles",
+   "runs": 94,
+   "wickets": 8,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Kyle Mayers",
+     "dismissal": "b Amshi de Silva",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alex Hales",
+     "dismissal": "c L Livingstone b Amshi de Silva",
+     "runs": 10,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Shimron Hetmyer",
+     "dismissal": "c A Joseph b Amshi de Silva",
+     "runs": 8,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rovman Powell",
+     "dismissal": "c A Sharafu b Amshi de Silva",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "David Wiese",
+     "dismissal": "b A Joseph",
+     "runs": 11,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chris Green",
+     "dismissal": "c M Ali b A Joseph",
+     "runs": 33,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Kona Srikar Bharat",
+     "dismissal": "c PI Walter b Muhammad Arfan",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hardus Viljoen",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Haider Razzaq",
+     "dismissal": "c TK Cadmore b D Pretorius",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Trent Boult",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Amshi de Silva",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Alzarri Joseph",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Liam Livingstone",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Andre Russell",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dwaine Pretorius",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Muhammad Arfan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kyle Mayers",
+     "score": 0,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Alex Hales",
+     "score": 16,
+     "over": "0.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rovman Powell",
+     "score": 29,
+     "over": "2.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shimron Hetmyer",
+     "score": 30,
+     "over": "2.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "David Wiese",
+     "score": 75,
+     "over": "6.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chris Green",
+     "score": 81,
+     "over": "6.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Kona Srikar Bharat",
+     "score": 81,
+     "over": "7.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Haider Razzaq",
+     "score": 93,
+     "over": "8.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 10,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Arabian Aces won",
+ "winner": "Arabian Aces"
+}
