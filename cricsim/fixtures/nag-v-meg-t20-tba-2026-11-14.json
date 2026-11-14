@@ -12,38 +12,38 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Nagaland won the toss and bowl first.",
   "teams": [
     {
       "name": "Nagaland",
       "short": "NAG",
       "players": [
-        "Joshua Ozukum",
-        "Sedezhalie Rupero",
-        "Yugandhar Singh",
         "Rongsen Jonathan",
-        "Hokaito Zhimomi",
-        "Saurav Kumar",
-        "Anil Gupta",
+        "Joshua Ozukum",
         "Chetan Bist",
+        "Sedezhalie Rupero",
+        "Tohuka Zhimo",
+        "Anil Gupta",
+        "Saurav Kumar",
+        "Imliwati Lemtur",
         "Neizekho Rupreo",
         "Nagaho Chishi",
-        "Chopise Hopongkyu"
+        "Hokaito Zhimomi"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
         "BAT",
         "BAT",
         "BAT",
         "AR",
-        "BAT",
-        "BAT",
-        "BAT",
-        "WK",
         "BOWL",
         "AR",
         "BAT"
       ],
-      "captain": "Hokaito Zhimomi",
+      "captain": "Rongsen Jonathan",
       "squad": [
         "Joshua Ozukum",
         "Sedezhalie Rupero",
@@ -63,31 +63,31 @@
       "short": "MEG",
       "players": [
         "Raj Biswa",
-        "Bamanbha Shangpliang",
+        "Arien Sangma",
         "Jiwanjot Singh",
+        "Josiah Momin",
         "Srinivas Sharath",
+        "Amiangshu Sen",
         "Akshay Karnewar",
-        "Dippu Sangma",
-        "Akash Choudhary",
         "Swarajeet Das",
-        "Nafees Siddique",
+        "Akash Choudhary",
         "Manish Sharma",
-        "Josiah Momin"
+        "Chengkam Sangma"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
         "WK",
-        "AR",
-        "AR",
         "BOWL",
+        "AR",
         "BAT",
-        "BAT",
+        "BOWL",
         "BAT",
         "BAT"
       ],
-      "captain": "Jiwanjot Singh",
+      "captain": "Srinivas Sharath",
       "squad": [
         "Raj Biswa",
         "Bamanbha Shangpliang",
@@ -107,6 +107,7 @@
     "kn": 41837,
     "url": "https://khelnow.com/live-cricket-score/nagaland-vs-meghalaya-syed-mushtaq-ali-trophy-plate-14th-november-2026-41837",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

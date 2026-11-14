@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Manipur won the toss and bat first.",
   "teams": [
     {
       "name": "Arunachal Pradesh",
@@ -20,15 +20,15 @@
       "players": [
         "Neelam Obi",
         "Techi Doria",
-        "Nabam Kama",
+        "Licha Jhon",
         "Salil Malhotra",
         "Techi Neri",
+        "Chandan Kumar Singh",
         "Kamsha Yangfo",
-        "Biki Kumar",
-        "Nabam Dol",
-        "Yab Niya",
         "Likha Sonia",
-        "Mibom Mosu"
+        "Yab Niya",
+        "Darge Bagra",
+        "Myendung Singpho"
       ],
       "roles": [
         "BAT",
@@ -36,11 +36,11 @@
         "BAT",
         "BAT",
         "BOWL",
+        "BAT",
         "WK",
         "BAT",
+        "BAT",
         "BOWL",
-        "BAT",
-        "BAT",
         "BOWL"
       ],
       "captain": "Neelam Obi",
@@ -63,29 +63,29 @@
       "short": "MAN",
       "players": [
         "Langlonyamba Keishangbam",
+        "Ulenyai Khwairakpam",
+        "Mandingbam Andyroshan",
         "Pheiroijam Jotin Singh",
-        "Al Bashid Muhammed",
-        "Karnajit Yumnam",
-        "Ronald Longjam",
-        "Kangabam Priyojit Singh",
-        "Johnson Singh",
-        "Rex Rajkumar Singh",
+        "Kiran Laishram",
         "L Kishan Singha",
-        "Lamabam Ajay Singh",
-        "Bishworjit Konthoujam"
+        "Prafullomani Singh",
+        "Baibhabee Das",
+        "Rex Rajkumar Singh",
+        "Sultan Karim",
+        "Ahmed Shah"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
         "BAT",
         "BOWL",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "AR",
+        "BAT"
       ],
       "captain": "Langlonyamba Keishangbam",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41838,
     "url": "https://khelnow.com/live-cricket-score/arunachal-pradesh-vs-manipur-syed-mushtaq-ali-trophy-plate-14th-november-2026-41838",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
