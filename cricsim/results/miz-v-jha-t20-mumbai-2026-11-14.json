@@ -1,0 +1,363 @@
+{
+ "id": "miz-v-jha-t20-mumbai-2026-11-14",
+ "innings": [
+  {
+   "team": "Mizoram",
+   "runs": 76,
+   "wickets": 10,
+   "overs": "19.2",
+   "batting": [
+    {
+     "name": "Jehu Anderson",
+     "dismissal": "b S Mishra",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalhruaizela-M",
+     "dismissal": "c R Minz b P Kumar",
+     "runs": 2,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "F Lalmuanzuala",
+     "dismissal": "c AS Roy b R Singh",
+     "runs": 7,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chinmay Sutar",
+     "dismissal": "c S Suraj Mohan b H Raj",
+     "runs": 19,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Joseph Lalthankhuma",
+     "dismissal": "b AS Roy",
+     "runs": 1,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Manender Singh",
+     "dismissal": "c P Kumar b P Kumar",
+     "runs": 20,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Khiangte Vanrotlinga",
+     "dismissal": "lbw b H Raj",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kuldip Yadav",
+     "dismissal": "c P Kumar b AS Roy",
+     "runs": 1,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "B Lalnunfela",
+     "dismissal": "c R Minz b H Raj",
+     "runs": 11,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sumit Lama",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalrempuia",
+     "dismissal": "b P Kumar",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sushant Mishra",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Pratyush Kumar",
+     "overs": "3.2",
+     "maidens": 1,
+     "runs": 13,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Harsh Raj",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rajandeep Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Anukul Roy",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Utkarsh Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jehu Anderson",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lalhruaizela-M",
+     "score": 4,
+     "over": "3.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "F Lalmuanzuala",
+     "score": 23,
+     "over": "5.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Joseph Lalthankhuma",
+     "score": 31,
+     "over": "8.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Chinmay Sutar",
+     "score": 33,
+     "over": "9.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Khiangte Vanrotlinga",
+     "score": 33,
+     "over": "9.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Kuldip Yadav",
+     "score": 37,
+     "over": "11.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Manender Singh",
+     "score": 60,
+     "over": "15.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "B Lalnunfela",
+     "score": 67,
+     "over": "17.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Lalrempuia",
+     "score": 76,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 23
+  },
+  {
+   "team": "Jharkhand",
+   "runs": 81,
+   "wickets": 4,
+   "overs": "8.3",
+   "batting": [
+    {
+     "name": "Virat Singh",
+     "dismissal": "c J Anderson b K Yadav",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Utkarsh Singh",
+     "dismissal": "c KL Vanrotlinga b Lalrempuia",
+     "runs": 45,
+     "balls": 27,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Shikhar Mohan",
+     "dismissal": "c Lalrempuia b K Yadav",
+     "runs": 13,
+     "balls": 8,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Robin Minz",
+     "dismissal": "c Lalhruaizela b S Lama",
+     "runs": 8,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Anukul Roy",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Rajandeep Singh",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kuldip Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Khiangte Vanrotlinga",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "B Lalnunfela",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sumit Lama",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lalrempuia",
+     "overs": "0.3",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Virat Singh",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Shikhar Mohan",
+     "score": 27,
+     "over": "2.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Robin Minz",
+     "score": 70,
+     "over": "7.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Utkarsh Singh",
+     "score": 74,
+     "over": "8.1"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
