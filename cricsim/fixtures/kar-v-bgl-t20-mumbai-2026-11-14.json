@@ -12,38 +12,38 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bengal won the toss and bowl first.",
   "teams": [
     {
       "name": "Karnataka",
       "short": "KAR",
       "players": [
-        "Mayank Agarwal",
-        "Rohan Patil",
-        "Aneeshwar Gautam",
+        "Luvnith Sisodia",
+        "Manish Pandey",
         "Karun Nair",
-        "Vidhwath Kaverappa",
-        "KV Aneesh",
-        "Shreyas Gopal",
-        "Shrijith Krishnan",
-        "Rithesh Bhatkal",
+        "Smaran-R",
+        "Abhinav Manohar",
+        "Shikhar shetty",
         "Manvanth Kumar",
-        "Shikhar shetty"
+        "Praveen Dubey",
+        "Vyshak Vijaykumar",
+        "Abhilash Shetty",
+        "Rithesh Bhatkal"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "AR",
-        "BAT",
-        "BOWL",
-        "BAT",
-        "BOWL",
         "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
         "AR"
       ],
-      "captain": "Shreyas Gopal",
+      "captain": "Smaran-R",
       "squad": [
         "Mayank Agarwal",
         "Rohan Patil",
@@ -62,29 +62,29 @@
       "name": "Bengal",
       "short": "BGL",
       "players": [
-        "Abhimanyu Easwaran",
-        "Sudip Kumar Gharami",
         "Abishek Porel",
-        "Ankur Paul",
+        "Karan Lal",
+        "Abhimanyu Easwaran",
         "Sudip Chatterjee",
-        "Sumanta Gupta",
-        "Pradipta Pramanik",
         "Shahbaz Ahamad",
+        "Shakir Habib Gandhi",
+        "Rishabh Chaudhary",
+        "Pradipta Pramanik",
         "Mohammad Shami",
-        "Mohammed Kaif",
-        "Suraj Sindhu Jaiswal"
+        "Mukesh Kumar",
+        "Sayan Ghosh"
       ],
       "roles": [
-        "BAT",
-        "BAT",
         "WK",
         "AR",
         "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "BAT",
         "BOWL"
       ],
       "captain": "Abhimanyu Easwaran",
@@ -107,6 +107,7 @@
     "kn": 41866,
     "url": "https://khelnow.com/live-cricket-score/karnataka-vs-bengal-syed-mushtaq-ali-trophy-elite-14th-november-2026-41866",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
