@@ -1,0 +1,112 @@
+{
+  "id": "vic-v-wa-odi-melbourne-2026-11-16",
+  "title": "Victoria v Western Australia",
+  "date": "2026-11-16",
+  "start_time": "08:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "Australia Domestic One-Day Cup · 15th Match",
+  "comp_key": "australia-domestic-one-day-cup",
+  "venue": "Junction Oval, Melbourne",
+  "venue_search": "junction oval",
+  "city": "Melbourne",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Victoria",
+      "short": "VIC",
+      "players": [
+        "Marcus Harris",
+        "Sam Harper",
+        "Ashley Chandrasinghe",
+        "Peter Handscomb",
+        "Blake Macdonald",
+        "Liam Blackford",
+        "Will Sutherland",
+        "Harry Hoekstra",
+        "Todd Murphy",
+        "Austin Anlezark",
+        "David Moody"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Will Sutherland",
+      "squad": [
+        "Marcus Harris",
+        "Sam Harper",
+        "Ashley Chandrasinghe",
+        "Peter Handscomb",
+        "Blake Macdonald",
+        "Liam Blackford",
+        "Will Sutherland",
+        "Harry Hoekstra",
+        "Todd Murphy",
+        "Austin Anlezark",
+        "David Moody"
+      ]
+    },
+    {
+      "name": "Western Australia",
+      "short": "WA",
+      "players": [
+        "Cameron Bancroft",
+        "Sam Whiteman",
+        "Jayden Goodwin",
+        "Aaron Hardie",
+        "Corey Wasley",
+        "Joel Curtis",
+        "Ashton Agar",
+        "Kieran Elliott",
+        "Corey Rocchiccioli",
+        "Liam Haskett",
+        "Albert Esterhuysen"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Aaron Hardie",
+      "squad": [
+        "Cameron Bancroft",
+        "Sam Whiteman",
+        "Jayden Goodwin",
+        "Aaron Hardie",
+        "Corey Wasley",
+        "Joel Curtis",
+        "Ashton Agar",
+        "Kieran Elliott",
+        "Corey Rocchiccioli",
+        "Liam Haskett",
+        "Albert Esterhuysen"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40671,
+    "url": "https://khelnow.com/live-cricket-score/victoria-vs-western-australia-australia-domestic-one-day-cup-16th-november-2026-40671",
+    "auto": true,
+    "xis": false
+  }
+}
