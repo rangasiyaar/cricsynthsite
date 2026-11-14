@@ -1,0 +1,112 @@
+{
+  "id": "zim-w-v-pak-w-t20-ajman-2026-11-16",
+  "title": "Zimbabwe Women v Pakistan Women",
+  "date": "2026-11-16",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 14th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Zimbabwe Women",
+      "short": "ZIM-W",
+      "players": [
+        "Kelis Ndhlovu",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Chipo Mugeri Tiripano",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Christine Mutasa",
+        "Michelle Mavunga",
+        "Chiedza Dhururu",
+        "Olinder Chare",
+        "Tendai Makusha"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Josephine Nkomo",
+      "squad": [
+        "Kelis Ndhlovu",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Chipo Mugeri Tiripano",
+        "Josephine Nkomo",
+        "Nyasha Gwanzura",
+        "Christine Mutasa",
+        "Michelle Mavunga",
+        "Chiedza Dhururu",
+        "Olinder Chare",
+        "Tendai Makusha"
+      ]
+    },
+    {
+      "name": "Pakistan Women",
+      "short": "PAK-W",
+      "players": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Tasmia Rubab",
+        "Nashra Sandhu",
+        "Waheeda Akhtar",
+        "Momina Riasat"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Muneeba Ali",
+      "squad": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Tasmia Rubab",
+        "Nashra Sandhu",
+        "Waheeda Akhtar",
+        "Momina Riasat"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41814,
+    "url": "https://khelnow.com/live-cricket-score/zimbabwe-women-vs-pakistan-women-icc-women's-emerging-nations-trophy-16th-november-2026-41814",
+    "auto": true,
+    "xis": false
+  }
+}

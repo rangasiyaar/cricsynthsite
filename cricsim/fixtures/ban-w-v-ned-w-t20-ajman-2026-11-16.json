@@ -1,0 +1,112 @@
+{
+  "id": "ban-w-v-ned-w-t20-ajman-2026-11-16",
+  "title": "Bangladesh Women v Netherlands Women",
+  "date": "2026-11-16",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 13th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bangladesh Women",
+      "short": "BAN-W",
+      "players": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Fahima Khatun",
+        "Rabeya Khan",
+        "Disha Biswas",
+        "Sanjida Akter Meghla"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Sobhana Mostary",
+      "squad": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Fahima Khatun",
+        "Rabeya Khan",
+        "Disha Biswas",
+        "Sanjida Akter Meghla"
+      ]
+    },
+    {
+      "name": "Netherlands Women",
+      "short": "NED-W",
+      "players": [
+        "Sterre Kalis",
+        "Heather Siegers",
+        "Phebe Molkenboer",
+        "Babette de Leede",
+        "Sanya Khurana",
+        "Carlijn van Koolwijk",
+        "Iris Zwilling",
+        "Frederique Overdijk",
+        "Robine Rijke",
+        "Hannah Landheer",
+        "Silver Siegers"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Babette de Leede",
+      "squad": [
+        "Sterre Kalis",
+        "Heather Siegers",
+        "Phebe Molkenboer",
+        "Babette de Leede",
+        "Sanya Khurana",
+        "Carlijn van Koolwijk",
+        "Iris Zwilling",
+        "Frederique Overdijk",
+        "Robine Rijke",
+        "Hannah Landheer",
+        "Silver Siegers"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41813,
+    "url": "https://khelnow.com/live-cricket-score/bangladesh-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-16th-november-2026-41813",
+    "auto": true,
+    "xis": false
+  }
+}
