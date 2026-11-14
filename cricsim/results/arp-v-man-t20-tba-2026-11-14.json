@@ -1,0 +1,430 @@
+{
+ "id": "arp-v-man-t20-tba-2026-11-14",
+ "innings": [
+  {
+   "team": "Manipur",
+   "runs": 167,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ulenyai Khwairakpam",
+     "dismissal": "c T Neri b Y Niya",
+     "runs": 72,
+     "balls": 51,
+     "fours": 9,
+     "sixes": 2
+    },
+    {
+     "name": "Pheiroijam Jotin Singh",
+     "dismissal": "b Darge Bagra",
+     "runs": 15,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Prafullomani Singh",
+     "dismissal": "c T Neri b Darge Bagra",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Langlonyamba Keishangbam",
+     "dismissal": "b Y Niya",
+     "runs": 31,
+     "balls": 26,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Mandingbam Andyroshan",
+     "dismissal": "c T Neri b L Sonia",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ahmed Shah",
+     "dismissal": "c Y Niya b Darge Bagra",
+     "runs": 27,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Chingakham Bidash",
+     "dismissal": "lbw b Y Niya",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rex Rajkumar Singh",
+     "dismissal": "runout (S Malhotra)",
+     "runs": 5,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sultan Karim",
+     "dismissal": "runout (K Yangfo)",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "L Kishan Singha",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Yab Niya",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Darge Bagra",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Chandan Kumar Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Techi Doria",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Likha Sonia",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Techi Neri",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Pheiroijam Jotin Singh",
+     "score": 37,
+     "over": "3.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prafullomani Singh",
+     "score": 40,
+     "over": "5.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Langlonyamba Keishangbam",
+     "score": 102,
+     "over": "13.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mandingbam Andyroshan",
+     "score": 111,
+     "over": "14.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ulenyai Khwairakpam",
+     "score": 162,
+     "over": "18.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chingakham Bidash",
+     "score": 162,
+     "over": "18.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ahmed Shah",
+     "score": 164,
+     "over": "19.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sultan Karim",
+     "score": 164,
+     "over": "19.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Rex Rajkumar Singh",
+     "score": 167,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 6,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 42
+  },
+  {
+   "team": "Arunachal Pradesh",
+   "runs": 106,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Neelam Obi",
+     "dismissal": "b PJ Singh",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Techi Doria",
+     "dismissal": "c PJ Singh b LK Singha",
+     "runs": 12,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Salil Malhotra",
+     "dismissal": "c L Keishangbam b LK Singha",
+     "runs": 53,
+     "balls": 48,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Techi Neri",
+     "dismissal": "c LK Singha b C Bidash",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Myendung Singpho",
+     "dismissal": "b LK Singha",
+     "runs": 5,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Licha Jhon",
+     "dismissal": "c PJ Singh b MD Sultan Karim",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kamsha Yangfo",
+     "dismissal": "c Kiran Laishram b MD Sultan Karim",
+     "runs": 14,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Likha Sonia",
+     "dismissal": "b MD Sultan Karim",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chandan Kumar Singh",
+     "dismissal": "b MD Sultan Karim",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yab Niya",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Darge Bagra",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Rex Rajkumar Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pheiroijam Jotin Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chingakham Bidash",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "L Kishan Singha",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kiran Laishram",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sultan Karim",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Neelam Obi",
+     "score": 9,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Techi Doria",
+     "score": 28,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Techi Neri",
+     "score": 33,
+     "over": "6.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Myendung Singpho",
+     "score": 45,
+     "over": "9.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Licha Jhon",
+     "score": 51,
+     "over": "11.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kamsha Yangfo",
+     "score": 95,
+     "over": "17.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Likha Sonia",
+     "score": 95,
+     "over": "17.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Chandan Kumar Singh",
+     "score": 95,
+     "over": "17.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Salil Malhotra",
+     "score": 104,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 5,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Manipur won",
+ "winner": "Manipur"
+}

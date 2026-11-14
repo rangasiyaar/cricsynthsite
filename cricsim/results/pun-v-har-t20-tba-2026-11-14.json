@@ -1,0 +1,363 @@
+{
+ "id": "pun-v-har-t20-tba-2026-11-14",
+ "innings": [
+  {
+   "team": "Haryana",
+   "runs": 190,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Arsh Ranga",
+     "dismissal": "c U Saharan b SS Bajwa",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ankit Kumar",
+     "dismissal": "c P Singh b H Brar",
+     "runs": 28,
+     "balls": 26,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Nishant Sindhu",
+     "dismissal": "c AP Singh b S Singh",
+     "runs": 8,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Yashvardhan Dalal",
+     "dismissal": "c & b RM Singh",
+     "runs": 25,
+     "balls": 22,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Dinesh Bana",
+     "dismissal": "b H Brar",
+     "runs": 42,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 5
+    },
+    {
+     "name": "Samant Jakhar",
+     "dismissal": "c S Singh b Raghu Sharma",
+     "runs": 24,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Rahul Tewatia",
+     "dismissal": "not out",
+     "runs": 35,
+     "balls": 20,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Sumit Kumar",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sukhdeep Singh Bajwa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sanvir Singh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sahil Bhaskar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Raghu Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Harpreet Brar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ramandeep Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arsh Ranga",
+     "score": 6,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nishant Sindhu",
+     "score": 15,
+     "over": "1.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ankit Kumar",
+     "score": 50,
+     "over": "7.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Yashvardhan Dalal",
+     "score": 88,
+     "over": "10.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Dinesh Bana",
+     "score": 120,
+     "over": "13.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Samant Jakhar",
+     "score": 139,
+     "over": "15.5"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 44
+  },
+  {
+   "team": "Punjab",
+   "runs": 193,
+   "wickets": 6,
+   "overs": "19.1",
+   "batting": [
+    {
+     "name": "Vihaan Malhotra",
+     "dismissal": "c S Jakhar b Sumit Kumar",
+     "runs": 86,
+     "balls": 50,
+     "fours": 8,
+     "sixes": 5
+    },
+    {
+     "name": "Prabhsimran Singh",
+     "dismissal": "c Y Dalal b Anuj Thakral",
+     "runs": 22,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Anmolpreet Singh",
+     "dismissal": "c Sumit Kumar b S Jakhar",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Salil Arora",
+     "dismissal": "b Sumit Kumar",
+     "runs": 12,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Ramandeep Singh",
+     "dismissal": "c Y Dalal b Sumit Kumar",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sanvir Singh",
+     "dismissal": "c Y Dalal b Anuj Thakral",
+     "runs": 21,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Uday Saharan",
+     "dismissal": "not out",
+     "runs": 42,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Harpreet Brar",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 1,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sumit Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Himanshu Kumar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anuj Thakral",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Yuzvendra Chahal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Samant Jakhar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nishant Sindhu",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rahul Tewatia",
+     "overs": "0.1",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Prabhsimran Singh",
+     "score": 56,
+     "over": "4.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Anmolpreet Singh",
+     "score": 73,
+     "over": "7.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Salil Arora",
+     "score": 113,
+     "over": "11.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ramandeep Singh",
+     "score": 119,
+     "over": "13.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Vihaan Malhotra",
+     "score": 128,
+     "over": "13.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sanvir Singh",
+     "score": 185,
+     "over": "18.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Punjab won",
+ "winner": "Punjab"
+}

@@ -1,0 +1,112 @@
+{
+  "id": "sikm-v-arp-t20-tba-2026-11-16",
+  "title": "Sikkim v Arunachal Pradesh",
+  "date": "2026-11-16",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 4th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sikkim",
+      "short": "SIKM",
+      "players": [
+        "Nilesh Lamichaney",
+        "Amit Rajera",
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "Gurinder Singh",
+        "Kranthi Kumar",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Abishek Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Lee Yong Lepcha",
+      "squad": [
+        "Nilesh Lamichaney",
+        "Amit Rajera",
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "Gurinder Singh",
+        "Kranthi Kumar",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Abishek Kumar"
+      ]
+    },
+    {
+      "name": "Arunachal Pradesh",
+      "short": "ARP",
+      "players": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Licha Jhon",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Chandan Kumar Singh",
+        "Kamsha Yangfo",
+        "Likha Sonia",
+        "Yab Niya",
+        "Darge Bagra",
+        "Myendung Singpho"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Neelam Obi",
+      "squad": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Licha Jhon",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Chandan Kumar Singh",
+        "Kamsha Yangfo",
+        "Likha Sonia",
+        "Yab Niya",
+        "Darge Bagra",
+        "Myendung Singpho"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41842,
+    "url": "https://khelnow.com/live-cricket-score/sikkim-vs-arunachal-pradesh-syed-mushtaq-ali-trophy-plate-16th-november-2026-41842",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,390 @@
+{
+ "id": "maha-v-pdy-t20-tba-2026-11-14",
+ "innings": [
+  {
+   "team": "Puducherry",
+   "runs": 204,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Bhanu Anand",
+     "dismissal": "c R Ghosh b V Ostwal",
+     "runs": 46,
+     "balls": 27,
+     "fours": 0,
+     "sixes": 5
+    },
+    {
+     "name": "Ramamoorthy Ragavan",
+     "dismissal": "c A Kulkarni b M Choudhary",
+     "runs": 6,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Pougajendy Akash",
+     "dismissal": "lbw b V Ostwal",
+     "runs": 42,
+     "balls": 14,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Aman Hakim Khan",
+     "dismissal": "c T Sanghvi b PH Solanki",
+     "runs": 7,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "S Parameeswaran",
+     "dismissal": "c R Ghosh b M Choudhary",
+     "runs": 46,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 5
+    },
+    {
+     "name": "Shashank Singh",
+     "dismissal": "c S Parakh b PH Solanki",
+     "runs": 20,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Sagar Trivedi",
+     "dismissal": "c RA Tripathi b T Sanghvi",
+     "runs": 21,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Raghav Goyal",
+     "dismissal": "runout (S Shinde)",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Adil Ayub Tunda",
+     "dismissal": "runout (T Sanghvi)",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Badal Rawat",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mukesh Choudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Tanay Sanghvi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Kiran Chormale",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Vicky Ostwal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Prashant Solanki",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ramamoorthy Ragavan",
+     "score": 26,
+     "over": "2.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Pougajendy Akash",
+     "score": 93,
+     "over": "6.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Bhanu Anand",
+     "score": 104,
+     "over": "8.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Aman Hakim Khan",
+     "score": 106,
+     "over": "9.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shashank Singh",
+     "score": 159,
+     "over": "15.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "S Parameeswaran",
+     "score": 174,
+     "over": "16.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Raghav Goyal",
+     "score": 204,
+     "over": "19.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Adil Ayub Tunda",
+     "score": 204,
+     "over": "19.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Sagar Trivedi",
+     "score": 204,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 82
+  },
+  {
+   "team": "Maharashtra",
+   "runs": 189,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Prithvi Shaw",
+     "dismissal": "c A H Khan b B Rawat",
+     "runs": 32,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Arshin Kulkarni",
+     "dismissal": "c A H Khan b B Rawat",
+     "runs": 33,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Sahil Parakh",
+     "dismissal": "c (sub S Udeshi) b B Rawat",
+     "runs": 57,
+     "balls": 29,
+     "fours": 7,
+     "sixes": 3
+    },
+    {
+     "name": "Rahul Tripathi",
+     "dismissal": "not out",
+     "runs": 35,
+     "balls": 27,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "dismissal": "runout (R Goyal)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kiran Chormale",
+     "dismissal": "c RM Ragavan b R Goyal",
+     "runs": 11,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Suraj Shinde",
+     "dismissal": "not out",
+     "runs": 16,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Gaurav Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Adil Ayub Tunda",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sagar Trivedi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Badal Rawat",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pougajendy Akash",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Raghav Goyal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shashank Singh",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aman Hakim Khan",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arshin Kulkarni",
+     "score": 44,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sahil Parakh",
+     "score": 115,
+     "over": "11.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Prithvi Shaw",
+     "score": 128,
+     "over": "13.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ramakrishna Ghosh",
+     "score": 129,
+     "over": "13.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Kiran Chormale",
+     "score": 151,
+     "over": "15.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
