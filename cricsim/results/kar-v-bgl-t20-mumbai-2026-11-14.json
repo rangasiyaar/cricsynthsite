@@ -1,0 +1,435 @@
+{
+ "id": "kar-v-bgl-t20-mumbai-2026-11-14",
+ "innings": [
+  {
+   "team": "Karnataka",
+   "runs": 184,
+   "wickets": 10,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Luvnith Sisodia",
+     "dismissal": "lbw b SS Ghosh",
+     "runs": 27,
+     "balls": 12,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Manish Pandey",
+     "dismissal": "c A Easwaran b PJ Pramanik",
+     "runs": 29,
+     "balls": 23,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Karun Nair",
+     "dismissal": "c PJ Pramanik b M Kumar",
+     "runs": 53,
+     "balls": 35,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Smaran-R",
+     "dismissal": "b PJ Pramanik",
+     "runs": 12,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Abhinav Manohar",
+     "dismissal": "c PJ Pramanik b SS Ghosh",
+     "runs": 19,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Praveen Dubey",
+     "dismissal": "not out",
+     "runs": 30,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Manvanth Kumar",
+     "dismissal": "c R Chaudhary b M Kumar",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rithesh Bhatkal",
+     "dismissal": "b SS Ghosh",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shikhar shetty",
+     "dismissal": "b SS Ghosh",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Vyshak Vijaykumar",
+     "dismissal": "runout (A Porel / K Lal)",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhilash Shetty",
+     "dismissal": "b M Shami",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammad Shami",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mukesh Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sayan Ghosh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Pradipta Pramanik",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Luvnith Sisodia",
+     "score": 47,
+     "over": "3.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Manish Pandey",
+     "score": 67,
+     "over": "7.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Smaran-R",
+     "score": 102,
+     "over": "10.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Karun Nair",
+     "score": 145,
+     "over": "15.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Abhinav Manohar",
+     "score": 151,
+     "over": "16.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Manvanth Kumar",
+     "score": 160,
+     "over": "17.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Rithesh Bhatkal",
+     "score": 165,
+     "over": "18.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Shikhar shetty",
+     "score": 167,
+     "over": "18.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Vyshak Vijaykumar",
+     "score": 184,
+     "over": "19.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Abhilash Shetty",
+     "score": 184,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 62
+  },
+  {
+   "team": "Bengal",
+   "runs": 165,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Abishek Porel",
+     "dismissal": "c L Sisodia b A Shetty",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Karan Lal",
+     "dismissal": "c K Nair b V Vijaykumar",
+     "runs": 9,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Abhimanyu Easwaran",
+     "dismissal": "lbw b A Shetty",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sudip Kumar Gharami",
+     "dismissal": "c Abhinav Manohar b M Kumar",
+     "runs": 65,
+     "balls": 42,
+     "fours": 6,
+     "sixes": 4
+    },
+    {
+     "name": "Rishabh Chaudhary",
+     "dismissal": "c PR Dubey b V Vijaykumar",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "dismissal": "c PR Dubey b V Vijaykumar",
+     "runs": 56,
+     "balls": 37,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Shakir Habib Gandhi",
+     "dismissal": "c Smaran-R b M Kumar",
+     "runs": 11,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Pradipta Pramanik",
+     "dismissal": "c M Pandey b A Shetty",
+     "runs": 12,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Mohammad Shami",
+     "dismissal": "c PR Dubey b A Shetty",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mukesh Kumar",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sayan Ghosh",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Abhilash Shetty",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 26,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Vyshak Vijaykumar",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 28,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rithesh Bhatkal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Manvanth Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Shikhar shetty",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Praveen Dubey",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Abishek Porel",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abhimanyu Easwaran",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Karan Lal",
+     "score": 24,
+     "over": "3.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rishabh Chaudhary",
+     "score": 24,
+     "over": "3.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sudip Kumar Gharami",
+     "score": 120,
+     "over": "13.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Shakir Habib Gandhi",
+     "score": 134,
+     "over": "15.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Shahbaz Ahamad",
+     "score": 153,
+     "over": "17.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Pradipta Pramanik",
+     "score": 159,
+     "over": "18.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Mohammad Shami",
+     "score": 162,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Karnataka won",
+ "winner": "Karnataka"
+}
