@@ -1,0 +1,112 @@
+{
+  "id": "kar-v-up-t20-mumbai-2026-11-16",
+  "title": "Karnataka v Uttar Pradesh",
+  "date": "2026-11-16",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 22nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Karnataka",
+      "short": "KAR",
+      "players": [
+        "Mayank Agarwal",
+        "Rohan Patil",
+        "Aneeshwar Gautam",
+        "Karun Nair",
+        "Vidhwath Kaverappa",
+        "KV Aneesh",
+        "Shreyas Gopal",
+        "Shrijith Krishnan",
+        "Rithesh Bhatkal",
+        "Manvanth Kumar",
+        "Shikhar shetty"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "WK",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Shreyas Gopal",
+      "squad": [
+        "Mayank Agarwal",
+        "Rohan Patil",
+        "Aneeshwar Gautam",
+        "Karun Nair",
+        "Vidhwath Kaverappa",
+        "KV Aneesh",
+        "Shreyas Gopal",
+        "Shrijith Krishnan",
+        "Rithesh Bhatkal",
+        "Manvanth Kumar",
+        "Shikhar shetty"
+      ]
+    },
+    {
+      "name": "Uttar Pradesh",
+      "short": "UP",
+      "players": [
+        "Madhav Kaushik",
+        "Adarsh Singh",
+        "Aryan Juyal",
+        "Karan Sharma",
+        "Siddarth Yadav",
+        "Rinku Singh",
+        "Prashant Veer",
+        "Zeeshan Ansari",
+        "Shivam Mavi",
+        "Yash Dayal",
+        "Kartik Yadav"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Aryan Juyal",
+      "squad": [
+        "Madhav Kaushik",
+        "Adarsh Singh",
+        "Aryan Juyal",
+        "Karan Sharma",
+        "Siddarth Yadav",
+        "Rinku Singh",
+        "Prashant Veer",
+        "Zeeshan Ansari",
+        "Shivam Mavi",
+        "Yash Dayal",
+        "Kartik Yadav"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41872,
+    "url": "https://khelnow.com/live-cricket-score/karnataka-vs-uttar-pradesh-syed-mushtaq-ali-trophy-elite-16th-november-2026-41872",
+    "auto": true,
+    "xis": false
+  }
+}
