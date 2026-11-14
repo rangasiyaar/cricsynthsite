@@ -1,0 +1,112 @@
+{
+  "id": "uae-w-v-sl-w-t20-ajman-2026-11-16",
+  "title": "United Arab Emirates Women v Sri Lanka Women",
+  "date": "2026-11-16",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 15th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "United Arab Emirates Women",
+      "short": "UAE-W",
+      "players": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Simran Sheth",
+        "Suraksha Kotte"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Esha Rohit",
+      "squad": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Simran Sheth",
+        "Suraksha Kotte"
+      ]
+    },
+    {
+      "name": "Sri Lanka Women",
+      "short": "SL-W",
+      "players": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Nimasha Madushani Meepage"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harshitha Samarawickrama",
+      "squad": [
+        "Vishmi Rajapaksha Gunaratne",
+        "Hasini Perera",
+        "Imesha Dulani",
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Sathya Sandeepani",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Nimasha Madushani Meepage"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41815,
+    "url": "https://khelnow.com/live-cricket-score/united-arab-emirates-women-vs-sri-lanka-women-icc-women's-emerging-nations-trophy-16th-november-2026-41815",
+    "auto": true,
+    "xis": false
+  }
+}
