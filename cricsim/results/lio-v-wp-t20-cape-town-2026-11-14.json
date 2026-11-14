@@ -1,0 +1,382 @@
+{
+ "id": "lio-v-wp-t20-cape-town-2026-11-14",
+ "innings": [
+  {
+   "team": "Lions",
+   "runs": 194,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Onkgomoditse Seletswane",
+     "dismissal": "c K Verreynne b O Whitehead",
+     "runs": 78,
+     "balls": 53,
+     "fours": 7,
+     "sixes": 3
+    },
+    {
+     "name": "Bjorn Fortuin",
+     "dismissal": "c Daniel Smith b R Daniels",
+     "runs": 29,
+     "balls": 17,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Rassie van der Dussen",
+     "dismissal": "c K Verreynne b J Breed",
+     "runs": 24,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Connor Esterhuizen",
+     "dismissal": "c R Daniels b O Whitehead",
+     "runs": 38,
+     "balls": 16,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Mitchell Van Buuren",
+     "dismissal": "c Daniel Smith b R Daniels",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Delano Potgieter",
+     "dismissal": "c K Verreynne b TL Moreki",
+     "runs": 8,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Morteza Manack",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gerald Coetzee",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "George Linde",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Raeeq Daniels",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Oliver Whitehead",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Tshepo Moreki",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Josh Breed",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mihlali Mpongwana",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Bjorn Fortuin",
+     "score": 42,
+     "over": "4.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rassie van der Dussen",
+     "score": 115,
+     "over": "13.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Onkgomoditse Seletswane",
+     "score": 148,
+     "over": "16.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mitchell Van Buuren",
+     "score": 160,
+     "over": "17.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Delano Potgieter",
+     "score": 173,
+     "over": "18.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Connor Esterhuizen",
+     "score": 192,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 5,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 47
+  },
+  {
+   "team": "Western Province",
+   "runs": 178,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Jiveshan Pillay",
+     "dismissal": "c C Esterhuizen b S Plaatjie",
+     "runs": 25,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Kashief Joseph",
+     "dismissal": "c RVD Dussen b CE Yusuf",
+     "runs": 20,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Kyle Verreynne",
+     "dismissal": "lbw b Nqabayomzi Peter",
+     "runs": 24,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Daniel Smith",
+     "dismissal": "c BC Fortuin b S Plaatjie",
+     "runs": 20,
+     "balls": 22,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "George Linde",
+     "dismissal": "c C Esterhuizen b Nqabayomzi Peter",
+     "runs": 59,
+     "balls": 33,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Mihlali Mpongwana",
+     "dismissal": "c M Van Buuren b CE Yusuf",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Oliver Whitehead",
+     "dismissal": "runout (M Van Buuren / OR Seletswane)",
+     "runs": 13,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Josh Breed",
+     "dismissal": "runout (C Esterhuizen / RVD Dussen)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Raeeq Daniels",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sinalo Gobeni",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Gerald Coetzee",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bjorn Fortuin",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Morteza Manack",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Codi Yusuf",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nqabayomzi Peter",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Siya Plaatjie",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kashief Joseph",
+     "score": 36,
+     "over": "4.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jiveshan Pillay",
+     "score": 69,
+     "over": "8.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kyle Verreynne",
+     "score": 73,
+     "over": "9.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Daniel Smith",
+     "score": 142,
+     "over": "16.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "George Linde",
+     "score": 157,
+     "over": "17.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Mihlali Mpongwana",
+     "score": 169,
+     "over": "18.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Josh Breed",
+     "score": 170,
+     "over": "18.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Oliver Whitehead",
+     "score": 173,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 5,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Lions won",
+ "winner": "Lions"
+}
