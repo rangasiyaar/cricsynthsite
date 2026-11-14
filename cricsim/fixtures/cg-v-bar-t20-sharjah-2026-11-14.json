@@ -12,23 +12,23 @@
   "city": "Sharjah",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chandigarh won the toss and bowl first.",
   "teams": [
     {
       "name": "Chandigarh",
       "short": "CG",
       "players": [
         "Manan Vohra",
-        "Arjit Pannu",
-        "Akshit Rana",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
         "Arjun Azad",
-        "Nehal Pajni",
-        "Nikhil Sharma",
+        "Sanyam Saini",
+        "Raman Bishnoi",
         "Bhagmender Lather",
+        "Chiragvir Dhindsa",
         "Jagjit Singh Sandhu",
-        "Nishunk Birla",
-        "Rohit Dhanda",
-        "Chiragvir Dhindsa"
+        "Sandeep Sharma",
+        "Rohit Dhanda"
       ],
       "roles": [
         "BAT",
@@ -38,12 +38,12 @@
         "BAT",
         "AR",
         "AR",
+        "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Manan Vohra",
+      "captain": "Shivam Bhambri",
       "squad": [
         "Manan Vohra",
         "Arjit Pannu",
@@ -62,32 +62,32 @@
       "name": "Baroda",
       "short": "BAR",
       "players": [
-        "Dhruv Patel",
-        "Shivalik Sharma",
+        "Krunal Pandya",
         "Atit Sheth",
-        "Shashwat Rawat",
-        "Mitesh Patel",
-        "Manan Solanki",
-        "Priyanshu Moliya",
+        "Jitesh Sharma",
+        "Shivalik Sharma",
+        "Deepak Hooda",
+        "Amit Passi",
         "Mahesh Pithiya",
         "Raj Limbani",
-        "Bhargav Bhatt",
-        "Rasikh Salam Dar"
+        "Rasikh Salam Dar",
+        "Bhanu Pania",
+        "Safvan Patel"
       ],
       "roles": [
         "AR",
         "AR",
-        "AR",
-        "BAT",
         "WK",
         "AR",
         "BAT",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
+        "BAT",
         "BOWL"
       ],
-      "captain": "Atit Sheth",
+      "captain": "Krunal Pandya",
       "squad": [
         "Dhruv Patel",
         "Shivalik Sharma",
@@ -107,6 +107,7 @@
     "kn": 41839,
     "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-baroda-syed-mushtaq-ali-trophy-elite-14th-november-2026-41839",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

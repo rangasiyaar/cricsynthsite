@@ -12,38 +12,38 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Punjab won the toss and bowl first.",
   "teams": [
     {
       "name": "Punjab",
       "short": "PUN",
       "players": [
-        "Vihaan Malhotra",
         "Prabhsimran Singh",
-        "Jashanpreet Singh Sidhu",
-        "Salil Arora",
-        "Ramandeep Singh",
-        "Harpreet Brar",
-        "Emanjot Singh Chahal",
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
         "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
         "Sanvir Singh",
+        "Harpreet Brar",
+        "Raghu Sharma",
         "Sukhdeep Singh Bajwa",
-        "Gursimran Singh"
+        "Sahil Bhaskar"
       ],
       "roles": [
-        "AR",
-        "BAT",
-        "BAT",
         "WK",
         "AR",
-        "BOWL",
-        "BOWL",
+        "BAT",
         "BAT",
         "AR",
+        "BAT",
         "AR",
-        "AR"
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
       ],
-      "captain": "Uday Saharan",
+      "captain": "Ramandeep Singh",
       "squad": [
         "Vihaan Malhotra",
         "Prabhsimran Singh",
@@ -63,28 +63,28 @@
       "short": "HAR",
       "players": [
         "Ankit Kumar",
-        "Himanshu Rana",
-        "Nishant Sindhu",
-        "Dheeru Singh",
-        "Yashvardhan Dalal",
-        "Parth Vats",
-        "Kanishk Chouhan",
-        "Tanmay Baloda",
-        "Aman Kumar",
         "Arsh Ranga",
-        "Ajit Chahal"
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Anuj Thakral",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
       ],
       "roles": [
         "BAT",
         "BAT",
-        "AR",
-        "BAT",
         "WK",
         "AR",
-        "AR",
+        "BAT",
         "AR",
         "AR",
         "BAT",
+        "BOWL",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Ankit Kumar",
@@ -107,6 +107,7 @@
     "kn": 41846,
     "url": "https://khelnow.com/live-cricket-score/punjab-vs-haryana-syed-mushtaq-ali-trophy-elite-14th-november-2026-41846",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
