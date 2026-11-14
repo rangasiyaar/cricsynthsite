@@ -1,0 +1,391 @@
+{
+ "id": "sau-v-bir-t20-tba-2026-11-14",
+ "innings": [
+  {
+   "team": "Bihar",
+   "runs": 137,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Alok Kumar",
+     "dismissal": "runout (J Unadkat / H Pangalia)",
+     "runs": 4,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Vaibhav Sooryavanshi",
+     "dismissal": "c & b C Sakariya",
+     "runs": 18,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Ayush Loharuka",
+     "dismissal": "c J Unadkat b PN Mankad",
+     "runs": 9,
+     "balls": 9,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Altamish Ashraf",
+     "dismissal": "c Harvik Desai b K Fuletra",
+     "runs": 24,
+     "balls": 20,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Raghuvendra Pratap Singh",
+     "dismissal": "c Harvik Desai b PN Mankad",
+     "runs": 14,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Prithvi Raj",
+     "dismissal": "c K Fuletra b C Sakariya",
+     "runs": 38,
+     "balls": 27,
+     "fours": 0,
+     "sixes": 4
+    },
+    {
+     "name": "Suraj Kashyap",
+     "dismissal": "c K Fuletra b J Unadkat",
+     "runs": 8,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mayank Kumar",
+     "dismissal": "c J Unadkat b C Sakariya",
+     "runs": 6,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Prashant Singh",
+     "dismissal": "c Harvik Desai b PN Mankad",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammed Salahuddin Izhar",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Himanshu Singh",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jaydev Unadkat",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chetan Sakariya",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Parth Bhut",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Prerak Mankad",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Krains Fuletra",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Samar Gajjar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Alok Kumar",
+     "score": 13,
+     "over": "2.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Vaibhav Sooryavanshi",
+     "score": 35,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ayush Loharuka",
+     "score": 39,
+     "over": "5.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Altamish Ashraf",
+     "score": 69,
+     "over": "10.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Raghuvendra Pratap Singh",
+     "score": 81,
+     "over": "13.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Suraj Kashyap",
+     "score": 121,
+     "over": "17.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mayank Kumar",
+     "score": 128,
+     "over": "18.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Prithvi Raj",
+     "score": 129,
+     "over": "18.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Prashant Singh",
+     "score": 131,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 4,
+    "w": 1,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 42
+  },
+  {
+   "team": "Saurashtra",
+   "runs": 138,
+   "wickets": 5,
+   "overs": "16.3",
+   "batting": [
+    {
+     "name": "Vishvaraj Jadeja",
+     "dismissal": "c P Raj b S Kashyap",
+     "runs": 18,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Harvik Desai",
+     "dismissal": "c H Singh b S Kashyap",
+     "runs": 21,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Harvansh Singh Pangalia",
+     "dismissal": "lbw b H Singh",
+     "runs": 33,
+     "balls": 11,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Prerak Mankad",
+     "dismissal": "b S Kashyap",
+     "runs": 16,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Samar Gajjar",
+     "dismissal": "c R Pratap Singh b M Kumar",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ruchit Ahir",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Siddhant Rana",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammed Salahuddin Izhar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Prashant Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Suraj Kashyap",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Raghuvendra Pratap Singh",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Himanshu Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mayank Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Altamish Ashraf",
+     "overs": "0.3",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Vishvaraj Jadeja",
+     "score": 34,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Harvik Desai",
+     "score": 55,
+     "over": "6.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harvansh Singh Pangalia",
+     "score": 81,
+     "over": "7.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Prerak Mankad",
+     "score": 93,
+     "over": "9.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Samar Gajjar",
+     "score": 95,
+     "over": "10.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Saurashtra won",
+ "winner": "Saurashtra"
+}
