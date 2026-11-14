@@ -12,14 +12,14 @@
   "city": "Perth",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Adelaide Strikers Women won the toss and bat first.",
   "teams": [
     {
       "name": "Perth Scorchers Women",
       "short": "PS W",
       "players": [
+        "Beth Mooney",
         "Katie Mack",
-        "Ines Mckeon",
         "Sophie Devine",
         "Freya Kemp",
         "Mikayla Hinkley",
@@ -31,11 +31,11 @@
         "Amy Edgar"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
         "BAT",
         "AR",
         "BOWL",
@@ -43,7 +43,7 @@
         "BOWL",
         "AR"
       ],
-      "captain": "Sophie Devine",
+      "captain": "Beth Mooney",
       "squad": [
         "Katie Mack",
         "Ines Mckeon",
@@ -62,17 +62,17 @@
       "name": "Adelaide Strikers Women",
       "short": "AS-W",
       "players": [
-        "Maia Bouchier",
         "Emma de Broughe",
+        "Maia Bouchier",
         "Laura Wolvaardt",
         "Tahlia McGrath",
         "Madeline Penna",
         "Ellie Johnston",
         "Amanda Wellington",
-        "Sophie Ecclestone",
         "Eleanor Larosa",
         "Ella Wilson",
-        "Megan Schutt"
+        "Megan Schutt",
+        "Anesu Mushangwe"
       ],
       "roles": [
         "BAT",
@@ -82,8 +82,8 @@
         "BAT",
         "WK",
         "BOWL",
-        "BOWL",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 40322,
     "url": "https://khelnow.com/live-cricket-score/perth-scorchers-women-vs-adelaide-strikers-women-women's-big-bash-league-14th-november-2026-40322",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
