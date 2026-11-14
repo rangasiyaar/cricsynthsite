@@ -1,0 +1,454 @@
+{
+ "id": "pak-u19-v-ind-u19-odi-al-amarat-2026-11-14",
+ "innings": [
+  {
+   "team": "Pakistan Under-19s",
+   "runs": 337,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Usman Khan",
+     "dismissal": "c A Rajput b Kavya Paresh Patel",
+     "runs": 107,
+     "balls": 111,
+     "fours": 11,
+     "sixes": 3
+    },
+    {
+     "name": "Hayam Khan",
+     "dismissal": "c A Dravid b Kavya Paresh Patel",
+     "runs": 21,
+     "balls": 23,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Abdul Qadir",
+     "dismissal": "c VK Vineeth b A Rajput",
+     "runs": 80,
+     "balls": 54,
+     "fours": 3,
+     "sixes": 8
+    },
+    {
+     "name": "Farhan Yousaf",
+     "dismissal": "c A Savsani b Chigurupati Venkata",
+     "runs": 63,
+     "balls": 60,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Ahmed Hussain",
+     "dismissal": "c Aaryavir Sehwag b Chigurupati Venkata",
+     "runs": 17,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hamza Zahoor",
+     "dismissal": "c Mohit Ulva b Kavya Paresh Patel",
+     "runs": 10,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hasnain Abbas Dar",
+     "dismissal": "c Y S Chauhan b Chigurupati Venkata",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Sayyam",
+     "dismissal": "runout (A Dravid)",
+     "runs": 7,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Niqab Shafiq",
+     "dismissal": "b Kavya Paresh Patel",
+     "runs": 11,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Rizwanullah",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ali Raza",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohit Ulva",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Kavya Paresh Patel",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 68,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chigurupati Venkata",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 3,
+     "no_balls": 2,
+     "wides": 1
+    },
+    {
+     "name": "Manal Chauhan",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aryan Savsani",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Yashbardhan Singh Chauhan",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Arjun Rajput",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "VK Vineeth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hayam Khan",
+     "score": 62,
+     "over": "8.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abdul Qadir",
+     "score": 197,
+     "over": "26.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Usman Khan",
+     "score": 240,
+     "over": "36.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ahmed Hussain",
+     "score": 299,
+     "over": "44.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Farhan Yousaf",
+     "score": 305,
+     "over": "44.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Hasnain Abbas Dar",
+     "score": 311,
+     "over": "46.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hamza Zahoor",
+     "score": 317,
+     "over": "47.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Niqab Shafiq",
+     "score": 332,
+     "over": "49.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Mohammad Sayyam",
+     "score": 336,
+     "over": "49.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 3,
+    "w": 9,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 93
+  },
+  {
+   "team": "India Under-19s",
+   "runs": 339,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Lakshya Rajesh Raichandani",
+     "dismissal": "c H Abbas Dar b A Raza",
+     "runs": 80,
+     "balls": 101,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Aaryavir Sehwag",
+     "dismissal": "c Usman Khan b N Shafiq",
+     "runs": 58,
+     "balls": 61,
+     "fours": 9,
+     "sixes": 0
+    },
+    {
+     "name": "VK Vineeth",
+     "dismissal": "c Usman Khan b Rizwanullah",
+     "runs": 24,
+     "balls": 21,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Arjun Rajput",
+     "dismissal": "c H Zahoor b Rizwanullah",
+     "runs": 16,
+     "balls": 18,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Yashbardhan Singh Chauhan",
+     "dismissal": "c Usman Khan b H Abbas Dar",
+     "runs": 9,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Anvay Dravid",
+     "dismissal": "runout (F Yousaf)",
+     "runs": 19,
+     "balls": 12,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Manal Chauhan",
+     "dismissal": "c Usman Khan b N Shafiq",
+     "runs": 47,
+     "balls": 32,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Aryan Savsani",
+     "dismissal": "c H Khan b Rizwanullah",
+     "runs": 9,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kavya Paresh Patel",
+     "dismissal": "c H Zahoor b M Sayyam",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohit Ulva",
+     "dismissal": "not out",
+     "runs": 49,
+     "balls": 26,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Chigurupati Venkata",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ali Raza",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 65,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mohammad Sayyam",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 79,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rizwanullah",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Niqab Shafiq",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ahmed Hussain",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Hasnain Abbas Dar",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aaryavir Sehwag",
+     "score": 95,
+     "over": "17.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "VK Vineeth",
+     "score": 146,
+     "over": "26.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Arjun Rajput",
+     "score": 172,
+     "over": "30.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Yashbardhan Singh Chauhan",
+     "score": 186,
+     "over": "32.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lakshya Rajesh Raichandani",
+     "score": 217,
+     "over": "36.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Anvay Dravid",
+     "score": 217,
+     "over": "36.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Aryan Savsani",
+     "score": 251,
+     "over": "40.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kavya Paresh Patel",
+     "score": 252,
+     "over": "41.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Manal Chauhan",
+     "score": 309,
+     "over": "47.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 8,
+    "w": 9,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
