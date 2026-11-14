@@ -1,0 +1,113 @@
+{
+  "id": "qb-v-tt-odi-brisbane-2026-11-16",
+  "title": "Queensland v Tasmania",
+  "date": "2026-11-16",
+  "start_time": "05:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "Australia Domestic One-Day Cup · 14th Match",
+  "comp_key": "australia-domestic-one-day-cup",
+  "venue": "The Gabba, Brisbane",
+  "venue_search": "the gabba",
+  "city": "Brisbane",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Queensland",
+      "short": "QB",
+      "players": [
+        "Angus Lovell",
+        "Hugo Burdon",
+        "Marnus Labuschagne",
+        "Jack Clayton",
+        "Hugh Weibgen",
+        "Jimmy Peirson",
+        "Michael Neser",
+        "Hayden Kerr",
+        "Cameron Gannon",
+        "Tom Straker",
+        "Mitchell Swepson"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Marnus Labuschagne",
+      "squad": [
+        "Angus Lovell",
+        "Hugo Burdon",
+        "Marnus Labuschagne",
+        "Jack Clayton",
+        "Hugh Weibgen",
+        "Jimmy Peirson",
+        "Michael Neser",
+        "Hayden Kerr",
+        "Cameron Gannon",
+        "Tom Straker",
+        "Mitchell Swepson"
+      ]
+    },
+    {
+      "name": "Tasmania",
+      "short": "TT",
+      "players": [
+        "Caleb Jewell",
+        "Teague Wyllie",
+        "Tim Ward",
+        "Jordan Silk",
+        "Ben McDermott",
+        "Beau Webster",
+        "Jake Doran",
+        "Matthew Kuhnemann",
+        "Riley Meredith",
+        "Gabe Bell",
+        "Jackson Bird"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jordan Silk",
+      "squad": [
+        "Caleb Jewell",
+        "Teague Wyllie",
+        "Tim Ward",
+        "Jordan Silk",
+        "Ben McDermott",
+        "Beau Webster",
+        "Jake Doran",
+        "Matthew Kuhnemann",
+        "Riley Meredith",
+        "Gabe Bell",
+        "Jackson Bird",
+        "Nikhil Chaudhary"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40668,
+    "url": "https://khelnow.com/live-cricket-score/queensland-vs-tasmania-australia-domestic-one-day-cup-16th-november-2026-40668",
+    "auto": true,
+    "xis": false
+  }
+}
