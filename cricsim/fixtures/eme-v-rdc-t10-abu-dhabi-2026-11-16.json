@@ -1,0 +1,112 @@
+{
+  "id": "eme-v-rdc-t10-abu-dhabi-2026-11-16",
+  "title": "Emirates Eagles v Royal Desert Champions",
+  "date": "2026-11-16",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 23rd Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Emirates Eagles",
+      "short": "EME",
+      "players": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kona Srikar Bharat",
+        "Chris Green",
+        "David Wiese",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq",
+        "Zahir Khan"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Rovman Powell",
+      "squad": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kona Srikar Bharat",
+        "Chris Green",
+        "David Wiese",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq",
+        "Zahir Khan"
+      ]
+    },
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Brandon King",
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Naseem Shah",
+        "Obus Pienaar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Brandon King",
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Ali Naseer",
+        "Chris Jordan",
+        "Maheesh Theekshana",
+        "Naseem Shah",
+        "Obus Pienaar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41636,
+    "url": "https://khelnow.com/live-cricket-score/emirates-eagles-vs-royal-desert-champions-abu-dhabi-t10-league-16th-november-2026-41636",
+    "auto": true,
+    "xis": false
+  }
+}
