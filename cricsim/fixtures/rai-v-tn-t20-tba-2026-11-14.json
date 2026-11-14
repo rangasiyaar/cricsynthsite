@@ -12,38 +12,38 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Railways won the toss and bowl first.",
   "teams": [
     {
       "name": "Railways",
       "short": "RAI",
       "players": [
-        "Bhargav Merai",
-        "Eshaan Goyal",
-        "Vivek Singh",
-        "Toufik Uddin Mondal",
+        "Jayant Lakhan",
         "Mohammad Saif",
-        "Adarsh Singh",
         "Ravi Singh",
-        "Zubair Ali Khan",
-        "Sahab Yuvraj Singh",
-        "Raj Choudhary",
-        "Himanshu Sangwan"
+        "Eshaan Goyal",
+        "Kritagya Singh",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Kunal Yadav",
+        "Atal Bihari Rai"
       ],
       "roles": [
-        "AR",
-        "BAT",
-        "BAT",
-        "BAT",
         "BAT",
         "BAT",
         "WK",
         "BAT",
         "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
         "BOWL",
-        "BAT"
+        "BOWL"
       ],
-      "captain": "Bhargav Merai",
+      "captain": "Mohammad Saif",
       "squad": [
         "Bhargav Merai",
         "Eshaan Goyal",
@@ -62,30 +62,30 @@
       "name": "Tamil Nadu",
       "short": "TN",
       "players": [
-        "R Vimal Khumar",
-        "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Tushar Raheja",
+        "B Sachin",
         "Sai Kishore",
-        "Andre Siddarth",
-        "Baba Indrajith",
-        "Pradosh Ranjan Paul",
-        "Sonu Yadav",
-        "S Ajith Ram",
+        "Narayan Jagadeesan",
+        "Shahrukh Khan",
+        "Sunny Sandhu",
+        "Ravi Rajkumar",
         "Gurjapneet Singh",
-        "P Saravana Kumar",
-        "Guruswamy Ajitesh"
+        "Varun Chakaravarthy",
+        "V Athisayaraj Davidson"
       ],
       "roles": [
         "BAT",
-        "WK",
+        "BAT",
+        "BAT",
         "BOWL",
+        "WK",
         "BAT",
-        "BAT",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Sai Kishore",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41859,
     "url": "https://khelnow.com/live-cricket-score/railways-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-14th-november-2026-41859",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
