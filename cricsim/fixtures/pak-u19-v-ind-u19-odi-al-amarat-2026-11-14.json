@@ -12,36 +12,36 @@
   "city": "Al Amarat",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pakistan Under-19s won the toss and bat first.",
   "teams": [
     {
       "name": "Pakistan Under-19s",
       "short": "PAK-U19",
       "players": [
-        "Hamza Zahoor",
-        "Abdul Qadir",
-        "Ali Raza",
-        "Ahmed Hussain",
+        "Usman Khan",
         "Hayam Khan",
+        "Abdul Qadir",
+        "Ahmed Hussain",
+        "Ali Raza",
+        "Hamza Zahoor",
         "Hasnain Abbas Dar",
         "Mohammad Sayyam",
         "Farhan Yousaf",
         "Niqab Shafiq",
-        "Rizwanullah",
-        "Usman Khan"
+        "Rizwanullah"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
         "WK",
-        "BAT",
-        "BOWL",
-        "AR",
-        "BAT",
         "AR",
         "BOWL",
         "BAT",
         "AR",
-        "AR",
-        "BAT"
+        "AR"
       ],
       "captain": "Farhan Yousaf",
       "squad": [
@@ -62,32 +62,32 @@
       "name": "India Under-19s",
       "short": "IND-U19",
       "players": [
-        "Aaryavir Sehwag",
-        "Anvay Dravid",
-        "Arjun Rajput",
-        "Aryan Savsani",
-        "Ishan Sood",
-        "Kavya Paresh Patel",
         "Lakshya Rajesh Raichandani",
-        "Manal Chauhan",
-        "Mohit Ulva",
+        "Aaryavir Sehwag",
         "VK Vineeth",
-        "Yashbardhan Singh Chauhan"
+        "Yashbardhan Singh Chauhan",
+        "Arjun Rajput",
+        "Anvay Dravid",
+        "Manal Chauhan",
+        "Aryan Savsani",
+        "Kavya Paresh Patel",
+        "Mohit Ulva",
+        "Chigurupati Venkata"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
         "WK",
         "AR",
         "BOWL",
-        "BAT",
         "BOWL",
         "BAT",
-        "AR",
-        "BAT",
-        "BAT",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Aaryavir Sehwag",
+      "captain": "Lakshya Rajesh Raichandani",
       "squad": [
         "Aaryavir Sehwag",
         "Anvay Dravid",
@@ -107,6 +107,7 @@
     "kn": 41660,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-u19-asia-cup-14th-november-2026-41660",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
