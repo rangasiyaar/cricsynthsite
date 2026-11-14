@@ -1,0 +1,435 @@
+{
+ "id": "tri-v-and-t20-chandigarh-2026-11-14",
+ "innings": [
+  {
+   "team": "Andhra",
+   "runs": 141,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Maramreddy Hemanth Reddy",
+     "dismissal": "c L Thareja b MB Murasingh",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Revanth Reddy",
+     "dismissal": "b S Das",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Seeram Rahul",
+     "dismissal": "c S Das b VK Saha",
+     "runs": 27,
+     "balls": 27,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ricky Bhui",
+     "dismissal": "c A Barman b AK Sarkar",
+     "runs": 7,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ashwin Hebbar",
+     "dismissal": "c AK Sarkar b VK Saha",
+     "runs": 34,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "SDNV Prasad",
+     "dismissal": "not out",
+     "runs": 50,
+     "balls": 33,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Saurabh Kumar",
+     "dismissal": "c S Das b VK Saha",
+     "runs": 7,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "KV Sasikanth",
+     "dismissal": "c P Sultan b AK Sarkar",
+     "runs": 5,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bailapudi Yeswanth",
+     "dismissal": "runout (S Paul)",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Satyanarayana Raju",
+     "dismissal": "c VK Saha b S Das",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cheepurapalli Stephen",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Manisankar  Murasingh",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abhijit Sarkar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Saurabh Das",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Viki Saha",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pravez Sultan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lakshay Thareja",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Maramreddy Hemanth Reddy",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Revanth Reddy",
+     "score": 21,
+     "over": "3.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ricky Bhui",
+     "score": 40,
+     "over": "7.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Seeram Rahul",
+     "score": 69,
+     "over": "9.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ashwin Hebbar",
+     "score": 80,
+     "over": "11.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Saurabh Kumar",
+     "score": 101,
+     "over": "14.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "KV Sasikanth",
+     "score": 116,
+     "over": "17.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Bailapudi Yeswanth",
+     "score": 117,
+     "over": "17.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Satyanarayana Raju",
+     "score": 130,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 34
+  },
+  {
+   "team": "Tripura",
+   "runs": 98,
+   "wickets": 10,
+   "overs": "17.2",
+   "batting": [
+    {
+     "name": "Bikramkumar Das",
+     "dismissal": "c SDNV Prasad b PV Satyanarayana Raju",
+     "runs": 7,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sridam Paul",
+     "dismissal": "c K Sasikanth b CV Stephen",
+     "runs": 4,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mandeep Singh",
+     "dismissal": "c R Reddy b K Sasikanth",
+     "runs": 16,
+     "balls": 11,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Lakshay Thareja",
+     "dismissal": "c R Reddy b K Sasikanth",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sentu Sarkar",
+     "dismissal": "st R Reddy b Saurabh Kumar",
+     "runs": 14,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Saurabh Das",
+     "dismissal": "c MH Reddy b B Yeswanth",
+     "runs": 10,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Manisankar  Murasingh",
+     "dismissal": "st R Reddy b B Yeswanth",
+     "runs": 11,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Arindam Barman",
+     "dismissal": "c R Reddy b K Sasikanth",
+     "runs": 25,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Viki Saha",
+     "dismissal": "c A Hebbar b CV Stephen",
+     "runs": 0,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhijit Sarkar",
+     "dismissal": "c R Reddy b CV Stephen",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pravez Sultan",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Cheepurapalli Stephen",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Satyanarayana Raju",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "KV Sasikanth",
+     "overs": "2.2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Saurabh Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bailapudi Yeswanth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Bikramkumar Das",
+     "score": 13,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sridam Paul",
+     "score": 23,
+     "over": "2.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mandeep Singh",
+     "score": 30,
+     "over": "4.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Lakshay Thareja",
+     "score": 33,
+     "over": "4.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Saurabh Das",
+     "score": 51,
+     "over": "8.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sentu Sarkar",
+     "score": 62,
+     "over": "11.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Manisankar  Murasingh",
+     "score": 72,
+     "over": "12.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Viki Saha",
+     "score": 73,
+     "over": "13.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Abhijit Sarkar",
+     "score": 83,
+     "over": "15.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Arindam Barman",
+     "score": 98,
+     "over": "17.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Andhra won",
+ "winner": "Andhra"
+}
