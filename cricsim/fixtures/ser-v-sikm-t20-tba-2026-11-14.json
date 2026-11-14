@@ -12,38 +12,38 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sikkim won the toss and bat first.",
   "teams": [
     {
       "name": "Services",
       "short": "SER",
       "players": [
-        "Shubham Rohilla",
+        "Suraj Vashisht",
+        "Kunwar Pathak",
+        "Sufiyan Alam",
+        "Arun Kumar",
         "Mohit Ahlawat",
-        "Ravi Chauhan",
-        "Rajat Paliwal",
-        "Nitin Tanwar",
-        "Vineet Dhankhar",
-        "Pulkit Narang",
-        "Jayant Goyat",
         "Nakul Sharma",
+        "Mohit Jangra",
         "Arjun Sharma",
-        "Virender"
+        "Arun Bamal",
+        "Mohit Kumar",
+        "Raj Bahadur"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
         "BAT",
-        "AR",
-        "BAT",
-        "BOWL",
         "BAT",
         "WK",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
       ],
-      "captain": "Rajat Paliwal",
+      "captain": "Nakul Sharma",
       "squad": [
         "Shubham Rohilla",
         "Mohit Ahlawat",
@@ -62,30 +62,30 @@
       "name": "Sikkim",
       "short": "SIKM",
       "players": [
-        "Nilesh Lamichaney",
         "Amit Rajera",
+        "Parth Palawat",
         "Robin Limboo",
         "Lee Yong Lepcha",
         "Gurinder Singh",
-        "Kranthi Kumar",
-        "Satyajeet Bachhav",
+        "C Kranthi Kumar",
         "Ashish Thapa",
+        "Satyajeet Bachhav",
         "Ankur Malik",
-        "Parth Palawat",
-        "Abishek Kumar"
+        "Abishek Kumar",
+        "Palzor Tamang"
       ],
       "roles": [
+        "AR",
         "BAT",
-        "AR",
-        "AR",
         "AR",
         "AR",
         "AR",
         "AR",
         "WK",
         "AR",
-        "BAT",
-        "BOWL"
+        "AR",
+        "BOWL",
+        "AR"
       ],
       "captain": "Lee Yong Lepcha",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41840,
     "url": "https://khelnow.com/live-cricket-score/services-vs-sikkim-syed-mushtaq-ali-trophy-plate-14th-november-2026-41840",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
