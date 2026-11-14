@@ -12,7 +12,7 @@
   "city": "Entebbe",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Namibia Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Namibia Women",
@@ -20,11 +20,11 @@
       "players": [
         "Jurriene Diergaardt",
         "Eveleen Kejarukua",
+        "Edelle Van Zyl",
         "Kayleen Green",
         "Mekelaye Mwatile",
         "Mezerly Gorases",
         "Naomi Benjamin",
-        "Saima Tuhadeleni",
         "Sune Wittmann",
         "Sylvia Shihepo",
         "Wilka Mwatile",
@@ -33,10 +33,10 @@
       "roles": [
         "AR",
         "BOWL",
+        "BAT",
         "AR",
         "AR",
         "WK",
-        "BOWL",
         "BOWL",
         "BAT",
         "BAT",
@@ -65,9 +65,9 @@
         "Aditi Chudasama",
         "Chetna Pagydyala",
         "Ella Claridge",
-        "Isani Vaghela",
-        "Lekha Shetty",
         "Geetika Kodali",
+        "Jivana Aras",
+        "Isani Vaghela",
         "Nikhar Doshi",
         "Pooja Ganesh",
         "Ritu Singh",
@@ -107,6 +107,7 @@
     "kn": 41786,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-women's-victoria-t20i-series-14th-november-2026-41786",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
