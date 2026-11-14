@@ -1,0 +1,329 @@
+{
+ "id": "yal-v-db-t10-abu-dhabi-2026-11-14",
+ "innings": [
+  {
+   "team": "UAE Bulls",
+   "runs": 117,
+   "wickets": 7,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Khawaja Nafay",
+     "dismissal": "c A Gous b J Holder",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Andre Fletcher",
+     "dismissal": "c K Janat b D Willey",
+     "runs": 11,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Max Bryant",
+     "dismissal": "c Awais Ahmad b D Willey",
+     "runs": 44,
+     "balls": 20,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Shadab Khan",
+     "dismissal": "b D Willey",
+     "runs": 6,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Kieron Pollard",
+     "dismissal": "c J Vince b Awais Ahmad",
+     "runs": 23,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Sunil Narine",
+     "dismissal": "c D Shanaka b F Farooqi",
+     "runs": 11,
+     "balls": 6,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Romario Shepherd",
+     "dismissal": "runout (K Janat / D Willey)",
+     "runs": 9,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Khushdil Shah",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tahir Zaman",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jason Holder",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Akeal Hosein",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Fazalhaq Farooqi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "David Willey",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Awais Ahmad",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Karim Janat",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Khawaja Nafay",
+     "score": 0,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Andre Fletcher",
+     "score": 46,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Shadab Khan",
+     "score": 52,
+     "over": "3.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Max Bryant",
+     "score": 63,
+     "over": "5.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sunil Narine",
+     "score": 94,
+     "over": "7.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kieron Pollard",
+     "score": 106,
+     "over": "8.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Romario Shepherd",
+     "score": 108,
+     "over": "9.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 24
+  },
+  {
+   "team": "Yas Lions",
+   "runs": 91,
+   "wickets": 4,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "James Vince",
+     "dismissal": "c K Nafay b M Amir",
+     "runs": 21,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Andries Gous",
+     "dismissal": "c A Fletcher b M Amir",
+     "runs": 31,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Dasun Shanaka",
+     "dismissal": "not out",
+     "runs": 29,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Tom Moores",
+     "dismissal": "c K Pollard b S Khan",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Karim Janat",
+     "dismissal": "b S Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jason Holder",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammad Amir",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Muhammad Rohid Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Tahir Zaman",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sunil Narine",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shadab Khan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Andries Gous",
+     "score": 51,
+     "over": "5.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "James Vince",
+     "score": 56,
+     "over": "5.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Tom Moores",
+     "score": 57,
+     "over": "6.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Karim Janat",
+     "score": 57,
+     "over": "6.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
