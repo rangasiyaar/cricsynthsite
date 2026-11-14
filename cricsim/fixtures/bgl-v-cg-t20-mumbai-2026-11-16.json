@@ -1,0 +1,112 @@
+{
+  "id": "bgl-v-cg-t20-mumbai-2026-11-16",
+  "title": "Bengal v Chandigarh",
+  "date": "2026-11-16",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 29th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bengal",
+      "short": "BGL",
+      "players": [
+        "Abhimanyu Easwaran",
+        "Sudip Kumar Gharami",
+        "Abishek Porel",
+        "Ankur Paul",
+        "Sudip Chatterjee",
+        "Sumanta Gupta",
+        "Pradipta Pramanik",
+        "Shahbaz Ahamad",
+        "Mohammad Shami",
+        "Mohammed Kaif",
+        "Suraj Sindhu Jaiswal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Abhimanyu Easwaran",
+      "squad": [
+        "Abhimanyu Easwaran",
+        "Sudip Kumar Gharami",
+        "Abishek Porel",
+        "Ankur Paul",
+        "Sudip Chatterjee",
+        "Sumanta Gupta",
+        "Pradipta Pramanik",
+        "Shahbaz Ahamad",
+        "Mohammad Shami",
+        "Mohammed Kaif",
+        "Suraj Sindhu Jaiswal"
+      ]
+    },
+    {
+      "name": "Chandigarh",
+      "short": "CG",
+      "players": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Raman Bishnoi",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shivam Bhambri",
+      "squad": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Raman Bishnoi",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41879,
+    "url": "https://khelnow.com/live-cricket-score/bengal-vs-chandigarh-syed-mushtaq-ali-trophy-elite-16th-november-2026-41879",
+    "auto": true,
+    "xis": false
+  }
+}

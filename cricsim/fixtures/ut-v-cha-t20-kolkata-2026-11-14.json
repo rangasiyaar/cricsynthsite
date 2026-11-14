@@ -12,34 +12,34 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chhattisgarh won the toss and bowl first.",
   "teams": [
     {
       "name": "Uttarakhand",
       "short": "UT",
       "players": [
         "Kunal Chandela",
-        "Aarav Mahajan",
+        "Yuvraj Chaudhary",
         "Avneesh Sudha",
-        "Dega Nischal",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aanjaneya Suryavanshi",
+        "Shashwat Dangwal",
         "Jagadeesha Suchith",
-        "Mayank Mishra",
-        "Devendra Singh Bora",
-        "Vaibhav Kandpal",
-        "Sanskar Rawat",
+        "Akash Madhwal",
         "Agnivesh Ayachi",
-        "Deepak Dhapola"
+        "Janmejay Joshi"
       ],
       "roles": [
         "BAT",
-        "BAT",
         "AR",
-        "BAT",
-        "BOWL",
-        "AR",
-        "BOWL",
         "AR",
         "WK",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
         "AR",
         "BOWL"
       ],
@@ -62,32 +62,32 @@
       "name": "Chhattisgarh",
       "short": "CHA",
       "players": [
-        "Aayush Pandey",
-        "Anuj Tiwary",
-        "Mayank Verma",
-        "Sanjeet Desai",
-        "Amandeep Khare",
         "Vikalp Tiwari",
-        "Ajay Mandal",
+        "Aayush Pandey",
+        "Rahul Pradhan",
+        "Amandeep Khare",
         "Prateek Yadav",
-        "Dharmendrasinh Jadeja",
+        "Shashank Chandrakar",
+        "Ajay Mandal",
+        "Shubham Agarwal",
+        "Sourabh Majumdar",
         "Jayant Yadav",
-        "Dev Aditya Singh"
+        "Sandeep Warrier"
       ],
       "roles": [
-        "BAT",
+        "AR",
         "BAT",
         "WK",
         "BAT",
         "BAT",
-        "AR",
-        "AR",
         "BAT",
+        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Anuj Tiwary",
+      "captain": "Vikalp Tiwari",
       "squad": [
         "Aayush Pandey",
         "Anuj Tiwary",
@@ -107,6 +107,7 @@
     "kn": 41868,
     "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-chhattisgarh-syed-mushtaq-ali-trophy-elite-14th-november-2026-41868",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

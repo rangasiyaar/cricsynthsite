@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-maha-t20-chandigarh-2026-11-16",
+  "title": "Kerala v Maharashtra",
+  "date": "2026-11-16",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 32nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Ahammed Imran",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Akhil Scaria",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Nikhil Muraleedharan",
+        "MD Nidheesh",
+        "KM Asif"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Ahammed Imran",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Akhil Scaria",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Nikhil Muraleedharan",
+        "MD Nidheesh",
+        "KM Asif"
+      ]
+    },
+    {
+      "name": "Maharashtra",
+      "short": "MAHA",
+      "players": [
+        "Rahul Tripathi",
+        "Suraj Shinde",
+        "Sahil Parakh",
+        "Prithvi Shaw",
+        "Ramakrishna Ghosh",
+        "Arshin Kulkarni",
+        "Kiran Chormale",
+        "Mukesh Choudhary",
+        "Vicky Ostwal",
+        "Prashant Solanki",
+        "Tanay Sanghvi"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Prithvi Shaw",
+      "squad": [
+        "Rahul Tripathi",
+        "Suraj Shinde",
+        "Sahil Parakh",
+        "Prithvi Shaw",
+        "Ramakrishna Ghosh",
+        "Arshin Kulkarni",
+        "Kiran Chormale",
+        "Mukesh Choudhary",
+        "Vicky Ostwal",
+        "Prashant Solanki",
+        "Tanay Sanghvi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41882,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-maharashtra-syed-mushtaq-ali-trophy-elite-16th-november-2026-41882",
+    "auto": true,
+    "xis": false
+  }
+}

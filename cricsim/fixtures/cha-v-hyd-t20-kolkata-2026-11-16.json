@@ -1,0 +1,111 @@
+{
+  "id": "cha-v-hyd-t20-kolkata-2026-11-16",
+  "title": "Chhattisgarh v Hyderabad (India)",
+  "date": "2026-11-16",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 30th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chhattisgarh",
+      "short": "CHA",
+      "players": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Rahul Pradhan",
+        "Amandeep Khare",
+        "Prateek Yadav",
+        "Shashank Chandrakar",
+        "Ajay Mandal",
+        "Shubham Agarwal",
+        "Sourabh Majumdar",
+        "Jayant Yadav",
+        "Sandeep Warrier"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Vikalp Tiwari",
+      "squad": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Rahul Pradhan",
+        "Amandeep Khare",
+        "Prateek Yadav",
+        "Shashank Chandrakar",
+        "Ajay Mandal",
+        "Shubham Agarwal",
+        "Sourabh Majumdar",
+        "Jayant Yadav",
+        "Sandeep Warrier"
+      ]
+    },
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41880,
+    "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-hyderabad-(india)-syed-mushtaq-ali-trophy-elite-16th-november-2026-41880",
+    "auto": true,
+    "xis": false
+  }
+}

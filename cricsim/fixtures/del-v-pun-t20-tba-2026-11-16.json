@@ -1,0 +1,112 @@
+{
+  "id": "del-v-pun-t20-tba-2026-11-16",
+  "title": "Delhi v Punjab",
+  "date": "2026-11-16",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 31st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Ayush Badoni",
+        "Yash Dhull",
+        "Sanat Sangwan",
+        "Ayush Doseja",
+        "Anuj Rawat",
+        "Hrithik Shokeen",
+        "Sumit Mathur",
+        "Priyansh Arya",
+        "Navdeep Saini",
+        "Dev Lakra",
+        "Aman Choudhary"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Ayush Badoni",
+      "squad": [
+        "Ayush Badoni",
+        "Yash Dhull",
+        "Sanat Sangwan",
+        "Ayush Doseja",
+        "Anuj Rawat",
+        "Hrithik Shokeen",
+        "Sumit Mathur",
+        "Priyansh Arya",
+        "Navdeep Saini",
+        "Dev Lakra",
+        "Aman Choudhary"
+      ]
+    },
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Prabhsimran Singh",
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Sanvir Singh",
+        "Harpreet Brar",
+        "Raghu Sharma",
+        "Sukhdeep Singh Bajwa",
+        "Sahil Bhaskar"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Prabhsimran Singh",
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Sanvir Singh",
+        "Harpreet Brar",
+        "Raghu Sharma",
+        "Sukhdeep Singh Bajwa",
+        "Sahil Bhaskar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41881,
+    "url": "https://khelnow.com/live-cricket-score/delhi-vs-punjab-syed-mushtaq-ali-trophy-elite-16th-november-2026-41881",
+    "auto": true,
+    "xis": false
+  }
+}

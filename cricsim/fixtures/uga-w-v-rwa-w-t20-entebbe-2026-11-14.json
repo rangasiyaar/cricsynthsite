@@ -12,7 +12,7 @@
   "city": "Entebbe",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Uganda Women won the toss and bat first.",
   "teams": [
     {
       "name": "Uganda Women",
@@ -21,11 +21,11 @@
         "Asumin Akurut",
         "Concylate Aweko",
         "Esther Iloku",
+        "Immaculate Nakisuuyi",
         "Janet Mbabazi",
         "Kevin Awino",
         "Malisa Ariokot",
         "Prosscovia Alako",
-        "Immaculate Nakisuuyi",
         "Rita Musamali",
         "Sarah Walaza",
         "Stephani Nampiina"
@@ -35,10 +35,10 @@
         "AR",
         "BAT",
         "AR",
+        "AR",
         "WK",
         "AR",
         "BAT",
-        "AR",
         "BAT",
         "BOWL",
         "AR"
@@ -107,6 +107,7 @@
     "kn": 41787,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-women's-victoria-t20i-series-14th-november-2026-41787",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
