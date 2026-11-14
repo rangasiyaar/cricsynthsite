@@ -12,18 +12,18 @@
   "city": "Cape Town",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Warriors won the toss and bowl first.",
   "teams": [
     {
       "name": "Warriors",
       "short": "WAR",
       "players": [
         "Jordan Hermann",
-        "Matthew De Villiers",
-        "Tristan Stubbs",
-        "Jp King",
         "Sibonelo Makhanya",
+        "Jp King",
+        "Tristan Stubbs",
         "Patrick Kruger",
+        "Matthew De Villiers",
         "Andile Mokgakane",
         "Beuran Hendricks",
         "Kerwin Mungroo",
@@ -33,17 +33,17 @@
       "roles": [
         "BAT",
         "BAT",
-        "WK",
         "AR",
         "BAT",
         "AR",
+        "WK",
         "BAT",
         "BOWL",
         "BOWL",
         "AR",
         "BOWL"
       ],
-      "captain": "Matthew De Villiers",
+      "captain": "Tristan Stubbs",
       "squad": [
         "Jordan Hermann",
         "Matthew De Villiers",
@@ -62,25 +62,25 @@
       "name": "Boland",
       "short": "BOL",
       "players": [
+        "Gavin Kaplan",
         "Blayde Capell",
-        "Ruan Terblanche",
-        "Kaden Solomons",
         "Neil Brand",
-        "Ferisco Adams",
+        "Gysbert Wege",
         "Jhedli van Briesies",
-        "Imran Manack",
+        "Ferisco Adams",
         "Glenton Stuurman",
+        "Imran Manack",
         "Lizaad Williams",
-        "Yves Kamanzi",
+        "Akhona Mnyaka",
         "Siyabonga Mahima"
       ],
       "roles": [
         "BAT",
-        "BAT",
         "WK",
         "AR",
-        "AR",
         "BAT",
+        "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41083,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-csa-pro-t20-cup-14th-november-2026-41083",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
