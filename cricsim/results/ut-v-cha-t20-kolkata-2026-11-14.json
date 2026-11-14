@@ -1,0 +1,340 @@
+{
+ "id": "ut-v-cha-t20-kolkata-2026-11-14",
+ "innings": [
+  {
+   "team": "Uttarakhand",
+   "runs": 197,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Tejasvi Jaiswal",
+     "dismissal": "c R Pradhan b S Warrier",
+     "runs": 26,
+     "balls": 12,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Yuvraj Chaudhary",
+     "dismissal": "c A Khare b SS Agarwal",
+     "runs": 26,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Kunal Chandela",
+     "dismissal": "c P Yadav b SS Agarwal",
+     "runs": 12,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Aanjaneya Suryavanshi",
+     "dismissal": "runout (V Tiwari)",
+     "runs": 14,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Shashwat Dangwal",
+     "dismissal": "b S Majumdar",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Avneesh Sudha",
+     "dismissal": "not out",
+     "runs": 48,
+     "balls": 29,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Jagadeesha Suchith",
+     "dismissal": "runout (A Pandey)",
+     "runs": 46,
+     "balls": 28,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Vijay Sharma",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jayant Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sourabh Majumdar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sandeep Warrier",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Ajay Mandal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shubham Agarwal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tejasvi Jaiswal",
+     "score": 31,
+     "over": "2.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kunal Chandela",
+     "score": 57,
+     "over": "6.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Yuvraj Chaudhary",
+     "score": 82,
+     "over": "8.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Aanjaneya Suryavanshi",
+     "score": 85,
+     "over": "9.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shashwat Dangwal",
+     "score": 89,
+     "over": "10.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Jagadeesha Suchith",
+     "score": 187,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 8,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 56
+  },
+  {
+   "team": "Chhattisgarh",
+   "runs": 202,
+   "wickets": 5,
+   "overs": "18.3",
+   "batting": [
+    {
+     "name": "Aayush Pandey",
+     "dismissal": "c A Suryavanshi b A Madhwal",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Amandeep Khare",
+     "dismissal": "c J Suchith b A Madhwal",
+     "runs": 13,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Vikalp Tiwari",
+     "dismissal": "lbw b A Sudha",
+     "runs": 50,
+     "balls": 17,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Rahul Pradhan",
+     "dismissal": "c Vijay Sharma b AC Ayachi",
+     "runs": 25,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Ajay Mandal",
+     "dismissal": "c S Dangwal b AC Ayachi",
+     "runs": 66,
+     "balls": 37,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Shashank Chandrakar",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Prateek Yadav",
+     "dismissal": "not out",
+     "runs": 15,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Akash Madhwal",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Janmejay Joshi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yuvraj Chaudhary",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Avneesh Sudha",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shashwat Dangwal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Agnivesh Ayachi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Jagadeesha Suchith",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aayush Pandey",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Amandeep Khare",
+     "score": 66,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Vikalp Tiwari",
+     "score": 72,
+     "over": "5.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rahul Pradhan",
+     "score": 145,
+     "over": "13.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ajay Mandal",
+     "score": 173,
+     "over": "15.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 9,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Chhattisgarh won",
+ "winner": "Chhattisgarh"
+}
