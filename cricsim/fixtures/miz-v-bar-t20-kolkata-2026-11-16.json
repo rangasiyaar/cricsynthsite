@@ -1,0 +1,112 @@
+{
+  "id": "miz-v-bar-t20-kolkata-2026-11-16",
+  "title": "Mizoram v Baroda",
+  "date": "2026-11-16",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 26th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Mizoram",
+      "short": "MIZ",
+      "players": [
+        "Lalhruaizela-M",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "F Lalmuanzuala",
+        "Lalrempuia"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Joseph Lalthankhuma",
+      "squad": [
+        "Lalhruaizela-M",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "F Lalmuanzuala",
+        "Lalrempuia"
+      ]
+    },
+    {
+      "name": "Baroda",
+      "short": "BAR",
+      "players": [
+        "Krunal Pandya",
+        "Atit Sheth",
+        "Jitesh Sharma",
+        "Shivalik Sharma",
+        "Deepak Hooda",
+        "Amit Passi",
+        "Mahesh Pithiya",
+        "Raj Limbani",
+        "Rasikh Salam Dar",
+        "Bhanu Pania",
+        "Safvan Patel"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Krunal Pandya",
+      "squad": [
+        "Krunal Pandya",
+        "Atit Sheth",
+        "Jitesh Sharma",
+        "Shivalik Sharma",
+        "Deepak Hooda",
+        "Amit Passi",
+        "Mahesh Pithiya",
+        "Raj Limbani",
+        "Rasikh Salam Dar",
+        "Bhanu Pania",
+        "Safvan Patel"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41876,
+    "url": "https://khelnow.com/live-cricket-score/mizoram-vs-baroda-syed-mushtaq-ali-trophy-elite-16th-november-2026-41876",
+    "auto": true,
+    "xis": false
+  }
+}

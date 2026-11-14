@@ -1,0 +1,112 @@
+{
+  "id": "sau-v-har-t20-mumbai-2026-11-16",
+  "title": "Saurashtra v Haryana",
+  "date": "2026-11-16",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 27th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Sharad Pawar Indoor Cricket Academy, Mumbai",
+  "venue_search": "sharad pawar indoor cricket academy",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Saurashtra",
+      "short": "SAU",
+      "players": [
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Vishvaraj Jadeja",
+        "Chetan Sakariya",
+        "Jaydev Unadkat",
+        "Ruchit Ahir",
+        "Samar Gajjar",
+        "Harvansh Singh Pangalia",
+        "Siddhant Rana",
+        "Parth Bhut",
+        "Krains Fuletra"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Jaydev Unadkat",
+      "squad": [
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Vishvaraj Jadeja",
+        "Chetan Sakariya",
+        "Jaydev Unadkat",
+        "Ruchit Ahir",
+        "Samar Gajjar",
+        "Harvansh Singh Pangalia",
+        "Siddhant Rana",
+        "Parth Bhut",
+        "Krains Fuletra"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Arsh Ranga",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Anuj Thakral",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Arsh Ranga",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Anuj Thakral",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41877,
+    "url": "https://khelnow.com/live-cricket-score/saurashtra-vs-haryana-syed-mushtaq-ali-trophy-elite-16th-november-2026-41877",
+    "auto": true,
+    "xis": false
+  }
+}

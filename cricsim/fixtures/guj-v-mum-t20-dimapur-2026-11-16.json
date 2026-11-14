@@ -1,0 +1,112 @@
+{
+  "id": "guj-v-mum-t20-dimapur-2026-11-16",
+  "title": "Gujarat v Mumbai",
+  "date": "2026-11-16",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 25th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Nagaland Cricket Stadium, Dimapur",
+  "venue_search": "nagaland cricket stadium",
+  "city": "Dimapur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Urvil Patel",
+        "Aarya Desai",
+        "Smit Patel",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Vishal Jayswal",
+        "Harshal Patel",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla",
+        "Khilan Patel"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Urvil Patel",
+      "squad": [
+        "Urvil Patel",
+        "Aarya Desai",
+        "Smit Patel",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Vishal Jayswal",
+        "Harshal Patel",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla",
+        "Khilan Patel"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41875,
+    "url": "https://khelnow.com/live-cricket-score/gujarat-vs-mumbai-syed-mushtaq-ali-trophy-elite-16th-november-2026-41875",
+    "auto": true,
+    "xis": false
+  }
+}

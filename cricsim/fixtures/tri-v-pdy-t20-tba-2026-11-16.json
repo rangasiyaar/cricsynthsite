@@ -1,0 +1,112 @@
+{
+  "id": "tri-v-pdy-t20-tba-2026-11-16",
+  "title": "Tripura v Puducherry",
+  "date": "2026-11-16",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 28th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ]
+    },
+    {
+      "name": "Puducherry",
+      "short": "PDY",
+      "players": [
+        "Gaurav Yadav",
+        "Bhanu Anand",
+        "Pougajendy Akash",
+        "S Parameeswaran",
+        "Ramamoorthy Ragavan",
+        "Aman Hakim Khan",
+        "Shashank Singh",
+        "Badal Rawat",
+        "Sagar Trivedi",
+        "Raghav Goyal",
+        "Adil Ayub Tunda"
+      ],
+      "roles": [
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Aman Hakim Khan",
+      "squad": [
+        "Gaurav Yadav",
+        "Bhanu Anand",
+        "Pougajendy Akash",
+        "S Parameeswaran",
+        "Ramamoorthy Ragavan",
+        "Aman Hakim Khan",
+        "Shashank Singh",
+        "Badal Rawat",
+        "Sagar Trivedi",
+        "Raghav Goyal",
+        "Adil Ayub Tunda"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41878,
+    "url": "https://khelnow.com/live-cricket-score/tripura-vs-puducherry-syed-mushtaq-ali-trophy-elite-16th-november-2026-41878",
+    "auto": true,
+    "xis": false
+  }
+}
