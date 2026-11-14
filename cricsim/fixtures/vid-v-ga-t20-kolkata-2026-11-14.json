@@ -12,38 +12,38 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Vidarbha won the toss and bowl first.",
   "teams": [
     {
       "name": "Vidarbha",
       "short": "VID",
       "players": [
-        "Akshay Wadkar",
-        "Ravikumar Samarth",
+        "Atharva Taide",
+        "Shubham Dubey",
         "Danish Malewar",
-        "Aman Mokhade",
-        "Dhruv Shorey",
-        "Satyam Bhoyar",
-        "Harsh Dubey",
-        "Parth Rekhade",
-        "Darshan Nalkande",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Rathod",
+        "Vedant Jajoo",
         "Nachiket Bhute",
-        "Rajneesh Gurbani"
+        "Darshan Nalkande",
+        "Parth Rekhade",
+        "Saurabh Dubey"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
         "AR",
-        "AR",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Akshay Wadkar",
+      "captain": "Atharva Taide",
       "squad": [
         "Akshay Wadkar",
         "Ravikumar Samarth",
@@ -62,27 +62,27 @@
       "name": "Goa",
       "short": "GA",
       "players": [
-        "Suyash Prabhudessai",
-        "Manthan Khutkar",
         "Shivendra Bhujbal",
+        "Ishaan Gadekar",
         "Abhinav Tejrana",
-        "Snehal Kauthankar",
+        "Suyash Prabhudessai",
         "Lalit Yadav",
+        "Deepraj Gaonkar",
         "Darshan Misal",
-        "Yash Kasvankar",
-        "V Koushik",
-        "Ruthvik Naik",
-        "Heramb Parab"
+        "Felix Alemao",
+        "Vikash Singh",
+        "Shubham Tari",
+        "V Koushik"
       ],
       "roles": [
-        "BAT",
-        "BAT",
         "WK",
         "BAT",
         "BAT",
+        "BAT",
         "AR",
         "AR",
         "AR",
+        "BOWL",
         "BOWL",
         "BAT",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41863,
     "url": "https://khelnow.com/live-cricket-score/vidarbha-vs-goa-syed-mushtaq-ali-trophy-elite-14th-november-2026-41863",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
