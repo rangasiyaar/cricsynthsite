@@ -242,13 +242,9 @@ export function previewLd(a: Article, home: [string, string] = ["Match previews"
   return [
     { "@context": "https://schema.org", "@type": "Article", headline: a.title.slice(0, 110), description: a.description,
       datePublished: a.date, dateModified: a.updated, mainEntityOfPage: url, image: `${SITE}/og-logo.png?v=1`,
+      about: { "@id": `${SITE}${matchPath(a.id)}#event` },   // the match's event lives on its match page
       author: { "@type": "Organization", name: PREVIEW_AUTHOR.name, url: SITE },
       publisher: { "@type": "Organization", name: "CricSynthesis", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/email-logo.png` } } },
-    { "@context": "https://schema.org", "@type": "SportsEvent", name: `${a.teams[0]} vs ${a.teams[1]}${a.no ? `, ${a.no}` : ""}`, sport: "Cricket",
-      ...(a.start ? { startDate: a.start } : {}), eventStatus: "https://schema.org/EventScheduled",
-      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      ...(a.venue ? { location: { "@type": "Place", name: a.venue } } : {}),
-      competitor: a.teams.map((n) => ({ "@type": "SportsTeam", name: n })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: home[0], item: `${SITE}${home[1]}` },
       { "@type": "ListItem", position: 2, name: `${a.teams[0]} vs ${a.teams[1]}`, item: url }] },

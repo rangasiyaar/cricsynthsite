@@ -1,7 +1,7 @@
 // Search text for the per-match pages (/match/{id}/, /fantasy/, /playing-xi/, /results/{id}/): titles, descriptions,
 // FAQ answers and structured data, all written from the published forecast so every page says something of its own.
 // Analytics wording only: win probability and projections, never betting language.
-import { SITE } from "./seo.ts";
+import { OG_IMAGE, SITE } from "./seo.ts";
 import type { MatchDoc, PlayerRow, ResultDoc } from "./types.ts";
 
 export type Kind = "prediction" | "fantasy" | "xi";
@@ -120,18 +120,34 @@ export function faq(x: Facts, kind: Kind): QA[] {
   return out;
 }
 
-/** SportsEvent + BreadcrumbList for one page (`qa` kept in the signature for callers). */
+/** The match as one schema.org SportsEvent, published only on the main match page and only when it is complete
+ *  (Google needs startDate and location; an incomplete event is reported as an error, so none is better). */
+export function sportsEvent(x: Facts, id: string) {
+  if (!x.date || !x.venue) return null;
+  const teams = [x.A, x.B].map((n) => ({ "@type": "SportsTeam", name: n }));
+  const limited = x.format !== "MULTIDAY";
+  return {
+    "@context": "https://schema.org", "@type": "SportsEvent", "@id": `${SITE}${matchPath(id)}#event`,
+    name: `${vs(x)}${x.no ? `, ${x.no}` : ""}`, sport: "Cricket", url: `${SITE}${matchPath(id)}`,
+    description: `${vs(x)}${x.no ? `, ${x.no}` : ""}${x.series ? ` (${x.series})` : ""} at ${x.venue}${x.when ? ` on ${x.when}` : ""}.`,
+    image: `${SITE}${OG_IMAGE}`,
+    startDate: x.time ? `${x.date}T${x.time}:00+05:30` : x.date,
+    ...(limited ? { endDate: x.time ? `${x.date}T23:59:00+05:30` : x.date } : {}),   // a one-day match ends on its start date
+    eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: { "@type": "Place", name: x.venue, address: x.venue },
+    competitor: teams, performer: teams,
+  };
+}
+
+/** Structured data for one page: the event on the main match page only, breadcrumbs everywhere.
+ *  (`qa` kept in the signature for callers.) */
 export function jsonLd(x: Facts, kind: Kind, id: string, qa: QA[]) {
   const url = `${SITE}${matchPath(id, kind)}`;
   const crumbs = [["Matches", `${SITE}/matches/`], [vs(x), `${SITE}${matchPath(id)}`]];
   if (kind !== "prediction") crumbs.push([kind === "fantasy" ? "Fantasy" : "Playing XI", url]);
+  const ev = kind === "prediction" ? sportsEvent(x, id) : null;
   return [
-    { "@context": "https://schema.org", "@type": "SportsEvent", name: `${vs(x)}${x.no ? `, ${x.no}` : ""}`, sport: "Cricket", url,
-      ...(x.date ? { startDate: x.time ? `${x.date}T${x.time}:00+05:30` : x.date } : {}),
-      eventStatus: "https://schema.org/EventScheduled", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      ...(x.venue ? { location: { "@type": "Place", name: x.venue } } : {}),
-      ...(x.series ? { superEvent: { "@type": "SportsEvent", name: x.series } } : {}),
-      competitor: [x.A, x.B].map((n) => ({ "@type": "SportsTeam", name: n })) },
+    ...(ev ? [ev] : []),
     { "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: crumbs.map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })) },
     // No FAQPage: its answers are not shown on the page, and Google only accepts FAQ markup for visible answers.
@@ -155,12 +171,8 @@ export function resultDescription(r: ResultDoc) {
 export function resultLd(r: ResultDoc) {
   const [a, b] = r.teams.map((t) => t.name);
   const url = `${SITE}${resultPath(r.id)}`;
+  // No SportsEvent here: Google only shows upcoming events, and the event lives on the match page.
   return [
-    { "@context": "https://schema.org", "@type": "SportsEvent", name: `${a} vs ${b}${split(r.competition).no ? `, ${split(r.competition).no}` : ""}`,
-      sport: "Cricket", url, ...(r.date ? { startDate: r.date } : {}), eventStatus: "https://schema.org/EventScheduled",
-      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      ...(r.venue ? { location: { "@type": "Place", name: r.venue } } : {}),
-      competitor: [a, b].map((n) => ({ "@type": "SportsTeam", name: n })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Results", item: `${SITE}/results/` },
       { "@type": "ListItem", position: 2, name: `${a} vs ${b}`, item: url }] },
