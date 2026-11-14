@@ -12,17 +12,17 @@
   "city": "Cape Town",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Lions won the toss and bat first.",
   "teams": [
     {
       "name": "Lions",
       "short": "LIO",
       "players": [
-        "Neil Timmers",
         "Onkgomoditse Seletswane",
-        "Rassie van der Dussen",
         "Connor Esterhuizen",
+        "Rassie van der Dussen",
         "Mitchell Van Buuren",
+        "Delano Potgieter",
         "Morteza Manack",
         "Bjorn Fortuin",
         "Gerald Coetzee",
@@ -32,9 +32,9 @@
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -64,28 +64,28 @@
       "players": [
         "Jiveshan Pillay",
         "Kashief Joseph",
+        "Kyle Verreynne",
         "Daniel Smith",
         "George Linde",
         "Mihlali Mpongwana",
         "Oliver Whitehead",
         "Josh Breed",
         "Sinalo Gobeni",
-        "Tshepo Moreki",
-        "Dane Paterson",
-        "Kyle Verreynne"
+        "Raeeq Daniels",
+        "Tshepo Moreki"
       ],
       "roles": [
         "BAT",
         "BOWL",
+        "WK",
         "BAT",
         "AR",
         "AR",
         "AR",
         "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
-        "WK"
+        "AR",
+        "BOWL"
       ],
       "captain": "George Linde",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41084,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-csa-pro-t20-cup-14th-november-2026-41084",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

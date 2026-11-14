@@ -1,0 +1,419 @@
+{
+ "id": "rai-v-tn-t20-tba-2026-11-14",
+ "innings": [
+  {
+   "team": "Tamil Nadu",
+   "runs": 172,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Amith Sathvik",
+     "dismissal": "c M Raut b P Parikh",
+     "runs": 38,
+     "balls": 28,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Tushar Raheja",
+     "dismissal": "c M Saif b A Bihari Rai",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "B Sachin",
+     "dismissal": "c R Singh b M Raut",
+     "runs": 33,
+     "balls": 34,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Narayan Jagadeesan",
+     "dismissal": "c K Singh b P Parikh",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shahrukh Khan",
+     "dismissal": "not out",
+     "runs": 46,
+     "balls": 30,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Ravi Rajkumar",
+     "dismissal": "c K Yadav b Z Ali",
+     "runs": 31,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Sunny Sandhu",
+     "dismissal": "c K Yadav b Z Ali",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sai Kishore",
+     "dismissal": "c M Saif b A Bihari Rai",
+     "runs": 4,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gurjapneet Singh",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Atal Bihari Rai",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kunal Yadav",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Zubair Ali",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mohit Raut",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Pradhyumn Parikh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kritagya Singh",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mohammad Saif",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tushar Raheja",
+     "score": 1,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Amith Sathvik",
+     "score": 66,
+     "over": "7.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Narayan Jagadeesan",
+     "score": 83,
+     "over": "11.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "B Sachin",
+     "score": 93,
+     "over": "12.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ravi Rajkumar",
+     "score": 148,
+     "over": "18.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sunny Sandhu",
+     "score": 154,
+     "over": "18.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sai Kishore",
+     "score": 159,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 55
+  },
+  {
+   "team": "Railways",
+   "runs": 166,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Eshaan Goyal",
+     "dismissal": "c R Sai Kishore b VA Davidson",
+     "runs": 1,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jayant Lakhan",
+     "dismissal": "c N Jagadeesan b VA Davidson",
+     "runs": 7,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Mohammad Saif",
+     "dismissal": "b V Chakaravarthy",
+     "runs": 11,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohit Raut",
+     "dismissal": "c A Sathvik b S Sandhu",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ravi Singh",
+     "dismissal": "c N Jagadeesan b G Singh",
+     "runs": 24,
+     "balls": 14,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Zubair Ali",
+     "dismissal": "c S Sandhu b R Sai Kishore",
+     "runs": 46,
+     "balls": 37,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Kritagya Singh",
+     "dismissal": "c S Khan b V Chakaravarthy",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Toufik Uddin Mondal",
+     "dismissal": "c R Rajkumar b VA Davidson",
+     "runs": 57,
+     "balls": 22,
+     "fours": 5,
+     "sixes": 5
+    },
+    {
+     "name": "Kunal Yadav",
+     "dismissal": "runout (A Sathvik)",
+     "runs": 5,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Pradhyumn Parikh",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Atal Bihari Rai",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sunny Sandhu",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "V Athisayaraj Davidson",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Gurjapneet Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sai Kishore",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Varun Chakaravarthy",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ravi Rajkumar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jayant Lakhan",
+     "score": 8,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Eshaan Goyal",
+     "score": 9,
+     "over": "1.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mohit Raut",
+     "score": 13,
+     "over": "2.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ravi Singh",
+     "score": 42,
+     "over": "5.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Mohammad Saif",
+     "score": 69,
+     "over": "9.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kritagya Singh",
+     "score": 69,
+     "over": "9.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Toufik Uddin Mondal",
+     "score": 138,
+     "over": "14.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Zubair Ali",
+     "score": 159,
+     "over": "18.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Kunal Yadav",
+     "score": 164,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Tamil Nadu won by 6 runs",
+ "winner": "Tamil Nadu"
+}
