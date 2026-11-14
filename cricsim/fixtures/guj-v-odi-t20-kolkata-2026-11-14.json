@@ -12,38 +12,38 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Odisha won the toss and bowl first.",
   "teams": [
     {
       "name": "Gujarat",
       "short": "GUJ",
       "players": [
-        "Abhishek Desai",
-        "Aarya Desai",
-        "Vedant Trivedi",
-        "Manan Hingrajia",
         "Urvil Patel",
-        "Jaymeet Patel",
+        "Aarya Desai",
+        "Smit Patel",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
         "Vishal Jayswal",
-        "Chintan Gaja",
+        "Harshal Patel",
+        "Ravi Bishnoi",
         "Arzan Nagwaswalla",
-        "Siddharth Desai",
-        "Amit Desai"
+        "Khilan Patel"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "AR",
-        "AR"
+        "BOWL",
+        "BOWL"
       ],
-      "captain": "Chintan Gaja",
+      "captain": "Urvil Patel",
       "squad": [
         "Abhishek Desai",
         "Aarya Desai",
@@ -64,15 +64,15 @@
       "players": [
         "Swastik Samal",
         "Gourav Choudhury",
-        "Sandeep Pattnaik",
         "Subhranshu Senapati",
+        "Kartik Biswal",
         "Ninad Rathva",
-        "Anil Parida",
-        "Rajesh Dhuper",
-        "Rajesh Mohanty",
-        "Lalit Yadav",
-        "Badal Biswal",
-        "Prasanta Rana"
+        "Aasirwad Swain",
+        "Soumya Lenka",
+        "Sarbeswar Mohanty",
+        "Abhishek Yadav",
+        "Debabrata Pradhan",
+        "Lalit Yadav"
       ],
       "roles": [
         "AR",
@@ -80,14 +80,14 @@
         "BAT",
         "BAT",
         "AR",
-        "BAT",
         "WK",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "AR",
+        "AR",
+        "BOWL"
       ],
-      "captain": "Subhranshu Senapati",
+      "captain": "Swastik Samal",
       "squad": [
         "Swastik Samal",
         "Gourav Choudhury",
@@ -107,6 +107,7 @@
     "kn": 41848,
     "url": "https://khelnow.com/live-cricket-score/gujarat-vs-odisha-syed-mushtaq-ali-trophy-elite-14th-november-2026-41848",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

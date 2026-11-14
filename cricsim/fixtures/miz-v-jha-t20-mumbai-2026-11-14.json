@@ -12,38 +12,38 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Mizoram won the toss and bat first.",
   "teams": [
     {
       "name": "Mizoram",
       "short": "MIZ",
       "players": [
         "Lalhruaizela-M",
-        "Sahil Reza",
+        "Jehu Anderson",
         "Chinmay Sutar",
         "Joseph Lalthankhuma",
         "Manender Singh",
-        "Jehu Anderson",
         "Khiangte Vanrotlinga",
         "Kuldip Yadav",
-        "Bobby Zothansanga",
-        "Lalrempuia",
-        "R Lalnuntluanga"
+        "B Lalnunfela",
+        "Sumit Lama",
+        "F Lalmuanzuala",
+        "Lalrempuia"
       ],
       "roles": [
-        "BAT",
-        "BAT",
         "BAT",
         "WK",
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
         "BOWL",
+        "BAT",
         "BOWL",
-        "AR",
-        "BAT"
+        "BAT",
+        "AR"
       ],
-      "captain": "Jehu Anderson",
+      "captain": "Joseph Lalthankhuma",
       "squad": [
         "Lalhruaizela-M",
         "Sahil Reza",
@@ -62,32 +62,32 @@
       "name": "Jharkhand",
       "short": "JHA",
       "players": [
-        "Virat Singh",
         "Anukul Roy",
-        "Aryaman Sen",
-        "Sharandeep Singh",
+        "Shikhar Mohan",
         "Utkarsh Singh",
+        "Virat Singh",
         "Robin Minz",
-        "Aditya Chandresh Singh",
-        "Shubh Sharma",
-        "Manishi",
-        "Saurabh Shekhar",
-        "Pratyush Kumar"
+        "Pankaj Kumar ll",
+        "Md Kounain Quraishi",
+        "Harsh Raj",
+        "Sushant Mishra",
+        "Pratyush Kumar",
+        "Rajandeep Singh"
       ],
       "roles": [
+        "AR",
         "BAT",
         "AR",
         "BAT",
         "BAT",
-        "AR",
         "WK",
-        "BAT",
+        "AR",
         "BAT",
         "BOWL",
-        "BOWL",
+        "AR",
         "AR"
       ],
-      "captain": "Virat Singh",
+      "captain": "Anukul Roy",
       "squad": [
         "Virat Singh",
         "Anukul Roy",
@@ -107,6 +107,7 @@
     "kn": 41850,
     "url": "https://khelnow.com/live-cricket-score/mizoram-vs-jharkhand-syed-mushtaq-ali-trophy-elite-14th-november-2026-41850",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
