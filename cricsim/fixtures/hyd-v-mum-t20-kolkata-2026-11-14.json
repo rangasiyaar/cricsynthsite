@@ -1,0 +1,123 @@
+{
+  "id": "hyd-v-mum-t20-kolkata-2026-11-14",
+  "title": "Hyderabad (India) v Mumbai",
+  "date": "2026-11-14",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 2nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Tanmay Agarwal",
+      "squad": [
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Bhavesh Seth",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ved Reddy Amisthapuram",
+        "Ajay Dev Goud",
+        "Chinntla Rakshann Readdi",
+        "Pragnay Reddy",
+        "Rahul Radesh",
+        "Rahul Buddhi",
+        "Gadugu Ganesh",
+        "Saranu Nishanth",
+        "Harshith Sai"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande",
+        "Suved Parkar",
+        "Divyaansh Saxena",
+        "Shams Mulani",
+        "Mohit Avasthi",
+        "Sylvester D’Souza"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41841,
+    "url": "https://khelnow.com/live-cricket-score/hyderabad-(india)-vs-mumbai-syed-mushtaq-ali-trophy-elite-14th-november-2026-41841",
+    "auto": true,
+    "xis": false
+  }
+}
