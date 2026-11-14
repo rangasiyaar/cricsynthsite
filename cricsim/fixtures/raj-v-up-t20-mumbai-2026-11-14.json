@@ -12,23 +12,23 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Uttar Pradesh won the toss and bat first.",
   "teams": [
     {
       "name": "Rajasthan",
       "short": "RAJ",
       "players": [
-        "Sachin Yadav",
+        "Abhijeet Tomar",
         "Rohan Rajbar",
         "Mahipal Lomror",
-        "Karan Lamba",
-        "Kunal Singh Rathore",
         "Kartik Sharma",
-        "Kukna Ajay Singh",
-        "Vishal Harsh",
-        "Ankit Chaudhary",
-        "Danish Bhambhu",
-        "Sahil Dhiwan"
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Deepak Chahar",
+        "Manav Suthar",
+        "Rahul Chahar",
+        "Himanshu Rana",
+        "Himanshu Nehra"
       ],
       "roles": [
         "BAT",
@@ -38,12 +38,12 @@
         "WK",
         "BAT",
         "BOWL",
-        "BAT",
-        "BOWL",
         "AR",
-        "BOWL"
+        "BOWL",
+        "BAT",
+        "AR"
       ],
-      "captain": "Kartik Sharma",
+      "captain": "Deepak Chahar",
       "squad": [
         "Sachin Yadav",
         "Rohan Rajbar",
@@ -62,32 +62,32 @@
       "name": "Uttar Pradesh",
       "short": "UP",
       "players": [
-        "Madhav Kaushik",
-        "Adarsh Singh",
-        "Aryan Juyal",
         "Karan Sharma",
+        "Devang Karamta",
+        "Madhav Kaushik",
+        "Sameer Rizvi",
+        "Aryan Juyal",
         "Siddarth Yadav",
-        "Rinku Singh",
         "Prashant Veer",
         "Zeeshan Ansari",
-        "Shivam Mavi",
-        "Yash Dayal",
-        "Kartik Yadav"
+        "Bhuvneshwar Kumar",
+        "Mohsin Khan",
+        "Yash Garg"
       ],
       "roles": [
+        "AR",
+        "BOWL",
         "BAT",
         "BAT",
         "WK",
-        "AR",
-        "BAT",
         "BAT",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Aryan Juyal",
+      "captain": "Karan Sharma",
       "squad": [
         "Madhav Kaushik",
         "Adarsh Singh",
@@ -107,6 +107,7 @@
     "kn": 41862,
     "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-uttar-pradesh-syed-mushtaq-ali-trophy-elite-14th-november-2026-41862",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
