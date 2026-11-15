@@ -12,38 +12,38 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Karnali Yaks won the toss and bat first.",
   "teams": [
     {
       "name": "Chitwan Rhinos",
       "short": "CR",
       "players": [
-        "Arjun Saud",
+        "Ashok Dhami",
         "Bibek Kumar Yadav",
         "Dan Mousley",
+        "Dev Khanal",
         "Kamal Singh Airee",
         "Kamil Mishara",
         "Kushal Malla",
-        "Shyam Mousom Dhakal",
-        "Ranjit Kumar",
-        "Ravi Bopara",
-        "Rijan Dhakal",
-        "Sikandar Raza"
+        "Salahuddin Khan",
+        "Usama Mir",
+        "Sikandar Raza",
+        "Rijan Dhakal"
       ],
       "roles": [
+        "BOWL",
         "WK",
         "AR",
-        "AR",
+        "BAT",
         "BOWL",
         "BAT",
         "AR",
-        "BOWL",
+        "BAT",
         "BOWL",
         "AR",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Sikandar Raza",
+      "captain": "Kushal Malla",
       "squad": [
         "Arjun Saud",
         "Bibek Kumar Yadav",
@@ -66,12 +66,12 @@
         "Bipin Sharma",
         "David Miller",
         "Deepak Dumre",
-        "Dipendra Rawat",
         "Gulshan Jha",
         "Mark Watt",
         "Hussain Talat",
         "Nandan Yadav",
         "Pawan Sarraf",
+        "Sachin Sharma",
         "Sompal Kami"
       ],
       "roles": [
@@ -79,12 +79,12 @@
         "AR",
         "BAT",
         "WK",
-        "BOWL",
         "AR",
         "AR",
         "AR",
         "BOWL",
         "AR",
+        "BAT",
         "BOWL"
       ],
       "captain": "David Miller",
@@ -107,6 +107,7 @@
     "kn": 41349,
     "url": "https://khelnow.com/live-cricket-score/chitwan-rhinos-vs-karnali-yaks-nepal-premier-league-15th-november-2026-41349",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
