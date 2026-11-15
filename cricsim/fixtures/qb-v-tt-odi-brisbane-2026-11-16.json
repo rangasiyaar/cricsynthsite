@@ -12,33 +12,33 @@
   "city": "Brisbane",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Tasmania won the toss and bowl first.",
   "teams": [
     {
       "name": "Queensland",
       "short": "QB",
       "players": [
-        "Angus Lovell",
-        "Hugo Burdon",
-        "Marnus Labuschagne",
         "Jack Clayton",
         "Hugh Weibgen",
+        "Marnus Labuschagne",
+        "Hugo Burdon",
+        "Lachlan Hearne",
         "Jimmy Peirson",
-        "Michael Neser",
         "Hayden Kerr",
-        "Cameron Gannon",
-        "Tom Straker",
-        "Mitchell Swepson"
+        "Gurinder Sandhu",
+        "Ollie Patterson",
+        "Mitchell Swepson",
+        "Tom Whitney"
       ],
       "roles": [
-        "AR",
+        "BAT",
         "BAT",
         "BAT",
         "BAT",
         "BAT",
         "WK",
         "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -62,27 +62,27 @@
       "name": "Tasmania",
       "short": "TT",
       "players": [
+        "Mitchell Owen",
         "Caleb Jewell",
-        "Teague Wyllie",
-        "Tim Ward",
-        "Jordan Silk",
-        "Ben McDermott",
         "Beau Webster",
+        "Jordan Silk",
+        "Tim David",
+        "Tim Ward",
+        "Nikhil Chaudhary",
         "Jake Doran",
         "Matthew Kuhnemann",
-        "Riley Meredith",
-        "Gabe Bell",
-        "Jackson Bird"
+        "Billy Stanlake",
+        "Marcus Bean"
       ],
       "roles": [
+        "AR",
         "BAT",
-        "BAT",
+        "AR",
         "BAT",
         "BAT",
         "BAT",
         "AR",
         "WK",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -108,6 +108,7 @@
     "kn": 40668,
     "url": "https://khelnow.com/live-cricket-score/queensland-vs-tasmania-australia-domestic-one-day-cup-16th-november-2026-40668",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
