@@ -1,0 +1,112 @@
+{
+  "id": "as-w-v-ss-w-t20-adelaide-2026-11-17",
+  "title": "Adelaide Strikers Women v Sydney Sixers Women",
+  "date": "2026-11-17",
+  "start_time": "13:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 25th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "Karen Rolton Oval, Adelaide",
+  "venue_search": "karen rolton oval",
+  "city": "Adelaide",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Adelaide Strikers Women",
+      "short": "AS-W",
+      "players": [
+        "Emma de Broughe",
+        "Maia Bouchier",
+        "Laura Wolvaardt",
+        "Tahlia McGrath",
+        "Madeline Penna",
+        "Ellie Johnston",
+        "Amanda Wellington",
+        "Eleanor Larosa",
+        "Ella Wilson",
+        "Megan Schutt",
+        "Anesu Mushangwe"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Tahlia McGrath",
+      "squad": [
+        "Emma de Broughe",
+        "Maia Bouchier",
+        "Laura Wolvaardt",
+        "Tahlia McGrath",
+        "Madeline Penna",
+        "Ellie Johnston",
+        "Amanda Wellington",
+        "Eleanor Larosa",
+        "Ella Wilson",
+        "Megan Schutt",
+        "Anesu Mushangwe"
+      ]
+    },
+    {
+      "name": "Sydney Sixers Women",
+      "short": "SS-W",
+      "players": [
+        "Sophia Dunkley",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Courtney Sippel",
+        "Frankie Nicklin"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ashleigh Gardner",
+      "squad": [
+        "Sophia Dunkley",
+        "Ellyse Perry",
+        "Amelia Kerr",
+        "Ashleigh Gardner",
+        "Alice Capsey",
+        "Eva Ragg",
+        "Erin Burns",
+        "Lauren Cheatle",
+        "Sarah Coyte",
+        "Courtney Sippel",
+        "Frankie Nicklin"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40325,
+    "url": "https://khelnow.com/live-cricket-score/adelaide-strikers-women-vs-sydney-sixers-women-women's-big-bash-league-17th-november-2026-40325",
+    "auto": true,
+    "xis": false
+  }
+}
