@@ -216,6 +216,10 @@ jobs:
         if: env.GCP == 'true' && vars.ALERTS_ENABLED == 'true'
         continue-on-error: true
         run: uv run python -m cricsim.notify plan --publish data/publish --out data/notify.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Keep Hosting storage under the free cap (latest 10 versions per site; never the live one)
+        if: env.GCP == 'true'
+        continue-on-error: true          # a cleanup problem must not hold back the deploy
+        run: FIREBASE_TOKEN="$(gcloud auth print-access-token)" python3 infra/hosting_prune.py --project "$PROJECT" --keep 10
       - name: Deploy to Firebase Hosting
         if: env.GCP == 'true'
         run: |
