@@ -12,7 +12,7 @@
   "city": "Mount Maunganui",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. New Zealand won the toss and bowl first.",
   "teams": [
     {
       "name": "New Zealand",
@@ -26,8 +26,8 @@
         "Michael Bracewell",
         "Mitchell Santner",
         "Kristian Clarke",
-        "Kyle Jamieson",
-        "Matt Henry",
+        "Blair Tickner",
+        "Jacob Duffy",
         "Matthew Fisher"
       ],
       "roles": [
@@ -65,21 +65,21 @@
         "Rohit Sharma",
         "Ruturaj Gaikwad",
         "Virat Kohli",
-        "Ishan Kishan",
         "Shreyas Iyer",
+        "Ishan Kishan",
         "Axar Patel",
         "Naman Dhir",
         "Auqib Nabi Dar",
-        "Kuldeep Yadav",
-        "Gurnoor Singh Brar",
-        "Arshdeep Singh"
+        "Mohammed Siraj",
+        "Arshdeep Singh",
+        "Yash Thakur"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
-        "WK",
         "BAT",
+        "WK",
         "AR",
         "BAT",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 40298,
     "url": "https://khelnow.com/live-cricket-score/new-zealand-vs-india-india-tour-of-new-zealand-15th-november-2026-40298",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
