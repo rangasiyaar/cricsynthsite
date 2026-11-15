@@ -12,7 +12,7 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Arab Emirates Women won the toss and bat first.",
   "teams": [
     {
       "name": "Scotland Women",
@@ -65,26 +65,26 @@
         "Esha Rohit",
         "Heena Hotchandani",
         "Theertha Satish",
+        "Archara Supriya",
         "Athige Silva",
         "Indhuja Nandakumar",
         "Janani Thirukkumaran",
         "Mehul Pranav Kulkarni",
         "Rinitha Rajith",
         "Samaira Dharnidharka",
-        "Simran Sheth",
         "Suraksha Kotte"
       ],
       "roles": [
         "AR",
         "BAT",
         "WK",
+        "BAT",
         "BOWL",
         "BAT",
         "AR",
         "BAT",
         "BAT",
         "BOWL",
-        "AR",
         "BAT"
       ],
       "captain": "Esha Rohit",
@@ -107,6 +107,7 @@
     "kn": 41811,
     "url": "https://khelnow.com/live-cricket-score/scotland-women-vs-united-arab-emirates-women-icc-women's-emerging-nations-trophy-15th-november-2026-41811",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
