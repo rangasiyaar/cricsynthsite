@@ -1,0 +1,381 @@
+{
+ "id": "ss-w-v-mr-w-t20-sydney-2026-11-15",
+ "innings": [
+  {
+   "team": "Sydney Sixers Women",
+   "runs": 152,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sophia Dunkley",
+     "dismissal": "c S Molineux b DJS Dottin",
+     "runs": 49,
+     "balls": 45,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Ellyse Perry",
+     "dismissal": "c & b S Molineux",
+     "runs": 3,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Amelia Kerr",
+     "dismissal": "st N Faltum b G Wareham",
+     "runs": 22,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "dismissal": "b G Wareham",
+     "runs": 55,
+     "balls": 31,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Alice Capsey",
+     "dismissal": "b G Wareham",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Erin Burns",
+     "dismissal": "runout (N Faltum / TJ Vlaeminck)",
+     "runs": 7,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Eva Ragg",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Tayla Vlaeminck",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sophie Molineux",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Milly Illingworth",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Georgia Wareham",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hayley Matthews",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Deandra Dottin",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ellyse Perry",
+     "score": 11,
+     "over": "3.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Amelia Kerr",
+     "score": 62,
+     "over": "9.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sophia Dunkley",
+     "score": 115,
+     "over": "15.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ashleigh Gardner",
+     "score": 136,
+     "over": "17.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Alice Capsey",
+     "score": 137,
+     "over": "17.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Erin Burns",
+     "score": 152,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 30
+  },
+  {
+   "team": "Melbourne Renegades Women",
+   "runs": 156,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Olivia Porter",
+     "dismissal": "c C Sippel b A Gardner",
+     "runs": 29,
+     "balls": 21,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Hayley Matthews",
+     "dismissal": "c & b A Gardner",
+     "runs": 3,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Deandra Dottin",
+     "dismissal": "c AC Kerr b SJ Coyte",
+     "runs": 7,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Courtney Webb",
+     "dismissal": "c SJ Coyte b A Gardner",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Georgia Wareham",
+     "dismissal": "c EA Perry b F Nicklin",
+     "runs": 8,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sophie Molineux",
+     "dismissal": "st A Capsey b AC Kerr",
+     "runs": 38,
+     "balls": 25,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Chloe Tryon",
+     "dismissal": "c EA Burns b A Gardner",
+     "runs": 43,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Tess Flintoff",
+     "dismissal": "c C Sippel b AC Kerr",
+     "runs": 8,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nicole Faltum",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Milly Illingworth",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lauren Cheatle",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ellyse Perry",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ashleigh Gardner",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amelia Kerr",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Courtney Sippel",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarah Coyte",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Frankie Nicklin",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 3,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hayley Matthews",
+     "score": 22,
+     "over": "3.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Deandra Dottin",
+     "score": 37,
+     "over": "6.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Olivia Porter",
+     "score": 43,
+     "over": "7.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Courtney Webb",
+     "score": 44,
+     "over": "7.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Georgia Wareham",
+     "score": 61,
+     "over": "11.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sophie Molineux",
+     "score": 108,
+     "over": "15.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Tess Flintoff",
+     "score": 136,
+     "over": "17.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Chloe Tryon",
+     "score": 151,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 8,
+    "lb": 1,
+    "w": 0,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
