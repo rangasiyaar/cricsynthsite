@@ -27,28 +27,37 @@ jobs:
               except Exception as e: print(f"=== GET {path}: ERROR {e}")
           with sync_playwright() as p:
               b = p.chromium.launch()
-              def grab(url, wait=15):
-                  pg = b.new_page(user_agent=UA); log = []
-                  def on_resp(r):
-                      try:
-                          if r.request.resource_type in ("xhr", "fetch", "document") or "json" in r.headers.get("content-type", ""):
-                              ct = r.headers.get("content-type", ""); body = r.text() if ("json" in ct) else ""
-                              log.append(("RES", r.status, r.url, ct[:30], len(body), body[:600]))
-                      except Exception: pass
-                  pg.on("response", on_resp)
-                  pg.on("requestfailed", lambda r: log.append(("FAIL", r.failure, r.url, "", 0, "")))
-                  pg.on("websocket", lambda w: log.append(("WS", "", w.url, "", 0, "")))
-                  t0 = time.time(); pg.goto(url, wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(wait * 1000)
-                  print(f"\n##### {url} title={pg.title()!r} {time.time()-t0:.1f}s")
-                  print("visible text:", head(pg.inner_text("body"), 2500))
-                  for e in log:
-                      if not re.search(r"(google|doubleclick|facebook|criteo|amazon-adsystem|adnxs|pubmatic|rubicon|taboola|outbrain|\.css|\.woff|\.png|\.jpg|\.webp|\.svg)", e[2]):
-                          print(" ", e[0], e[1], e[2][:170], e[3], f"{e[4]}B", ("keys=" + str(list(json.loads(e[5]).keys())[:12]) if e[5].startswith("{") and e[4] < 600 else ""))
-                  links = pg.eval_on_selector_all("a[href]", "els => els.map(e => e.href)"); pg.close(); return links
-              links = grab(BASE + "/cricket/live")
-              match = [l for l in dict.fromkeys(links) if "cricketworld.com" in l and re.search(r"/(scorecard|live-score|match|cricket/live/)", l)]
-              print("\nmatch links:", len(match)); [print("  ", l) for l in match[:15]]
-              for l in match[:2]: grab(l, 15)
+              def text(url, wait=12):
+                  pg = b.new_page(user_agent=UA); t0 = time.time()
+                  pg.goto(url, wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(wait * 1000)
+                  t = pg.inner_text("body"); links = pg.eval_on_selector_all("a[href]", "els => els.map(e => e.href)"); pg.close()
+                  print(f"\n##### {url} ({time.time()-t0:.0f}s, {len(t)} chars)")
+                  return t, links
+              t, links = text(BASE + "/cricket/live")
+              results = [l for l in dict.fromkeys(links) if re.search(r"/match/(result|scorecard|live)/", l)]
+              print("all match links on the live page:", len(results))
+              for l in results[:40]: print("  ", l)
+              i = t.find("Live Matc"); print("after the strip:", head(t[i:i+3000] if i >= 0 else t[-3000:], 3000))
+              # a recent finished WBBL match and the first live match
+              cand = [l for l in results if "women" in l][:1] + results[:1]
+              for l in cand:
+                  for suffix in ("", "?tab=scorecard"):
+                      t2, _ = text(l + suffix)
+                      for k in ("Playing XI", "Playing 11", "Toss", "won the toss", "elected", "Scorecard", "Fall of", "Did not bat", "Bench", "Squad"):
+                          j = t2.find(k)
+                          if j >= 0: print(f"   [{k}] ...{head(t2[max(0,j-150):j+450], 600)}")
+              # one finished limited-overs match via its series page
+              t3, l3 = text(BASE + "/cricket/series")
+              wbbl = [l for l in dict.fromkeys(l3) if "big-bash" in l.lower() and "women" in l.lower()][:1]
+              print("WBBL series link:", wbbl)
+              if wbbl:
+                  t4, l4 = text(wbbl[0])
+                  done = [l for l in dict.fromkeys(l4) if "/match/" in l][:3]; print("WBBL match links:", done)
+                  for l in done[:1]:
+                      t5, _ = text(l)
+                      for k in ("Playing XI", "Toss", "won the toss", "elected", "Did not bat", "Fall of", "Result", "won by"):
+                          j = t5.find(k)
+                          if j >= 0: print(f"   [{k}] ...{head(t5[max(0,j-150):j+450], 600)}")
               b.close()
           PY
           python probe.py
