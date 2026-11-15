@@ -34,23 +34,15 @@ jobs:
                   t = pg.inner_text("body"); links = pg.eval_on_selector_all("a[href]", "els => els.map(e => e.href)"); pg.close()
                   print(f"    rendered: {len(t)} chars")
               return t, [l if l.startswith("http") else BASE + l for l in links]
-          t, links = page(LIVE)
-          print("live text:", head(t, 2500))
-          ml = [l for l in dict.fromkeys(links) if "cricketnmore.com" in l and re.search(r"(scorecard|live-score|match|commentary)", l, re.I) and l.rstrip("/") != LIVE]
-          print("match links:", len(ml)); [print("  ", l) for l in ml[:30]]
-          KEYS = ("Playing XI", "Playing 11", "Playing11", "Squad", "won the toss", "elected to", "Toss", "Yet to bat", "Did not bat", "Impact")
-          for u in ml[:6]:
-              t2, l2 = page(u)
-              for k in KEYS:
-                  for m in list(re.finditer(k, t2, re.I))[:1]:
-                      print(f"   [{k}] ...{head(t2[max(0,m.start()-80):m.end()+500], 580)}")
-              tabs = [l for l in dict.fromkeys(l2) if re.search(r"(squad|playing|scorecard)", l, re.I) and "cricketnmore.com" in l][:3]
-              print("   tabs:", tabs)
-              for tb in tabs[:2]:
-                  t3, _ = page(tb)
-                  for k in KEYS:
-                      for m in list(re.finditer(k, t3, re.I))[:1]:
-                          print(f"      [{k}] ...{head(t3[max(0,m.start()-80):m.end()+600], 680)}")
+          for u in (BASE + "/cricket-series/india-tour-of-new-zealand-2026/squads", BASE + "/cricket-series/england-tour-of-australia-2026/squads",
+                    BASE + "/cricket-livescore/scorecard/13072010969/syed-mushtaq-ali-trophy-t20-1"):
+              t, l = page(u)
+              i = max(t.find("Squad"), 0)
+              for k in ("Playing XI", "Playing 11", "Squad", "Toss", "Did not bat", "Yet to bat", "Bench"):
+                  for m in list(re.finditer(k, t))[:3]:
+                      print(f"   [{k}] ...{head(t[max(0,m.start()-60):m.end()+500], 560)}")
+              print("   tail:", head(t[len(t)//3: len(t)//3 + 1500], 1500))
+              sl = [x for x in dict.fromkeys(l) if "squad" in x.lower()][:8]; print("   squad links:", sl)
           br.close(); pw.stop()
           PY
           python probe.py
