@@ -1,0 +1,48 @@
+name: Probe source
+on: { workflow_dispatch: }
+permissions: { contents: read }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -q requests
+      - name: Probe
+        run: |
+          cat > probe.py <<'PY'
+          import re, requests, urllib.robotparser
+          BASE = "https://possible11.com"
+          UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
+          S = requests.Session(); S.headers["User-Agent"] = UA
+          rp = urllib.robotparser.RobotFileParser(); rp.parse(S.get(BASE + "/robots.txt", timeout=30).text.splitlines())
+          head = lambda s, n=900: re.sub(r"\s+", " ", s)[:n]
+          text = lambda h: re.sub(r"<script.*?</script>|<style.*?</style>|<[^>]+>", " ", h, flags=re.S)
+          def get(u):
+              if not rp.can_fetch("*", u): print("robots disallow", u); return ""
+              r = S.get(u, timeout=30); print(f"--- {r.status_code} {len(r.text)}B {u}"); return r.text
+          links = []
+          for page in ("/", "/cricket-schedule/", "/live-score/"):
+              h = get(BASE + page)
+              links += re.findall(r'href="(https://possible11\.com/live-score/[a-z0-9-]+-\d+/)"', h) + [BASE + l for l in re.findall(r'href="(/live-score/[a-z0-9-]+-\d+/)"', h)]
+          links = list(dict.fromkeys(links)); print("match links:", len(links)); [print("  ", l) for l in links[:40]]
+          KEYS = ("Playing XI", "Playing 11", "Playing11", "Probable", "Squad", "Toss", "won the toss", "Impact Player", "Bench")
+          for u in links[:8]:
+              h = get(u); t = text(h)
+              status = re.search(r"(Live Score|Result|won by|Match starts|Scorecard will be available)", t)
+              print("   status hint:", status.group(0) if status else "?")
+              for k in KEYS:
+                  for m in list(re.finditer(k, t, re.I))[:1]:
+                      print(f"   [{k}] ...{head(t[max(0,m.start()-80):m.end()+500], 580)}")
+              tabs = sorted(set(re.findall(r'href="([^"]*' + re.escape(u.rstrip('/').rsplit('/',1)[-1]) + r'[^"]*)"', h)))
+              print("   sub-pages:", tabs[:10])
+              for sp in tabs[:4]:
+                  sp = sp if sp.startswith("http") else BASE + sp
+                  if sp.rstrip("/") == u.rstrip("/"): continue
+                  t2 = text(get(sp))
+                  for k in KEYS:
+                      for m in list(re.finditer(k, t2, re.I))[:1]:
+                          print(f"      [{k}] ...{head(t2[max(0,m.start()-80):m.end()+600], 680)}")
+          PY
+          python probe.py
