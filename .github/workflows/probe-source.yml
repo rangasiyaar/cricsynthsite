@@ -36,5 +36,4 @@ jobs:
               t = look(BASE + u, ("Playing XI", "Playing 11", "won the toss", "elected to", "Did not bat", "Yet to bat", "Bench", "Impact"), 500)
               i = t.find("Scorecard"); print("   scorecard area:", head(t[i:i+1500], 1500) if i >= 0 else "none")
           PY
-          PY
           python probe.py
