@@ -21,7 +21,6 @@ Every forecast is frozen at the start of play. After the match it is checked aga
 ## Pages
 
 - [Match centre](https://cricsynthesis.in/match/): forecasts for upcoming matches
-- [Forecast results](https://cricsynthesis.in/results/): how past forecasts compared with what happened
 - [MatchSynth Lab](https://cricsynthesis.in/lab/): change the XI, toss or conditions and re-run a match in the browser
 - [Pricing](https://cricsynthesis.in/pricing/): free match centre, Pro (free during the beta) and API plans
 - [Cricket analytics API](https://cricsynthesis.in/developers/): analytics, simulation and broadcast graphics for businesses

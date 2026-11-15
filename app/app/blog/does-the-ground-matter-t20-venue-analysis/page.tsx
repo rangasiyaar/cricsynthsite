@@ -326,7 +326,7 @@ export default function Post() {
           </dl>
           <p>
             If you want to check us, every forecast we publish is frozen at the start of play and scored against the real scorecard
-            on our <Link href="/results/">results page</Link>, misses included.
+            and each result is linked from our <Link href="/matches/">Matches page</Link>, misses included.
           </p>
 
           <h2 id="faq">Questions people ask</h2>

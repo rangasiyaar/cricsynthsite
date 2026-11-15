@@ -255,7 +255,12 @@
         },
         {
           "source": "/results.html",
-          "destination": "/results/",
+          "destination": "/matches/",
+          "type": 301
+        },
+        {
+          "regex": "^/results/?$",
+          "destination": "/matches/",
           "type": 301
         },
         {

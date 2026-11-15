@@ -365,7 +365,7 @@ function Drawer({ onClose }: { onClose: () => void }) {
           <Item icon={MENU_ICONS.help} label="Help" onClick={() => go("/m/help/")} />
         </div>
         <div className="a-drawer-list">
-          <Item icon={MENU_ICONS.results} label="Past results" href={`${SITE}/results/`} />
+          <Item icon={MENU_ICONS.results} label="Past results" onClick={() => go("/m/matches/?f=finished")} />
           <Item icon={MENU_ICONS.share} label="Share the app" onClick={onShare} />
         </div>
         <div className="a-drawer-list">

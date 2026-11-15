@@ -174,7 +174,7 @@ export function resultLd(r: ResultDoc) {
   // No SportsEvent here: Google only shows upcoming events, and the event lives on the match page.
   return [
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Results", item: `${SITE}/results/` },
+      { "@type": "ListItem", position: 1, name: "Matches", item: `${SITE}/matches/` },
       { "@type": "ListItem", position: 2, name: `${a} vs ${b}`, item: url }] },
   ];
 }

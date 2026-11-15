@@ -20,11 +20,11 @@ export default async function Page({ params }: P) {
   const r = readResult((await params).id);
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <nav className="small muted" aria-label="Breadcrumb"><Link href="/results/">Results</Link> / {r ? r.teams.map((t) => t.name).join(" vs ") : "Match"}</nav>
+      <nav className="small muted" aria-label="Breadcrumb"><Link href="/matches/">Matches</Link> / {r ? r.teams.map((t) => t.name).join(" vs ") : "Match"}</nav>
       {r ? <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resultLd(r)) }} />
         <div style={{ marginTop: 16 }}><ResultDetail doc={r} heading="h1" /></div>
-      </> : <p className="notice" style={{ marginTop: 16 }}>No result for this match yet. <Link href="/results/">All results</Link></p>}
+      </> : <p className="notice" style={{ marginTop: 16 }}>No result for this match yet. <Link href="/matches/">All matches</Link></p>}
     </div>
   );
 }

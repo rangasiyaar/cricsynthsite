@@ -184,7 +184,7 @@ export function buildPreview(doc: MatchDoc, venue: VenueIntel | null, results: R
     ] },
     ...(recordLine ? [{ id: "record", heading: "How our forecasts have done", blocks: [
       { p: recordLine + " Every forecast is frozen before the start and checked against the scorecard, misses included." },
-      { links: [{ href: "/results/", label: "See every result" }] },
+      { links: [{ href: "/matches/", label: "See recent results" }] },
     ] } as Section] : []),
     { id: "explore", heading: "Explore this match", blocks: [
       { p: "Every number in this preview comes from the match centre, where you can dig into each one:" },
@@ -407,7 +407,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
     ] } as Section] : []),
     ...(rec && rec.matches ? [{ id: "record", heading: "How our fantasy picks have done", blocks: [
       { p: `Across ${rec.matches} matches we have scored, our single team averaged **${pc(rec.single)}** of the best possible XI picked after the match, and the best of our five teams **${pc(rec.best_of_teams)}**.` },
-      { links: [{ href: "/results/", label: "Every result, pick by pick" }] },
+      { links: [{ href: "/matches/", label: "Recent results, pick by pick" }] },
     ] } as Section] : []),
     { id: "explore", heading: "Explore this match", blocks: [
       { links: [{ href: previewPath(id), label: "Match preview" }, { href: matchPath(id), label: "Match centre" },
