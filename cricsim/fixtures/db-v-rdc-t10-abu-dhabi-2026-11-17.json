@@ -1,0 +1,112 @@
+{
+  "id": "db-v-rdc-t10-abu-dhabi-2026-11-17",
+  "title": "UAE Bulls v Royal Desert Champions",
+  "date": "2026-11-17",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 25th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Khawaja Nafay",
+        "Max Bryant",
+        "Kieron Pollard",
+        "Shadab Khan",
+        "Sunil Narine",
+        "Romario Shepherd",
+        "Khushdil Shah",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Tahir Zaman"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Khawaja Nafay",
+        "Max Bryant",
+        "Kieron Pollard",
+        "Shadab Khan",
+        "Sunil Narine",
+        "Romario Shepherd",
+        "Khushdil Shah",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Tahir Zaman"
+      ]
+    },
+    {
+      "name": "Royal Desert Champions",
+      "short": "RDC",
+      "players": [
+        "Brandon King",
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Obus Pienaar",
+        "Aayan Afzal Khan",
+        "Chris Jordan",
+        "Dushmantha Chameera",
+        "Maheesh Theekshana"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicholas Pooran",
+      "squad": [
+        "Brandon King",
+        "Nicholas Pooran",
+        "Muhammad Waseem",
+        "Sherfane Rutherford",
+        "Gulbadin Naib",
+        "Keemo Paul",
+        "Obus Pienaar",
+        "Aayan Afzal Khan",
+        "Chris Jordan",
+        "Dushmantha Chameera",
+        "Maheesh Theekshana"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41638,
+    "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-royal-desert-champions-abu-dhabi-t10-league-17th-november-2026-41638",
+    "auto": true,
+    "xis": false
+  }
+}
