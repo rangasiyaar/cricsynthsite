@@ -1,0 +1,112 @@
+{
+  "id": "rai-v-bir-t20-tba-2026-11-16",
+  "title": "Railways v Bihar",
+  "date": "2026-11-16",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 18th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Eshaan Goyal",
+        "Kritagya Singh",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Kunal Yadav",
+        "Atal Bihari Rai"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mohammad Saif",
+      "squad": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Eshaan Goyal",
+        "Kritagya Singh",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Kunal Yadav",
+        "Atal Bihari Rai"
+      ]
+    },
+    {
+      "name": "Bihar",
+      "short": "BIR",
+      "players": [
+        "Vaibhav Sooryavanshi",
+        "Ayush Loharuka",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Raghuvendra Pratap Singh",
+        "Mayank Kumar",
+        "Mohammed Salahuddin Izhar",
+        "Suraj Kashyap",
+        "Prashant Singh",
+        "Himanshu Singh",
+        "Alok Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Vaibhav Sooryavanshi",
+      "squad": [
+        "Vaibhav Sooryavanshi",
+        "Ayush Loharuka",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Raghuvendra Pratap Singh",
+        "Mayank Kumar",
+        "Mohammed Salahuddin Izhar",
+        "Suraj Kashyap",
+        "Prashant Singh",
+        "Himanshu Singh",
+        "Alok Kumar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41970,
+    "url": "https://khelnow.com/live-cricket-score/railways-vs-bihar-syed-mushtaq-ali-trophy-elite-16th-november-2026-41970",
+    "auto": true,
+    "xis": false
+  }
+}
