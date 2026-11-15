@@ -12,38 +12,38 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. New South Wales won the toss and bowl first.",
   "teams": [
     {
       "name": "New South Wales",
       "short": "NSW",
       "players": [
+        "Josh Philippe",
+        "Riley Kingsell",
         "Sam Konstas",
-        "Oliver Davies",
-        "Kurtis Patterson",
-        "William Salzmann",
-        "Nic Maddinson",
         "Lachlan Shaw",
-        "Ryan Hicks",
+        "Nic Maddinson",
+        "Joel Davies",
+        "Oliver Davies",
         "Ben Dwarshuis",
         "Sean Abbott",
-        "Nathan Lyon",
-        "Liam Hatcher"
+        "Tanveer Sangha",
+        "Bryce Jackson"
       ],
       "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
         "BAT",
         "AR",
         "BAT",
-        "BOWL",
-        "BAT",
-        "BAT",
-        "WK",
         "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Nic Maddinson",
+      "captain": "Lachlan Shaw",
       "squad": [
         "Sam Konstas",
         "Oliver Davies",
@@ -63,28 +63,28 @@
       "name": "South Australia",
       "short": "SA",
       "players": [
+        "Mackenzie Harvey",
+        "Jake Fraser-McGurk",
         "Jake Weatherald",
-        "Henry Hunt",
         "Nathan McSweeney",
-        "Jason Sangha",
-        "Jake Lehmann",
         "Matthew Gilkes",
+        "Jake Lehmann",
         "Ben Manenti",
-        "Noah McFadyen",
+        "Jerrssis Wadia",
+        "Hayden Schiller",
         "Henry Thornton",
-        "Wes Agar",
-        "Jordan Buckingham"
+        "Wes Agar"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "BAT",
         "AR",
-        "BAT",
-        "BAT",
         "WK",
-        "AR",
+        "BAT",
         "AR",
         "BOWL",
+        "BAT",
         "BOWL",
         "BOWL"
       ],
@@ -108,6 +108,7 @@
     "kn": 40665,
     "url": "https://khelnow.com/live-cricket-score/new-south-wales-vs-south-australia-australia-domestic-one-day-cup-15th-november-2026-40665",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
