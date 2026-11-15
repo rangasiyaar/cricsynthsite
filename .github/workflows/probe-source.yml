@@ -22,27 +22,19 @@ jobs:
           def get(u):
               if not rp.can_fetch("*", u): print("robots disallow", u); return ""
               r = S.get(u, timeout=30); print(f"--- {r.status_code} {len(r.text)}B {u}"); return r.text
-          links = []
-          for page in ("/", "/cricket-schedule/", "/live-score/"):
-              h = get(BASE + page)
-              links += re.findall(r'href="(https://possible11\.com/live-score/[a-z0-9-]+-\d+/)"', h) + [BASE + l for l in re.findall(r'href="(/live-score/[a-z0-9-]+-\d+/)"', h)]
-          links = list(dict.fromkeys(links)); print("match links:", len(links)); [print("  ", l) for l in links[:40]]
-          KEYS = ("Playing XI", "Playing 11", "Playing11", "Probable", "Squad", "Toss", "won the toss", "Impact Player", "Bench")
-          for u in links[:8]:
-              h = get(u); t = text(h)
-              status = re.search(r"(Live Score|Result|won by|Match starts|Scorecard will be available)", t)
-              print("   status hint:", status.group(0) if status else "?")
-              for k in KEYS:
-                  for m in list(re.finditer(k, t, re.I))[:1]:
-                      print(f"   [{k}] ...{head(t[max(0,m.start()-80):m.end()+500], 580)}")
-              tabs = sorted(set(re.findall(r'href="([^"]*' + re.escape(u.rstrip('/').rsplit('/',1)[-1]) + r'[^"]*)"', h)))
-              print("   sub-pages:", tabs[:10])
-              for sp in tabs[:4]:
-                  sp = sp if sp.startswith("http") else BASE + sp
-                  if sp.rstrip("/") == u.rstrip("/"): continue
-                  t2 = text(get(sp))
-                  for k in KEYS:
-                      for m in list(re.finditer(k, t2, re.I))[:1]:
-                          print(f"      [{k}] ...{head(t2[max(0,m.start()-80):m.end()+600], 680)}")
+          KEYS = ("Playing XI", "Playing 11", "Probable", "Squad", "won the toss", "elected to", "Impact")
+          def look(u, keys=KEYS, n=700):
+              t = text(get(u))
+              for k in keys:
+                  for m in list(re.finditer(k, t))[:2]:
+                      print(f"   [{k}] ...{head(t[max(0,m.start()-60):m.end()+n], n+60)}")
+              return t
+          for u in ("/live-score/ben-vs-chn-21100/", "/live-score/guj-vs-mum-21096/", "/live-score/nag-vs-man-21057/", "/live-score/vct-vs-wau-19305/"):
+              look(BASE + u, ("Squad",), 500)
+          # finished matches: the scorecard section and any confirmed XI
+          for u in ("/live-score/pka-vs-kmg-20636/", "/live-score/nz-vs-ind-17892/"):
+              t = look(BASE + u, ("Playing XI", "Playing 11", "won the toss", "elected to", "Did not bat", "Yet to bat", "Bench", "Impact"), 500)
+              i = t.find("Scorecard"); print("   scorecard area:", head(t[i:i+1500], 1500) if i >= 0 else "none")
+          PY
           PY
           python probe.py
