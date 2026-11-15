@@ -12,30 +12,30 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Royal Desert Champions won the toss and bowl first.",
   "teams": [
     {
       "name": "Royal Desert Champions",
       "short": "RDC",
       "players": [
-        "Phil Salt",
-        "Muhammad Waseem",
         "Brandon King",
         "Nicholas Pooran",
+        "Muhammad Waseem",
         "Sherfane Rutherford",
         "Gulbadin Naib",
         "Keemo Paul",
-        "Ali Naseer",
+        "Obus Pienaar",
+        "Aayan Afzal Khan",
         "Chris Jordan",
-        "Naseem Shah",
+        "Dushmantha Chameera",
         "Maheesh Theekshana"
       ],
       "roles": [
+        "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
+        "AR",
+        "AR",
         "AR",
         "AR",
         "AR",
@@ -62,25 +62,25 @@
       "name": "Arabian Aces",
       "short": "ARA",
       "players": [
+        "Paul Walter",
         "Tom Kohler-Cadmore",
         "Liam Livingstone",
-        "Paul Walter",
         "Moeen Ali",
-        "Sam Billings",
         "Andre Russell",
+        "Sam Billings",
         "Alishan Sharafu",
-        "Alzarri Joseph",
+        "Dwaine Pretorius",
         "Richard Gleeson",
-        "Muhammad Arfan",
-        "Salman Irshad"
+        "Alzarri Joseph",
+        "Muhammad Arfan"
       ],
       "roles": [
+        "AR",
         "WK",
         "AR",
         "AR",
         "AR",
         "BAT",
-        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41632,
     "url": "https://khelnow.com/live-cricket-score/royal-desert-champions-vs-arabian-aces-abu-dhabi-t10-league-15th-november-2026-41632",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
