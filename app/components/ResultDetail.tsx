@@ -1,6 +1,6 @@
 "use client";
 // One match's result: every projection the match centre showed before the start, checked against the scorecard,
-// and the fantasy picks against real points. Shown on /results/{id}/.
+// and the fantasy picks against real points. Shown on /results/{id}/ and in the app at /m/result/?id={id}.
 import Link from "next/link";
 import { useState } from "react";
 import { matchPath } from "@/lib/matchText";
@@ -51,7 +51,7 @@ function FantasyResultView({ f }: { f: FantasyResult }) {
   );
 }
 
-export default function ResultDetail({ doc, heading = "h3" }: { doc: ResultDoc; heading?: "h1" | "h3" }) {
+export default function ResultDetail({ doc, heading = "h3", forecastHref }: { doc: ResultDoc; heading?: "h1" | "h3"; forecastHref?: string }) {
   const [tab, setTab] = useState<string>("All");
   const items = doc.items.filter((c) => tab === "All" || c.tab === tab);
   const H = heading;
@@ -68,7 +68,7 @@ export default function ResultDetail({ doc, heading = "h3" }: { doc: ResultDoc; 
           </div>
           {doc.note && <p className="small"><b>{doc.note}</b></p>}
           <p className="small muted">Our forecast before the start: {doc.teams.map((t, k) => `${t.name} ${pct(doc.forecast.win[t.name])} to win, projected ${doc.forecast.projected[k] !== null ? Math.round(doc.forecast.projected[k]!) : "—"}`).join(" · ")}.{" "}
-            <Link href={matchPath(doc.id)}>See the forecast</Link></p>
+            <Link href={forecastHref ?? matchPath(doc.id)}>See the forecast</Link></p>
           <div className="seg res-seg" role="group" aria-label="Tab">
             {["All", ...RESULT_TABS].map((t) => (
               <button key={t} type="button" aria-pressed={tab === t} onClick={() => setTab(t)}>

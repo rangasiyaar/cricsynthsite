@@ -9,8 +9,6 @@ import { SectionView, TAB_ICONS, sectionName, sectionsFor, type Section } from "
 import { loadMatch, peekMatch } from "@/lib/data";
 import { FORMAT } from "@/lib/format";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
-import { SITE } from "@/lib/seo";
-import { resultPath } from "@/lib/matchText";
 import type { MatchDoc } from "@/lib/types";
 
 function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
@@ -89,7 +87,7 @@ function Match() {
       <OfflineBar show={fresh.offline} onRetry={fresh.refresh} />
       {error && (
         <Empty title="Not available" action={<button type="button" className="a-pill" onClick={() => router.replace("/m/matches/")}>Back to matches</button>}>
-          {error} <a href={`${SITE}${resultPath(id)}`}>See the result on the website</a>.
+          {error} <Link href={`/m/result/?id=${encodeURIComponent(id)}`}>See the result</Link>.
         </Empty>
       )}
       {!doc && !error && <Loading rows={3} />}

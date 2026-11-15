@@ -60,7 +60,7 @@ function Forecast({ m, st, now }: { m: MatchCard; st: Status; now: number | null
 function Result({ r }: { r: ResultSummary }) {
   return (
     <article className="a-mcard">
-      <Link href={`/m/match/?id=${encodeURIComponent(r.id)}`} className="a-mcard-main">
+      <Link href={`/m/result/?id=${encodeURIComponent(r.id)}`} className="a-mcard-main">
         <div className="a-mcard-head">
           <span className="a-mcard-comp">{r.competition ?? ""}</span>
         </div>
