@@ -198,11 +198,15 @@ def test_started_match_with_late_xis_is_rerun_once(tmp_path):
     now = datetime(2026, 11, 5, 7, 30, tzinfo=timezone.utc)                     # 13:00 IST, under way
     get = lambda path, sites=None: live.get(path)
     assert frozen(fx_dir, sc, now, get) == ["b.json", "c.json"]
-    (sc / "a.json").write_text("{}")                                            # result in: frozen for good
-    assert frozen(fx_dir, sc, now, get) == ["a.json", "b.json", "c.json"]
-    later = datetime(2026, 11, 6, 7, 30, tzinfo=timezone.utc)                   # next day: frozen whatever
-    (sc / "a.json").unlink()
+    (sc / "a.json").write_text("{}")                                            # result in: still made up
+    assert frozen(fx_dir, sc, now, get) == ["b.json", "c.json"]
+    later = datetime(2026, 11, 8, 7, 30, tzinfo=timezone.utc)                   # 3 days on (an outage): still made up
+    assert frozen(fx_dir, sc, later, get) == ["b.json", "c.json"]
+    live["matches/a.json"] = {"match": {"xis": True}}                           # once re-run and live: frozen
     assert frozen(fx_dir, sc, later, get) == ["a.json", "b.json", "c.json"]
+    live["matches/a.json"] = {"match": {"xis": False}}
+    much_later = datetime(2026, 11, 10, 7, 30, tzinfo=timezone.utc)             # past XI_RERUN_DAYS: frozen whatever
+    assert frozen(fx_dir, sc, much_later, get) == ["a.json", "b.json", "c.json"]
 
 
 def test_evening_match_stays_listed_past_midnight(tmp_path):

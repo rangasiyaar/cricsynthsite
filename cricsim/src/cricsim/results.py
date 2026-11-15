@@ -61,14 +61,20 @@ def started(fx: dict, now: datetime | None = None) -> bool:
     return k is not None and (now or datetime.now(timezone.utc)) >= k
 
 
+XI_RERUN_DAYS = 4          # how long after the start a lost confirmed-XI re-run is still made up
+MAX_XI_RERUNS = 25         # at most this many made up per site update
+
+
 def needs_xi_rerun(fx: dict, live_doc: dict | None, has_result: bool, now: datetime | None = None) -> bool:
-    """A started match whose playing XIs were confirmed after its live forecast was made (the re-run the auto loop
-    asked for was lost, e.g. its site update was cancelled by a newer one): re-simulate it once with the XIs.
-    Only on the match day and before its result is in."""
+    """A started match whose playing XIs (and toss) were confirmed before the start but whose live forecast was made
+    without them (the re-run the auto loop asked for was lost: its site update was cancelled by a newer one, or no
+    deploy got through, as in the Nov 2026 Hosting-quota outage): re-simulate it once with the XIs. Uses only what
+    was known at the toss, so it is the forecast we would have published; made up to XI_RERUN_DAYS after the start,
+    also once the result is in (the results page then scores the corrected forecast)."""
     from cricsim.publish import xis_confirmed
     k = kickoff(fx)
     now = now or datetime.now(timezone.utc)
-    if has_result or k is None or not (k <= now <= k + timedelta(hours=12)) or not xis_confirmed(fx):
+    if k is None or not (k <= now <= k + timedelta(days=XI_RERUN_DAYS)) or not xis_confirmed(fx):
         return False
     return live_doc is not None and not (live_doc.get("match") or {}).get("xis")
 
@@ -77,17 +83,20 @@ def frozen(fixtures: Path, scorecards: Path, now: datetime | None = None, fetch=
     """Fixture files whose forecast stays as it was at the start: every started match, except one that still needs
     its confirmed-XI re-run (needs_xi_rerun)."""
     fetch = fetch or _fetch
-    out = []
+    out, rerun = [], []
     for p in sorted(fixtures.glob("*.json")):
         f = json.loads(p.read_text())
         if not started(f, now):
             continue
         k = kickoff(f)
-        recent = k is not None and (now or datetime.now(timezone.utc)) - k <= timedelta(hours=12)
+        recent = k is not None and (now or datetime.now(timezone.utc)) - k <= timedelta(days=XI_RERUN_DAYS)
         if recent and needs_xi_rerun(f, fetch(f"matches/{f['id']}.json"), (scorecards / p.name).exists(), now):
+            rerun.append((k, p.name))
             continue
         out.append(p.name)
-    return out
+    rerun.sort(reverse=True)                     # newest first; the rest wait for the next update (keeps runs short)
+    out += [name for _, name in rerun[MAX_XI_RERUNS:]]
+    return sorted(out)
 
 
 # ── names: scorecard names → forecast player ids ──────────────────────────────────────────────────────────────────
