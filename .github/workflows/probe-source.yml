@@ -12,58 +12,38 @@ jobs:
       - name: Probe
         run: |
           cat > probe.py <<'PY'
-          import json, re, time, requests
-          from urllib.parse import urljoin
+          import re, time, requests
           from playwright.sync_api import sync_playwright
           BASE = "https://www.heroliveline.com"
           UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
-          def head(s, n=600): return re.sub(r"\s+", " ", s)[:n]
-          for path in ("/robots.txt", "/terms", "/terms-and-conditions", "/fixtures"):
-              try:
-                  r = requests.get(BASE + path, headers={"User-Agent": UA}, timeout=30)
-                  print(f"=== GET {path}: {r.status_code} {len(r.text)} bytes, {r.headers.get('content-type')}, server={r.headers.get('server')}, cf={r.headers.get('cf-ray') is not None}")
-                  if path == "/robots.txt" or r.status_code != 200: print(head(r.text, 1500))
-                  if path == "/fixtures":
-                      t = r.text
-                      print("next_data:", "__NEXT_DATA__" in t, "| nuxt:", "__NUXT__" in t, "| plain text sample:", head(re.sub(r"<[^>]+>", " ", t), 500))
-              except Exception as e:
-                  print(f"=== GET {path}: ERROR {e}")
-          seen = {}
-          def grab(page, url, wait=12):
-              calls = []
-              def on_resp(resp):
-                  try:
-                      ct = resp.headers.get("content-type", "")
-                      if resp.request.resource_type in ("xhr", "fetch") or "json" in ct:
-                          body = resp.text() if ("json" in ct or "text" in ct) else ""
-                          calls.append((resp.status, resp.request.method, resp.url, ct, body))
-                  except Exception: pass
-              ws = []
-              page.on("response", on_resp)
-              page.on("websocket", lambda w: ws.append(w.url))
-              t0 = time.time(); page.goto(url, wait_until="domcontentloaded", timeout=60000); page.wait_for_timeout(wait * 1000)
-              print(f"\n##### {url}  title={page.title()!r}  load {time.time()-t0:.1f}s")
-              print("visible text:", head(page.inner_text("body"), 1200))
-              for st, m, u, ct, body in calls:
-                  keys = ""
-                  try:
-                      j = json.loads(body); keys = list(j.keys())[:15] if isinstance(j, dict) else f"list[{len(j)}]"
-                  except Exception: pass
-                  print(f"  {st} {m} {u[:160]} [{ct[:30]}] {len(body)}B keys={keys}")
-                  seen.setdefault(u.split('?')[0], body[:1500])
-              for w in ws: print("  WEBSOCKET", w)
-              links = page.eval_on_selector_all("a[href]", "els => els.map(e => e.href)")
-              return links
+          head = lambda s, n=700: re.sub(r"\s+", " ", s)[:n]
+          html = requests.get(BASE + "/fixtures", headers={"User-Agent": UA}, timeout=30).text
+          js = [BASE + j if j.startswith("/") else j for j in re.findall(r'src="([^"]+\.js)"', html)]
+          print("bundles:", js)
+          hosts = set()
+          for j in js:
+              t = requests.get(j, headers={"User-Agent": UA}, timeout=60).text
+              print(f"-- {j} {len(t)} bytes")
+              for u in sorted(set(re.findall(r'https?://[a-zA-Z0-9.-]+(?:/[a-zA-Z0-9_./-]*)?', t))):
+                  if not re.search(r"(w3\.org|reactjs|googletagmanager|google-analytics|facebook|apple\.com|play\.google|mozilla|github)", u):
+                      hosts.add(u)
+              for k in ("socket", "firebase", "apiKey", "baseURL", "Authorization", "x-api-key", "token", "liveline", "cricket"):
+                  for m in list(re.finditer(k, t))[:3]:
+                      print(f"   [{k}] ...{head(t[max(0,m.start()-120):m.end()+160], 300)}...")
+          print("URLs in bundles:"); [print("  ", h) for h in sorted(hosts)[:80]]
           with sync_playwright() as p:
-              b = p.chromium.launch(); pg = b.new_page(user_agent=UA)
-              links = grab(pg, BASE + "/fixtures")
-              match = [l for l in dict.fromkeys(links) if re.search(r"/(match|live|scorecard|score)", l, re.I) and "heroliveline" in l]
-              print("\nmatch-like links:", len(match)); [print("  ", l) for l in match[:15]]
-              for l in match[:2]:
-                  grab(b.new_page(user_agent=UA), l, 15)
+              b = p.chromium.launch(); pg = b.new_page(user_agent=UA, locale="en-IN", timezone_id="Asia/Kolkata")
+              log = []
+              pg.on("request", lambda r: log.append(("REQ", r.resource_type, r.method, r.url)))
+              pg.on("requestfailed", lambda r: log.append(("FAIL", r.resource_type, r.failure, r.url)))
+              pg.on("response", lambda r: log.append(("RES", r.request.resource_type, r.status, r.url)))
+              pg.on("websocket", lambda w: log.append(("WS", "", "", w.url)))
+              pg.on("console", lambda m: log.append(("CONSOLE", m.type, "", m.text[:200])))
+              pg.goto(BASE + "/fixtures", wait_until="networkidle", timeout=90000); pg.wait_for_timeout(25000)
+              print("\nvisible text:", head(pg.inner_text("body"), 1500))
+              for e in log:
+                  if not re.search(r"(google-analytics|googletagmanager|\.css|\.woff|\.png|\.svg|\.jpg|\.webp)", str(e[3])):
+                      print(" ", *[str(x)[:170] for x in e])
               b.close()
-          print("\n===== sample bodies of data endpoints =====")
-          for u, body in list(seen.items())[:8]:
-              print("--", u[:160]); print(head(body, 900))
           PY
           python probe.py
