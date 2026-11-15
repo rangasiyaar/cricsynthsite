@@ -1,0 +1,448 @@
+{
+ "id": "nz-v-ind-odi-mount-maunganui-2026-11-15",
+ "innings": [
+  {
+   "team": "India",
+   "runs": 209,
+   "wickets": 10,
+   "overs": "42.1",
+   "batting": [
+    {
+     "name": "Rohit Sharma",
+     "dismissal": "c D Foxcroft b M Fisher",
+     "runs": 7,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ruturaj Gaikwad",
+     "dismissal": "c TL Seifert b JA Duffy",
+     "runs": 18,
+     "balls": 27,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Virat Kohli",
+     "dismissal": "c TL Seifert b M Fisher",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shreyas Iyer",
+     "dismissal": "c M Fisher b BM Tickner",
+     "runs": 22,
+     "balls": 26,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Axar Patel",
+     "dismissal": "c W Young b MG Bracewell",
+     "runs": 46,
+     "balls": 55,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Ishan Kishan",
+     "dismissal": "c M Fisher b JA Duffy",
+     "runs": 46,
+     "balls": 58,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Naman Dhir",
+     "dismissal": "c NF Kelly b M Santner",
+     "runs": 22,
+     "balls": 31,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "dismissal": "c F Allen b M Santner",
+     "runs": 5,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Yash Thakur",
+     "dismissal": "c TL Seifert b M Santner",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammed Siraj",
+     "dismissal": "not out",
+     "runs": 14,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Arshdeep Singh",
+     "dismissal": "b JA Duffy",
+     "runs": 14,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 2
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jacob Duffy",
+     "overs": "8.1",
+     "maidens": 1,
+     "runs": 60,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Matthew Fisher",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Kristian Clarke",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Blair Tickner",
+     "overs": "5",
+     "maidens": 1,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mitchell Santner",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 47,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Michael Bracewell",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Rohit Sharma",
+     "score": 23,
+     "over": "5.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Virat Kohli",
+     "score": 33,
+     "over": "7.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ruturaj Gaikwad",
+     "score": 34,
+     "over": "8.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shreyas Iyer",
+     "score": 86,
+     "over": "17.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Axar Patel",
+     "score": 121,
+     "over": "24.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Naman Dhir",
+     "score": 160,
+     "over": "33.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Auqib Nabi Dar",
+     "score": 166,
+     "over": "35.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Yash Thakur",
+     "score": 166,
+     "over": "35.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ishan Kishan",
+     "score": 183,
+     "over": "40.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Arshdeep Singh",
+     "score": 209,
+     "over": "42.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 7,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 37
+  },
+  {
+   "team": "New Zealand",
+   "runs": 187,
+   "wickets": 10,
+   "overs": "48.1",
+   "batting": [
+    {
+     "name": "Will Young",
+     "dismissal": "c RD Gaikwad b Arshdeep Singh",
+     "runs": 22,
+     "balls": 42,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Tim Seifert",
+     "dismissal": "c YS Thakur b M Siraj",
+     "runs": 14,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Nick Kelly",
+     "dismissal": "b Arshdeep Singh",
+     "runs": 24,
+     "balls": 45,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Dean Foxcroft",
+     "dismissal": "b YS Thakur",
+     "runs": 31,
+     "balls": 42,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Finn Allen",
+     "dismissal": "b M Siraj",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Michael Bracewell",
+     "dismissal": "c Naman Dhir b AN Dar",
+     "runs": 19,
+     "balls": 33,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Santner",
+     "dismissal": "c Arshdeep Singh b Naman Dhir",
+     "runs": 24,
+     "balls": 31,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Kristian Clarke",
+     "dismissal": "c I Kishan b Arshdeep Singh",
+     "runs": 16,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Blair Tickner",
+     "dismissal": "st I Kishan b Axar Patel",
+     "runs": 14,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jacob Duffy",
+     "dismissal": "c V Kohli b Axar Patel",
+     "runs": 9,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Matthew Fisher",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Arshdeep Singh",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 30,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mohammed Siraj",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 50,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Auqib Nabi Dar",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Yash Thakur",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 3,
+     "wides": 1
+    },
+    {
+     "name": "Axar Patel",
+     "overs": "6.1",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Naman Dhir",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Seifert",
+     "score": 26,
+     "over": "5.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Will Young",
+     "score": 64,
+     "over": "16.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nick Kelly",
+     "score": 82,
+     "over": "20.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Finn Allen",
+     "score": 83,
+     "over": "21.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Michael Bracewell",
+     "score": 119,
+     "over": "30.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Dean Foxcroft",
+     "score": 119,
+     "over": "31.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mitchell Santner",
+     "score": 158,
+     "over": "40.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kristian Clarke",
+     "score": 161,
+     "over": "42.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jacob Duffy",
+     "score": 181,
+     "over": "46.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Blair Tickner",
+     "score": 187,
+     "over": "48.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 7,
+    "nb": 3,
+    "p": 0
+   }
+  }
+ ]
+}
