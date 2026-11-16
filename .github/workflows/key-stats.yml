@@ -1,0 +1,52 @@
+name: API key stats
+# Read-only: counts the API keys in Firestore (collection group "keys" under users/{uid}). Reads only plan,
+# revoked, created and lastUsed (never hash, prefix, name or account details) and prints totals.
+on: { workflow_dispatch: }
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Count
+        run: |
+          export TOKEN="$(gcloud auth print-access-token)"
+          python3 - <<'PY'
+          import collections, datetime as dt, json, os, urllib.request
+          P, T = os.environ["PROJECT"], os.environ["TOKEN"]
+          base = f"https://firestore.googleapis.com/v1/projects/{P}/databases/(default)/documents"
+          def post(url, body):
+              req = urllib.request.Request(url, json.dumps(body).encode(), {"Authorization": f"Bearer {T}", "Content-Type": "application/json"})
+              return json.load(urllib.request.urlopen(req, timeout=60))
+          rows = post(base + ":runQuery", {"structuredQuery": {"from": [{"collectionId": "keys", "allDescendants": True}],
+              "select": {"fields": [{"fieldPath": f} for f in ("plan", "revoked", "created", "lastUsed")]}}})
+          docs = [r["document"] for r in rows if "document" in r]
+          def val(d, k):
+              v = d.get("fields", {}).get(k, {})
+              return v.get("stringValue") or v.get("booleanValue") or v.get("timestampValue")
+          now = dt.datetime.now(dt.timezone.utc)
+          ts = lambda s: dt.datetime.fromisoformat(s.replace("Z", "+00:00")) if s else None
+          accounts = {d["name"].split("/users/")[1].split("/")[0] for d in docs}
+          active = [d for d in docs if not val(d, "revoked")]
+          print(f"API keys created (all time): {len(docs)}")
+          print(f"  active: {len(active)}   revoked: {len(docs) - len(active)}")
+          print(f"  accounts with at least one key: {len(accounts)}")
+          print("  by plan (active):", dict(collections.Counter(val(d, 'plan') or 'free' for d in active)))
+          used = [ts(val(d, "lastUsed")) for d in active]
+          print(f"  active keys ever used: {sum(1 for u in used if u)}; used in the last 7 days: {sum(1 for u in used if u and now - u <= dt.timedelta(days=7))}")
+          by_month = collections.Counter(ts(val(d, 'created')).strftime('%Y-%m') for d in docs if val(d, 'created'))
+          print("  created by month:", dict(sorted(by_month.items())))
+          last14 = collections.Counter(ts(val(d, 'created')).date().isoformat() for d in docs if val(d, 'created') and now - ts(val(d, 'created')) <= dt.timedelta(days=14))
+          print("  created in the last 14 days:", dict(sorted(last14.items())))
+          n = post(base + ":runAggregationQuery", {"structuredAggregationQuery": {"structuredQuery": {"from": [{"collectionId": "users"}]},
+                   "aggregations": [{"alias": "n", "count": {}}]}})
+          print("user profiles in Firestore:", n[0]["result"]["aggregateFields"]["n"].get("integerValue"))
+          PY
