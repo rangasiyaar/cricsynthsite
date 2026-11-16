@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bihar won the toss and bowl first.",
   "teams": [
     {
       "name": "Railways",
@@ -21,27 +21,27 @@
         "Jayant Lakhan",
         "Mohammad Saif",
         "Ravi Singh",
+        "Upendra Yadav",
         "Eshaan Goyal",
-        "Kritagya Singh",
         "Toufik Uddin Mondal",
         "Mohit Raut",
         "Pradhyumn Parikh",
+        "Atal Bihari Rai",
         "Zubair Ali",
-        "Kunal Yadav",
-        "Atal Bihari Rai"
+        "Akshat Pandey"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "BAT",
         "WK",
         "BAT",
-        "AR",
         "BAT",
         "AR",
-        "BAT",
         "BAT",
         "BOWL",
-        "BOWL"
+        "BAT",
+        "AR"
       ],
       "captain": "Mohammad Saif",
       "squad": [
@@ -62,32 +62,32 @@
       "name": "Bihar",
       "short": "BIR",
       "players": [
-        "Vaibhav Sooryavanshi",
-        "Ayush Loharuka",
-        "Altamish Ashraf",
-        "Prithvi Raj",
-        "Raghuvendra Pratap Singh",
-        "Mayank Kumar",
-        "Mohammed Salahuddin Izhar",
         "Suraj Kashyap",
+        "Ayush Loharuka",
+        "Alok Kumar",
+        "Tarun Kumar",
+        "Prithvi Raj",
+        "Mayank Kumar",
+        "Raghuvendra Pratap Singh",
         "Prashant Singh",
-        "Himanshu Singh",
-        "Alok Kumar"
+        "Mohammed Salahuddin Izhar",
+        "Altamish Ashraf",
+        "Himanshu Singh"
       ],
       "roles": [
-        "BAT",
+        "BOWL",
         "WK",
+        "BAT",
+        "BAT",
         "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL",
         "AR",
-        "BAT",
-        "BOWL",
-        "BOWL",
-        "BOWL",
-        "BAT",
-        "BAT",
         "BAT"
       ],
-      "captain": "Vaibhav Sooryavanshi",
+      "captain": "Suraj Kashyap",
       "squad": [
         "Vaibhav Sooryavanshi",
         "Ayush Loharuka",
@@ -107,6 +107,7 @@
     "kn": 41970,
     "url": "https://khelnow.com/live-cricket-score/railways-vs-bihar-syed-mushtaq-ali-trophy-elite-16th-november-2026-41970",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
