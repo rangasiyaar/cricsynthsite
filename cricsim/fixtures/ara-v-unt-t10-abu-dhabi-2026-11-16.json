@@ -12,31 +12,31 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Tigers won the toss and bat first.",
   "teams": [
     {
       "name": "Arabian Aces",
       "short": "ARA",
       "players": [
         "Paul Walter",
-        "Tom Kohler-Cadmore",
+        "Quentin Sampson",
         "Liam Livingstone",
         "Moeen Ali",
         "Andre Russell",
         "Sam Billings",
         "Alishan Sharafu",
         "Dwaine Pretorius",
+        "Richard Gleeson",
         "Alzarri Joseph",
-        "Muhammad Arfan",
-        "Richard Gleeson"
+        "Muhammad Arfan"
       ],
       "roles": [
         "AR",
-        "WK",
-        "AR",
-        "AR",
-        "AR",
         "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
         "AR",
         "BOWL",
         "BOWL",
@@ -68,11 +68,11 @@
         "Iftikhar Ahmed",
         "Azmatullah Omarzai",
         "Faheem Ashraf",
-        "Odean Smith",
-        "Awais Ali",
         "Abbas Afridi",
         "Zeeshan Naseer",
-        "Usman Tariq"
+        "Usman Tariq",
+        "Ali Majid",
+        "Khalid Shah"
       ],
       "roles": [
         "BAT",
@@ -81,11 +81,11 @@
         "AR",
         "AR",
         "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "BAT"
       ],
       "captain": "Fakhar Zaman",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41635,
     "url": "https://khelnow.com/live-cricket-score/arabian-aces-vs-united-tigers-abu-dhabi-t10-league-16th-november-2026-41635",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
