@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Puducherry won the toss and bat first.",
   "teams": [
     {
       "name": "Tripura",
@@ -63,29 +63,29 @@
       "short": "PDY",
       "players": [
         "Gaurav Yadav",
+        "Prasad Pawar",
+        "Sagar Trivedi",
+        "Shashank Singh",
+        "Raghav Goyal",
+        "Aman Hakim Khan",
         "Bhanu Anand",
-        "Pougajendy Akash",
+        "Badal Rawat",
         "S Parameeswaran",
         "Ramamoorthy Ragavan",
-        "Aman Hakim Khan",
-        "Shashank Singh",
-        "Badal Rawat",
-        "Sagar Trivedi",
-        "Raghav Goyal",
-        "Adil Ayub Tunda"
+        "Pougajendy Akash"
       ],
       "roles": [
         "BOWL",
-        "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL"
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT"
       ],
       "captain": "Aman Hakim Khan",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41878,
     "url": "https://khelnow.com/live-cricket-score/tripura-vs-puducherry-syed-mushtaq-ali-trophy-elite-16th-november-2026-41878",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
