@@ -12,32 +12,32 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Hyderabad (India) won the toss and bowl first.",
   "teams": [
     {
       "name": "Chhattisgarh",
       "short": "CHA",
       "players": [
-        "Vikalp Tiwari",
-        "Aayush Pandey",
-        "Rahul Pradhan",
-        "Amandeep Khare",
-        "Prateek Yadav",
         "Shashank Chandrakar",
+        "Rahul Pradhan",
+        "Prateek Yadav",
+        "Aayush Pandey",
+        "Vikalp Tiwari",
         "Ajay Mandal",
         "Shubham Agarwal",
         "Sourabh Majumdar",
         "Jayant Yadav",
-        "Sandeep Warrier"
+        "Dev Aditya Singh",
+        "Vijay Yadav"
       ],
       "roles": [
-        "AR",
         "BAT",
         "WK",
         "BAT",
         "BAT",
-        "BAT",
         "AR",
+        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -66,13 +66,13 @@
         "Tanmay Agarwal",
         "Abhirath Reddy",
         "Aman Rao Perala",
-        "Kodimela Himateja",
+        "Rahul Buddhi",
         "Chama Milind",
+        "Kodimela Himateja",
         "Tanay Thyagarajan",
         "Pranav Varma",
         "Ajay Dev Goud",
-        "Harshith Sai",
-        "Ved Reddy Amisthapuram"
+        "Chinntla Rakshann Readdi"
       ],
       "roles": [
         "WK",
@@ -81,9 +81,9 @@
         "BAT",
         "BAT",
         "AR",
+        "BAT",
         "AR",
         "AR",
-        "BOWL",
         "BOWL",
         "BAT"
       ],
@@ -99,13 +99,15 @@
         "Ajay Dev Goud",
         "Harshith Sai",
         "Ved Reddy Amisthapuram"
-      ]
+      ],
+      "captain": "Chama Milind"
     }
   ],
   "live": {
     "kn": 41880,
     "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-hyderabad-(india)-syed-mushtaq-ali-trophy-elite-16th-november-2026-41880",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
