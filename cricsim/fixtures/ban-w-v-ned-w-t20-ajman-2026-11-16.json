@@ -12,7 +12,7 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Netherlands Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Bangladesh Women",
@@ -25,8 +25,8 @@
         "Sobhana Mostary",
         "Shorna Akter",
         "Ritu Moni",
-        "Fahima Khatun",
         "Rabeya Khan",
+        "Jannatul Ferdus",
         "Disha Biswas",
         "Sanjida Akter Meghla"
       ],
@@ -38,8 +38,8 @@
         "AR",
         "AR",
         "AR",
-        "BOWL",
         "AR",
+        "BAT",
         "BAT",
         "BOWL"
       ],
@@ -62,30 +62,30 @@
       "name": "Netherlands Women",
       "short": "NED-W",
       "players": [
-        "Sterre Kalis",
-        "Heather Siegers",
-        "Phebe Molkenboer",
-        "Babette de Leede",
-        "Sanya Khurana",
-        "Carlijn van Koolwijk",
-        "Iris Zwilling",
         "Frederique Overdijk",
-        "Robine Rijke",
         "Hannah Landheer",
-        "Silver Siegers"
+        "Iris Zwilling",
+        "Babette de Leede",
+        "Heather Siegers",
+        "Sterre Kalis",
+        "Phebe Molkenboer",
+        "Robine Rijke",
+        "Silver Siegers",
+        "Carlijn van Koolwijk",
+        "Sanya Khurana"
       ],
       "roles": [
-        "BAT",
-        "AR",
-        "BAT",
-        "WK",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
-        "BOWL"
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT"
       ],
       "captain": "Babette de Leede",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41813,
     "url": "https://khelnow.com/live-cricket-score/bangladesh-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-16th-november-2026-41813",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
