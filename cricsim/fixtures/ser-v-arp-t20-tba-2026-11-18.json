@@ -1,0 +1,112 @@
+{
+  "id": "ser-v-arp-t20-tba-2026-11-18",
+  "title": "Services v Arunachal Pradesh",
+  "date": "2026-11-18",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 8th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Services",
+      "short": "SER",
+      "players": [
+        "Suraj Vashisht",
+        "Kunwar Pathak",
+        "Sufiyan Alam",
+        "Arun Kumar",
+        "Mohit Ahlawat",
+        "Nakul Sharma",
+        "Mohit Jangra",
+        "Arjun Sharma",
+        "Arun Bamal",
+        "Mohit Kumar",
+        "Raj Bahadur"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Nakul Sharma",
+      "squad": [
+        "Suraj Vashisht",
+        "Kunwar Pathak",
+        "Sufiyan Alam",
+        "Arun Kumar",
+        "Mohit Ahlawat",
+        "Nakul Sharma",
+        "Mohit Jangra",
+        "Arjun Sharma",
+        "Arun Bamal",
+        "Mohit Kumar",
+        "Raj Bahadur"
+      ]
+    },
+    {
+      "name": "Arunachal Pradesh",
+      "short": "ARP",
+      "players": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Licha Jhon",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Chandan Kumar Singh",
+        "Kamsha Yangfo",
+        "Likha Sonia",
+        "Yab Niya",
+        "Darge Bagra",
+        "Myendung Singpho"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Neelam Obi",
+      "squad": [
+        "Neelam Obi",
+        "Techi Doria",
+        "Licha Jhon",
+        "Salil Malhotra",
+        "Techi Neri",
+        "Chandan Kumar Singh",
+        "Kamsha Yangfo",
+        "Likha Sonia",
+        "Yab Niya",
+        "Darge Bagra",
+        "Myendung Singpho"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41849,
+    "url": "https://khelnow.com/live-cricket-score/services-vs-arunachal-pradesh-syed-mushtaq-ali-trophy-plate-18th-november-2026-41849",
+    "auto": true,
+    "xis": false
+  }
+}

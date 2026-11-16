@@ -1,0 +1,112 @@
+{
+  "id": "sikm-v-nag-t20-tba-2026-11-18",
+  "title": "Sikkim v Nagaland",
+  "date": "2026-11-18",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 7th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sikkim",
+      "short": "SIKM",
+      "players": [
+        "Amit Rajera",
+        "Parth Palawat",
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "Gurinder Singh",
+        "C Kranthi Kumar",
+        "Ashish Thapa",
+        "Satyajeet Bachhav",
+        "Ankur Malik",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Lee Yong Lepcha",
+      "squad": [
+        "Amit Rajera",
+        "Parth Palawat",
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "Gurinder Singh",
+        "C Kranthi Kumar",
+        "Ashish Thapa",
+        "Satyajeet Bachhav",
+        "Ankur Malik",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ]
+    },
+    {
+      "name": "Nagaland",
+      "short": "NAG",
+      "players": [
+        "Rongsen Jonathan",
+        "Joshua Ozukum",
+        "Chetan Bist",
+        "Sedezhalie Rupero",
+        "Tohuka Zhimo",
+        "Anil Gupta",
+        "Saurav Kumar",
+        "Imliwati Lemtur",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Hokaito Zhimomi"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Rongsen Jonathan",
+      "squad": [
+        "Rongsen Jonathan",
+        "Joshua Ozukum",
+        "Chetan Bist",
+        "Sedezhalie Rupero",
+        "Tohuka Zhimo",
+        "Anil Gupta",
+        "Saurav Kumar",
+        "Imliwati Lemtur",
+        "Neizekho Rupreo",
+        "Nagaho Chishi",
+        "Hokaito Zhimomi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41847,
+    "url": "https://khelnow.com/live-cricket-score/sikkim-vs-nagaland-syed-mushtaq-ali-trophy-plate-18th-november-2026-41847",
+    "auto": true,
+    "xis": false
+  }
+}
