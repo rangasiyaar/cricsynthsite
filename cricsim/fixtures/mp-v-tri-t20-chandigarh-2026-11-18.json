@@ -1,0 +1,112 @@
+{
+  "id": "mp-v-tri-t20-chandigarh-2026-11-18",
+  "title": "Madhya Pradesh v Tripura",
+  "date": "2026-11-18",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 47th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Madhya Pradesh",
+      "short": "MP",
+      "players": [
+        "Rajat Patidar",
+        "Ankush Singh",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Apurve Dwivedi",
+        "Kumar Kartikeya"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "WK",
+        "BOWL"
+      ],
+      "captain": "Rajat Patidar",
+      "squad": [
+        "Rajat Patidar",
+        "Ankush Singh",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Apurve Dwivedi",
+        "Kumar Kartikeya"
+      ]
+    },
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41897,
+    "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-tripura-syed-mushtaq-ali-trophy-elite-18th-november-2026-41897",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,447 @@
+{
+ "id": "vic-v-wa-odi-melbourne-2026-11-16",
+ "innings": [
+  {
+   "team": "Victoria",
+   "runs": 268,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Sam Harper",
+     "dismissal": "c AJ Turner b A Agar",
+     "runs": 22,
+     "balls": 26,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Thomas Fraser Rogers",
+     "dismissal": "b BL Couch",
+     "runs": 48,
+     "balls": 58,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Peter Handscomb",
+     "dismissal": "b M Dawson",
+     "runs": 21,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Blake Macdonald",
+     "dismissal": "c J Curtis b M Dawson",
+     "runs": 86,
+     "balls": 98,
+     "fours": 7,
+     "sixes": 2
+    },
+    {
+     "name": "Will Sutherland",
+     "dismissal": "c BL Couch b JA Richardson",
+     "runs": 10,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Blackford",
+     "dismissal": "lbw b A Agar",
+     "runs": 5,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Perry",
+     "dismissal": "c A Agar b BL Couch",
+     "runs": 8,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Elliott",
+     "dismissal": "c SM Whiteman b M Dawson",
+     "runs": 7,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Todd Murphy",
+     "dismissal": "c M Dawson b BL Couch",
+     "runs": 25,
+     "balls": 23,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Doug Warren",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Hennig",
+     "dismissal": "not out",
+     "runs": 15,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jhye Richardson",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Jordan Quiggin",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ashton Agar",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Will Malajczuk",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Michael Dawson",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 46,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ashton Turner",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Brody Couch",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 3
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sam Harper",
+     "score": 49,
+     "over": "7.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Peter Handscomb",
+     "score": 79,
+     "over": "14.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Thomas Fraser Rogers",
+     "score": 125,
+     "over": "23.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Will Sutherland",
+     "score": 140,
+     "over": "26.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Liam Blackford",
+     "score": 153,
+     "over": "29.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Mitchell Perry",
+     "score": 173,
+     "over": "34.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sam Elliott",
+     "score": 197,
+     "over": "38.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Todd Murphy",
+     "score": 243,
+     "over": "45.1"
+    },
+    {
+     "wicket": 9,
+     "batter": "Blake Macdonald",
+     "score": 248,
+     "over": "47.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 15,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 53
+  },
+  {
+   "team": "Western Australia",
+   "runs": 272,
+   "wickets": 9,
+   "overs": "49.1",
+   "batting": [
+    {
+     "name": "Joel Curtis",
+     "dismissal": "c SB Harper b W Sutherland",
+     "runs": 75,
+     "balls": 73,
+     "fours": 8,
+     "sixes": 1
+    },
+    {
+     "name": "Cameron Bancroft",
+     "dismissal": "b TR Murphy",
+     "runs": 55,
+     "balls": 52,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Whiteman",
+     "dismissal": "c PSP Handscomb b Matt Hennig",
+     "runs": 20,
+     "balls": 32,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Corey Wasley",
+     "dismissal": "c SB Harper b Matt Hennig",
+     "runs": 11,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ashton Turner",
+     "dismissal": "not out",
+     "runs": 53,
+     "balls": 52,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Will Malajczuk",
+     "dismissal": "b Matt Hennig",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ashton Agar",
+     "dismissal": "b TR Murphy",
+     "runs": 30,
+     "balls": 47,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Jhye Richardson",
+     "dismissal": "b Matt Hennig",
+     "runs": 14,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Brody Couch",
+     "dismissal": "lbw b Matt Hennig",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Michael Dawson",
+     "dismissal": "b Matt Hennig",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jordan Quiggin",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mitchell Perry",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sam Elliott",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Todd Murphy",
+     "overs": "9.1",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Will Sutherland",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Matt Hennig",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 45,
+     "wickets": 6,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Doug Warren",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 54,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Cameron Bancroft",
+     "score": 115,
+     "over": "17.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Joel Curtis",
+     "score": 149,
+     "over": "23.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Corey Wasley",
+     "score": 170,
+     "over": "28.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sam Whiteman",
+     "score": 171,
+     "over": "28.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Will Malajczuk",
+     "score": 171,
+     "over": "28.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ashton Agar",
+     "score": 237,
+     "over": "43.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jhye Richardson",
+     "score": 264,
+     "over": "48.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Brody Couch",
+     "score": 266,
+     "over": "48.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Michael Dawson",
+     "score": 266,
+     "over": "48.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 10,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Western Australia won by 1 wicket",
+ "winner": "Western Australia"
+}

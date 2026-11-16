@@ -1,0 +1,112 @@
+{
+  "id": "ut-v-guj-t20-kolkata-2026-11-18",
+  "title": "Uttarakhand v Gujarat",
+  "date": "2026-11-18",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 48th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uttarakhand",
+      "short": "UT",
+      "players": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Mayank Mishra",
+        "Jagadeesha Suchith",
+        "Akash Madhwal",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Kunal Chandela",
+      "squad": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Mayank Mishra",
+        "Jagadeesha Suchith",
+        "Akash Madhwal",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ]
+    },
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Urvil Patel",
+        "Smit Patel",
+        "Aarya Desai",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Khilan Patel",
+        "Vishal Jayswal",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ],
+      "roles": [
+        "WK",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Urvil Patel",
+      "squad": [
+        "Urvil Patel",
+        "Smit Patel",
+        "Aarya Desai",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Khilan Patel",
+        "Vishal Jayswal",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41898,
+    "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-gujarat-syed-mushtaq-ali-trophy-elite-18th-november-2026-41898",
+    "auto": true,
+    "xis": false
+  }
+}

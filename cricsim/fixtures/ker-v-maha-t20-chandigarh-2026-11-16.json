@@ -12,7 +12,7 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Kerala won the toss and bat first.",
   "teams": [
     {
       "name": "Kerala",
@@ -20,10 +20,10 @@
       "players": [
         "Sanju Samson",
         "Mohammed Azharuddeen",
-        "Ahammed Imran",
+        "Rohan  Kunnummal",
         "Vishnu Vinod",
+        "Ahammed Imran",
         "Salman Nizar",
-        "Akhil Scaria",
         "Karthik B Nair",
         "Biju Narayanan",
         "Nikhil Muraleedharan",
@@ -36,7 +36,7 @@
         "BAT",
         "BAT",
         "BAT",
-        "AR",
+        "BAT",
         "AR",
         "BOWL",
         "AR",
@@ -62,24 +62,24 @@
       "name": "Maharashtra",
       "short": "MAHA",
       "players": [
+        "Prithvi Shaw",
+        "Arshin Kulkarni",
+        "Sahil Parakh",
         "Rahul Tripathi",
         "Suraj Shinde",
-        "Sahil Parakh",
-        "Prithvi Shaw",
-        "Ramakrishna Ghosh",
-        "Arshin Kulkarni",
         "Kiran Chormale",
-        "Mukesh Choudhary",
+        "Ramakrishna Ghosh",
         "Vicky Ostwal",
-        "Prashant Solanki",
-        "Tanay Sanghvi"
+        "Tanay Sanghvi",
+        "Mukesh Choudhary",
+        "Prashant Solanki"
       ],
       "roles": [
         "BAT",
-        "WK",
-        "BAT",
-        "BAT",
         "AR",
+        "BAT",
+        "BAT",
+        "WK",
         "AR",
         "AR",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41882,
     "url": "https://khelnow.com/live-cricket-score/kerala-vs-maharashtra-syed-mushtaq-ali-trophy-elite-16th-november-2026-41882",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

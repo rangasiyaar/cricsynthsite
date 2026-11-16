@@ -1,0 +1,112 @@
+{
+  "id": "kar-v-miz-t20-mumbai-2026-11-18",
+  "title": "Karnataka v Mizoram",
+  "date": "2026-11-18",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 46th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Karnataka",
+      "short": "KAR",
+      "players": [
+        "Luvnith Sisodia",
+        "Manish Pandey",
+        "Karun Nair",
+        "Smaran-R",
+        "Abhinav Manohar",
+        "Shikhar shetty",
+        "Manvanth Kumar",
+        "Praveen Dubey",
+        "Abhilash Shetty",
+        "Rithesh Bhatkal",
+        "Vyshak Vijaykumar"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Smaran-R",
+      "squad": [
+        "Luvnith Sisodia",
+        "Manish Pandey",
+        "Karun Nair",
+        "Smaran-R",
+        "Abhinav Manohar",
+        "Shikhar shetty",
+        "Manvanth Kumar",
+        "Praveen Dubey",
+        "Abhilash Shetty",
+        "Rithesh Bhatkal",
+        "Vyshak Vijaykumar"
+      ]
+    },
+    {
+      "name": "Mizoram",
+      "short": "MIZ",
+      "players": [
+        "Lalhruaizela-M",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "F Lalmuanzuala",
+        "Marema"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Joseph Lalthankhuma",
+      "squad": [
+        "Lalhruaizela-M",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "F Lalmuanzuala",
+        "Marema"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41896,
+    "url": "https://khelnow.com/live-cricket-score/karnataka-vs-mizoram-syed-mushtaq-ali-trophy-elite-18th-november-2026-41896",
+    "auto": true,
+    "xis": false
+  }
+}
