@@ -1,0 +1,112 @@
+{
+  "id": "ban-w-v-tl-w-t20-ajman-2026-11-18",
+  "title": "Bangladesh Women v Thailand Women",
+  "date": "2026-11-18",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 20th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bangladesh Women",
+      "short": "BAN-W",
+      "players": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Rabeya Khan",
+        "Jannatul Ferdus",
+        "Disha Biswas",
+        "Sanjida Akter Meghla"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Sobhana Mostary",
+      "squad": [
+        "Sathi Rani",
+        "Dilara Akter",
+        "Sharmin Akhter",
+        "Nigar Sultana",
+        "Sobhana Mostary",
+        "Shorna Akter",
+        "Ritu Moni",
+        "Rabeya Khan",
+        "Jannatul Ferdus",
+        "Disha Biswas",
+        "Sanjida Akter Meghla"
+      ]
+    },
+    {
+      "name": "Thailand Women",
+      "short": "TL-W",
+      "players": [
+        "Naruemol Chaiwai",
+        "Nannapat Koncharoenkai",
+        "Natthakan Chantham",
+        "Chanida Sutthiruang",
+        "Suleeporn Laomi",
+        "Onnicha Kamchomphu",
+        "Thipatcha Putthawong",
+        "Phannita Maya",
+        "Aphisara Suwanchonrathi",
+        "Chayanisa Phengpaen",
+        "Sarnsiree Rosaline Plant"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Naruemol Chaiwai",
+      "squad": [
+        "Naruemol Chaiwai",
+        "Nannapat Koncharoenkai",
+        "Natthakan Chantham",
+        "Chanida Sutthiruang",
+        "Suleeporn Laomi",
+        "Onnicha Kamchomphu",
+        "Thipatcha Putthawong",
+        "Phannita Maya",
+        "Aphisara Suwanchonrathi",
+        "Chayanisa Phengpaen",
+        "Sarnsiree Rosaline Plant"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41820,
+    "url": "https://khelnow.com/live-cricket-score/bangladesh-women-vs-thailand-women-icc-women's-emerging-nations-trophy-18th-november-2026-41820",
+    "auto": true,
+    "xis": false
+  }
+}

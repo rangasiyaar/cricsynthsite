@@ -1,0 +1,112 @@
+{
+  "id": "ned-w-v-zim-w-t20-ajman-2026-11-18",
+  "title": "Netherlands Women v Zimbabwe Women",
+  "date": "2026-11-18",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 19th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Netherlands Women",
+      "short": "NED-W",
+      "players": [
+        "Frederique Overdijk",
+        "Hannah Landheer",
+        "Iris Zwilling",
+        "Babette de Leede",
+        "Heather Siegers",
+        "Sterre Kalis",
+        "Phebe Molkenboer",
+        "Robine Rijke",
+        "Silver Siegers",
+        "Carlijn van Koolwijk",
+        "Sanya Khurana"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Babette de Leede",
+      "squad": [
+        "Frederique Overdijk",
+        "Hannah Landheer",
+        "Iris Zwilling",
+        "Babette de Leede",
+        "Heather Siegers",
+        "Sterre Kalis",
+        "Phebe Molkenboer",
+        "Robine Rijke",
+        "Silver Siegers",
+        "Carlijn van Koolwijk",
+        "Sanya Khurana"
+      ]
+    },
+    {
+      "name": "Zimbabwe Women",
+      "short": "ZIM-W",
+      "players": [
+        "Josephine Nkomo",
+        "Nomvelo Sibanda",
+        "Chipo Mugeri Tiripano",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Christine Mutasa",
+        "Kelis Ndhlovu",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Olinder Chare",
+        "Michelle Mavunga"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Josephine Nkomo",
+      "squad": [
+        "Josephine Nkomo",
+        "Nomvelo Sibanda",
+        "Chipo Mugeri Tiripano",
+        "Nyasha Gwanzura",
+        "Chiedza Dhururu",
+        "Christine Mutasa",
+        "Kelis Ndhlovu",
+        "Beloved Biza",
+        "Sharne Mayers",
+        "Olinder Chare",
+        "Michelle Mavunga"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41819,
+    "url": "https://khelnow.com/live-cricket-score/netherlands-women-vs-zimbabwe-women-icc-women's-emerging-nations-trophy-18th-november-2026-41819",
+    "auto": true,
+    "xis": false
+  }
+}
