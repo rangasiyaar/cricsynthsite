@@ -1,0 +1,112 @@
+{
+  "id": "db-v-unt-t10-abu-dhabi-2026-11-18",
+  "title": "UAE Bulls v United Tigers",
+  "date": "2026-11-18",
+  "start_time": "19:15",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 26th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "UAE Bulls",
+      "short": "DB",
+      "players": [
+        "Andre Fletcher",
+        "Khawaja Nafay",
+        "Max Bryant",
+        "Kieron Pollard",
+        "Shadab Khan",
+        "Sunil Narine",
+        "Romario Shepherd",
+        "Khushdil Shah",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Tahir Zaman"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Andre Fletcher",
+        "Khawaja Nafay",
+        "Max Bryant",
+        "Kieron Pollard",
+        "Shadab Khan",
+        "Sunil Narine",
+        "Romario Shepherd",
+        "Khushdil Shah",
+        "Mohammad Amir",
+        "Muhammad Rohid Khan",
+        "Tahir Zaman"
+      ]
+    },
+    {
+      "name": "United Tigers",
+      "short": "UNT",
+      "players": [
+        "Fakhar Zaman",
+        "Sahibzada Farhan",
+        "Joe Clarke",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Faheem Ashraf",
+        "Odean Smith",
+        "Awais Ali",
+        "Zeeshan Naseer",
+        "Usman Tariq",
+        "Abbas Afridi"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Fakhar Zaman",
+      "squad": [
+        "Fakhar Zaman",
+        "Sahibzada Farhan",
+        "Joe Clarke",
+        "Iftikhar Ahmed",
+        "Azmatullah Omarzai",
+        "Faheem Ashraf",
+        "Odean Smith",
+        "Awais Ali",
+        "Zeeshan Naseer",
+        "Usman Tariq",
+        "Abbas Afridi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41639,
+    "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-united-tigers-abu-dhabi-t10-league-18th-november-2026-41639",
+    "auto": true,
+    "xis": false
+  }
+}
