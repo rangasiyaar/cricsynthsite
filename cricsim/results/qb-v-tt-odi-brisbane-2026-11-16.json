@@ -1,0 +1,354 @@
+{
+ "id": "qb-v-tt-odi-brisbane-2026-11-16",
+ "innings": [
+  {
+   "team": "Queensland",
+   "runs": 241,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Hugh Weibgen",
+     "dismissal": "runout (M Kuhnemann)",
+     "runs": 5,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jack Clayton",
+     "dismissal": "c N Chaudhary b BJ Stanlake",
+     "runs": 24,
+     "balls": 29,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Marnus Labuschagne",
+     "dismissal": "b BJ Webster",
+     "runs": 8,
+     "balls": 24,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hugo Burdon",
+     "dismissal": "c JR Doran b BJ Stanlake",
+     "runs": 87,
+     "balls": 94,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Lachlan Hearne",
+     "dismissal": "c BJ Webster b MJ Owen",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jimmy Peirson",
+     "dismissal": "c N Chaudhary b MJ Owen",
+     "runs": 17,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Hayden Kerr",
+     "dismissal": "c M Bean b BJ Stanlake",
+     "runs": 4,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gurinder Sandhu",
+     "dismissal": "c BJ Webster b M Bean",
+     "runs": 46,
+     "balls": 85,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ollie Patterson",
+     "dismissal": "c N Chaudhary b M Bean",
+     "runs": 27,
+     "balls": 22,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Mitchell Swepson",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tom Whitney",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Billy Stanlake",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 45,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Marcus Bean",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Beau Webster",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mitchell Owen",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matthew Kuhnemann",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nikhil Chaudhary",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hugh Weibgen",
+     "score": 8,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jack Clayton",
+     "score": 42,
+     "over": "8.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Marnus Labuschagne",
+     "score": 54,
+     "over": "11.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Lachlan Hearne",
+     "score": 60,
+     "over": "13.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jimmy Peirson",
+     "score": 86,
+     "over": "17.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Hayden Kerr",
+     "score": 97,
+     "over": "21.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hugo Burdon",
+     "score": 199,
+     "over": "43.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Gurinder Sandhu",
+     "score": 214,
+     "over": "47.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ollie Patterson",
+     "score": 239,
+     "over": "49.3"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 5,
+    "w": 11,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 51
+  },
+  {
+   "team": "Tasmania",
+   "runs": 164,
+   "wickets": 3,
+   "overs": "29.2",
+   "batting": [
+    {
+     "name": "Caleb Jewell",
+     "dismissal": "c M Labuschagne b O Patterson",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mitchell Owen",
+     "dismissal": "b H Kerr",
+     "runs": 33,
+     "balls": 20,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Beau Webster",
+     "dismissal": "not out",
+     "runs": 68,
+     "balls": 80,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Jordan Silk",
+     "dismissal": "b MJ Swepson",
+     "runs": 27,
+     "balls": 38,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Tim David",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 32,
+     "fours": 4,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ollie Patterson",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Tom Whitney",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Hayden Kerr",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mitchell Swepson",
+     "overs": "7.2",
+     "maidens": 1,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gurinder Sandhu",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Marnus Labuschagne",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Caleb Jewell",
+     "score": 2,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mitchell Owen",
+     "score": 49,
+     "over": "6.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jordan Silk",
+     "score": 108,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Tasmania won",
+ "winner": "Tasmania"
+}
