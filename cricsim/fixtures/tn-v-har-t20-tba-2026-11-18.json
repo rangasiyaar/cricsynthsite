@@ -1,0 +1,112 @@
+{
+  "id": "tn-v-har-t20-tba-2026-11-18",
+  "title": "Tamil Nadu v Haryana",
+  "date": "2026-11-18",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 43rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Tamil Nadu",
+      "short": "TN",
+      "players": [
+        "Amith Sathvik",
+        "Tushar Raheja",
+        "B Sachin",
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Shahrukh Khan",
+        "Sunny Sandhu",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "Varun Chakaravarthy",
+        "V Athisayaraj Davidson"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sai Kishore",
+      "squad": [
+        "Amith Sathvik",
+        "Tushar Raheja",
+        "B Sachin",
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Shahrukh Khan",
+        "Sunny Sandhu",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "Varun Chakaravarthy",
+        "V Athisayaraj Davidson"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Arsh Ranga",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Anuj Thakral",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Arsh Ranga",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Anuj Thakral",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41893,
+    "url": "https://khelnow.com/live-cricket-score/tamil-nadu-vs-haryana-syed-mushtaq-ali-trophy-elite-18th-november-2026-41893",
+    "auto": true,
+    "xis": false
+  }
+}

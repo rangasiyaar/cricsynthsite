@@ -1,0 +1,112 @@
+{
+  "id": "ga-v-mum-t20-kolkata-2026-11-18",
+  "title": "Goa v Mumbai",
+  "date": "2026-11-18",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 42nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Goa",
+      "short": "GA",
+      "players": [
+        "Abhinav Tejrana",
+        "Ishaan Gadekar",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Darshan Misal",
+        "Deepraj Gaonkar",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Abhinav Tejrana",
+      "squad": [
+        "Abhinav Tejrana",
+        "Ishaan Gadekar",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Darshan Misal",
+        "Deepraj Gaonkar",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Angkrish Raghuvanshi",
+        "Hardik Tamore",
+        "Surya Kumar Yadav",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Musheer Khan",
+        "Sairaj Patil",
+        "Shardul Thakur",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande",
+        "Atharva Ankolekar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Angkrish Raghuvanshi",
+        "Hardik Tamore",
+        "Surya Kumar Yadav",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Musheer Khan",
+        "Sairaj Patil",
+        "Shardul Thakur",
+        "Maxwell Swaminathan",
+        "Tushar Deshpande",
+        "Atharva Ankolekar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41892,
+    "url": "https://khelnow.com/live-cricket-score/goa-vs-mumbai-syed-mushtaq-ali-trophy-elite-18th-november-2026-41892",
+    "auto": true,
+    "xis": false
+  }
+}
