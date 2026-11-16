@@ -12,32 +12,32 @@
   "city": "Basseterre",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England Lions won the toss and bat first.",
   "teams": [
     {
       "name": "West Indies A",
       "short": "WI-A",
       "players": [
-        "Mikyle Louis",
         "Kirk McKenzie",
+        "Mikyle Louis",
         "Keacy Carty",
         "Alick Athanaze",
         "Jyd Goolie",
-        "Jewel Andrew",
+        "Kevlon Anderson",
         "Rivaldo Clarke",
-        "Jediah Blades",
-        "Vitel Lawes",
+        "Karima Gore",
+        "Jakeem Pollard",
         "Oshane Thomas",
         "Micah Mckenzie"
       ],
       "roles": [
+        "AR",
         "BAT",
         "AR",
-        "AR",
+        "BAT",
         "BAT",
         "BAT",
         "WK",
-        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -62,16 +62,16 @@
       "name": "England Lions",
       "short": "ENG-L",
       "players": [
-        "Thomas Rew",
+        "Ben Mayes",
         "Ben McKinney",
         "Rehan Ahmed",
         "Dan Lawrence",
         "James Rew",
-        "Ben Mayes",
-        "Ekansh Singh",
+        "Jack Haynes",
+        "Benjamin Kellaway",
         "Liam Patterson-White",
-        "Adam Finch",
         "Mason Crane",
+        "Samuel Cook",
         "Naavya Sharma"
       ],
       "roles": [
@@ -81,7 +81,7 @@
         "AR",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41773,
     "url": "https://khelnow.com/live-cricket-score/west-indies-a-vs-england-lions-england-lions-tour-of-west-indies-16th-november-2026-41773",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
