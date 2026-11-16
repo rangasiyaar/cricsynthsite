@@ -1,0 +1,112 @@
+{
+  "id": "png-w-v-uae-w-t20-ajman-2026-11-18",
+  "title": "Papua New Guinea Women v United Arab Emirates Women",
+  "date": "2026-11-18",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · 17th Match",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Papua New Guinea Women",
+      "short": "PNG-W",
+      "players": [
+        "Brenda Tau",
+        "Tanya Ruma",
+        "Henao Thomas",
+        "Hollan Doriga",
+        "Hane Tau",
+        "Pauke Siaka",
+        "Naoani Vare",
+        "Lakshmi Rajadurai",
+        "Sibona Jimmy",
+        "Geua Tom",
+        "Dika Lohia"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Brenda Tau",
+      "squad": [
+        "Brenda Tau",
+        "Tanya Ruma",
+        "Henao Thomas",
+        "Hollan Doriga",
+        "Hane Tau",
+        "Pauke Siaka",
+        "Naoani Vare",
+        "Lakshmi Rajadurai",
+        "Sibona Jimmy",
+        "Geua Tom",
+        "Dika Lohia"
+      ]
+    },
+    {
+      "name": "United Arab Emirates Women",
+      "short": "UAE-W",
+      "players": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Archara Supriya",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Suraksha Kotte"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Esha Rohit",
+      "squad": [
+        "Esha Rohit",
+        "Heena Hotchandani",
+        "Theertha Satish",
+        "Archara Supriya",
+        "Athige Silva",
+        "Indhuja Nandakumar",
+        "Janani Thirukkumaran",
+        "Mehul Pranav Kulkarni",
+        "Rinitha Rajith",
+        "Samaira Dharnidharka",
+        "Suraksha Kotte"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41817,
+    "url": "https://khelnow.com/live-cricket-score/papua-new-guinea-women-vs-united-arab-emirates-women-icc-women's-emerging-nations-trophy-18th-november-2026-41817",
+    "auto": true,
+    "xis": false
+  }
+}
