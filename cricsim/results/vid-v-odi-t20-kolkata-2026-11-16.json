@@ -1,0 +1,327 @@
+{
+ "id": "vid-v-odi-t20-kolkata-2026-11-16",
+ "innings": [
+  {
+   "team": "Odisha",
+   "runs": 161,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Swastik Samal",
+     "dismissal": "b N Bhute",
+     "runs": 14,
+     "balls": 10,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Gourav Choudhury",
+     "dismissal": "c Varun Bisht b Y Kadam",
+     "runs": 53,
+     "balls": 28,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Subhranshu Senapati",
+     "dismissal": "c Saurabh Dubey b N Bhute",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kartik Biswal",
+     "dismissal": "b N Bhute",
+     "runs": 30,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Ninad Rathva",
+     "dismissal": "c P Rekhade b Varun Bisht",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sarbeswar Mohanty",
+     "dismissal": "c D Malewar b Y Kadam",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Aasirwad Swain",
+     "dismissal": "c A Taide b Saurabh Dubey",
+     "runs": 20,
+     "balls": 24,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Soumya Lenka",
+     "dismissal": "c V Jajoo b N Bhute",
+     "runs": 7,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Debabrata Pradhan",
+     "dismissal": "not out",
+     "runs": 16,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Praful Hinge",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Saurabh Dubey",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Parth Rekhade",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nachiket Bhute",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yash Kadam",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Varun Bisht",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Swastik Samal",
+     "score": 40,
+     "over": "3.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Subhranshu Senapati",
+     "score": 54,
+     "over": "5.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Gourav Choudhury",
+     "score": 92,
+     "over": "9.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ninad Rathva",
+     "score": 95,
+     "over": "10.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sarbeswar Mohanty",
+     "score": 106,
+     "over": "11.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Kartik Biswal",
+     "score": 114,
+     "over": "14.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Soumya Lenka",
+     "score": 130,
+     "over": "16.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Aasirwad Swain",
+     "score": 161,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 54
+  },
+  {
+   "team": "Vidarbha",
+   "runs": 162,
+   "wickets": 2,
+   "overs": "17.4",
+   "batting": [
+    {
+     "name": "Atharva Taide",
+     "dismissal": "c K Biswal b S Mohanty",
+     "runs": 74,
+     "balls": 48,
+     "fours": 11,
+     "sixes": 0
+    },
+    {
+     "name": "Danish Malewar",
+     "dismissal": "not out",
+     "runs": 67,
+     "balls": 42,
+     "fours": 9,
+     "sixes": 1
+    },
+    {
+     "name": "Varun Bisht",
+     "dismissal": "b NA Rathva",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Vedant Jajoo",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lalit Yadav",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Debabrata Pradhan",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Badal Biswal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Soumya Lenka",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ninad Rathva",
+     "overs": "3.4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kartik Biswal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sarbeswar Mohanty",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Atharva Taide",
+     "score": 125,
+     "over": "13.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Varun Bisht",
+     "score": 144,
+     "over": "15.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Vidarbha won",
+ "winner": "Vidarbha"
+}
