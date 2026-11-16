@@ -12,36 +12,36 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sikkim won the toss and bowl first.",
   "teams": [
     {
       "name": "Sikkim",
       "short": "SIKM",
       "players": [
-        "Nilesh Lamichaney",
-        "Amit Rajera",
-        "Robin Limboo",
-        "Lee Yong Lepcha",
-        "Gurinder Singh",
-        "Kranthi Kumar",
-        "Satyajeet Bachhav",
         "Ashish Thapa",
-        "Ankur Malik",
         "Parth Palawat",
-        "Abishek Kumar"
+        "Md Saptulla",
+        "Robin Limboo",
+        "Ankur Malik",
+        "Palzor Tamang",
+        "Lee Yong Lepcha",
+        "Amit Rajera",
+        "C Kranthi Kumar",
+        "Gurinder Singh",
+        "Satyajeet Bachhav"
       ],
       "roles": [
-        "BAT",
-        "AR",
-        "AR",
-        "AR",
-        "AR",
-        "AR",
-        "AR",
         "WK",
-        "AR",
         "BAT",
-        "BOWL"
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR"
       ],
       "captain": "Lee Yong Lepcha",
       "squad": [
@@ -62,28 +62,28 @@
       "name": "Arunachal Pradesh",
       "short": "ARP",
       "players": [
-        "Neelam Obi",
-        "Techi Doria",
-        "Licha Jhon",
-        "Salil Malhotra",
-        "Techi Neri",
-        "Chandan Kumar Singh",
         "Kamsha Yangfo",
-        "Likha Sonia",
+        "Biki Kumar",
+        "Neelam Obi",
+        "Chandan Kumar Singh",
+        "Techi Doria",
+        "Salil Malhotra",
         "Yab Niya",
-        "Darge Bagra",
-        "Myendung Singpho"
+        "Likha Sonia",
+        "Nabam Tempol",
+        "Techi Neri",
+        "Darge Bagra"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BOWL",
-        "BAT",
         "WK",
         "BAT",
         "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41842,
     "url": "https://khelnow.com/live-cricket-score/sikkim-vs-arunachal-pradesh-syed-mushtaq-ali-trophy-plate-16th-november-2026-41842",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
