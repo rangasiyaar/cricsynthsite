@@ -1,0 +1,112 @@
+{
+  "id": "eme-v-yal-t10-abu-dhabi-2026-11-18",
+  "title": "Emirates Eagles v Yas Lions",
+  "date": "2026-11-18",
+  "start_time": "21:30",
+  "format": "T10",
+  "gender": "male",
+  "competition": "Abu Dhabi T10 League · 27th Match",
+  "comp_key": "abu-dhabi-t10-league",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Emirates Eagles",
+      "short": "EME",
+      "players": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "David Wiese",
+        "Chris Green",
+        "Hilal Afghan",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Rovman Powell",
+      "squad": [
+        "Alex Hales",
+        "Kyle Mayers",
+        "Rovman Powell",
+        "Shimron Hetmyer",
+        "Kusal Perera",
+        "David Wiese",
+        "Chris Green",
+        "Hilal Afghan",
+        "Trent Boult",
+        "Hardus Viljoen",
+        "Haider Razzaq"
+      ]
+    },
+    {
+      "name": "Yas Lions",
+      "short": "YAL",
+      "players": [
+        "James Vince",
+        "Andries Gous",
+        "Dasun Shanaka",
+        "Tom Moores",
+        "Ansh Tandon",
+        "Karim Janat",
+        "Jason Holder",
+        "David Willey",
+        "Akeal Hosein",
+        "Aryan Dutt",
+        "Awais Ahmad"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "James Vince",
+        "Andries Gous",
+        "Dasun Shanaka",
+        "Tom Moores",
+        "Ansh Tandon",
+        "Karim Janat",
+        "Jason Holder",
+        "David Willey",
+        "Akeal Hosein",
+        "Aryan Dutt",
+        "Awais Ahmad"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41640,
+    "url": "https://khelnow.com/live-cricket-score/emirates-eagles-vs-yas-lions-abu-dhabi-t10-league-18th-november-2026-41640",
+    "auto": true,
+    "xis": false
+  }
+}
