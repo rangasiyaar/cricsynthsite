@@ -20,12 +20,15 @@ jobs:
         run: |
           export TOKEN="$(gcloud auth print-access-token)"
           python3 - <<'PY'
-          import collections, datetime as dt, json, os, urllib.request
+          import collections, datetime as dt, json, os, urllib.error, urllib.request
           P, T = os.environ["PROJECT"], os.environ["TOKEN"]
           base = f"https://firestore.googleapis.com/v1/projects/{P}/databases/(default)/documents"
           def post(url, body):
-              req = urllib.request.Request(url, json.dumps(body).encode(), {"Authorization": f"Bearer {T}", "Content-Type": "application/json"})
-              return json.load(urllib.request.urlopen(req, timeout=60))
+              req = urllib.request.Request(url, json.dumps(body).encode(), {"Authorization": f"Bearer {T}", "Content-Type": "application/json", "x-goog-user-project": P})
+              try:
+                  return json.load(urllib.request.urlopen(req, timeout=60))
+              except urllib.error.HTTPError as e:
+                  print("Firestore said:", e.code, e.read().decode()[:600]); raise SystemExit(1)
           rows = post(base + ":runQuery", {"structuredQuery": {"from": [{"collectionId": "keys", "allDescendants": True}],
               "select": {"fields": [{"fieldPath": f} for f in ("plan", "revoked", "created", "lastUsed")]}}})
           docs = [r["document"] for r in rows if "document" in r]
