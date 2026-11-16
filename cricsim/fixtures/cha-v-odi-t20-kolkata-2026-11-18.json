@@ -1,0 +1,112 @@
+{
+  "id": "cha-v-odi-t20-kolkata-2026-11-18",
+  "title": "Chhattisgarh v Odisha",
+  "date": "2026-11-18",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 34th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chhattisgarh",
+      "short": "CHA",
+      "players": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Rahul Pradhan",
+        "Amandeep Khare",
+        "Prateek Yadav",
+        "Shashank Chandrakar",
+        "Ajay Mandal",
+        "Shubham Agarwal",
+        "Sourabh Majumdar",
+        "Jayant Yadav",
+        "Sandeep Warrier"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Vikalp Tiwari",
+      "squad": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Rahul Pradhan",
+        "Amandeep Khare",
+        "Prateek Yadav",
+        "Shashank Chandrakar",
+        "Ajay Mandal",
+        "Shubham Agarwal",
+        "Sourabh Majumdar",
+        "Jayant Yadav",
+        "Sandeep Warrier"
+      ]
+    },
+    {
+      "name": "Odisha",
+      "short": "ODI",
+      "players": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Aasirwad Swain",
+        "Sarbeswar Mohanty",
+        "Lalit Yadav",
+        "Debabrata Pradhan",
+        "Badal Biswal"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Swastik Samal",
+      "squad": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Aasirwad Swain",
+        "Sarbeswar Mohanty",
+        "Lalit Yadav",
+        "Debabrata Pradhan",
+        "Badal Biswal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41884,
+    "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-odisha-syed-mushtaq-ali-trophy-elite-18th-november-2026-41884",
+    "auto": true,
+    "xis": false
+  }
+}

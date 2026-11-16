@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-and-t20-tba-2026-11-18",
+  "title": "Kerala v Andhra",
+  "date": "2026-11-18",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 36th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Ahammed Imran",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Akhil Scaria",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Nikhil Muraleedharan",
+        "MD Nidheesh",
+        "KM Asif"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Ahammed Imran",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Akhil Scaria",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Nikhil Muraleedharan",
+        "MD Nidheesh",
+        "KM Asif"
+      ]
+    },
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Revanth Reddy",
+        "Ricky Bhui",
+        "Seeram Rahul",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Saurabh Kumar",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Cheepurapalli Stephen"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Seeram Rahul",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Revanth Reddy",
+        "Ricky Bhui",
+        "Seeram Rahul",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Saurabh Kumar",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Cheepurapalli Stephen"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41886,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-andhra-syed-mushtaq-ali-trophy-elite-18th-november-2026-41886",
+    "auto": true,
+    "xis": false
+  }
+}
