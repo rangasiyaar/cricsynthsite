@@ -1,0 +1,112 @@
+{
+  "id": "pun-v-rai-t20-tba-2026-11-18",
+  "title": "Punjab v Railways",
+  "date": "2026-11-18",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 40th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Prabhsimran Singh",
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Sanvir Singh",
+        "Harpreet Brar",
+        "Raghu Sharma",
+        "Sukhdeep Singh Bajwa",
+        "Sahil Bhaskar"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Prabhsimran Singh",
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Sanvir Singh",
+        "Harpreet Brar",
+        "Raghu Sharma",
+        "Sukhdeep Singh Bajwa",
+        "Sahil Bhaskar"
+      ]
+    },
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Upendra Yadav",
+        "Eshaan Goyal",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Atal Bihari Rai",
+        "Zubair Ali",
+        "Akshat Pandey"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Mohammad Saif",
+      "squad": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Upendra Yadav",
+        "Eshaan Goyal",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Atal Bihari Rai",
+        "Zubair Ali",
+        "Akshat Pandey"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41890,
+    "url": "https://khelnow.com/live-cricket-score/punjab-vs-railways-syed-mushtaq-ali-trophy-elite-18th-november-2026-41890",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "cg-v-raj-t20-mumbai-2026-11-18",
+  "title": "Chandigarh v Rajasthan",
+  "date": "2026-11-18",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 37th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chandigarh",
+      "short": "CG",
+      "players": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Raman Bishnoi",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shivam Bhambri",
+      "squad": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Raman Bishnoi",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ]
+    },
+    {
+      "name": "Rajasthan",
+      "short": "RAJ",
+      "players": [
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Mahipal Lomror",
+        "Kartik Sharma",
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Deepak Chahar",
+        "Manav Suthar",
+        "Rahul Chahar",
+        "Himanshu Rana",
+        "Pratap Singh"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Deepak Chahar",
+      "squad": [
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Mahipal Lomror",
+        "Kartik Sharma",
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Deepak Chahar",
+        "Manav Suthar",
+        "Rahul Chahar",
+        "Himanshu Rana",
+        "Pratap Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41887,
+    "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-rajasthan-syed-mushtaq-ali-trophy-elite-18th-november-2026-41887",
+    "auto": true,
+    "xis": false
+  }
+}

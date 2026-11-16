@@ -1,0 +1,111 @@
+{
+  "id": "hyd-v-vid-t20-kolkata-2026-11-18",
+  "title": "Hyderabad (India) v Vidarbha",
+  "date": "2026-11-18",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 38th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ]
+    },
+    {
+      "name": "Vidarbha",
+      "short": "VID",
+      "players": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Shubham Dubey",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Praful Hinge",
+        "Nachiket Bhute",
+        "Saurabh Dubey"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Atharva Taide",
+      "squad": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Shubham Dubey",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Praful Hinge",
+        "Nachiket Bhute",
+        "Saurabh Dubey"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41888,
+    "url": "https://khelnow.com/live-cricket-score/hyderabad-(india)-vs-vidarbha-syed-mushtaq-ali-trophy-elite-18th-november-2026-41888",
+    "auto": true,
+    "xis": false
+  }
+}
