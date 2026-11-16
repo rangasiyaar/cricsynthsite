@@ -20,10 +20,11 @@ FAMILIES = {"T20": ("T20", "T10", "HUNDRED"), "OD": ("OD",)}
 class History:
     """pid -> dates and points of every match played, oldest first (and the match ids, when built with them)."""
 
-    def __init__(self, rows: dict[str, list[tuple]]):
+    def __init__(self, rows: dict[str, list[tuple]], opp: dict[tuple[str, str], tuple] | None = None):
         self.dates = {p: [r[0] for r in v] for p, v in rows.items()}
         self.points = {p: np.array([r[1] for r in v]) for p, v in rows.items()}
         self.matches = {p: [r[2] for r in v] for p, v in rows.items() if v and len(v[0]) > 2}
+        self.opp = opp or {}                     # (match, player) -> (batting position or None, legal balls bowled)
 
     def before(self, pid: str, day: date) -> np.ndarray:
         """Points in matches strictly before `day`, oldest first."""
@@ -35,7 +36,7 @@ class History:
         """Recent-form summaries of the points before `day` (None where there's nothing to summarise)."""
         x = self.before(pid, day)
         days = self.dates.get(pid, [])[: len(x)]
-        out = {"n": int(len(x))}
+        out = {"n": int(len(x)), **self.opportunity(pid, len(x))}
         if not len(x):
             return {**out, "last5": None, "last10": None, "ewma": None, "year": None, "n_year": 0, "since": None}
         w = 0.8 ** np.arange(len(x))[::-1]                     # each older match counts 0.8 of the next
@@ -43,6 +44,18 @@ class History:
         return {**out, "last5": float(x[-5:].mean()), "last10": float(x[-10:].mean()),
                 "ewma": float((w * x).sum() / w.sum()), "year": float(np.mean(recent)) if recent else None,
                 "n_year": len(recent), "since": (day - days[-1]).days}
+
+
+    def opportunity(self, pid: str, k: int) -> dict:
+        """Recent opportunity over his last 5 matches before the k-th: average batting position when he batted,
+        share of those matches he batted in, average overs bowled (None without history)."""
+        ms = self.matches.get(pid, [])[:k][-5:]
+        if not ms or not self.opp:
+            return {"slot5": None, "bat5": None, "overs5": None}
+        o = [self.opp.get((m, pid), (None, 0)) for m in ms]
+        slots = [s for s, _ in o if s]
+        return {"slot5": float(np.mean(slots)) if slots else None, "bat5": len(slots) / len(o),
+                "overs5": float(np.mean([b for _, b in o])) / 6}
 
 
 def family(fmt: str) -> str:
@@ -89,11 +102,26 @@ def build(con, parquet: Path, family: str = "T20", players: set[str] | None = No
                count(*) FILTER (WHERE wicket_kind IN ('bowled', 'lbw'))
         FROM read_parquet('{d}') WHERE format IN ({fmts}) AND NOT is_super_over AND bowler_id IS NOT NULL{only}
         GROUP BY 1, 2""").fetchall()
+    opp: dict[tuple[str, str], tuple] = {}
     if bowl:
         m, p, balls, runs, w, bl = zip(*bowl)
         v = bowling_points(np.array(balls), np.array(runs), np.array(w), np.array(bl), od=od)
-        for mm, pp, x in zip(m, p, v):
+        for mm, pp, x, bb in zip(m, p, v, balls):
             add(mm, pp, float(x))
+            opp[(mm, pp)] = (None, int(bb))
+    # batting position: order of first appearance (as striker or non-striker) in each innings
+    for mm, pp, slot in con.execute(f"""
+            WITH a AS (
+              SELECT match_id, innings_no, batter_id AS p, min(over * 10000 + ball_seq) AS s FROM read_parquet('{d}')
+              WHERE format IN ({fmts}) AND NOT is_super_over AND batter_id IS NOT NULL{only} GROUP BY 1, 2, 3
+              UNION ALL
+              SELECT match_id, innings_no, non_striker_id, min(over * 10000 + ball_seq) FROM read_parquet('{d}')
+              WHERE format IN ({fmts}) AND NOT is_super_over AND non_striker_id IS NOT NULL{only} GROUP BY 1, 2, 3),
+            b AS (SELECT match_id, innings_no, p, min(s) AS s FROM a GROUP BY 1, 2, 3)
+            SELECT match_id, p, min(r) FROM (
+              SELECT match_id, p, row_number() OVER (PARTITION BY match_id, innings_no ORDER BY s) AS r FROM b)
+            GROUP BY 1, 2""").fetchall():
+        opp[(mm, pp)] = (int(slot), opp.get((mm, pp), (None, 0))[1])
     if any((parquet / "wickets").glob("*.parquet")):
         ev: dict[str, list] = {}
         for m, kind, f, b in con.execute(f"""
@@ -116,7 +144,7 @@ def build(con, parquet: Path, family: str = "T20", players: set[str] | None = No
             rows.setdefault(p, []).append((day[m], x, m))
     for v in rows.values():
         v.sort()
-    return History(rows)
+    return History(rows, opp)
 
 
 def form(hist: History, key: str, day: date, hit: float | None = None) -> dict:

@@ -9,6 +9,9 @@ Strategies: the simulations alone (the live rule, `dmean`), recent real form alo
 regression on both learned only from earlier matches (rolling forward in date order, so no strategy sees the match
 it is judged on or anything after it).
 
+Opportunity: the learned pick with each player's recent batting position, share of matches batted and overs
+bowled (last 5 matches) added.
+
 Captain choice: with the XI held at the live pick, rules for the captain and vice-captain (the XI's own score, the
 simulated expected points, the ceiling, the top-scorer chance, spread bonuses, an all-rounder lean, and a model
 learned on earlier matches of who ends up in an XI's top three), against the best captain in hindsight.
@@ -50,6 +53,16 @@ def _fold(w, mu, sd):
     return raw
 
 
+OPP_FEATURES = ("recent overs bowled", "recent top-3 slot", "recent slot 4-7", "recent share batted", "has opportunity")
+
+
+def opp_features(r: dict) -> list[float]:
+    """features() plus recent opportunity (batting position and overs over the last 5 matches)."""
+    s5, has = r.get("slot5"), r.get("bat5") is not None
+    return features(r) + [float(r.get("overs5") or 0.0), float(bool(s5) and s5 <= 3), float(bool(s5) and 3 < s5 <= 7),
+                          float(r.get("bat5") or 0.0), float(has)]
+
+
 def evaluate(matches: list[dict], strategies: dict, min_train: int = 60) -> dict:
     """Real points of each strategy's XI per match (matches in date order; learned strategies only see earlier ones)."""
     matches = sorted(matches, key=lambda m: m["date"])
@@ -57,6 +70,7 @@ def evaluate(matches: list[dict], strategies: dict, min_train: int = 60) -> dict
     out["best"], out["label"] = [], []
     learned = {k: v for k, v in strategies.items() if isinstance(v, tuple)}
     X_by = [np.array([features(r) for r in m["players"]]) for m in matches] if learned else []
+    O_by = [np.array([opp_features(r) for r in m["players"]]) for m in matches] if learned else []
     y_by = [np.array([r["real"] for r in m["players"]]) for m in matches] if learned else []
     for i, m in enumerate(matches):
         if i < min_train:
@@ -67,11 +81,12 @@ def evaluate(matches: list[dict], strategies: dict, min_train: int = 60) -> dict
         fitted = {}
         if learned:
             X, y = np.vstack(X_by[:i]), np.concatenate(y_by[:i])
-            for k, (_, lam) in learned.items():
-                fitted[k] = ridge(X, y, lam)
+            for k, (kind, lam) in learned.items():
+                fitted[k] = ridge(np.vstack(O_by[:i]) if kind == "ridge+opp" else X, y, lam)
         for k, f in strategies.items():
             if k in fitted:
-                score = dict(zip((r["p"] for r in ps), (X_by[i] @ fitted[k]).tolist()))
+                Xi = O_by[i] if learned[k][0] == "ridge+opp" else X_by[i]
+                score = dict(zip((r["p"] for r in ps), (Xi @ fitted[k]).tolist()))
             else:
                 score = {r["p"]: f(r) for r in ps}
             out[k].append(team_points(*pick_xi(score, team_of), real))
@@ -180,6 +195,8 @@ def default_strategies() -> dict:
                                                     / (min(r.get("n", 0), 20) + k0) * (_src(r, "ewma") - r["dmean"]))(k0)
     s["learned (ridge, λ=10)"] = ("ridge", 10.0)
     s["learned (ridge, λ=100)"] = ("ridge", 100.0)
+    s["learned + recent opportunity (ridge, λ=10)"] = ("ridge+opp", 10.0)
+    s["learned + recent opportunity (ridge, λ=100)"] = ("ridge+opp", 100.0)
     return s
 
 
@@ -209,7 +226,7 @@ def correlations(matches: list[dict]) -> str:
     def spearman(a, b):
         ra, rb = np.argsort(np.argsort(a)), np.argsort(np.argsort(b))
         return float(np.corrcoef(ra, rb)[0, 1]) if np.std(ra) and np.std(rb) else 0.0
-    keys = ["dmean", "mean", "p_top", "last5", "last10", "ewma", "year"]
+    keys = ["dmean", "mean", "p_top", "last5", "last10", "ewma", "year", "overs5", "bat5"]
     out = ["| predictor | rank correlation with real points | players with history |", "|---|---:|---:|"]
     for k in keys:
         cs, cover = [], []
