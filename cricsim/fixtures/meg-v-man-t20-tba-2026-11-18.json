@@ -1,0 +1,112 @@
+{
+  "id": "meg-v-man-t20-tba-2026-11-18",
+  "title": "Meghalaya v Manipur",
+  "date": "2026-11-18",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 9th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Meghalaya",
+      "short": "MEG",
+      "players": [
+        "Raj Biswa",
+        "Arien Sangma",
+        "Jiwanjot Singh",
+        "Josiah Momin",
+        "Srinivas Sharath",
+        "Amiangshu Sen",
+        "Akshay Karnewar",
+        "Swarajeet Das",
+        "Akash Choudhary",
+        "Manish Sharma",
+        "Chengkam Sangma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Srinivas Sharath",
+      "squad": [
+        "Raj Biswa",
+        "Arien Sangma",
+        "Jiwanjot Singh",
+        "Josiah Momin",
+        "Srinivas Sharath",
+        "Amiangshu Sen",
+        "Akshay Karnewar",
+        "Swarajeet Das",
+        "Akash Choudhary",
+        "Manish Sharma",
+        "Chengkam Sangma"
+      ]
+    },
+    {
+      "name": "Manipur",
+      "short": "MAN",
+      "players": [
+        "Prafullomani Singh",
+        "Ahmed Shah",
+        "Chingakham Bidash",
+        "Langlonyamba Keishangbam",
+        "Ulenyai Khwairakpam",
+        "Mandingbam Andyroshan",
+        "Kiran Laishram",
+        "Pheiroijam Jotin Singh",
+        "Aqeel Ahamed",
+        "Sultan Karim",
+        "L Kishan Singha"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Langlonyamba Keishangbam",
+      "squad": [
+        "Prafullomani Singh",
+        "Ahmed Shah",
+        "Chingakham Bidash",
+        "Langlonyamba Keishangbam",
+        "Ulenyai Khwairakpam",
+        "Mandingbam Andyroshan",
+        "Kiran Laishram",
+        "Pheiroijam Jotin Singh",
+        "Aqeel Ahamed",
+        "Sultan Karim",
+        "L Kishan Singha"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41851,
+    "url": "https://khelnow.com/live-cricket-score/meghalaya-vs-manipur-syed-mushtaq-ali-trophy-plate-18th-november-2026-41851",
+    "auto": true,
+    "xis": false
+  }
+}
