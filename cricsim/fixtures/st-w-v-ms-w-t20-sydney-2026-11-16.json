@@ -12,7 +12,7 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sydney Thunder Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Sydney Thunder Women",
@@ -26,7 +26,7 @@
         "Tahlia Wilson",
         "Laura Harris",
         "Jemma Barsby",
-        "Hannah Darlington",
+        "Nicola Hancock",
         "Lauren Bell",
         "Samantha Bates"
       ],
@@ -39,7 +39,7 @@
         "WK",
         "BAT",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -65,13 +65,13 @@
         "Meg Lanning",
         "Amy Jones",
         "Carly Leeson",
-        "Annabel Sutherland",
+        "Zoe Samuel",
         "Naomi Stalenberg",
         "Danielle Gibson",
         "Charlotte Dean",
         "Georgia Prestwidge",
+        "Rhys McKenna",
         "Kim Garth",
-        "Maisy Gibson",
         "Sophie Day"
       ],
       "roles": [
@@ -83,7 +83,7 @@
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 40324,
     "url": "https://khelnow.com/live-cricket-score/sydney-thunder-women-vs-melbourne-stars-women-women's-big-bash-league-16th-november-2026-40324",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
