@@ -12,7 +12,7 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Arab Emirates Women won the toss and bat first.",
   "teams": [
     {
       "name": "United Arab Emirates Women",
@@ -21,29 +21,29 @@
         "Esha Rohit",
         "Heena Hotchandani",
         "Theertha Satish",
+        "Archara Supriya",
         "Athige Silva",
         "Indhuja Nandakumar",
         "Janani Thirukkumaran",
         "Mehul Pranav Kulkarni",
         "Rinitha Rajith",
         "Samaira Dharnidharka",
-        "Simran Sheth",
         "Suraksha Kotte"
       ],
       "roles": [
-        "AR",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BAT",
         "BOWL",
         "BAT",
         "AR",
         "BAT",
         "BAT",
         "BOWL",
-        "AR",
         "BAT"
       ],
-      "captain": "Esha Rohit",
+      "captain": "Theertha Satish",
       "squad": [
         "Esha Rohit",
         "Heena Hotchandani",
@@ -62,29 +62,29 @@
       "name": "Sri Lanka Women",
       "short": "SL-W",
       "players": [
-        "Vishmi Rajapaksha Gunaratne",
-        "Hasini Perera",
-        "Imesha Dulani",
         "Harshitha Samarawickrama",
         "Kavisha Dilhari",
+        "Imesha Dulani",
+        "Sanjana Kavindi",
         "Nilakshi de Silva",
         "Kaushani Nuthyangana",
-        "Sathya Sandeepani",
+        "Vishmi Rajapaksha Gunaratne",
         "Sugandika Kumari",
-        "Chethana Vimukthi",
+        "Rashmika Sewwandi",
+        "Sathya Sandeepani",
         "Nimasha Madushani Meepage"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
+        "BAT",
+        "BAT",
         "AR",
         "WK",
+        "BAT",
+        "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Harshitha Samarawickrama",
@@ -107,6 +107,7 @@
     "kn": 41815,
     "url": "https://khelnow.com/live-cricket-score/united-arab-emirates-women-vs-sri-lanka-women-icc-women's-emerging-nations-trophy-16th-november-2026-41815",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

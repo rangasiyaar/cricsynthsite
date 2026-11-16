@@ -12,32 +12,32 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Papua New Guinea Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Ireland Women",
       "short": "IRE-W",
       "players": [
-        "Gaby Lewis",
         "Amy Hunter",
+        "Abbi Harrison",
+        "Gaby Lewis",
+        "Laura Delany",
+        "Georgina Dempsey",
+        "Kia Mccartney",
         "Lara Maritz",
         "Louise Little",
-        "Laura Delany",
-        "Alana Dalzell",
-        "Abbi Harrison",
-        "Cara Murray",
+        "Lara McBride",
         "Jane Maguire",
-        "Aimee Maguire",
-        "Lara McBride"
+        "Cara Murray"
       ],
       "roles": [
-        "BAT",
         "WK",
-        "BOWL",
-        "BOWL",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
         "AR",
         "BOWL",
-        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -62,28 +62,28 @@
       "name": "Papua New Guinea Women",
       "short": "PNG-W",
       "players": [
-        "Naoani Vare",
-        "Hollan Doriga",
         "Brenda Tau",
-        "Sibona Jimmy",
         "Tanya Ruma",
-        "Pauke Siaka",
         "Henao Thomas",
-        "Geua Tom",
+        "Hollan Doriga",
         "Hane Tau",
-        "Dika Lohia",
-        "Buruka Vicky"
+        "Pauke Siaka",
+        "Naoani Vare",
+        "Lakshmi Rajadurai",
+        "Sibona Jimmy",
+        "Geua Tom",
+        "Dika Lohia"
       ],
       "roles": [
-        "BAT",
-        "AR",
         "WK",
-        "AR",
         "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "AR",
         "AR",
         "BOWL",
-        "BAT",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41816,
     "url": "https://khelnow.com/live-cricket-score/ireland-women-vs-papua-new-guinea-women-icc-women's-emerging-nations-trophy-16th-november-2026-41816",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
