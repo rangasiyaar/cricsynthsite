@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Jharkhand won the toss and bowl first.",
   "teams": [
     {
       "name": "Rajasthan",
@@ -28,11 +28,11 @@
         "Manav Suthar",
         "Rahul Chahar",
         "Himanshu Rana",
-        "Himanshu Nehra"
+        "Pratap Singh"
       ],
       "roles": [
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "BAT",
         "WK",
@@ -40,7 +40,7 @@
         "BOWL",
         "AR",
         "BOWL",
-        "BAT",
+        "BOWL",
         "AR"
       ],
       "captain": "Deepak Chahar",
@@ -68,24 +68,24 @@
         "Virat Singh",
         "Robin Minz",
         "Pankaj Kumar ll",
+        "Rajandeep Singh",
         "Md Kounain Quraishi",
         "Harsh Raj",
         "Sushant Mishra",
-        "Pratyush Kumar",
-        "Rajandeep Singh"
+        "Pratyush Kumar"
       ],
       "roles": [
         "AR",
-        "BAT",
+        "AR",
         "AR",
         "BAT",
         "BAT",
         "WK",
+        "BAT",
         "AR",
         "BAT",
         "BOWL",
-        "AR",
-        "AR"
+        "BOWL"
       ],
       "captain": "Anukul Roy",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41969,
     "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-jharkhand-syed-mushtaq-ali-trophy-elite-16th-november-2026-41969",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
