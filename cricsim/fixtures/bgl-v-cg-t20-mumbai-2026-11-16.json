@@ -12,35 +12,35 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chandigarh won the toss and bowl first.",
   "teams": [
     {
       "name": "Bengal",
       "short": "BGL",
       "players": [
+        "Abishek Porel",
+        "Karan Lal",
         "Abhimanyu Easwaran",
         "Sudip Kumar Gharami",
-        "Abishek Porel",
-        "Ankur Paul",
-        "Sudip Chatterjee",
-        "Sumanta Gupta",
+        "Yuvraj Keswani",
+        "Rishabh Chaudhary",
+        "Shakir Habib Gandhi",
         "Pradipta Pramanik",
-        "Shahbaz Ahamad",
         "Mohammad Shami",
-        "Mohammed Kaif",
-        "Suraj Sindhu Jaiswal"
+        "Mukesh Kumar",
+        "Sayan Ghosh"
       ],
       "roles": [
-        "BAT",
-        "BAT",
         "WK",
         "AR",
         "BAT",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
         "BAT",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Abhimanyu Easwaran",
@@ -67,8 +67,8 @@
         "Aarush Bhandari",
         "Arjun Azad",
         "Sanyam Saini",
-        "Raman Bishnoi",
         "Bhagmender Lather",
+        "Raman Bishnoi",
         "Chiragvir Dhindsa",
         "Jagjit Singh Sandhu",
         "Sandeep Sharma",
@@ -87,7 +87,7 @@
         "BOWL",
         "BOWL"
       ],
-      "captain": "Shivam Bhambri",
+      "captain": "Manan Vohra",
       "squad": [
         "Manan Vohra",
         "Shivam Bhambri",
@@ -107,6 +107,7 @@
     "kn": 41879,
     "url": "https://khelnow.com/live-cricket-score/bengal-vs-chandigarh-syed-mushtaq-ali-trophy-elite-16th-november-2026-41879",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
