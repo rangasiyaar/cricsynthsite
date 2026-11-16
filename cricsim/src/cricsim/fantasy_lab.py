@@ -9,6 +9,10 @@ Strategies: the simulations alone (the live rule, `dmean`), recent real form alo
 regression on both learned only from earlier matches (rolling forward in date order, so no strategy sees the match
 it is judged on or anything after it).
 
+Captain choice: with the XI held at the live pick, rules for the captain and vice-captain (the XI's own score, the
+simulated expected points, the ceiling, the top-scorer chance, spread bonuses, an all-rounder lean, and a model
+learned on earlier matches of who ends up in an XI's top three), against the best captain in hindsight.
+
 python -m cricsim.fantasy_lab ROWS.json [ROWS2.json ...] --out report.md
 """
 from __future__ import annotations
@@ -74,6 +78,93 @@ def evaluate(matches: list[dict], strategies: dict, min_train: int = 60) -> dict
         out["best"].append(team_points(*pick_xi(real, team_of), real))
         out["label"].append(m["label"])
     return out
+
+
+CAPTAIN_FEATURES = ("intercept", "learned score", "dmean", "p90", "sd", "p_top x100", "ewma", "overs bowled", "top order")
+
+
+def _captain_x(r: dict, base: float) -> list[float]:
+    has = (r.get("n") or 0) > 0
+    return [1.0, base, r["dmean"], r.get("p90", r["dmean"]), r["sd"], r["p_top"] * 100,
+            (r.get("ewma") if has and r.get("ewma") is not None else r["dmean"]), min(r["bowl"], 60) / 6, float(r["slot"] <= 3)]
+
+
+def captain_rules() -> dict:
+    """Captain / vice-captain choices inside a fixed XI: player row, XI score -> captain score."""
+    return {"same as the XI score (live rule)": lambda r, b: b,
+            "simulated expected points": lambda r, b: r["dmean"],
+            "ceiling (90th percentile)": lambda r, b: r.get("p90", r["dmean"]),
+            "top-scorer chance": lambda r, b: r["p_top"],
+            "XI score + 0.5 spread": lambda r, b: b + 0.5 * r["sd"],
+            "XI score + 1.0 spread": lambda r, b: b + 1.0 * r["sd"],
+            "half XI score, half ceiling": lambda r, b: 0.5 * b + 0.5 * r.get("p90", r["dmean"]),
+            "XI score, all-rounder lean (+2 per over bowled if top 7)": lambda r, b: b + (2 * min(r["bowl"], 60) / 6 if r["slot"] <= 7 else 0),
+            "learned for captains (ridge on top-3 of the XI)": "learned"}
+
+
+def evaluate_captains(matches: list[dict], min_train: int = 60, learned_xi: bool = True) -> dict:
+    """Same XI every time (the live pick: learned ridge for T20, simulations for one-day); only the captain and
+    vice-captain differ. Real points of the XI per match, plus how often the captain was the XI's top scorer."""
+    matches = sorted(matches, key=lambda m: m["date"])
+    rules = captain_rules()
+    out = {k: [] for k in rules} | {"oracle (best captain in hindsight)": [], "best": [], "_hit": {k: [] for k in rules}}
+    X_by = [np.array([features(r) for r in m["players"]]) for m in matches]
+    y_by = [np.array([r["real"] for r in m["players"]]) for m in matches]
+    cap_X, cap_y = [], []                                  # captain model: rows of earlier matches' XIs
+    for i, m in enumerate(matches):
+        ps = m["players"]
+        team_of = {r["p"]: r["team"] for r in ps}
+        real = {r["p"]: r["real"] for r in ps}
+        if learned_xi and i >= 1:
+            w = ridge(np.vstack(X_by[:i]), np.concatenate(y_by[:i]), 10.0)
+            base = dict(zip((r["p"] for r in ps), (X_by[i] @ w).tolist()))
+        else:
+            base = {r["p"]: r["dmean"] for r in ps}
+        xi, _, _ = pick_xi(base, team_of)
+        row = {r["p"]: r for r in ps}
+        if i >= min_train:
+            wc = ridge(np.array(cap_X), np.array(cap_y), 10.0) if len(cap_X) > 50 else None
+            top = max(xi, key=lambda p: real[p])
+            for k, f in rules.items():
+                if f == "learned":
+                    cs = {p: (float(np.array(_captain_x(row[p], base[p])) @ wc) if wc is not None else base[p]) for p in xi}
+                else:
+                    cs = {p: f(row[p], base[p]) for p in xi}
+                order = sorted(xi, key=lambda p: -cs[p])
+                out[k].append(team_points(xi, order[0], order[1], real))
+                out["_hit"][k].append(order[0] == top)
+            by_real = sorted(xi, key=lambda p: -real[p])
+            out["oracle (best captain in hindsight)"].append(team_points(xi, by_real[0], by_real[1], real))
+            out["best"].append(team_points(*pick_xi(real, team_of), real))
+        # the captain model learns, inside each XI, which players end up in its top three
+        ranks = {p: k for k, p in enumerate(sorted(xi, key=lambda p: -real[p]))}
+        for p in xi:
+            cap_X.append(_captain_x(row[p], base[p]))
+            cap_y.append(1.0 if ranks[p] < 3 else 0.0)
+    return out
+
+
+def captain_report(res: dict, title: str) -> str:
+    best = np.array(res["best"])
+    base = np.array(res["same as the XI score (live rule)"])
+    rng = np.random.default_rng(1)
+    lines = [f"## Captain choice: {title}", "", (f"{len(best)} matches judged; the XI is the same in every row, only the captain "
+                                                   "(x2) and vice-captain (x1.5) change."), "",
+             "| captain rule | points | share of best | v live rule | better in | captain was the XI's top scorer |",
+             "|---|---:|---:|---:|---:|---:|"]
+    rows = []
+    for k, v in res.items():
+        if k in ("best", "_hit"):
+            continue
+        v = np.array(v)
+        d = v - base
+        boot = [d[rng.integers(len(d), size=len(d))].mean() for _ in range(2000)]
+        lo, hi = np.percentile(boot, [2.5, 97.5])
+        hit = f"{np.mean(res['_hit'][k]):.0%}" if k in res["_hit"] else "100%"
+        rows.append((v.mean(), (f"| {k} | {v.mean():.1f} | {v.mean() / best.mean():.1%} | {d.mean():+.1f} ({lo:+.1f} to {hi:+.1f}) | "
+                                f"{(d > 0).mean():.0%} | {hit} |")))
+    lines += [r for _, r in sorted(rows, key=lambda x: -x[0])]
+    return "\n".join(lines)
 
 
 def default_strategies() -> dict:
@@ -151,6 +242,8 @@ def main(rows: tuple[Path, ...], out: Path, min_train: int, weights_out: Path | 
         res = evaluate(matches, default_strategies(), min_train=min(min_train, max(len(matches) // 3, 10)))
         parts.append(report(res, f"{path.stem} ({fmt}, {len(matches)} matches)"))
         parts.append("\n### Ranking players\n\n" + correlations(matches))
+        cap = evaluate_captains(matches, min_train=min(min_train, max(len(matches) // 3, 10)), learned_xi=fmt != "OD")
+        parts.append(captain_report(cap, f"{path.stem} ({fmt})"))
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("# Fantasy lab\n\n" + "\n\n".join(parts) + "\n")
     if weights_out:
