@@ -12,34 +12,34 @@
   "city": "Dimapur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Mumbai won the toss and bowl first.",
   "teams": [
     {
       "name": "Gujarat",
       "short": "GUJ",
       "players": [
         "Urvil Patel",
-        "Aarya Desai",
         "Smit Patel",
+        "Aarya Desai",
         "Saurav Chauhan",
         "Hemang Patel",
         "Ashutosh Sharma",
-        "Vishal Jayswal",
         "Harshal Patel",
+        "Khilan Patel",
+        "Vishal Jayswal",
         "Ravi Bishnoi",
-        "Arzan Nagwaswalla",
-        "Khilan Patel"
+        "Arzan Nagwaswalla"
       ],
       "roles": [
         "WK",
-        "BAT",
         "BOWL",
         "BAT",
-        "AR",
         "BAT",
         "AR",
+        "BAT",
         "BOWL",
         "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -62,30 +62,30 @@
       "name": "Mumbai",
       "short": "MUM",
       "players": [
+        "Angkrish Raghuvanshi",
+        "Hardik Tamore",
         "Surya Kumar Yadav",
-        "Shardul Thakur",
         "Sarfaraz Khan",
         "Shivam Dube",
-        "Atharva Ankolekar",
-        "Angkrish Raghuvanshi",
-        "Sairaj Patil",
         "Musheer Khan",
-        "Hardik Tamore",
+        "Sairaj Patil",
+        "Shardul Thakur",
         "Maxwell Swaminathan",
-        "Tushar Deshpande"
+        "Tushar Deshpande",
+        "Atharva Ankolekar"
       ],
       "roles": [
         "BAT",
-        "BOWL",
-        "BAT",
-        "AR",
-        "AR",
-        "BAT",
-        "AR",
-        "AR",
         "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BOWL",
+        "AR"
       ],
       "captain": "Surya Kumar Yadav",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41875,
     "url": "https://khelnow.com/live-cricket-score/gujarat-vs-mumbai-syed-mushtaq-ali-trophy-elite-16th-november-2026-41875",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
