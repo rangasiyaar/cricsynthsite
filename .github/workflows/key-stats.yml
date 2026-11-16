@@ -18,17 +18,20 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v2
       - name: Count
         run: |
-          export TOKEN="$(gcloud auth print-access-token)"
+          pip install -q google-auth requests
           python3 - <<'PY'
           import collections, datetime as dt, json, os, urllib.error, urllib.request
-          P, T = os.environ["PROJECT"], os.environ["TOKEN"]
+          import google.auth
+          from google.auth.transport.requests import AuthorizedSession
+          creds, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/datastore"])
+          S = AuthorizedSession(creds)
+          P = os.environ["PROJECT"]
           base = f"https://firestore.googleapis.com/v1/projects/{P}/databases/(default)/documents"
           def post(url, body):
-              req = urllib.request.Request(url, json.dumps(body).encode(), {"Authorization": f"Bearer {T}", "Content-Type": "application/json", "x-goog-user-project": P})
-              try:
-                  return json.load(urllib.request.urlopen(req, timeout=60))
-              except urllib.error.HTTPError as e:
-                  print("Firestore said:", e.code, e.read().decode()[:600]); raise SystemExit(1)
+              r = S.post(url, json=body, timeout=60)
+              if r.status_code != 200:
+                  print("Firestore said:", r.status_code, r.text[:400]); raise SystemExit(1)
+              return r.json()
           rows = post(base + ":runQuery", {"structuredQuery": {"from": [{"collectionId": "keys", "allDescendants": True}],
               "select": {"fields": [{"fieldPath": f} for f in ("plan", "revoked", "created", "lastUsed")]}}})
           docs = [r["document"] for r in rows if "document" in r]
