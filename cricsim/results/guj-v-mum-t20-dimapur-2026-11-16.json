@@ -1,0 +1,397 @@
+{
+ "id": "guj-v-mum-t20-dimapur-2026-11-16",
+ "innings": [
+  {
+   "team": "Gujarat",
+   "runs": 197,
+   "wickets": 10,
+   "overs": "19.2",
+   "batting": [
+    {
+     "name": "Aarya Desai",
+     "dismissal": "c M Khan b TU Deshpande",
+     "runs": 11,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Urvil Patel",
+     "dismissal": "lbw b S Thakur",
+     "runs": 10,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Smit Patel",
+     "dismissal": "b M Swaminathan",
+     "runs": 14,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Saurav Chauhan",
+     "dismissal": "c TU Deshpande b A Ankolekar",
+     "runs": 22,
+     "balls": 19,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Harshal Patel",
+     "dismissal": "c Hardik Tamore b M Khan",
+     "runs": 14,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Khilan Patel",
+     "dismissal": "c & b A Ankolekar",
+     "runs": 12,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Hemang Patel",
+     "dismissal": "c M Khan b S Thakur",
+     "runs": 25,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Vishal Jayswal",
+     "dismissal": "c M Swaminathan b A Ankolekar",
+     "runs": 38,
+     "balls": 21,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Ashutosh Sharma",
+     "dismissal": "c S Khan b SB Patil",
+     "runs": 42,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 5
+    },
+    {
+     "name": "Ravi Bishnoi",
+     "dismissal": "b S Thakur",
+     "runs": 3,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Arzan Nagwaswalla",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Shardul Thakur",
+     "overs": "3.2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Tushar Deshpande",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Maxwell Swaminathan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Atharva Ankolekar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Musheer Khan",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shivam Dube",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sairaj Patil",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Urvil Patel",
+     "score": 11,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Aarya Desai",
+     "score": 25,
+     "over": "1.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Smit Patel",
+     "score": 43,
+     "over": "4.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Saurav Chauhan",
+     "score": 73,
+     "over": "7.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Khilan Patel",
+     "score": 86,
+     "over": "7.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Harshal Patel",
+     "score": 87,
+     "over": "8.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hemang Patel",
+     "score": 137,
+     "over": "13.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Vishal Jayswal",
+     "score": 172,
+     "over": "15.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ashutosh Sharma",
+     "score": 196,
+     "over": "18.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Ravi Bishnoi",
+     "score": 197,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 4,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 59
+  },
+  {
+   "team": "Mumbai",
+   "runs": 201,
+   "wickets": 5,
+   "overs": "15.4",
+   "batting": [
+    {
+     "name": "Angkrish Raghuvanshi",
+     "dismissal": "c HM Patel b A Nagwaswalla",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hardik Tamore",
+     "dismissal": "c A Desai b H Patel",
+     "runs": 26,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Musheer Khan",
+     "dismissal": "b V Jayswal",
+     "runs": 14,
+     "balls": 8,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Surya Kumar Yadav",
+     "dismissal": "b R Bishnoi",
+     "runs": 82,
+     "balls": 29,
+     "fours": 9,
+     "sixes": 7
+    },
+    {
+     "name": "Shivam Dube",
+     "dismissal": "c H Patel b R Bishnoi",
+     "runs": 11,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sarfaraz Khan",
+     "dismissal": "not out",
+     "runs": 40,
+     "balls": 17,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Atharva Ankolekar",
+     "dismissal": "not out",
+     "runs": 15,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Arzan Nagwaswalla",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 63,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Vishal Jayswal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ravi Bishnoi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Harshal Patel",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Hemang Patel",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Saurav Chauhan",
+     "overs": "0.4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Angkrish Raghuvanshi",
+     "score": 9,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Musheer Khan",
+     "score": 25,
+     "over": "1.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Hardik Tamore",
+     "score": 111,
+     "over": "8.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Surya Kumar Yadav",
+     "score": 134,
+     "over": "10.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shivam Dube",
+     "score": 173,
+     "over": "13.6"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Mumbai won",
+ "winner": "Mumbai"
+}
