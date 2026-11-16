@@ -12,38 +12,38 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Vidarbha won the toss and bowl first.",
   "teams": [
     {
       "name": "Vidarbha",
       "short": "VID",
       "players": [
-        "Akshay Wadkar",
-        "Ravikumar Samarth",
+        "Atharva Taide",
         "Danish Malewar",
-        "Aman Mokhade",
-        "Dhruv Shorey",
-        "Satyam Bhoyar",
-        "Harsh Dubey",
-        "Parth Rekhade",
+        "Shubham Dubey",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Praful Hinge",
         "Darshan Nalkande",
         "Nachiket Bhute",
-        "Rajneesh Gurbani"
+        "Saurabh Dubey"
       ],
       "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
+        "BOWL",
         "AR",
         "AR",
-        "AR",
-        "AR",
-        "AR"
+        "BOWL"
       ],
-      "captain": "Akshay Wadkar",
+      "captain": "Atharva Taide",
       "squad": [
         "Akshay Wadkar",
         "Ravikumar Samarth",
@@ -64,15 +64,15 @@
       "players": [
         "Swastik Samal",
         "Gourav Choudhury",
-        "Sandeep Pattnaik",
         "Subhranshu Senapati",
+        "Kartik Biswal",
         "Ninad Rathva",
-        "Anil Parida",
-        "Rajesh Dhuper",
-        "Rajesh Mohanty",
+        "Soumya Lenka",
+        "Aasirwad Swain",
+        "Sarbeswar Mohanty",
         "Lalit Yadav",
-        "Badal Biswal",
-        "Prasanta Rana"
+        "Debabrata Pradhan",
+        "Badal Biswal"
       ],
       "roles": [
         "AR",
@@ -80,14 +80,14 @@
         "BAT",
         "BAT",
         "AR",
-        "BAT",
+        "BOWL",
         "WK",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "AR",
+        "BOWL"
       ],
-      "captain": "Subhranshu Senapati",
+      "captain": "Swastik Samal",
       "squad": [
         "Swastik Samal",
         "Gourav Choudhury",
@@ -107,6 +107,7 @@
     "kn": 41870,
     "url": "https://khelnow.com/live-cricket-score/vidarbha-vs-odisha-syed-mushtaq-ali-trophy-elite-16th-november-2026-41870",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
