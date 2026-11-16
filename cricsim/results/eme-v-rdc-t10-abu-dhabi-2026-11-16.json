@@ -1,0 +1,251 @@
+{
+ "id": "eme-v-rdc-t10-abu-dhabi-2026-11-16",
+ "innings": [
+  {
+   "team": "Royal Desert Champions",
+   "runs": 110,
+   "wickets": 4,
+   "overs": "10",
+   "batting": [
+    {
+     "name": "Brandon King",
+     "dismissal": "c D Wiese b T Boult",
+     "runs": 29,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Nicholas Pooran",
+     "dismissal": "runout (GC Viljoen)",
+     "runs": 51,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 5
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "dismissal": "runout (CJ Green)",
+     "runs": 17,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Gulbadin Naib",
+     "dismissal": "c H  Afghan b Haider Razzaq",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Obus Pienaar",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Trent Boult",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chris Green",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hardus Viljoen",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Haider Razzaq",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "David Wiese",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Brandon King",
+     "score": 51,
+     "over": "5.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nicholas Pooran",
+     "score": 88,
+     "over": "7.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Gulbadin Naib",
+     "score": 102,
+     "over": "8.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sherfane Rutherford",
+     "score": 110,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 12
+  },
+  {
+   "team": "Emirates Eagles",
+   "runs": 111,
+   "wickets": 2,
+   "overs": "8.2",
+   "batting": [
+    {
+     "name": "Kyle Mayers",
+     "dismissal": "c BA King b SE Rutherford",
+     "runs": 34,
+     "balls": 20,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Alex Hales",
+     "dismissal": "c AJ Pienaar b N Shah",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shimron Hetmyer",
+     "dismissal": "not out",
+     "runs": 59,
+     "balls": 25,
+     "fours": 6,
+     "sixes": 4
+    },
+    {
+     "name": "Rovman Powell",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Naseem Shah",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Dushmantha Chameera",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Maheesh Theekshana",
+     "overs": "1.2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Tajinder Singh",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Gulbadin Naib",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sherfane Rutherford",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Alex Hales",
+     "score": 7,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kyle Mayers",
+     "score": 89,
+     "over": "7.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
