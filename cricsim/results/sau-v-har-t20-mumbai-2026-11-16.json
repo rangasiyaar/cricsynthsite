@@ -1,0 +1,368 @@
+{
+ "id": "sau-v-har-t20-mumbai-2026-11-16",
+ "innings": [
+  {
+   "team": "Haryana",
+   "runs": 118,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Arsh Ranga",
+     "dismissal": "runout (J Unadkat)",
+     "runs": 7,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ankit Kumar",
+     "dismissal": "c & b J Unadkat",
+     "runs": 9,
+     "balls": 7,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Nishant Sindhu",
+     "dismissal": "b PR Bhut",
+     "runs": 8,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Yashvardhan Dalal",
+     "dismissal": "not out",
+     "runs": 65,
+     "balls": 54,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Dinesh Bana",
+     "dismissal": "b PR Bhut",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Samant Jakhar",
+     "dismissal": "c S Gajjar b K Fuletra",
+     "runs": 8,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rahul Tewatia",
+     "dismissal": "c VM Jadeja b C Sakariya",
+     "runs": 14,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sumit Kumar",
+     "dismissal": "c PN Mankad b C Sakariya",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Anuj Thakral",
+     "dismissal": "b S Gajjar",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yuzvendra Chahal",
+     "dismissal": "b J Unadkat",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Himanshu Kumar",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jaydev Unadkat",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chetan Sakariya",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Prerak Mankad",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Parth Bhut",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Krains Fuletra",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Samar Gajjar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arsh Ranga",
+     "score": 8,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ankit Kumar",
+     "score": 19,
+     "over": "2.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nishant Sindhu",
+     "score": 41,
+     "over": "5.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Dinesh Bana",
+     "score": 41,
+     "over": "5.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Samant Jakhar",
+     "score": 56,
+     "over": "10.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Rahul Tewatia",
+     "score": 83,
+     "over": "14.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sumit Kumar",
+     "score": 83,
+     "over": "14.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Anuj Thakral",
+     "score": 90,
+     "over": "16.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Yuzvendra Chahal",
+     "score": 91,
+     "over": "17.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 41
+  },
+  {
+   "team": "Saurashtra",
+   "runs": 119,
+   "wickets": 4,
+   "overs": "13.5",
+   "batting": [
+    {
+     "name": "Vishvaraj Jadeja",
+     "dismissal": "c D Bana b H Kumar",
+     "runs": 46,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 4
+    },
+    {
+     "name": "Harvik Desai",
+     "dismissal": "c N Sindhu b Y Chahal",
+     "runs": 24,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Harvansh Singh Pangalia",
+     "dismissal": "lbw b Y Chahal",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Prerak Mankad",
+     "dismissal": "not out",
+     "runs": 28,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Samar Gajjar",
+     "dismissal": "b Y Chahal",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ruchit Ahir",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Rahul Tewatia",
+     "overs": "3.5",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nishant Sindhu",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anuj Thakral",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Himanshu Kumar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yuzvendra Chahal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sumit Kumar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Harvik Desai",
+     "score": 60,
+     "over": "5.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Harvansh Singh Pangalia",
+     "score": 60,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Vishvaraj Jadeja",
+     "score": 84,
+     "over": "8.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Samar Gajjar",
+     "score": 85,
+     "over": "9.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 0,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Saurashtra won",
+ "winner": "Saurashtra"
+}
