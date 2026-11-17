@@ -4,7 +4,7 @@
 // read; a user's profile is read live. Never writes anything about users.
 import { daysAgo, profile, snapshot, type Snapshot } from "./data.ts";
 import { type Env, project } from "./env.ts";
-import { accuracy, analytics, CLARITY_TTL_MS, clarityFetch, clarityShape, health, traffic } from "./external.ts";
+import { accuracy, analytics, CLARITY_TTL_MS, clarityFetch, clarityShape, health, search, traffic } from "./external.ts";
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 
@@ -139,6 +139,7 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));
     case "/api/product": return json(await cached("product", 900, () => analytics(env, google(env))));
+    case "/api/search": return json(await cached("search", 3 * 3600, () => search(env, google(env))));
     case "/api/ux": return json(await clarity(env));
     case "/api/accuracy": return json(await cached("accuracy", 1800, () => accuracy(env)));
   }

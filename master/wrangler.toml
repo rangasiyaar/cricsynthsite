@@ -13,6 +13,7 @@ SITE_HOST = "cricsynthesis.in"
 GH_REPO = "rangasiyaar/cricsynthsite"
 GH_BRANCH = "claude/cricsynthesis-platform"
 API_SCRIPT = "cricsynthesis-api"
+SC_SITE = "sc-domain:cricsynthesis.in"   # Search Console domain property (api-worker is a Restricted user)
 GA_PROPERTY = "564813945"         # Google Analytics 4 property (api-worker is a Viewer)
 
 # The console's pages (built from ui/ by `npm run build`); every request goes through the Worker so it can add the

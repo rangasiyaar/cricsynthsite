@@ -50,7 +50,7 @@ function renderLogin(msg = "") {
 
 // ── shell ──
 const NAV = [["", "Overview"], ["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"],
-             ["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
+             ["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
 function shell() {
   document.body.classList.remove("out");
   $("#app")!.innerHTML = `<header class="top"><a href="#/" class="brand"><img src="/logo-mark.svg" alt="" width="26" height="26">CricSynthesis <b>Console</b></a>
@@ -72,7 +72,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, ux, traffic, health, accuracy };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, ux, search, traffic, health, accuracy };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -330,6 +330,45 @@ async function ux() {
       <section class="card"><h2>Script errors by page</h2>${list(c.scriptErrors)}</section></div>
     <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${list(c.scroll, (v) => `${n(v)}%`)}</section>
       <section class="card"><h2>Most visited pages</h2>${list(c.traffic)}</section></div>`;
+}
+
+// ── search (Google Search Console) ──
+async function search() {
+  const s = await api("/api/search");
+  const delta = (a: number | null, b: number | null, lowerBetter = false) => {
+    if (a == null || b == null || !b) return "";
+    const d = (a - b) / b, good = lowerBetter ? d < 0 : d > 0;
+    return ` ${badge(`${d > 0 ? "+" : ""}${(d * 100).toFixed(0)}%`, Math.abs(d) < 0.02 ? "plain" : good ? "good" : "bad")}`;
+  };
+  const pos = (v: number | null) => (v == null ? "–" : v.toFixed(1));
+  const l7 = s.last7 || {}, p7 = s.prev7 || {};
+  const cols: Col<Row>[] = [{ key: "key", label: "", render: (r) => esc(r.key.replace(/^https?:\/\/[^/]+/, "") || r.key) },
+    { key: "clicks", label: "Clicks", num: true, render: (r) => n(r.clicks) }, { key: "impressions", label: "Impressions", num: true, render: (r) => n(r.impressions) },
+    { key: "ctr", label: "CTR", num: true, render: (r) => pct(r.ctr, 1) }, { key: "position", label: "Position", num: true, render: (r) => pos(r.position) }];
+  main().innerHTML = head("Search (Google)") + `<p class="muted">${esc(s.site || "")} · last 28 days · Google's data lags 2–3 days · updated ${ago(s.built)} ·
+      <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=${encodeURIComponent(s.site || "")}" target="_blank" rel="noopener">Open Search Console</a></p>`
+    + (s.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${s.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    <div class="tiles">
+      ${tile("Clicks (7 days)", n(l7.clicks) + delta(l7.clicks, p7.clicks), `${n(s.total?.clicks)} in 28 days`)}
+      ${tile("Impressions (7 days)", n(l7.impressions) + delta(l7.impressions, p7.impressions), `${n(s.total?.impressions)} in 28 days`)}
+      ${tile("Click-through rate", pct(l7.ctr, 1), "last 7 days")}
+      ${tile("Average position", pos(l7.position) + delta(l7.position, p7.position, true), "last 7 days · lower is better")}
+    </div>
+    ${s.daily?.length ? `<section class="card">${bars(s.daily, [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Clicks per day" })}</section>
+      <section class="card">${bars(s.daily, [{ key: "impressions", label: "Impressions", color: S1 }], { x: "day", title: "Impressions per day" })}</section>` : ""}
+    <section class="card"><h2>Top search queries</h2><div id="q"></div></section>
+    <section class="card"><h2>Top pages</h2><div id="p"></div></section>
+    <div class="grid2"><section class="card"><h2>Countries</h2><div id="c"></div></section>
+      <section class="card"><h2>Devices</h2><div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2><div id="sm"></div></section></div>`;
+  table($("#q")!, cols, s.queries || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No search queries yet." });
+  table($("#p")!, cols, s.pages || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No pages with impressions yet." });
+  table($("#c")!, cols, s.countries || [], { initial: { key: "clicks", desc: true } });
+  table($("#d")!, cols, s.devices || [], { initial: { key: "clicks", desc: true } });
+  table($("#sm")!, [{ key: "path", label: "Sitemap", render: (r) => esc(r.path.replace(/^https?:\/\/[^/]+/, "")) },
+    { key: "lastDownloaded", label: "Last read", render: (r) => ago(r.lastDownloaded) },
+    { key: "submitted", label: "URLs", num: true, render: (r) => n(r.submitted) },
+    { key: "errors", label: "Issues", render: (r) => (r.errors ? badge(`${r.errors} errors`, "bad") : r.warnings ? badge(`${r.warnings} warnings`, "warn") : r.pending ? badge("Pending", "info") : badge("OK", "good")) }],
+    s.sitemaps || [], { empty: "No sitemaps submitted." });
 }
 
 // ── traffic ──

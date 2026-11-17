@@ -94,6 +94,12 @@ export class Google {
       { method: "POST", body: JSON.stringify(body) }, "https://www.googleapis.com/auth/analytics.readonly");
   }
 
+  // ── Search Console (the service account is a Restricted user on the property) ──
+  sc(site: string, path: string, body?: Row): Promise<any> {
+    const url = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(site)}${path}`;
+    return this.call(url, body ? { method: "POST", body: JSON.stringify(body) } : {}, "https://www.googleapis.com/auth/webmasters.readonly");
+  }
+
   // ── Firebase Auth ──
   /** Every account (Identity Toolkit accounts:query, paged by offset). */
   async users(): Promise<AuthUser[]> {

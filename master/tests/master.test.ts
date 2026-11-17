@@ -179,3 +179,16 @@ test("Clarity export shaping and the UX route is gated", async () => {
   assert.equal(s.summary.RageClickCount.sessionsWithMetricPercentage, 2.5);
   assert.equal((await call("/api/ux")).status, 401);
 });
+
+test("Search Console shaping (weighted position, week over week) and the route is gated", async () => {
+  const { scShape } = await import("../src/external.ts");
+  const days = Array.from({ length: 14 }, (_, i) => ({ keys: [`2026-11-${String(i + 1).padStart(2, "0")}`], clicks: i < 7 ? 1 : 2, impressions: 10, ctr: 0, position: i < 7 ? 20 : 10 }));
+  const s = scShape({ rows: days }, { rows: [{ keys: ["cricket predictions"], clicks: 5, impressions: 50, ctr: 0.1, position: 8.2 }] }, null, null, null,
+    { sitemap: [{ path: "https://cricsynthesis.in/sitemap.xml", errors: "0", warnings: "1", contents: [{ submitted: "1200" }] }] });
+  assert.equal(s.last7.clicks, 14);
+  assert.equal(s.prev7.clicks, 7);
+  assert.equal(s.last7.position, 10);
+  assert.equal(s.queries[0].key, "cricket predictions");
+  assert.equal(s.sitemaps[0].submitted, 1200);
+  assert.equal((await call("/api/search")).status, 401);
+});

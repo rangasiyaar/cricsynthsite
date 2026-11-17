@@ -227,3 +227,35 @@ export function clarityShape(overall: any[] | null, byUrl: any[] | null) {
            summary, rage: pageRows("RageClickCount"), dead: pageRows("DeadClickCount"), quickback: pageRows("QuickbackClick"),
            scriptErrors: pageRows("ScriptErrorCount"), scroll: pageRows("ScrollDepth", "averageScrollDepth"), traffic: pageRows("Traffic", "totalSessionCount") };
 }
+
+// ── Google Search Console (search clicks, impressions, queries, pages; data lags 2–3 days) ──
+type ScRow = { keys?: string[]; clicks: number; impressions: number; ctr: number; position: number };
+export function scShape(daily: any, queries: any, pages: any, countries: any, devices: any, sitemaps: any) {
+  const r = (x: any): ScRow[] => x?.rows || [];
+  const row = (x: ScRow) => ({ key: x.keys?.[0] ?? "", clicks: x.clicks, impressions: x.impressions, ctr: x.ctr, position: x.position });
+  const d = r(daily).map((x) => ({ day: x.keys?.[0] ?? "", clicks: x.clicks, impressions: x.impressions, ctr: x.ctr, position: x.position }))
+    .sort((a, b) => a.day.localeCompare(b.day));
+  const tot = (rows: typeof d) => {
+    const c = rows.reduce((s, x) => s + x.clicks, 0), i = rows.reduce((s, x) => s + x.impressions, 0);
+    return { clicks: c, impressions: i, ctr: i ? c / i : null,
+             position: i ? rows.reduce((s, x) => s + x.position * x.impressions, 0) / i : null };
+  };
+  return { daily: d, last7: tot(d.slice(-7)), prev7: tot(d.slice(-14, -7)), total: tot(d),
+           queries: r(queries).map(row), pages: r(pages).map(row), countries: r(countries).map(row), devices: r(devices).map(row),
+           sitemaps: (sitemaps?.sitemap || []).map((s: any) => ({ path: s.path, lastSubmitted: s.lastSubmitted || null, lastDownloaded: s.lastDownloaded || null,
+             pending: Boolean(s.isPending), errors: Number(s.errors || 0), warnings: Number(s.warnings || 0),
+             submitted: (s.contents || []).reduce((n: number, c: any) => n + Number(c.submitted || 0), 0) })) };
+}
+
+export async function search(env: Env, google: { sc: (site: string, path: string, body?: Row) => Promise<any> }, now = new Date()) {
+  const site = env.SC_SITE || "sc-domain:cricsynthesis.in";
+  const day = (n: number) => new Date(now.getTime() - n * 86400_000).toISOString().slice(0, 10);
+  const q = (dimensions: string[], rowLimit: number, from = 27) =>
+    google.sc(site, "/searchAnalytics/query", { startDate: day(from), endDate: day(0), dimensions, rowLimit, dataState: "all" });
+  const errors: string[] = [];
+  const get = (name: string, f: () => Promise<any>) => f().catch((e) => { errors.push(`${name}: ${String(e.message || e).slice(0, 200)}`); return null; });
+  const [daily, queries, pages, countries, devices, sitemaps] = await Promise.all([
+    get("Daily", () => q(["date"], 60, 34)), get("Queries", () => q(["query"], 50)), get("Pages", () => q(["page"], 50)),
+    get("Countries", () => q(["country"], 12)), get("Devices", () => q(["device"], 5)), get("Sitemaps", () => google.sc(site, "/sitemaps"))]);
+  return { built: now.toISOString(), site, ...scShape(daily, queries, pages, countries, devices, sitemaps), errors };
+}
