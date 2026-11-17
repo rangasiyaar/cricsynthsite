@@ -30,22 +30,26 @@ service cloud.firestore {
     function adult(uid) { return get(/databases/$(database)/documents/users/$(uid)).data.get('adult', false) == true; }
 
     // A signed-in user's profile. They may set their company and use case; the plan is server-only.
+    function profileOk() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['company', 'useCase', 'updated', 'notifyProduct', 'notifyUsage', 'notifyBilling', 'adult', 'ageConfirmed'])
+        && (!('adult' in d) || d.adult == true)
+        && (!('ageConfirmed' in d) || 'adult' in d)
+        && (!('company' in d) || (d.company is string && d.company.size() <= 80))
+        && (!('useCase' in d) || (d.useCase is string && d.useCase.size() <= 280))
+        && (!('notifyProduct' in d) || d.notifyProduct is bool)
+        && (!('notifyUsage' in d) || d.notifyUsage is bool)
+        && (!('notifyBilling' in d) || d.notifyBilling is bool);
+    }
     match /users/{uid} {
       allow read: if me(uid);
-      allow create, update: if me(uid)
-        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated', 'notifyProduct', 'notifyUsage', 'notifyBilling',
-                                                 'adult', 'ageConfirmed'])
-        // the 18+ confirmation: can only be set to true (with the server time), never changed back or forged later
-        && (!('adult' in request.resource.data) || (request.resource.data.adult == true
-            && (resource != null && resource.data.get('adult', false) == true
-                ? request.resource.data.ageConfirmed == resource.data.ageConfirmed
-                : request.resource.data.ageConfirmed == request.time)))
-        && (!('ageConfirmed' in request.resource.data) || 'adult' in request.resource.data)
-        && (!('company' in request.resource.data) || (request.resource.data.company is string && request.resource.data.company.size() <= 80))
-        && (!('useCase' in request.resource.data) || (request.resource.data.useCase is string && request.resource.data.useCase.size() <= 280))
-        && (!('notifyProduct' in request.resource.data) || request.resource.data.notifyProduct is bool)
-        && (!('notifyUsage' in request.resource.data) || request.resource.data.notifyUsage is bool)
-        && (!('notifyBilling' in request.resource.data) || request.resource.data.notifyBilling is bool);
+      allow create: if me(uid) && profileOk()
+        && (!('adult' in request.resource.data) || request.resource.data.ageConfirmed == request.time);
+      allow update: if me(uid) && profileOk()
+        // the 18+ confirmation is one-way: set once with the server time, never changed back or re-dated
+        && (!('adult' in request.resource.data) || (resource.data.get('adult', false) == true
+              ? request.resource.data.ageConfirmed == resource.data.ageConfirmed
+              : request.resource.data.ageConfirmed == request.time));
 
       // API usage per day, written by the API (batched); the account holder can read it.
       match /usage/{day} { allow read: if me(uid); }
