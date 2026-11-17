@@ -1,4 +1,13 @@
 [
+ {
+  "version": "0.3.6",
+  "date": "2026-11-17",
+  "notes": [
+   "Finished matches open their result in the app: every pre-match projection checked against the scorecard, plus how our fantasy picks scored",
+   "Past results in the menu opens the Finished matches list",
+   "Players to watch on the Match Overview fills its row, with no gaps"
+  ]
+ },
   {"version": "0.3.5", "date": "2026-11-07", "notes": [
     "A new Match Overview: projected scores, a runs-per-over chart with expected wickets, when wickets fall, players to watch, the ground and fantasy picks on one screen",
     "Every chart now has clear axes",
