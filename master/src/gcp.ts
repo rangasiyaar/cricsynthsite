@@ -25,7 +25,7 @@ export type Doc = Row & { _path: string; _id: string };
 
 export class Google {
   sa: SA; project: string; fetcher: typeof fetch;
-  constructor(saJson: string, project?: string, fetcher: typeof fetch = fetch) {
+  constructor(saJson: string, project?: string, fetcher: typeof fetch = (input, init) => fetch(input, init)) {   // a bare `fetch` stored on the object throws "Illegal invocation" in Workers
     this.sa = JSON.parse(saJson);
     this.project = project || this.sa.project_id || "";
     this.fetcher = fetcher;

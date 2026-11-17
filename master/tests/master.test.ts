@@ -137,3 +137,17 @@ test("accuracy by format and competition", () => {
   assert.deepEqual(a.formats.map((f) => f.key).sort(), ["OD", "T20"]);
   assert.equal(a.tabs[0].accuracy, 0.75);
 });
+
+test("Google client calls fetch unbound (Workers throw 'Illegal invocation' for a stored fetch)", async () => {
+  const { Google } = await import("../src/gcp.ts");
+  const real = globalThis.fetch;
+  let self: unknown = "unset";
+  (globalThis as any).fetch = function (this: unknown) { self = this; return Promise.resolve(new Response(JSON.stringify({ access_token: "t", expires_in: 3600 }))); };
+  try {
+    const { generateKeyPairSync } = await import("node:crypto");
+    const pem = generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey.export({ type: "pkcs8", format: "pem" });
+    const g = new Google(JSON.stringify({ client_email: "t@x", private_key: pem, project_id: "p" }));
+    await g.get("users/u1").catch(() => null);
+    assert.notEqual(self, g);                      // never called as a method of the client
+  } finally { globalThis.fetch = real; }
+});
