@@ -1,100 +1,11 @@
 name: Results diagnose (temporary)
-# Why the results lost their history: can CI fetch the live site's data, what zone security is on, and which
-# Cloudflare Pages deployment still has the full archive. Read-only. Removed after the fix.
+# Which daily data + model caches are still in Actions (to rebuild frozen forecasts lost on 17 Nov). Read-only.
 on: workflow_dispatch
-permissions: { contents: read, id-token: write, actions: read }
+permissions: { contents: read, actions: read }
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    env:
-      CF: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      ACCT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Actions caches (data + model per day)
         env: { GH_TOKEN: "${{ github.token }}" }
-        run: gh api "repos/${{ github.repository }}/actions/caches?per_page=100&sort=created_at" --jq '.actions_caches[] | "\(.created_at) \(.last_accessed_at) \(.size_in_bytes/1048576|floor)MB \(.key)"'
-      - name: CI fetch test (the same request results.py makes)
-        run: |
-          python3 - <<'PY'
-          import urllib.request, urllib.error
-          for site in ("https://cricsynthesis.in", "https://cricsynthesis-site.pages.dev", "https://cricsynthesis.web.app"):
-              for ua in ("cricsynthesis-ci", "Mozilla/5.0"):
-                  try:
-                      with urllib.request.urlopen(urllib.request.Request(f"{site}/data/archive.json", headers={"User-Agent": ua}), timeout=30) as r:
-                          b = r.read(); print(site, ua, r.status, len(b), b[:80])
-                  except urllib.error.HTTPError as e:
-                      print(site, ua, "HTTP", e.code, e.headers.get("server"), e.headers.get("cf-mitigated"), e.read()[:120])
-                  except Exception as e:
-                      print(site, ua, "ERR", e)
-          PY
-      - name: Zone security settings
-        run: |
-          Z=$(curl -s -H "Authorization: Bearer $CF" "https://api.cloudflare.com/client/v4/zones?name=cricsynthesis.in" | python3 -c "import json,sys;print(json.load(sys.stdin)['result'][0]['id'])")
-          for p in bot_management settings/security_level settings/browser_check settings/challenge_ttl; do
-            echo "== $p"; curl -s -H "Authorization: Bearer $CF" "https://api.cloudflare.com/client/v4/zones/$Z/$p" | python3 -c "import json,sys;d=json.load(sys.stdin);print(json.dumps(d.get('result'))[:400])"
-          done
-      - name: Pages deployments and their archive size
-        run: |
-          python3 - <<'PY'
-          import json, os, urllib.request
-          tok, acct = os.environ["CF"], os.environ["ACCT"]
-          def api(p):
-              return json.loads(urllib.request.urlopen(urllib.request.Request("https://api.cloudflare.com/client/v4" + p, headers={"Authorization": "Bearer " + tok}), timeout=60).read())
-          deps = []
-          for page in range(1, 9):
-              r = api(f"/accounts/{acct}/pages/projects/cricsynthesis-site/deployments?per_page=25&page={page}")["result"]
-              deps += r
-              if len(r) < 25: break
-          print("deployments:", len(deps))
-          for d in deps[::max(1, len(deps)//40)]:
-              url = d["url"]
-              try:
-                  a = json.loads(urllib.request.urlopen(urllib.request.Request(url + "/data/archive.json", headers={"User-Agent": "Mozilla/5.0"}), timeout=30).read())
-                  n = len(a.get("matches", []))
-              except Exception as e:
-                  n = f"ERR {e}"
-              try:
-                  rs = json.loads(urllib.request.urlopen(urllib.request.Request(url + "/data/results/index.json", headers={"User-Agent": "Mozilla/5.0"}), timeout=30).read())
-                  m = len(rs.get("matches", []))
-              except Exception as e:
-                  m = f"ERR {e}"
-              print(d["created_on"], url, "archive:", n, "results:", m)
-          PY
-      - uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
-      - uses: google-github-actions/setup-gcloud@v2
-      - name: Firebase Hosting versions (which still hold the old archive)
-        env: { PROJECT: "${{ secrets.GCP_PROJECT_ID }}" }
-        run: |
-          T=$(gcloud auth print-access-token)
-          P=${PROJECT:-$(gcloud config get-value project)}
-          python3 - "$T" "$P" <<'PY'
-          import json, sys, urllib.request
-          tok, proj = sys.argv[1], sys.argv[2]
-          def api(u):
-              return json.loads(urllib.request.urlopen(urllib.request.Request(u, headers={"Authorization": "Bearer " + tok, "x-goog-user-project": proj}), timeout=60).read())
-          A = "https://firebasehosting.googleapis.com/v1beta1"
-          sites = [s["name"].rsplit("/", 1)[-1] for s in api(f"{A}/projects/{proj}/sites").get("sites", [])]
-          for site in sites:
-              live = api(f"{A}/sites/{site}/channels/live").get("release", {}).get("version", {}).get("name")
-              vs, page = [], ""
-              while True:
-                  d = api(f"{A}/sites/{site}/versions?pageSize=100" + (f"&pageToken={page}" if page else ""))
-                  vs += d.get("versions", []); page = d.get("nextPageToken", "")
-                  if not page: break
-              vs.sort(key=lambda v: v.get("createTime", ""))
-              print(f"{site}: {len(vs)} versions, live {str(live).rsplit('/',1)[-1]}")
-              for v in vs:
-                  name = v["name"]
-                  arch = None
-                  try:
-                      f = api(f"{A}/{name}/files?pageSize=1000&status=ACTIVE")
-                      files = f.get("files", [])
-                      has = [x for x in files if x["path"] in ("/data/archive.json", "/data/results/index.json")]
-                      arch = f"{len(files)}+ files; " + ", ".join(f"{x['path']} {x['hash'][:10]}" for x in has)
-                  except Exception as e:
-                      arch = f"files ERR {e}"
-                  print(" ", v.get("createTime"), v.get("status"), name.rsplit("/", 1)[-1], v.get("fileCount"), arch)
-          PY
+        run: gh api --paginate "repos/${{ github.repository }}/actions/caches?per_page=100" --jq '.actions_caches[] | "\(.created_at) \(.last_accessed_at) \(.size_in_bytes/1048576|floor)MB \(.key)"' | sort
