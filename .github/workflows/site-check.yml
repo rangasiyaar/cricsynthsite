@@ -1,0 +1,15 @@
+name: Site check
+# Smoke test of the live static site (infra/site_check.py): pages, app data with CORS, redirects, headers, MCP index.
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "Site address"
+        default: "https://cricsynthesis.in"
+permissions: { contents: read }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 infra/site_check.py "${{ inputs.base }}"
