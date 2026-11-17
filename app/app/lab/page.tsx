@@ -53,7 +53,6 @@ function Lab() {
 export default function LabPage() {
   return (
     <div className="page-head" style={{ paddingBottom: 80 }}>
-      <p className="cs-eyebrow"><span className="tag pro">Pro</span></p>
       <h1><span>MatchSynth Lab</span></h1>
       <div style={{ marginTop: 32 }}>
         <RequireSignIn pro>

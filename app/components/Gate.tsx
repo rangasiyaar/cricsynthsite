@@ -18,7 +18,7 @@ export function loginHref(next?: string) {
 export function ProBanner({ feature, signedIn, style }: { feature: string; signedIn: boolean; style?: React.CSSProperties }) {
   return (
     <div className="card" style={{ maxWidth: 640, ...style }}>
-      <h3>{feature} is part of Pro <span className="tag pro">Pro</span></h3>
+      <h3>{feature} is part of Pro</h3>
       <p className="small muted">The Overview is free for every match. Pro opens the full match centre (scores, wickets,
         players, top players, MVP, match-ups, venue intelligence and fantasy) and MatchSynth Lab.
         {!signedIn && " Pro is free during the beta: sign in to open it."}</p>
