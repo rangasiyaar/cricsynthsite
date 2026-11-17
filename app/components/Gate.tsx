@@ -13,19 +13,26 @@ export function loginHref(next?: string) {
   return `/login/?next=${encodeURIComponent(next ?? here())}`;
 }
 
-export function RequireSignIn({ children, pro = false }: { children: React.ReactNode; pro?: boolean }) {
+/** "<feature> is part of Pro": the same banner for the match-centre tabs and MatchSynth Lab. Guests get a sign-in
+ *  button that comes straight back; signed-in accounts without Pro get the plans. */
+export function ProBanner({ feature, signedIn, style }: { feature: string; signedIn: boolean; style?: React.CSSProperties }) {
+  return (
+    <div className="card" style={{ maxWidth: 640, ...style }}>
+      <h3>{feature} is part of Pro <span className="tag pro">Pro</span></h3>
+      <p className="small muted">The Overview is free for every match. Pro opens the full match centre (scores, wickets,
+        players, top players, MVP, match-ups, venue intelligence and fantasy) and MatchSynth Lab.
+        {!signedIn && " Pro is free during the beta: sign in to open it."}</p>
+      {signedIn ? <Link className="btn" href="/pricing/">See plans</Link> : <Link className="btn" href={loginHref()}>Sign in to open</Link>}
+    </div>
+  );
+}
+
+/** `pro`: guests and accounts without Pro see the Pro banner; otherwise guests go to sign-in and come straight back. */
+export function RequireSignIn({ children, pro = false, feature = "MatchSynth Lab" }: { children: React.ReactNode; pro?: boolean; feature?: string }) {
   const { user, plan } = usePlan();
-  useEffect(() => { if (user === null) window.location.replace(loginHref()); }, [user]);
-  if (plan === undefined || user === null) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
-  if (pro && plan !== "pro") {
-    return (
-      <div className="card" style={{ maxWidth: 640 }}>
-        <h3>MatchSynth Lab is part of Pro <span className="tag pro">Pro</span></h3>
-        <p className="small muted">Pro adds the full what-if engine: pitch and conditions, dew, player form, bowler
-          availability and any match situation, re-simulated in your browser.</p>
-        <Link className="btn" href="/pricing/">See plans</Link>
-      </div>
-    );
-  }
+  useEffect(() => { if (user === null && !pro) window.location.replace(loginHref()); }, [user, pro]);
+  if (plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
+  if (pro && plan !== "pro") return <ProBanner feature={feature} signedIn={!!user} />;
+  if (user === null) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
   return <>{children}</>;
 }

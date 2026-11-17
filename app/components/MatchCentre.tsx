@@ -4,7 +4,7 @@ import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/compo
 import LiveProjection from "@/components/LiveProjection";
 import Snapshot from "@/components/Snapshot";
 import Link from "next/link";
-import { loginHref } from "@/components/Gate";
+import { ProBanner } from "@/components/Gate";
 import { track } from "@/lib/analytics";
 import { usePlan } from "@/lib/firebase";
 import Scoreboard from "@/components/Scoreboard";
@@ -73,15 +73,7 @@ function ProSection({ section, children }: { section: Section; children: React.R
   const { user, plan } = usePlan();
   if (!isProSection(section) || plan === "pro") return <>{children}</>;
   if (plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
-  return (
-    <div className="card" style={{ maxWidth: 640, marginTop: 24 }}>
-      <h3>{FULL[section] ?? section} is part of Pro <span className="tag pro">Pro</span></h3>
-      <p className="small muted">The Overview is free for every match. Pro opens the full match centre (scores, wickets,
-        players, top players, MVP, match-ups, venue intelligence and fantasy) and MatchSynth Lab.
-        {!user && " Pro is free during the beta: sign in to open it."}</p>
-      {user ? <Link className="btn" href="/pricing/">See plans</Link> : <Link className="btn" href={loginHref()}>Sign in to open</Link>}
-    </div>
-  );
+  return <ProBanner feature={FULL[section] ?? section} signedIn={!!user} style={{ marginTop: 24 }} />;
 }
 
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
@@ -89,7 +81,6 @@ function ProSection({ section, children }: { section: Section; children: React.R
 export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean;
                                                                        initial?: string | null }) {
   const tabs = sectionsFor(doc);
-  const pro = usePlan().plan === "pro";
   const [tab, setTab] = useState<Tab>(() => tabs.find((t) => t.toLowerCase() === (initial ?? "").toLowerCase()) ?? "Overview");
   return (
     <>
@@ -97,7 +88,6 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
         {tabs.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => { setTab(t); track("match_tab", { tab: t, match_id: doc.match.id }); }}>
             <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{FULL[t] ?? t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
-            {live && !pro && isProSection(t) && <span className="tag pro">Pro</span>}
           </button>
         ))}
         {extra}
@@ -124,7 +114,6 @@ export default function MatchCentre({ doc, initialTab, heading = true }: { doc: 
         <Link role="tab" className="tab-link" href={`/lab/?id=${encodeURIComponent(match.id)}`}>
           <span className="mc-ico" aria-hidden="true">{TAB_ICONS.Lab}</span>
           <span className="mc-label"><span className="mc-full">MatchSynth Lab</span><span className="mc-short">Lab</span></span>
-          <span className="tag pro">Pro</span>
         </Link>} />
 
     </div>
