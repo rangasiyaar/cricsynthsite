@@ -1,677 +1,1022 @@
 {
- "testCases": [
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+  "testCases": [
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "create",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "free",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "pro",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "create",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "pro",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k6",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k6",
-    "method": "create",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "free",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u2"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u2"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "create",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "free",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": null,
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "get",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": null,
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "get",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "get",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u2"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "get",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "get",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u2"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "get",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "update",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "free",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": true,
-      "revokedAt": "2026-10-10T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": true,
+            "revokedAt": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "update",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "business",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "business",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "update",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "name": "Prod",
-      "prefix": "cs_live_abc",
-      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "plan": "free",
-      "created": "2026-10-10T12:00:00Z",
-      "revoked": false
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": true
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": true
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "delete",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": false
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "delete",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": false
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/keys/k1",
-    "method": "delete",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {
-     "name": "Prod",
-     "prefix": "cs_live_abc",
-     "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-     "plan": "free",
-     "created": "2026-10-10T12:00:00Z",
-     "revoked": true
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "delete",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {
+          "name": "Prod",
+          "prefix": "cs_live_abc",
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "plan": "free",
+          "created": "2026-10-10T12:00:00Z",
+          "revoked": true
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1",
-    "method": "update",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "company": "Acme",
-      "useCase": "fantasy",
-      "updated": "2026-10-10T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {}
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "useCase": "fantasy",
+            "updated": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {}
+      }
     },
-    "path": "/databases/(default)/documents/users/u1",
-    "method": "update",
-    "time": "2026-10-10T12:00:00Z",
-    "resource": {
-     "data": {
-      "company": "Acme",
-      "plan": "pro"
-     }
-    }
-   },
-   "resource": {
-    "data": {}
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "plan": "pro"
+          }
+        }
+      },
+      "resource": {
+        "data": {}
+      }
     },
-    "path": "/databases/(default)/documents/fixtures/x",
-    "method": "get",
-    "time": "2026-10-10T12:00:00Z"
-   },
-   "resource": {
-    "data": {}
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/fixtures/x",
+        "method": "get",
+        "time": "2026-10-10T12:00:00Z"
+      },
+      "resource": {
+        "data": {}
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
-    "method": "get",
-    "time": "2026-10-11T12:00:00Z"
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
+        "method": "get",
+        "time": "2026-10-11T12:00:00Z"
+      }
     },
-    "path": "/databases/(default)/documents/users/u2/usage/2026-10-11",
-    "method": "get",
-    "time": "2026-10-11T12:00:00Z"
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u2/usage/2026-10-11",
+        "method": "get",
+        "time": "2026-10-11T12:00:00Z"
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
-    "method": "create",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "total": 1
-     }
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/usage/2026-10-11",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "total": 1
+          }
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "create",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "pending",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "create",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "approved",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "approved",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/requests/pro-free",
-    "method": "create",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "pro-free",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "pending",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/pro-free",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "pro-free",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-business",
-    "method": "create",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "pending",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-business",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {
+                "adult": true
+              }
+            }
+          }
+        }
+      ]
     },
-    "path": "/databases/(default)/documents/users/u1",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "company": "Acme",
-      "notifyProduct": true,
-      "notifyUsage": false
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "notifyProduct": true,
+            "notifyUsage": false
+          }
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "pro"
-     }
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "pro"
+          }
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "cancelled",
-      "created": "2026-10-10T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "plan": "api-pro",
-     "volume": "1k-10k",
-     "note": "Fantasy app",
-     "status": "pending",
-     "created": "2026-10-10T12:00:00Z"
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "cancelled",
+            "created": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "plan": "api-pro",
+          "volume": "1k-10k",
+          "note": "Fantasy app",
+          "status": "pending",
+          "created": "2026-10-10T12:00:00Z"
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "pending",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "plan": "api-pro",
-     "volume": "1k-10k",
-     "note": "Fantasy app",
-     "status": "cancelled",
-     "created": "2026-10-10T12:00:00Z"
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "plan": "api-pro",
+          "volume": "1k-10k",
+          "note": "Fantasy app",
+          "status": "cancelled",
+          "created": "2026-10-10T12:00:00Z"
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "pending",
-      "created": "2026-10-11T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "plan": "api-pro",
-     "volume": "1k-10k",
-     "note": "Fantasy app",
-     "status": "approved",
-     "created": "2026-10-10T12:00:00Z"
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "plan": "api-pro",
+          "volume": "1k-10k",
+          "note": "Fantasy app",
+          "status": "approved",
+          "created": "2026-10-10T12:00:00Z"
+        }
+      }
     },
-    "path": "/databases/(default)/documents/users/u1/requests/api-pro",
-    "method": "update",
-    "time": "2026-10-11T12:00:00Z",
-    "resource": {
-     "data": {
-      "plan": "api-pro",
-      "volume": "1k-10k",
-      "note": "Fantasy app",
-      "status": "approved",
-      "created": "2026-10-10T12:00:00Z"
-     }
-    }
-   },
-   "resource": {
-    "data": {
-     "plan": "api-pro",
-     "volume": "1k-10k",
-     "note": "Fantasy app",
-     "status": "pending",
-     "created": "2026-10-10T12:00:00Z"
-    }
-   }
-  },
-  {
-   "expectation": "ALLOW",
-   "request": {
-    "path": "/databases/(default)/documents/live/pka-v-spr",
-    "time": "2026-10-29T12:00:00Z",
-    "auth": null,
-    "method": "get"
-   },
-   "resource": {
-    "data": {
-     "published": true,
-     "runs": 46
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "path": "/databases/(default)/documents/live/pka-v-spr",
-    "time": "2026-10-29T12:00:00Z",
-    "auth": null,
-    "method": "get"
-   },
-   "resource": {
-    "data": {
-     "runs": 46
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "path": "/databases/(default)/documents/live/pka-v-spr",
-    "time": "2026-10-29T12:00:00Z",
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "update",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "approved",
+            "created": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "plan": "api-pro",
+          "volume": "1k-10k",
+          "note": "Fantasy app",
+          "status": "pending",
+          "created": "2026-10-10T12:00:00Z"
+        }
+      }
     },
-    "method": "create",
-    "resource": {
-     "data": {
-      "published": true,
-      "runs": 999
-     }
-    }
-   }
-  },
-  {
-   "expectation": "DENY",
-   "request": {
-    "path": "/databases/(default)/documents/live/pka-v-spr",
-    "time": "2026-10-29T12:00:00Z",
-    "auth": {
-     "uid": "u1"
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "path": "/databases/(default)/documents/live/pka-v-spr",
+        "time": "2026-10-29T12:00:00Z",
+        "auth": null,
+        "method": "get"
+      },
+      "resource": {
+        "data": {
+          "published": true,
+          "runs": 46
+        }
+      }
     },
-    "method": "update",
-    "resource": {
-     "data": {
-      "published": true,
-      "runs": 999
-     }
+    {
+      "expectation": "DENY",
+      "request": {
+        "path": "/databases/(default)/documents/live/pka-v-spr",
+        "time": "2026-10-29T12:00:00Z",
+        "auth": null,
+        "method": "get"
+      },
+      "resource": {
+        "data": {
+          "runs": 46
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "path": "/databases/(default)/documents/live/pka-v-spr",
+        "time": "2026-10-29T12:00:00Z",
+        "auth": {
+          "uid": "u1"
+        },
+        "method": "create",
+        "resource": {
+          "data": {
+            "published": true,
+            "runs": 999
+          }
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "path": "/databases/(default)/documents/live/pka-v-spr",
+        "time": "2026-10-29T12:00:00Z",
+        "auth": {
+          "uid": "u1"
+        },
+        "method": "update",
+        "resource": {
+          "data": {
+            "published": true,
+            "runs": 999
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "published": true,
+          "runs": 46
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/keys/k1",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "name": "Prod",
+            "prefix": "cs_live_abc",
+            "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "plan": "free",
+            "created": "2026-10-10T12:00:00Z",
+            "revoked": false
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/requests/api-pro",
+        "method": "create",
+        "time": "2026-10-11T12:00:00Z",
+        "resource": {
+          "data": {
+            "plan": "api-pro",
+            "volume": "1k-10k",
+            "note": "Fantasy app",
+            "status": "pending",
+            "created": "2026-10-11T12:00:00Z"
+          }
+        }
+      },
+      "functionMocks": [
+        {
+          "function": "get",
+          "args": [
+            {
+              "exactValue": "/databases/(default)/documents/users/u1"
+            }
+          ],
+          "result": {
+            "value": {
+              "data": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "create",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": true,
+            "ageConfirmed": "2026-11-17T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "create",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": false,
+            "ageConfirmed": "2026-11-17T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "create",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": true,
+            "ageConfirmed": "2020-01-01T00:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "create",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "ageConfirmed": "2026-11-17T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "adult": true,
+            "ageConfirmed": "2026-11-10T00:00:00Z",
+            "updated": "2026-11-17T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "adult": true,
+          "ageConfirmed": "2026-11-10T00:00:00Z"
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": true,
+            "ageConfirmed": "2026-11-17T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "adult": true,
+          "ageConfirmed": "2026-11-10T00:00:00Z"
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-11-17T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": false,
+            "ageConfirmed": "2026-11-10T00:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "adult": true,
+          "ageConfirmed": "2026-11-10T00:00:00Z"
+        }
+      }
     }
-   },
-   "resource": {
-    "data": {
-     "published": true,
-     "runs": 46
-    }
-   }
-  }
- ]
+  ]
 }

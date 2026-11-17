@@ -26,11 +26,21 @@ service cloud.firestore {
 
     function me(uid) { return request.auth != null && request.auth.uid == uid; }
 
+    // The account holder confirmed they are 18 or over (components/AgeGate.tsx): needed for API keys and upgrades.
+    function adult(uid) { return get(/databases/$(database)/documents/users/$(uid)).data.get('adult', false) == true; }
+
     // A signed-in user's profile. They may set their company and use case; the plan is server-only.
     match /users/{uid} {
       allow read: if me(uid);
       allow create, update: if me(uid)
-        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated', 'notifyProduct', 'notifyUsage', 'notifyBilling'])
+        && request.resource.data.keys().hasOnly(['company', 'useCase', 'updated', 'notifyProduct', 'notifyUsage', 'notifyBilling',
+                                                 'adult', 'ageConfirmed'])
+        // the 18+ confirmation: can only be set to true (with the server time), never changed back or forged later
+        && (!('adult' in request.resource.data) || (request.resource.data.adult == true
+            && (resource != null && resource.data.get('adult', false) == true
+                ? request.resource.data.ageConfirmed == resource.data.ageConfirmed
+                : request.resource.data.ageConfirmed == request.time)))
+        && (!('ageConfirmed' in request.resource.data) || 'adult' in request.resource.data)
         && (!('company' in request.resource.data) || (request.resource.data.company is string && request.resource.data.company.size() <= 80))
         && (!('useCase' in request.resource.data) || (request.resource.data.useCase is string && request.resource.data.useCase.size() <= 280))
         && (!('notifyProduct' in request.resource.data) || request.resource.data.notifyProduct is bool)
@@ -44,7 +54,7 @@ service cloud.firestore {
       // our team approves or declines server-side.
       match /requests/{plan} {
         allow read: if me(uid);
-        allow create: if me(uid) && plan in ['api-pro', 'api-business']
+        allow create: if me(uid) && adult(uid) && plan in ['api-pro', 'api-business']
           && request.resource.data.keys().hasOnly(['plan', 'volume', 'note', 'status', 'created'])
           && request.resource.data.plan == plan && request.resource.data.status == 'pending'
           && request.resource.data.volume in ['<1k', '1k-10k', '10k-50k', '>50k']
@@ -64,7 +74,7 @@ service cloud.firestore {
       // A key can be renamed or revoked, and a revoked key deleted to free its slot.
       match /keys/{slot} {
         allow read: if me(uid);
-        allow create: if me(uid) && slot in ['k1', 'k2', 'k3', 'k4', 'k5']
+        allow create: if me(uid) && adult(uid) && slot in ['k1', 'k2', 'k3', 'k4', 'k5']
           && request.resource.data.keys().hasOnly(['name', 'prefix', 'hash', 'plan', 'created', 'revoked'])
           && request.resource.data.plan == 'free' && request.resource.data.revoked == false
           && request.resource.data.hash is string && request.resource.data.hash.matches('^[0-9a-f]{64}$')
