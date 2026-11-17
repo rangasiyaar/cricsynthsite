@@ -7,7 +7,7 @@ export const MESSAGES: Record<string, string> = {
   "auth/popup-closed-by-user": "The Google window was closed before signing in.",
   "auth/too-many-requests": "Too many attempts. Wait a minute and try again.",
   "auth/configuration-not-found": "Sign-in isn't available yet. Please try again later.",
-  "auth/unauthorized-domain": "Sign-in isn't enabled on this address yet. Please use cricsynthesis.web.app for now.",
+  "auth/unauthorized-domain": "Sign-in isn't enabled on this address yet. Please use cricsynthesis.in.",
   "auth/popup-blocked": "Your browser blocked the Google window. Allow pop-ups for this site and try again.",
   "auth/operation-not-allowed": "This sign-in method isn't switched on yet.",
 };

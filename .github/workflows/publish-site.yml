@@ -32,6 +32,7 @@ concurrency: { group: publish-site, cancel-in-progress: true }
 
 env:
   GCP: ${{ vars.GCP_ENABLED == 'true' }}
+  HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
   BILLING: ${{ vars.GCP_BILLING == 'true' }}
   PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
@@ -216,12 +217,28 @@ jobs:
         if: env.GCP == 'true' && vars.ALERTS_ENABLED == 'true'
         continue-on-error: true
         run: uv run python -m cricsim.notify plan --publish data/publish --out data/notify.json | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Cloudflare Pages settings (_redirects and _headers from firebase.json; file-count and size checks)
+        run: python3 infra/cf_pages.py --firebase firebase.json --out app/out
+      # The site is served by Cloudflare Pages (free, unlimited bandwidth); Firebase Hosting's free 10 GB a month ran out
+      # (Nov 2026). Needs CLOUDFLARE_API_TOKEN with "Cloudflare Pages: Edit" and CLOUDFLARE_ACCOUNT_ID.
+      - name: Deploy to Cloudflare Pages
+        id: pages
+        if: env.HAS_CF == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          W="npx --yes wrangler@4.45.0"
+          $W pages project list 2>/dev/null | grep -q "cricsynthesis-site" \
+            || $W pages project create cricsynthesis-site --production-branch main
+          $W pages deploy app/out --project-name cricsynthesis-site --branch main --commit-dirty=true | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep Hosting storage under the free cap (latest 10 versions per site; never the live one)
         if: env.GCP == 'true'
         continue-on-error: true          # a cleanup problem must not hold back the deploy
         run: FIREBASE_TOKEN="$(gcloud auth print-access-token)" python3 infra/hosting_prune.py --project "$PROJECT" --keep 10
-      - name: Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting (the old host, kept current as cricsynthesis.web.app while it still serves)
         if: env.GCP == 'true'
+        continue-on-error: true          # Cloudflare Pages is the live host now; Firebase must not hold the run back
         run: |
           cat > .firebaserc <<EOF
           {"projects": {"default": "${PROJECT}"},

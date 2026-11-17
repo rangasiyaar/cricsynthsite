@@ -32,7 +32,7 @@ cricsynthsite/
 
 | Concern | Service | Notes |
 |---|---|---|
-| Website + fan app | Firebase Hosting (static Next.js export) at cricsynthesis.in | Forecasts are static JSON built nightly (`publish-site.yml`); Firestore for accounts/Pro later |
+| Website + fan app | Cloudflare Pages (static Next.js export) at cricsynthesis.in (Firebase Hosting until its free bandwidth ran out, Nov 2026; still deployed as a fallback) | Forecasts are static JSON built nightly (`publish-site.yml`); Firestore for accounts/Pro later |
 | Auth | Firebase Auth (`app/lib/firebase.ts`) | Google + email; no SMS (billed). Pro = any signed-in account during the beta (`BETA_PRO`); a `plan` custom claim overrides |
 | Account dashboard | `/account/` (`components/Dashboard.tsx`) | Overview, usage (`users/{uid}/usage/{day}`, written by the API in batches), API keys (read by the API when `CRICAPI_FIRESTORE_PROJECT` is set), subscription + upgrade requests (`users/{uid}/requests/{plan}`, approved server-side), profile + email preferences |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
