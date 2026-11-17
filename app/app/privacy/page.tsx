@@ -45,6 +45,9 @@ export default function Privacy() {
           match, running a MatchSynth Lab scenario, creating an API key), the website that sent you, approximate location
           (city/country), device and browser. Google Analytics does not log or store IP addresses. We don&apos;t send your name,
           email or account ID to it. Provided by Google LLC.</li>
+        <li><b>Microsoft Clarity session recordings (optional, only with your consent).</b> Heatmaps and replays of how pages are
+          used (clicks, taps, scrolling, mouse movement) so we can find confusing or broken parts of the site. Everything you
+          type is hidden, and the account, sign-in and connect pages are fully masked. Provided by Microsoft Corporation.</li>
         <li><b>Visit statistics (always on, no cookies).</b> Cloudflare Web Analytics counts page views and page speed without
           cookies or any identifier and without tracking you across sites; we see totals only.</li>
         <li><b>Sign-in storage (necessary).</b> When you sign in, Firebase Authentication keeps your session in your browser&apos;s
@@ -57,6 +60,7 @@ export default function Privacy() {
         <thead><tr><th>Name</th><th>Set by</th><th>Purpose</th><th>Kept for</th><th>Optional?</th></tr></thead>
         <tbody>
           <tr><td>_ga, _ga_*</td><td>Google Analytics</td><td>Tells visits apart and counts returning visitors, anonymously</td><td>Up to 13 months</td><td>Yes (Analytics)</td></tr>
+          <tr><td>_clck, _clsk, CLID, MUID</td><td>Microsoft Clarity</td><td>Links pages of one visit for recordings and heatmaps</td><td>_clsk 1 day; others up to 1 year</td><td>Yes (Session recordings)</td></tr>
           <tr><td>cs-consent (browser storage)</td><td>CricSynthesis</td><td>Remembers your cookie choice</td><td>12 months</td><td>No</td></tr>
           <tr><td>cs-theme (browser storage)</td><td>CricSynthesis</td><td>Light or dark theme</td><td>Until cleared</td><td>No</td></tr>
           <tr><td>Firebase sign-in (browser storage)</td><td>Firebase Authentication</td><td>Keeps you signed in</td><td>Until you sign out</td><td>No</td></tr>
@@ -84,7 +88,7 @@ export default function Privacy() {
       <h2>4. Service providers and transfers</h2>
       <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications, data
         processing and, if you agree, website analytics (Google Analytics) run on Google Cloud, Firebase and Google Analytics
-        (Google LLC); and contact forms and email
+        (Google LLC); if you agree, session recordings run on Microsoft Clarity (Microsoft Corporation); and contact forms and email
         are handled by our email and workspace providers. These providers process data on our behalf under their own security
         and privacy commitments. Data is stored on servers in the United States. We may also disclose information where the
         law requires it.</p>

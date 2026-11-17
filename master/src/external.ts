@@ -200,3 +200,30 @@ export async function analytics(env: Env, google: { ga: (p: string, m: "runRepor
   ]);
   return { built: new Date().toISOString(), property: p, ...gaShape(daily, events, pages, sources, countries, devices, nvr, live), errors };
 }
+
+// ── Microsoft Clarity (data export: last 1–3 days, 10 calls a day per project) ──
+// One overall call and one by page, cached in Firestore for 6 hours (≤ 8 calls a day).
+export const CLARITY_TTL_MS = 6 * 3600_000;
+export async function clarityFetch(env: Env, dims = ""): Promise<any[]> {
+  const r = await fetch(`https://www.clarity.ms/export-data/api/v1/project-live-insights?numOfDays=3${dims}`,
+    { headers: { Authorization: `Bearer ${env.CLARITY_TOKEN}`, "Content-Type": "application/json" } });
+  if (!r.ok) throw new Error(`clarity ${r.status}${r.status === 429 ? " (daily export limit reached; try later)" : ""}`);
+  return r.json() as Promise<any[]>;
+}
+
+/** Clarity's metrics as {name, rows}: each row is a flat record (sessions, pages, percentages, URL…). */
+export function clarityShape(overall: any[] | null, byUrl: any[] | null) {
+  const flat = (m: any) => ({ name: String(m.metricName || ""), rows: (m.information || []) as Record<string, any>[] });
+  const o = (overall || []).map(flat), u = (byUrl || []).map(flat);
+  const pick = (list: typeof o, name: string) => list.find((m) => m.name.toLowerCase() === name.toLowerCase())?.rows || [];
+  const num = (v: any) => (v == null || v === "" ? null : Number(v));
+  const traffic = pick(o, "Traffic")[0] || {};
+  const pageRows = (metric: string, key = "sessionsCount") => pick(u, metric).map((r) => ({ url: r.Url || r.URL || r.url || "(unknown)",
+    value: num(r[key] ?? r.subTotal ?? r.sessionsWithMetricPercentage ?? r.sessionsCount) })).filter((r) => r.value)
+    .sort((a, b) => (b.value as number) - (a.value as number)).slice(0, 12);
+  const summary = Object.fromEntries(o.map((m) => [m.name, m.rows[0] || {}]));
+  return { sessions: num(traffic.totalSessionCount ?? traffic.sessionsCount), bots: num(traffic.totalBotSessionCount),
+           users: num(traffic.distinctUserCount), pagesPerSession: num(traffic.pagesPerSessionPercentage),
+           summary, rage: pageRows("RageClickCount"), dead: pageRows("DeadClickCount"), quickback: pageRows("QuickbackClick"),
+           scriptErrors: pageRows("ScriptErrorCount"), scroll: pageRows("ScrollDepth", "averageScrollDepth"), traffic: pageRows("Traffic", "totalSessionCount") };
+}

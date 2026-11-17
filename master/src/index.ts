@@ -4,7 +4,7 @@
 // read; a user's profile is read live. Never writes anything about users.
 import { daysAgo, profile, snapshot, type Snapshot } from "./data.ts";
 import { type Env, project } from "./env.ts";
-import { accuracy, analytics, health, traffic } from "./external.ts";
+import { accuracy, analytics, CLARITY_TTL_MS, clarityFetch, clarityShape, health, traffic } from "./external.ts";
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 
@@ -87,6 +87,22 @@ async function cached<T>(key: string, ttl: number, f: () => Promise<T>): Promise
   return v;
 }
 
+/** Clarity's export allows 10 calls a day, so the last answer is kept in Firestore (adminCache/clarity) for 6 hours. */
+async function clarity(env: Env) {
+  if (!env.CLARITY_TOKEN) return { errors: ["Clarity isn't connected yet (add the CLARITY_TOKEN secret and redeploy)"] };
+  const g = google(env);
+  const doc = await g.get("adminCache/clarity").catch(() => null);
+  if (doc?.json && Date.now() - Date.parse(doc.built) < CLARITY_TTL_MS) return JSON.parse(doc.json);
+  const errors: string[] = [];
+  const [overall, byUrl] = await Promise.all([
+    clarityFetch(env).catch((e) => { errors.push(String(e.message)); return null; }),
+    clarityFetch(env, "&dimension1=URL").catch((e) => { errors.push(String(e.message)); return null; })]);
+  if (!overall && doc?.json) return { ...JSON.parse(doc.json), errors: [...errors, "Showing the last saved copy"] };
+  const out = { built: new Date().toISOString(), project: "zeyhpmwp0b", ...clarityShape(overall, byUrl), errors };
+  if (overall) await g.put("adminCache/clarity", { json: JSON.stringify(out), built: out.built }).catch(() => {});
+  return out;
+}
+
 async function api(req: Request, env: Env, path: string, url: URL): Promise<Response> {
   if (path === "/api/session") {
     if (req.method === "POST") {
@@ -123,6 +139,7 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));
     case "/api/product": return json(await cached("product", 900, () => analytics(env, google(env))));
+    case "/api/ux": return json(await clarity(env));
     case "/api/accuracy": return json(await cached("accuracy", 1800, () => accuracy(env)));
   }
   return fail(404, "Not found");

@@ -164,3 +164,18 @@ test("GA4 report shaping and the product route is gated", async () => {
   assert.equal(g.newVsReturning.find((x) => x.name === "returning")!.value, 10);
   assert.equal((await call("/api/product")).status, 401);
 });
+
+test("Clarity export shaping and the UX route is gated", async () => {
+  const { clarityShape } = await import("../src/external.ts");
+  const s = clarityShape(
+    [{ metricName: "Traffic", information: [{ totalSessionCount: "120", totalBotSessionCount: "8", distinctUserCount: "90", pagesPerSessionPercentage: 1.8 }] },
+     { metricName: "RageClickCount", information: [{ sessionsWithMetricPercentage: 2.5, subTotal: "3" }] }],
+    [{ metricName: "RageClickCount", information: [{ Url: "https://cricsynthesis.in/lab/", subTotal: "3" }, { Url: "https://cricsynthesis.in/", subTotal: "0" }] },
+     { metricName: "ScrollDepth", information: [{ Url: "https://cricsynthesis.in/", averageScrollDepth: 61.2 }] }]);
+  assert.equal(s.sessions, 120);
+  assert.equal(s.users, 90);
+  assert.deepEqual(s.rage, [{ url: "https://cricsynthesis.in/lab/", value: 3 }]);
+  assert.equal(s.scroll[0].value, 61.2);
+  assert.equal(s.summary.RageClickCount.sessionsWithMetricPercentage, 2.5);
+  assert.equal((await call("/api/ux")).status, 401);
+});

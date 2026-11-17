@@ -5,7 +5,7 @@ import { RequireSignIn } from "@/components/Gate";
 
 export default function AccountPage() {
   return (
-    <div className="page-head dash" style={{ paddingBottom: 80 }}>
+    <div className="page-head dash" style={{ paddingBottom: 80 }} data-clarity-mask="true">
       <RequireSignIn><Dashboard /></RequireSignIn>
     </div>
   );

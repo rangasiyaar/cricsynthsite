@@ -51,7 +51,7 @@ export default function Connect() {
 
   const next = raw ? `/login/?next=${encodeURIComponent(`/connect/?req=${raw}`)}` : "/login/";
   return (
-    <div className="login-wrapper">
+    <div className="login-wrapper" data-clarity-mask="true">
       <div className="login-card">
         <a href="/" className="login-logo cs-brand" aria-label="CricSynthesis home"><Logo /><span>Cric<b>Synthesis</b></span></a>
         {raw === null ? <div className="skeleton" style={{ height: 120 }} aria-busy="true" /> : expired || !server ? (<>

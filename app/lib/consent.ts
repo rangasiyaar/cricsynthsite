@@ -1,7 +1,7 @@
 // Cookie consent for the website: nothing optional loads until the visitor chooses. The choice lives on this device
 // (localStorage "cs-consent") for 12 months, then we ask again; a new VERSION (e.g. a new tool) asks again too.
 // Withdrawing deletes the cookies the optional tools set. The Android app asks separately (later phase).
-export const CONSENT_VERSION = 1;
+export const CONSENT_VERSION = 2;   // 2: Microsoft Clarity added (everyone is asked again)
 const KEY = "cs-consent";
 const MAX_AGE_MS = 365 * 86400_000;
 

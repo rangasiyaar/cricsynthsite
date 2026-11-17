@@ -6,6 +6,7 @@ export interface Env {
   SESSION_SECRET?: string;            // optional secret: signs the session cookie (else derived from GOOGLE_SA)
   CF_API_TOKEN?: string;              // secret: Cloudflare token (analytics read)
   CF_ACCOUNT_ID?: string;             // secret: Cloudflare account id
+  CLARITY_TOKEN?: string;             // optional secret: Microsoft Clarity data-export token (10 calls a day)
   GH_TOKEN?: string;                  // optional secret: GitHub token with read access to Actions (pipeline health, downloads)
   FIRESTORE_PROJECT?: string;
   SITE_URL?: string;                  // the public site (its /data files)

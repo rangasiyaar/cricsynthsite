@@ -50,7 +50,7 @@ function renderLogin(msg = "") {
 
 // ── shell ──
 const NAV = [["", "Overview"], ["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"],
-             ["product", "Product (GA4)"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
+             ["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
 function shell() {
   document.body.classList.remove("out");
   $("#app")!.innerHTML = `<header class="top"><a href="#/" class="brand"><img src="/logo-mark.svg" alt="" width="26" height="26">CricSynthesis <b>Console</b></a>
@@ -72,7 +72,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, traffic, health, accuracy };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, ux, traffic, health, accuracy };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -304,6 +304,32 @@ async function product() {
   table($("#ev")!, [{ key: "name", label: "Event", render: (r) => `${esc(EVENT_NAMES[r.name] || r.name)} <small class="muted">${esc(r.name)}</small>` },
     { key: "count", label: "Count", num: true, render: (r) => n(r.count) }, { key: "users", label: "Users", num: true, render: (r) => n(r.users) }],
     g.events || [], { initial: { key: "count", desc: true }, empty: "No events yet." });
+}
+
+// ── UX (Microsoft Clarity: visitors who allowed session recordings) ──
+async function ux() {
+  const c = await api("/api/ux");
+  const link = `https://clarity.microsoft.com/projects/view/${esc(c.project || "zeyhpmwp0b")}/dashboard`;
+  const list = (rows: Row[] | undefined, fmt = (v: number) => n(v)) => ranked((rows || []).map((r) => ({ name: r.url.replace(/^https?:\/\/[^/]+/, "") || "/", value: Number(r.value) })), fmt);
+  const s = c.summary || {};
+  const share = (m: string) => { const r = s[m] || {}; const v = r.sessionsWithMetricPercentage ?? r.subTotal; return v == null ? "–" : `${n(v)}${r.sessionsWithMetricPercentage != null ? "%" : ""}`; };
+  main().innerHTML = head("UX (Microsoft Clarity)") + `<p class="muted">Last 3 days, visitors who allowed session recordings · updated ${ago(c.built)} · refreshed at most every 6 hours (Clarity allows 10 exports a day) ·
+      <a href="${link}" target="_blank" rel="noopener">Open Clarity (heatmaps and recordings)</a></p>`
+    + (c.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${c.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    <div class="tiles">
+      ${tile("Sessions (3 days)", n(c.sessions), c.bots != null ? `${n(c.bots)} bot sessions filtered` : "")}
+      ${tile("Users (3 days)", n(c.users), c.pagesPerSession != null ? `${n(c.pagesPerSession)} pages per session` : "")}
+      ${tile("Rage clicks", share("RageClickCount"), "sessions with repeated angry clicks")}
+      ${tile("Dead clicks", share("DeadClickCount"), "sessions clicking things that do nothing")}
+      ${tile("Quick backs", share("QuickbackClick"), "sessions leaving a page straight away")}
+      ${tile("Script errors", share("ScriptErrorCount"), "sessions with a JavaScript error")}
+    </div>
+    <div class="grid2"><section class="card"><h2>Rage clicks by page</h2>${list(c.rage)}</section>
+      <section class="card"><h2>Dead clicks by page</h2>${list(c.dead)}</section></div>
+    <div class="grid2"><section class="card"><h2>Quick backs by page</h2>${list(c.quickback)}</section>
+      <section class="card"><h2>Script errors by page</h2>${list(c.scriptErrors)}</section></div>
+    <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${list(c.scroll, (v) => `${n(v)}%`)}</section>
+      <section class="card"><h2>Most visited pages</h2>${list(c.traffic)}</section></div>`;
 }
 
 // ── traffic ──

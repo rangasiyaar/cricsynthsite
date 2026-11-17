@@ -8,7 +8,7 @@ import { type Consent, getConsent, onConsent } from "./consent";
 import { isNative } from "./firebase";
 
 export const GA_ID = "G-898VXQ61MC";
-export const CLARITY_ID = "";            // Microsoft Clarity project id; empty = off
+export const CLARITY_ID = "zeyhpmwp0b";  // Microsoft Clarity project id; empty = off. Account, sign-in and connect pages are masked (data-clarity-mask)
 
 type Gtag = (...args: unknown[]) => void;
 declare global { interface Window { dataLayer?: unknown[]; gtag?: Gtag; clarity?: (...a: unknown[]) => void } }

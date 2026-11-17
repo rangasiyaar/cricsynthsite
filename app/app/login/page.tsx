@@ -54,7 +54,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login-wrapper">
+    <div className="login-wrapper" data-clarity-mask="true">
       <div className="login-card">
         <a href="/" className="login-logo cs-brand" aria-label="CricSynthesis home"><Logo /><span>Cric<b>Synthesis</b></span></a>
         <h1>{mode === "up" ? "Create account" : "Sign in"}</h1>

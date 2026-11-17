@@ -4,7 +4,7 @@ name: Deploy console
 # build the pages, deploy, set the Worker's secrets, turn on Web Analytics for the site, and smoke-test the gate.
 # Secrets: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (deploy), FIRESTORE_SA_KEY (Firestore + Firebase Auth reads),
 # ADMIN_EMAILS (comma-separated admin Google emails), optional MASTER_GH_TOKEN (fine-grained, read-only Actions +
-# Contents on this repo) and optional CF_ANALYTICS_TOKEN (read-only analytics token for the Worker; else the deploy
+# Contents on this repo), optional CLARITY_TOKEN (Clarity data export) and optional CF_ANALYTICS_TOKEN (read-only analytics token for the Worker; else the deploy
 # token is used). Worker secrets persist between deploys, so ADMIN_EMAILS can also be given once as a run input.
 on:
   workflow_dispatch:
@@ -56,6 +56,7 @@ jobs:
           S_CF_API_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
           S_CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           S_GH_TOKEN: ${{ secrets.MASTER_GH_TOKEN }}
+          S_CLARITY_TOKEN: ${{ secrets.CLARITY_TOKEN }}
         run: |
           [ -n "$S_ADMIN_EMAILS" ] && echo "::add-mask::$S_ADMIN_EMAILS"
           umask 077
