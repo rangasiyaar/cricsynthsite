@@ -25,9 +25,9 @@ def get(path, follow=True):
     req = urllib.request.Request(BASE + path, headers=UA)
     try:
         r = (urllib.request.urlopen if follow else raw.open)(req, timeout=30)
-        return r.status, dict(r.headers), r.read()
+        return r.status, r.headers, r.read()
     except urllib.error.HTTPError as e:
-        return e.code, dict(e.headers), e.read()
+        return e.code, e.headers, e.read()
 
 
 def check(name, ok, detail=""):
