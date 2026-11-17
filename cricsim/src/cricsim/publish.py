@@ -184,7 +184,7 @@ def publish_all(model: Model, coverage: Path, out: Path, n: int = 20_000, fetch=
               help="Keep a live forecast whose inputs (XIs, toss, ground, model, code) haven't changed")
 def main(model_dir: Path, coverage: Path, out: Path, n: int, reuse: bool) -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    from cricsim.results import _fetch
+    from cricsim.results import _fetch               # best effort: an unreadable site only means "simulate again"
     cards = publish_all(Model.load(model_dir), coverage, out, n, fetch=_fetch if reuse else None,
                         model_id=model_key(model_dir))
     click.echo(f"published {len(cards)} matches → {out}")

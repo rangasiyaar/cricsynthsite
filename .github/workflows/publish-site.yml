@@ -24,7 +24,7 @@ on:
     paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/venue_intel.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
-  contents: read
+  contents: write                  # the forecast-archive branch (a durable copy of every frozen forecast)
   actions: write                   # latest Pattern Lab report artifact; starts the hosted API's prepared answers
   id-token: write                  # keyless auth to Google Cloud (Workload Identity Federation)
 
@@ -127,8 +127,32 @@ jobs:
           done
       - name: Simulate + publish
         run: uv run python -m cricsim.publish --model data/models/latest --coverage data/coverage --out data/publish --n 20000
+      - name: Forecast archive (every frozen forecast, kept on its own branch so results never depend on the live site)
+        run: |
+          mkdir -p data/archive
+          if git fetch --depth=1 origin forecast-archive 2>/dev/null; then
+            git --work-tree=data/archive checkout FETCH_HEAD -- . && git reset -q
+          fi
+          echo "archive: $(ls data/archive/matches 2>/dev/null | grep -vc pack) frozen forecasts"
       - name: Results (keep started matches' pre-match forecasts; score finished ones against their scorecards)
-        run: uv run python -m cricsim.results --fixtures cricsim/fixtures --scorecards cricsim/results --out data/publish | tee -a "$GITHUB_STEP_SUMMARY"
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.results --fixtures cricsim/fixtures --scorecards cricsim/results --out data/publish \
+            --archive data/archive | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Save new frozen forecasts to the archive branch
+        run: |
+          cd data/archive
+          [ -d matches ] || exit 0
+          git init -q && git checkout -q -b forecast-archive
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth=1 origin forecast-archive 2>/dev/null; then git reset -q --soft FETCH_HEAD; fi
+          printf '# Frozen pre-match forecasts\n\nWritten by publish-site.yml: every forecast as it stood when its match started.\nResults are scored from these copies. Never edit by hand.\n' > README.md
+          git add -A
+          if git diff --cached --quiet; then echo "archive unchanged"; exit 0; fi
+          git commit -q -m "Frozen forecasts $(date -u +%FT%TZ)"
+          for i in 1 2 3; do git push -q origin forecast-archive && break; git fetch -q --depth=1 origin forecast-archive && git rebase -q FETCH_HEAD || true; sleep 5; done
+          echo "archive: $(ls matches | grep -vc pack) frozen forecasts saved"
       - uses: actions/upload-artifact@v4          # inputs for the hosted API's prepared answers (edge-data.yml)
         with:
           name: edge-inputs
@@ -233,7 +257,7 @@ jobs:
             || $W pages project create cricsynthesis-site --production-branch main
           $W pages deploy app/out --project-name cricsynthesis-site --branch main --commit-dirty=true | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep Hosting storage under the free cap (latest 10 versions per site; never the live one)
-        if: false                        # paused 17 Nov: old versions may hold forecasts lost in the Hosting outage
+        if: env.GCP == 'true'
         continue-on-error: true          # a cleanup problem must not hold back the deploy
         run: FIREBASE_TOKEN="$(gcloud auth print-access-token)" python3 infra/hosting_prune.py --project "$PROJECT" --keep 10
       - name: Deploy to Firebase Hosting (the old host, kept current as cricsynthesis.web.app while it still serves)

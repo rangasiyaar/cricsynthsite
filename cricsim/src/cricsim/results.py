@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import unicodedata
 import urllib.error
 import urllib.request
@@ -34,7 +35,13 @@ from cricsim.insights import tidy
 
 IST = timezone(timedelta(hours=5, minutes=30))
 TABS = ("Overview", "Scores", "Wickets", "Players", "Matchups")
-SITES = ("https://cricsynthesis.in", "https://cricsynthesis.web.app")
+# The live site, then the same Cloudflare Pages project's own address (not behind the zone's settings). Firebase Hosting
+# (cricsynthesis.web.app) is no longer read: when its quota ran out it answered 509 to every request.
+SITES = ("https://cricsynthesis.in", "https://cricsynthesis-site.pages.dev")
+
+
+class FetchFailed(RuntimeError):
+    """The live site couldn't be read (not a 404). Publishing without its frozen forecasts would drop them for good."""
 
 
 # ── when a match counts as started ────────────────────────────────────────────────────────────────────────────────
@@ -387,18 +394,32 @@ def score_fantasy(fantasy: dict, card: dict, roster: Roster) -> dict:
 
 # ── freezing forecasts and writing everything ─────────────────────────────────────────────────────────────────────
 
-def _fetch(path: str, sites=SITES) -> dict | None:
+def fetch_strict(path: str, sites=SITES) -> dict | None:
+    """A published file, None if the site says it doesn't exist (404); FetchFailed if no site could be read at all
+    (quota pages, outages, timeouts), so a run never mistakes an outage for "nothing was published"."""
+    errors = []
     for site in sites:
-        try:
-            with urllib.request.urlopen(urllib.request.Request(f"{site}/data/{path}", headers={"User-Agent": "cricsynthesis-ci"}),
-                                        timeout=30) as r:
-                return json.loads(r.read())
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                return None
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
-            continue
-    return None
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(urllib.request.Request(f"{site}/data/{path}", headers={"User-Agent": "cricsynthesis-ci"}),
+                                            timeout=30) as r:
+                    return json.loads(r.read())
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    return None
+                errors.append(f"{site}: HTTP {e.code}")
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+                errors.append(f"{site}: {type(e).__name__}")
+            time.sleep(2 * (attempt + 1))
+    raise FetchFailed(f"couldn't read {path} from the live site ({'; '.join(errors[-4:])})")
+
+
+def _fetch(path: str, sites=SITES) -> dict | None:
+    """Best effort (alerts, social posts, live projection, labs): None when missing or unreadable."""
+    try:
+        return fetch_strict(path, sites)
+    except FetchFailed:
+        return None
 
 
 def _xis(f: dict) -> bool:
@@ -406,21 +427,31 @@ def _xis(f: dict) -> bool:
     return bool((f.get("live") or {}).get("xis")) or "confirmed" in (f.get("note") or "").lower()
 
 
-def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime | None = None, fetch=_fetch,
-        picks: Path | None = None) -> dict:
+def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime | None = None, fetch=fetch_strict,
+        picks: Path | None = None, archive: Path | None = None) -> dict:
+    """`archive` (the forecast-archive branch checked out) holds every frozen forecast ever published; it is read
+    before the live site, so results never depend on the site being reachable. New frozen forecasts are copied
+    into it at the end (the workflow commits them)."""
     fx = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(fixtures.glob("*.json"))}
     cards = {json.loads(p.read_text())["id"]: json.loads(p.read_text()) for p in sorted(scorecards.glob("*.json"))} \
         if scorecards.exists() else {}
+    kept = {p.name.removesuffix(".json") for p in (archive / "matches").glob("*.json") if not p.name.endswith(".pack.json")} \
+        if archive and (archive / "matches").is_dir() else set()
     live_archive = (fetch("archive.json", sites) or {}).get("matches", [])
     today = (now or datetime.now(timezone.utc)).astimezone(IST).date().isoformat()
     yesterday = ((now or datetime.now(timezone.utc)).astimezone(IST) - timedelta(days=1)).date().isoformat()
     # freeze fixtures that started recently (older ones were never frozen and aren't live any more)
     recent = {i for i, f in fx.items() if started(f, now) and (f.get("date") or "") >= yesterday}
-    want = {m["id"] for m in live_archive} | recent | set(cards)
+    want = {m["id"] for m in live_archive} | recent | set(cards) | kept
     (out / "matches").mkdir(parents=True, exist_ok=True)
-    archive, missing = [], []
+    archive_rows, missing = [], []
     for mid in sorted(want):
         doc_p = out / "matches" / f"{mid}.json"
+        if not doc_p.exists() and mid in kept:      # the durable copy first
+            for suffix in (".json", ".pack.json"):
+                src = archive / "matches" / f"{mid}{suffix}"
+                if src.exists():
+                    (out / "matches" / f"{mid}{suffix}").write_bytes(src.read_bytes())
         if not doc_p.exists():                       # not re-simulated this run: keep what was live
             doc = fetch(f"matches/{mid}.json", sites)
             if doc is None:
@@ -436,11 +467,18 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
             doc["fantasy"] = {**json.loads(fp.read_text()), "after": True}
             doc_p.write_text(json.dumps(doc, separators=(",", ":")))
         m, sm = doc["match"], doc["summary"]
-        archive.append({"id": mid, "title": m.get("title"), "date": m.get("date"), "competition": m.get("competition"),
+        archive_rows.append({"id": mid, "title": m.get("title"), "date": m.get("date"), "competition": m.get("competition"),
                         "teams": [{"name": t["name"], "short": t.get("short")} for t in m["teams"]],
                         "win": sm["result"]["win"], "has_result": mid in cards})
-    archive.sort(key=lambda c: (c.get("date") or "", c["id"]), reverse=True)
-    (out / "archive.json").write_text(json.dumps({"matches": archive}))
+    archive_rows.sort(key=lambda c: (c.get("date") or "", c["id"]), reverse=True)
+    (out / "archive.json").write_text(json.dumps({"matches": archive_rows}))
+    if archive:                                       # keep every frozen forecast for good (committed by the workflow)
+        (archive / "matches").mkdir(parents=True, exist_ok=True)
+        for row in archive_rows:
+            for suffix in (".json", ".pack.json"):
+                src, dst = out / "matches" / f"{row['id']}{suffix}", archive / "matches" / f"{row['id']}{suffix}"
+                if src.exists() and (not dst.exists() or dst.read_bytes() != src.read_bytes()):
+                    dst.write_bytes(src.read_bytes())
     # a match under way stays on the home page for the rest of its day, with its frozen pre-match forecast
     idx_p = out / "index.json"
     idx = json.loads(idx_p.read_text()) if idx_p.exists() else {"matches": []}
@@ -497,7 +535,7 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
                   if (f := [r["fantasy"] for r in index if r.get("fantasy") and r["fantasy"]["single"] is not None]) else {}),
                "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     (out / "results" / "index.json").write_text(json.dumps(summary, separators=(",", ":")))
-    return {"archived": [a["id"] for a in archive], "missing": missing, "scored": [r["id"] for r in index]}
+    return {"archived": [a["id"] for a in archive_rows], "missing": missing, "scored": [r["id"] for r in index]}
 
 
 @click.command()
@@ -506,13 +544,18 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
 @click.option("--out", type=click.Path(path_type=Path), default=Path("data/publish"))
 @click.option("--picks", type=click.Path(path_type=Path), default=Path("cricsim/fantasy"),
               help="Fantasy picks made afterwards for matches published before the Fantasy tab")
+@click.option("--archive", type=click.Path(path_type=Path), default=None,
+              help="Durable copy of every frozen forecast (the forecast-archive branch); read first, new ones added")
 @click.option("--started", "show_started", is_flag=True, help="Print the ids of fixtures that have started, and exit")
-def main(fixtures: Path, scorecards: Path, out: Path, picks: Path, show_started: bool) -> None:
+def main(fixtures: Path, scorecards: Path, out: Path, picks: Path, archive: Path | None, show_started: bool) -> None:
     if show_started:
         for name in frozen(fixtures, scorecards):
             click.echo(name)
         return
-    r = run(fixtures, scorecards, out, picks=picks)
+    try:
+        r = run(fixtures, scorecards, out, picks=picks, archive=archive)
+    except FetchFailed as e:      # stop the publish: the live site keeps its frozen forecasts until it can be read again
+        raise click.ClickException(f"{e}. Not publishing, so no frozen forecast or result is lost.")
     click.echo(f"archived {len(r['archived'])}, scored {len(r['scored'])}"
                + (f", forecast missing for {', '.join(r['missing'])}" if r["missing"] else ""))
     for mid in r["scored"]:

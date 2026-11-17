@@ -2,8 +2,10 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from cricsim.results import Roster, credited_bowler, over_number, run, score, started
+import pytest
 from cricsim.scorecard import parse
+
+from cricsim.results import Roster, credited_bowler, over_number, run, score, started
 
 DATA = Path(__file__).parent
 
@@ -244,3 +246,59 @@ def test_fill_result_from_innings():
     given = {"innings": [inn("A", 73, 9, "20"), inn("B", 64, 6, "18")], "result": "Match tied"}
     assert fill_result(given, 20) == given
     assert fill_result({"innings": []}, 20) == {"innings": []}
+
+
+def test_fetch_tells_missing_from_unreachable(monkeypatch):
+    """A 404 means 'never published'; a quota page or outage must stop the run instead of dropping frozen forecasts
+    (17 Nov 2026: Firebase Hosting answered 509 and one publish lost every finished match's forecast)."""
+    import io
+    import urllib.error
+
+    from cricsim import results as R
+
+    monkeypatch.setattr(R.time, "sleep", lambda s: None)
+
+    def urlopen_404(req, timeout=0):
+        raise urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, io.BytesIO(b""))
+    monkeypatch.setattr(R.urllib.request, "urlopen", urlopen_404)
+    assert R.fetch_strict("matches/x.json") is None
+
+    def urlopen_509(req, timeout=0):
+        raise urllib.error.HTTPError(req.full_url, 509, "Quota", {}, io.BytesIO(b"<html>Quota Exceeded</html>"))
+    monkeypatch.setattr(R.urllib.request, "urlopen", urlopen_509)
+    with pytest.raises(R.FetchFailed):
+        R.fetch_strict("archive.json")
+    assert R._fetch("archive.json") is None          # best-effort callers (alerts, social, live) keep None
+
+    class Page:
+        def __init__(self, body): self.body = body
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def read(self): return self.body
+    monkeypatch.setattr(R.urllib.request, "urlopen", lambda req, timeout=0: Page(b"<html>not json</html>"))
+    with pytest.raises(R.FetchFailed):
+        R.fetch_strict("archive.json")
+
+
+def test_run_reads_and_fills_the_durable_archive(tmp_path):
+    """Frozen forecasts are copied into the archive, and a later run scores from it with the live site unreachable."""
+    from cricsim.results import FetchFailed
+
+    fx_dir, sc_dir, out, arc = tmp_path / "fx", tmp_path / "sc", tmp_path / "out", tmp_path / "archive"
+    fx_dir.mkdir(); sc_dir.mkdir()
+    (fx_dir / "m.json").write_text(json.dumps({"id": "m", "date": "2026-10-11", "start_time": "18:30", **FIXTURE}))
+    now = datetime(2026, 10, 11, 14, 0, tzinfo=timezone.utc)
+    live = {"matches/m.json": doc(), "matches/m.pack.json": {"pack": 1}}
+    run(fx_dir, sc_dir, out, now=now, fetch=lambda path, sites=None: live.get(path), archive=arc)
+    assert (arc / "matches" / "m.json").exists() and json.loads((arc / "matches" / "m.pack.json").read_text()) == {"pack": 1}
+
+    # next day: scorecard in, live site down (archive.json and docs unreadable except via the archive)
+    (sc_dir / "m.json").write_text(json.dumps({"id": "m", **parse((DATA / "scorecard_pak_sl.txt").read_text())}))
+    out2 = tmp_path / "out2"
+
+    def down(path, sites=None):
+        if path == "archive.json":
+            return {"matches": []}              # the site came back empty (as on 17 Nov)
+        raise FetchFailed(path)
+    r = run(fx_dir, sc_dir, out2, now=datetime(2026, 10, 12, 14, 0, tzinfo=timezone.utc), fetch=down, archive=arc)
+    assert r["scored"] == ["m"] and r["missing"] == []
