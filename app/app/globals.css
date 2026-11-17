@@ -701,11 +701,3 @@ body:has(.cs-consent) .app-promo { display: none; }
 .age-row select { font: 16px var(--cs-body); padding: 10px 8px; border: 1px solid var(--cs-line); background: var(--cs-bg); color: var(--cs-ink); border-radius: 0; }
 .age-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 .age-btns .cs-btn { flex: 1 1 auto; justify-content: center; }
-
-/* Pro banner (components/Gate.tsx ProBanner) */
-.pro-banner { display: grid; gap: 10px; justify-items: start; }
-.pro-banner .eyebrow { margin: 0; }
-.pro-banner h3 { margin: 0; font-size: 26px; line-height: 1.15; }
-.pro-banner p { margin: 0; }
-.pro-banner .btn { margin-top: 6px; }
-.pro-banner-foot { margin-top: 2px !important; }

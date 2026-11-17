@@ -4,7 +4,7 @@ import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/compo
 import LiveProjection from "@/components/LiveProjection";
 import Snapshot from "@/components/Snapshot";
 import Link from "next/link";
-import { ProBanner } from "@/components/Gate";
+import { proHref } from "@/components/Gate";
 import { track } from "@/lib/analytics";
 import { usePlan } from "@/lib/firebase";
 import Scoreboard from "@/components/Scoreboard";
@@ -69,11 +69,20 @@ export function SectionView({ doc, section, live = true, onOpen, hrefFor, scoreb
 /** Every section but the Overview is part of Pro (like MatchSynth Lab); during the beta any signed-in account has Pro. */
 export const isProSection = (s: Section) => s !== "Overview";
 
+/** A Pro section opened without Pro (e.g. a shared ?tab= link): off to sign-in, coming back to this tab. */
 function ProSection({ section, children }: { section: Section; children: React.ReactNode }) {
   const { user, plan } = usePlan();
-  if (!isProSection(section) || plan === "pro") return <>{children}</>;
-  if (plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
-  return <ProBanner section={section} label={sectionName(section)} signedIn={!!user} style={{ marginTop: 24 }} />;
+  const blocked = isProSection(section) && plan !== undefined && plan !== "pro";
+  useEffect(() => { if (blocked) window.location.assign(proHref(!!user, tabUrl(section))); }, [blocked, user, section]);
+  if (isProSection(section) && plan !== "pro") return <div className="skeleton card" style={{ minHeight: 280, marginTop: 24 }} aria-busy="true" />;
+  return <>{children}</>;
+}
+
+/** This page with ?tab=<section>, so sign-in returns to the tab that was clicked. */
+function tabUrl(section: Section) {
+  const u = new URL(window.location.href);
+  u.searchParams.set("tab", section.toLowerCase());
+  return u.pathname + u.search;
 }
 
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
@@ -81,12 +90,17 @@ function ProSection({ section, children }: { section: Section; children: React.R
 export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean;
                                                                        initial?: string | null }) {
   const tabs = sectionsFor(doc);
+  const { user, plan } = usePlan();
   const [tab, setTab] = useState<Tab>(() => tabs.find((t) => t.toLowerCase() === (initial ?? "").toLowerCase()) ?? "Overview");
   return (
     <>
       <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
         {tabs.map((t) => (
-          <button key={t} role="tab" aria-selected={tab === t} onClick={() => { setTab(t); track("match_tab", { tab: t, match_id: doc.match.id }); }}>
+          <button key={t} role="tab" aria-selected={tab === t} onClick={() => {
+            track("match_tab", { tab: t, match_id: doc.match.id });
+            if (isProSection(t) && plan !== undefined && plan !== "pro") { window.location.assign(proHref(!!user, tabUrl(t))); return; }
+            setTab(t);
+          }}>
             <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{FULL[t] ?? t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
           </button>
         ))}

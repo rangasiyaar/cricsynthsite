@@ -61,7 +61,7 @@ export default function Login() {
         <a href="/" className="login-logo cs-brand" aria-label="CricSynthesis home"><Logo /><span>Cric<b>Synthesis</b></span></a>
         <h1>{mode === "up" ? "Create account" : "Sign in"}</h1>
         <p className="login-sub">{mode === "up" ? "Every account gets Pro free during the beta, including MatchSynth Lab."
-                                                : "Sign in to open MatchSynth Lab and manage your account."}</p>
+                                                : "Sign in to access Pro features and manage your account and developer resources."}</p>
         {err && <div className="error-box" role="alert">{err}</div>}
         {info && <div className="error-box info" role="status">{info}</div>}
         {blocked ? <div className="error-box" role="alert">Accounts are for people aged {MIN_AGE} and over, so sign-in is closed on this device for now.</div> : <>
