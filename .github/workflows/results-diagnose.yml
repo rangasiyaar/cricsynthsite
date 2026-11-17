@@ -2,7 +2,7 @@ name: Results diagnose (temporary)
 # Why the results lost their history: can CI fetch the live site's data, what zone security is on, and which
 # Cloudflare Pages deployment still has the full archive. Read-only. Removed after the fix.
 on: workflow_dispatch
-permissions: { contents: read, id-token: write }
+permissions: { contents: read, id-token: write, actions: read }
 jobs:
   diagnose:
     runs-on: ubuntu-latest
@@ -10,6 +10,9 @@ jobs:
       CF: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       ACCT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
+      - name: Actions caches (data + model per day)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh api "repos/${{ github.repository }}/actions/caches?per_page=100&sort=created_at" --jq '.actions_caches[] | "\(.created_at) \(.last_accessed_at) \(.size_in_bytes/1048576|floor)MB \(.key)"'
       - name: CI fetch test (the same request results.py makes)
         run: |
           python3 - <<'PY'
