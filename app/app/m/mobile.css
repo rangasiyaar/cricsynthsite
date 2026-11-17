@@ -247,7 +247,7 @@ html body .a-field input:focus { box-shadow: 0 0 0 2px var(--cs-steel); }
 .a-paywall-hero { text-align: center; padding: 8px 8px 22px; display: grid; justify-items: center; }
 .a-paywall-icon { width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center; background: var(--cs-steel); color: var(--cs-paper); margin-bottom: 16px; }
 .a-paywall-icon svg { width: 30px; height: 30px; }
-.a-paywall-hero h1 { font-family: var(--cs-head); font-weight: 600; font-size: 36px; line-height: 1; text-transform: uppercase; margin: 0; color: var(--cs-ink); }
+.a-paywall-hero h1 { font-family: var(--cs-head); font-weight: 600; font-size: 30px; line-height: 1.05; text-transform: uppercase; margin: 0; color: var(--cs-ink); }
 .a-paywall-hero p { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: var(--cs-ink-2); max-width: 38ch; }
 .a-paywall-list { list-style: none; margin: 0 0 22px; padding: 6px 16px; background: var(--a-surface); border-radius: var(--a-r); }
 .a-paywall-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 15px; color: var(--cs-ink); }

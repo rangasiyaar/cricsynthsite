@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { usePlan } from "@/lib/firebase";
+import { BETA_LINE, FREE_LINE, PITCH, PRO_LINE } from "@/lib/procopy";
 
 function here() {
   return typeof window === "undefined" ? "/" : window.location.pathname + window.location.search;
@@ -13,26 +14,28 @@ export function loginHref(next?: string) {
   return `/login/?next=${encodeURIComponent(next ?? here())}`;
 }
 
-/** "<feature> is part of Pro": the same banner for the match-centre tabs and MatchSynth Lab. Guests get a sign-in
- *  button that comes straight back; signed-in accounts without Pro get the plans. */
-export function ProBanner({ feature, signedIn, style }: { feature: string; signedIn: boolean; style?: React.CSSProperties }) {
+/** The Pro banner for a locked match-centre section or MatchSynth Lab ("Lab"); copy in lib/procopy.ts. Guests get a
+ *  sign-in button that comes straight back; signed-in accounts without Pro get the plans. */
+export function ProBanner({ section, label, signedIn, style }: { section: string; label: string; signedIn: boolean; style?: React.CSSProperties }) {
+  const pitch = PITCH[section] ?? { title: `${label} is part of Pro.`, body: "" };
   return (
-    <div className="card" style={{ maxWidth: 640, ...style }}>
-      <h3>{feature} is part of Pro</h3>
-      <p className="small muted">The Overview is free for every match. Pro opens the full match centre (scores, wickets,
-        players, top players, MVP, match-ups, venue intelligence and fantasy) and MatchSynth Lab.
-        {!signedIn && " Pro is free during the beta: sign in to open it."}</p>
-      {signedIn ? <Link className="btn" href="/pricing/">See plans</Link> : <Link className="btn" href={loginHref()}>Sign in to open</Link>}
+    <div className="card pro-banner" style={{ maxWidth: 640, ...style }}>
+      <p className="eyebrow">{label}</p>
+      <h3>{pitch.title}</h3>
+      {pitch.body && <p>{pitch.body}</p>}
+      <p className="small muted">{PRO_LINE}{!signedIn && ` ${BETA_LINE}`}</p>
+      {signedIn ? <Link className="btn" href="/pricing/">See plans</Link> : <Link className="btn" href={loginHref()}>Sign in free</Link>}
+      {section !== "Lab" && <p className="small muted pro-banner-foot">{FREE_LINE}</p>}
     </div>
   );
 }
 
 /** `pro`: guests and accounts without Pro see the Pro banner; otherwise guests go to sign-in and come straight back. */
-export function RequireSignIn({ children, pro = false, feature = "MatchSynth Lab" }: { children: React.ReactNode; pro?: boolean; feature?: string }) {
+export function RequireSignIn({ children, pro = false }: { children: React.ReactNode; pro?: boolean }) {
   const { user, plan } = usePlan();
   useEffect(() => { if (user === null && !pro) window.location.replace(loginHref()); }, [user, pro]);
   if (plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
-  if (pro && plan !== "pro") return <ProBanner feature={feature} signedIn={!!user} />;
+  if (pro && plan !== "pro") return <ProBanner section="Lab" label="MatchSynth Lab" signedIn={!!user} />;
   if (user === null) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
   return <>{children}</>;
 }

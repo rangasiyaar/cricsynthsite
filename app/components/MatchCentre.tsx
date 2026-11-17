@@ -73,7 +73,7 @@ function ProSection({ section, children }: { section: Section; children: React.R
   const { user, plan } = usePlan();
   if (!isProSection(section) || plan === "pro") return <>{children}</>;
   if (plan === undefined) return <div className="skeleton card" style={{ minHeight: 280 }} aria-busy="true" />;
-  return <ProBanner feature={FULL[section] ?? section} signedIn={!!user} style={{ marginTop: 24 }} />;
+  return <ProBanner section={section} label={sectionName(section)} signedIn={!!user} style={{ marginTop: 24 }} />;
 }
 
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the

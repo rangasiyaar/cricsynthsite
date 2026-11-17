@@ -42,7 +42,7 @@ function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
 }
 
 function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
-  if (isProSection(section)) return <AppGate pro centre><SectionBody doc={doc} section={section} /></AppGate>;
+  if (isProSection(section)) return <AppGate pro section={section}><SectionBody doc={doc} section={section} /></AppGate>;
   return <SectionBody doc={doc} section={section} />;
 }
 
