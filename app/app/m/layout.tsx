@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { AppRuntime, ScreenMotion, TabBar } from "@/components/App";
+import PolicyPrompt from "@/components/PolicyPrompt";
 import { seo } from "@/lib/seo";
 // The app ships its fonts (latin) so the first screen never waits on, or falls back from, Google Fonts.
 import "@fontsource/barlow/latin-400.css";
@@ -18,5 +19,5 @@ export const metadata: Metadata = seo("/m/", "CricSynthesis app", "Cricket match
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#f2f2f3" };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <><AppRuntime /><Suspense fallback={null}><ScreenMotion /></Suspense>{children}<Suspense fallback={null}><TabBar /></Suspense></>;
+  return <><AppRuntime /><Suspense fallback={null}><ScreenMotion /></Suspense>{children}<Suspense fallback={null}><TabBar /></Suspense><PolicyPrompt /></>;
 }

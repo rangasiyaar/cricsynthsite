@@ -196,3 +196,25 @@ export async function reportError(message: string) {
   const { FirebaseCrashlytics } = await import("@capacitor-firebase/crashlytics");
   await FirebaseCrashlytics.recordException({ message: message.slice(0, 1000) }).catch(() => {});
 }
+
+// ── usage analytics (Firebase Analytics, the same GA4 property as the website; lib/policy.ts decides when it's on) ──
+export const hasAppAnalytics = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseAnalytics");
+
+export async function setAppAnalytics(on: boolean) {
+  if (!hasAppAnalytics()) return;
+  const { FirebaseAnalytics } = await import("@capacitor-firebase/analytics");
+  await FirebaseAnalytics.setEnabled({ enabled: on }).catch(() => {});
+}
+
+export async function appEvent(name: string, params: Record<string, string | number | boolean | undefined> = {}) {
+  if (!hasAppAnalytics()) return;
+  const { FirebaseAnalytics } = await import("@capacitor-firebase/analytics");
+  const clean = Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined));
+  await FirebaseAnalytics.logEvent({ name, params: clean }).catch(() => {});
+}
+
+export async function appScreen(screenName: string) {
+  if (!hasAppAnalytics()) return;
+  const { FirebaseAnalytics } = await import("@capacitor-firebase/analytics");
+  await FirebaseAnalytics.setCurrentScreen({ screenName, screenClassOverride: "CricSynthesis" }).catch(() => {});
+}

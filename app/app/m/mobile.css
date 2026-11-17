@@ -491,3 +491,15 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .a-result .res-table { font-size: 13px; }
 .a-result .res-table th, .a-result .res-table td { padding: 8px 6px; }
 .a-result .res-table th:first-child, .a-result .res-table td:first-child { display: none; }   /* the tab buttons already say it */
+
+/* ── privacy policy prompt (components/PolicyPrompt.tsx) ── */
+.a-sheet-wrap { position: fixed; inset: 0; z-index: 90; display: flex; align-items: flex-end; background: rgba(0, 0, 0, .45); animation: a-in .2s both; }
+.a-sheet { width: 100%; max-height: 88vh; overflow-y: auto; background: var(--cs-bg); border-radius: 22px 22px 0 0;
+  padding: 22px 20px calc(20px + env(safe-area-inset-bottom)); display: grid; gap: 12px; }
+.a-sheet h2 { margin: 0; font-family: var(--cs-head); font-size: 22px; font-weight: 600; color: var(--cs-ink); }
+.a-sheet p { margin: 0; font-size: 14.5px; color: var(--cs-ink-2); }
+.a-sheet ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: var(--cs-ink-2); }
+.a-sheet a { color: var(--cs-steel-700); font-weight: 600; }
+.a-check { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; border-radius: 14px; background: var(--a-surface); font-weight: 600; font-size: 15px; }
+.a-check input { width: 22px; height: 22px; accent-color: var(--cs-steel); }
+.a-sheet-btns { display: flex; gap: 10px; margin-top: 4px; }

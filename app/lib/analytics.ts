@@ -2,10 +2,13 @@
 // Optional analytics on the website, loaded only after consent (lib/consent.ts):
 //  - Google Analytics 4 (analytics consent): page views (incl. client-side navigation) and the product events below.
 //  - Microsoft Clarity (recordings consent): heatmaps and session recordings, off until CLARITY_ID is set.
-// Never in the Android app's web view (it will ask for its own consent), on localhost, or for bots that don't run JS.
+// Never in the Android app's web view (the app uses Firebase Analytics after its privacy policy is accepted: lib/policy.ts),
+// on localhost, or for bots that don't run JS.
 // Ads features stay off: ad_storage / ad_user_data / ad_personalization are always denied, Google signals disabled.
 import { type Consent, getConsent, onConsent } from "./consent";
 import { isNative } from "./firebase";
+import { appEvent } from "./native";
+import { appAnalyticsAllowed } from "./policy";
 
 export const GA_ID = "G-898VXQ61MC";
 export const CLARITY_ID = "zeyhpmwp0b";  // Microsoft Clarity project id; empty = off. Account, sign-in and connect pages are masked (data-clarity-mask)
@@ -62,8 +65,13 @@ export function initAnalytics() {
   onConsent(apply);
 }
 
-/** A product event (GA4). Dropped unless analytics consent was given. Keep params free of personal data. */
+/** A product event: GA4 on the website (after cookie consent), Firebase Analytics in the Android app (after the
+ *  privacy policy is accepted, unless switched off in Settings). Keep params free of personal data. */
 export function track(name: string, params: Record<string, string | number | boolean | undefined> = {}) {
+  if (typeof window !== "undefined" && isNative()) {
+    if (appAnalyticsAllowed()) void appEvent(name, params);
+    return;
+  }
   if (!gaOn || !window.gtag) return;
   window.gtag("event", name, params);
 }

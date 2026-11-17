@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.8",
+  "date": "2026-11-17",
+  "notes": [
+   "Privacy policy prompt on first launch; anonymous usage analytics (no ads, no advertising ID) start only after you accept, and can be switched off in Settings → Privacy"
+  ]
+ },
+ {
   "version": "0.3.7",
   "date": "2026-11-17",
   "notes": [

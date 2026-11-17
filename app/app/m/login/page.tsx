@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/Shell";
 import { explain } from "@/lib/auth-messages";
 import { auth, useUser } from "@/lib/firebase";
+import { track } from "@/lib/analytics";
 import { hasNativeGoogle, isNative, signInWithGoogleNative } from "@/lib/native";
 import { SITE } from "@/lib/seo";
 import { blockedUntil, MIN_AGE } from "@/lib/age";
@@ -44,12 +45,16 @@ export default function AppLogin() {
     setBusy(true); setErr(null); setInfo(null);
     try { await f(); } catch (e) { setErr(explain(e)); } finally { setBusy(false); }
   };
-  const withGoogle = () => run(async () => (isNative() ? await signInWithGoogleNative()
-                                                       : await signInWithPopup(auth(), new GoogleAuthProvider())));
+  const withGoogle = () => run(async () => {
+    await (isNative() ? signInWithGoogleNative() : signInWithPopup(auth(), new GoogleAuthProvider()));
+    track("login", { method: "google" });
+  });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => (mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
-                                   : await createUserWithEmailAndPassword(auth(), email, password)));
+    run(async () => {
+      if (mode === "in") { await signInWithEmailAndPassword(auth(), email, password); track("login", { method: "email" }); }
+      else { await createUserWithEmailAndPassword(auth(), email, password); track("sign_up", { method: "email" }); }
+    });
   };
   const reset = () => {
     if (!email) { setErr("Enter your email first, then press “Forgot password”."); return; }

@@ -35,7 +35,8 @@ export default function Privacy() {
           enforce plan limits and keep the service secure.</li>
         <li><b>Android app.</b> If the app crashes, it sends a crash report (device model, operating system and app version, and
           technical details of the error). Crash reports are not linked to your account. If you turn on match alerts, your device
-          is registered to receive them; we see only which alerts are subscribed to, not who you are.</li>
+          is registered to receive them; we see only which alerts are subscribed to, not who you are. App usage analytics are
+          described under <a href="#app-analytics">Android app analytics</a>.</li>
         <li><b>MatchSynth Lab inputs.</b> What-if simulations run on your device. The settings you choose are not sent to us.</li>
         <li><b>Stored on your device.</b> Your theme choice, alert choices, saved Lab settings and a cache of match data that
           lets the site and app load faster and work offline. These stay in your browser or app and you can clear them at any time.</li>
@@ -72,7 +73,15 @@ export default function Privacy() {
           <tr><td data-label="Name">__Host-cs_admin</td><td data-label="Set by">CricSynthesis (admin console only)</td><td data-label="Purpose">Staff sign-in session</td><td data-label="Kept for">8 hours</td><td data-label="Optional?">No</td></tr>
         </tbody>
       </table></div>
-      <p>The Android app does not use these cookies; if it adds analytics, it will ask for your consent in the app first.</p>
+      <p>The Android app does not use these cookies.</p>
+      <h3 id="app-analytics">Android app analytics</h3>
+      <p>The app asks you to accept this privacy policy when you first open it (and again when the policy changes). Once you
+        accept, the app uses Google Analytics for Firebase (Google LLC) to count how it is used: which screens are opened,
+        features such as running MatchSynth Lab, turning on alerts or signing in, plus the app version, device model, operating
+        system, language and approximate country. It uses a random app-instance ID, not your name or email, and it never uses the
+        advertising ID; ad personalisation is off. Nothing is collected before you accept. You can switch it off at any time in
+        the app under Settings → Privacy → &quot;Share anonymous usage analytics&quot;. The data is reported in aggregate in the same
+        Google Analytics property as the website and kept for up to 14 months.</p>
 
       <h2>3. How we use it</h2>
       <ul>

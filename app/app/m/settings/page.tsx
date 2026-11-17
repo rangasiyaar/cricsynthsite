@@ -2,6 +2,9 @@
 // App settings: appearance and the data kept on this phone (match alerts have their own tab).
 import { useEffect, useState } from "react";
 import { MenuGroup, SwitchRow, TopBar, useAppVersion } from "@/components/App";
+import { setAppAnalytics } from "@/lib/native";
+import { acceptedOn, analyticsPref, appAnalyticsAllowed, onPolicyChange, setAnalyticsPref } from "@/lib/policy";
+import { SITE } from "@/lib/seo";
 
 type Theme = "light" | "dark" | "system";
 
@@ -21,6 +24,13 @@ export default function Settings() {
   const version = useAppVersion();
   const [theme, setTheme] = useState<Theme>("system");
   const [cleared, setCleared] = useState(false);
+  const [share, setShare] = useState(true);
+  const [accepted, setAccepted] = useState<string | null>(null);
+  useEffect(() => {
+    const read = () => { setShare(analyticsPref()); setAccepted(acceptedOn()); };
+    read();
+    return onPolicyChange(read);
+  }, []);
   useEffect(() => {
     let t: string | null = null;
     try { t = localStorage.getItem("cs-theme"); } catch {}
@@ -37,6 +47,14 @@ export default function Settings() {
               <button key={t} type="button" aria-pressed={theme === t} onClick={() => { setTheme(t); applyTheme(t); }}>{t[0].toUpperCase() + t.slice(1)}</button>
             ))}
           </div>
+        </div>
+      </MenuGroup>
+      <MenuGroup label="Privacy">
+        <SwitchRow title="Share anonymous usage analytics" sub="Which screens and features are used. No ads, no advertising ID."
+                   on={share} onChange={(v) => { setAnalyticsPref(v); setShare(v); void setAppAnalytics(appAnalyticsAllowed()); }} />
+        <div className="a-panel" style={{ fontSize: 14 }}>
+          <a href={`${SITE}/privacy/`} target="_blank" rel="noopener noreferrer">Privacy policy</a>
+          {accepted ? ` · accepted ${accepted}` : " · not accepted yet"}
         </div>
       </MenuGroup>
       <MenuGroup label="Saved on this phone">

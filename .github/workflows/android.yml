@@ -59,8 +59,8 @@ jobs:
           if [ -n "$GOOGLE_SERVICES_JSON" ]; then
             printf '%s' "$GOOGLE_SERVICES_JSON" > mobile/android/app/google-services.json
           else
-            echo "::notice::No GOOGLE_SERVICES_JSON secret: building without Google sign-in, match alerts and crash reports"
-            (cd mobile && npm rm --no-audit --no-fund @capacitor-firebase/authentication @capacitor-firebase/messaging @capacitor-firebase/crashlytics)
+            echo "::notice::No GOOGLE_SERVICES_JSON secret: building without Google sign-in, match alerts, crash reports and analytics"
+            (cd mobile && npm rm --no-audit --no-fund @capacitor-firebase/authentication @capacitor-firebase/messaging @capacitor-firebase/crashlytics @capacitor-firebase/analytics)
           fi
       - name: App screens
         run: cd mobile && node scripts/build-web.mjs

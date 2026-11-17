@@ -2,6 +2,7 @@
 // App Alerts tab: which match alerts this phone gets.
 import { useEffect, useState } from "react";
 import { Empty, MenuGroup, SwitchRow, Title, TopBar } from "@/components/App";
+import { track } from "@/lib/analytics";
 import { ALERTS, alertChoice, hasAlerts, setAlerts, type AlertTopic } from "@/lib/native";
 
 export default function Alerts() {
@@ -12,6 +13,7 @@ export default function Alerts() {
   const flip = async (t: AlertTopic, on: boolean) => {
     setBusy(true);
     setOn(await setAlerts(on ? [...(alerts ?? []), t] : (alerts ?? []).filter((x) => x !== t)));
+    track(on ? "alerts_on" : "alerts_off", { topic: t });
     setBusy(false);
   };
   return (
