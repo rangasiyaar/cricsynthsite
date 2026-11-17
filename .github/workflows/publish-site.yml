@@ -233,7 +233,7 @@ jobs:
             || $W pages project create cricsynthesis-site --production-branch main
           $W pages deploy app/out --project-name cricsynthesis-site --branch main --commit-dirty=true | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep Hosting storage under the free cap (latest 10 versions per site; never the live one)
-        if: env.GCP == 'true'
+        if: false                        # paused 17 Nov: old versions may hold forecasts lost in the Hosting outage
         continue-on-error: true          # a cleanup problem must not hold back the deploy
         run: FIREBASE_TOKEN="$(gcloud auth print-access-token)" python3 infra/hosting_prune.py --project "$PROJECT" --keep 10
       - name: Deploy to Firebase Hosting (the old host, kept current as cricsynthesis.web.app while it still serves)

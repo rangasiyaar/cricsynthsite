@@ -2,7 +2,7 @@ name: Results diagnose (temporary)
 # Why the results lost their history: can CI fetch the live site's data, what zone security is on, and which
 # Cloudflare Pages deployment still has the full archive. Read-only. Removed after the fix.
 on: workflow_dispatch
-permissions: { contents: read }
+permissions: { contents: read, id-token: write }
 jobs:
   diagnose:
     runs-on: ubuntu-latest
@@ -56,4 +56,42 @@ jobs:
               except Exception as e:
                   m = f"ERR {e}"
               print(d["created_on"], url, "archive:", n, "results:", m)
+          PY
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOYER_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Firebase Hosting versions (which still hold the old archive)
+        env: { PROJECT: "${{ secrets.GCP_PROJECT_ID }}" }
+        run: |
+          T=$(gcloud auth print-access-token)
+          P=${PROJECT:-$(gcloud config get-value project)}
+          python3 - "$T" "$P" <<'PY'
+          import json, sys, urllib.request
+          tok, proj = sys.argv[1], sys.argv[2]
+          def api(u):
+              return json.loads(urllib.request.urlopen(urllib.request.Request(u, headers={"Authorization": "Bearer " + tok, "x-goog-user-project": proj}), timeout=60).read())
+          A = "https://firebasehosting.googleapis.com/v1beta1"
+          sites = [s["name"].rsplit("/", 1)[-1] for s in api(f"{A}/projects/{proj}/sites").get("sites", [])]
+          for site in sites:
+              live = api(f"{A}/sites/{site}/channels/live").get("release", {}).get("version", {}).get("name")
+              vs, page = [], ""
+              while True:
+                  d = api(f"{A}/sites/{site}/versions?pageSize=100" + (f"&pageToken={page}" if page else ""))
+                  vs += d.get("versions", []); page = d.get("nextPageToken", "")
+                  if not page: break
+              vs.sort(key=lambda v: v.get("createTime", ""))
+              print(f"{site}: {len(vs)} versions, live {str(live).rsplit('/',1)[-1]}")
+              for v in vs:
+                  name = v["name"]
+                  arch = None
+                  try:
+                      f = api(f"{A}/{name}/files?pageSize=1000&status=ACTIVE")
+                      files = f.get("files", [])
+                      has = [x for x in files if x["path"] in ("/data/archive.json", "/data/results/index.json")]
+                      arch = f"{len(files)}+ files; " + ", ".join(f"{x['path']} {x['hash'][:10]}" for x in has)
+                  except Exception as e:
+                      arch = f"files ERR {e}"
+                  print(" ", v.get("createTime"), v.get("status"), name.rsplit("/", 1)[-1], v.get("fileCount"), arch)
           PY
