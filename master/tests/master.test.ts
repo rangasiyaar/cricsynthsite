@@ -151,3 +151,16 @@ test("Google client calls fetch unbound (Workers throw 'Illegal invocation' for 
     assert.notEqual(self, g);                      // never called as a method of the client
   } finally { globalThis.fetch = real; }
 });
+
+test("GA4 report shaping and the product route is gated", async () => {
+  const { gaShape } = await import("../src/external.ts");
+  const r = (rows: [string[], number[]][]) => ({ rows: rows.map(([d, m]) => ({ dimensionValues: d.map((value) => ({ value })), metricValues: m.map((v) => ({ value: String(v) })) })) });
+  const g = gaShape(r([[["20261116"], [5, 3, 6, 20, 4]], [["20261115"], [2, 2, 2, 5, 1]]]),
+    r([[["page_view"], [100, 40]], [["match_view"], [30, 20]], [["sign_up"], [3, 3]]]), null, null, null, null,
+    r([[["new"], [30]], [["returning"], [10]]]), r([[[], [4]]]));
+  assert.deepEqual(g.daily.map((d) => d.day), ["2026-11-15", "2026-11-16"]);
+  assert.deepEqual(g.funnel.map((f) => f.users), [40, 20, 3, 0]);
+  assert.equal(g.realtime, 4);
+  assert.equal(g.newVsReturning.find((x) => x.name === "returning")!.value, 10);
+  assert.equal((await call("/api/product")).status, 401);
+});

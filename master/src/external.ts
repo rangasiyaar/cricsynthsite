@@ -157,3 +157,46 @@ export async function accuracy(env: Env) {
   if (!r.ok) throw new Error(`results index ${r.status}`);
   return accuracyFrom(await r.json());
 }
+
+// ── Google Analytics 4 (website visitors who accepted analytics cookies) ──
+export const FUNNEL = [["page_view", "Visited"], ["match_view", "Opened a match"], ["sign_up", "Signed up"], ["api_key_created", "Created an API key"]];
+
+type GaRow = { dims: string[]; mets: number[] };
+const rows = (r: any): GaRow[] => (r?.rows || []).map((x: any) => ({
+  dims: (x.dimensionValues || []).map((d: any) => d.value), mets: (x.metricValues || []).map((m: any) => Number(m.value)) }));
+
+export function gaShape(daily: any, events: any, pages: any, sources: any, countries: any, devices: any, nvr: any, live: any) {
+  const ev = rows(events).map((r) => ({ name: r.dims[0], count: r.mets[0], users: r.mets[1] }));
+  const users = (n: string) => ev.find((e) => e.name === n)?.users ?? 0;
+  const pair = (r: any, k = 1) => rows(r).map((x) => ({ name: x.dims.slice(0, k).join(" / ") || "(none)", value: x.mets[0] }));
+  return {
+    daily: rows(daily).map((r) => ({ day: `${r.dims[0].slice(0, 4)}-${r.dims[0].slice(4, 6)}-${r.dims[0].slice(6, 8)}`,
+      users: r.mets[0], newUsers: r.mets[1], sessions: r.mets[2], views: r.mets[3], engaged: r.mets[4] })).sort((a, b) => a.day.localeCompare(b.day)),
+    events: ev,
+    funnel: FUNNEL.map(([name, label]) => ({ name, label, users: users(name) })),
+    pages: pair(pages), sources: pair(sources, 2), countries: pair(countries), devices: pair(devices),
+    newVsReturning: pair(nvr),
+    realtime: rows(live)[0]?.mets[0] ?? 0,
+  };
+}
+
+export async function analytics(env: Env, google: { ga: (p: string, m: "runReport" | "runRealtimeReport", b: Row) => Promise<any> }) {
+  if (!env.GA_PROPERTY) return { errors: ["Google Analytics isn't connected yet (GA_PROPERTY)"] };
+  const p = env.GA_PROPERTY, d30 = [{ startDate: "29daysAgo", endDate: "today" }], d7 = [{ startDate: "6daysAgo", endDate: "today" }];
+  const report = (dims: string[], mets: string[], dateRanges = d7, limit = 12, order = mets[0]) => google.ga(p, "runReport", {
+    dateRanges, dimensions: dims.map((name) => ({ name })), metrics: mets.map((name) => ({ name })), limit,
+    ...(dims[0] === "date" ? {} : { orderBys: [{ metric: { metricName: order }, desc: true }] }) });
+  const errors: string[] = [];
+  const get = (name: string, f: () => Promise<any>) => f().catch((e) => { errors.push(`${name}: ${String(e.message || e).slice(0, 200)}`); return null; });
+  const [daily, events, pages, sources, countries, devices, nvr, live] = await Promise.all([
+    get("Daily", () => report(["date"], ["activeUsers", "newUsers", "sessions", "screenPageViews", "engagedSessions"], d30, 40)),
+    get("Events", () => report(["eventName"], ["eventCount", "totalUsers"], d30, 50)),
+    get("Pages", () => report(["pagePath"], ["screenPageViews"], d7, 15)),
+    get("Sources", () => report(["sessionSource", "sessionMedium"], ["sessions"], d7, 12)),
+    get("Countries", () => report(["country"], ["activeUsers"], d7, 12)),
+    get("Devices", () => report(["deviceCategory"], ["activeUsers"], d7, 5)),
+    get("New vs returning", () => report(["newVsReturning"], ["activeUsers"], d30, 5)),
+    get("Realtime", () => google.ga(p, "runRealtimeReport", { metrics: [{ name: "activeUsers" }] })),
+  ]);
+  return { built: new Date().toISOString(), property: p, ...gaShape(daily, events, pages, sources, countries, devices, nvr, live), errors };
+}

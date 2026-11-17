@@ -50,7 +50,7 @@ function renderLogin(msg = "") {
 
 // ── shell ──
 const NAV = [["", "Overview"], ["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"],
-             ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
+             ["product", "Product (GA4)"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
 function shell() {
   document.body.classList.remove("out");
   $("#app")!.innerHTML = `<header class="top"><a href="#/" class="brand"><img src="/logo-mark.svg" alt="" width="26" height="26">CricSynthesis <b>Console</b></a>
@@ -72,7 +72,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, traffic, health, accuracy };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, traffic, health, accuracy };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -267,6 +267,43 @@ async function requests() {
     { key: "created", label: "Filed", render: (r) => when(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) }],
     s.requests, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "status", desc: false }, empty: "No upgrade requests yet." });
   wireRefresh();
+}
+
+// ── product (Google Analytics 4: visitors who accepted analytics cookies) ──
+const EVENT_NAMES: Record<string, string> = { page_view: "Page views", match_view: "Match opened", match_tab: "Match tab opened",
+  lab_run: "Lab scenario run", sign_up: "Sign-up", login: "Sign-in", api_key_created: "API key created",
+  upgrade_request: "Upgrade request", app_download: "App download", session_start: "Session started", first_visit: "First visit",
+  user_engagement: "Engaged", scroll: "Scrolled to bottom", click: "Outbound click", file_download: "File download" };
+async function product() {
+  const [g, t] = await Promise.all([api("/api/product"), api("/api/traffic").catch(() => null)]);
+  const sum = (rows: Row[] | undefined, k: string, from = 0) => (rows || []).slice(from).reduce((s, r) => s + Number(r[k] || 0), 0);
+  const users7 = sum(g.daily, "users", -7), visits7 = t?.rum ? sum(t.rum.days, "visits", -7) : null;
+  const rate = visits7 ? Math.min(1, users7 / visits7) : null;
+  const top = (g.funnel?.[0]?.users as number) || 0;
+  const nvr = Object.fromEntries((g.newVsReturning || []).map((r: Row) => [r.name, r.value]));
+  const returning = (nvr.returning || 0) / Math.max(1, (nvr.returning || 0) + (nvr.new || 0));
+  main().innerHTML = head("Product (Google Analytics)") + `<p class="muted">Website visitors who accepted analytics cookies. Property ${esc(g.property || "–")} ·
+      updated ${ago(g.built)} · <a href="https://analytics.google.com/analytics/web/#/p${esc(g.property || "")}/reports/intelligenthome" target="_blank" rel="noopener">Open GA4</a></p>`
+    + (g.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${g.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    <div class="tiles">
+      ${tile("Active right now", n(g.realtime), "last 30 minutes")}
+      ${tile("Users (7 days)", n(users7), `${n(sum(g.daily, "users"))} in 30 days`)}
+      ${tile("Returning users", pct(returning), "of users in 30 days came back")}
+      ${tile("Consent rate (est.)", pct(rate), visits7 ? `GA users ÷ ${n(visits7)} Cloudflare visits, 7 days` : "needs Web Analytics data")}
+    </div>
+    ${g.daily ? `<section class="card">${bars(g.daily, [{ key: "users", label: "Users", color: S1 }], { x: "day", title: "Users per day (30 days)" })}</section>` : ""}
+    <section class="card"><h2>Funnel (30 days)</h2>${g.funnel ? `<ol class="funnel">${(g.funnel as Row[]).map((f, i) => `<li>
+        <span class="fl">${esc(f.label)}</span><span class="rb"><i style="width:${top ? (100 * f.users / top).toFixed(1) : 0}%"></i></span>
+        <span class="rv">${n(f.users)}</span><span class="muted">${i ? pct(top ? f.users / top : null, 1) : ""}</span></li>`).join("")}</ol>
+      <p class="muted">Users who did each step at least once. Sign-ups and keys from people who rejected cookies appear only in Users / API keys.</p>` : ""}</section>
+    <div class="grid2"><section class="card"><h2>Events (30 days)</h2><div id="ev"></div></section>
+      <section class="card"><h2>Top pages (7 days)</h2>${ranked((g.pages || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>
+    <div class="grid2"><section class="card"><h2>Where visitors come from (7 days)</h2>${ranked((g.sources || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section>
+      <section class="card"><h2>Countries (7 days)</h2>${ranked((g.countries || []).map((r: Row) => ({ name: r.name, value: r.value })))}
+      <h2>Devices</h2>${ranked((g.devices || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>`;
+  table($("#ev")!, [{ key: "name", label: "Event", render: (r) => `${esc(EVENT_NAMES[r.name] || r.name)} <small class="muted">${esc(r.name)}</small>` },
+    { key: "count", label: "Count", num: true, render: (r) => n(r.count) }, { key: "users", label: "Users", num: true, render: (r) => n(r.users) }],
+    g.events || [], { initial: { key: "count", desc: true }, empty: "No events yet." });
 }
 
 // ── traffic ──

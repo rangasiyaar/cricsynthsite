@@ -88,6 +88,12 @@ export class Google {
     await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}/${path}`, { method: "PATCH", body: JSON.stringify({ fields: f }) });
   }
 
+  // ── Google Analytics 4 (Data API; the service account is a Viewer on the property) ──
+  ga(property: string, method: "runReport" | "runRealtimeReport", body: Row): Promise<any> {
+    return this.call(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:${method}`,
+      { method: "POST", body: JSON.stringify(body) }, "https://www.googleapis.com/auth/analytics.readonly");
+  }
+
   // ── Firebase Auth ──
   /** Every account (Identity Toolkit accounts:query, paged by offset). */
   async users(): Promise<AuthUser[]> {

@@ -138,3 +138,6 @@ tr.link:hover td { background: var(--surface-2); }
   .profile-head { align-items: flex-start; }
   .timeline time { display: block; }
 }
+.funnel { list-style: none; padding: 0; margin: 0 0 8px; }
+.funnel li { display: grid; grid-template-columns: minmax(140px, 1fr) 2fr 70px 60px; gap: 12px; align-items: center; padding: 6px 0; font-size: 14px; }
+.funnel .rb { height: 14px; }

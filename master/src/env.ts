@@ -10,6 +10,7 @@ export interface Env {
   FIRESTORE_PROJECT?: string;
   SITE_URL?: string;                  // the public site (its /data files)
   SITE_HOST?: string;                 // the zone / Web Analytics host
+  GA_PROPERTY?: string;               // Google Analytics 4 property id (a number; not secret)
   GH_REPO?: string;
   GH_BRANCH?: string;
   API_SCRIPT?: string;                // the API Worker's script name (request counts)
