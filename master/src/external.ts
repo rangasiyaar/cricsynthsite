@@ -50,6 +50,29 @@ export async function traffic(env: Env, now = new Date()) {
              referrers: pick(a.referrers, "refererHost"), devices: pick(a.devices, "deviceType") };
   });
 
+  // Core Web Vitals from the same beacon (p75 per page and device; Google's thresholds in the UI)
+  const vitals = await part(errors, "Core Web Vitals", async () => {
+    const sites = (await cf(env, `/accounts/${acct}/rum/site_info/list?per_page=50`)).result || [];
+    const s = sites.find((x: Row) => x.host === host || x.ruleset?.zone_name === host) || sites[0];
+    if (!s) throw new Error("Web Analytics not turned on");
+    const f7 = { siteTag: s.site_tag, datetime_geq: since7, datetime_leq: until };
+    const q = "quantiles { largestContentfulPaintP75 interactionToNextPaintP75 cumulativeLayoutShiftP75 firstContentfulPaintP75 timeToFirstByteP75 }";
+    const sums = "sum { lcpGood lcpNeedsImprovement lcpPoor inpGood inpNeedsImprovement inpPoor clsGood clsNeedsImprovement clsPoor }";
+    const d = await gql(env, `query($acct: String!, $f: AccountRumWebVitalsEventsAdaptiveGroupsFilter_InputObject) {
+      viewer { accounts(filter: { accountTag: $acct }) {
+        all: rumWebVitalsEventsAdaptiveGroups(limit: 1, filter: $f) { count ${q} ${sums} }
+        pages: rumWebVitalsEventsAdaptiveGroups(limit: 15, filter: $f, orderBy: [count_DESC]) { count ${q} dimensions { requestPath } }
+        devices: rumWebVitalsEventsAdaptiveGroups(limit: 5, filter: $f, orderBy: [count_DESC]) { count ${q} dimensions { deviceType } }
+      } } }`, { acct, f: f7 });
+    const a = d?.viewer?.accounts?.[0] || {};
+    const p75 = (r: Row) => ({ samples: r.count, lcp: r.quantiles?.largestContentfulPaintP75 ?? null, inp: r.quantiles?.interactionToNextPaintP75 ?? null,
+      cls: r.quantiles?.cumulativeLayoutShiftP75 ?? null, fcp: r.quantiles?.firstContentfulPaintP75 ?? null, ttfb: r.quantiles?.timeToFirstByteP75 ?? null });
+    const all = a.all?.[0];
+    return { overall: all ? { ...p75(all), sum: all.sum || {} } : null,
+             pages: (a.pages || []).map((r: Row) => ({ name: r.dimensions.requestPath, ...p75(r) })),
+             devices: (a.devices || []).map((r: Row) => ({ name: r.dimensions.deviceType, ...p75(r) })) };
+  });
+
   // zone requests per day (every request to cricsynthesis.in, including the data files and bots)
   const zone = await part(errors, "Zone requests", async () => {
     const z = (await cf(env, `/zones?name=${encodeURIComponent(host)}`)).result?.[0];
@@ -70,7 +93,7 @@ export async function traffic(env: Env, now = new Date()) {
       script: r.dimensions.scriptName, requests: r.sum.requests, errors: r.sum.errors }));
   });
 
-  return { built: now.toISOString(), host, rum, zone, workers, errors };
+  return { built: now.toISOString(), host, rum, vitals, zone, workers, errors };
 }
 
 // ── GitHub ──
@@ -258,4 +281,38 @@ export async function search(env: Env, google: { sc: (site: string, path: string
     get("Daily", () => q(["date"], 60, 34)), get("Queries", () => q(["query"], 50)), get("Pages", () => q(["page"], 50)),
     get("Countries", () => q(["country"], 12)), get("Devices", () => q(["device"], 5)), get("Sitemaps", () => google.sc(site, "/sitemaps"))]);
   return { built: now.toISOString(), site, ...scShape(daily, queries, pages, countries, devices, sitemaps), errors };
+}
+
+// ── free-tier meters: today's use against each free limit (Firestore via Cloud Monitoring; Workers via Cloudflare) ──
+export const FREE = { firestoreReads: 50_000, firestoreWrites: 20_000, firestoreDeletes: 20_000, workerRequests: 100_000, pagesFiles: 20_000 };
+export async function meters(env: Env, google: { dailySum: (m: string, d: number) => Promise<{ day: string; value: number }[]> }, now = new Date()) {
+  const errors: string[] = [];
+  const get = async <T>(name: string, f: () => Promise<T>) => { try { return await f(); } catch (e) {
+    const m = String((e as Error).message || e);
+    errors.push(`${name}: ${m.includes(" 403") ? "grant api-worker the Monitoring Viewer role" : m.slice(0, 160)}`); return null; } };
+  const [reads, writes, deletes] = await Promise.all([
+    get("Firestore reads", () => google.dailySum("firestore.googleapis.com/document/read_ops_count", 14)),
+    get("Firestore writes", () => google.dailySum("firestore.googleapis.com/document/write_ops_count", 14)),
+    get("Firestore deletes", () => google.dailySum("firestore.googleapis.com/document/delete_ops_count", 14))]);
+  let workers: { day: string; value: number }[] | null = null;
+  if (env.CF_API_TOKEN && env.CF_ACCOUNT_ID) workers = await get("Worker requests", async () => {
+    const d = await gql(env, `query($acct: String!, $d: Date!) { viewer { accounts(filter: { accountTag: $acct }) {
+      workersInvocationsAdaptive(limit: 500, filter: { date_geq: $d }) { dimensions { date } sum { requests } } } } }`,
+      { acct: env.CF_ACCOUNT_ID, d: new Date(now.getTime() - 13 * 86400_000).toISOString().slice(0, 10) });
+    const by: Record<string, number> = {};
+    for (const r of d?.viewer?.accounts?.[0]?.workersInvocationsAdaptive || []) by[r.dimensions.date] = (by[r.dimensions.date] || 0) + r.sum.requests;
+    return Object.entries(by).map(([day, value]) => ({ day, value })).sort((a, b) => a.day.localeCompare(b.day));
+  });
+  const today = now.toISOString().slice(0, 10);
+  const row = (label: string, series: { day: string; value: number }[] | null, limit: number, note: string) => {
+    const t = series?.find((x) => x.day === today)?.value ?? (series ? 0 : null);
+    const peak = series?.length ? Math.max(...series.map((x) => x.value)) : null;
+    return { label, today: t, peak14: peak, limit, share: t == null ? null : t / limit, note, series: series || [] };
+  };
+  return { built: now.toISOString(), errors, meters: [
+    row("Firestore reads", reads, FREE.firestoreReads, "per day, resets at midnight Pacific"),
+    row("Firestore writes", writes, FREE.firestoreWrites, "per day"),
+    row("Firestore deletes", deletes, FREE.firestoreDeletes, "per day"),
+    row("Worker requests (all Workers)", workers, FREE.workerRequests, "per day, UTC; over it requests fail, never billed"),
+  ] };
 }

@@ -192,3 +192,36 @@ test("Search Console shaping (weighted position, week over week) and the route i
   assert.equal(s.sitemaps[0].submitted, 1200);
   assert.equal((await call("/api/search")).status, 401);
 });
+
+test("uptime: probe codes, line format, summary (uptime %, incidents, strip)", async () => {
+  const { probe, check, summarize, TARGETS } = await import("../src/uptime.ts");
+  const ok = (ct: string) => (async () => new Response("{}", { status: 200, headers: { "Content-Type": ct } })) as unknown as typeof fetch;
+  assert.equal((await probe("https://x", "json", ok("application/json"))).code, 200);
+  assert.equal((await probe("https://x", "json", ok("text/html"))).code, 299);                 // answered with the wrong thing
+  assert.equal((await probe("https://x", "json", (async () => { throw new Error("down"); }) as unknown as typeof fetch)).code, 0);
+  const line = await check(new Date("2026-11-17T10:05:00Z"), ok("application/json; text/html"));
+  assert.match(line, new RegExp(`^10:05(\\|200:\\d+){${TARGETS.length}}$`));
+  const up = (t: string) => `${t}|200:100|200:50|200:80|200:90`, down = (t: string) => `${t}|0:10000|200:50|200:80|200:90`;
+  const s = summarize([{ day: "2026-11-17", checks: [up("09:00"), down("09:05"), down("09:10"), up("09:15"), up("09:20")] }], new Date("2026-11-17T09:21:00Z"));
+  const site = s.targets[0];
+  assert.equal(site.uptime24, 0.6);
+  assert.equal(site.incidents.length, 1);
+  assert.equal(site.incidents[0].checks, 2);
+  assert.equal(site.incidents[0].to, "2026-11-17T09:15:00Z");
+  assert.deepEqual(site.strip, [1, 0, 0, 1, 1]);
+  assert.equal(s.targets[1].uptime24, 1);
+  assert.equal(site.now!.up, true);
+  assert.equal((await call("/api/uptime")).status, 401);
+  assert.equal((await call("/api/meters")).status, 401);
+});
+
+test("meters: Monitoring permission missing is explained, Worker requests summed per day", async () => {
+  const { meters } = await import("../src/external.ts");
+  const g = { dailySum: async () => { throw new Error("monitoring 403: denied"); } };
+  const m = await meters({} as any, g, new Date("2026-11-17T10:00:00Z"));
+  assert.match(m.errors[0], /Monitoring Viewer/);
+  assert.equal(m.meters[0].today, null);
+  const g2 = { dailySum: async () => [{ day: "2026-11-17", value: 40_000 }] };
+  const m2 = await meters({} as any, g2, new Date("2026-11-17T10:00:00Z"));
+  assert.equal(m2.meters[0].share, 0.8);
+});

@@ -141,3 +141,11 @@ tr.link:hover td { background: var(--surface-2); }
 .funnel { list-style: none; padding: 0; margin: 0 0 8px; }
 .funnel li { display: grid; grid-template-columns: minmax(140px, 1fr) 2fr 70px 60px; gap: 12px; align-items: center; padding: 6px 0; font-size: 14px; }
 .funnel .rb { height: 14px; }
+.uptime { display: grid; gap: 14px; }
+.ut-h { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; margin-bottom: 6px; font-size: 14px; }
+.strip { display: flex; gap: 1px; height: 18px; }
+.strip i { flex: 1; background: var(--s1); border-radius: 1px; min-width: 1px; }
+.strip i.bad { background: var(--bad); }
+.meters { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.mt-h { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; margin-bottom: 6px; }
+.mt .meter { margin: 0 0 4px; }

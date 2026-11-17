@@ -4,9 +4,10 @@
 // read; a user's profile is read live. Never writes anything about users.
 import { daysAgo, profile, snapshot, type Snapshot } from "./data.ts";
 import { type Env, project } from "./env.ts";
-import { accuracy, analytics, CLARITY_TTL_MS, clarityFetch, clarityShape, health, search, traffic } from "./external.ts";
+import { accuracy, analytics, CLARITY_TTL_MS, clarityFetch, clarityShape, health, meters, search, traffic } from "./external.ts";
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
+import { check, summarize } from "./uptime.ts";
 
 const SECURITY: Record<string, string> = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -25,6 +26,7 @@ const SECURITY: Record<string, string> = {
   ].join("; "),
 };
 
+const UPTIME_CRON = "*/5 * * * *";    // must match wrangler.toml
 const json = (body: unknown, status = 200, extra: Record<string, string> = {}) =>
   new Response(JSON.stringify(body), { status, headers: { ...SECURITY, "Content-Type": "application/json", "Cache-Control": "no-store", ...extra } });
 const fail = (status: number, detail: string) => json({ detail }, status);
@@ -139,6 +141,13 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));
     case "/api/product": return json(await cached("product", 900, () => analytics(env, google(env))));
+    case "/api/meters": return json(await cached("meters", 600, () => meters(env, google(env))));
+    case "/api/uptime": return json(await cached("uptime", 240, async () => {
+      const g = google(env), now = new Date();
+      const days = await Promise.all(Array.from({ length: 7 }, (_, i) => daysAgo(6 - i, now)).map(async (day) =>
+        ({ day, checks: ((await g.get(`adminUptime/${day}`).catch(() => null))?.checks as string[]) || [] })));
+      return { built: now.toISOString(), ...summarize(days, now) };
+    }));
     case "/api/search": return json(await cached("search", 3 * 3600, () => search(env, google(env))));
     case "/api/ux": return json(await clarity(env));
     case "/api/accuracy": return json(await cached("accuracy", 1800, () => accuracy(env)));
@@ -161,7 +170,12 @@ export default {
     if ((h.get("Content-Type") || "").includes("text/html")) h.set("Cache-Control", "no-store");
     return new Response(r.body, { status: r.status, headers: h });
   },
-  async scheduled(_c: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+  async scheduled(c: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    if (c.cron === UPTIME_CRON) {
+      const now = new Date(c.scheduledTime);
+      ctx.waitUntil(check(now).then((line) => google(env).append(`adminUptime/${now.toISOString().slice(0, 10)}`, "checks", [line])));
+      return;
+    }
     ctx.waitUntil(refresh(env).then(() => undefined));
   },
 } satisfies ExportedHandler<Env>;

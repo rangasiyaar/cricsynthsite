@@ -88,6 +88,30 @@ export class Google {
     await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}/${path}`, { method: "PATCH", body: JSON.stringify({ fields: f }) });
   }
 
+  /** Append strings to an array field without reading the document first (one write; creates the doc). */
+  async append(path: string, field: string, values: string[]): Promise<void> {
+    const name = `${this.docsRoot}/${path}`;
+    await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}:commit`, { method: "POST", body: JSON.stringify({ writes: [{
+      update: { name, fields: { id: { stringValue: path.split("/").pop() } } }, updateMask: { fieldPaths: ["id"] },
+      updateTransforms: [{ fieldPath: field, appendMissingElements: { values: values.map((v) => ({ stringValue: v })) } }] }] }) });
+  }
+
+  /** Daily totals of a Cloud Monitoring metric (needs the Monitoring Viewer role). */
+  async dailySum(metricType: string, days: number, now = new Date()): Promise<{ day: string; value: number }[]> {
+    const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+    const start = new Date(end.getTime() - days * 86400_000);
+    const q = new URLSearchParams({ filter: `metric.type="${metricType}"`, "interval.startTime": start.toISOString(),
+      "interval.endTime": end.toISOString(), "aggregation.alignmentPeriod": "86400s", "aggregation.perSeriesAligner": "ALIGN_SUM",
+      "aggregation.crossSeriesReducer": "REDUCE_SUM" });
+    const d = await this.call(`https://monitoring.googleapis.com/v3/projects/${this.project}/timeSeries?${q}`);
+    const out: Record<string, number> = {};
+    for (const s of d.timeSeries || []) for (const p of s.points || []) {
+      const day = String(p.interval?.startTime || "").slice(0, 10);
+      out[day] = (out[day] || 0) + Number(p.value?.int64Value ?? p.value?.doubleValue ?? 0);
+    }
+    return Object.entries(out).map(([day, value]) => ({ day, value })).sort((a, b) => a.day.localeCompare(b.day));
+  }
+
   // ── Google Analytics 4 (Data API; the service account is a Viewer on the property) ──
   ga(property: string, method: "runReport" | "runRealtimeReport", body: Row): Promise<any> {
     return this.call(`https://analyticsdata.googleapis.com/v1beta/properties/${property}:${method}`,

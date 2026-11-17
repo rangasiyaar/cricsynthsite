@@ -397,17 +397,47 @@ async function traffic() {
       <section class="card"><h2>Countries (7 days)</h2>${ranked(rum.countries.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>
     <div class="grid2"><section class="card"><h2>Referrers (7 days)</h2>${ranked(rum.referrers.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
       <section class="card"><h2>Devices (7 days)</h2>${ranked(rum.devices.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>` : ""}
+    ${t.vitals ? vitalsHtml(t.vitals) : ""}
     ${zone ? `<section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day (all requests to the domain)" })}</section>` : ""}
     ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }], { x: "day", title: "Worker requests per day (all scripts)" })}
       <div id="scripts"></div></section>` : ""}`;
+  if (t.vitals) {
+    const vcols: Col<Row>[] = [{ key: "name", label: "" }, { key: "samples", label: "Samples", num: true, render: (r) => n(r.samples) },
+      { key: "lcp", label: "LCP", num: true, render: (r) => vital("lcp", r.lcp) }, { key: "inp", label: "INP", num: true, render: (r) => vital("inp", r.inp) },
+      { key: "cls", label: "CLS", num: true, render: (r) => vital("cls", r.cls) }, { key: "ttfb", label: "TTFB", num: true, render: (r) => fmtVital("ttfb", r.ttfb) }];
+    table($("#cwv-pages")!, vcols, t.vitals.pages || [], { initial: { key: "samples", desc: true }, empty: "No samples yet." });
+    table($("#cwv-dev")!, vcols, t.vitals.devices || [], { initial: { key: "samples", desc: true }, empty: "No samples yet." });
+  }
   if (wk) table($("#scripts")!, [{ key: "script", label: "Worker" }, { key: "today", label: "Today", num: true, render: (r) => n(r.today) },
     { key: "d30", label: "30 days", num: true, render: (r) => n(r.d30) }, { key: "errors", label: "Errors (30d)", num: true, render: (r) => n(r.errors) }],
     Object.entries(scripts).map(([script, v]) => ({ script, ...v })), { initial: { key: "d30", desc: true } });
 }
 
+// Core Web Vitals: Google's thresholds (good / needs improvement / poor) at the 75th percentile
+const LIMITS: Record<string, [number, number]> = { lcp: [2500, 4000], inp: [200, 500], cls: [0.1, 0.25], ttfb: [800, 1800], fcp: [1800, 3000] };
+const fmtVital = (k: string, v: number | null) => (v == null ? "–" : k === "cls" ? v.toFixed(2) : v >= 1000 ? `${(v / 1000).toFixed(2)} s` : `${Math.round(v)} ms`);
+function vital(k: string, v: number | null) {
+  if (v == null) return "–";
+  const [g, p] = LIMITS[k];
+  return `${fmtVital(k, v)} ${badge(v <= g ? "Good" : v <= p ? "Needs work" : "Poor", v <= g ? "good" : v <= p ? "warn" : "bad")}`;
+}
+function vitalsHtml(v: Row) {
+  const o = v.overall, s = o?.sum || {};
+  const share = (m: string) => { const tot = (s[`${m}Good`] || 0) + (s[`${m}NeedsImprovement`] || 0) + (s[`${m}Poor`] || 0); return tot ? `${pct(s[`${m}Good`] / tot)} of visits good` : ""; };
+  return `<h2 class="sec">Core Web Vitals (real visitors, 7 days, 75th percentile)</h2>
+    <div class="tiles">
+      ${tile("Largest Contentful Paint", o ? vital("lcp", o.lcp) : "–", `loading · good ≤ 2.5 s · ${share("lcp")}`)}
+      ${tile("Interaction to Next Paint", o ? vital("inp", o.inp) : "–", `responsiveness · good ≤ 200 ms · ${share("inp")}`)}
+      ${tile("Cumulative Layout Shift", o ? vital("cls", o.cls) : "–", `visual stability · good ≤ 0.1 · ${share("cls")}`)}
+      ${tile("Time to First Byte", o ? fmtVital("ttfb", o.ttfb) : "–", o ? `first paint ${fmtVital("fcp", o.fcp)} · ${n(o.samples)} samples` : "")}
+    </div>
+    <div class="grid2"><section class="card"><h2>By page</h2><div id="cwv-pages"></div></section>
+      <section class="card"><h2>By device</h2><div id="cwv-dev"></div></section></div>`;
+}
+
 // ── health ──
 async function health() {
-  const h = await api("/api/health");
+  const [h, up, m] = await Promise.all([api("/api/health"), api("/api/uptime").catch((e) => ({ error: String(e.message) })), api("/api/meters").catch((e) => ({ errors: [String(e.message)] }))]);
   const files = h.build?.files as number | undefined;
   const runBadge = (r: Row) => !r.last ? badge(r.error ? "Unknown" : "No runs", "plain")
     : r.last.status !== "completed" ? badge("Running", "info") : r.last.conclusion === "success" ? badge("Passed", "good")
@@ -420,6 +450,8 @@ async function health() {
       ${tile("Android app", esc(h.app?.version || "–"), h.app ? `build ${esc(h.app.build ?? h.app.versionCode ?? "–")}` : "")}
     </div>
     ${files != null ? `<div class="meter" role="meter" aria-valuemin="0" aria-valuemax="20000" aria-valuenow="${files}"><i style="width:${Math.min(100, 100 * files / 20000).toFixed(1)}%" class="${files > 18000 ? "bad" : files > 15000 ? "warn" : ""}"></i></div>` : ""}
+    ${uptimeHtml(up)}
+    ${metersHtml(m, files, h.limits?.pagesFiles)}
     <section class="card"><h2>Workflows</h2><div id="runs"></div></section>
     <div class="grid2"><section class="card"><h2>Upcoming matches without XIs</h2><div id="xi"></div></section>
       <section class="card"><h2>App releases</h2><div id="rel"></div></section></div>`;
@@ -431,6 +463,28 @@ async function health() {
     h.data?.missingXi || [], { initial: { key: "date", desc: false }, empty: "Every upcoming match has its XIs." });
   table($("#rel")!, [{ key: "tag", label: "Release", render: (r) => esc(r.name || r.tag) }, { key: "at", label: "Published", render: (r) => day(r.at) },
     { key: "apk", label: "APK downloads", num: true, render: (r) => n(r.apk) }], h.releases || [], { initial: { key: "at", desc: true }, empty: "No releases found." });
+}
+
+function uptimeHtml(u: Row) {
+  if (u.error) return `<div class="warn">Uptime: ${esc(u.error)}</div>`;
+  if (!u.checks) return `<section class="card"><h2>Uptime</h2><p class="empty">The first checks run within 5 minutes of this deploy.</p></section>`;
+  return `<section class="card"><h2>Uptime <small class="muted" style="display:inline">checked every 5 minutes · last ${ago(u.last)}</small></h2>
+    <div class="uptime">${(u.targets as Row[]).map((t) => `<div class="ut">
+      <div class="ut-h"><b>${esc(t.label)}</b> ${t.now ? (t.now.up ? badge("Up", "good") : badge(t.now.code ? `Down (${t.now.code === 299 ? "wrong content" : t.now.code})` : "Down (no answer)", "bad")) : badge("–", "plain")}
+        <span class="muted">${pct(t.uptime24, 2)} 24 h · ${pct(t.uptime7, 2)} 7 d · ${t.p50 == null ? "–" : `${t.p50} ms`} median, ${t.p95 == null ? "–" : `${t.p95} ms`} p95</span></div>
+      <div class="strip" role="img" aria-label="${esc(t.label)}: last 24 hours">${(t.strip as number[]).map((x) => `<i class="${x ? "ok" : "bad"}"></i>`).join("")}</div>
+      ${t.incidents.length ? `<p class="muted">Recent outages: ${(t.incidents as Row[]).slice(0, 3).map((i) => `${when(i.from)} for ${i.checks * 5} min${i.to ? "" : " (ongoing)"}`).join(" · ")}</p>` : ""}
+    </div>`).join("")}</div></section>`;
+}
+
+function metersHtml(m: Row, files: number | undefined, pagesLimit = 20000) {
+  const rows: Row[] = [...(m.meters || []), ...(files != null ? [{ label: "Pages files per deployment", today: files, limit: pagesLimit, share: files / pagesLimit, note: "move /data to R2 or retire old pages before 20,000" }] : [])];
+  return `<section class="card"><h2>Free-tier meters (today)</h2>
+    ${m.errors?.length ? `<div class="warn"><ul>${m.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
+    <div class="meters">${rows.map((r) => `<div class="mt"><div class="mt-h"><b>${esc(r.label)}</b>
+      <span>${r.today == null ? "–" : n(r.today)} / ${n(r.limit)} ${r.share == null ? "" : badge(pct(r.share), r.share >= 0.8 ? "bad" : r.share >= 0.5 ? "warn" : "good")}</span></div>
+      <div class="meter"><i style="width:${Math.min(100, 100 * (r.share || 0)).toFixed(1)}%" class="${(r.share || 0) >= 0.8 ? "bad" : (r.share || 0) >= 0.5 ? "warn" : ""}"></i></div>
+      <small class="muted">${esc(r.note || "")}${r.peak14 != null ? ` · busiest of 14 days ${n(r.peak14)}` : ""}</small></div>`).join("")}</div></section>`;
 }
 
 // ── accuracy ──
