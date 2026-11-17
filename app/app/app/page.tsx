@@ -25,7 +25,7 @@ const FAQ: [string, React.ReactNode][] = [
   ["I have an iPhone.", "There's no iPhone app yet. The website works the same way: in Safari tap Share, then Add to Home Screen, and it opens like an app."],
 ];
 
-// The app's release notes (mobile/changelog.json, newest first): the same notes the app's update prompt and the
+// The app's release notes (mobile/changelog.json, newest first; the page lists the latest 5): the same notes the app's update prompt and the
 // release page show, read when the site is built.
 type Change = { version: string; date?: string; notes: string[] };
 const CHANGES: Change[] = JSON.parse(readFileSync(path.join(process.cwd(), "..", "mobile", "changelog.json"), "utf8"));
@@ -64,7 +64,7 @@ export default function AppPage() {
 
       <h2 style={{ marginTop: 72 }}>What&apos;s new</h2>
       <div className="app-faq">
-        {CHANGES.slice(0, 8).map((c, i) => (
+        {CHANGES.slice(0, 5).map((c, i) => (
           <details key={c.version} open={i === 0}>
             <summary><span>Version {c.version}{c.date && <span className="muted" style={{ fontWeight: 400 }}> · {day(c.date)}</span>}</span></summary>
             <ul>{c.notes.map((n) => <li key={n}>{n}</li>)}</ul>
