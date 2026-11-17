@@ -9,7 +9,7 @@ import type { MatchCard, ResultSummary } from "@/lib/types";
 const FILTERS = ["all", "live", "upcoming", "result"] as const;
 type Filter = (typeof FILTERS)[number];
 const NAMES: Record<Filter, string> = { all: "All", live: "Live", upcoming: "Upcoming", result: "Results" };
-const RESULTS_PAGE = 12;
+const RESULTS_PAGE = 6;
 
 export default function MatchesPage() {
   const [index, setIndex] = useState<MatchCard[] | null>(null);
