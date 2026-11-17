@@ -1,0 +1,459 @@
+{
+ "id": "wi-a-v-eng-l-odi-basseterre-2026-11-16",
+ "innings": [
+  {
+   "team": "England Lions",
+   "runs": 326,
+   "wickets": 10,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Ben Mayes",
+     "dismissal": "c J Blades b M Mckenzie",
+     "runs": 33,
+     "balls": 44,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Ben McKinney",
+     "dismissal": "c RA Clarke b J Blades",
+     "runs": 5,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rehan Ahmed",
+     "dismissal": "c RA Clarke b K Gore",
+     "runs": 69,
+     "balls": 54,
+     "fours": 7,
+     "sixes": 4
+    },
+    {
+     "name": "Dan Lawrence",
+     "dismissal": "c S Thompson b M Mckenzie",
+     "runs": 95,
+     "balls": 82,
+     "fours": 7,
+     "sixes": 6
+    },
+    {
+     "name": "James Rew",
+     "dismissal": "runout (RA Clarke / K Gore)",
+     "runs": 11,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jack Haynes",
+     "dismissal": "runout (K Anderson)",
+     "runs": 61,
+     "balls": 54,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Benjamin Kellaway",
+     "dismissal": "b K Gore",
+     "runs": 1,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Patterson-White",
+     "dismissal": "c K McKenzie b S Thompson",
+     "runs": 12,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mason Crane",
+     "dismissal": "c S Thompson b J Blades",
+     "runs": 10,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Samuel Cook",
+     "dismissal": "c K Carty b J Blades",
+     "runs": 6,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Naavya Sharma",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Stewart Thompson",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 72,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 8
+    },
+    {
+     "name": "Jediah Blades",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 58,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Karima Gore",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sadrack Descartes",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Micah Mckenzie",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jyd Goolie",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ben McKinney",
+     "score": 19,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ben Mayes",
+     "score": 75,
+     "over": "11.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rehan Ahmed",
+     "score": 150,
+     "over": "21.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "James Rew",
+     "score": 193,
+     "over": "28.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Dan Lawrence",
+     "score": 246,
+     "over": "36.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Benjamin Kellaway",
+     "score": 247,
+     "over": "37.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Liam Patterson-White",
+     "score": 281,
+     "over": "43.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Mason Crane",
+     "score": 309,
+     "over": "47.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jack Haynes",
+     "score": 325,
+     "over": "49.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Samuel Cook",
+     "score": 326,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 3,
+    "lb": 2,
+    "w": 17,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 66
+  },
+  {
+   "team": "West Indies A",
+   "runs": 238,
+   "wickets": 10,
+   "overs": "44",
+   "batting": [
+    {
+     "name": "Kirk McKenzie",
+     "dismissal": "st B Mayes b DW Lawrence",
+     "runs": 46,
+     "balls": 65,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Keacy Carty",
+     "dismissal": "c MS Crane b N Sharma",
+     "runs": 20,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Kevlon Anderson",
+     "dismissal": "b LP White",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alick Athanaze",
+     "dismissal": "c & b B Kellaway",
+     "runs": 49,
+     "balls": 72,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Jyd Goolie",
+     "dismissal": "lbw b MS Crane",
+     "runs": 35,
+     "balls": 32,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Rivaldo Clarke",
+     "dismissal": "b R Ahmed",
+     "runs": 9,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Sadrack Descartes",
+     "dismissal": "c S Cook b MS Crane",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Karima Gore",
+     "dismissal": "not out",
+     "runs": 61,
+     "balls": 40,
+     "fours": 2,
+     "sixes": 7
+    },
+    {
+     "name": "Jediah Blades",
+     "dismissal": "b R Ahmed",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Micah Mckenzie",
+     "dismissal": "c B Kellaway b MS Crane",
+     "runs": 0,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Stewart Thompson",
+     "dismissal": "b R Ahmed",
+     "runs": 0,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Samuel Cook",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Liam Patterson-White",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Naavya Sharma",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Benjamin Kellaway",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rehan Ahmed",
+     "overs": "9",
+     "maidens": 1,
+     "runs": 62,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mason Crane",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 62,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Dan Lawrence",
+     "overs": "5",
+     "maidens": 1,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Keacy Carty",
+     "score": 38,
+     "over": "6.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kevlon Anderson",
+     "score": 41,
+     "over": "7.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kirk McKenzie",
+     "score": 109,
+     "over": "22.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Alick Athanaze",
+     "score": 147,
+     "over": "29.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rivaldo Clarke",
+     "score": 168,
+     "over": "32.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sadrack Descartes",
+     "score": 169,
+     "over": "33.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jyd Goolie",
+     "score": 192,
+     "over": "35.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Jediah Blades",
+     "score": 201,
+     "over": "36.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Micah Mckenzie",
+     "score": 214,
+     "over": "39.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Stewart Thompson",
+     "score": 238,
+     "over": "43.6"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 2,
+    "w": 8,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "England Lions won by 88 runs",
+ "winner": "England Lions"
+}
