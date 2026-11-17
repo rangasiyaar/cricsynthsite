@@ -14,7 +14,11 @@ export default function Terms() {
         confirm you have the authority to bind it.</p>
 
       <h2>2. Eligibility</h2>
-      <p>You must be 18 or older to create an account, or use one with the consent of a parent or guardian.</p>
+      <p>You must be 18 or older to create or use a CricSynthesis account, including API keys, the AI-assistant connector and
+        the Android app&apos;s signed-in features. When you first sign in we ask for your date of birth to confirm this; if you
+        are under 18 we won&apos;t open an account and we delete the sign-in straight away. By signing in you confirm that the
+        date of birth you give is true. We may close an account, and revoke its API keys, if we learn its holder is under 18.
+        Public match pages can be read without an account.</p>
 
       <h2>3. What we provide</h2>
       <p>CricSynthesis provides probabilities, projections, analytics, match previews, fantasy team suggestions and graphics

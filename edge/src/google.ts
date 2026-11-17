@@ -66,6 +66,16 @@ export class Firestore {
              revoked: Boolean(f.revoked?.booleanValue) };
   }
 
+  /** Whether the account holder confirmed they are 18 or over (users/{uid}.adult, set by the website's age check). */
+  async isAdult(uid: string): Promise<boolean> {
+    const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
+                          { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });
+    if (r.status === 404) return false;
+    if (!r.ok) throw new Error(`firestore ${r.status}`);
+    const d: any = await r.json();
+    return d.fields?.adult?.booleanValue === true;
+  }
+
   /** Add to users/{uid}/usage/{day} (total, per key slot, per category, per endpoint or tool) and set the key's lastUsed. */
   async addUsage(uid: string, day: string, slot: string, total: number, cats: Record<string, number>, last: string,
                  eps: Record<string, number> = {}) {

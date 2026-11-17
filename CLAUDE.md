@@ -117,7 +117,10 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 
 - New cloud resource? Add its free-tier limit and our guard to `infra/COSTS.md` first.
 - BigQuery: never `SELECT *` on `deliveries`; filter on `match_date`; set `maximum_bytes_billed`.
-- Firestore: writes only from server code, except a signed-in user's own `users/{uid}` profile fields and
+- Accounts are 18+: `components/AgeGate.tsx` asks for the date of birth once after any sign-in (web, app, connect) and stores
+  only `users/{uid}.adult` + `ageConfirmed` (never the date); under-18 sign-ins are deleted. Rules require `adult` for API keys and
+  upgrade requests; the Worker's `/oauth/complete` (MCP connector) checks it too. The welcome email is sent only after confirmation.
+- Firestore: writes only from server code, except a signed-in user's own `users/{uid}` profile fields (incl. the one-way `adult` flag) and
   `users/{uid}/keys/{k1..k5}` API keys (hash + prefix only, free plan only), email preferences and
   `users/{uid}/requests/{api-pro|api-business}` upgrade requests (file / cancel only). New accounts get a welcome email from
   the sign-ups Apps Script (kept outside the repo; never commit it): the sign-in page posts the uid (`app/lib/welcome.ts`),

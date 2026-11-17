@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.7",
+  "date": "2026-11-17",
+  "notes": [
+   "Accounts are for ages 18 and over: after you sign in, the app asks for your date of birth once (only a note that you're 18+ is kept)",
+   "Updated terms and privacy policy"
+  ]
+ },
+ {
   "version": "0.3.6",
   "date": "2026-11-17",
   "notes": [

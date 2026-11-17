@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Shell";
 import { auth, useUser } from "@/lib/firebase";
-import { welcome } from "@/lib/welcome";
+import { blockedUntil, MIN_AGE } from "@/lib/age";
 import { track } from "@/lib/analytics";
 import { explain } from "@/lib/auth-messages";
 
@@ -30,8 +30,10 @@ export default function Login() {
   const [info, setInfo] = useState<string | null>(null);
   const [emailOpen, setEmailOpen] = useState(false);
 
-  // wait while a sign-in is in flight, so a new account's welcome request goes out first
-  useEffect(() => { if (user && !busy) { welcome(user); window.location.replace(next()); } }, [user, busy]);
+  // the 18+ check (components/AgeGate) runs on the next page; the welcome email waits for it
+  useEffect(() => { if (user && !busy) window.location.replace(next()); }, [user, busy]);
+  const [blocked, setBlocked] = useState<Date | null>(null);
+  useEffect(() => setBlocked(blockedUntil()), []);
 
   const run = async (f: () => Promise<unknown>) => {
     setBusy(true); setErr(null); setInfo(null);
@@ -42,11 +44,11 @@ export default function Login() {
     track(getAdditionalUserInfo(cred)?.isNewUser ? "sign_up" : "login", { method });
     return cred;
   };
-  const google = () => run(async () => welcome(signedIn(await signInWithPopup(auth(), new GoogleAuthProvider()), "google")));
+  const google = () => run(async () => signedIn(await signInWithPopup(auth(), new GoogleAuthProvider()), "google"));
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => welcome(signedIn(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
-                                                   : await createUserWithEmailAndPassword(auth(), email, password), "email")));
+    run(async () => signedIn(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
+                                           : await createUserWithEmailAndPassword(auth(), email, password), "email"));
   };
   const reset = () => {
     if (!email) { setErr("Enter your email first, then press “Forgot password”."); return; }
@@ -62,6 +64,8 @@ export default function Login() {
                                                 : "Sign in to open MatchSynth Lab and manage your account."}</p>
         {err && <div className="error-box" role="alert">{err}</div>}
         {info && <div className="error-box info" role="status">{info}</div>}
+        {blocked ? <div className="error-box" role="alert">Accounts are for people aged {MIN_AGE} and over, so sign-in is closed on this device for now.</div> : <>
+        <p className="small muted" style={{ margin: "0 0 12px" }}>You must be {MIN_AGE} or older to create an account.</p>
         <button type="button" className="google-btn" onClick={google} disabled={busy}>
           {busy ? <span className="spinner" /> : (
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
@@ -91,9 +95,10 @@ export default function Login() {
             </p>
           </form>
         )}
+        </>}
         <div className="divider" />
         <p className="login-footer">
-          By signing in you agree to our <a href="/terms/">Terms of Service</a> and <a href="/privacy/">Privacy Policy</a>.
+          By signing in you confirm you are {MIN_AGE} or older and agree to our <a href="/terms/">Terms of Service</a> and <a href="/privacy/">Privacy Policy</a>.
         </p>
         <p className="login-footer login-dev">
           Building with cricket data? <a href="/developers/">Explore the API</a> or <a href="/contact/">talk to our team</a> about

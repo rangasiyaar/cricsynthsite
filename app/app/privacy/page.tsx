@@ -17,6 +17,11 @@ export default function Privacy() {
       <ul>
         <li><b>Account details.</b> When you sign in with Google or with email and password we receive your name, email address,
           profile picture (Google only) and a user ID. Passwords are handled by our sign-in provider; we never see them.</li>
+        <li id="age"><b>Age confirmation.</b> Accounts are for people aged 18 and over. When you first sign in we ask for your
+          date of birth and check it on your device: we keep only a record that you confirmed you are 18 or over, and when.
+          Your date of birth itself is not stored or sent to us. If the date shows you are under 18, the sign-in is deleted
+          straight away and we keep nothing about you; your device remembers, on the device only, not to allow a new sign-up
+          until your 18th birthday.</li>
         <li><b>Profile and preferences.</b> Details you add to your profile and your email preferences.</li>
         <li><b>Account activity.</b> When your account was created and last signed in, daily counts of how much you use your
           account's features (API and AI-assistant connector calls, per key and per endpoint or tool), the API keys you create
@@ -59,12 +64,12 @@ export default function Privacy() {
       <div className="table-wrap"><table>
         <thead><tr><th>Name</th><th>Set by</th><th>Purpose</th><th>Kept for</th><th>Optional?</th></tr></thead>
         <tbody>
-          <tr><td>_ga, _ga_*</td><td>Google Analytics</td><td>Tells visits apart and counts returning visitors, anonymously</td><td>Up to 13 months</td><td>Yes (Analytics)</td></tr>
-          <tr><td>_clck, _clsk, CLID, MUID</td><td>Microsoft Clarity</td><td>Links pages of one visit for recordings and heatmaps</td><td>_clsk 1 day; others up to 1 year</td><td>Yes (Session recordings)</td></tr>
-          <tr><td>cs-consent (browser storage)</td><td>CricSynthesis</td><td>Remembers your cookie choice</td><td>12 months</td><td>No</td></tr>
-          <tr><td>cs-theme (browser storage)</td><td>CricSynthesis</td><td>Light or dark theme</td><td>Until cleared</td><td>No</td></tr>
-          <tr><td>Firebase sign-in (browser storage)</td><td>Firebase Authentication</td><td>Keeps you signed in</td><td>Until you sign out</td><td>No</td></tr>
-          <tr><td>__Host-cs_admin</td><td>CricSynthesis (admin console only)</td><td>Staff sign-in session</td><td>8 hours</td><td>No</td></tr>
+          <tr><td data-label="Name">_ga, _ga_*</td><td data-label="Set by">Google Analytics</td><td data-label="Purpose">Tells visits apart and counts returning visitors, anonymously</td><td data-label="Kept for">Up to 13 months</td><td data-label="Optional?">Yes (Analytics)</td></tr>
+          <tr><td data-label="Name">_clck, _clsk, CLID, MUID</td><td data-label="Set by">Microsoft Clarity</td><td data-label="Purpose">Links pages of one visit for recordings and heatmaps</td><td data-label="Kept for">_clsk 1 day; others up to 1 year</td><td data-label="Optional?">Yes (Session recordings)</td></tr>
+          <tr><td data-label="Name">cs-consent (browser storage)</td><td data-label="Set by">CricSynthesis</td><td data-label="Purpose">Remembers your cookie choice</td><td data-label="Kept for">12 months</td><td data-label="Optional?">No</td></tr>
+          <tr><td data-label="Name">cs-theme (browser storage)</td><td data-label="Set by">CricSynthesis</td><td data-label="Purpose">Light or dark theme</td><td data-label="Kept for">Until cleared</td><td data-label="Optional?">No</td></tr>
+          <tr><td data-label="Name">Firebase sign-in (browser storage)</td><td data-label="Set by">Firebase Authentication</td><td data-label="Purpose">Keeps you signed in</td><td data-label="Kept for">Until you sign out</td><td data-label="Optional?">No</td></tr>
+          <tr><td data-label="Name">__Host-cs_admin</td><td data-label="Set by">CricSynthesis (admin console only)</td><td data-label="Purpose">Staff sign-in session</td><td data-label="Kept for">8 hours</td><td data-label="Optional?">No</td></tr>
         </tbody>
       </table></div>
       <p>The Android app does not use these cookies; if it adds analytics, it will ask for your consent in the app first.</p>
@@ -111,8 +116,10 @@ export default function Privacy() {
         before acting, and we respond within 30 days.</p>
 
       <h2>7. Children</h2>
-      <p>CricSynthesis is meant for people aged 18 and over. Under-18s may use an account only with the verifiable consent of a
-        parent or guardian. If you believe a child has given us personal data without that consent, contact us and we'll delete it.</p>
+      <p>CricSynthesis accounts are only for people aged 18 and over, and we don&apos;t knowingly process personal data of anyone
+        under 18. We check age when an account is first used (see &quot;Age confirmation&quot; above) and decline anyone under 18
+        without keeping their details. If you believe someone under 18 has an account or has given us personal data, contact
+        us and we&apos;ll delete it promptly.</p>
 
       <h2>8. Security</h2>
       <p>All traffic is encrypted with TLS. API keys are stored only as hashes, and access to systems that hold personal data is

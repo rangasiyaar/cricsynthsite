@@ -360,8 +360,24 @@ body .legal-content li::marker { color: var(--cs-steel); }
 body .legal-content strong { color: var(--cs-ink); font-weight: 600; }
 body .legal-content a { color: var(--cs-steel-700); text-decoration: underline; text-underline-offset: 3px; }
 body .legal-content a:hover { color: var(--cs-steel-800); }
+body .legal-content { min-width: 0; overflow-wrap: anywhere; }
+body .legal-content .table-wrap { margin: 0 0 18px; max-width: 100%; }
+body .legal-content table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+body .legal-content th, body .legal-content td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--cs-line); white-space: normal; }
+body .legal-content th { font-weight: 600; color: var(--cs-ink); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+@media (max-width: 640px) {   /* tables become one card per row, each value with its column name */
+  body .legal-content { font-size: 16px; }
+  body .legal-content h2 { font-size: 24px; margin-top: 36px; }
+  body .legal-content .table-wrap { border: 0; overflow: visible; }
+  body .legal-content table, body .legal-content tbody, body .legal-content tr, body .legal-content td { display: block; width: 100%; }
+  body .legal-content thead { display: none; }   /* each value carries its column name (data-label) */
+  body .legal-content tr { border: 1px solid var(--cs-line); padding: 6px 12px; margin: 0 0 12px; }
+  body .legal-content td { border: 0; padding: 6px 0; white-space: normal; }
+  body .legal-content td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--cs-ink-3); }
+  body .legal-content td:first-child { font-weight: 600; color: var(--cs-ink); }
+}
 @media (max-width: 860px) {
-  body .legal-page { grid-template-columns: 1fr; }
+  body .legal-page { grid-template-columns: minmax(0, 1fr); }
   body .legal-header { position: static; }
 }
 

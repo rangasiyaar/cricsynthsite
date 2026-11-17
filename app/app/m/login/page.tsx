@@ -11,7 +11,7 @@ import { explain } from "@/lib/auth-messages";
 import { auth, useUser } from "@/lib/firebase";
 import { hasNativeGoogle, isNative, signInWithGoogleNative } from "@/lib/native";
 import { SITE } from "@/lib/seo";
-import { welcome } from "@/lib/welcome";
+import { blockedUntil, MIN_AGE } from "@/lib/age";
 
 /** Where to go after signing in: only an app screen. */
 function next(): string {
@@ -35,18 +35,21 @@ export default function AppLogin() {
 
   // Google needs the native plugin inside the app; without it the app offers email only.
   useEffect(() => { const g = !isNative() || hasNativeGoogle(); setGoogle(g); if (!g) setEmailOpen(true); }, []);
-  useEffect(() => { if (user && !busy) { welcome(user); router.replace(next()); } }, [user, busy, router]);
+  // the 18+ check (components/AgeGate) runs on the next screen; the welcome email waits for it
+  useEffect(() => { if (user && !busy) router.replace(next()); }, [user, busy, router]);
+  const [blocked, setBlocked] = useState<Date | null>(null);
+  useEffect(() => setBlocked(blockedUntil()), []);
 
   const run = async (f: () => Promise<unknown>) => {
     setBusy(true); setErr(null); setInfo(null);
     try { await f(); } catch (e) { setErr(explain(e)); } finally { setBusy(false); }
   };
-  const withGoogle = () => run(async () => welcome(isNative() ? await signInWithGoogleNative()
-                                                              : await signInWithPopup(auth(), new GoogleAuthProvider())));
+  const withGoogle = () => run(async () => (isNative() ? await signInWithGoogleNative()
+                                                       : await signInWithPopup(auth(), new GoogleAuthProvider())));
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => welcome(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
-                                          : await createUserWithEmailAndPassword(auth(), email, password)));
+    run(async () => (mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
+                                   : await createUserWithEmailAndPassword(auth(), email, password)));
   };
   const reset = () => {
     if (!email) { setErr("Enter your email first, then press “Forgot password”."); return; }
@@ -63,6 +66,7 @@ export default function AppLogin() {
       <div className="a-login-form">
         {err && <div className="a-msg" role="alert">{err}</div>}
         {info && <div className="a-msg info" role="status">{info}</div>}
+        {blocked ? <div className="a-msg" role="alert">Accounts are for people aged {MIN_AGE} and over, so sign-in is closed on this device for now.</div> : <>
         {google && (
           <button type="button" className="a-btn soft" onClick={withGoogle} disabled={busy}>
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
@@ -93,10 +97,11 @@ export default function AppLogin() {
             </div>
           </form>
         )}
+        </>}
         <Link href="/m/matches/" className="a-btn plain">Skip for now</Link>
       </div>
       <p className="a-login-foot">
-        Forecasts are free without an account. By signing in you agree to our <a href={`${SITE}/terms/`}>Terms of Service</a> and <a href={`${SITE}/privacy/`}>Privacy Policy</a>.
+        Forecasts are free without an account. Accounts are for ages {MIN_AGE}+: by signing in you confirm you are {MIN_AGE} or older and agree to our <a href={`${SITE}/terms/`}>Terms of Service</a> and <a href={`${SITE}/privacy/`}>Privacy Policy</a>.
       </p>
     </div>
   );

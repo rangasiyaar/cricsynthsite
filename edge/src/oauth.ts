@@ -3,6 +3,8 @@
 // Users sign in on the website (cricsynthesis.in/connect, Firebase Auth) and approve the client; this Worker checks
 // the Firebase ID token itself. Everything it hands out (client ids, codes, tokens) is HMAC-signed and self-contained,
 // so nothing is stored. Codes live 5 minutes and are bound to the client's PKCE verifier.
+import { Firestore } from "./google.ts";
+
 type Row = Record<string, any>;
 
 const SITE = "https://cricsynthesis.in";
@@ -169,6 +171,10 @@ export async function complete(env: OAuthEnv, body: Row): Promise<string> {
     return u.toString();
   }
   const user = await firebaseUser(env, String(body.id_token || ""));
+  // accounts are for people aged 18 and over: the website asks once after sign-in (components/AgeGate.tsx)
+  if (env.GOOGLE_SA && !(await new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT).isAdult(user.uid).catch(() => false))) {
+    throw new OAuthError("access_denied", "Confirm your age on CricSynthesis first: accounts are for people aged 18 and over.", 403);
+  }
   u.searchParams.set("code", await sign(env, { typ: "code", uid: user.uid, cid: r.cid, ru: r.ru, cc: r.cc, aud: r.aud,
                                                exp: now() + CODE_TTL }));
   return u.toString();

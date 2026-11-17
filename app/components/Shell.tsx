@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth, useUser } from "@/lib/firebase";
 import { AppPromo } from "@/components/AppPromo";
+import AgeGate from "@/components/AgeGate";
 import ConsentBanner from "@/components/Consent";
 import { openConsent } from "@/lib/consent";
 
@@ -127,8 +128,8 @@ export function Nav() {
 /** The site's nav and footer around a page. App screens (/m/…, the Android app) draw their own top bar instead. */
 export function SiteFrame({ children }: { children: React.ReactNode }) {
   const path = usePathname() || "/";
-  if (path === "/m" || path.startsWith("/m/")) return <main className="app-wrap">{children}</main>;
-  return <><Nav /><main className="cs-wrap">{children}</main><Footer /><AppPromo /><ConsentBanner /></>;
+  if (path === "/m" || path.startsWith("/m/")) return <><main className="app-wrap">{children}</main><AgeGate /></>;
+  return <><Nav /><main className="cs-wrap">{children}</main><Footer /><AppPromo /><ConsentBanner /><AgeGate /></>;
 }
 
 export function Footer() {
