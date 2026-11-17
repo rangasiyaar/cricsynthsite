@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Yas Lions won the toss and bowl first.",
   "teams": [
     {
       "name": "Yas Lions",
@@ -22,11 +22,11 @@
         "Andries Gous",
         "Dasun Shanaka",
         "Tom Moores",
-        "Ansh Tandon",
+        "Masood Gurbaz",
         "Karim Janat",
         "Jason Holder",
         "David Willey",
-        "Fazalhaq Farooqi",
+        "Aryan Dutt",
         "Akeal Hosein",
         "Awais Ahmad"
       ],
@@ -63,9 +63,9 @@
       "short": "ARA",
       "players": [
         "Paul Walter",
-        "Tom Kohler-Cadmore",
-        "Liam Livingstone",
         "Moeen Ali",
+        "Quentin Sampson",
+        "Liam Livingstone",
         "Andre Russell",
         "Sam Billings",
         "Alishan Sharafu",
@@ -76,11 +76,11 @@
       ],
       "roles": [
         "AR",
-        "WK",
-        "AR",
-        "AR",
         "AR",
         "BAT",
+        "AR",
+        "AR",
+        "WK",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41637,
     "url": "https://khelnow.com/live-cricket-score/yas-lions-vs-arabian-aces-abu-dhabi-t10-league-17th-november-2026-41637",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
