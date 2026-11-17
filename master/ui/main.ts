@@ -334,7 +334,7 @@ async function ux() {
 
 // ── search (Google Search Console) ──
 async function search() {
-  const s = await api("/api/search");
+  const [s, b] = await Promise.all([api("/api/search"), api("/api/bing").catch((e): Row => ({ errors: [String(e.message)] }))]);
   const delta = (a: number | null, b: number | null, lowerBetter = false) => {
     if (a == null || b == null || !b) return "";
     const d = (a - b) / b, good = lowerBetter ? d < 0 : d > 0;
@@ -345,7 +345,7 @@ async function search() {
   const cols: Col<Row>[] = [{ key: "key", label: "", render: (r) => esc(r.key.replace(/^https?:\/\/[^/]+/, "") || r.key) },
     { key: "clicks", label: "Clicks", num: true, render: (r) => n(r.clicks) }, { key: "impressions", label: "Impressions", num: true, render: (r) => n(r.impressions) },
     { key: "ctr", label: "CTR", num: true, render: (r) => pct(r.ctr, 1) }, { key: "position", label: "Position", num: true, render: (r) => pos(r.position) }];
-  main().innerHTML = head("Search (Google)") + `<p class="muted">${esc(s.site || "")} · last 28 days · Google's data lags 2–3 days · updated ${ago(s.built)} ·
+  main().innerHTML = head("Search (Google and Bing)") + `<p class="muted">${esc(s.site || "")} · last 28 days · Google's data lags 2–3 days · updated ${ago(s.built)} ·
       <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=${encodeURIComponent(s.site || "")}" target="_blank" rel="noopener">Open Search Console</a></p>`
     + (s.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${s.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
     <div class="tiles">
@@ -360,6 +360,14 @@ async function search() {
     <section class="card"><h2>Top pages</h2><div id="p"></div></section>
     <div class="grid2"><section class="card"><h2>Countries</h2><div id="c"></div></section>
       <section class="card"><h2>Devices</h2><div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2><div id="sm"></div></section></div>`;
+  main().insertAdjacentHTML("beforeend", `<h2 class="sec">Bing</h2>${b.errors?.length ? `<div class="warn"><ul>${b.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
+    ${b.daily ? `<div class="tiles">${tile("Bing clicks (7 days)", n(b.last7?.clicks), `${n(b.total?.clicks)} in the period`)}${tile("Bing impressions (7 days)", n(b.last7?.impressions), `${n(b.total?.impressions)} in the period`)}</div>
+      ${b.daily.length ? `<section class="card">${bars(b.daily.slice(-30), [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Bing clicks per day" })}</section>` : ""}
+      <div class="grid2"><section class="card"><h2>Bing queries</h2><div id="bq"></div></section><section class="card"><h2>Bing pages</h2><div id="bp"></div></section></div>` : ""}`);
+  if (b.daily) {
+    table($("#bq")!, cols, b.queries || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing queries yet." });
+    table($("#bp")!, cols, b.pages || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing pages yet." });
+  }
   table($("#q")!, cols, s.queries || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No search queries yet." });
   table($("#p")!, cols, s.pages || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No pages with impressions yet." });
   table($("#c")!, cols, s.countries || [], { initial: { key: "clicks", desc: true } });
@@ -437,7 +445,7 @@ function vitalsHtml(v: Row) {
 
 // ── health ──
 async function health() {
-  const [h, up, m] = await Promise.all([api("/api/health"), api("/api/uptime").catch((e) => ({ error: String(e.message) })), api("/api/meters").catch((e) => ({ errors: [String(e.message)] }))]);
+  const [h, up, m] = await Promise.all([api("/api/health"), api("/api/uptime").catch((e): Row => ({ error: String(e.message) })), api("/api/meters").catch((e): Row => ({ errors: [String(e.message)] }))]);
   const files = h.build?.files as number | undefined;
   const runBadge = (r: Row) => !r.last ? badge(r.error ? "Unknown" : "No runs", "plain")
     : r.last.status !== "completed" ? badge("Running", "info") : r.last.conclusion === "success" ? badge("Passed", "good")

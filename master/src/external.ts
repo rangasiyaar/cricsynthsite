@@ -316,3 +316,31 @@ export async function meters(env: Env, google: { dailySum: (m: string, d: number
     row("Worker requests (all Workers)", workers, FREE.workerRequests, "per day, UTC; over it requests fail, never billed"),
   ] };
 }
+
+// ── Bing Webmaster Tools (clicks, impressions, top queries and pages; Bing's index also feeds ChatGPT search) ──
+const bingDate = (v: string) => { const m = /\/Date\((\d+)/.exec(String(v)); return m ? new Date(Number(m[1])).toISOString().slice(0, 10) : String(v).slice(0, 10); };
+export function bingShape(traffic: any, queries: any, pages: any) {
+  const d = (x: any) => (x?.d || []) as Row[];
+  const daily = d(traffic).map((r) => ({ day: bingDate(r.Date), clicks: Number(r.Clicks || 0), impressions: Number(r.Impressions || 0) }))
+    .sort((a, b) => a.day.localeCompare(b.day));
+  const row = (r: Row) => ({ key: r.Query, clicks: Number(r.Clicks || 0), impressions: Number(r.Impressions || 0),
+    ctr: Number(r.Impressions) ? Number(r.Clicks || 0) / Number(r.Impressions) : null, position: r.AvgImpressionPosition ?? r.AvgClickPosition ?? null });
+  const sum = (rows: typeof daily, k: "clicks" | "impressions") => rows.reduce((s, x) => s + x[k], 0);
+  return { daily, last7: { clicks: sum(daily.slice(-7), "clicks"), impressions: sum(daily.slice(-7), "impressions") },
+           total: { clicks: sum(daily, "clicks"), impressions: sum(daily, "impressions") },
+           queries: d(queries).map(row).sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions).slice(0, 50),
+           pages: d(pages).map(row).sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions).slice(0, 50) };
+}
+export async function bing(env: Env) {
+  if (!env.BING_API_KEY) return { errors: ["Bing isn't connected yet (add the BING_API_KEY secret)"] };
+  const site = encodeURIComponent(`https://${env.SITE_HOST || "cricsynthesis.in"}/`);
+  const call = async (m: string) => {
+    const r = await fetch(`https://ssl.bing.com/webmaster/api.svc/json/${m}?siteUrl=${site}&apikey=${encodeURIComponent(env.BING_API_KEY!)}`);
+    if (!r.ok) throw new Error(`bing ${m} ${r.status}`);
+    return r.json();
+  };
+  const errors: string[] = [];
+  const get = (m: string) => call(m).catch((e) => { errors.push(String(e.message)); return null; });
+  const [t, q, p] = await Promise.all([get("GetRankAndTrafficStats"), get("GetQueryStats"), get("GetPageStats")]);
+  return { built: new Date().toISOString(), ...bingShape(t, q, p), errors };
+}

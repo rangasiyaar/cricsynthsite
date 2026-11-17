@@ -225,3 +225,14 @@ test("meters: Monitoring permission missing is explained, Worker requests summed
   const m2 = await meters({} as any, g2, new Date("2026-11-17T10:00:00Z"));
   assert.equal(m2.meters[0].share, 0.8);
 });
+
+test("Bing Webmaster shaping and the route is gated", async () => {
+  const { bingShape } = await import("../src/external.ts");
+  const b = bingShape({ d: [{ Date: "/Date(1763337600000-0800)/", Clicks: 3, Impressions: 40 }, { Date: "/Date(1763251200000-0800)/", Clicks: 1, Impressions: 10 }] },
+    { d: [{ Query: "cricket prediction", Clicks: 2, Impressions: 30, AvgImpressionPosition: 7.5 }] }, null);
+  assert.equal(b.daily.length, 2);
+  assert.ok(b.daily[0].day < b.daily[1].day);
+  assert.equal(b.last7.clicks, 4);
+  assert.equal(b.queries[0].ctr, 2 / 30);
+  assert.equal((await call("/api/bing")).status, 401);
+});
