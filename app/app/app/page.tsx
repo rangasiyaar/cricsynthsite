@@ -21,7 +21,7 @@ const FAQ: [string, React.ReactNode][] = [
   ["Why isn't it on the Play Store?", "It will be. Until then you install it straight from this page, which Android allows once you say yes to installs from your browser."],
   ["Is it safe to install?", "Every version is signed with the same CricSynthesis key, so Android will only ever update it with a build from us. It needs no special permissions."],
   ["How do I update it?", "The app tells you when a new version is out: tap Update and install. You can also download it again from this page. It updates in place and keeps your sign-in and settings."],
-  ["Is it free?", <>Yes. The match centre is free, and MatchSynth Lab is part of Pro, which every signed-in account gets free during the beta. See <Link href="/pricing/">plans</Link>.</>],
+  ["Is it free?", <>Yes. Every match's Overview is free; the rest of the match centre and MatchSynth Lab are part of Pro, which every signed-in account gets free during the beta. See <Link href="/pricing/">plans</Link>.</>],
   ["I have an iPhone.", "There's no iPhone app yet. The website works the same way: in Safari tap Share, then Add to Home Screen, and it opens like an app."],
 ];
 

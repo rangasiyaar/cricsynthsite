@@ -1,7 +1,7 @@
 # CricSynthesis — Project Guide
 
-Cricket simulation & analytics platform. Fans get a free match centre (Pro adds
-the full Scenario Lab); businesses get one analytics / simulation / graphics API.
+Cricket simulation & analytics platform. Fans get each match's Overview free (Pro adds
+the other match-centre tabs and the full Scenario Lab; `isProSection` in `components/MatchCentre.tsx`); businesses get one analytics / simulation / graphics API.
 We sell analytics and projections, never live scores or raw data.
 **Zero-spend policy:** everything must fit Google Cloud / Firebase free tiers —
 read `infra/COSTS.md` before adding any cloud resource.

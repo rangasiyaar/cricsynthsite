@@ -593,7 +593,7 @@ const CHECK = svg("M5 12l5 5L20 7", 18);
 
 /** What Pro adds and the plans, before anything else: guests then sign in (and come straight back here); accounts
  *  without Pro see how to get it. */
-export function ProPaywall({ signedIn }: { signedIn: boolean }) {
+export function ProPaywall({ signedIn, centre = false }: { signedIn: boolean; centre?: boolean }) {
   const router = useRouter();
   const here = typeof window === "undefined" ? "/m/matches/" : window.location.pathname + window.location.search;
   const free = TIERS.find((t) => t.id === "free")!, pro = TIERS.find((t) => t.id === "pro")!;
@@ -602,12 +602,12 @@ export function ProPaywall({ signedIn }: { signedIn: boolean }) {
       <div className="a-paywall-hero">
         <span className="a-paywall-icon">{Icon.lab}</span>
         <div className="a-eyebrow" style={{ justifyContent: "center" }}>For subscribers <span className="a-pro">Pro</span></div>
-        <h1>MatchSynth Lab</h1>
-        <p>Change the match. See what moves.</p>
+        <h1>{centre ? "Full match centre" : "MatchSynth Lab"}</h1>
+        <p>{centre ? "Every section of every match, plus the Lab. The Overview stays free." : "Change the match. See what moves."}</p>
       </div>
       <ul className="a-paywall-list">
         {pro.lines.filter((l) => !l.startsWith("Everything")).map((l) => <li key={l}><span>{CHECK}</span>{l}</li>)}
-        <li><span>{CHECK}</span>Fantasy picks rebuilt for your scenario</li>
+        {!centre && <li><span>{CHECK}</span>Fantasy picks rebuilt for your scenario</li>}
       </ul>
       <div className="a-group-label">Plans</div>
       <div className="a-plans">
@@ -641,14 +641,14 @@ export function ProPaywall({ signedIn }: { signedIn: boolean }) {
 
 /** Pages for signed-in accounts send guests to sign-in (and back afterwards). Pro pages show what Pro adds and the
  *  plans first (ProPaywall), to guests and to accounts without Pro alike. */
-export function AppGate({ children, pro = false }: { children: React.ReactNode; pro?: boolean }) {
+export function AppGate({ children, pro = false, centre = false }: { children: React.ReactNode; pro?: boolean; centre?: boolean }) {
   const { user, plan } = usePlan();
   const router = useRouter();
   useEffect(() => {
     if (user === null && !pro) router.replace(`/m/login/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
   }, [user, router, pro]);
   if (plan === undefined) return <Loading rows={2} />;
-  if (pro && plan !== "pro") return <ProPaywall signedIn={!!user} />;
+  if (pro && plan !== "pro") return <ProPaywall signedIn={!!user} centre={centre} />;
   if (user === null) return <Loading rows={2} />;
   return <>{children}</>;
 }

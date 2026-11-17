@@ -4,9 +4,10 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, SwipeNav, TopBar, XiTag, fromSlug, preview, useFresh } from "@/components/App";
-import { SectionView, TAB_ICONS, sectionName, sectionsFor, type Section } from "@/components/MatchCentre";
+import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, SwipeNav, TopBar, XiTag, fromSlug, preview, useFresh } from "@/components/App";
+import { SectionView, TAB_ICONS, isProSection, sectionName, sectionsFor, type Section } from "@/components/MatchCentre";
 import { loadMatch, peekMatch } from "@/lib/data";
+import { usePlan } from "@/lib/firebase";
 import { FORMAT } from "@/lib/format";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
 import type { MatchDoc } from "@/lib/types";
@@ -14,6 +15,7 @@ import type { MatchDoc } from "@/lib/types";
 function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
   const id = encodeURIComponent(doc.match.id);
   const sections = sectionsFor(doc);
+  const pro = usePlan().plan === "pro";
   const left = countdown(kickoffMs(doc.match.date, doc.match.start_time), Date.now());
   return (
     <>
@@ -31,7 +33,8 @@ function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
       <Link href={`/m/lab/?id=${id}`} className="a-btn a-lab-open">{Icon.lab}<span>Open in MatchSynth Lab</span><span className="a-pro">Pro</span></Link>
       <MenuGroup label="Match centre">
         {sections.map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={sectionName(s)} sub={preview(doc, s) || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={<>{sectionName(s)}{!pro && isProSection(s) && <span className="a-pro">Pro</span>}</>}
+                   sub={(pro || !isProSection(s) ? preview(doc, s) : "") || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>
     </>
@@ -39,6 +42,11 @@ function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
 }
 
 function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
+  if (isProSection(section)) return <AppGate pro centre><SectionBody doc={doc} section={section} /></AppGate>;
+  return <SectionBody doc={doc} section={section} />;
+}
+
+function SectionBody({ doc, section }: { doc: MatchDoc; section: Section }) {
   const list = sectionsFor(doc), i = list.indexOf(section);
   const near = (d: number) => { const s = list[i + d]; return s ? `/m/match/?id=${encodeURIComponent(doc.match.id)}&s=${SLUG[s]}` : null; };
   return (
