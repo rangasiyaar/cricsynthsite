@@ -1,0 +1,69 @@
+name: Site domain on Cloudflare Pages
+# Points cricsynthesis.in and www at the Cloudflare Pages project: adds them as the project's custom domains and
+# replaces only their website records (A / AAAA / CNAME) with a proxied CNAME to the project's pages.dev address.
+# MX, TXT and every other record are left alone. Dry run by default: prints the current records and the plan.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Apply the change (otherwise a dry run)"
+        type: boolean
+        default: false
+permissions: { contents: read }
+jobs:
+  domain:
+    runs-on: ubuntu-latest
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      APPLY: ${{ inputs.apply }}
+    steps:
+      - name: Plan / apply
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.error, urllib.request
+          T, ACC, APPLY = os.environ["CF_TOKEN"], os.environ["CF_ACCOUNT"], os.environ["APPLY"] == "true"
+          ZONE_NAME, PROJECT = "cricsynthesis.in", "cricsynthesis-site"
+          HOSTS = [ZONE_NAME, "www." + ZONE_NAME]
+          def cf(method, path, body=None):
+              req = urllib.request.Request("https://api.cloudflare.com/client/v4" + path, method=method,
+                  data=json.dumps(body).encode() if body is not None else None,
+                  headers={"Authorization": f"Bearer {T}", "Content-Type": "application/json"})
+              try:
+                  return json.load(urllib.request.urlopen(req, timeout=60))
+              except urllib.error.HTTPError as e:
+                  return json.loads(e.read() or b"{}") | {"http": e.code}
+          z = cf("GET", f"/zones?name={ZONE_NAME}")
+          zone = z["result"][0]["id"]
+          proj = cf("GET", f"/accounts/{ACC}/pages/projects/{PROJECT}")["result"]
+          target = proj["subdomain"]                      # <project>.pages.dev
+          print("Pages address:", target.replace("cricsynthesis", "<name>"))
+          plan = []
+          for h in HOSTS:
+              recs = cf("GET", f"/zones/{zone}/dns_records?name={h}&per_page=100")["result"]
+              for r in recs:
+                  web = r["type"] in ("A", "AAAA", "CNAME")
+                  print(f"  {h:28} {r['type']:6} {r['content']:45} proxied={r.get('proxied')} {'<- replace' if web else '(kept)'}")
+                  if web:
+                      plan.append(("delete", h, r))
+              plan.append(("create", h, None))
+          print("\nPlan:", "; ".join(f"{a} {h}" + (f" {r['type']} {r['content']}" if r else f" CNAME {target.split('.')[0][:0]}<project>.pages.dev proxied") for a, h, r in plan))
+          if not APPLY:
+              print("\nDry run: nothing changed."); raise SystemExit(0)
+          for h in HOSTS:
+              r = cf("POST", f"/accounts/{ACC}/pages/projects/{PROJECT}/domains", {"name": h})
+              print("add custom domain", h, "ok" if r.get("success") else r.get("errors"))
+          for a, h, r in plan:
+              if a == "delete":
+                  x = cf("DELETE", f"/zones/{zone}/dns_records/{r['id']}")
+                  print("deleted", h, r["type"], r["content"], "ok" if x.get("success") else x.get("errors"))
+              else:
+                  x = cf("POST", f"/zones/{zone}/dns_records", {"type": "CNAME", "name": h, "content": target, "proxied": True, "ttl": 1})
+                  print("created", h, "CNAME -> pages.dev, proxied", "ok" if x.get("success") else x.get("errors"))
+          for _ in range(30):
+              st = {d["name"]: d.get("status") for d in cf("GET", f"/accounts/{ACC}/pages/projects/{PROJECT}/domains")["result"]}
+              print("domain status:", st)
+              if all(st.get(h) == "active" for h in HOSTS):
+                  break
+              time.sleep(20)
+          PY
