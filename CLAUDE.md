@@ -22,6 +22,7 @@ cricsynthsite/
 ├── edge/                      ← Hosted API + remote MCP on Cloudflare Workers (api. / mcp.cricsynthesis.in; infra/EDGE_PLAN.md)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 │                                 (app/app/m/ = the Android app's screens: splash, sign-in, matches, match, Lab, account)
+├── master/                    ← Admin console at master.cricsynthesis.in (Cloudflare Worker + static UI, read-only; deploy-master.yml)
 ├── mobile/                    ← Android app: Capacitor shell around app/app/m (see mobile/README.md; APK built in CI)
 ├── infra/                     ← bootstrap.sh, budget kill-switch, Firestore rules, cost limits
 ├── firebase.json              ← Hosting (app + api front door) and Firestore config
@@ -40,6 +41,7 @@ cricsynthsite/
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |
+| Admin console | Cloudflare Worker `master/` at master.cricsynthesis.in | Google sign-in → `ADMIN_EMAILS` → 8-h `__Host-` session cookie; reads Firebase Auth + Firestore with the API Worker's service account, Cloudflare analytics and GitHub; snapshot in `adminSnapshot/latest` (cron every 6 h); per-endpoint usage from `eps.*` in `users/{uid}/usage/{day}`. Read-only for now |
 | Android app | Capacitor (`mobile/`), APK from `android.yml` | Screens are `app/app/m/`; data from the site's `/data/` (CORS on); Google sign-in via the native Firebase plugin when `GOOGLE_SERVICES_JSON` is set |
 | Scenario Lab (MatchSynth Lab) | Runs in the browser (Web Worker) | Zero server cost; `lib/engine/full.ts` (browser port of `summary.py`) rebuilds every match-centre tab from the user's scenario |
 

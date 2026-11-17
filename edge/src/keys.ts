@@ -9,6 +9,7 @@ export const PLANS: Record<string, { daily_requests: number; max_simulations: nu
   pro: { daily_requests: 5_000, max_simulations: 20_000, watermark: false },
   business: { daily_requests: 50_000, max_simulations: 50_000, watermark: false },
 };
+export const MCP_DAILY = 200;             // MCP tool calls a day for a signed-in account (an API key uses its plan instead)
 // Keys we issue: "cs_live_" + 24–64 characters. Anything else is refused before any lookup.
 export const KEY_FORMAT = /^cs_live_[A-Za-z0-9_-]{24,64}$/;
 export const CATEGORY_SLUGS: Record<string, string> = { Analytics: "analytics", "Simulation & modelling": "simulation", Graphics: "graphics" };
@@ -64,11 +65,20 @@ export async function lookup(env: Env, key: string): Promise<Account | null> {
   return rec;
 }
 
+/** A short field-safe name for an endpoint or tool, for the per-endpoint usage counts the admin console reads:
+ *  "GET /v1/players/{id}/rating" → "players_rating", "POST /v1/simulate" → "post_simulate", MCP tool "par_score" → "mcp_par_score". */
+export function endpointSlug(method: string, path: string): string {
+  const parts = path.replace(/^\/v1\/?/, "").split("/").filter((p) => p && !p.startsWith("{"));
+  const s = (method.toUpperCase() === "GET" ? "" : method.toLowerCase() + "_") + (parts.join("_") || "root");
+  return s.toLowerCase().replace(/[^a-z0-9_]+/g, "_").replace(/^[^a-z]+/, "").slice(0, 64) || "other";
+}
+export const toolSlug = (tool: string) => ("mcp_" + tool.toLowerCase().replace(/[^a-z0-9_]+/g, "_")).slice(0, 64);
+
 /** Count one request for this key; returns today's count (UTC). */
-export async function hit(env: Env, acct: Account, category: string): Promise<number> {
+export async function hit(env: Env, acct: Account, category: string, endpoint = "other"): Promise<number> {
   const stub = env.USAGE.get(env.USAGE.idFromName(acct.hash));
   const r = await stub.fetch("https://usage/hit", { method: "POST", body: JSON.stringify(
-    { owner: acct.owner, slot: acct.slot, cat: CATEGORY_SLUGS[category] || "other" }) });
+    { owner: acct.owner, slot: acct.slot, cat: CATEGORY_SLUGS[category] || "other", ep: endpoint }) });
   return ((await r.json()) as { n: number }).n;
 }
 
@@ -78,7 +88,7 @@ export class Usage {
   constructor(state: DurableObjectState, env: Env) { this.state = state; this.env = env; }
 
   async fetch(req: Request): Promise<Response> {
-    const { owner, slot, cat } = await req.json() as { owner: string | null; slot: string | null; cat: string };
+    const { owner, slot, cat, ep } = await req.json() as { owner: string | null; slot: string | null; cat: string; ep?: string };
     const now = new Date();
     const day = now.toISOString().slice(0, 10);
     const st = this.state.storage;
@@ -88,9 +98,12 @@ export class Usage {
     await st.put("today", today);
     if (owner && slot && this.env.GOOGLE_SA) {
       const p = (await st.get<any>("pending")) || { owner, slot, days: {} };
-      const d = (p.days[day] ||= { total: 0, cats: {}, last: "" });
+      const d = (p.days[day] ||= { total: 0, cats: {}, eps: {}, last: "" });
       d.total += 1;
       d.cats[cat] = (d.cats[cat] || 0) + 1;
+      d.eps ||= {};
+      const e = ep && /^[a-z][a-z0-9_]{0,63}$/.test(ep) ? ep : "other";
+      d.eps[e] = (d.eps[e] || 0) + 1;
       d.last = now.toISOString();
       await st.put("pending", p);
       if ((await st.getAlarm()) == null) await st.setAlarm(Date.now() + 60_000);
@@ -104,14 +117,16 @@ export class Usage {
     await this.state.storage.delete("pending");
     const fs = new Firestore(this.env.GOOGLE_SA, this.env.FIRESTORE_PROJECT);
     try {
-      for (const [day, d] of Object.entries<any>(p.days)) await fs.addUsage(p.owner, day, p.slot, d.total, d.cats, d.last);
+      for (const [day, d] of Object.entries<any>(p.days)) await fs.addUsage(p.owner, day, p.slot, d.total, d.cats, d.last, d.eps || {});
     } catch {
       // never lose counts over a failed write: put them back and retry in a minute
       const again = (await this.state.storage.get<any>("pending")) || { owner: p.owner, slot: p.slot, days: {} };
       for (const [day, d] of Object.entries<any>(p.days)) {
-        const x = (again.days[day] ||= { total: 0, cats: {}, last: d.last });
+        const x = (again.days[day] ||= { total: 0, cats: {}, eps: {}, last: d.last });
         x.total += d.total;
         for (const [c, n] of Object.entries<number>(d.cats)) x.cats[c] = (x.cats[c] || 0) + n;
+        x.eps ||= {};
+        for (const [e, n] of Object.entries<number>(d.eps || {})) x.eps[e] = (x.eps[e] || 0) + n;
       }
       await this.state.storage.put("pending", again);
     }

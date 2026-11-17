@@ -6,7 +6,7 @@ export const metadata: Metadata = seo("/terms/", "Terms of service | CricSynthes
 
 export default function Terms() {
   return (
-    <Legal title="Terms of Service" subtitle="Effective 3 November 2026">
+    <Legal title="Terms of Service" subtitle="Effective 17 November 2026">
       <h2>1. Acceptance</h2>
       <p>These terms apply when you use the CricSynthesis website, the CricSynthesis app, an account, the API or the CricSynthesis
         tools for AI assistants (together, "the service"). CricSynthesis is currently operated by an individual based in India;
@@ -33,12 +33,17 @@ export default function Terms() {
       <h2>6. Accounts</h2>
       <p>You're responsible for activity under your account and for keeping your sign-in secure. Every signed-in account has Pro,
         including MatchSynth Lab, free during the launch beta. We'll give notice and show prices, billing terms and the refund
-        policy before any paid plan applies to you; nothing is charged without your agreement.</p>
+        policy before any paid plan applies to you; nothing is charged without your agreement. We keep a record of your account
+        and how it is used (see the <a href="/privacy/">privacy policy</a>), which our team may review to support you, manage
+        plans and keep the service working.</p>
 
       <h2>7. API and developer tools</h2>
       <ul>
         <li><b>Keys.</b> Keep API keys confidential and server-side. You are responsible for requests made with your key.</li>
         <li><b>Limits.</b> Usage is subject to the limits of your plan. Don't try to get around them or overload the service.</li>
+        <li><b>Monitoring.</b> We count requests and tool calls per key, per account and per endpoint to apply plan limits, show
+          your usage in your dashboard and detect misuse. We may contact you about your usage, for example when you regularly
+          reach your plan's limit.</li>
         <li><b>Caching.</b> You may cache responses for your own service within the cache times we return.</li>
         <li><b>Graphics.</b> You may publish graphics returned by the API in your own products, with the attribution your plan requires.</li>
         <li><b>Tools for AI assistants.</b> The downloadable package is licensed to you for use with your own account and plan.

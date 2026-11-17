@@ -152,3 +152,13 @@ test("player search: full names, initials and namesakes", async () => {
   const b = new Analytics({ get: async (p: string) => { if (p === "analytics/players.json") return players; throw new Error(p); } });
   assert.equal((await b.findPlayers("Rohit Sharma", 3))[0].id, "740742ef");
 });
+
+test("endpoint slugs for the admin usage counts", async () => {
+  const { endpointSlug, toolSlug } = await import("../src/keys.ts");
+  assert.equal(endpointSlug("GET", "/v1/players/{id}/rating"), "players_rating");
+  assert.equal(endpointSlug("POST", "/v1/simulate"), "post_simulate");
+  assert.equal(endpointSlug("GET", "/v1/matches/{id}"), "matches");
+  assert.equal(toolSlug("par_score"), "mcp_par_score");
+  const { routes } = await import("../src/api.ts");
+  for (const r of routes) assert.match(endpointSlug(r.method, r.path), /^[a-z][a-z0-9_]{0,63}$/, r.path);
+});

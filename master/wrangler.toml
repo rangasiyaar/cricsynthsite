@@ -1,0 +1,26 @@
+# CricSynthesis admin console (Cloudflare Workers, free plan). Deployed by .github/workflows/deploy-master.yml.
+# Secrets (set by the workflow): GOOGLE_SA, ADMIN_EMAILS, CF_API_TOKEN, CF_ACCOUNT_ID, GH_TOKEN (optional).
+name = "cricsynthesis-master"
+main = "src/index.ts"
+compatibility_date = "2025-10-01"
+workers_dev = false
+
+routes = [{ pattern = "master.cricsynthesis.in", custom_domain = true }]
+
+[vars]
+SITE_URL = "https://cricsynthesis.in"
+SITE_HOST = "cricsynthesis.in"
+GH_REPO = "rangasiyaar/cricsynthsite"
+GH_BRANCH = "claude/cricsynthesis-platform"
+API_SCRIPT = "cricsynthesis-api"
+
+# The console's pages (built from ui/ by `npm run build`); every request goes through the Worker so it can add the
+# security headers and keep /api private.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# Rebuild the snapshot every 6 hours (4 runs a day; the free plan allows 5 cron triggers per account).
+[triggers]
+crons = ["23 */6 * * *"]

@@ -1,0 +1,361 @@
+// CricSynthesis admin console: sign-in, hash routes and the read-only views.
+import { initializeApp } from "firebase/app";
+import { browserPopupRedirectResolver, GoogleAuthProvider, inMemoryPersistence, initializeAuth, signInWithPopup, signOut } from "firebase/auth";
+import { bars, ranked, wireTips } from "./charts.ts";
+import { type Col, table } from "./table.ts";
+import { $, $$, ago, badge, csv, day, download, esc, n, pct, provider, tile, when } from "./util.ts";
+
+type Row = Record<string, any>;
+const CONFIG = {   // the site's public Firebase web config (app/lib/firebase.ts)
+  apiKey: "AIzaSyCS3d9wd0kfNrQ5vZqXx1agjTqwCHKtLcU", authDomain: "cricsynthesis.firebaseapp.com", projectId: "cricsynthesis",
+  appId: "1:738796128383:web:805a11670433963e73d74a",
+};
+const S1 = "var(--s1)", S2 = "var(--s2)";
+const main = () => $("#main")!;
+let me: { email: string; exp: number } | null = null;
+let snap: Row | null = null;
+
+class ApiError extends Error { status: number; constructor(s: number, m: string) { super(m); this.status = s; } }
+async function api<T = Row>(path: string, init: RequestInit = {}): Promise<T> {
+  const r = await fetch(path, { credentials: "same-origin", ...init, headers: { "Content-Type": "application/json", ...(init.headers || {}) } });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401 && path !== "/api/session") { me = null; renderLogin("Your session ended. Sign in again."); }
+  if (!r.ok) throw new ApiError(r.status, (j as Row).detail || r.statusText);
+  return j as T;
+}
+
+// ── sign-in ──
+async function signIn() {
+  const btn = $<HTMLButtonElement>("#signin");
+  if (btn) btn.disabled = true;
+  try {
+    const auth = initializeAuth(initializeApp(CONFIG), { persistence: inMemoryPersistence, popupRedirectResolver: browserPopupRedirectResolver });
+    const cred = await signInWithPopup(auth, new GoogleAuthProvider().setCustomParameters({ prompt: "select_account" }));
+    const idToken = await cred.user.getIdToken();
+    await signOut(auth);                    // the console keeps its own session cookie, nothing in this browser
+    me = await api("/api/session", { method: "POST", body: JSON.stringify({ idToken }) });
+    start();
+  } catch (e) {
+    const m = (e as Error).message || String(e);
+    renderLogin(/unauthorized-domain/.test(m) ? "This address isn't an authorised sign-in domain in Firebase yet." : m.replace(/^Firebase: /, ""));
+  }
+}
+function renderLogin(msg = "") {
+  document.body.classList.add("out");
+  $("#app")!.innerHTML = `<div class="login"><img src="/logo-mark.svg" alt="" width="44" height="44"><h1>CricSynthesis Console</h1>
+    <p>Admins only. Sign in with your Google account.</p><button id="signin" class="btn">Sign in with Google</button>
+    ${msg ? `<p class="err">${esc(msg)}</p>` : ""}</div>`;
+  $("#signin")!.addEventListener("click", signIn);
+}
+
+// ── shell ──
+const NAV = [["", "Overview"], ["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"],
+             ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
+function shell() {
+  document.body.classList.remove("out");
+  $("#app")!.innerHTML = `<header class="top"><a href="#/" class="brand"><img src="/logo-mark.svg" alt="" width="26" height="26">CricSynthesis <b>Console</b></a>
+    <button class="menu" aria-label="Menu">☰</button><span class="who">${esc(me!.email)}</span><button id="out" class="btn ghost sm">Sign out</button></header>
+    <nav class="side">${NAV.map(([k, l]) => `<a href="#/${k}" data-k="${k}">${l}</a>`).join("")}<p class="ro">Read-only</p></nav>
+    <main id="main"></main>`;
+  $("#out")!.addEventListener("click", async () => { await api("/api/session", { method: "DELETE" }).catch(() => {}); me = null; renderLogin(); });
+  $(".menu")!.addEventListener("click", () => document.body.classList.toggle("nav-open"));
+}
+async function start() {
+  shell();
+  window.addEventListener("hashchange", route);
+  route();
+}
+async function route() {
+  document.body.classList.remove("nav-open");
+  const [, view = "", arg = ""] = location.hash.replace(/^#/, "").split("/");
+  $$(".side a").forEach((a) => a.classList.toggle("on", a.dataset.k === (view === "user" ? "users" : view)));
+  main().innerHTML = `<p class="loading">Loading…</p>`;
+  window.scrollTo(0, 0);
+  try {
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, traffic, health, accuracy };
+    await (views[view] || overview)(decodeURIComponent(arg));
+    wireTips(main());
+  } catch (e) {
+    if ((e as ApiError).status !== 401) main().innerHTML = `<p class="err">${esc((e as Error).message)}</p>`;
+  }
+}
+async function snapshot(force = false): Promise<Row> {
+  if (force) snap = await api("/api/refresh", { method: "POST" });
+  else if (!snap) snap = await api("/api/snapshot");
+  return snap!;
+}
+const head = (title: string, s?: Row, extra = "") => `<div class="head"><h1>${esc(title)}</h1>${s ? `<span class="built">Data as of ${ago(s.built)}
+  <button class="btn ghost sm" id="refresh">Refresh now</button></span>` : ""}${extra}</div>
+  ${s?.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${s.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}`;
+function wireRefresh() {
+  $("#refresh")?.addEventListener("click", async (e) => {
+    (e.target as HTMLButtonElement).disabled = true;
+    (e.target as HTMLButtonElement).textContent = "Refreshing…";
+    await snapshot(true).catch((x) => alert(x.message));
+    route();
+  });
+}
+const userLink = (uid: string, email: string | null) => `<a href="#/user/${encodeURIComponent(uid)}">${esc(email || uid)}</a>`;
+const planBadge = (p: string) => badge(p === "free" ? "Free" : p[0].toUpperCase() + p.slice(1), p === "free" ? "plain" : "good");
+
+// ── overview ──
+async function overview() {
+  const s = await snapshot(), t = s.totals;
+  main().innerHTML = head("Overview", s) + `<div class="tiles">
+    ${tile("Users", n(t.users), `+${n(t.signups.d7)} this week · ${n(t.verified)} verified`, "#/users")}
+    ${tile("Sign-ups", n(t.signups.d1), `today · ${n(t.signups.d7)} in 7 days · ${n(t.signups.d30)} in 30`)}
+    ${tile("Active users", n(t.active.d1), `today · ${n(t.active.d7)} in 7 days · ${n(t.active.d30)} in 30`)}
+    ${tile("Paid plans", n(t.plans.paid), `API Pro ${n(t.plans.api.pro)} · Business ${n(t.plans.api.business)} · Pro beta ${n(t.plans.website.beta)}`)}
+    ${tile("API keys", n(t.keys.active), `${n(t.keys.used7)} used this week · ${n(t.keys.revoked)} revoked`, "#/keys")}
+    ${tile("Calls today", n(t.calls.today), `${n(t.calls.d7)} in 7 days · ${n(t.calls.d30)} in 30`, "#/usage")}
+    ${tile("MCP connector", n(t.mcpUsers30), `accounts in 30 days · ${n(t.calls.mcp30)} tool calls`)}
+    ${tile("Open requests", n(t.requestsOpen), `${n(t.nearLimit)} keys near today's limit`, "#/requests")}
+  </div>
+  <div class="grid2">
+    <section class="card">${bars(s.series, [{ key: "api", label: "API", color: S1 }, { key: "mcp", label: "MCP", color: S2 }], { x: "day", title: "Calls per day (30 days)" })}</section>
+    <section class="card">${bars(s.series, [{ key: "signups", label: "Sign-ups", color: S1 }], { x: "day", title: "Sign-ups per day (30 days)" })}</section>
+  </div>
+  <div class="grid2"><section class="card"><h2>Newest accounts</h2><div id="new"></div></section>
+    <section class="card"><h2>Most active (30 days)</h2><div id="top"></div></section></div>`;
+  const cols: Col<Row>[] = [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) },
+                            { key: "created", label: "Joined", render: (r) => ago(r.created) }, { key: "calls30", label: "Calls 30d", num: true, render: (r) => n(r.calls30) }];
+  table($("#new")!, cols, s.users.slice(0, 10), { rowHref: (r) => `/user/${r.uid}` });
+  table($("#top")!, cols, s.users.filter((u: Row) => u.calls30).sort((a: Row, b: Row) => b.calls30 - a.calls30).slice(0, 10),
+        { rowHref: (r) => `/user/${r.uid}`, empty: "No API or MCP calls in the last 30 days." });
+  wireRefresh();
+}
+
+// ── users ──
+async function users() {
+  const s = await snapshot();
+  main().innerHTML = head("Users", s) + `<div class="filters">
+    <input id="q" type="search" placeholder="Search email, name, company or account ID" aria-label="Search">
+    <select id="f-plan" aria-label="Plan"><option value="">All plans</option><option value="paid">Paid</option><option value="free">Free API plan</option><option value="pro">API Pro</option><option value="business">API Business</option></select>
+    <select id="f-use" aria-label="Activity"><option value="">Any activity</option><option value="keys">Has API keys</option><option value="calls">Made calls (30d)</option><option value="mcp">Used MCP (30d)</option><option value="active7">Seen in 7 days</option><option value="req">Open request</option><option value="noauth">Not in Firebase Auth</option></select>
+    <span id="count" class="muted"></span><button id="csv" class="btn ghost sm">Export CSV</button></div><div id="tbl"></div>`;
+  const cols: Col<Row>[] = [
+    { key: "email", label: "Account", render: (r) => `<span class="who-cell">${r.photo ? `<img src="${esc(r.photo)}" alt="" width="24" height="24" referrerpolicy="no-referrer">` : `<span class="av">${esc((r.email || r.uid)[0].toUpperCase())}</span>`}
+        <span>${userLink(r.uid, r.email)}${r.name ? `<small>${esc(r.name)}${r.company ? ` · ${esc(r.company)}` : ""}</small>` : ""}</span></span>` },
+    { key: "providers", label: "Sign-in", render: (r) => esc(provider(r.providers)), sort: (r) => r.providers.join() },
+    { key: "created", label: "Joined", render: (r) => `<span title="${esc(when(r.created))}">${day(r.created)}</span>` },
+    { key: "lastSeen", label: "Last seen", render: (r) => `<span title="${esc(when(r.lastSeen))}">${ago(r.lastSeen)}</span>` },
+    { key: "apiPlan", label: "Plan", render: (r) => `API ${planBadge(r.apiPlan)}${r.websitePlanSource === "assigned" ? " " + badge(`Site ${r.websitePlan}`, "good") : ""}${r.paid ? " " + badge("Paid", "info") : ""}`, sort: (r) => (r.paid ? 10 : 0) + ({ free: 0, pro: 1, business: 2 } as Row)[r.apiPlan] },
+    { key: "activeKeys", label: "Keys", num: true, render: (r) => n(r.activeKeys) },
+    { key: "mcpDays", label: "MCP", num: true, render: (r) => (r.mcpDays ? `${r.mcpDays} d` : "–") },
+    { key: "calls7", label: "Calls 7d", num: true, render: (r) => n(r.calls7) },
+    { key: "calls30", label: "Calls 30d", num: true, render: (r) => n(r.calls30) },
+    { key: "open", label: "", render: (r) => `<a class="btn ghost sm" href="#/user/${encodeURIComponent(r.uid)}">Open profile</a>`, sort: () => null },
+  ];
+  const since7 = new Date(Date.now() - 7 * 86400_000).toISOString();
+  const draw = () => {
+    const q = ($<HTMLInputElement>("#q")!.value || "").toLowerCase().trim();
+    const plan = $<HTMLSelectElement>("#f-plan")!.value, use = $<HTMLSelectElement>("#f-use")!.value;
+    const rows = (s.users as Row[]).filter((u) =>
+      (!q || [u.email, u.name, u.company, u.uid].some((x) => String(x || "").toLowerCase().includes(q)))
+      && (!plan || (plan === "paid" ? u.paid : u.apiPlan === plan))
+      && (!use || (use === "keys" ? u.activeKeys > 0 : use === "calls" ? u.calls30 > 0 : use === "mcp" ? u.mcpDays > 0
+                  : use === "active7" ? String(u.lastSeen || "") >= since7 : use === "req" ? u.requestsOpen > 0 : !u.inAuth)));
+    $("#count")!.textContent = `${n(rows.length)} of ${n(s.users.length)}`;
+    table($("#tbl")!, cols, rows, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "created", desc: true }, empty: "No accounts match." });
+    return rows;
+  };
+  let rows = draw();
+  ["#q", "#f-plan", "#f-use"].forEach((id) => $(id)!.addEventListener("input", () => { rows = draw(); }));
+  $("#csv")!.addEventListener("click", () => download(`cricsynthesis-users-${new Date().toISOString().slice(0, 10)}.csv`,
+    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "websitePlan", "apiPlan", "paid", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
+  wireRefresh();
+}
+
+// ── one user ──
+async function user(uid: string) {
+  const p = await api(`/api/user?uid=${encodeURIComponent(uid)}`), u = p.user, id = p.identity, sv = p.services;
+  const series = (p.usage.series as Row[]).map((d) => ({ day: d.day, api: d.total - Number(d.keys?.mcp || 0), mcp: Number(d.keys?.mcp || 0) }));
+  const paidTag = (paid: boolean) => badge(paid ? "Paid" : "Free", paid ? "good" : "plain");
+  main().innerHTML = `<p><a href="#/users" class="back">← All users</a></p>
+  <div class="profile-head">${id?.photo ? `<img src="${esc(id.photo)}" alt="" width="64" height="64" referrerpolicy="no-referrer">` : `<span class="av big">${esc((u.email || uid)[0].toUpperCase())}</span>`}
+    <div><h1>${esc(u.name || u.email || uid)}</h1><p>${esc(u.email || "No email")} ${u.verified ? badge("Verified", "good") : badge("Not verified", "warn")}
+      ${u.disabled ? badge("Disabled", "bad") : ""} ${!u.inAuth ? badge("Not in Firebase Auth", "warn") : ""}</p>
+      <p class="muted">Account ID <code>${esc(uid)}</code> <button class="btn ghost xs" id="copy">Copy</button> · Signs in with ${esc(provider(u.providers))}
+      · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p></div></div>
+  <h2 class="sec">Services and plan</h2>
+  <div class="tiles">
+    ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${sv.website.source === "beta" ? "Pro free during the beta" : "Assigned plan"}`)}
+    ${tile("API plan", planBadge(sv.api.plan), `${paidTag(sv.api.paid)} ${n(sv.api.activeKeys)} active key${sv.api.activeKeys === 1 ? "" : "s"} · ${n(sv.api.limit)} calls a day per key`)}
+    ${tile("MCP connector", sv.mcp.used ? "In use" : "Not used", sv.mcp.used ? `${n(sv.mcp.days)} days in 90 · last ${day(sv.mcp.lastDay)} · today ${n(sv.mcp.today)} / ${n(sv.mcp.limit)}` : "No connector calls in 90 days")}
+    ${tile("Usage", n(p.usage.today), `today · ${n(p.usage.calls7)} in 7 days · ${n(p.usage.calls30)} in 30`)}
+  </div>
+  <section class="card">${bars(series, [{ key: "api", label: "API keys", color: S1 }, { key: "mcp", label: "MCP connector", color: S2 }], { x: "day", title: "Calls per day (90 days)" })}</section>
+  <section class="card"><h2>API keys</h2><div id="keys"></div></section>
+  <div class="grid2"><section class="card"><h2>What they call (30 days)</h2>${ranked((p.usage.endpoints as Row[]).slice(0, 15).map((e) => ({ name: epName(e.ep), value: e.calls })))}
+      ${Object.keys(p.usage.cats).length ? `<p class="muted">By category: ${Object.entries(p.usage.cats).map(([c, v]) => `${esc(c)} ${n(v)}`).join(" · ")}</p>` : ""}</section>
+    <section class="card"><h2>Days at the daily limit</h2><div id="limits"></div></section></div>
+  <div class="grid2"><section class="card"><h2>Upgrade requests</h2><div id="reqs"></div></section>
+    <section class="card"><h2>Profile and email preferences</h2>${p.profile ? `<dl class="dl">
+      <dt>Company</dt><dd>${esc(p.profile.company || "–")}</dd><dt>Use case</dt><dd>${esc(p.profile.useCase || "–")}</dd>
+      <dt>Product news</dt><dd>${yn(p.profile.notifyProduct)}</dd><dt>Usage alerts</dt><dd>${yn(p.profile.notifyUsage)}</dd>
+      <dt>Billing emails</dt><dd>${yn(p.profile.notifyBilling)}</dd><dt>Updated</dt><dd>${when(p.profile.updated)}</dd></dl>` : `<p class="empty">No profile details saved.</p>`}</section></div>
+  <section class="card"><h2>Timeline</h2>${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
+  $("#copy")!.addEventListener("click", () => navigator.clipboard.writeText(uid));
+  table($("#keys")!, [
+    { key: "name", label: "Key", render: (r) => `${esc(r.name)} <small class="muted">${esc(r.slot)}</small>` },
+    { key: "prefix", label: "Prefix", render: (r) => `<code>${esc(r.prefix)}…</code>` },
+    { key: "plan", label: "Plan", render: (r) => planBadge(r.plan) },
+    { key: "revoked", label: "Status", render: (r) => (r.revoked ? badge("Revoked", "bad") : badge("Active", "good")) },
+    { key: "created", label: "Created", render: (r) => day(r.created) },
+    { key: "lastUsed", label: "Last used", render: (r) => ago(r.lastUsed) },
+    { key: "today", label: "Today", num: true, render: (r) => `${n(r.today)} <small class="muted">/ ${n(r.limit)}</small>` },
+    { key: "calls30", label: "30 days", num: true, render: (r) => n(r.calls30) },
+  ], p.keys, { empty: "No API keys created." });
+  table($("#limits")!, [{ key: "day", label: "Day", render: (r) => day(r.day) }, { key: "slot", label: "Key", render: (r) => slotName(r.slot) },
+    { key: "calls", label: "Calls", num: true, render: (r) => `${n(r.calls)} / ${n(r.limit)}` }], p.usage.limitDays, { initial: { key: "day", desc: true }, limit: 10, empty: "Never hit a limit." });
+  table($("#reqs")!, [{ key: "plan", label: "Plan" }, { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status) },
+    { key: "created", label: "Filed", render: (r) => day(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) }], p.requests, { empty: "No upgrade requests." });
+}
+const slotName = (s: string) => (s === "mcp" ? "MCP connector" : esc(s));
+const yn = (v: boolean | null) => (v == null ? "–" : v ? "On" : "Off");
+const reqBadge = (s: string) => badge(s, s === "pending" ? "warn" : s === "approved" ? "good" : s === "declined" ? "bad" : "plain");
+const epName = (ep: string) => (ep.startsWith("mcp_") ? `MCP · ${ep.slice(4)}` : ep.replace(/^post_/, "POST ").replace(/_/g, " / "));
+
+// ── keys ──
+async function keys() {
+  const s = await snapshot();
+  main().innerHTML = head("API keys", s) + `<div class="filters"><input id="q" type="search" placeholder="Search owner, key name or prefix" aria-label="Search">
+    <select id="f" aria-label="Status"><option value="active">Active</option><option value="revoked">Revoked</option><option value="">All</option></select><span id="count" class="muted"></span></div><div id="tbl"></div>`;
+  const cols: Col<Row>[] = [
+    { key: "email", label: "Owner", render: (r) => userLink(r.uid, r.email) },
+    { key: "name", label: "Key", render: (r) => `${esc(r.name)} <code>${esc(r.prefix)}…</code>` },
+    { key: "plan", label: "Plan", render: (r) => planBadge(r.plan) },
+    { key: "created", label: "Created", render: (r) => day(r.created) },
+    { key: "lastUsed", label: "Last used", render: (r) => ago(r.lastUsed) },
+    { key: "today", label: "Today", num: true, render: (r) => `${n(r.today)} <small class="muted">/ ${n(r.limit)}</small>${r.today >= r.limit ? " " + badge("At limit", "warn") : ""}` },
+    { key: "calls30", label: "30 days", num: true, render: (r) => n(r.calls30) },
+  ];
+  const draw = () => {
+    const q = $<HTMLInputElement>("#q")!.value.toLowerCase().trim(), f = $<HTMLSelectElement>("#f")!.value;
+    const rows = (s.keys as Row[]).filter((k) => (!f || (f === "revoked") === k.revoked) && (!q || [k.email, k.name, k.prefix, k.uid].some((x) => String(x || "").toLowerCase().includes(q))));
+    $("#count")!.textContent = `${n(rows.length)} keys`;
+    table($("#tbl")!, cols, rows, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "calls30", desc: true }, empty: "No keys match." });
+  };
+  draw();
+  ["#q", "#f"].forEach((id) => $(id)!.addEventListener("input", draw));
+  wireRefresh();
+}
+
+// ── usage ──
+async function usage() {
+  const s = await snapshot();
+  main().innerHTML = head("Usage", s) + `
+    <section class="card">${bars(s.series, [{ key: "api", label: "API", color: S1 }, { key: "mcp", label: "MCP", color: S2 }], { x: "day", title: "Calls per day (30 days)" })}</section>
+    <section class="card">${bars(s.series, [{ key: "active", label: "Accounts", color: S1 }], { x: "day", title: "Accounts making calls, per day" })}</section>
+    <div class="grid2"><section class="card"><h2>Top endpoints and tools (30 days)</h2>${ranked((s.endpoints as Row[]).slice(0, 20).map((e) => ({ name: epName(e.ep), value: e.calls })))}
+      <p class="muted">Per-endpoint counts start from this release; earlier calls show by category only.</p></section>
+      <section class="card"><h2>By category (30 days)</h2>${ranked(Object.entries(s.cats as Row).map(([k, v]) => ({ name: k, value: Number(v) })).sort((a, b) => b.value - a.value))}
+      <h2>Top accounts (30 days)</h2>${ranked((s.users as Row[]).filter((u) => u.calls30).sort((a, b) => b.calls30 - a.calls30).slice(0, 10).map((u) => ({ name: u.email || u.uid, value: u.calls30, href: `#/user/${u.uid}` })))}</section></div>
+    <section class="card"><h2>Hit the daily limit</h2><p class="muted">Accounts that reached their plan's limit: likely upgrade leads.</p><div id="lim"></div></section>`;
+  table($("#lim")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) }, { key: "day", label: "Day", render: (r) => day(r.day) },
+    { key: "slot", label: "Key", render: (r) => slotName(r.slot) }, { key: "calls", label: "Calls", num: true, render: (r) => `${n(r.calls)} / ${n(r.limit)}` }], s.limitHits,
+    { rowHref: (r) => `/user/${r.uid}`, initial: { key: "day", desc: true }, empty: "Nobody hit a limit in the last 30 days." });
+  wireRefresh();
+}
+
+// ── requests ──
+async function requests() {
+  const s = await snapshot();
+  main().innerHTML = head("Upgrade requests", s) + `<p class="muted">Approving or declining comes in the next phase; for now this is the queue.</p><div id="tbl"></div>`;
+  table($("#tbl")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) }, { key: "plan", label: "Plan" },
+    { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status), sort: (r) => (r.status === "pending" ? "0" : r.status) },
+    { key: "created", label: "Filed", render: (r) => when(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) }],
+    s.requests, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "status", desc: false }, empty: "No upgrade requests yet." });
+  wireRefresh();
+}
+
+// ── traffic ──
+async function traffic() {
+  const t = await api("/api/traffic");
+  const rum = t.rum, zone = t.zone as Row[] | null, wk = t.workers as Row[] | null;
+  const scripts: Record<string, { today: number; d30: number; errors: number }> = {};
+  const today = new Date().toISOString().slice(0, 10);
+  const perDay: Record<string, number> = {};
+  for (const r of wk || []) {
+    const s = (scripts[r.script] ||= { today: 0, d30: 0, errors: 0 });
+    s.d30 += r.requests; s.errors += r.errors;
+    if (r.day === today) s.today += r.requests;
+    perDay[r.day] = (perDay[r.day] || 0) + r.requests;
+  }
+  const sum = (rows: Row[] | undefined, k: string, from = 0) => (rows || []).slice(from).reduce((s, r) => s + Number(r[k] || 0), 0);
+  main().innerHTML = head("Traffic") + (t.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${t.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    <div class="tiles">
+      ${tile("Page views (7 days)", rum ? n(sum(rum.days, "views", -7)) : "–", rum ? `${n(sum(rum.days, "visits", -7))} visits · Web Analytics` : "Web Analytics not connected")}
+      ${tile("Page views (30 days)", rum ? n(sum(rum.days, "views")) : "–", rum ? `${n(sum(rum.days, "visits"))} visits` : "")}
+      ${tile("Unique visitors (yesterday)", n(zone?.at(-2)?.uniques), "all requests to the domain")}
+      ${tile("Worker requests today", n(Object.values(scripts).reduce((s, x) => s + x.today, 0)), "of 100,000 a day on the free plan")}
+    </div>
+    ${rum ? `<section class="card">${bars(rum.days, [{ key: "views", label: "Page views", color: S1 }], { x: "day", title: "Page views per day (Web Analytics, 30 days)" })}</section>
+    <div class="grid2"><section class="card"><h2>Top pages (7 days)</h2>${ranked(rum.pages.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
+      <section class="card"><h2>Countries (7 days)</h2>${ranked(rum.countries.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>
+    <div class="grid2"><section class="card"><h2>Referrers (7 days)</h2>${ranked(rum.referrers.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
+      <section class="card"><h2>Devices (7 days)</h2>${ranked(rum.devices.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>` : ""}
+    ${zone ? `<section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day (all requests to the domain)" })}</section>` : ""}
+    ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }], { x: "day", title: "Worker requests per day (all scripts)" })}
+      <div id="scripts"></div></section>` : ""}`;
+  if (wk) table($("#scripts")!, [{ key: "script", label: "Worker" }, { key: "today", label: "Today", num: true, render: (r) => n(r.today) },
+    { key: "d30", label: "30 days", num: true, render: (r) => n(r.d30) }, { key: "errors", label: "Errors (30d)", num: true, render: (r) => n(r.errors) }],
+    Object.entries(scripts).map(([script, v]) => ({ script, ...v })), { initial: { key: "d30", desc: true } });
+}
+
+// ── health ──
+async function health() {
+  const h = await api("/api/health");
+  const files = h.build?.files as number | undefined;
+  const runBadge = (r: Row) => !r.last ? badge(r.error ? "Unknown" : "No runs", "plain")
+    : r.last.status !== "completed" ? badge("Running", "info") : r.last.conclusion === "success" ? badge("Passed", "good")
+    : r.last.conclusion === "failure" ? badge("Failed", "bad") : badge(r.last.conclusion || "–", "plain");
+  main().innerHTML = head("Pipeline health") + (h.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${h.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    <div class="tiles">
+      ${tile("Forecasts published", h.data ? ago(h.data.generated) : "–", h.data ? `${n(h.data.upcoming)} upcoming · ${n(h.data.live)} live` : "")}
+      ${tile("Upcoming without XIs", h.data ? n(h.data.missingXi.length) : "–", "simulated on probable XIs")}
+      ${tile("Site files", files != null ? n(files) : "–", files != null ? `${pct(files / h.limits.pagesFiles)} of the 20,000 Pages limit` : "build.json appears after the next publish")}
+      ${tile("Android app", esc(h.app?.version || "–"), h.app ? `build ${esc(h.app.build ?? h.app.versionCode ?? "–")}` : "")}
+    </div>
+    ${files != null ? `<div class="meter" role="meter" aria-valuemin="0" aria-valuemax="20000" aria-valuenow="${files}"><i style="width:${Math.min(100, 100 * files / 20000).toFixed(1)}%" class="${files > 18000 ? "bad" : files > 15000 ? "warn" : ""}"></i></div>` : ""}
+    <section class="card"><h2>Workflows</h2><div id="runs"></div></section>
+    <div class="grid2"><section class="card"><h2>Upcoming matches without XIs</h2><div id="xi"></div></section>
+      <section class="card"><h2>App releases</h2><div id="rel"></div></section></div>`;
+  table($("#runs")!, [{ key: "label", label: "Workflow", render: (r) => `${esc(r.label)} <small class="muted">${esc(r.file)}</small>` },
+    { key: "status", label: "Last run", render: (r) => `${runBadge(r)} ${r.last ? `<a href="${esc(r.last.url)}" target="_blank" rel="noopener">${ago(r.last.at)}</a>` : esc(r.error || "")}`, sort: (r) => r.last?.at || "" },
+    { key: "lastSuccess", label: "Last success", render: (r) => ago(r.lastSuccess) },
+    { key: "failures", label: "Failed (last 10)", num: true, render: (r) => `${n(r.failures)} / ${n(r.of)}` }], h.runs || [], { empty: "GitHub isn't connected." });
+  table($("#xi")!, [{ key: "title", label: "Match" }, { key: "date", label: "Date", render: (r) => `${day(r.date)} ${esc(r.start || "")}` }],
+    h.data?.missingXi || [], { initial: { key: "date", desc: false }, empty: "Every upcoming match has its XIs." });
+  table($("#rel")!, [{ key: "tag", label: "Release", render: (r) => esc(r.name || r.tag) }, { key: "at", label: "Published", render: (r) => day(r.at) },
+    { key: "apk", label: "APK downloads", num: true, render: (r) => n(r.apk) }], h.releases || [], { initial: { key: "at", desc: true }, empty: "No releases found." });
+}
+
+// ── accuracy ──
+async function accuracy() {
+  const a = await api("/api/accuracy"), o = a.overall;
+  main().innerHTML = head("Model accuracy") + `<p class="muted">From the published results (scored after each match). Updated ${ago(a.generated)}.</p>
+    <div class="tiles">
+      ${tile("Projections that came true", pct(o.accuracy), `${n(o.hits)} of ${n(o.checks)} checks · ${n(o.matches)} matches`)}
+      ${tile("Favourite won", pct(o.favourite), `${n(o.favouriteOf)} matches`)}
+      ${tile("Result Brier score", o.brier == null ? "–" : o.brier.toFixed(3), "lower is better; 0.25 = coin flip")}
+      ${tile("Fantasy XI", pct(o.fantasy), "of the best possible XI's points")}
+    </div>
+    <section class="card">${bars(a.months.map((m: Row) => ({ month: m.key, acc: m.accuracy == null ? 0 : Math.round(m.accuracy * 1000) / 10 })),
+      [{ key: "acc", label: "Projections that came true (%)", color: S1 }], { x: "month", xLabel: (v) => v, fmt: (v) => `${v}%`, title: "By month" })}</section>
+    <section class="card"><h2>By format</h2><div id="fmt"></div></section>
+    <section class="card"><h2>By competition</h2><div id="comp"></div></section>
+    <div class="grid2"><section class="card"><h2>By match-centre tab</h2><div id="tabs"></div></section>
+      <section class="card"><h2>Latest matches</h2><div id="recent"></div></section></div>`;
+  const cols: Col<Row>[] = [{ key: "key", label: "" }, { key: "matches", label: "Matches", num: true },
+    { key: "accuracy", label: "Came true", num: true, render: (r) => pct(r.accuracy) }, { key: "favourite", label: "Favourite won", num: true, render: (r) => pct(r.favourite) },
+    { key: "brier", label: "Brier", num: true, render: (r) => (r.brier == null ? "–" : r.brier.toFixed(3)) }, { key: "fantasy", label: "Fantasy", num: true, render: (r) => pct(r.fantasy) }];
+  table($("#fmt")!, cols, a.formats, { initial: { key: "matches", desc: true } });
+  table($("#comp")!, cols, a.competitions, { initial: { key: "matches", desc: true } });
+  table($("#tabs")!, [{ key: "tab", label: "Tab" }, { key: "checks", label: "Checks", num: true }, { key: "accuracy", label: "Came true", num: true, render: (r) => pct(r.accuracy) }], a.tabs, { initial: { key: "checks", desc: true } });
+  table($("#recent")!, [{ key: "title", label: "Match", render: (r) => `${esc(r.title || r.id)}<small>${esc(r.result || "")}</small>` },
+    { key: "date", label: "Date", render: (r) => day(r.date) }, { key: "accuracy", label: "Came true", num: true, render: (r) => pct(r.accuracy) }], a.recent, { initial: { key: "date", desc: true }, limit: 10 });
+}
+
+// ── boot ──
+api<{ email: string; exp: number }>("/api/session").then((s) => { me = s; start(); }).catch(() => renderLogin());

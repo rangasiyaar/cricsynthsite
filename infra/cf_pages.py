@@ -64,6 +64,10 @@ def headers(site: dict) -> list[str]:
 
 def check(out: Path) -> None:
     files = [p for p in out.rglob("*") if p.is_file()]
+    if (out / "data").is_dir():   # for the admin console's health page: size of this deployment against the Pages limits
+        (out / "data" / "build.json").write_text(json.dumps({"files": len(files) + 1, "max_files": MAX_FILES,
+                                                              "bytes": sum(p.stat().st_size for p in files)}) + "\n")
+        files.append(out / "data" / "build.json")
     big = [(p, p.stat().st_size) for p in files if p.stat().st_size > MAX_BYTES]
     print(f"cf_pages: {len(files)} files ({sum(p.stat().st_size for p in files) / 1e6:.0f} MB)")
     if big:

@@ -1,0 +1,91 @@
+name: Deploy console
+
+# The admin console at master.cricsynthesis.in (master/, a Cloudflare Worker on the free plan, read-only): tests,
+# build the pages, deploy, set the Worker's secrets, turn on Web Analytics for the site, and smoke-test the gate.
+# Secrets: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (deploy), FIRESTORE_SA_KEY (Firestore + Firebase Auth reads),
+# ADMIN_EMAILS (comma-separated admin Google emails), optional MASTER_GH_TOKEN (fine-grained, read-only Actions +
+# Contents on this repo) and optional CF_ANALYTICS_TOKEN (read-only analytics token for the Worker; else the deploy
+# token is used). Worker secrets persist between deploys, so ADMIN_EMAILS can also be given once as a run input.
+on:
+  workflow_dispatch:
+    inputs:
+      admin_emails:
+        description: "Admin emails (only if the ADMIN_EMAILS secret isn't set; kept as a Worker secret)"
+        required: false
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: ["master/**", "edge/src/google.ts", "edge/src/oauth.ts", "edge/src/keys.ts", "infra/cf_analytics.py", ".github/workflows/deploy-master.yml"]
+
+permissions:
+  contents: read
+
+concurrency: { group: deploy-master, cancel-in-progress: true }
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HAS_CF: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: master/package-lock.json }
+      - name: Tests and build
+        working-directory: master
+        run: |
+          npm ci
+          npx tsc --noEmit -p . && npx tsc --noEmit -p ui
+          npm test
+          npm run build
+      - name: Deploy
+        if: env.HAS_CF == 'true'
+        working-directory: master
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Worker secrets
+        if: env.HAS_CF == 'true'
+        working-directory: master
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          S_GOOGLE_SA: ${{ secrets.FIRESTORE_SA_KEY }}
+          S_ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS || inputs.admin_emails }}
+          S_CF_API_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
+          S_CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          S_GH_TOKEN: ${{ secrets.MASTER_GH_TOKEN }}
+        run: |
+          [ -n "$S_ADMIN_EMAILS" ] && echo "::add-mask::$S_ADMIN_EMAILS"
+          umask 077
+          python3 - > "$RUNNER_TEMP/secrets.json" <<'PY'
+          import json, os
+          print(json.dumps({k[2:]: v for k, v in os.environ.items() if k.startswith("S_") and v}))
+          PY
+          npx wrangler secret bulk "$RUNNER_TEMP/secrets.json"
+          rm -f "$RUNNER_TEMP/secrets.json"
+          [ -n "$S_ADMIN_EMAILS" ] || echo "::warning::No ADMIN_EMAILS yet (secret or run input): nobody can sign in."
+          [ -n "$S_GH_TOKEN" ] || echo "::notice::No MASTER_GH_TOKEN: pipeline health and app downloads use unauthenticated GitHub calls."
+      - name: Web Analytics for the site (cookieless, once)
+        if: env.HAS_CF == 'true'
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: python3 infra/cf_analytics.py --host cricsynthesis.in
+      - name: Smoke test (the gate holds)
+        if: env.HAS_CF == 'true'
+        run: |
+          for i in $(seq 1 20); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://master.cricsynthesis.in/api/snapshot || true)
+            [ "$code" = "401" ] && break
+            sleep 15
+          done
+          echo "/api/snapshot without a session: $code"
+          [ "$code" = "401" ]
+          curl -sI https://master.cricsynthesis.in/ | grep -i '^x-robots-tag: noindex'
+          curl -s https://master.cricsynthesis.in/ | grep -q 'CricSynthesis Console'
+      - name: Not deployed
+        if: env.HAS_CF != 'true'
+        run: echo "::notice::Tests passed. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets to deploy."

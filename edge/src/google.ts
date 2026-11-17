@@ -1,8 +1,9 @@
 // Firestore over REST with a service account (Worker secret GOOGLE_SA = the account's JSON key): an OAuth token from a
 // signed JWT (cached until near expiry), a collection-group lookup of API keys by hash, and usage increments.
-type SA = { client_email: string; private_key: string; project_id?: string };
+export type SA = { client_email: string; private_key: string; project_id?: string };
 
-let token: { v: string; exp: number } | null = null;
+const tokens = new Map<string, { v: string; exp: number }>();
+const DATASTORE = "https://www.googleapis.com/auth/datastore";
 
 const b64url = (b: ArrayBuffer | Uint8Array | string): string => {
   const bytes = typeof b === "string" ? new TextEncoder().encode(b) : new Uint8Array(b);
@@ -11,14 +12,17 @@ const b64url = (b: ArrayBuffer | Uint8Array | string): string => {
   return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 };
 
-async function accessToken(sa: SA): Promise<string> {
+/** An OAuth access token for the service account (cached per account and scope until near expiry). */
+export async function accessToken(sa: SA, scope = DATASTORE): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
+  const ck = `${sa.client_email} ${scope}`;
+  const token = tokens.get(ck);
   if (token && token.exp - 120 > now) return token.v;
   const pem = sa.private_key.replace(/-----[^-]+-----/g, "").replace(/\s+/g, "");
   const der = Uint8Array.from(atob(pem), (c) => c.charCodeAt(0));
   const key = await crypto.subtle.importKey("pkcs8", der, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["sign"]);
   const head = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const claims = b64url(JSON.stringify({ iss: sa.client_email, scope: "https://www.googleapis.com/auth/datastore",
+  const claims = b64url(JSON.stringify({ iss: sa.client_email, scope,
                                          aud: "https://oauth2.googleapis.com/token", iat: now, exp: now + 3600 }));
   const sig = b64url(await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, new TextEncoder().encode(`${head}.${claims}`)));
   const r = await fetch("https://oauth2.googleapis.com/token", {
@@ -27,8 +31,8 @@ async function accessToken(sa: SA): Promise<string> {
   });
   if (!r.ok) throw new Error(`token ${r.status}`);
   const j: any = await r.json();
-  token = { v: j.access_token, exp: now + (j.expires_in || 3600) };
-  return token.v;
+  tokens.set(ck, { v: j.access_token, exp: now + (j.expires_in || 3600) });
+  return j.access_token;
 }
 
 export class Firestore {
@@ -62,8 +66,9 @@ export class Firestore {
              revoked: Boolean(f.revoked?.booleanValue) };
   }
 
-  /** Add to users/{uid}/usage/{day} (total, per key slot, per category) and set the key's lastUsed. */
-  async addUsage(uid: string, day: string, slot: string, total: number, cats: Record<string, number>, last: string) {
+  /** Add to users/{uid}/usage/{day} (total, per key slot, per category, per endpoint or tool) and set the key's lastUsed. */
+  async addUsage(uid: string, day: string, slot: string, total: number, cats: Record<string, number>, last: string,
+                 eps: Record<string, number> = {}) {
     const usage = `projects/${this.project}/databases/(default)/documents/users/${uid}/usage/${day}`;
     const key = `projects/${this.project}/databases/(default)/documents/users/${uid}/keys/${slot}`;
     const inc = (fieldPath: string, n: number) => ({ fieldPath, increment: { integerValue: String(n) } });
@@ -71,6 +76,7 @@ export class Firestore {
       { update: { name: usage, fields: { day: { stringValue: day } } }, updateMask: { fieldPaths: ["day"] },
         updateTransforms: [inc("total", total), inc(`keys.${slot}`, total),
                            ...Object.entries(cats).map(([c, n]) => inc(`cats.${c}`, n)),
+                           ...Object.entries(eps).filter(([e]) => /^[a-z][a-z0-9_]{0,63}$/.test(e)).map(([e, n]) => inc(`eps.${e}`, n)),
                            { fieldPath: "updated", setToServerValue: "REQUEST_TIME" }] },
     ];
     // a dashboard key's lastUsed; the MCP connector's sign-in (slot "mcp") has no key document

@@ -2,7 +2,7 @@
 // website's /data), does light arithmetic, never simulates. See infra/EDGE_PLAN.md.
 import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
-import { type Account, type Env, hit, keyFrom, lookup, PLANS, sha256, Usage } from "./keys.ts";
+import { type Account, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
@@ -10,7 +10,7 @@ import { AssetSource, EdgeSource } from "./source.ts";
 export { Usage };
 
 const MAX_BODY = 256 * 1024;
-const MCP_DAILY = 200;             // MCP tool calls a day for a signed-in account (an API key uses its plan instead)
+
 const DEFAULT_CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000";
 const ABOUT = {
   name: "CricSynthesis API", version: "1",
@@ -121,7 +121,7 @@ async function mcp(req: Request, env: Env, url: URL, path: string): Promise<Resp
       error: { code: -32001, message: "Sign in to CricSynthesis to use this connector (or use an API key)." } }), { status: 401, headers: h });
   }
   const allow = async (tool: string): Promise<string | null> => {
-    const n = await hit(env, acct!, toolCategory(tool));
+    const n = await hit(env, acct!, toolCategory(tool), toolSlug(tool));
     return n > acct!.limits.daily_requests
       ? `Daily limit of ${acct!.limits.daily_requests} tool calls reached${acct!.slot === "mcp" ? " for your account" : ` for the ${acct!.plan} plan`}.` : null;
   };
@@ -160,7 +160,7 @@ export default {
     const key = keyFrom(req);
     const acct = key ? await lookup(env, key) : null;
     if (!acct) return fail(req, env, 401, "Missing or invalid API key");
-    const n = await hit(env, acct, m.route.tag);
+    const n = await hit(env, acct, m.route.tag, endpointSlug(m.route.method, m.route.path));
     if (n > acct.limits.daily_requests) {
       return fail(req, env, 429, `Daily limit of ${acct.limits.daily_requests} requests reached for the ${acct.plan} plan`);
     }

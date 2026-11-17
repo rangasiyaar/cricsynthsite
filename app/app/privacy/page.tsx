@@ -6,7 +6,7 @@ export const metadata: Metadata = seo("/privacy/", "Privacy policy | CricSynthes
 
 export default function Privacy() {
   return (
-    <Legal title="Privacy Policy" subtitle="Effective 3 November 2026">
+    <Legal title="Privacy Policy" subtitle="Effective 17 November 2026">
       <h2>1. Who we are</h2>
       <p>CricSynthesis runs a cricket match centre and Android app for fans, and an analytics, simulation and graphics API for
         businesses. CricSynthesis is currently operated by an individual based in India, who is the data fiduciary for the
@@ -18,7 +18,9 @@ export default function Privacy() {
         <li><b>Account details.</b> When you sign in with Google or with email and password we receive your name, email address,
           profile picture (Google only) and a user ID. Passwords are handled by our sign-in provider; we never see them.</li>
         <li><b>Profile and preferences.</b> Details you add to your profile and your email preferences.</li>
-        <li><b>Account activity.</b> Daily counts of how much you use your account's features, and plan or upgrade requests you
+        <li><b>Account activity.</b> When your account was created and last signed in, daily counts of how much you use your
+          account's features (API and AI-assistant connector calls, per key and per endpoint or tool), the API keys you create
+          (name, a short prefix and when it was created, last used or revoked; never the full key), and plan or upgrade requests you
           file from your dashboard.</li>
         <li><b>Contact and access requests.</b> Name, work email, organisation and interest you enter in our forms.</li>
         <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such
@@ -33,7 +35,17 @@ export default function Privacy() {
         <li><b>Stored on your device.</b> Your theme choice, alert choices, saved Lab settings and a cache of match data that
           lets the site and app load faster and work offline. These stay in your browser or app and you can clear them at any time.</li>
       </ul>
-      <p>We don't use advertising cookies or third-party tracking on the website.</p>
+      <p><b>Analytics and cookies.</b></p>
+      <ul>
+        <li><b>Visit statistics.</b> We count page views with Cloudflare Web Analytics, which sets no cookies, doesn't build a
+          profile of you and doesn't track you across sites. We see totals only: pages viewed, countries, referring sites and
+          device types.</li>
+        <li><b>Sign-in storage.</b> When you sign in, our sign-in provider (Firebase Authentication) keeps your session in your
+          browser's local storage so you stay signed in. Signing out removes it.</li>
+        <li><b>Strictly necessary cookies.</b> Our internal admin console uses a single session cookie for staff sign-in. It is
+          only set on that console's address, never on the public site.</li>
+      </ul>
+      <p>We don't use advertising cookies or third-party tracking on the website or app, so there is nothing to opt out of.</p>
 
       <h2>3. How we use it</h2>
       <ul>
@@ -42,6 +54,9 @@ export default function Privacy() {
         <li>To send account emails such as a welcome message and important service notices, and, if your email preferences allow,
           product updates. You can change email preferences in your account at any time.</li>
         <li>To enforce rate limits and these terms, and to protect the service against abuse.</li>
+        <li>To run the service: authorised CricSynthesis staff can view account records (the account details, activity, keys and
+          requests described above) in an internal, access-controlled admin console, to support you, review plans and upgrade
+          requests, and spot problems or misuse. Every staff sign-in is logged.</li>
         <li>To fix crashes and understand aggregate usage so we can improve the product.</li>
       </ul>
       <p>We process your data on the basis of the consent you give when you create an account, submit a form or turn on a
@@ -49,15 +64,16 @@ export default function Privacy() {
         rent or trade personal information, and we don't use it for advertising.</p>
 
       <h2>4. Service providers and transfers</h2>
-      <p>The website, app, sign-in, storage and API run on Google Cloud and Firebase (Google LLC), and contact forms and email
+      <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications and data
+        processing run on Google Cloud and Firebase (Google LLC); and contact forms and email
         are handled by our email and workspace providers. These providers process data on our behalf under their own security
         and privacy commitments. Data is stored on servers in the United States. We may also disclose information where the
         law requires it.</p>
 
       <h2>5. Retention</h2>
       <p>Account data is kept while your account is active and deleted within 30 days of a deletion request, except where the
-        law requires us to keep a record. API usage logs and crash reports are kept only as long as needed for security,
-        billing and fixing problems. Job applications are kept as described above.</p>
+        law requires us to keep a record. Daily usage counts are kept for up to 13 months; other API usage logs and crash
+        reports are kept only as long as needed for security, billing and fixing problems. Job applications are kept as described above.</p>
 
       <h2>6. Your rights</h2>
       <p>You can ask us to:</p>
