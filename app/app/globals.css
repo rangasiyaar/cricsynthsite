@@ -664,3 +664,25 @@ html body .footer a:focus-visible { outline: 2px solid var(--ft-accent); outline
 .snap-table th { text-align: left; font-size: 11px; padding: 4px 6px; }
 .snap-table td { padding: 5px 6px; border-top: 1px solid var(--cs-line); }
 .snap-table td b { font-family: var(--cs-mono); }
+
+/* ── cookie consent (components/Consent.tsx): bottom bar, never covers the whole page ── */
+.cs-consent { position: fixed; z-index: 95; left: 0; right: 0; bottom: 0; background: var(--cs-bg); border-top: 1px solid var(--cs-line);
+  box-shadow: 0 -12px 32px -16px rgba(0, 0, 0, .3); }
+.cs-consent-in { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: grid; grid-template-columns: 1fr auto; gap: 12px 28px; align-items: center; }
+.cs-consent h2 { font-family: var(--cs-head); font-size: 20px; margin: 0 0 4px; text-transform: uppercase; letter-spacing: .03em; }
+.cs-consent p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--cs-ink-2); max-width: 70ch; }
+.cs-consent p a { color: var(--cs-steel-700); text-decoration: underline; }
+.cs-consent-opts { grid-column: 1 / -1; display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.cs-consent-opt { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; color: var(--cs-ink-2);
+  border: 1px solid var(--cs-line); padding: 10px 12px; cursor: pointer; }
+.cs-consent-opt b { display: block; color: var(--cs-ink); }
+.cs-consent-opt input { margin-top: 3px; accent-color: var(--cs-steel); width: 16px; height: 16px; flex: none; }
+.cs-consent-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.cs-consent-btns .cs-btn { padding: 10px 16px; font-size: 15px; }
+body:has(.cs-consent) .app-promo { display: none; }
+.footer-link-btn { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-align: left; }
+@media (max-width: 760px) {
+  .cs-consent-in { grid-template-columns: 1fr; padding: 14px 16px; }
+  .cs-consent-btns { justify-content: stretch; }
+  .cs-consent-btns .cs-btn { flex: 1 1 0; padding: 10px 8px; }
+}

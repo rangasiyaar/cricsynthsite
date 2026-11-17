@@ -35,17 +35,35 @@ export default function Privacy() {
         <li><b>Stored on your device.</b> Your theme choice, alert choices, saved Lab settings and a cache of match data that
           lets the site and app load faster and work offline. These stay in your browser or app and you can clear them at any time.</li>
       </ul>
-      <p><b>Analytics and cookies.</b></p>
+      <h3 id="cookies">Analytics and cookies</h3>
+      <p>When you first visit the website we ask whether you agree to optional analytics cookies. Nothing optional is set or
+        loaded until you choose, &quot;Reject all&quot; is as easy as &quot;Accept all&quot;, and you can change your mind at any time from
+        &quot;Cookie settings&quot; at the bottom of every page (withdrawing deletes those cookies). We ask again after 12 months
+        or if we add a new tool. We never use advertising cookies, and advertising features in Google Analytics are off.</p>
       <ul>
-        <li><b>Visit statistics.</b> We count page views with Cloudflare Web Analytics, which sets no cookies, doesn't build a
-          profile of you and doesn't track you across sites. We see totals only: pages viewed, countries, referring sites and
-          device types.</li>
-        <li><b>Sign-in storage.</b> When you sign in, our sign-in provider (Firebase Authentication) keeps your session in your
-          browser's local storage so you stay signed in. Signing out removes it.</li>
-        <li><b>Strictly necessary cookies.</b> Our internal admin console uses a single session cookie for staff sign-in. It is
-          only set on that console's address, never on the public site.</li>
+        <li><b>Google Analytics (optional, only with your consent).</b> Pages viewed and the features used (for example opening a
+          match, running a MatchSynth Lab scenario, creating an API key), the website that sent you, approximate location
+          (city/country), device and browser. Google Analytics does not log or store IP addresses. We don&apos;t send your name,
+          email or account ID to it. Provided by Google LLC.</li>
+        <li><b>Visit statistics (always on, no cookies).</b> Cloudflare Web Analytics counts page views and page speed without
+          cookies or any identifier and without tracking you across sites; we see totals only.</li>
+        <li><b>Sign-in storage (necessary).</b> When you sign in, Firebase Authentication keeps your session in your browser&apos;s
+          storage so you stay signed in. Signing out removes it.</li>
+        <li><b>Your choices (necessary).</b> Your theme and your cookie choice are remembered in your browser.</li>
+        <li><b>Admin console (necessary).</b> Our internal admin console uses one session cookie for staff sign-in, only on that
+          console&apos;s address.</li>
       </ul>
-      <p>We don't use advertising cookies or third-party tracking on the website or app, so there is nothing to opt out of.</p>
+      <div className="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Set by</th><th>Purpose</th><th>Kept for</th><th>Optional?</th></tr></thead>
+        <tbody>
+          <tr><td>_ga, _ga_*</td><td>Google Analytics</td><td>Tells visits apart and counts returning visitors, anonymously</td><td>Up to 13 months</td><td>Yes (Analytics)</td></tr>
+          <tr><td>cs-consent (browser storage)</td><td>CricSynthesis</td><td>Remembers your cookie choice</td><td>12 months</td><td>No</td></tr>
+          <tr><td>cs-theme (browser storage)</td><td>CricSynthesis</td><td>Light or dark theme</td><td>Until cleared</td><td>No</td></tr>
+          <tr><td>Firebase sign-in (browser storage)</td><td>Firebase Authentication</td><td>Keeps you signed in</td><td>Until you sign out</td><td>No</td></tr>
+          <tr><td>__Host-cs_admin</td><td>CricSynthesis (admin console only)</td><td>Staff sign-in session</td><td>8 hours</td><td>No</td></tr>
+        </tbody>
+      </table></div>
+      <p>The Android app does not use these cookies; if it adds analytics, it will ask for your consent in the app first.</p>
 
       <h2>3. How we use it</h2>
       <ul>
@@ -64,8 +82,9 @@ export default function Privacy() {
         rent or trade personal information, and we don't use it for advertising.</p>
 
       <h2>4. Service providers and transfers</h2>
-      <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications and data
-        processing run on Google Cloud and Firebase (Google LLC); and contact forms and email
+      <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications, data
+        processing and, if you agree, website analytics (Google Analytics) run on Google Cloud, Firebase and Google Analytics
+        (Google LLC); and contact forms and email
         are handled by our email and workspace providers. These providers process data on our behalf under their own security
         and privacy commitments. Data is stored on servers in the United States. We may also disclose information where the
         law requires it.</p>

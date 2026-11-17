@@ -4,6 +4,7 @@ import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/compo
 import LiveProjection from "@/components/LiveProjection";
 import Snapshot from "@/components/Snapshot";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 import Scoreboard from "@/components/Scoreboard";
 import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/components/charts";
 import VenueIntel from "@/components/VenueIntel";
@@ -73,7 +74,7 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
     <>
       <div className="tabs mc-tabs" role="tablist" style={{ "--mc-n": tabs.length + (extra ? 1 : 0) } as React.CSSProperties}>
         {tabs.map((t) => (
-          <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+          <button key={t} role="tab" aria-selected={tab === t} onClick={() => { setTab(t); track("match_tab", { tab: t, match_id: doc.match.id }); }}>
             <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{FULL[t] ?? t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
           </button>
         ))}
@@ -89,6 +90,7 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
 export default function MatchCentre({ doc, initialTab, heading = true }: { doc: MatchDoc; initialTab?: string | null; heading?: boolean }) {
   useEffect(() => { if (initialTab === "lab") window.location.replace(`/lab/?id=${encodeURIComponent(doc.match.id)}`); }, [initialTab, doc.match.id]);
   const { match, summary: s } = doc;
+  useEffect(() => { track("match_view", { match_id: match.id, format: match.format, competition: match.competition }); }, [match.id]); // eslint-disable-line react-hooks/exhaustive-deps
   const [a, b] = s.teams.map((t) => t.name);
   const pa = s.result.win[a], pb = s.result.win[b];
   return (

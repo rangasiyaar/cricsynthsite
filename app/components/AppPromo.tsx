@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Shell";
 import { APK_URL, isAndroid, useAppInfo } from "@/lib/appDownload";
+import { track } from "@/lib/analytics";
 
 const KEY = "cs-app-promo";
 const QUIET_DAYS = 1;
@@ -55,7 +56,7 @@ export function AppPromo() {
         <p>Every forecast, match alerts and MatchSynth Lab, in an app.</p>
         <div className="app-promo-actions">
           {android
-            ? <a className="btn" href={APK_URL} onClick={hush}>Download</a>
+            ? <a className="btn" href={APK_URL} onClick={() => { track("app_download", { from: "popup" }); hush(); }}>Download</a>
             : <Link className="btn" href="/app/" onClick={hush}>Get the app</Link>}
           <button type="button" className="btn ghost" onClick={close}>Not now</button>
         </div>

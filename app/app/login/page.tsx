@@ -1,11 +1,13 @@
 "use client";
 import {
-  createUserWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup,
+  createUserWithEmailAndPassword, getAdditionalUserInfo, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup,
+  type UserCredential,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Shell";
 import { auth, useUser } from "@/lib/firebase";
 import { welcome } from "@/lib/welcome";
+import { track } from "@/lib/analytics";
 import { explain } from "@/lib/auth-messages";
 
 /** Where to go after signing in: only a path on this site ("/\\evil.com" or "//evil.com" would leave it). */
@@ -35,11 +37,16 @@ export default function Login() {
     setBusy(true); setErr(null); setInfo(null);
     try { await f(); } catch (e) { setErr(explain(e)); } finally { setBusy(false); }
   };
-  const google = () => run(async () => welcome(await signInWithPopup(auth(), new GoogleAuthProvider())));
+  // GA4's recommended sign_up / login events (method only, nothing personal)
+  const signedIn = (cred: UserCredential, method: string) => {
+    track(getAdditionalUserInfo(cred)?.isNewUser ? "sign_up" : "login", { method });
+    return cred;
+  };
+  const google = () => run(async () => welcome(signedIn(await signInWithPopup(auth(), new GoogleAuthProvider()), "google")));
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => welcome(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
-                                          : await createUserWithEmailAndPassword(auth(), email, password)));
+    run(async () => welcome(signedIn(mode === "in" ? await signInWithEmailAndPassword(auth(), email, password)
+                                                   : await createUserWithEmailAndPassword(auth(), email, password), "email")));
   };
   const reset = () => {
     if (!email) { setErr("Enter your email first, then press “Forgot password”."); return; }

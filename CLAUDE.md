@@ -93,6 +93,8 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 
 ## App design
 
+- Optional analytics (GA4, later Clarity) load only after cookie consent: `lib/consent.ts` + `components/Consent.tsx`;
+  send product events with `track()` from `lib/analytics.ts` (no personal data in params).
 - `app/app/site.css` is the site theme; reuse its `cs-*` classes (hero, frames, metrics, steps, API block, nav/footer
   markup in `components/Shell.tsx`). App-only pieces in `globals.css` use the same tokens.
 

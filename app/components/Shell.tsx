@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth, useUser } from "@/lib/firebase";
 import { AppPromo } from "@/components/AppPromo";
+import ConsentBanner from "@/components/Consent";
+import { openConsent } from "@/lib/consent";
 
 export function Logo() {
   return (
@@ -126,7 +128,7 @@ export function Nav() {
 export function SiteFrame({ children }: { children: React.ReactNode }) {
   const path = usePathname() || "/";
   if (path === "/m" || path.startsWith("/m/")) return <main className="app-wrap">{children}</main>;
-  return <><Nav /><main className="cs-wrap">{children}</main><Footer /><AppPromo /></>;
+  return <><Nav /><main className="cs-wrap">{children}</main><Footer /><AppPromo /><ConsentBanner /></>;
 }
 
 export function Footer() {
@@ -164,6 +166,7 @@ export function Footer() {
               <Link href="/privacy/" className="footer-link">Privacy policy</Link>
               <Link href="/terms/" className="footer-link">Terms of service</Link>
               <Link href="/credits/" className="footer-link">Data credits</Link>
+              <button type="button" className="footer-link footer-link-btn" onClick={openConsent}>Cookie settings</button>
             </div>
           </div>
         </div>

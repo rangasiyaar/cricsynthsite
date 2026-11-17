@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Num, Pct, WinBar } from "@/components/charts";
 import { ForecastTabs } from "@/components/MatchCentre";
 import Scoreboard from "@/components/Scoreboard";
+import { track } from "@/lib/analytics";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
 import { num, signed } from "@/lib/format";
@@ -113,12 +114,14 @@ export function useLab(doc: MatchDoc) {
   }, [pack, restored, doc.match.id]);
   useEffect(() => { if (restored) saveLevers(doc.match.id, levers); }, [levers, restored, doc.match.id]);
 
+  const lastTrack = useRef(0);          // one lab_run event per 30 s of slider changes
   const scenario = useMemo(() => (pack ? toScenario(levers, pack) : null), [levers, pack]);
   useEffect(() => {
     if (!pack || !scenario || !restored) return;
     setBusy(true);
     const t = setTimeout(() => {
       const mine = reqId.current + 1;
+      if (Date.now() - lastTrack.current > 30_000) { lastTrack.current = Date.now(); track("lab_run", { match_id: doc.match.id }); }
       run(scenario).then((s) => { if (reqId.current === mine) { setRes(enrich(s, doc)); setBusy(false); } });
     }, 250);
     return () => clearTimeout(t);

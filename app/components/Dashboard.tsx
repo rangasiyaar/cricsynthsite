@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChartFrame, type Column } from "@/components/charts";
 import { SHEET } from "@/components/RequestAccess";
+import { track } from "@/lib/analytics";
 import { auth, usePlan } from "@/lib/firebase";
 import {
   API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
@@ -328,6 +329,7 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
     setBusy(true); setErr(null);
     try {
       await requestUpgrade(uid, asking, volume, note);
+      track("upgrade_request", { plan: asking, volume });
       // let the team know straight away (same inbox as the contact form)
       fetch(SHEET, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         name: user.displayName ?? "", email: user.email ?? "", interest: `Upgrade: ${asking}`, volume, message: note,
@@ -459,7 +461,7 @@ export function Keys({ uid, keys, usage, refresh, setErr }: {
   };
   const create = (e: React.FormEvent) => {
     e.preventDefault();
-    run(async () => { const key = await createKey(uid, name, used); setFresh({ key, name: name || "Untitled key" }); setName(""); setCopied(false); });
+    run(async () => { const key = await createKey(uid, name, used); track("api_key_created"); setFresh({ key, name: name || "Untitled key" }); setName(""); setCopied(false); });
   };
   const copy = async () => { if (fresh) { await navigator.clipboard.writeText(fresh.key); setCopied(true); } };
 
