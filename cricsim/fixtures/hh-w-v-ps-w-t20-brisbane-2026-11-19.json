@@ -1,0 +1,112 @@
+{
+  "id": "hh-w-v-ps-w-t20-brisbane-2026-11-19",
+  "title": "Hobart Hurricanes Women v Perth Scorchers Women",
+  "date": "2026-11-19",
+  "start_time": "10:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 26th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "Allan Border Field, Brisbane",
+  "venue_search": "allan border field",
+  "city": "Brisbane",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Hobart Hurricanes Women",
+      "short": "HH-W",
+      "players": [
+        "Lizelle Lee",
+        "Rachel Trenaman",
+        "Nicola Carey",
+        "Maddy Green",
+        "Heather Graham",
+        "Chinelle Henry",
+        "Molly Strano",
+        "Hayley Silver holmes",
+        "Lauren Smith",
+        "Isabella Malgioglio",
+        "Linsey Smith"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicola Carey",
+      "squad": [
+        "Lizelle Lee",
+        "Rachel Trenaman",
+        "Nicola Carey",
+        "Maddy Green",
+        "Heather Graham",
+        "Chinelle Henry",
+        "Molly Strano",
+        "Hayley Silver holmes",
+        "Lauren Smith",
+        "Isabella Malgioglio",
+        "Linsey Smith"
+      ]
+    },
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PS W",
+      "players": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Fatima Sana",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Lilly Mills",
+        "Amy Edgar"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Beth Mooney",
+      "squad": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Fatima Sana",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Lilly Mills",
+        "Amy Edgar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40326,
+    "url": "https://khelnow.com/live-cricket-score/hobart-hurricanes-women-vs-perth-scorchers-women-women's-big-bash-league-19th-november-2026-40326",
+    "auto": true,
+    "xis": false
+  }
+}
