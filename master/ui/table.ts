@@ -32,7 +32,7 @@ export function table<T extends Record<string, any>>(host: HTMLElement, cols: Co
       th.addEventListener("keydown", (e) => { if ((e as KeyboardEvent).key === "Enter") go(); });
     });
     $$("tr.link", host).forEach((tr) => tr.addEventListener("click", (e) => {
-      if ((e.target as HTMLElement).closest("a,button")) return;
+      if ((e.target as HTMLElement).closest("a,button,select,label")) return;
       location.hash = tr.dataset.href!;
     }));
     $("button.more", host)?.addEventListener("click", () => { shown += step; draw(); });

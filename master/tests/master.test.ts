@@ -236,3 +236,38 @@ test("Bing Webmaster shaping and the route is gated", async () => {
   assert.equal(b.queries[0].ctr, 2 / 30);
   assert.equal((await call("/api/bing")).status, 401);
 });
+
+test("actions: validation, approve moves live keys, wrong state refused, everything logged", async () => {
+  const { validate, apply, ActionError } = await import("../src/actions.ts");
+  assert.throws(() => validate({ type: "key.revoke", uid: "u1", slot: "k9" }), ActionError);
+  assert.throws(() => validate({ type: "request.approve", uid: "u1", plan: "gold" }), ActionError);
+  assert.throws(() => validate({ type: "nope", uid: "u1" }), ActionError);
+  assert.throws(() => validate({ type: "key.plan", uid: "../x", slot: "k1", plan: "pro" }), ActionError);
+  const docs: Record<string, any> = {
+    "users/u1/requests/api-pro": { status: "pending", _id: "api-pro" },
+    "users/u1/keys/k1": { _id: "k1", plan: "free", revoked: false }, "users/u1/keys/k2": { _id: "k2", plan: "free", revoked: true },
+  };
+  const writes: [string, any][] = [];
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    list: async (p: string) => Object.entries(docs).filter(([k]) => k.startsWith(p + "/")).map(([, v]) => v),
+    patch: async (p: string, d: any) => { writes.push([p, d]); docs[p] = { ...docs[p], ...d }; },
+    put: async (p: string, d: any) => { writes.push([p, d]); },
+    user: async () => ({ claims: { plan: "pro", other: 1 } }),
+    updateUser: async (_: string, c: any) => { writes.push(["auth", c]); },
+  };
+  const r = await apply(g, "boss@example.com", validate({ type: "request.approve", uid: "u1", plan: "api-pro", note: "paid" }), new Date(1000));
+  assert.match(r.done, /1 key moved to pro/);
+  assert.equal(docs["users/u1/keys/k1"].plan, "pro");
+  assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
+  assert.equal(docs["users/u1/requests/api-pro"].status, "approved");
+  assert.ok(writes.some(([p, d]) => p === "adminLog/1000-request.approve" && d.email === "boss@example.com" && d.uid === "u1"));
+  await assert.rejects(apply(g, "boss@example.com", validate({ type: "request.decline", uid: "u1", plan: "api-pro" })), /approved, not pending/);
+  await apply(g, "boss@example.com", validate({ type: "user.website-plan", uid: "u1", plan: "beta" }));
+  assert.deepEqual(writes.find(([p]) => p === "auth")![1], { claims: { other: 1 } });
+  g.updateUser = async () => { throw new Error("identitytoolkit 403: denied"); };
+  await assert.rejects(apply(g, "boss@example.com", validate({ type: "user.disable", uid: "u1" })), /Firebase Authentication Admin/);
+  // the route needs a session and the same origin
+  assert.equal((await call("/api/action", { method: "POST", body: "{}" })).status, 401);
+  assert.equal((await call("/api/log")).status, 401);
+});

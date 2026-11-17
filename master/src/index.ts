@@ -8,6 +8,7 @@ import { accuracy, analytics, bing, CLARITY_TTL_MS, clarityFetch, clarityShape, 
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 import { check, summarize } from "./uptime.ts";
+import { ActionError, apply, validate } from "./actions.ts";
 
 const SECURITY: Record<string, string> = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -70,7 +71,9 @@ async function refresh(env: Env): Promise<Snapshot> {
   return s;
 }
 
+let snapStale = false;                  // an action changed data: the next snapshot read rebuilds it
 async function latest(env: Env): Promise<Snapshot> {
+  if (snapStale) { snapStale = false; return refresh(env); }
   const d = await google(env).get("adminSnapshot/latest").catch(() => null);
   if (d?.json) {
     const s = JSON.parse(d.json) as Snapshot;
@@ -126,7 +129,19 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     if (req.headers.get("Origin") !== url.origin) return fail(403, "Bad origin");
     return json(await refresh(env));
   }
-  if (req.method !== "GET") return fail(405, "Read-only");
+  if (req.method === "POST" && path === "/api/action") {
+    if (req.headers.get("Origin") !== url.origin) return fail(403, "Bad origin");
+    try {
+      const a = validate((await req.json().catch(() => null)) as Record<string, unknown>);
+      const r = await apply(google(env), s.email, a);
+      snapStale = true;
+      return json({ ok: true, ...r });
+    } catch (e) {
+      if (e instanceof ActionError) return fail(e.status, e.message);
+      throw e;
+    }
+  }
+  if (req.method !== "GET") return fail(405, "Method not allowed");
   switch (path) {
     case "/api/snapshot": return json(await latest(env));
     case "/api/user": {
@@ -141,6 +156,11 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));
     case "/api/product": return json(await cached("product", 900, () => analytics(env, google(env))));
+    case "/api/log": {
+      const rows = await google(env).latest("adminLog", 200);
+      return json({ entries: rows.map((r) => ({ id: r._id, at: r.at, email: r.email, what: r.what, uid: r.uid || null, done: r.done || null,
+        detail: (() => { try { return JSON.parse(r.detail || "{}"); } catch { return {}; } })(), ip: r.ip || null, country: r.country || null })) });
+    }
     case "/api/meters": return json(await cached("meters", 600, () => meters(env, google(env))));
     case "/api/uptime": return json(await cached("uptime", 240, async () => {
       const g = google(env), now = new Date();

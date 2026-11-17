@@ -88,6 +88,31 @@ export class Google {
     await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}/${path}`, { method: "PATCH", body: JSON.stringify({ fields: f }) });
   }
 
+  /** Set some fields of an existing document (strings, booleans, numbers; "now" for a server timestamp). */
+  async patch(path: string, data: Record<string, string | boolean | number | null>, mustExist = true): Promise<void> {
+    const name = `${this.docsRoot}/${path}`;
+    const enc = (v: unknown) => (v === null ? { nullValue: null } : typeof v === "boolean" ? { booleanValue: v }
+      : typeof v === "number" ? { integerValue: String(Math.round(v)) } : { stringValue: String(v) });
+    const plain = Object.entries(data).filter(([, v]) => v !== "now");
+    const stamps = Object.entries(data).filter(([, v]) => v === "now").map(([k]) => ({ fieldPath: k, setToServerValue: "REQUEST_TIME" }));
+    await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}:commit`, { method: "POST", body: JSON.stringify({ writes: [{
+      update: { name, fields: Object.fromEntries(plain.map(([k, v]) => [k, enc(v)])) },
+      updateMask: { fieldPaths: plain.map(([k]) => k) }, ...(stamps.length ? { updateTransforms: stamps } : {}),
+      ...(mustExist ? { currentDocument: { exists: true } } : {}) }] }) });
+  }
+
+  /** The newest documents of a top-level collection by id (ids start with a timestamp). */
+  latest(collectionId: string, limit: number): Promise<Doc[]> {
+    return this.query("", { from: [{ collectionId }], orderBy: [{ field: { fieldPath: "__name__" }, direction: "DESCENDING" }], limit });
+  }
+
+  /** Enable / disable an account or set its custom claims (needs the Firebase Authentication Admin role). */
+  async updateUser(uid: string, change: { disabled?: boolean; claims?: Row }): Promise<void> {
+    await this.call(`https://identitytoolkit.googleapis.com/v1/projects/${this.project}/accounts:update`, { method: "POST", body: JSON.stringify({
+      localId: uid, ...(change.disabled !== undefined ? { disableUser: change.disabled } : {}),
+      ...(change.claims !== undefined ? { customAttributes: JSON.stringify(change.claims) } : {}) }) });
+  }
+
   /** Append strings to an array field without reading the document first (one write; creates the doc). */
   async append(path: string, field: string, values: string[]): Promise<void> {
     const name = `${this.docsRoot}/${path}`;

@@ -24,6 +24,40 @@ async function api<T = Row>(path: string, init: RequestInit = {}): Promise<T> {
   return j as T;
 }
 
+// ── actions (phase 2): confirm, POST, show the result, re-render ──
+async function act(body: Row, question: string, after: () => void, withNote = false) {
+  let note: string | null | undefined;
+  if (withNote) { note = prompt(`${question}\n\nOptional note for the log / the customer:`, ""); if (note === null) return; }
+  else if (!confirm(question)) return;
+  try {
+    const r = await api<Row>("/api/action", { method: "POST", body: JSON.stringify({ ...body, ...(note ? { note } : {}) }) });
+    snap = null;
+    toast(r.done || "Done");
+    after();
+  } catch (e) { toast((e as Error).message, true); }
+}
+function toast(msg: string, bad = false) {
+  const t = Object.assign(document.createElement("div"), { className: `toast${bad ? " bad" : ""}`, textContent: msg, role: "status" });
+  document.body.append(t);
+  setTimeout(() => t.remove(), 5000);
+}
+function wireActions(root: ParentNode, after: () => void) {
+  $$<HTMLButtonElement>("button[data-act]", root).forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const d = b.dataset;
+    act(JSON.parse(d.act!), d.q || "Are you sure?", after, d.note === "1");
+  }));
+  $$<HTMLSelectElement>("select[data-act]", root).forEach((s) => s.addEventListener("change", (e) => {
+    e.stopPropagation();
+    const base = JSON.parse(s.dataset.act!);
+    const v = s.value;
+    s.value = s.dataset.cur || "";
+    if (v && v !== s.dataset.cur) act({ ...base, plan: v }, `${s.dataset.q || "Change plan"} → ${v}?`, after);
+  }));
+}
+const actBtn = (label: string, body: Row, q: string, kind = "", note = false) =>
+  `<button class="btn ghost xs ${kind}" data-act='${esc(JSON.stringify(body))}' data-q="${esc(q)}"${note ? ' data-note="1"' : ""}>${esc(label)}</button>`;
+
 // ── sign-in ──
 async function signIn() {
   const btn = $<HTMLButtonElement>("#signin");
@@ -50,12 +84,12 @@ function renderLogin(msg = "") {
 
 // ── shell ──
 const NAV = [["", "Overview"], ["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"],
-             ["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"]];
+             ["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"], ["health", "Pipeline health"], ["accuracy", "Model accuracy"], ["log", "Audit log"]];
 function shell() {
   document.body.classList.remove("out");
   $("#app")!.innerHTML = `<header class="top"><a href="#/" class="brand"><img src="/logo-mark.svg" alt="" width="26" height="26">CricSynthesis <b>Console</b></a>
     <button class="menu" aria-label="Menu">☰</button><span class="who">${esc(me!.email)}</span><button id="out" class="btn ghost sm">Sign out</button></header>
-    <nav class="side">${NAV.map(([k, l]) => `<a href="#/${k}" data-k="${k}">${l}</a>`).join("")}<p class="ro">Read-only</p></nav>
+    <nav class="side">${NAV.map(([k, l]) => `<a href="#/${k}" data-k="${k}">${l}</a>`).join("")}<p class="ro">Every action is logged</p></nav>
     <main id="main"></main>`;
   $("#out")!.addEventListener("click", async () => { await api("/api/session", { method: "DELETE" }).catch(() => {}); me = null; renderLogin(); });
   $(".menu")!.addEventListener("click", () => document.body.classList.toggle("nav-open"));
@@ -72,7 +106,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, ux, search, traffic, health, accuracy };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, product, ux, search, traffic, health, accuracy, log };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -176,7 +210,11 @@ async function user(uid: string) {
     <div><h1>${esc(u.name || u.email || uid)}</h1><p>${esc(u.email || "No email")} ${u.verified ? badge("Verified", "good") : badge("Not verified", "warn")}
       ${u.disabled ? badge("Disabled", "bad") : ""} ${!u.inAuth ? badge("Not in Firebase Auth", "warn") : ""}</p>
       <p class="muted">Account ID <code>${esc(uid)}</code> <button class="btn ghost xs" id="copy">Copy</button> · Signs in with ${esc(provider(u.providers))}
-      · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p></div></div>
+      · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p>
+      <p class="acts">${u.inAuth ? (u.disabled ? actBtn("Enable account", { type: "user.enable", uid }, `Enable ${u.email || uid}? They can sign in again.`)
+        : actBtn("Disable account", { type: "user.disable", uid }, `Disable ${u.email || uid}? They are signed out and can't sign in; their API keys keep working until revoked.`, "danger")) : ""}
+        ${u.inAuth ? `<label class="muted">Website plan <select data-act='${esc(JSON.stringify({ type: "user.website-plan", uid }))}' data-cur="${sv.website.source === "beta" ? "beta" : esc(id?.claims?.plan || "free")}" data-q="Set website plan">
+          ${[["beta", "Pro (beta default)"], ["pro", "Pro (assigned)"], ["free", "Free"]].map(([v, l]) => `<option value="${v}"${(sv.website.source === "beta" ? "beta" : id?.claims?.plan || "free") === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>` : ""}</p></div></div>
   <h2 class="sec">Services and plan</h2>
   <div class="tiles">
     ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${sv.website.source === "beta" ? "Pro free during the beta" : "Assigned plan"}`)}
@@ -205,13 +243,21 @@ async function user(uid: string) {
     { key: "lastUsed", label: "Last used", render: (r) => ago(r.lastUsed) },
     { key: "today", label: "Today", num: true, render: (r) => `${n(r.today)} <small class="muted">/ ${n(r.limit)}</small>` },
     { key: "calls30", label: "30 days", num: true, render: (r) => n(r.calls30) },
+    { key: "act", label: "", sort: () => null, render: (r) => r.revoked ? "" : `<select data-act='${esc(JSON.stringify({ type: "key.plan", uid, slot: r.slot }))}' data-cur="${esc(r.plan)}" data-q="Set ${esc(r.name)} (${esc(r.slot)}) plan" aria-label="Key plan">
+        ${["free", "pro", "business"].map((pl) => `<option${pl === r.plan ? " selected" : ""}>${pl}</option>`).join("")}</select>
+        ${actBtn("Revoke", { type: "key.revoke", uid, slot: r.slot }, `Revoke "${r.name}" (${r.prefix}…)? Requests with it stop within a minute. This can't be undone.`, "danger")}` },
   ], p.keys, { empty: "No API keys created." });
   table($("#limits")!, [{ key: "day", label: "Day", render: (r) => day(r.day) }, { key: "slot", label: "Key", render: (r) => slotName(r.slot) },
     { key: "calls", label: "Calls", num: true, render: (r) => `${n(r.calls)} / ${n(r.limit)}` }], p.usage.limitDays, { initial: { key: "day", desc: true }, limit: 10, empty: "Never hit a limit." });
   table($("#reqs")!, [{ key: "plan", label: "Plan" }, { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status) },
-    { key: "created", label: "Filed", render: (r) => day(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) }], p.requests, { empty: "No upgrade requests." });
+    { key: "created", label: "Filed", render: (r) => day(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) },
+    { key: "act", label: "", sort: () => null, render: (r) => reqActs(uid, r.plan, r.status, u.email) }], p.requests, { empty: "No upgrade requests." });
+  wireActions(main(), () => user(uid).then(() => wireTips(main())));
 }
 const slotName = (s: string) => (s === "mcp" ? "MCP connector" : esc(s));
+const reqActs = (uid: string, plan: string, status: string, email: string | null) => status !== "pending" ? "" :
+  actBtn("Approve", { type: "request.approve", uid, plan }, `Approve ${plan} for ${email || uid}? All their live keys move to ${plan === "api-business" ? "business" : "pro"}.`, "", true)
+  + " " + actBtn("Decline", { type: "request.decline", uid, plan }, `Decline ${plan} for ${email || uid}?`, "danger", true);
 const yn = (v: boolean | null) => (v == null ? "–" : v ? "On" : "Off");
 const reqBadge = (s: string) => badge(s, s === "pending" ? "warn" : s === "approved" ? "good" : s === "declined" ? "bad" : "plain");
 const epName = (ep: string) => (ep.startsWith("mcp_") ? `MCP · ${ep.slice(4)}` : ep.replace(/^post_/, "POST ").replace(/_/g, " / "));
@@ -261,11 +307,13 @@ async function usage() {
 // ── requests ──
 async function requests() {
   const s = await snapshot();
-  main().innerHTML = head("Upgrade requests", s) + `<p class="muted">Approving or declining comes in the next phase; for now this is the queue.</p><div id="tbl"></div>`;
+  main().innerHTML = head("Upgrade requests", s) + `<p class="muted">Approving moves all of the account's live keys to the plan (the API picks it up within a minute). Payments aren't automated yet: approve once the customer has paid or agreed terms.</p><div id="tbl"></div>`;
   table($("#tbl")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) }, { key: "plan", label: "Plan" },
     { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status), sort: (r) => (r.status === "pending" ? "0" : r.status) },
-    { key: "created", label: "Filed", render: (r) => when(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) }],
+    { key: "created", label: "Filed", render: (r) => when(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) },
+    { key: "act", label: "", sort: () => null, render: (r) => reqActs(r.uid, r.plan, r.status, r.email) }],
     s.requests, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "status", desc: false }, empty: "No upgrade requests yet." });
+  wireActions(main(), () => route());
   wireRefresh();
 }
 
@@ -330,6 +378,20 @@ async function ux() {
       <section class="card"><h2>Script errors by page</h2>${list(c.scriptErrors)}</section></div>
     <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${list(c.scroll, (v) => `${n(v)}%`)}</section>
       <section class="card"><h2>Most visited pages</h2>${list(c.traffic)}</section></div>`;
+}
+
+// ── audit log ──
+const ACT_NAMES: Record<string, string> = { signin: "Signed in", "request.approve": "Approved request", "request.decline": "Declined request",
+  "key.revoke": "Revoked key", "key.plan": "Changed key plan", "user.disable": "Disabled account", "user.enable": "Enabled account",
+  "user.website-plan": "Changed website plan" };
+async function log() {
+  const l = await api("/api/log");
+  main().innerHTML = head("Audit log") + `<p class="muted">Every admin sign-in and action, newest first (last 200).</p><div id="tbl"></div>`;
+  table($("#tbl")!, [{ key: "at", label: "When", render: (r) => `<span title="${esc(r.at)}">${when(r.at)}</span>` },
+    { key: "email", label: "Admin" }, { key: "what", label: "Action", render: (r) => esc(ACT_NAMES[r.what] || r.what) },
+    { key: "uid", label: "Account", render: (r) => (r.uid ? `<a href="#/user/${encodeURIComponent(r.uid)}">${esc(r.uid)}</a>` : "–") },
+    { key: "done", label: "Details", render: (r) => esc(r.done || [r.ip, r.country].filter(Boolean).join(" · ")) }],
+    l.entries || [], { initial: { key: "at", desc: true }, empty: "Nothing logged yet." });
 }
 
 // ── search (Google Search Console) ──
