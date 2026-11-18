@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Haryana won the toss and bowl first.",
   "teams": [
     {
       "name": "Tamil Nadu",
@@ -20,14 +20,14 @@
       "players": [
         "Amith Sathvik",
         "Tushar Raheja",
-        "B Sachin",
+        "Balasubramaniam Sachin",
         "Sai Kishore",
         "Narayan Jagadeesan",
-        "Shahrukh Khan",
         "Sunny Sandhu",
+        "Shahrukh Khan",
         "Ravi Rajkumar",
         "Gurjapneet Singh",
-        "Varun Chakaravarthy",
+        "M. Siddharth",
         "V Athisayaraj Davidson"
       ],
       "roles": [
@@ -36,8 +36,8 @@
         "BAT",
         "BOWL",
         "WK",
-        "BAT",
         "AR",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
@@ -63,27 +63,27 @@
       "short": "HAR",
       "players": [
         "Ankit Kumar",
-        "Arsh Ranga",
         "Yashvardhan Dalal",
+        "Arsh Ranga",
         "Nishant Sindhu",
         "Dinesh Bana",
         "Rahul Tewatia",
         "Sumit Kumar",
         "Samant Jakhar",
-        "Anuj Thakral",
+        "Kanishk Chouhan",
         "Himanshu Kumar",
         "Yuzvendra Chahal"
       ],
       "roles": [
         "BAT",
-        "BAT",
         "WK",
+        "BAT",
         "AR",
         "BAT",
         "AR",
         "AR",
         "BAT",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41893,
     "url": "https://khelnow.com/live-cricket-score/tamil-nadu-vs-haryana-syed-mushtaq-ali-trophy-elite-18th-november-2026-41893",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
