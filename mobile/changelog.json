@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.11",
+  "date": "2026-11-18",
+  "notes": [
+   "Promo codes at checkout: new subscribers can use WELCOME100 for ₹100 off their first payment",
+   "Monthly is now the default plan"
+  ]
+ },
+ {
   "version": "0.3.10",
   "date": "2026-11-18",
   "notes": [

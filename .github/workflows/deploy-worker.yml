@@ -60,9 +60,10 @@ jobs:
           RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
+          RZP_OFFER_WELCOME100: ${{ secrets.RAZORPAY_OFFER_WELCOME100 }}
         run: |
           [ -n "$RZP_ID" ] && [ -n "$RZP_SECRET" ] || { echo "::notice::No Razorpay keys yet: checkout stays off."; exit 0; }
-          node -e 'const e=process.env, o={RAZORPAY_KEY_ID:e.RZP_ID, RAZORPAY_KEY_SECRET:e.RZP_SECRET}; if (e.RZP_WEBHOOK) o.RAZORPAY_WEBHOOK_SECRET=e.RZP_WEBHOOK; process.stdout.write(JSON.stringify(o))' > /tmp/rzp.json
+          node -e 'const e=process.env, o={RAZORPAY_KEY_ID:e.RZP_ID, RAZORPAY_KEY_SECRET:e.RZP_SECRET}; if (e.RZP_WEBHOOK) o.RAZORPAY_WEBHOOK_SECRET=e.RZP_WEBHOOK; if (e.RZP_OFFER_WELCOME100) o.RAZORPAY_OFFER_WELCOME100=e.RZP_OFFER_WELCOME100; process.stdout.write(JSON.stringify(o))' > /tmp/rzp.json
           npx wrangler secret bulk /tmp/rzp.json
           rm -f /tmp/rzp.json
           case "$RZP_ID" in rzp_live_*) echo "Razorpay: live keys";; *) echo "Razorpay: test keys";; esac >> "$GITHUB_STEP_SUMMARY"

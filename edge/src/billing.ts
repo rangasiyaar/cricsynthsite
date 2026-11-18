@@ -31,8 +31,15 @@ export interface Store {
   set(path: string, fields: Rec): Promise<void>;
 }
 
+/** Promo codes: a flat discount on the first payment, for accounts that have never paid. Each needs a Razorpay
+ *  subscription offer (created in the dashboard, flat amount, first cycle only) whose id is in Deps.offers. */
+export const PROMOS: Record<string, { off: number; label: string }> = {
+  WELCOME100: { off: 10_000, label: "₹100 off your first payment" },
+};
+
 export interface Deps {
   keyId: string; keySecret: string; webhookSecret?: string;
+  offers?: Record<string, string>;         // promo code → Razorpay offer_id
   store: Store;
   rzp: (method: string, path: string, body?: unknown) => Promise<any>;
   now: () => number;                       // ms
@@ -118,11 +125,28 @@ async function save(deps: Deps, uid: string, sub: any, extra: Rec = {}) {
   const fields: Rec = {
     product: "pro", subscriptionId: sub.id, rzStatus: sub.status, status: a.status, proUntil: a.proUntil,
     trialEnd: a.trialEnd, currentEnd: a.currentEnd, paidCount: Number(sub.paid_count || 0),
-    trialUsed: prev.trialUsed === true || a.trialUsed, checked: new Date(deps.now()), updated: new Date(deps.now()), ...extra,
+    trialUsed: prev.trialUsed === true || a.trialUsed, everPaid: prev.everPaid === true || Number(sub.paid_count || 0) > 0, checked: new Date(deps.now()), updated: new Date(deps.now()), ...extra,
   };
   if (["cancelled", "ended", "halted"].includes(a.status)) fields.cancelAtEnd = false;
   await deps.store.set(docPath(uid), fields);
   return { ...prev, ...fields };
+}
+
+/** A promo code for this account: the discount, or a BillingError saying why not. */
+export function promoFor(deps: Deps, prev: Rec | null, raw: unknown, billing: Billing) {
+  const code = String(raw ?? "").trim().toUpperCase();
+  const promo = PROMOS[code];
+  if (!code || !promo) throw new BillingError(422, "That code isn't valid.");
+  if (!deps.offers?.[code]) throw new BillingError(422, "That code isn't available right now.");
+  if (prev?.everPaid === true || Number(prev?.paidCount || 0) > 0) throw new BillingError(422, "This code is for your first subscription only.");
+  return { code, off: promo.off, label: promo.label, offerId: deps.offers[code], firstCharge: PRICE[billing] - promo.off };
+}
+
+/** Check a promo code before checkout (the checkout page shows the discount). */
+export async function promo(deps: Deps, uid: string, body: any) {
+  const billing: Billing = body?.billing === "yearly" ? "yearly" : "monthly";
+  const p = promoFor(deps, await deps.store.get(docPath(uid)), body?.code, billing);
+  return { code: p.code, off: p.off, label: p.label, firstCharge: p.firstCharge, billing };
 }
 
 /** Start a subscription for the website's checkout. */
@@ -134,15 +158,18 @@ export async function checkout(deps: Deps, user: { uid: string; email: string | 
   const view = publicView(prev, now);
   if (view.pro && prev?.status !== "created" && prev?.status !== "cancelled") throw new BillingError(409, "You already have CricSynthesis Pro.");
   const trial = view.trialAvailable;
+  const p = body?.promo ? promoFor(deps, prev, body.promo, billing) : null;
   const sub = await deps.rzp("POST", "/subscriptions", {
     plan_id: await planId(deps, billing), total_count: CYCLES[billing], quantity: 1, customer_notify: 1,
     ...(trial ? { start_at: Math.floor(now / 1000) + TRIAL_S } : {}),
-    notes: { uid: user.uid, product: "pro", billing },
+    ...(p ? { offer_id: p.offerId } : {}),
+    notes: { uid: user.uid, product: "pro", billing, ...(p ? { promo: p.code } : {}) },
   });
   // keep any access still running (e.g. a cancelled plan's last days) until the new subscription is confirmed
   await deps.store.set(docPath(user.uid), { product: "pro", subscriptionId: sub.id, rzStatus: sub.status, billing,
-                                            ...(view.pro ? {} : { status: "created" }), updated: new Date(now) });
-  return { key: deps.keyId, subscription_id: sub.id, trial, billing, amount: PRICE[billing], email: user.email };
+                                            promo: p?.code ?? null, ...(view.pro ? {} : { status: "created" }), updated: new Date(now) });
+  return { key: deps.keyId, subscription_id: sub.id, trial, billing, amount: PRICE[billing], email: user.email,
+           promo: p ? { code: p.code, off: p.off, firstCharge: p.firstCharge } : null };
 }
 
 /** The checkout's success callback: check Razorpay's signature, then record the subscription. */
