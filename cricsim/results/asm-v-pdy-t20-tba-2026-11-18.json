@@ -1,0 +1,368 @@
+{
+ "id": "asm-v-pdy-t20-tba-2026-11-18",
+ "innings": [
+  {
+   "team": "Puducherry",
+   "runs": 192,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Bhanu Anand",
+     "dismissal": "c SM Jain b M Hussain",
+     "runs": 18,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Ramamoorthy Ragavan",
+     "dismissal": "c JN Kalita b MK Dutta",
+     "runs": 14,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Pougajendy Akash",
+     "dismissal": "b D Das",
+     "runs": 21,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "S Parameeswaran",
+     "dismissal": "c RM Sen b Akash Sengupta",
+     "runs": 53,
+     "balls": 43,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Aman Hakim Khan",
+     "dismissal": "c SM Jain b Akash Sengupta",
+     "runs": 55,
+     "balls": 32,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Shashank Singh",
+     "dismissal": "c SA Roy b MK Dutta",
+     "runs": 7,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sagar Trivedi",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ankit Sharma",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mukhtar Hussain",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mrinmoy Dutta",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 2
+    },
+    {
+     "name": "Akash Sengupta",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Roshan Alam",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Denish Das",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jitumoni Kalita",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ramamoorthy Ragavan",
+     "score": 34,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Bhanu Anand",
+     "score": 40,
+     "over": "4.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Pougajendy Akash",
+     "score": 74,
+     "over": "8.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "S Parameeswaran",
+     "score": 172,
+     "over": "18.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Aman Hakim Khan",
+     "score": 175,
+     "over": "18.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Shashank Singh",
+     "score": 183,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 1,
+    "w": 10,
+    "nb": 3,
+    "p": 0
+   },
+   "powerplay_runs": 56
+  },
+  {
+   "team": "Assam",
+   "runs": 131,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Bishal Saha",
+     "dismissal": "c A H Khan b Adil Ayub Tunda",
+     "runs": 16,
+     "balls": 9,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Rohit Mihir Sen",
+     "dismissal": "c SH Singh b P Singh",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pradyun Saikia",
+     "dismissal": "not out",
+     "runs": 44,
+     "balls": 51,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Denish Das",
+     "dismissal": "c P Akash b Adil Ayub Tunda",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sibsankar Roy",
+     "dismissal": "c B Rawat b Adil Ayub Tunda",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Saahil Jain",
+     "dismissal": "b B Rawat",
+     "runs": 19,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Jitumoni Kalita",
+     "dismissal": "b A Sharma",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Akash Sengupta",
+     "dismissal": "b S Trivedi",
+     "runs": 42,
+     "balls": 30,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Mukhtar Hussain",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Pranay Singh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Adil Ayub Tunda",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Sagar Trivedi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Badal Rawat",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ankit Sharma",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pougajendy Akash",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Bishal Saha",
+     "score": 19,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rohit Mihir Sen",
+     "score": 21,
+     "over": "2.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Denish Das",
+     "score": 24,
+     "over": "3.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Sibsankar Roy",
+     "score": 24,
+     "over": "3.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Saahil Jain",
+     "score": 62,
+     "over": "9.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Jitumoni Kalita",
+     "score": 63,
+     "over": "10.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Akash Sengupta",
+     "score": 130,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 4,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Puducherry won",
+ "winner": "Puducherry"
+}
