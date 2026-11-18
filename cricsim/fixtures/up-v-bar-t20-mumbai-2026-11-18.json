@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Baroda won the toss and bowl first.",
   "teams": [
     {
       "name": "Uttar Pradesh",
@@ -65,26 +65,26 @@
         "Krunal Pandya",
         "Atit Sheth",
         "Jitesh Sharma",
+        "Shashwat Rawat",
         "Shivalik Sharma",
         "Deepak Hooda",
         "Amit Passi",
-        "Mahesh Pithiya",
-        "Raj Limbani",
-        "Rasikh Salam Dar",
         "Bhanu Pania",
-        "Safvan Patel"
+        "Hemant Punde",
+        "Rasikh Salam Dar",
+        "Raj Limbani"
       ],
       "roles": [
         "AR",
         "AR",
         "WK",
+        "BAT",
         "AR",
+        "BAT",
         "BAT",
         "BAT",
         "AR",
         "BOWL",
-        "BOWL",
-        "BAT",
         "BOWL"
       ],
       "captain": "Krunal Pandya",
@@ -107,6 +107,7 @@
     "kn": 41894,
     "url": "https://khelnow.com/live-cricket-score/uttar-pradesh-vs-baroda-syed-mushtaq-ali-trophy-elite-18th-november-2026-41894",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
