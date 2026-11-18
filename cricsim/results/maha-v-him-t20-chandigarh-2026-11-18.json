@@ -1,0 +1,377 @@
+{
+ "id": "maha-v-him-t20-chandigarh-2026-11-18",
+ "innings": [
+  {
+   "team": "Himachal Pradesh",
+   "runs": 145,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ayush Jamwal",
+     "dismissal": "c S Shinde b V Shelar",
+     "runs": 20,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Innesh Mahajan",
+     "dismissal": "c V Shelar b V Ostwal",
+     "runs": 11,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ekant Sen",
+     "dismissal": "not out",
+     "runs": 73,
+     "balls": 55,
+     "fours": 9,
+     "sixes": 1
+    },
+    {
+     "name": "Pukhraj Mann",
+     "dismissal": "c M Choudhary b V Ostwal",
+     "runs": 13,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Nehal Wadhera",
+     "dismissal": "c PH Solanki b S Veer",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mridul Surroch",
+     "dismissal": "c S Shinde b V Shelar",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Vaibhav Kalta",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mukesh Choudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Vivek Shelar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Vicky Ostwal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Prashant Solanki",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Siddhesh Veer",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ayush Jamwal",
+     "score": 36,
+     "over": "4.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Innesh Mahajan",
+     "score": 47,
+     "over": "6.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Pukhraj Mann",
+     "score": 81,
+     "over": "10.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nehal Wadhera",
+     "score": 86,
+     "over": "11.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Mridul Surroch",
+     "score": 126,
+     "over": "17.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 7,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 46
+  },
+  {
+   "team": "Maharashtra",
+   "runs": 148,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Prithvi Shaw",
+     "dismissal": "c I Mahajan b R Kumar",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Arshin Kulkarni",
+     "dismissal": "c M Surroch b R Kumar",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sahil Parakh",
+     "dismissal": "c AS Jamwal b M Surroch",
+     "runs": 35,
+     "balls": 25,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Rushikesh Sonavne",
+     "dismissal": "b AS Jamwal",
+     "runs": 42,
+     "balls": 33,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Siddhesh Veer",
+     "dismissal": "lbw b R Kumar",
+     "runs": 22,
+     "balls": 23,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Suraj Shinde",
+     "dismissal": "c P Mann b M Surroch",
+     "runs": 6,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "dismissal": "c E Sen b A Singh-I",
+     "runs": 12,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Vicky Ostwal",
+     "dismissal": "not out",
+     "runs": 25,
+     "balls": 18,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Prashant Solanki",
+     "dismissal": "c P Mann b R Kumar",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mukesh Choudhary",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Rohit Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Arpit Guleria",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mridul Surroch",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jitender Rana",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aryaman Singh-I",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ayush Jamwal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nehal Wadhera",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arshin Kulkarni",
+     "score": 1,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prithvi Shaw",
+     "score": 3,
+     "over": "0.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sahil Parakh",
+     "score": 78,
+     "over": "9.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rushikesh Sonavne",
+     "score": 81,
+     "over": "10.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Suraj Shinde",
+     "score": 90,
+     "over": "11.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ramakrishna Ghosh",
+     "score": 111,
+     "over": "14.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Siddhesh Veer",
+     "score": 134,
+     "over": "18.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Prashant Solanki",
+     "score": 134,
+     "over": "18.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Maharashtra won",
+ "winner": "Maharashtra"
+}
