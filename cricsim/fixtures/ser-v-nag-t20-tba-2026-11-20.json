@@ -1,0 +1,112 @@
+{
+  "id": "ser-v-nag-t20-tba-2026-11-20",
+  "title": "Services v Nagaland",
+  "date": "2026-11-20",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 11th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Services",
+      "short": "SER",
+      "players": [
+        "Suraj Vashisht",
+        "Kunwar Pathak",
+        "Arun Kumar",
+        "Mohit Ahlawat",
+        "Nakul Sharma",
+        "Mohit Jangra",
+        "Arjun Sharma",
+        "Arun Bamal",
+        "Irfan Khan",
+        "Raj Bahadur",
+        "Mohit Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Nakul Sharma",
+      "squad": [
+        "Suraj Vashisht",
+        "Kunwar Pathak",
+        "Arun Kumar",
+        "Mohit Ahlawat",
+        "Nakul Sharma",
+        "Mohit Jangra",
+        "Arjun Sharma",
+        "Arun Bamal",
+        "Irfan Khan",
+        "Raj Bahadur",
+        "Mohit Kumar"
+      ]
+    },
+    {
+      "name": "Nagaland",
+      "short": "NAG",
+      "players": [
+        "Hokaito Zhimomi",
+        "Rongsen Jonathan",
+        "Joshua Ozukum",
+        "Chetan Bist",
+        "Sedezhalie Rupero",
+        "Tohuka Zhimo",
+        "Anil Gupta",
+        "Imliwati Lemtur",
+        "Nagaho Chishi",
+        "Neizekho Rupreo",
+        "Akavi Yeptho"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Hokaito Zhimomi",
+      "squad": [
+        "Hokaito Zhimomi",
+        "Rongsen Jonathan",
+        "Joshua Ozukum",
+        "Chetan Bist",
+        "Sedezhalie Rupero",
+        "Tohuka Zhimo",
+        "Anil Gupta",
+        "Imliwati Lemtur",
+        "Nagaho Chishi",
+        "Neizekho Rupreo",
+        "Akavi Yeptho"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41855,
+    "url": "https://khelnow.com/live-cricket-score/services-vs-nagaland-syed-mushtaq-ali-trophy-plate-20th-november-2026-41855",
+    "auto": true,
+    "xis": false
+  }
+}

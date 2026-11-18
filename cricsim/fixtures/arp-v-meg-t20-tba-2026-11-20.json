@@ -1,0 +1,112 @@
+{
+  "id": "arp-v-meg-t20-tba-2026-11-20",
+  "title": "Arunachal Pradesh v Meghalaya",
+  "date": "2026-11-20",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 10th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Arunachal Pradesh",
+      "short": "ARP",
+      "players": [
+        "Kamsha Yangfo",
+        "Biki Kumar",
+        "Neelam Obi",
+        "Chandan Kumar Singh",
+        "Techi Doria",
+        "Salil Malhotra",
+        "Yab Niya",
+        "Likha Sonia",
+        "Nabam Tempol",
+        "Techi Neri",
+        "Darge Bagra"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Neelam Obi",
+      "squad": [
+        "Kamsha Yangfo",
+        "Biki Kumar",
+        "Neelam Obi",
+        "Chandan Kumar Singh",
+        "Techi Doria",
+        "Salil Malhotra",
+        "Yab Niya",
+        "Likha Sonia",
+        "Nabam Tempol",
+        "Techi Neri",
+        "Darge Bagra"
+      ]
+    },
+    {
+      "name": "Meghalaya",
+      "short": "MEG",
+      "players": [
+        "Srinivas Sharath",
+        "Josiah Momin",
+        "Arien Sangma",
+        "Manish Sharma",
+        "Swarajeet Das",
+        "Jiwanjot Singh",
+        "Chengkam Sangma",
+        "Raj Biswa",
+        "Akshay Karnewar",
+        "Amiangshu Sen",
+        "Akash Choudhary"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Srinivas Sharath",
+      "squad": [
+        "Srinivas Sharath",
+        "Josiah Momin",
+        "Arien Sangma",
+        "Manish Sharma",
+        "Swarajeet Das",
+        "Jiwanjot Singh",
+        "Chengkam Sangma",
+        "Raj Biswa",
+        "Akshay Karnewar",
+        "Amiangshu Sen",
+        "Akash Choudhary"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41853,
+    "url": "https://khelnow.com/live-cricket-score/arunachal-pradesh-vs-meghalaya-syed-mushtaq-ali-trophy-plate-20th-november-2026-41853",
+    "auto": true,
+    "xis": false
+  }
+}
