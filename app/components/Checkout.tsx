@@ -22,7 +22,7 @@ const Lock = () => (
 export default function Checkout() {
   const params = useSearchParams();
   const router = useRouter();
-  const billing: Billing = params.get("plan") === "monthly" ? "monthly" : "yearly";
+  const billing: Billing = params.get("plan") === "yearly" ? "yearly" : "monthly";
   const setBilling = (b: Billing) => router.replace(`/checkout/?plan=${b}`, { scroll: false });
   const c = useCheckout(billing, "web");
   useEffect(() => { if (c.uid === null) window.location.replace(loginHref(`/checkout/?plan=${billing}`)); }, [c.uid, billing]);

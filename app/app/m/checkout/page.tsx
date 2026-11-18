@@ -17,7 +17,7 @@ const Tick = () => (
 function Checkout() {
   const params = useSearchParams();
   const router = useRouter();
-  const billing: Billing = params.get("plan") === "monthly" ? "monthly" : "yearly";
+  const billing: Billing = params.get("plan") === "yearly" ? "yearly" : "monthly";
   const c = useCheckout(billing, "app");
   useEffect(() => {
     if (c.uid === null) router.replace(`/m/login/?next=${encodeURIComponent(`/m/checkout/?plan=${billing}`)}`);
@@ -47,7 +47,7 @@ function Checkout() {
       <div className="a-title" style={{ paddingBottom: 12 }}><div className="a-eyebrow">Checkout</div><h1>Start CricSynthesis Pro</h1></div>
       <div className="a-group-label">Your plan</div>
       <div className="ap-options" role="radiogroup" aria-label="Plan">
-        {(["yearly", "monthly"] as Billing[]).map((id) => (
+        {(["monthly", "yearly"] as Billing[]).map((id) => (
           <button key={id} type="button" role="radio" aria-checked={billing === id} className="ap-option"
                   onClick={() => router.replace(`/m/checkout/?plan=${id}`)}>
             <span className="ap-radio" aria-hidden="true" />

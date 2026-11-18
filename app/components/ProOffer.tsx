@@ -42,7 +42,7 @@ export function proLine(b: ProBilling): string {
 }
 
 export default function ProOffer({ api = false }: { api?: boolean }) {
-  const [billing, setBilling] = useState<Billing>("yearly");
+  const [billing, setBilling] = useState<Billing>("monthly");
   const { user, source } = usePlan();
   const b = useProBilling(user === undefined ? undefined : user?.uid ?? null);
   const paid = hasPaidPro(b);

@@ -23,7 +23,7 @@ const Tick = () => (
 
 export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
   const router = useRouter();
-  const [billing, setBilling] = useState<Billing>("yearly");
+  const [billing, setBilling] = useState<Billing>("monthly");
   const { user } = usePlan();
   const b = useProBilling(user === undefined ? undefined : user?.uid ?? null);
   const paid = hasPaidPro(b);
@@ -39,8 +39,8 @@ export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
     router.push(user === null ? `/m/login/?next=${encodeURIComponent(to)}` : to);
   };
   const options: { id: Billing; title: string; price: string; per: string; note: string; badge?: string }[] = [
-    { id: "yearly", title: "Yearly", price: rupees(PRO.yearly), per: "/year", note: `${rupees(yearlyPerMonth)} a month`, badge: `Save ${rupees(yearlySaving)}` },
     { id: "monthly", title: "Monthly", price: rupees(PRO.monthly), per: "/month", note: "Flexible, cancel any time" },
+    { id: "yearly", title: "Yearly", price: rupees(PRO.yearly), per: "/year", note: `${rupees(yearlyPerMonth)} a month`, badge: `Save ${rupees(yearlySaving)}` },
   ];
   return (
     <div className="ap">
