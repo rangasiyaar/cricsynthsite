@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Karnataka won the toss and bowl first.",
   "teams": [
     {
       "name": "Karnataka",
@@ -22,25 +22,25 @@
         "Manish Pandey",
         "Karun Nair",
         "Smaran-R",
-        "Abhinav Manohar",
-        "Shikhar shetty",
-        "Manvanth Kumar",
         "Praveen Dubey",
+        "Manvanth Kumar",
+        "Vyshak Vijaykumar",
+        "Yash Punja",
         "Abhilash Shetty",
-        "Rithesh Bhatkal",
-        "Vyshak Vijaykumar"
+        "Rohan Patil",
+        "Shreesha Achar"
       ],
       "roles": [
         "WK",
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
-        "AR",
         "AR",
         "AR",
         "BOWL",
-        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Smaran-R",
@@ -72,7 +72,7 @@
         "B Lalnunfela",
         "Sumit Lama",
         "F Lalmuanzuala",
-        "Marema"
+        "Lalthianawma"
       ],
       "roles": [
         "BAT",
@@ -85,7 +85,7 @@
         "BAT",
         "BOWL",
         "AR",
-        "BAT"
+        "AR"
       ],
       "captain": "Joseph Lalthankhuma",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41896,
     "url": "https://khelnow.com/live-cricket-score/karnataka-vs-mizoram-syed-mushtaq-ali-trophy-elite-18th-november-2026-41896",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
