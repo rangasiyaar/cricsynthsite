@@ -1,7 +1,7 @@
 name: Reset subscriptions
 
-# One-off: every account back to "not subscribed" (master/scripts/reset-subscriptions.ts). Cancels each CricSynthesis Pro
-# subscription in Razorpay, deletes its billing record and removes assigned plans. Dry run unless "apply" is ticked;
+# Every account back to "not subscribed" (master/scripts/reset-subscriptions.ts). Cancels each CricSynthesis Pro
+# subscription in Razorpay (and any other open one on the account), deletes the billing records and removes assigned plans. Dry run unless "apply" is ticked;
 # refuses live Razorpay keys.
 on:
   workflow_dispatch:

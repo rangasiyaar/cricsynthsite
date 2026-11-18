@@ -35,6 +35,24 @@ for (const b of bills) {
   await g.remove(b._path);
 }
 
+// 1b. Every other subscription on the Razorpay account (throwaway checks, abandoned checkouts): cancel the open ones.
+//     Razorpay can't delete subscriptions; cancelled ones stay listed in its dashboard as history.
+const open = ["created", "authenticated", "active", "pending", "halted", "paused"];
+let all: any[] = [];
+for (let skip = 0; skip < 2000; skip += 100) {
+  const page = await rzp("GET", `/subscriptions?count=100&skip=${skip}`);
+  all = all.concat(page.items || []);
+  if ((page.items || []).length < 100) break;
+}
+const toCancel = all.filter((x) => open.includes(x.status));
+say(`Razorpay subscriptions: ${all.length} · still open: ${toCancel.length}`);
+for (const x of toCancel) {
+  say(`- ${x.id}: ${x.status} (${x.notes?.product ?? "?"}${x.notes?.uid ? ` · ${x.notes.uid}` : ""}) → cancel`);
+  if (!apply) continue;
+  try { await rzp("POST", `/subscriptions/${x.id}/cancel`, { cancel_at_cycle_end: 0 }); }
+  catch (e) { say(`  cancel failed: ${(e as Error).message}`); }
+}
+
 const users = await g.users();
 const claimed = users.filter((u) => u.claims && "plan" in u.claims);
 say(`Accounts: ${users.length} · with an assigned plan: ${claimed.length}`);
