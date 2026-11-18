@@ -1,0 +1,483 @@
+{
+ "id": "aus-v-eng-odi-hobart-2026-11-18",
+ "innings": [
+  {
+   "team": "England",
+   "runs": 328,
+   "wickets": 10,
+   "overs": "48.3",
+   "batting": [
+    {
+     "name": "Tom Banton",
+     "dismissal": "c M Marsh b J Edwards",
+     "runs": 44,
+     "balls": 35,
+     "fours": 9,
+     "sixes": 0
+    },
+    {
+     "name": "Ben Duckett",
+     "dismissal": "c J Inglis b MT Renshaw",
+     "runs": 133,
+     "balls": 115,
+     "fours": 15,
+     "sixes": 3
+    },
+    {
+     "name": "Joe Root",
+     "dismissal": "b MT Renshaw",
+     "runs": 12,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harry Brook",
+     "dismissal": "c M Beardman b C Connolly",
+     "runs": 17,
+     "balls": 23,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Jordan Cox",
+     "dismissal": "st J Inglis b MT Renshaw",
+     "runs": 12,
+     "balls": 23,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jofra Archer",
+     "dismissal": "c J Edwards b T Head",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Will Jacks",
+     "dismissal": "c M Beardman b J Edwards",
+     "runs": 59,
+     "balls": 48,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Sam Curran",
+     "dismissal": "c (sub L Scott) b J Edwards",
+     "runs": 19,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Gus Atkinson",
+     "dismissal": "b XC Bartlett",
+     "runs": 10,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Liam Dawson",
+     "dismissal": "c CM Green b J Edwards",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sonny Baker",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Xavier Bartlett",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 66,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Spencer Johnson",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mahli Beardman",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 54,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Jack Edwards",
+     "overs": "5.3",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matt Renshaw",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Cooper Connolly",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Travis Head",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tom Banton",
+     "score": 74,
+     "over": "8.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Joe Root",
+     "score": 112,
+     "over": "14.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Harry Brook",
+     "score": 146,
+     "over": "22.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Jordan Cox",
+     "score": 172,
+     "over": "28.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jofra Archer",
+     "score": 195,
+     "over": "32.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ben Duckett",
+     "score": 251,
+     "over": "38.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sam Curran",
+     "score": 292,
+     "over": "44.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Gus Atkinson",
+     "score": 307,
+     "over": "45.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Liam Dawson",
+     "score": 312,
+     "over": "46.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Will Jacks",
+     "score": 328,
+     "over": "48.3"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 3,
+    "w": 7,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 79
+  },
+  {
+   "team": "Australia",
+   "runs": 231,
+   "wickets": 10,
+   "overs": "46.5",
+   "batting": [
+    {
+     "name": "Mitchell Marsh",
+     "dismissal": "c H Brook b S Baker",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Travis Head",
+     "dismissal": "c J Root b G Atkinson",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Renshaw",
+     "dismissal": "c & b L Dawson",
+     "runs": 55,
+     "balls": 70,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Josh Inglis",
+     "dismissal": "c J Cox b S Baker",
+     "runs": 14,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Alex Carey",
+     "dismissal": "runout (J Cox / BM Duckett)",
+     "runs": 37,
+     "balls": 53,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Cameron Green",
+     "dismissal": "Retired hurt",
+     "runs": 3,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cooper Connolly",
+     "dismissal": "b L Dawson",
+     "runs": 29,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Jack Edwards",
+     "dismissal": "c G Atkinson b L Dawson",
+     "runs": 31,
+     "balls": 36,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ollie Peake",
+     "dismissal": "c L Dawson b S Baker",
+     "runs": 5,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Xavier Bartlett",
+     "dismissal": "c H Brook b S Baker",
+     "runs": 16,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Spencer Johnson",
+     "dismissal": "c BM Duckett b H Brook",
+     "runs": 15,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mahli Beardman",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 29,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Gus Atkinson",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Sonny Baker",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 45,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Will Jacks",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jofra Archer",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sam Curran",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Joe Root",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Liam Dawson",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Harry Brook",
+     "overs": "0.5",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Travis Head",
+     "score": 5,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mitchell Marsh",
+     "score": 5,
+     "over": "1.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Josh Inglis",
+     "score": 34,
+     "over": "7.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Matt Renshaw",
+     "score": 108,
+     "over": "23.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Alex Carey",
+     "score": 115,
+     "over": "26.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Cooper Connolly",
+     "score": 162,
+     "over": "33.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ollie Peake",
+     "score": 179,
+     "over": "36.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Xavier Bartlett",
+     "score": 199,
+     "over": "38.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jack Edwards",
+     "score": 203,
+     "over": "39.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Spencer Johnson",
+     "score": 231,
+     "over": "46.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
