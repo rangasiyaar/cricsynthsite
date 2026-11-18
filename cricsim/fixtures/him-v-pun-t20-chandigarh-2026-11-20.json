@@ -1,0 +1,112 @@
+{
+  "id": "him-v-pun-t20-chandigarh-2026-11-20",
+  "title": "Himachal Pradesh v Punjab",
+  "date": "2026-11-20",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 61st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Himachal Pradesh",
+      "short": "HIM",
+      "players": [
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Innesh Mahajan",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Ekant Sen",
+        "Jitender Rana"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Pukhraj Mann",
+      "squad": [
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Innesh Mahajan",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Ekant Sen",
+        "Jitender Rana"
+      ]
+    },
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Harpreet Brar",
+        "Sukhdeep Singh Bajwa",
+        "Umesh Yadav",
+        "Sanvir Singh",
+        "Kartik Chadha",
+        "Krish Bhagat"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Harpreet Brar",
+        "Sukhdeep Singh Bajwa",
+        "Umesh Yadav",
+        "Sanvir Singh",
+        "Kartik Chadha",
+        "Krish Bhagat"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41913,
+    "url": "https://khelnow.com/live-cricket-score/himachal-pradesh-vs-punjab-syed-mushtaq-ali-trophy-elite-20th-november-2026-41913",
+    "auto": true,
+    "xis": false
+  }
+}

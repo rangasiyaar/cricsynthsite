@@ -1,0 +1,112 @@
+{
+  "id": "raj-v-bar-t20-mumbai-2026-11-20",
+  "title": "Rajasthan v Baroda",
+  "date": "2026-11-20",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 63rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Rajasthan",
+      "short": "RAJ",
+      "players": [
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Mahipal Lomror",
+        "Kartik Sharma",
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Deepak Chahar",
+        "Manav Suthar",
+        "Rahul Chahar",
+        "Himanshu Rana",
+        "Himanshu Nehra"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Deepak Chahar",
+      "squad": [
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Mahipal Lomror",
+        "Kartik Sharma",
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Deepak Chahar",
+        "Manav Suthar",
+        "Rahul Chahar",
+        "Himanshu Rana",
+        "Himanshu Nehra"
+      ]
+    },
+    {
+      "name": "Baroda",
+      "short": "BAR",
+      "players": [
+        "Krunal Pandya",
+        "Atit Sheth",
+        "Jitesh Sharma",
+        "Shashwat Rawat",
+        "Shivalik Sharma",
+        "Deepak Hooda",
+        "Amit Passi",
+        "Bhanu Pania",
+        "Hemant Punde",
+        "Rasikh Salam Dar",
+        "Raj Limbani"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Krunal Pandya",
+      "squad": [
+        "Krunal Pandya",
+        "Atit Sheth",
+        "Jitesh Sharma",
+        "Shashwat Rawat",
+        "Shivalik Sharma",
+        "Deepak Hooda",
+        "Amit Passi",
+        "Bhanu Pania",
+        "Hemant Punde",
+        "Rasikh Salam Dar",
+        "Raj Limbani"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41915,
+    "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-baroda-syed-mushtaq-ali-trophy-elite-20th-november-2026-41915",
+    "auto": true,
+    "xis": false
+  }
+}

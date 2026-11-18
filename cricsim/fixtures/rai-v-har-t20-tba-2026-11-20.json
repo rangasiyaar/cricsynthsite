@@ -1,0 +1,112 @@
+{
+  "id": "rai-v-har-t20-tba-2026-11-20",
+  "title": "Railways v Haryana",
+  "date": "2026-11-20",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 62nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Garv Sangwan",
+        "Upendra Yadav",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Atal Bihari Rai",
+        "Kritagya Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Mohammad Saif",
+      "squad": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Garv Sangwan",
+        "Upendra Yadav",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Atal Bihari Rai",
+        "Kritagya Singh"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Yashvardhan Dalal",
+        "Arsh Ranga",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Yashvardhan Dalal",
+        "Arsh Ranga",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41914,
+    "url": "https://khelnow.com/live-cricket-score/railways-vs-haryana-syed-mushtaq-ali-trophy-elite-20th-november-2026-41914",
+    "auto": true,
+    "xis": false
+  }
+}

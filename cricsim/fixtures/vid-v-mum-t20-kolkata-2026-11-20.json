@@ -1,0 +1,112 @@
+{
+  "id": "vid-v-mum-t20-kolkata-2026-11-20",
+  "title": "Vidarbha v Mumbai",
+  "date": "2026-11-20",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 64th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Vidarbha",
+      "short": "VID",
+      "players": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Shubham Dubey",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Adhyayan Daga",
+        "Nachiket Bhute",
+        "Saurabh Dubey"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Atharva Taide",
+      "squad": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Shubham Dubey",
+        "Ravikumar Samarth",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Adhyayan Daga",
+        "Nachiket Bhute",
+        "Saurabh Dubey"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Tushar Deshpande",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Tushar Deshpande",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41916,
+    "url": "https://khelnow.com/live-cricket-score/vidarbha-vs-mumbai-syed-mushtaq-ali-trophy-elite-20th-november-2026-41916",
+    "auto": true,
+    "xis": false
+  }
+}
