@@ -6,7 +6,8 @@ from cricsim.notify import IST
 
 from cricsim.social import caption, carousel_data, due, email, league
 
-DATA = Path(__file__).resolve().parents[2] / "app" / "public" / "data"
+# a saved published match (Melbourne Renegades v Adelaide Strikers, WBBL, 7 Nov 2026): the live data drops old matches
+FIX = Path(__file__).resolve().parent / "fixtures" / "social"
 
 
 def card(home, away, comp="Some Cup · 1st Match", start="2026-11-10T19:30", **kw):
@@ -51,8 +52,8 @@ def test_due_two_hours_before():
 
 def test_carousel_data_and_caption():
     mid = "mlrw-v-adsw-t20-melbourne-2026-11-07"
-    doc = json.loads((DATA / "matches" / f"{mid}.json").read_text())
-    venue = json.loads((DATA / "venue" / f"{mid}.json").read_text())
+    doc = json.loads((FIX / "match.json").read_text())
+    venue = json.loads((FIX / "venue.json").read_text())
     d = carousel_data(doc, venue)
     assert [t["short"] for t in d["teams"]] == ["MLRW", "ADSW"]
     assert len(d["teams"][0]["runs"]) == d["overs"] == 20
@@ -78,7 +79,7 @@ def test_email(monkeypatch, tmp_path):
 
     monkeypatch.setattr("urllib.request.urlopen", fake)
     mid = "mlrw-v-adsw-t20-melbourne-2026-11-07"
-    d = carousel_data(json.loads((DATA / "matches" / f"{mid}.json").read_text()), None)
+    d = carousel_data(json.loads((FIX / "match.json").read_text()), None)
     slides = []
     for i in range(1, 7):
         (tmp_path / f"{i}.jpg").write_bytes(b"\xff\xd8jpeg")
