@@ -13,7 +13,7 @@
 }
 :root[data-theme="dark"] .app-wrap { --a-press: rgba(230, 231, 232, .08); }
 .app-wrap *:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; border-radius: 8px; }
-.app-wrap button { font: inherit; color: inherit; }
+.app-wrap button:not(.a-btn) { font: inherit; color: inherit; }   /* .a-btn sets its own font and colour */
 .app-wrap a { text-decoration: none !important; }
 
 /* ── top bar ── */
@@ -504,3 +504,43 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .a-check input { width: 22px; height: 22px; accent-color: var(--cs-steel); }
 .a-sheet-btns { display: flex; gap: 10px; margin-top: 4px; }
 .a-row-title .a-pro { margin-left: 8px; vertical-align: 2px; }
+
+/* ── CricSynthesis Pro screen (components/ProOfferApp.tsx) ── */
+.ap { padding-bottom: 24px; }
+.ap-hero { text-align: center; padding: 8px 8px 22px; display: grid; justify-items: center; }
+.ap-hero h1 { font-family: var(--cs-head); font-weight: 600; font-size: 32px; line-height: 1.02; text-transform: uppercase; margin: 6px 0 0; color: var(--cs-ink); }
+.ap-hero p { margin: 12px 0 0; font-size: 15px; line-height: 1.5; color: var(--cs-ink-2); max-width: 36ch; }
+.ap-card { background: var(--a-surface); border-radius: var(--a-r); padding: 14px 16px; margin: 0 0 12px; }
+.ap-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.ap-list.ap-card { padding: 16px; margin-bottom: 22px; }
+.ap-list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 15px; line-height: 1.42; color: var(--cs-ink); }
+.ap-list svg { color: var(--cs-steel); margin-top: 1px; }
+.ap-options { display: grid; gap: 10px; }
+.ap-option { position: relative; display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 12px; text-align: left; width: 100%;
+  min-height: 72px; padding: 14px 16px; border-radius: 16px; border: 2px solid transparent; background: var(--a-surface); cursor: pointer; color: var(--cs-ink); font: inherit; }
+.ap-option[aria-checked="true"] { border-color: var(--cs-steel); background: var(--a-tint); }
+.ap-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--cs-ink-3); }
+.ap-option[aria-checked="true"] .ap-radio { border-color: var(--cs-steel); box-shadow: inset 0 0 0 4px var(--a-tint), inset 0 0 0 12px var(--cs-steel); }
+.ap-option-main { display: grid; gap: 2px; }
+.ap-option-main b { font-size: 16.5px; }
+.ap-option-main small { font-size: 13px; color: var(--cs-ink-3); }
+.ap-option-price { font-family: var(--cs-head); font-weight: 600; font-size: 24px; text-align: right; }
+.ap-option-price small { font-family: var(--cs-body); font-size: 12.5px; font-weight: 500; color: var(--cs-ink-3); margin-left: 2px; }
+.ap-badge { position: absolute; top: -9px; right: 14px; background: var(--cs-steel); color: var(--cs-paper); font-size: 11px; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
+.ap-cta { margin-top: 18px; }
+.ap-after { text-align: center; font-size: 13px; color: var(--cs-ink-3); margin: 10px 0 0; }
+.ap-steps { list-style: none; display: grid; gap: 14px; }
+.ap-steps li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; }
+.ap-steps li > span { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--cs-steel); color: var(--cs-paper); font: 600 16px var(--cs-head); }
+.ap-steps b { font-size: 15px; }
+.ap-steps p { margin: 2px 0 0; font-size: 14px; line-height: 1.45; color: var(--cs-ink-2); }
+.ap-group h2 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: 17px; letter-spacing: .03em; color: var(--cs-steel-700); margin: 2px 0 12px; }
+.ap-faq { padding: 0 16px; }
+.ap-faq details + details { border-top: 1px solid var(--cs-line); }
+.ap-faq summary { list-style: none; cursor: pointer; padding: 15px 28px 15px 0; position: relative; font-weight: 600; font-size: 15px; }
+.ap-faq summary::-webkit-details-marker { display: none; }
+.ap-faq summary::after { content: "+"; position: absolute; right: 2px; top: 50%; transform: translateY(-50%); font-size: 22px; color: var(--cs-steel-700); }
+.ap-faq details[open] summary::after { content: "–"; }
+.ap-faq p { margin: 0 0 15px; font-size: 14px; line-height: 1.5; color: var(--cs-ink-2); }
+.ap-fine { text-align: center; font-size: 12.5px; color: var(--cs-ink-3); margin: 20px 8px 8px; }

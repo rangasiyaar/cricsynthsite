@@ -701,3 +701,67 @@ body:has(.cs-consent) .app-promo { display: none; }
 .age-row select { font: 16px var(--cs-body); padding: 10px 8px; border: 1px solid var(--cs-line); background: var(--cs-bg); color: var(--cs-ink); border-radius: 0; }
 .age-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 .age-btns .cs-btn { flex: 1 1 auto; justify-content: center; }
+
+/* ── CricSynthesis Pro offer (components/ProOffer.tsx) ── */
+.pro-page { padding: clamp(40px, 6vw, 72px) 0 72px; }
+.pro-hero { text-align: center; max-width: 760px; margin: 0 auto; display: grid; justify-items: center; }
+.pro-hero .cs-eyebrow { justify-content: center; }
+.pro-hero h1 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; letter-spacing: .01em; line-height: .98;
+  font-size: clamp(40px, 6.4vw, 76px); margin: 0; color: var(--cs-ink); }
+.pro-sub { font-size: clamp(16px, 1.6vw, 19px); line-height: 1.55; color: var(--cs-ink-2); max-width: 56ch; margin: 18px 0 28px; }
+.pro-switch { display: inline-flex; border: 1px solid var(--cs-line); padding: 4px; gap: 4px; background: var(--cs-bg); }
+.pro-switch button { border: 0; background: none; cursor: pointer; padding: 10px 18px; min-height: 44px; font: 600 15px var(--cs-body); color: var(--cs-ink-2);
+  display: inline-flex; align-items: center; gap: 8px; }
+.pro-switch button[aria-checked="true"] { background: var(--cs-ink); color: var(--cs-bg); }
+.pro-save { font-size: 12px; font-weight: 700; letter-spacing: .02em; padding: 2px 7px; background: var(--cs-accent-bg); color: var(--cs-steel-700); }
+.pro-switch button[aria-checked="true"] .pro-save { background: var(--cs-steel); color: var(--cs-paper); }
+
+.pro-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; max-width: 920px; margin: 44px auto 0; align-items: stretch; }
+.pro-plan { position: relative; border: 1px solid var(--cs-line); padding: 28px 28px 24px; display: flex; flex-direction: column; background: var(--cs-bg); }
+.pro-plan.is-pro { border: 2px solid var(--cs-steel); background: var(--cs-surface); }
+.pro-plan h2 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: 24px; letter-spacing: .02em; margin: 0; }
+.pro-ribbon { position: absolute; top: -1px; right: 24px; transform: translateY(-50%); background: var(--cs-steel); color: var(--cs-paper);
+  font: 700 12px var(--cs-body); letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; }
+.pro-price { font-family: var(--cs-head); font-weight: 600; font-size: 52px; line-height: 1; margin: 14px 0 6px; color: var(--cs-ink); }
+.pro-price span { font-family: var(--cs-body); font-size: 16px; font-weight: 500; color: var(--cs-ink-3); margin-left: 4px; }
+.pro-note { margin: 0 0 18px; font-size: 14.5px; color: var(--cs-steel-700); font-weight: 600; min-height: 1.4em; }
+.pro-list { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 10px; }
+.pro-list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 15.5px; line-height: 1.45; color: var(--cs-ink); }
+.pro-list svg { color: var(--cs-steel); margin-top: 2px; }
+.pro-cta { margin-top: auto; width: 100%; min-height: 50px; }
+.pro-after { margin: 10px 0 0; font-size: 13px; color: var(--cs-ink-3); text-align: center; }
+
+.pro-section { max-width: 1040px; margin: 80px auto 0; }
+.pro-section > h2, .pro-final h2 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: clamp(30px, 3.6vw, 44px);
+  margin: 0 0 24px; padding-bottom: 14px; border-bottom: 2px solid var(--cs-ink); }
+.pro-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px 40px; }
+.pro-group h3 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: 19px; letter-spacing: .03em; color: var(--cs-steel-700); margin: 0 0 14px; }
+.pro-group .pro-list { margin: 0; }
+.pro-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 28px; }
+.pro-steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; }
+.pro-step-n { width: 40px; height: 40px; display: grid; place-items: center; background: var(--cs-steel); color: var(--cs-paper); font: 600 20px var(--cs-head); }
+.pro-steps b { font-family: var(--cs-head); font-size: 19px; text-transform: uppercase; letter-spacing: .02em; }
+.pro-steps p { margin: 4px 0 0; color: var(--cs-ink-2); font-size: 15.5px; line-height: 1.5; }
+.pro-faq { display: grid; border-top: 1px solid var(--cs-line); }
+.pro-faq details { border-bottom: 1px solid var(--cs-line); }
+.pro-faq summary { cursor: pointer; list-style: none; padding: 18px 36px 18px 0; position: relative; font-weight: 600; font-size: 16.5px; color: var(--cs-ink); }
+.pro-faq summary::-webkit-details-marker { display: none; }
+.pro-faq summary::after { content: "+"; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font: 500 24px var(--cs-body); color: var(--cs-steel-700); }
+.pro-faq details[open] summary::after { content: "–"; }
+.pro-faq p { margin: 0 0 18px; color: var(--cs-ink-2); font-size: 15.5px; line-height: 1.55; max-width: 70ch; }
+.pro-final { max-width: 1040px; margin: 80px auto 0; padding: clamp(32px, 5vw, 56px); background: var(--cs-steel-900); color: var(--cs-paper); text-align: center; display: grid; justify-items: center; gap: 14px; }
+.pro-final h2 { border: 0; padding: 0; margin: 0; color: var(--cs-paper); }
+.pro-final p { margin: 0; font-size: 14px; color: rgba(242, 242, 243, .75); }
+.pro-final .cs-btn { min-height: 50px; padding: 12px 28px; }
+.pro-fine { max-width: 1040px; margin: 24px auto 0; text-align: center; font-size: 13px; color: var(--cs-ink-3); }
+.pro-modal-wrap { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
+.pro-modal-scrim { position: absolute; inset: 0; border: 0; background: rgba(0, 0, 0, .5); cursor: pointer; }
+.pro-modal { position: relative; background: var(--cs-bg); border: 1px solid var(--cs-line); padding: 28px; max-width: 420px; width: 100%; display: grid; gap: 12px; }
+.pro-modal h3 { margin: 0; font-family: var(--cs-head); text-transform: uppercase; font-size: 24px; }
+.pro-modal p { margin: 0 0 6px; color: var(--cs-ink-2); }
+@media (max-width: 640px) {
+  .pro-plan { padding: 24px 20px 20px; }
+  .pro-section { margin-top: 56px; }
+  .pro-plan.is-pro { order: -1; }          /* Pro first on phones */
+  .pro-plans { margin-top: 36px; gap: 28px; }
+}
