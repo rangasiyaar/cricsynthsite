@@ -1,0 +1,112 @@
+{
+  "id": "cha-v-guj-t20-kolkata-2026-11-20",
+  "title": "Chhattisgarh v Gujarat",
+  "date": "2026-11-20",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 58th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chhattisgarh",
+      "short": "CHA",
+      "players": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Dharmendrasinh Jadeja",
+        "Amandeep Khare",
+        "Shashank Chandrakar",
+        "Prateek Yadav",
+        "Ajay Mandal",
+        "Dev Aditya Singh",
+        "Vijay Yadav",
+        "Jayant Yadav",
+        "Sourabh Majumdar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Vikalp Tiwari",
+      "squad": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Dharmendrasinh Jadeja",
+        "Amandeep Khare",
+        "Shashank Chandrakar",
+        "Prateek Yadav",
+        "Ajay Mandal",
+        "Dev Aditya Singh",
+        "Vijay Yadav",
+        "Jayant Yadav",
+        "Sourabh Majumdar"
+      ]
+    },
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Urvil Patel",
+        "Smit Patel",
+        "Aarya Desai",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Khilan Patel",
+        "Vishal Jayswal",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ],
+      "roles": [
+        "WK",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Urvil Patel",
+      "squad": [
+        "Urvil Patel",
+        "Smit Patel",
+        "Aarya Desai",
+        "Saurav Chauhan",
+        "Hemang Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Khilan Patel",
+        "Vishal Jayswal",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41910,
+    "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-gujarat-syed-mushtaq-ali-trophy-elite-20th-november-2026-41910",
+    "auto": true,
+    "xis": false
+  }
+}

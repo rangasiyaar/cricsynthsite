@@ -1,0 +1,112 @@
+{
+  "id": "del-v-sau-t20-tba-2026-11-20",
+  "title": "Delhi v Saurashtra",
+  "date": "2026-11-20",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 59th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Priyansh Arya",
+        "Sarthak Ranjan",
+        "Tejasvi Dahiya",
+        "Himmat Singh",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Keshav Dabas",
+        "Digvesh Singh Rathi",
+        "Simarjeet Singh",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Priyansh Arya",
+      "squad": [
+        "Priyansh Arya",
+        "Sarthak Ranjan",
+        "Tejasvi Dahiya",
+        "Himmat Singh",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Keshav Dabas",
+        "Digvesh Singh Rathi",
+        "Simarjeet Singh",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ]
+    },
+    {
+      "name": "Saurashtra",
+      "short": "SAU",
+      "players": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Harvansh Singh Pangalia",
+        "Prerak Mankad",
+        "Ruchit Ahir",
+        "Samar Gajjar",
+        "Siddhant Rana",
+        "Krains Fuletra",
+        "Chetan Sakariya",
+        "Parth Bhut"
+      ],
+      "roles": [
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Jaydev Unadkat",
+      "squad": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Harvansh Singh Pangalia",
+        "Prerak Mankad",
+        "Ruchit Ahir",
+        "Samar Gajjar",
+        "Siddhant Rana",
+        "Krains Fuletra",
+        "Chetan Sakariya",
+        "Parth Bhut"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41911,
+    "url": "https://khelnow.com/live-cricket-score/delhi-vs-saurashtra-syed-mushtaq-ali-trophy-elite-20th-november-2026-41911",
+    "auto": true,
+    "xis": false
+  }
+}

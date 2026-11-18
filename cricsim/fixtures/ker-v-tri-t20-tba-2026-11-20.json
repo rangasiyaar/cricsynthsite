@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-tri-t20-tba-2026-11-20",
+  "title": "Kerala v Tripura",
+  "date": "2026-11-20",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 60th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "MD Nidheesh",
+        "KM Asif",
+        "Salman Nizar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "MD Nidheesh",
+        "KM Asif",
+        "Salman Nizar"
+      ]
+    },
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Bikramkumar Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Lakshay Thareja",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Pravez Sultan",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41912,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-tripura-syed-mushtaq-ali-trophy-elite-20th-november-2026-41912",
+    "auto": true,
+    "xis": false
+  }
+}
