@@ -1,0 +1,335 @@
+{
+ "id": "cg-v-raj-t20-mumbai-2026-11-18",
+ "innings": [
+  {
+   "team": "Chandigarh",
+   "runs": 193,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Manan Vohra",
+     "dismissal": "c R Rajbar b DL Chahar",
+     "runs": 59,
+     "balls": 46,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Arjun Azad",
+     "dismissal": "st KS Rathore b M Suthar",
+     "runs": 38,
+     "balls": 17,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Shivam Bhambri",
+     "dismissal": "c M Suthar b H Nehra",
+     "runs": 47,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Nikhil Kumar",
+     "dismissal": "st KS Rathore b RD Chahar",
+     "runs": 16,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Bhagmender Lather",
+     "dismissal": "c H Nehra b M Suthar",
+     "runs": 6,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aarush Bhandari",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nehal Pajni",
+     "dismissal": "c M Suthar b H Rana",
+     "runs": 10,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Jagjit Singh Sandhu",
+     "dismissal": "c DL Chahar b H Rana",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rohit Dhanda",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Deepak Chahar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Himanshu Rana",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Manav Suthar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Himanshu Nehra",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rahul Chahar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rohan Rajbar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Arjun Azad",
+     "score": 69,
+     "over": "6.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Shivam Bhambri",
+     "score": 141,
+     "over": "13.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nikhil Kumar",
+     "score": 161,
+     "over": "15.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Manan Vohra",
+     "score": 165,
+     "over": "16.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Bhagmender Lather",
+     "score": 171,
+     "over": "17.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Nehal Pajni",
+     "score": 186,
+     "over": "19.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jagjit Singh Sandhu",
+     "score": 192,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 62
+  },
+  {
+   "team": "Rajasthan",
+   "runs": 194,
+   "wickets": 3,
+   "overs": "17.2",
+   "batting": [
+    {
+     "name": "Abhijeet Tomar",
+     "dismissal": "c N Kumar b B Lather",
+     "runs": 80,
+     "balls": 42,
+     "fours": 6,
+     "sixes": 5
+    },
+    {
+     "name": "Rohan Rajbar",
+     "dismissal": "c M Vohra b R Dhanda",
+     "runs": 27,
+     "balls": 14,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Mahipal Lomror",
+     "dismissal": "c N Pajni b B Lather",
+     "runs": 29,
+     "balls": 23,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Kartik Sharma",
+     "dismissal": "not out",
+     "runs": 38,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Kunal Singh Rathore",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 9,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sandeep Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Jagjit Singh Sandhu",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Rohit Dhanda",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chiragvir Dhindsa",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bhagmender Lather",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 53,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Nikhil Kumar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Shivam Bhambri",
+     "overs": "0.2",
+     "maidens": 0,
+     "runs": 1,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Rohan Rajbar",
+     "score": 33,
+     "over": "3.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abhijeet Tomar",
+     "score": 139,
+     "over": "12.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mahipal Lomror",
+     "score": 157,
+     "over": "14.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 6,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Rajasthan won",
+ "winner": "Rajasthan"
+}
