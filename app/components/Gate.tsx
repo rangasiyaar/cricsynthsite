@@ -22,4 +22,4 @@ export function RequireSignIn({ children, pro = false }: { children: React.React
 }
 
 /** Where a Pro feature sends someone without Pro: guests to sign-in (then back to `next`), accounts to the plans. */
-export const proHref = (signedIn: boolean, next?: string) => (signedIn ? "/pricing/" : loginHref(next));
+export const proHref = (signedIn: boolean, next?: string) => (signedIn ? "/pro/" : loginHref(next));

@@ -53,7 +53,8 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   try { auth = await g.users(); } catch (e) {
     errors.push(`Firebase Auth: ${(e as Error).message} — grant the service account the Firebase Authentication Viewer role`);
   }
-  const [profiles, keys, requests] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests")]);
+  const [profiles, keys, requests, billing] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests"),
+                                                                  g.group("billing").catch(() => [])]);
   const uids = new Set<string>([...(auth || []).map((a) => a.uid), ...profiles.map((p) => p._id),
                                 ...keys.map((k) => k._path.split("/")[1]), ...requests.map((r) => r._path.split("/")[1])]);
   const from = daysAgo(29, now), usage: Record<string, any[]> = {};
@@ -61,7 +62,7 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
     try { const u = await g.usage(uid, from); if (u.length) usage[uid] = u; }
     catch (e) { if (errors.length < 20) errors.push(`usage ${uid}: ${(e as Error).message}`); }
   });
-  return { ...snapshot({ now, auth, profiles, keys, requests, usage }), errors };
+  return { ...snapshot({ now, auth, profiles, keys, requests, usage, billing }), errors };
 }
 
 async function refresh(env: Env): Promise<Snapshot> {
@@ -148,10 +149,11 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
       const uid = url.searchParams.get("uid") || "";
       if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid)) return fail(422, "Bad uid");
       const g = google(env), now = new Date();
-      const [a, prof, keys, requests, usage] = await Promise.all([
-        g.user(uid).catch(() => null), g.get(`users/${uid}`), g.list(`users/${uid}/keys`), g.list(`users/${uid}/requests`), g.usage(uid, daysAgo(89, now))]);
+      const [a, prof, keys, requests, usage, billing] = await Promise.all([
+        g.user(uid).catch(() => null), g.get(`users/${uid}`), g.list(`users/${uid}/keys`), g.list(`users/${uid}/requests`), g.usage(uid, daysAgo(89, now)),
+        g.get(`users/${uid}/billing/pro`).catch(() => null)]);
       if (!a && !prof && !keys.length && !usage.length) return fail(404, "No such account");
-      return json(profile(uid, a, prof, keys, requests, usage, now));
+      return json(profile(uid, a, prof, keys, requests, usage, now, billing));
     }
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));

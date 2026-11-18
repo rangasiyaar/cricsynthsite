@@ -6,7 +6,8 @@ import { SITE } from "@/lib/seo";
 const FAQ: [string, string][] = [
   ["Where do the forecasts come from?", "Each match is played out ball by ball from the past matches of the players, the ground and the competition."],
   ["When does a forecast change?", "When the playing XIs or the toss are announced."],
-  ["What is MatchSynth Lab?", "Change the toss, the pitch, the dew, a player's form or who can bowl, or start from any score, and the match is re-run on your phone. It is part of Pro, which is free during the beta."],
+  ["What is MatchSynth Lab?", "Change the toss, the pitch, the dew, a player's form or who can bowl, or start from any score, and the match is re-run on your phone. It is part of CricSynthesis Pro."],
+  ["What does CricSynthesis Pro cost?", "₹349 a month or ₹3,769 a year. New accounts get one day free, and you can cancel any time from Account."],
   ["What are the five fantasy teams?", "Five different teams with different captains, for the different ways the match can go."],
   ["Why can't I see a match?", "Forecasts appear once the fixture is published, usually a day or two before the start. Pull down on the match list to refresh."],
   ["How do I delete my account?", "Write to us from the contact page with the email you signed in with, and we'll delete the account and its data."],

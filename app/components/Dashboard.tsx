@@ -9,6 +9,7 @@ import { proLine } from "@/components/ProOffer";
 import { track } from "@/lib/analytics";
 import { cancelPro, hasPaidPro, useProBilling } from "@/lib/billing";
 import { auth, usePlan } from "@/lib/firebase";
+import { API_TIERS as PLAN_TIERS } from "@/lib/plans";
 import { PRO, rupees } from "@/lib/pro";
 import {
   API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
@@ -111,7 +112,7 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
           <h1 className="dash-title">{u.displayName ? `Hi, ${u.displayName.split(" ")[0]}` : "Your account"}</h1>
           <p className="muted small" style={{ margin: 0 }}>{u.email}</p>
         </div>
-        <span className="tag pro dash-plan">{plan === "pro" ? `Pro${source === "beta" ? " · beta" : ""}` : "Free"}</span>
+        <span className="tag pro dash-plan">{plan === "pro" ? `Pro${source === "trial" ? " · free day" : ""}` : "Free"}</span>
       </div>
       <div className="dash-layout">
         <nav className="dash-side" aria-label="Dashboard">
@@ -161,7 +162,7 @@ export function Overview({ plan, source, keys, usage, apiPlan, go }: {
         <div className="card">
           <div className="cs-k">Plan</div>
           <div className="stat dash-stat">{plan === "pro" ? "Pro" : "Free"}</div>
-          <p className="small muted">{plan === "pro" && source === "beta" ? "Free during the beta, MatchSynth Lab included." : "Forecasts and the match centre."}</p>
+          <p className="small muted">{plan === "pro" ? "Every match-centre tab and MatchSynth Lab." : "The Overview for every match."}</p>
           <div className="card-foot"><button type="button" className="btn ghost" onClick={() => go("Subscription")}>Manage plan</button></div>
         </div>
         <div className="card">
@@ -304,11 +305,8 @@ export function Usage({ keys, usage, apiPlan, go }: { keys: ApiKey[] | null; usa
   );
 }
 
-const API_TIERS: { id: string; upgrade?: Upgrade; price: string; points: string[] }[] = [
-  { id: "free", price: "₹0", points: ["200 requests a day per key", "Up to 2,000 simulations a request", "Watermarked graphics"] },
-  { id: "pro", upgrade: "api-pro", price: "Custom", points: ["5,000 requests a day per key", "Up to 20,000 simulations a request", "Clean graphics"] },
-  { id: "business", upgrade: "api-business", price: "Custom", points: ["50,000 requests a day per key", "Up to 50,000 simulations a request", "Priority support"] },
-];
+const UPGRADE: Record<string, Upgrade | undefined> = { pro: "api-pro", business: "api-business" };
+const API_TIERS = PLAN_TIERS.map((t) => ({ id: t.id, upgrade: UPGRADE[t.id], price: t.per ? `${t.price}${t.per}` : t.price, points: t.lines }));
 const STATUS: Record<string, string> = { pending: "Under review", approved: "Approved", declined: "Not approved", cancelled: "Cancelled" };
 
 /** CricSynthesis Pro on the account page: what they have, when it renews or ends, and cancel. */
@@ -325,24 +323,24 @@ function ProPlanCard({ pro, source, setErr }: { pro: boolean; source: string | n
     catch (x) { setErr(friendly(x)); } finally { setBusy(false); }
   };
   const label = paid ? (b!.status === "trial" ? "Free day" : b!.cancelAtEnd || b!.status === "cancelled" ? "Ending" : "Active")
-    : pro ? (source === "beta" ? "Beta" : "Active") : "Free";
+    : pro ? "Active" : "Free";
   const price = b?.billing === "yearly" ? `${rupees(PRO.yearly)} a year` : b?.billing === "monthly" ? `${rupees(PRO.monthly)} a month` : null;
   return (
     <div className="card">
       <div className="card-head"><h3>CricSynthesis Pro</h3><span className="tag pro">{label}</span></div>
       <div className="stat dash-stat">{paid || pro ? "Pro" : "Free"}</div>
       <p className="small">{paid ? proLine(b!)
-        : pro ? (source === "beta" ? "Pro is free during the beta. Subscribe to keep it when the beta ends." : "Pro is on for your account.")
+        : pro ? "Pro is on for your account."
         : "You're on the free plan: the Overview for every match."}</p>
       <dl className="dash-dl">
-        <div><dt>Plan</dt><dd>{paid && price ? price : pro && source === "beta" ? "₹0 during the beta" : "₹0"}</dd></div>
+        <div><dt>Plan</dt><dd>{paid && price ? price : pro ? "Included" : "₹0"}</dd></div>
         <div><dt>{b?.status === "trial" ? "First charge" : "Renews"}</dt>
           <dd>{paid && !b!.cancelAtEnd && b!.status !== "cancelled"
             ? (b!.status === "trial" ? b!.trialEnd : b!.currentEnd)?.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) ?? "—"
             : "—"}</dd></div>
       </dl>
       <div className="card-foot" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-        {paid ? <Link className="btn" href="/matches/">Open a match</Link> : <Link className="btn" href="/pro/">{pro ? "Subscribe to Pro" : "Get Pro"}</Link>}
+        {paid || pro ? <Link className="btn" href="/matches/">Open a match</Link> : <Link className="btn" href="/pro/">Get CricSynthesis Pro</Link>}
         {canCancel && !confirm && <button type="button" className="btn ghost" onClick={() => setConfirm(true)}>Cancel plan</button>}
       </div>
       {confirm && (
@@ -410,7 +408,7 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
       </div>
 
       <div className="card">
-        <div className="card-head"><h3>API plan</h3><span className="small muted">Limits apply per key</span></div>
+        <div className="card-head"><h3>API plan</h3><span className="small muted">Daily limits apply per key</span></div>
         <div className="grid g3 dash-tiers">
           {API_TIERS.map((t) => {
             const current = t.id === apiPlan;
@@ -439,9 +437,10 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
         </div>
         {asking && (
           <form className="dash-upgrade" onSubmit={submit}>
-            <h3>Upgrade to {asking === "api-pro" ? "Pro" : "Business"}</h3>
-            <p className="small muted">Tell us roughly how much you'll use. We reply within one working day with pricing; the new
-              limits go live on your existing keys once you confirm.</p>
+            <h3>{asking === "api-pro" ? "Get API Plus" : "Talk to us about Business"}</h3>
+            <p className="small muted">{asking === "api-pro"
+              ? "API Plus is ₹4,999 a month, or ₹53,989 a year. Tell us roughly how much you'll use: we reply within one working day with a payment link, and your keys move to Plus as soon as it's paid."
+              : "Tell us roughly how much you'll use and what you're building. We reply within one working day with a proposal."}</p>
             <label className="form-label" htmlFor="volume">Expected requests</label>
             <select id="volume" className="form-input" value={volume} onChange={(e) => setVolume(e.target.value)}>
               {VOLUMES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
@@ -458,7 +457,7 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
           <div className="table-wrap" style={{ marginTop: 20 }}><table>
             <thead><tr><th>Request</th><th>Volume</th><th>Sent</th><th>Status</th></tr></thead>
             <tbody>{requests.map((r) => (
-              <tr key={r.plan}><td>{r.plan === "api-pro" ? "API Pro" : "API Business"}</td>
+              <tr key={r.plan}><td>{r.plan === "api-pro" ? "API Plus" : "API Business"}</td>
                 <td>{VOLUMES.find(([v]) => v === r.volume)?.[1] ?? r.volume}</td><td>{fmtDate(r.created)}</td>
                 <td><span className={`dash-status ${r.status}`}>{STATUS[r.status] ?? r.status}</span></td></tr>
             ))}</tbody>

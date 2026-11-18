@@ -46,14 +46,11 @@ export function useUser(): User | null | undefined {
 
 // ── plans ──
 // Pro comes from (1) a paid CricSynthesis Pro subscription (users/{uid}/billing/pro, proUntil in the future: lib/billing.ts),
-// (2) a `plan` custom claim set by our team (comps), or (3) the beta while BETA_PRO is on.────────────────────────────────────────────────────────────────────────────────────────────────────
-// Guest: not signed in (forecasts and match centre). Free: signed in. Pro: MatchSynth Lab.
-// A paid plan is a custom claim `plan` on the account ("free" | "pro"), set from server code once payments exist.
-// Until then BETA_PRO gives every signed-in account Pro.
+// or (2) a `plan` custom claim set by our team (comps, partners). There is no free beta any more.
+// Guest: not signed in (each match's Overview). Free: signed in, no Pro. Pro: every match-centre tab and MatchSynth Lab.
 export type Plan = "guest" | "free" | "pro";
-export const BETA_PRO = true;
 
-export type PlanState = { user: User | null | undefined; plan: Plan | undefined; source: "beta" | "subscription" | "trial" | null };
+export type PlanState = { user: User | null | undefined; plan: Plan | undefined; source: "subscription" | "trial" | "comp" | null };
 
 export function usePlan(): PlanState {
   const user = useUser();
@@ -69,9 +66,8 @@ export function usePlan(): PlanState {
   if (user === undefined || (user && (claim === undefined || billing === undefined))) return { user, plan: undefined, source: null };
   if (!user) return { user, plan: "guest", source: null };
   if (hasPaidPro(billing)) return { user, plan: "pro", source: billing!.status === "trial" ? "trial" : "subscription" };
-  if (claim === "pro") return { user, plan: "pro", source: "subscription" };
-  if (BETA_PRO) return { user, plan: "pro", source: "beta" };
-  return { user, plan: "free", source: claim ? "subscription" : null };
+  if (claim === "pro") return { user, plan: "pro", source: "comp" };
+  return { user, plan: "free", source: null };
 }
 
 /** Pro (true / false), or undefined while the account is still being checked. */

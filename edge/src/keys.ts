@@ -6,7 +6,7 @@ import { Firestore } from "./google.ts";
 
 export const PLANS: Record<string, { daily_requests: number; max_simulations: number; watermark: boolean }> = {
   free: { daily_requests: 200, max_simulations: 2_000, watermark: true },
-  pro: { daily_requests: 5_000, max_simulations: 20_000, watermark: false },
+  pro: { daily_requests: 20_000, max_simulations: 20_000, watermark: false },   // shown as "API Plus"
   business: { daily_requests: 50_000, max_simulations: 50_000, watermark: false },
 };
 export const MCP_DAILY = 200;             // MCP tool calls a day for a signed-in account (an API key uses its plan instead)

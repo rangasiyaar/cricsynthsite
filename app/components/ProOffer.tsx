@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { loginHref } from "@/components/Gate";
+import { ApiPlans } from "@/components/Plans";
 import { track } from "@/lib/analytics";
 import { hasPaidPro, startCheckout, trialAvailable, useProBilling, type ProBilling } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
@@ -58,7 +59,7 @@ function Done({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default function ProOffer() {
+export default function ProOffer({ api = false }: { api?: boolean }) {
   const [billing, setBilling] = useState<Billing>("yearly");
   const [done, setDone] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -89,7 +90,7 @@ export default function ProOffer() {
         <h1>{PRO_HERO.title}</h1>
         <p className="pro-sub">{PRO_HERO.sub}</p>
         {paid && <p className="pro-status">You have CricSynthesis Pro. {proLine(b!)}</p>}
-        {!paid && source === "beta" && <p className="pro-status">You have Pro free during the beta. Subscribe now to keep it when the beta ends.</p>}
+        {!paid && source === "comp" && <p className="pro-status">CricSynthesis Pro is on for your account.</p>}
         <BillingSwitch value={billing} onChange={setBilling} />
       </section>
 
@@ -136,6 +137,15 @@ export default function ProOffer() {
           ))}
         </ol>
       </section>
+
+      {api && (
+        <section className="pro-section" id="api">
+          <h2>For developers and businesses</h2>
+          <p className="pro-lede">One API and MCP server for cricket analytics, forecasts and graphics. API Plus includes CricSynthesis Pro.</p>
+          <ApiPlans cta={{ free: ["/account/#api-keys", "Get a free key"], pro: ["/account/#subscription", "Get API Plus"], business: ["/contact/", "Contact sales"] }} />
+          <p className="pro-fine" style={{ textAlign: "left", margin: "16px 0 0" }}><Link href="/developers/">About the API</Link> · <Link href="/docs/">API reference</Link></p>
+        </section>
+      )}
 
       <section className="pro-section">
         <h2>Questions</h2>

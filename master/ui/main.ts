@@ -139,7 +139,7 @@ async function overview() {
     ${tile("Users", n(t.users), `+${n(t.signups.d7)} this week · ${n(t.verified)} verified`, "#/users")}
     ${tile("Sign-ups", n(t.signups.d1), `today · ${n(t.signups.d7)} in 7 days · ${n(t.signups.d30)} in 30`)}
     ${tile("Active users", n(t.active.d1), `today · ${n(t.active.d7)} in 7 days · ${n(t.active.d30)} in 30`)}
-    ${tile("Paid plans", n(t.plans.paid), `API Pro ${n(t.plans.api.pro)} · Business ${n(t.plans.api.business)} · Pro beta ${n(t.plans.website.beta)}`)}
+    ${tile("Paid plans", n(t.plans.paid), `CricSynthesis Pro ${n(t.plans.website.subscribed ?? 0)} (+${n(t.plans.website.trial ?? 0)} on a free day) · API Plus ${n(t.plans.api.pro)} · Business ${n(t.plans.api.business)}`)}
     ${tile("API keys", n(t.keys.active), `${n(t.keys.used7)} used this week · ${n(t.keys.revoked)} revoked`, "#/keys")}
     ${tile("Calls today", n(t.calls.today), `${n(t.calls.d7)} in 7 days · ${n(t.calls.d30)} in 30`, "#/usage")}
     ${tile("MCP connector", n(t.mcpUsers30), `accounts in 30 days · ${n(t.calls.mcp30)} tool calls`)}
@@ -213,11 +213,11 @@ async function user(uid: string) {
       · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p>
       <p class="acts">${u.inAuth ? (u.disabled ? actBtn("Enable account", { type: "user.enable", uid }, `Enable ${u.email || uid}? They can sign in again.`)
         : actBtn("Disable account", { type: "user.disable", uid }, `Disable ${u.email || uid}? They are signed out and can't sign in; their API keys keep working until revoked.`, "danger")) : ""}
-        ${u.inAuth ? `<label class="muted">Website plan <select data-act='${esc(JSON.stringify({ type: "user.website-plan", uid }))}' data-cur="${sv.website.source === "beta" ? "beta" : esc(id?.claims?.plan || "free")}" data-q="Set website plan">
-          ${[["beta", "Pro (beta default)"], ["pro", "Pro (assigned)"], ["free", "Free"]].map(([v, l]) => `<option value="${v}"${(sv.website.source === "beta" ? "beta" : id?.claims?.plan || "free") === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>` : ""}</p></div></div>
+        ${u.inAuth ? `<label class="muted">Website plan <select data-act='${esc(JSON.stringify({ type: "user.website-plan", uid }))}' data-cur="${esc(id?.claims?.plan || "beta")}" data-q="Set website plan">
+          ${[["beta", "Their subscription decides"], ["pro", "Pro (assigned, free)"], ["free", "Free (assigned)"]].map(([v, l]) => `<option value="${v}"${(id?.claims?.plan || "beta") === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>` : ""}</p></div></div>
   <h2 class="sec">Services and plan</h2>
   <div class="tiles">
-    ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${sv.website.source === "beta" ? "Pro free during the beta" : "Assigned plan"}`)}
+    ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${({ subscription: "Paid subscription", trial: "Free day", assigned: "Assigned by our team", default: "No subscription" } as Record<string, string>)[sv.website.source] || ""}${sv.website.billing?.status ? ` · ${esc(sv.website.billing.status)}${sv.website.billing.billing ? ` (${esc(sv.website.billing.billing)})` : ""}` : ""}`)}
     ${tile("API plan", planBadge(sv.api.plan), `${paidTag(sv.api.paid)} ${n(sv.api.activeKeys)} active key${sv.api.activeKeys === 1 ? "" : "s"} · ${n(sv.api.limit)} calls a day per key`)}
     ${tile("MCP connector", sv.mcp.used ? "In use" : "Not used", sv.mcp.used ? `${n(sv.mcp.days)} days in 90 · last ${day(sv.mcp.lastDay)} · today ${n(sv.mcp.today)} / ${n(sv.mcp.limit)}` : "No connector calls in 90 days")}
     ${tile("Usage", n(p.usage.today), `today · ${n(p.usage.calls7)} in 7 days · ${n(p.usage.calls30)} in 30`)}

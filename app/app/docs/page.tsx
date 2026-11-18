@@ -4,7 +4,7 @@ import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, hosted
 
 const PLANS = [
   ["Free", "200", "2,000", "Watermarked graphics"],
-  ["Pro", "5,000", "20,000", "Clean graphics"],
+  ["Plus", "20,000", "20,000", "Clean graphics"],
   ["Business", "50,000", "50,000", "Priority support"],
 ];
 const ERRORS = [

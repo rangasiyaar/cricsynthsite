@@ -110,8 +110,12 @@ test("profile: services, keys, usage by endpoint, timeline", () => {
   const p = profile("u1", auth[0], null, keys.slice(0, 1), requests, usage.u1, now);
   assert.equal(p.services.api.plan, "free");
   assert.equal(p.services.api.paid, false);
-  assert.equal(p.services.website.plan, "Pro");
-  assert.equal(p.services.website.source, "beta");
+  assert.equal(p.services.website.plan, "Free");                              // no subscription, no assigned plan
+  assert.equal(p.services.website.source, "default");
+  const paid = profile("u1", auth[0], null, [], [], [], now, { status: "active", billing: "monthly", proUntil: new Date(now.getTime() + 86400_000).toISOString() } as any);
+  assert.equal(paid.services.website.plan, "Pro");
+  assert.equal(paid.services.website.source, "subscription");
+  assert.equal(paid.services.website.paid, true);
   assert.equal(p.services.mcp.used, true);
   assert.equal(p.services.mcp.today, 40);
   assert.equal(p.keys[0].today, 210);
@@ -257,14 +261,15 @@ test("actions: validation, approve moves live keys, wrong state refused, everyth
     updateUser: async (_: string, c: any) => { writes.push(["auth", c]); },
   };
   const r = await apply(g, "boss@example.com", validate({ type: "request.approve", uid: "u1", plan: "api-pro", note: "paid" }), new Date(1000));
-  assert.match(r.done, /1 key moved to pro/);
+  assert.match(r.done, /1 key moved to pro; CricSynthesis Pro turned on/);
+  assert.deepEqual(writes.find(([p]) => p === "auth")![1], { claims: { plan: "pro", other: 1 } });   // API Plus includes Pro
   assert.equal(docs["users/u1/keys/k1"].plan, "pro");
   assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
   assert.equal(docs["users/u1/requests/api-pro"].status, "approved");
   assert.ok(writes.some(([p, d]) => p === "adminLog/1000-request.approve" && d.email === "boss@example.com" && d.uid === "u1"));
   await assert.rejects(apply(g, "boss@example.com", validate({ type: "request.decline", uid: "u1", plan: "api-pro" })), /approved, not pending/);
   await apply(g, "boss@example.com", validate({ type: "user.website-plan", uid: "u1", plan: "beta" }));
-  assert.deepEqual(writes.find(([p]) => p === "auth")![1], { claims: { other: 1 } });
+  assert.deepEqual(writes.filter(([p]) => p === "auth").at(-1)![1], { claims: { other: 1 } });
   g.updateUser = async () => { throw new Error("identitytoolkit 403: denied"); };
   await assert.rejects(apply(g, "boss@example.com", validate({ type: "user.disable", uid: "u1" })), /Firebase Authentication Admin/);
   // the route needs a session and the same origin

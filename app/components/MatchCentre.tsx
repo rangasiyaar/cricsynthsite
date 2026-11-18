@@ -66,7 +66,7 @@ export function SectionView({ doc, section, live = true, onOpen, hrefFor, scoreb
   }
 }
 
-/** Every section but the Overview is part of Pro (like MatchSynth Lab); during the beta any signed-in account has Pro. */
+/** Every section but the Overview is part of CricSynthesis Pro (like MatchSynth Lab). */
 export const isProSection = (s: Section) => s !== "Overview";
 
 /** A Pro section opened without Pro (e.g. a shared ?tab= link): off to sign-in, coming back to this tab. */

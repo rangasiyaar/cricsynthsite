@@ -66,7 +66,7 @@ export default function AppLogin() {
       <div className="a-brand"><Logo /><span>Cric<b>Synthesis</b></span></div>
       <div className="a-login-hero">
         <h1>{mode === "up" ? <>Create your<br /><span>account.</span></> : <>Sign in</>}</h1>
-        <p>{forLab ? "Sign in to open MatchSynth Lab." : mode === "up" ? "Pro is free in the beta." : "Win chances, XIs and fantasy picks before the first ball."}</p>
+        <p>{forLab ? "Sign in to get CricSynthesis Pro." : mode === "up" ? "Create a free account, then try Pro free for a day." : "Win chances, XIs and fantasy picks before the first ball."}</p>
       </div>
       <div className="a-login-form">
         {err && <div className="a-msg" role="alert">{err}</div>}

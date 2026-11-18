@@ -6,12 +6,11 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TAB_ICONS, sectionName, type Section } from "@/components/MatchCentre";
+import ProOfferApp from "@/components/ProOfferApp";
 import { Logo } from "@/components/Shell";
 import { usePlan } from "@/lib/firebase";
 import { appInfo, cmpVersion, hideSplash, tap, upgradeAlerts, latestRelease, onAlertTap, onAlertWhileOpen, onResume, onBackButton, openExternal, reportError, share, signOutNative,
   themeStatusBar, type AppInfo, type Release } from "@/lib/native";
-import { TIERS } from "@/lib/plans";
-import { FREE_LINE, PITCH, PRO_LINE } from "@/lib/procopy";
 import { SITE } from "@/lib/seo";
 import type { MatchDoc } from "@/lib/types";
 
@@ -354,7 +353,7 @@ function Drawer({ onClose }: { onClose: () => void }) {
           </button>
         ) : user === null ? (
           <div className="a-drawer-guest">
-            <p>Sign in for MatchSynth Lab</p>
+            <p>Sign in to get CricSynthesis Pro</p>
             <button type="button" className="a-btn" onClick={() => go("/m/login/")}>Sign in</button>
           </div>
         ) : null}
@@ -594,52 +593,9 @@ const CHECK = svg("M5 12l5 5L20 7", 18);
 
 /** What Pro adds and the plans, before anything else: guests then sign in (and come straight back here); accounts
  *  without Pro see how to get it. */
-export function ProPaywall({ signedIn, section = "Lab" }: { signedIn: boolean; section?: string }) {
-  const centre = section !== "Lab", pitch = PITCH[section] ?? PITCH.Lab;
-  const router = useRouter();
-  const here = typeof window === "undefined" ? "/m/matches/" : window.location.pathname + window.location.search;
-  const free = TIERS.find((t) => t.id === "free")!, pro = TIERS.find((t) => t.id === "pro")!;
-  return (
-    <div className="a-paywall">
-      <div className="a-paywall-hero">
-        <span className="a-paywall-icon">{centre ? TAB_ICONS[section as Section] ?? Icon.lab : Icon.lab}</span>
-        <div className="a-eyebrow" style={{ justifyContent: "center" }}>{centre ? sectionName(section) : "MatchSynth Lab"}</div>
-        <h1>{pitch.title}</h1>
-        <p>{pitch.body}</p>
-        <p>{PRO_LINE}{centre ? ` ${FREE_LINE}` : ""}</p>
-      </div>
-      <ul className="a-paywall-list">
-        {pro.lines.filter((l) => !l.startsWith("Everything")).map((l) => <li key={l}><span>{CHECK}</span>{l}</li>)}
-        {!centre && <li><span>{CHECK}</span>Fantasy picks rebuilt for your scenario</li>}
-      </ul>
-      <div className="a-group-label">Plans</div>
-      <div className="a-plans">
-        {[free, pro].map((t) => (
-          <div key={t.id} className={`a-plan${t.id === "pro" ? " is-pro" : ""}`}>
-            <div className="a-plan-head">
-              <span className="a-plan-name">{t.name}</span>
-              {t.tag && <span className="a-pro">{t.tag}</span>}
-            </div>
-            <div className="a-plan-price">{t.price}<span>{t.id === "pro" ? " / month" : ""}</span></div>
-            <div className="a-plan-note">{t.note}</div>
-            <ul>{t.lines.slice(0, 3).map((l) => <li key={l}>{l}</li>)}</ul>
-          </div>
-        ))}
-      </div>
-      <div className="a-paywall-cta">
-        {!signedIn ? (
-          <>
-            <Link href={`/m/login/?next=${encodeURIComponent(here)}`} className="a-btn">Sign in free</Link>
-          </>
-        ) : (
-          <>
-            <a href={`${SITE}/pricing/`} className="a-btn">See how to get Pro</a>
-          </>
-        )}
-        <button type="button" className="a-btn plain" onClick={() => (window.history.length > 2 ? router.back() : router.replace("/m/matches/"))}>Not now</button>
-      </div>
-    </div>
-  );
+/** What a locked section or MatchSynth Lab shows without Pro: the CricSynthesis Pro screen, with checkout. */
+export function ProPaywall({ section = "Lab" }: { signedIn?: boolean; section?: string }) {
+  return <ProOfferApp section={section} />;
 }
 
 /** Pages for signed-in accounts send guests to sign-in (and back afterwards). Pro pages show what Pro adds and the

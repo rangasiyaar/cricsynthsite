@@ -1,6 +1,6 @@
 // Copy for the Pro banners: one pitch per locked match-centre section and for MatchSynth Lab. Shared by the website
 // banner (components/Gate.tsx ProBanner) and the app paywall (components/App.tsx ProPaywall). Every claim must match
-// what the section really shows. During the beta Pro is free with any account, so the guest call to action is "sign in".
+// what the section really shows.
 export type Pitch = { title: string; body: string };
 
 export const PITCH: Record<string, Pitch> = {
@@ -25,5 +25,4 @@ export const PITCH: Record<string, Pitch> = {
 };
 
 export const PRO_LINE = "Pro opens every tab of every match, plus MatchSynth Lab.";
-export const BETA_LINE = "Free during the beta. Just sign in.";
 export const FREE_LINE = "The Overview stays free for every match.";

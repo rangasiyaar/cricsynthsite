@@ -4,7 +4,6 @@ import { MCP_DAILY, PLANS } from "../../edge/src/keys.ts";
 import type { AuthUser, Doc } from "./gcp.ts";
 
 type Row = Record<string, any>;
-export const BETA_PRO = true;                 // as app/lib/firebase.ts: every signed-in account has Pro during the beta
 const RANK: Record<string, number> = { free: 0, pro: 1, business: 2 };
 
 export const dayKey = (d: Date) => d.toISOString().slice(0, 10);
@@ -19,16 +18,22 @@ export type Inputs = {
   keys: Doc[];                                // every users/{uid}/keys/{slot}
   requests: Doc[];                            // every users/{uid}/requests/{plan}
   usage: Record<string, Doc[]>;               // uid → users/{uid}/usage/{day} docs (recent days)
+  billing?: Doc[];                            // every users/{uid}/billing/pro (CricSynthesis Pro, written by the API Worker)
 };
 
 export function limitFor(slot: string, plan: string): number {
   return slot === "mcp" ? MCP_DAILY : (PLANS[plan] || PLANS.free).daily_requests;
 }
 
-export function websitePlan(u: AuthUser | null): { plan: string; source: string } {
+/** As app/lib/firebase.ts usePlan: a paid subscription (proUntil in the future), else an assigned claim, else Free. */
+export function websitePlan(u: AuthUser | null, billing?: Doc | null, now = new Date()): { plan: string; source: string; status?: string } {
+  const until = billing?.proUntil ? Date.parse(billing.proUntil) : NaN;
+  if (Number.isFinite(until) && until > now.getTime()) {
+    return { plan: "Pro", source: billing!.status === "trial" ? "trial" : "subscription", status: billing!.status };
+  }
   const claim = u?.claims?.plan;
   if (claim && claim !== "free") return { plan: claim === "pro" ? "Pro" : String(claim), source: "assigned" };
-  return BETA_PRO ? { plan: "Pro", source: "beta" } : { plan: "Free", source: "default" };
+  return { plan: "Free", source: "default", ...(billing?.status ? { status: billing.status } : {}) };
 }
 
 export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
@@ -45,7 +50,8 @@ export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
 }
 
 /** The per-user summary row (users table) for one account. */
-export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefined, keys: Doc[], requests: Doc[], usage: Doc[], now: Date) {
+export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefined, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
+                        billing?: Doc | null) {
   const today = dayKey(now), from7 = daysAgo(6, now), from30 = daysAgo(29, now);
   const live = keys.filter((k) => !k.revoked);
   const apiPlan = live.reduce((p, k) => ((RANK[k.plan] ?? 0) > (RANK[p] ?? 0) ? k.plan : p), "free");
@@ -57,7 +63,7 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     if (u._id === today) callsToday += n;
     if (n && (!lastCall || u._id > lastCall.slice(0, 10))) lastCall = ts(u.updated) || u._id;
   }
-  const web = websitePlan(a);
+  const web = websitePlan(a, billing, now);
   const lastSeen = [a?.lastActive, a?.lastLogin, lastCall].filter(Boolean).sort().pop() || null;
   return {
     uid, email: a?.email ?? null, name: a?.name ?? null, photo: a?.photo ?? null, verified: a?.verified ?? false,
@@ -65,7 +71,7 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     disabled: a?.disabled ?? false, inAuth: Boolean(a),
     company: profile?.company || null,
     websitePlan: web.plan, websitePlanSource: web.source, apiPlan,
-    paid: apiPlan !== "free" || web.source === "assigned",
+    paid: apiPlan !== "free" || web.source === "assigned" || web.source === "subscription", websiteStatus: web.status ?? null,
     keys: keys.length, activeKeys: live.length, mcpDays, mcp30,
     today: callsToday, calls7, calls30, lastCall,
     requestsOpen: requests.filter((r) => r.status === "pending").length,
@@ -86,8 +92,9 @@ export function snapshot(inp: Inputs) {
   const profBy = new Map(inp.profiles.map((p) => [p._id, p]));
   const keysBy = group(inp.keys), reqBy = group(inp.requests);
   const uids = new Set<string>([...authBy.keys(), ...profBy.keys(), ...keysBy.keys(), ...reqBy.keys(), ...Object.keys(inp.usage)]);
+  const billBy = new Map((inp.billing || []).map((b) => [uidOf(b._path), b]));
   const users = [...uids].map((uid) => userRow(uid, authBy.get(uid) || null, profBy.get(uid), keysBy.get(uid) || [],
-                                               reqBy.get(uid) || [], inp.usage[uid] || [], now));
+                                               reqBy.get(uid) || [], inp.usage[uid] || [], now, billBy.get(uid)));
   const emailOf = new Map(users.map((u) => [u.uid, u.email]));
 
   const keys = inp.keys.map((k) => ({ ...keyRow(k, inp.usage[uidOf(k._path)] || [], today, from30), email: emailOf.get(uidOf(k._path)) ?? null }));
@@ -130,7 +137,8 @@ export function snapshot(inp: Inputs) {
       active: { d1: active(today), d7: active(from7), d30: active(from30) },
       keys: { total: keys.length, active: liveKeys.length, revoked: keys.length - liveKeys.length,
               used7: liveKeys.filter((k) => since(k.lastUsed, from7)).length },
-      plans: { website: { pro_assigned: count((u) => u.websitePlanSource === "assigned"), beta: count((u) => u.websitePlanSource === "beta") },
+      plans: { website: { pro_assigned: count((u) => u.websitePlanSource === "assigned"), subscribed: count((u) => u.websitePlanSource === "subscription"),
+                          trial: count((u) => u.websitePlanSource === "trial") },
                api: { free: count((u) => u.apiPlan === "free"), pro: count((u) => u.apiPlan === "pro"), business: count((u) => u.apiPlan === "business") },
                paid: count((u) => u.paid) },
       calls: { today: users.reduce((s, u) => s + u.today, 0), d7: users.reduce((s, u) => s + u.calls7, 0),
@@ -151,9 +159,10 @@ export function snapshot(inp: Inputs) {
 export type Snapshot = ReturnType<typeof snapshot> & { errors?: string[] };
 
 /** One account in full: identity, plans and services, keys, usage by day / key / endpoint, requests, timeline. */
-export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys: Doc[], requests: Doc[], usage: Doc[], now: Date) {
+export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
+                        billing?: Doc | null) {
   const today = dayKey(now), from30 = daysAgo(29, now);
-  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now);
+  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now, billing);
   const series: Row[] = [];
   const byDay = new Map(usage.map((u) => [u._id, u]));
   for (let i = 89; i >= 0; i--) {
@@ -196,7 +205,10 @@ export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys:
     profile: prof ? { company: prof.company || null, useCase: prof.useCase || null, notifyProduct: prof.notifyProduct ?? null,
                       notifyUsage: prof.notifyUsage ?? null, notifyBilling: prof.notifyBilling ?? null, updated: ts(prof.updated) } : null,
     services: {
-      website: { plan: row.websitePlan, source: row.websitePlanSource, paid: row.websitePlanSource === "assigned" },
+      website: { plan: row.websitePlan, source: row.websitePlanSource, paid: row.websitePlanSource === "subscription" || row.websitePlanSource === "assigned",
+                 billing: billing ? { status: billing.status ?? null, billing: billing.billing ?? null, proUntil: ts(billing.proUntil),
+                                      trialEnd: ts(billing.trialEnd), currentEnd: ts(billing.currentEnd), cancelAtEnd: billing.cancelAtEnd === true,
+                                      subscriptionId: billing.subscriptionId ?? null } : null },
       api: { plan: row.apiPlan, paid: row.apiPlan !== "free", activeKeys: row.activeKeys, limit: (PLANS[row.apiPlan] || PLANS.free).daily_requests },
       mcp: { used: mcpRows.length > 0, days: mcpRows.length, lastDay: mcpRows[mcpRows.length - 1] || null,
              today: Number(byDay.get(today)?.keys?.mcp || 0), limit: MCP_DAILY },

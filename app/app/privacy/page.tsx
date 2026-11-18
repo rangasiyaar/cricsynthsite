@@ -27,6 +27,9 @@ export default function Privacy() {
           account's features (API and AI-assistant connector calls, per key and per endpoint or tool), the API keys you create
           (name, a short prefix and when it was created, last used or revoked; never the full key), and plan or upgrade requests you
           file from your dashboard.</li>
+        <li><b>CricSynthesis Pro payments.</b> When you subscribe, Razorpay collects your payment details; we never see your card,
+          UPI or bank details. We keep your plan, its status, the subscription reference Razorpay gives us and the dates your free
+          day, paid period or renewal start and end, to turn Pro on and show your plan. Razorpay sends receipts to your email.</li>
         <li><b>Contact and access requests.</b> Name, work email, organisation and interest you enter in our forms.</li>
         <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such
           as gender. We use them only to assess your application and contact you about it, and delete them within 12 months
@@ -102,7 +105,8 @@ export default function Privacy() {
       <h2>4. Service providers and transfers</h2>
       <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications, data
         processing and, if you agree, website analytics (Google Analytics) run on Google Cloud, Firebase and Google Analytics
-        (Google LLC); if you agree, session recordings run on Microsoft Clarity (Microsoft Corporation); and contact forms and email
+        (Google LLC); if you agree, session recordings run on Microsoft Clarity (Microsoft Corporation); subscription payments are processed by
+        Razorpay (Razorpay Software Private Limited, India); and contact forms and email
         are handled by our email and workspace providers. These providers process data on our behalf under their own security
         and privacy commitments. Data is stored on servers in the United States. We may also disclose information where the
         law requires it.</p>

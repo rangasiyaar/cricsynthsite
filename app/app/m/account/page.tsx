@@ -1,9 +1,14 @@
 "use client";
 // App account: profile, plan, the website's account pages, and logging out. Theme and alerts live in App settings.
 import { signOut } from "firebase/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { AppGate, MenuGroup, MenuRow, TopBar, initials } from "@/components/App";
+import { proLine } from "@/components/ProOffer";
+import { cancelPro, hasPaidPro, useProBilling } from "@/lib/billing";
 import { auth, usePlan } from "@/lib/firebase";
+import { PRO, rupees } from "@/lib/pro";
 import { signOutNative } from "@/lib/native";
 import { SITE } from "@/lib/seo";
 
@@ -26,14 +31,7 @@ function Account() {
         <span className="a-avatar">{initials(user.displayName || user.email || "?")}</span>
         <div><h1>{user.displayName || "Your account"}</h1><p>{user.email}</p></div>
       </div>
-      <MenuGroup label="Plan">
-        <div className="a-panel">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h2>{plan === "pro" ? "Pro" : "Free"}</h2>{source === "beta" && <span className="a-pro">Beta</span>}
-          </div>
-          <p>{source === "beta" ? "Pro · free in the beta" : plan === "pro" ? "MatchSynth Lab included" : "MatchSynth Lab is part of Pro"}</p>
-        </div>
-      </MenuGroup>
+      <MenuGroup label="Plan"><PlanPanel pro={plan === "pro"} comp={source === "comp"} uid={user.uid} /></MenuGroup>
       <MenuGroup label="On the website">
         <MenuRow icon={KEY} title="API keys and usage" href={`${SITE}/account/`} />
         <MenuRow icon={MAIL} title="Email preferences" href={`${SITE}/account/`} />
@@ -41,6 +39,41 @@ function Account() {
       </MenuGroup>
       <button type="button" className="a-btn soft" onClick={logOut}>Log out</button>
     </>
+  );
+}
+
+function PlanPanel({ pro, comp, uid }: { pro: boolean; comp: boolean; uid: string }) {
+  const b = useProBilling(uid);
+  const paid = hasPaidPro(b);
+  const [confirm, setConfirm] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const canCancel = paid && !!b && !b.cancelAtEnd && ["trial", "active", "past_due"].includes(b.status);
+  const price = b?.billing === "yearly" ? `${rupees(PRO.yearly)} a year` : `${rupees(PRO.monthly)} a month`;
+  const doCancel = async () => {
+    setBusy(true); setErr(null);
+    try { await cancelPro(); setConfirm(false); } catch (e) { setErr(e instanceof Error ? e.message : "Couldn't cancel. Please try again."); }
+    finally { setBusy(false); }
+  };
+  return (
+    <div className="a-panel" style={{ display: "grid", gap: 10 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12 }}>
+        <h2>{pro ? "CricSynthesis Pro" : "Free"}</h2>
+        {paid && <span className="small muted">{b!.status === "trial" ? "Free day" : price}</span>}
+      </div>
+      <p>{paid ? proLine(b!) : comp ? "Pro is on for your account." : "The Overview for every match. Pro opens every tab and MatchSynth Lab."}</p>
+      {!pro && <Link href="/m/pro/" className="a-btn">Get CricSynthesis Pro</Link>}
+      {canCancel && !confirm && <button type="button" className="a-btn plain" onClick={() => setConfirm(true)}>Cancel plan</button>}
+      {confirm && (
+        <>
+          <p>{b!.status === "trial" ? "Cancel your free day? You won't be charged, and Pro stays on until it ends."
+            : "Cancel CricSynthesis Pro? You keep Pro until the end of the period you've paid for, and it won't renew."}</p>
+          <button type="button" className="a-btn" onClick={doCancel} disabled={busy}>{busy ? "Cancelling…" : "Yes, cancel"}</button>
+          <button type="button" className="a-btn soft" onClick={() => setConfirm(false)} disabled={busy}>Keep Pro</button>
+        </>
+      )}
+      {err && <div className="a-msg" role="alert">{err}</div>}
+    </div>
   );
 }
 

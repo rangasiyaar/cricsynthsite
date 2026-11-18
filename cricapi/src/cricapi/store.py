@@ -19,7 +19,7 @@ from pathlib import Path
 
 PLANS = {
     "free": {"daily_requests": 200, "max_simulations": 2_000, "watermark": True},
-    "pro": {"daily_requests": 5_000, "max_simulations": 20_000, "watermark": False},
+    "pro": {"daily_requests": 20_000, "max_simulations": 20_000, "watermark": False},   # "API Plus"
     "business": {"daily_requests": 50_000, "max_simulations": 50_000, "watermark": False},
 }
 SAFE_ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")

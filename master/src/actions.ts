@@ -60,6 +60,13 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
         for (const k of keys) await g.patch(`users/${a.uid}/keys/${k._id}`, { plan });
         detail = { plan, keys: keys.map((k) => k._id) };
         done = `Approved ${a.plan}: ${keys.length} key${keys.length === 1 ? "" : "s"} moved to ${plan}`;
+        // API Plus and Business include CricSynthesis Pro on the website and app (the account's `plan` claim)
+        try {
+          const u: AuthUser | null = await g.user(a.uid).catch(() => null);
+          await g.updateUser(a.uid, { claims: { ...(u?.claims || {}), plan: "pro" } });
+          detail.websitePro = true;
+          done += "; CricSynthesis Pro turned on";
+        } catch { detail.websitePro = false; done += "; CricSynthesis Pro NOT turned on (needs the Firebase Authentication Admin role)"; }
       } else done = `Declined ${a.plan}`;
       if (a.note) detail.note = a.note;
       break;
@@ -81,7 +88,7 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       const claims = { ...(u?.claims || {}) };
       if (a.plan === "beta") delete claims.plan; else claims.plan = a.plan;
       await g.updateUser(a.uid, { claims }).catch((e) => { throw authHint(e); });
-      done = a.plan === "beta" ? "Website plan back to the beta default" : `Website plan set to ${a.plan}`;
+      done = a.plan === "beta" ? "Website plan back to default (their own subscription decides)" : `Website plan set to ${a.plan}`;
       break;
     }
   }

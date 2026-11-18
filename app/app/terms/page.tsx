@@ -35,11 +35,25 @@ export default function Terms() {
         belong to their owners.</p>
 
       <h2>6. Accounts</h2>
-      <p>You're responsible for activity under your account and for keeping your sign-in secure. Every signed-in account has Pro,
-        including MatchSynth Lab, free during the launch beta. We'll give notice and show prices, billing terms and the refund
-        policy before any paid plan applies to you; nothing is charged without your agreement. We keep a record of your account
+      <p>You're responsible for activity under your account and for keeping your sign-in secure. We keep a record of your account
         and how it is used (see the <a href="/privacy/">privacy policy</a>), which our team may review to support you, manage
         plans and keep the service working.</p>
+
+      <h3 id="pro">CricSynthesis Pro</h3>
+      <ul>
+        <li><b>What it is.</b> A subscription that opens every match-centre tab for every match we cover, and MatchSynth Lab, on the
+          website and in the app. Each match&apos;s Overview stays free.</li>
+        <li><b>Price.</b> ₹349 a month or ₹3,769 a year, in Indian rupees. The price shown at checkout is the price you pay.</li>
+        <li><b>Free day.</b> New accounts can try Pro free for one day, once per account. You add a payment method to start; the
+          first charge is taken when the free day ends unless you cancel before then.</li>
+        <li><b>Renewal.</b> Your plan renews automatically each month or year until you cancel. Payments are handled by Razorpay;
+          we never see your card or UPI details.</li>
+        <li><b>Cancelling.</b> Cancel any time from your account. You keep Pro until the end of the period you&apos;ve paid for and
+          you won&apos;t be charged again. If a renewal payment fails, Pro stays on for 3 days while the payment is retried.</li>
+        <li><b>Refunds.</b> A period that has started isn&apos;t refunded, except where the law requires it or you were charged in
+          error. Write to us from the <a href="/contact/">contact page</a> about any billing problem.</li>
+        <li><b>Changes.</b> If we change the price, we&apos;ll tell you before it applies to your next renewal.</li>
+      </ul>
 
       <h2>7. API and developer tools</h2>
       <ul>

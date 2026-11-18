@@ -1,6 +1,7 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ApiPlans } from "@/components/Plans";
 import RequestAccess from "@/components/RequestAccess";
 import { CATEGORIES, ENDPOINTS } from "@/lib/apiref";
 
@@ -8,11 +9,9 @@ export const metadata: Metadata = seo("/developers/", "Cricket analytics API | C
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.cricsynthesis.in";
 
-const PLANS = [
-  { name: "Free", price: "₹0", lines: ["200 requests a day", "Every hosted endpoint", "Graphics carry a watermark"] },
-  { name: "Pro", price: "Contact us", lines: ["5,000 requests a day", "Every hosted endpoint", "Clean graphics"] },
-  { name: "Business", price: "Contact us", lines: ["50,000 requests a day", "Every hosted endpoint", "Priority support"] },
-];
+const CTA: Record<string, [string, string]> = {
+  free: ["/account/#api-keys", "Get a free key"], pro: ["/account/#subscription", "Get API Plus"], business: ["/contact/", "Contact sales"],
+};
 
 const EXAMPLE = `# Batter v bowler, ball by ball
 curl "${API}/v1/matchups?batter=ba607b88&bowler=462411b3&phase=death" \\
@@ -64,15 +63,7 @@ export default function Developers() {
       <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Request</span><span>curl</span></div>
         <pre className="req">{EXAMPLE}</pre></div></div>
       <h2 id="plans" style={{ marginTop: 56, scrollMarginTop: 88 }}>Plans</h2>
-      <div className="grid g3">
-        {PLANS.map((p) => (
-          <div key={p.name} className="card">
-            <p className="cs-eyebrow">{p.name}</p>
-            <div className="stat" style={{ fontSize: 30 }}>{p.price}</div>
-            <ul className="small" style={{ paddingLeft: 18, color: "var(--ink-2)" }}>{p.lines.map((l) => <li key={l}>{l}</li>)}</ul>
-          </div>
-        ))}
-      </div>
+      <ApiPlans cta={CTA} />
       <p className="small muted" style={{ marginTop: 20 }}>
         <Link href="/docs/">API reference</Link> · <Link href="/playground/">Playground</Link>
       </p>

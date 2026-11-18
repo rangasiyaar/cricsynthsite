@@ -768,3 +768,6 @@ body:has(.cs-consent) .app-promo { display: none; }
 .pro-status { margin: -8px 0 24px; padding: 10px 16px; background: var(--cs-accent-bg); color: var(--cs-steel-800); font-weight: 600; font-size: 15px; }
 .pro-err { margin: 10px 0 0; padding: 10px 12px; background: var(--cs-danger-bg); color: var(--cs-danger); font-size: 14px; }
 .pro-cta:disabled { opacity: .6; cursor: progress; }
+.pro-plans-3 { max-width: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.pro-plans-3 .pro-price { font-size: 42px; }
+.pro-lede { margin: -8px 0 24px; color: var(--cs-ink-2); font-size: 16.5px; max-width: 70ch; }

@@ -9,7 +9,7 @@ import { db } from "./firebase";
 export const SLOTS = ["k1", "k2", "k3", "k4", "k5"] as const;
 export const API_PLANS: Record<string, { daily: number; sims: number; label: string }> = {
   free: { daily: 200, sims: 2_000, label: "Free" },
-  pro: { daily: 5_000, sims: 20_000, label: "Pro" },
+  pro: { daily: 20_000, sims: 20_000, label: "Plus" },
   business: { daily: 50_000, sims: 50_000, label: "Business" },
 };
 

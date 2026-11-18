@@ -60,7 +60,7 @@ export default function Login() {
       <div className="login-card">
         <a href="/" className="login-logo cs-brand" aria-label="CricSynthesis home"><Logo /><span>Cric<b>Synthesis</b></span></a>
         <h1>{mode === "up" ? "Create account" : "Sign in"}</h1>
-        <p className="login-sub">{mode === "up" ? "Every account gets Pro free during the beta, including MatchSynth Lab."
+        <p className="login-sub">{mode === "up" ? "Create a free account, then start CricSynthesis Pro with one day free."
                                                 : "Sign in to access Pro features and manage your account and developer resources."}</p>
         {err && <div className="error-box" role="alert">{err}</div>}
         {info && <div className="error-box info" role="status">{info}</div>}

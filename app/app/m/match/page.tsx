@@ -30,10 +30,10 @@ function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
         {left && <span className="a-fact ok">Starts in {left}</span>}
         <XiTag xis={doc.match.xis} at={doc.generated_at} fresh={xiNew} />
       </div>
-      <Link href={`/m/lab/?id=${id}`} className="a-btn a-lab-open">{Icon.lab}<span>Open in MatchSynth Lab</span><span className="a-pro">Pro</span></Link>
+      <Link href={`/m/lab/?id=${id}`} className="a-btn a-lab-open">{Icon.lab}<span>Open in MatchSynth Lab</span></Link>
       <MenuGroup label="Match centre">
         {sections.map((s) => (
-          <MenuRow key={s} icon={TAB_ICONS[s]} title={<>{sectionName(s)}{!pro && isProSection(s) && <span className="a-pro">Pro</span>}</>}
+          <MenuRow key={s} icon={TAB_ICONS[s]} title={sectionName(s)}
                    sub={(pro || !isProSection(s) ? preview(doc, s) : "") || undefined} href={`/m/match/?id=${id}&s=${SLUG[s]}`} />
         ))}
       </MenuGroup>

@@ -21,7 +21,7 @@ function LabMenu({ lab, id }: { lab: Lab; id: string }) {
   return (
     <>
       <div className="a-title" style={{ paddingBottom: 14 }}>
-        <div className="a-eyebrow">MatchSynth Lab <span className="a-pro">Pro</span></div>
+        <div className="a-eyebrow">MatchSynth Lab</div>
         <h1>{doc.match.teams.map((t) => t.short).join(" v ")}</h1>
       </div>
       <MatchHero doc={doc} note={<Busy lab={lab} />} />
@@ -87,7 +87,7 @@ function Pick() {
   const list = (ix.data?.matches ?? []).filter((m) => m.published && status(m, now) !== "finished");
   return (
     <>
-      <Title eyebrow={<>MatchSynth Lab <span className="a-pro">Pro</span></>}>Pick a match</Title>
+      <Title eyebrow="MatchSynth Lab">Pick a match</Title>
       {!ix.data ? <Loading rows={3} /> : !list.length ? <Empty title="No matches to open">New fixtures appear once their forecast is ready.</Empty> : (
         <MenuGroup>
           {list.map((m) => <MenuRow key={m.id} icon={Icon.lab} title={m.teams.map((t) => t.short).join(" v ")}
