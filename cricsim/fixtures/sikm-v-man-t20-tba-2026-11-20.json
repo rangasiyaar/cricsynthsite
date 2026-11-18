@@ -1,0 +1,112 @@
+{
+  "id": "sikm-v-man-t20-tba-2026-11-20",
+  "title": "Sikkim v Manipur",
+  "date": "2026-11-20",
+  "start_time": "12:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 12th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sikkim",
+      "short": "SIKM",
+      "players": [
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "C Kranthi Kumar",
+        "Gurinder Singh",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Amit Rajera",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Lee Yong Lepcha",
+      "squad": [
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "C Kranthi Kumar",
+        "Gurinder Singh",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Amit Rajera",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ]
+    },
+    {
+      "name": "Manipur",
+      "short": "MAN",
+      "players": [
+        "Prafullomani Singh",
+        "Ahmed Shah",
+        "Chingakham Bidash",
+        "Langlonyamba Keishangbam",
+        "Ulenyai Khwairakpam",
+        "Mandingbam Andyroshan",
+        "Kiran Laishram",
+        "Pheiroijam Jotin Singh",
+        "Aqeel Ahamed",
+        "Sultan Karim",
+        "L Kishan Singha"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Langlonyamba Keishangbam",
+      "squad": [
+        "Prafullomani Singh",
+        "Ahmed Shah",
+        "Chingakham Bidash",
+        "Langlonyamba Keishangbam",
+        "Ulenyai Khwairakpam",
+        "Mandingbam Andyroshan",
+        "Kiran Laishram",
+        "Pheiroijam Jotin Singh",
+        "Aqeel Ahamed",
+        "Sultan Karim",
+        "L Kishan Singha"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41856,
+    "url": "https://khelnow.com/live-cricket-score/sikkim-vs-manipur-syed-mushtaq-ali-trophy-plate-20th-november-2026-41856",
+    "auto": true,
+    "xis": false
+  }
+}

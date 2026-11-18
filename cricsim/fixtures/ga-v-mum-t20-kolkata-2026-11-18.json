@@ -12,19 +12,19 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Mumbai won the toss and bat first.",
   "teams": [
     {
       "name": "Goa",
       "short": "GA",
       "players": [
         "Abhinav Tejrana",
-        "Ishaan Gadekar",
+        "Azaan Thota",
         "Shivendra Bhujbal",
         "Suyash Prabhudessai",
         "Lalit Yadav",
-        "Darshan Misal",
         "Deepraj Gaonkar",
+        "Darshan Misal",
         "Vikash Singh",
         "Felix Alemao",
         "V Koushik",
@@ -32,7 +32,7 @@
       ],
       "roles": [
         "BAT",
-        "BAT",
+        "AR",
         "WK",
         "BAT",
         "AR",
@@ -62,30 +62,30 @@
       "name": "Mumbai",
       "short": "MUM",
       "players": [
-        "Angkrish Raghuvanshi",
-        "Hardik Tamore",
         "Surya Kumar Yadav",
+        "Shardul Thakur",
         "Sarfaraz Khan",
         "Shivam Dube",
-        "Musheer Khan",
-        "Sairaj Patil",
-        "Shardul Thakur",
-        "Maxwell Swaminathan",
         "Tushar Deshpande",
-        "Atharva Ankolekar"
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
       ],
       "roles": [
         "BAT",
-        "WK",
+        "BOWL",
         "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
         "BAT",
         "AR",
         "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL",
-        "AR"
+        "WK"
       ],
       "captain": "Surya Kumar Yadav",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41892,
     "url": "https://khelnow.com/live-cricket-score/goa-vs-mumbai-syed-mushtaq-ali-trophy-elite-18th-november-2026-41892",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
