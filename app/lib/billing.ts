@@ -68,7 +68,7 @@ export async function startCheckout(billing: Billing): Promise<"done" | "closed"
   const [c] = await Promise.all([call("checkout", { billing }), loadCheckout()]);
   return new Promise((resolve, reject) => {
     const rz = new window.Razorpay!({
-      key: c.key, subscription_id: c.subscription_id, name: "CricSynthesis",
+      key: c.key, subscription_id: c.subscription_id, name: "CricSynthesis", image: "https://cricsynthesis.in/brand-logo.png",
       description: `CricSynthesis Pro (${billing})${c.trial ? " · 1 day free" : ""}`,
       prefill: { email: c.email || "" }, theme: { color: "#416180" }, notes: { product: "pro" },
       handler: (resp: RazorpayResponse) => { call("verify", resp).then(() => resolve("done"), reject); },
