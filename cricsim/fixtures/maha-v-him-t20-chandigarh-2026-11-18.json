@@ -12,31 +12,31 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Himachal Pradesh won the toss and bat first.",
   "teams": [
     {
       "name": "Maharashtra",
       "short": "MAHA",
       "players": [
-        "Rahul Tripathi",
-        "Suraj Shinde",
-        "Sahil Parakh",
         "Prithvi Shaw",
-        "Ramakrishna Ghosh",
         "Arshin Kulkarni",
-        "Kiran Chormale",
-        "Mukesh Choudhary",
+        "Sahil Parakh",
+        "Siddhesh Veer",
+        "Rushikesh Sonavne",
+        "Suraj Shinde",
+        "Ramakrishna Ghosh",
         "Vicky Ostwal",
         "Prashant Solanki",
-        "Tanay Sanghvi"
+        "Mukesh Choudhary",
+        "Vivek Shelar"
       ],
       "roles": [
         "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -62,29 +62,29 @@
       "name": "Himachal Pradesh",
       "short": "HIM",
       "players": [
+        "Pukhraj Mann",
         "Ayush Jamwal",
         "Innesh Mahajan",
-        "Pukhraj Mann",
         "Vaibhav Kalta",
         "Nehal Wadhera",
         "Aryaman Singh-I",
         "Rohit Kumar",
         "Mridul Surroch",
-        "Ekant Sen",
         "Arpit Guleria",
+        "Ekant Sen",
         "Jitender Rana"
       ],
       "roles": [
+        "BAT",
         "BOWL",
         "WK",
-        "BAT",
         "BAT",
         "BAT",
         "BOWL",
         "AR",
         "BOWL",
-        "BAT",
         "BOWL",
+        "BAT",
         "AR"
       ],
       "captain": "Pukhraj Mann",
@@ -107,6 +107,7 @@
     "kn": 41889,
     "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-himachal-pradesh-syed-mushtaq-ali-trophy-elite-18th-november-2026-41889",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

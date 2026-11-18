@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Rajasthan won the toss and bowl first.",
   "teams": [
     {
       "name": "Chandigarh",
@@ -22,13 +22,13 @@
         "Shivam Bhambri",
         "Aarush Bhandari",
         "Arjun Azad",
-        "Sanyam Saini",
-        "Raman Bishnoi",
+        "Nehal Pajni",
         "Bhagmender Lather",
         "Chiragvir Dhindsa",
-        "Jagjit Singh Sandhu",
+        "Nikhil Kumar",
+        "Rohit Dhanda",
         "Sandeep Sharma",
-        "Rohit Dhanda"
+        "Jagjit Singh Sandhu"
       ],
       "roles": [
         "BAT",
@@ -38,7 +38,7 @@
         "BAT",
         "AR",
         "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -72,7 +72,7 @@
         "Manav Suthar",
         "Rahul Chahar",
         "Himanshu Rana",
-        "Pratap Singh"
+        "Himanshu Nehra"
       ],
       "roles": [
         "BAT",
@@ -85,7 +85,7 @@
         "AR",
         "BOWL",
         "BOWL",
-        "AR"
+        "BAT"
       ],
       "captain": "Deepak Chahar",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41887,
     "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-rajasthan-syed-mushtaq-ali-trophy-elite-18th-november-2026-41887",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
