@@ -12,7 +12,7 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Ireland Women won the toss and bat first.",
   "teams": [
     {
       "name": "Ireland Women",
@@ -23,12 +23,12 @@
         "Lara Maritz",
         "Louise Little",
         "Laura Delany",
-        "Alana Dalzell",
         "Abbi Harrison",
+        "Georgina Dempsey",
         "Cara Murray",
         "Jane Maguire",
-        "Aimee Maguire",
-        "Lara McBride"
+        "Lara McBride",
+        "Aimee Maguire"
       ],
       "roles": [
         "BAT",
@@ -36,8 +36,8 @@
         "BOWL",
         "BOWL",
         "AR",
-        "BOWL",
         "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41818,
     "url": "https://khelnow.com/live-cricket-score/ireland-women-vs-scotland-women-icc-women's-emerging-nations-trophy-18th-november-2026-41818",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
