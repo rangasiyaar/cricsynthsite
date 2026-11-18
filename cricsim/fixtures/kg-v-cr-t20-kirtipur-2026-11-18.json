@@ -12,35 +12,35 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chitwan Rhinos won the toss and bat first.",
   "teams": [
     {
       "name": "Kathmandu Gorkhas",
       "short": "KG",
       "players": [
-        "Ganesh Gautam",
         "Bhim Sharki",
+        "Ganesh Gautam",
         "Jahandad Khan",
         "KC Karan",
         "Rashid Khan",
         "Sahan Arachchige",
+        "Sahil Patel",
+        "Sam Heazlett",
         "Santosh Yadav",
-        "Smit Patel",
         "Sonu Devkota",
-        "Sumit Maharjan",
         "William Bosisto"
       ],
       "roles": [
-        "AR",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
         "AR",
+        "BOWL",
         "AR",
         "WK",
-        "BOWL",
         "BAT",
+        "AR",
+        "BOWL",
         "BOWL"
       ],
       "captain": "KC Karan",
@@ -62,32 +62,32 @@
       "name": "Chitwan Rhinos",
       "short": "CR",
       "players": [
-        "Ashok Dhami",
         "Bibek Kumar Yadav",
-        "Dan Mousley",
-        "Dev Khanal",
+        "Dawid Malan",
+        "Ranjit Kumar",
         "Kamal Singh Airee",
-        "Kamil Mishara",
         "Kushal Malla",
-        "Salahuddin Khan",
+        "Kamil Mishara",
+        "Ravi Bopara",
+        "Rijan Dhakal",
         "Usama Mir",
-        "Sikandar Raza",
-        "Rijan Dhakal"
+        "Salahuddin Khan",
+        "Dev Khanal"
       ],
       "roles": [
+        "AR",
+        "BAT",
         "BOWL",
+        "BOWL",
+        "AR",
         "WK",
         "AR",
-        "BAT",
+        "BOWL",
         "BOWL",
         "BAT",
-        "AR",
-        "BAT",
-        "BOWL",
-        "AR",
-        "BOWL"
+        "BAT"
       ],
-      "captain": "Kushal Malla",
+      "captain": "Ravi Bopara",
       "squad": [
         "Ashok Dhami",
         "Bibek Kumar Yadav",
@@ -107,6 +107,7 @@
     "kn": 41352,
     "url": "https://khelnow.com/live-cricket-score/kathmandu-gorkhas-vs-chitwan-rhinos-nepal-premier-league-18th-november-2026-41352",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
