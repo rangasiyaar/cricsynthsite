@@ -31,7 +31,8 @@ export interface Store {
   set(path: string, fields: Rec): Promise<void>;
 }
 
-/** Promo codes: a flat discount on the first payment, for accounts that have never paid. Each needs a Razorpay
+/** Promo codes: a flat discount on the first payment, for accounts that have never paid. A code replaces the free day:
+ *  Razorpay won't apply an offer to a subscription whose first charge is scheduled later (start_at). Each needs a Razorpay
  *  subscription offer (created in the dashboard, flat amount, first cycle only) whose id is in Deps.offers. */
 export const PROMOS: Record<string, { off: number; label: string }> = {
   WELCOME100: { off: 10_000, label: "₹100 off your first payment" },
@@ -146,7 +147,7 @@ export function promoFor(deps: Deps, prev: Rec | null, raw: unknown, billing: Bi
 export async function promo(deps: Deps, uid: string, body: any) {
   const billing: Billing = body?.billing === "yearly" ? "yearly" : "monthly";
   const p = promoFor(deps, await deps.store.get(docPath(uid)), body?.code, billing);
-  return { code: p.code, off: p.off, label: p.label, firstCharge: p.firstCharge, billing };
+  return { code: p.code, off: p.off, label: p.label, firstCharge: p.firstCharge, billing, replacesFreeDay: true };
 }
 
 /** Start a subscription for the website's checkout. */
@@ -157,8 +158,8 @@ export async function checkout(deps: Deps, user: { uid: string; email: string | 
   const prev = await deps.store.get(docPath(user.uid));
   const view = publicView(prev, now);
   if (view.pro && prev?.status !== "created" && prev?.status !== "cancelled") throw new BillingError(409, "You already have CricSynthesis Pro.");
-  const trial = view.trialAvailable;
   const p = body?.promo ? promoFor(deps, prev, body.promo, billing) : null;
+  const trial = view.trialAvailable && !p;           // a promo code is instead of the free day
   const sub = await deps.rzp("POST", "/subscriptions", {
     plan_id: await planId(deps, billing), total_count: CYCLES[billing], quantity: 1, customer_notify: 1,
     ...(trial ? { start_at: Math.floor(now / 1000) + TRIAL_S } : {}),

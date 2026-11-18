@@ -27,6 +27,7 @@ function Checkout() {
   }, [c.uid, billing, router]);
   const price = billing === "monthly" ? PRO.monthly : PRO.yearly;
   const first = pr.applied ? pr.applied.firstCharge / 100 : price;
+  const trial = c.trial && !pr.applied;            // a promo code is instead of the free day
   const per = billing === "monthly" ? "month" : "year";
   if (!c.uid || c.b === undefined) return <Loading rows={3} />;
 
@@ -63,15 +64,15 @@ function Checkout() {
         ))}
       </div>
       <div className="ap-card ap-sum" style={{ marginTop: 16 }}>
-        {c.trial ? (
+        {trial ? (
           <>
             <div><span>Due today</span><b>{rupees(0)}</b></div>
-            <div><span>From {day(firstChargeDate())}</span><b>{pr.applied ? `${rupees(first)} first ${per}, then ${rupees(price)}` : `${rupees(price)} a ${per}`}</b></div>
+            <div><span>From {day(firstChargeDate())}</span><b>{`${rupees(price)} a ${per}`}</b></div>
           </>
         ) : (
           <>
             <div><span>Due today</span><b>{rupees(first)}</b></div>
-            <div><span>Renews</span><b>Every {per}</b></div>
+            <div><span>Then</span><b>{rupees(price)} every {per}</b></div>
           </>
         )}
         <div><span>Account</span><b>{c.email}</b></div>
@@ -89,11 +90,14 @@ function Checkout() {
         </form>
       ) : <button type="button" className="a-btn plain" style={{ marginBottom: 6 }} onClick={() => pr.setOpen(true)}>Have a promo code?</button>}
       {pr.err && <div className="a-msg" role="alert" style={{ marginBottom: 12 }}>{pr.err}</div>}
-      <p className="ap-after" style={{ margin: "0 4px 14px", textAlign: "left" }}>{c.trial
+      <p className="ap-after" style={{ margin: "0 4px 14px", textAlign: "left" }}>{trial
         ? `Your free day starts now. Cancel before ${day(firstChargeDate())} and you won't be charged.`
-        : "You've already had your free day, so your plan starts today."}</p>
+        : pr.applied
+          ? (c.trial ? `${pr.applied.code} is instead of your free day: your plan starts today at ${rupees(first)}. Remove the code to start with a free day.`
+                     : `Your plan starts today at ${rupees(first)}, then ${rupees(price)} a ${per}.`)
+          : "You've already had your free day, so your plan starts today."}</p>
       <button type="button" className="a-btn" onClick={c.pay} disabled={c.busy}>
-        {c.busy ? "Opening secure payment…" : c.trial ? "Start your free day" : `Pay ${rupees(first)}`}</button>
+        {c.busy ? "Opening secure payment…" : trial ? "Start your free day" : `Pay ${rupees(first)}`}</button>
       {c.err && <div className="a-msg" role="alert" style={{ marginTop: 10 }}>{c.err}</div>}
       <p className="ap-after">Secure payment by Razorpay · UPI, cards and netbanking</p>
       <div className="a-group-label" style={{ marginTop: 26 }}>What you get</div>

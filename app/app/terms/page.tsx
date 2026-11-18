@@ -53,7 +53,8 @@ export default function Terms() {
         <li><b>Refunds.</b> A period that has started isn&apos;t refunded, except where the law requires it or you were charged in
           error. Write to us from the <a href="/contact/">contact page</a> about any billing problem.</li>
         <li><b>Promo codes.</b> A promo code such as WELCOME100 gives the discount it states on your first payment only, for accounts
-          that haven&apos;t paid for Pro before. One code per account; it has no cash value and we may end an offer at any time.
+          that haven&apos;t paid for Pro before. One code per account. A code is instead of the free day: with it, your plan starts and is charged straight away. It has
+          no cash value and we may end an offer at any time.
           Later renewals are at the full price.</li>
         <li><b>Changes.</b> If we change the price, we&apos;ll tell you before it applies to your next renewal.</li>
       </ul>

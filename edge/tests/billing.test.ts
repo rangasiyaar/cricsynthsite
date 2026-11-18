@@ -153,11 +153,13 @@ test("WELCOME100: ₹100 off the first payment, first subscription only, needs i
   await assert.rejects(B.checkout(w.deps, user, { billing: "monthly", promo: "welcome100" }), /isn't available/);   // no offer set up
   w.deps.offers = { WELCOME100: "offer_ABCDEFGHIJKLMNOP" };
   assert.deepEqual(await B.promo(w.deps, "u1", { code: " welcome100 ", billing: "monthly" }),
-                   { code: "WELCOME100", off: 10_000, label: "₹100 off your first payment", firstCharge: 24_900, billing: "monthly" });
+                   { code: "WELCOME100", off: 10_000, label: "₹100 off your first payment", firstCharge: 24_900, billing: "monthly", replacesFreeDay: true });
   await assert.rejects(B.promo(w.deps, "u1", { code: "NOPE" }), /isn't valid/);
   const r = await B.checkout(w.deps, user, { billing: "yearly", promo: "WELCOME100" });
   assert.equal(r.promo!.firstCharge, 366_900);
+  assert.equal(r.trial, false);                                   // the code replaces the free day: charged today
   const sent = w.subs.get(r.subscription_id);
+  assert.equal(sent.start_at, null);
   assert.equal(sent.notes.promo, "WELCOME100");
   // once the account has paid, the code no longer applies
   Object.assign(sent, { status: "active", paid_count: 1, current_end: S0 + 365 * 86400 });
