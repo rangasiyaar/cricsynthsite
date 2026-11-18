@@ -5,8 +5,11 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChartFrame, type Column } from "@/components/charts";
 import { SHEET } from "@/components/RequestAccess";
+import { proLine } from "@/components/ProOffer";
 import { track } from "@/lib/analytics";
+import { cancelPro, hasPaidPro, useProBilling } from "@/lib/billing";
 import { auth, usePlan } from "@/lib/firebase";
+import { PRO, rupees } from "@/lib/pro";
 import {
   API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
   renameKey, requestUpgrade, revokeKey, saveNotify, saveProfile, SLOTS, VOLUMES,
@@ -308,6 +311,55 @@ const API_TIERS: { id: string; upgrade?: Upgrade; price: string; points: string[
 ];
 const STATUS: Record<string, string> = { pending: "Under review", approved: "Approved", declined: "Not approved", cancelled: "Cancelled" };
 
+/** CricSynthesis Pro on the account page: what they have, when it renews or ends, and cancel. */
+function ProPlanCard({ pro, source, setErr }: { pro: boolean; source: string | null; setErr: (s: string | null) => void }) {
+  const { user } = usePlan();
+  const b = useProBilling(user?.uid);
+  const paid = hasPaidPro(b);
+  const [busy, setBusy] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const canCancel = paid && !!b && !b.cancelAtEnd && ["trial", "active", "past_due"].includes(b.status);
+  const doCancel = async () => {
+    setBusy(true); setErr(null);
+    try { await cancelPro(); track("pro_cancelled", { status: b?.status ?? "" }); setConfirm(false); }
+    catch (x) { setErr(friendly(x)); } finally { setBusy(false); }
+  };
+  const label = paid ? (b!.status === "trial" ? "Free day" : b!.cancelAtEnd || b!.status === "cancelled" ? "Ending" : "Active")
+    : pro ? (source === "beta" ? "Beta" : "Active") : "Free";
+  const price = b?.billing === "yearly" ? `${rupees(PRO.yearly)} a year` : b?.billing === "monthly" ? `${rupees(PRO.monthly)} a month` : null;
+  return (
+    <div className="card">
+      <div className="card-head"><h3>CricSynthesis Pro</h3><span className="tag pro">{label}</span></div>
+      <div className="stat dash-stat">{paid || pro ? "Pro" : "Free"}</div>
+      <p className="small">{paid ? proLine(b!)
+        : pro ? (source === "beta" ? "Pro is free during the beta. Subscribe to keep it when the beta ends." : "Pro is on for your account.")
+        : "You're on the free plan: the Overview for every match."}</p>
+      <dl className="dash-dl">
+        <div><dt>Plan</dt><dd>{paid && price ? price : pro && source === "beta" ? "₹0 during the beta" : "₹0"}</dd></div>
+        <div><dt>{b?.status === "trial" ? "First charge" : "Renews"}</dt>
+          <dd>{paid && !b!.cancelAtEnd && b!.status !== "cancelled"
+            ? (b!.status === "trial" ? b!.trialEnd : b!.currentEnd)?.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) ?? "—"
+            : "—"}</dd></div>
+      </dl>
+      <div className="card-foot" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {paid ? <Link className="btn" href="/matches/">Open a match</Link> : <Link className="btn" href="/pro/">{pro ? "Subscribe to Pro" : "Get Pro"}</Link>}
+        {canCancel && !confirm && <button type="button" className="btn ghost" onClick={() => setConfirm(true)}>Cancel plan</button>}
+      </div>
+      {confirm && (
+        <div className="notice" style={{ marginTop: 14 }}>
+          <p style={{ margin: "0 0 10px" }}>{b!.status === "trial"
+            ? "Cancel your free day? You won't be charged, and Pro stays on until the free day ends."
+            : "Cancel CricSynthesis Pro? You keep Pro until the end of the period you've paid for, and it won't renew."}</p>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <button type="button" className="btn" onClick={doCancel} disabled={busy}>{busy ? "Cancelling…" : "Yes, cancel"}</button>
+            <button type="button" className="btn ghost" onClick={() => setConfirm(false)} disabled={busy}>Keep Pro</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Subscription({ uid, plan, source, apiPlan, requests, refresh, setErr, user }: {
   uid: string; plan?: string; source: string | null; apiPlan: string; requests: UpgradeRequest[] | null;
   refresh: () => void; setErr: (s: string | null) => void; user: User;
@@ -344,30 +396,15 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
   return (
     <div className="grid">
       <div className="grid g2">
-        <div className="card">
-          <div className="card-head"><h3>Website plan</h3><span className="tag pro">{pro ? "Active" : "Free"}</span></div>
-          <div className="stat dash-stat">{pro ? "Pro" : "Free"}</div>
-          <p className="small">{pro ? source === "beta" ? "Pro is included at no cost for every account during the beta." : "Your Pro subscription is active."
-            : "You're on the free plan."}</p>
-          <dl className="dash-dl">
-            <div><dt>Price</dt><dd>{pro && source === "beta" ? "₹0 during the beta" : "₹0"}</dd></div>
-            <div><dt>Renews</dt><dd>{pro && source === "beta" ? "No renewal needed" : "—"}</dd></div>
-          </dl>
-          <div className="card-foot" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {pro ? <Link className="btn" href="/lab/">Open MatchSynth Lab</Link> : <Link className="btn" href="/pricing/">Upgrade to Pro</Link>}
-            <Link className="btn ghost" href="/pricing/">Compare plans</Link>
-          </div>
-        </div>
+        <ProPlanCard pro={pro} source={source} setErr={setErr} />
         <div className="card">
           <h3>Billing</h3>
           <dl className="dash-dl">
-            <div><dt>Payment method</dt><dd>None needed</dd></div>
-            <div><dt>Next invoice</dt><dd>—</dd></div>
+            <div><dt>Payments</dt><dd>Razorpay (UPI, cards, netbanking)</dd></div>
             <div><dt>Billing email</dt><dd>{user.email}</dd></div>
           </dl>
-          <p className="small muted">Paid API plans are set up with our team: we confirm the price by email first, and nothing is
-            charged without your written go-ahead.</p>
-          <div className="dash-empty">No invoices yet.</div>
+          <p className="small muted">Razorpay emails a receipt for every CricSynthesis Pro payment. Paid API plans are set up with our
+            team: we confirm the price by email first, and nothing is charged without your written go-ahead.</p>
           <div className="card-foot"><Link className="btn ghost" href="/contact/">Billing questions</Link></div>
         </div>
       </div>

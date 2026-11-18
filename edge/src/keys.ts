@@ -25,6 +25,9 @@ export interface Env {
   FIRESTORE_PROJECT?: string;
   STATIC_KEYS?: string;               // optional JSON {sha256: plan} for keys not in the dashboard (tests, partners)
   CORS?: string;
+  RAZORPAY_KEY_ID?: string;           // secrets: CricSynthesis Pro checkout (billing.ts); test keys start rzp_test_
+  RAZORPAY_KEY_SECRET?: string;
+  RAZORPAY_WEBHOOK_SECRET?: string;
 }
 
 export type Account = { hash: string; plan: string; owner: string | null; slot: string | null; limits: typeof PLANS[string] };

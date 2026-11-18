@@ -51,6 +51,21 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SA: ${{ secrets.FIRESTORE_SA_KEY }}
         run: printf '%s' "$SA" | npx wrangler secret put GOOGLE_SA
+      - name: Razorpay keys (CricSynthesis Pro checkout → Worker secrets; test keys until launch)
+        if: env.HAS_CF == 'true'
+        working-directory: edge
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+          RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+          RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
+        run: |
+          [ -n "$RZP_ID" ] && [ -n "$RZP_SECRET" ] || { echo "::notice::No Razorpay keys yet: checkout stays off."; exit 0; }
+          node -e 'const e=process.env, o={RAZORPAY_KEY_ID:e.RZP_ID, RAZORPAY_KEY_SECRET:e.RZP_SECRET}; if (e.RZP_WEBHOOK) o.RAZORPAY_WEBHOOK_SECRET=e.RZP_WEBHOOK; process.stdout.write(JSON.stringify(o))' > /tmp/rzp.json
+          npx wrangler secret bulk /tmp/rzp.json
+          rm -f /tmp/rzp.json
+          case "$RZP_ID" in rzp_live_*) echo "Razorpay: live keys";; *) echo "Razorpay: test keys";; esac >> "$GITHUB_STEP_SUMMARY"
       - name: Not deployed
         if: env.HAS_CF != 'true'
         run: echo "::notice::Tests passed. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets to deploy."

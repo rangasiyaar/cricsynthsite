@@ -1017,6 +1017,62 @@
           "ageConfirmed": "2026-11-10T00:00:00Z"
         }
       }
+    },
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/billing/pro",
+        "method": "get",
+        "time": "2026-11-18T12:00:00Z"
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u2"
+        },
+        "path": "/databases/(default)/documents/users/u1/billing/pro",
+        "method": "get",
+        "time": "2026-11-18T12:00:00Z"
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/billing/pro",
+        "method": "create",
+        "time": "2026-11-18T12:00:00Z",
+        "resource": {
+          "data": {
+            "status": "active",
+            "proUntil": "2030-01-01T00:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1/billing/pro",
+        "method": "update",
+        "time": "2026-11-18T12:00:00Z",
+        "resource": {
+          "data": {
+            "status": "active",
+            "proUntil": "2030-01-01T00:00:00Z"
+          }
+        }
+      }
     }
   ]
 }

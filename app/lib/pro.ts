@@ -74,7 +74,7 @@ export const PRO_GROUPS: { title: string; items: string[] }[] = [
 
 export const TRIAL_STEPS = [
   { when: "Today", text: "Start your free day. Everything in Pro opens straight away." },
-  { when: "Before it ends", text: "We'll remind you a few hours before your free day is over." },
+  { when: "Any time that day", text: "Not for you? Cancel in one tap from your account and you won't be charged." },
   { when: "Tomorrow", text: `Your plan starts and you're charged. Cancel any time before then and you pay nothing.` },
 ];
 

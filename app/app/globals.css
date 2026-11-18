@@ -765,3 +765,6 @@ body:has(.cs-consent) .app-promo { display: none; }
   .pro-plan.is-pro { order: -1; }          /* Pro first on phones */
   .pro-plans { margin-top: 36px; gap: 28px; }
 }
+.pro-status { margin: -8px 0 24px; padding: 10px 16px; background: var(--cs-accent-bg); color: var(--cs-steel-800); font-weight: 600; font-size: 15px; }
+.pro-err { margin: 10px 0 0; padding: 10px 12px; background: var(--cs-danger-bg); color: var(--cs-danger); font-size: 14px; }
+.pro-cta:disabled { opacity: .6; cursor: progress; }

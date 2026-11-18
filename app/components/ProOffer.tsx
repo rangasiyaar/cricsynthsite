@@ -1,7 +1,11 @@
 "use client";
 // The CricSynthesis Pro offer on the website: plan switch, Free v Pro, everything in Pro, how the free day works, FAQ.
-// Copy and prices in lib/pro.ts. Checkout isn't connected yet: the buttons open a "coming soon" note.
+// Copy and prices in lib/pro.ts; checkout in lib/billing.ts (Razorpay's window, then the API verifies the payment).
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { loginHref } from "@/components/Gate";
+import { track } from "@/lib/analytics";
+import { hasPaidPro, startCheckout, trialAvailable, useProBilling, type ProBilling } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
 import {
   FREE_HIGHLIGHTS, PRO, PRO_FAQ, PRO_FINE_PRINT, PRO_GROUPS, PRO_HERO, PRO_HIGHLIGHTS, TRIAL_STEPS,
@@ -25,19 +29,30 @@ export function BillingSwitch({ value, onChange }: { value: Billing; onChange: (
   );
 }
 
-function ComingSoon({ onClose }: { onClose: () => void }) {
+const day = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "");
+
+/** One line on the account's Pro: free day, renewal, or end date. */
+export function proLine(b: ProBilling): string {
+  if (b.status === "trial") return `Your free day ends on ${day(b.trialEnd)}. ${b.billing === "yearly" ? "The yearly" : "The monthly"} plan starts then.`;
+  if (b.cancelAtEnd || b.status === "cancelled") return `Pro stays on until ${day(b.status === "cancelled" ? b.proUntil : b.currentEnd)}. It won't renew.`;
+  if (b.status === "past_due") return "We couldn't take your last payment. Razorpay will retry; you keep Pro for now.";
+  if (b.status === "active") return `Renews on ${day(b.currentEnd)}.`;
+  return "";
+}
+
+function Done({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const esc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", esc);
     return () => document.removeEventListener("keydown", esc);
   }, [onClose]);
   return (
-    <div className="pro-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="pro-soon">
+    <div className="pro-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="pro-done">
       <button type="button" className="pro-modal-scrim" aria-label="Close" onClick={onClose} />
       <div className="pro-modal">
-        <h3 id="pro-soon">Checkout is almost ready</h3>
-        <p>Payments for CricSynthesis Pro open soon. Nothing has been charged.</p>
-        <button type="button" className="cs-btn cs-btn--primary" onClick={onClose}>OK</button>
+        <h3 id="pro-done">Welcome to CricSynthesis Pro</h3>
+        <p>Every tab of every match and MatchSynth Lab are now open on your account, on the website and in the app.</p>
+        <a className="cs-btn cs-btn--primary" href="/matches/">Open a match</a>
       </div>
     </div>
   );
@@ -45,11 +60,27 @@ function ComingSoon({ onClose }: { onClose: () => void }) {
 
 export default function ProOffer() {
   const [billing, setBilling] = useState<Billing>("yearly");
-  const [soon, setSoon] = useState(false);
-  const { plan } = usePlan();
-  const trial = true;                       // every new account gets one free day (checked server-side once payments are live)
+  const [done, setDone] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const { user, source } = usePlan();
+  const b = useProBilling(user === undefined ? undefined : user?.uid ?? null);
+  const paid = hasPaidPro(b);
+  const trial = trialAvailable(b);        // one free day per account, checked again by the API
   const price = billing === "monthly" ? PRO.monthly : PRO.yearly;
-  const subscribe = () => setSoon(true);
+  const subscribe = async () => {
+    if (user === null) { window.location.assign(loginHref("/pro/")); return; }
+    if (!user || busy) return;
+    setBusy(true); setErr(null);
+    track("pro_checkout", { billing, trial });
+    try {
+      if ((await startCheckout(billing)) === "done") { setDone(true); track("pro_subscribed", { billing, trial }); }
+    } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong. Please try again."); }
+    finally { setBusy(false); }
+  };
+  const cta = (cls: string) => paid
+    ? <Link className={cls} href="/account/#subscription">Manage your plan</Link>
+    : <button type="button" className={cls} onClick={subscribe} disabled={busy || user === undefined}>{busy ? "Opening checkout…" : ctaLabel(trial)}</button>;
 
   return (
     <div className="pro-page">
@@ -57,6 +88,8 @@ export default function ProOffer() {
         <p className="cs-eyebrow">{PRO_HERO.eyebrow}</p>
         <h1>{PRO_HERO.title}</h1>
         <p className="pro-sub">{PRO_HERO.sub}</p>
+        {paid && <p className="pro-status">You have CricSynthesis Pro. {proLine(b!)}</p>}
+        {!paid && source === "beta" && <p className="pro-status">You have Pro free during the beta. Subscribe now to keep it when the beta ends.</p>}
         <BillingSwitch value={billing} onChange={setBilling} />
       </section>
 
@@ -77,10 +110,9 @@ export default function ProOffer() {
             ? <>Just {rupees(yearlyPerMonth)} a month. You save {rupees(yearlySaving)}.</>
             : <>Switch to yearly and save {rupees(yearlySaving)}.</>}</p>
           <ul className="pro-list">{PRO_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
-          {plan === "pro"
-            ? <a className="cs-btn cs-btn--primary pro-cta" href="/matches/">You have Pro: open a match</a>
-            : <button type="button" className="cs-btn cs-btn--primary pro-cta" onClick={subscribe}>{ctaLabel(trial)}</button>}
-          <p className="pro-after">{trial ? afterTrial(billing) : "Cancel any time."}</p>
+          {cta("cs-btn cs-btn--primary pro-cta")}
+          <p className="pro-after">{paid ? proLine(b!) : trial ? afterTrial(billing) : `${rupees(price)} a ${billing === "monthly" ? "month" : "year"}. Cancel any time.`}</p>
+          {err && <p className="pro-err" role="alert">{err}</p>}
         </div>
       </section>
 
@@ -116,12 +148,12 @@ export default function ProOffer() {
 
       <section className="pro-final">
         <h2>Ready for the full picture?</h2>
-        <button type="button" className="cs-btn cs-btn--light" onClick={subscribe}>{ctaLabel(trial)}</button>
-        <p>{afterTrial(billing)}</p>
+        {cta("cs-btn cs-btn--light")}
+        {!paid && <p>{trial ? afterTrial(billing) : "Cancel any time."}</p>}
       </section>
 
       <p className="pro-fine">{PRO_FINE_PRINT} Secure checkout: UPI, cards and netbanking.</p>
-      {soon && <ComingSoon onClose={() => setSoon(false)} />}
+      {done && <Done onClose={() => setDone(false)} />}
     </div>
   );
 }

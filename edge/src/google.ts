@@ -66,6 +66,25 @@ export class Firestore {
              revoked: Boolean(f.revoked?.booleanValue) };
   }
 
+  /** A document as plain values (strings, numbers, booleans, timestamps as ISO strings), or null when missing. */
+  async getDoc(path: string): Promise<Record<string, unknown> | null> {
+    const r = await fetch(`${this.root}/${path}`, { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error(`firestore ${r.status}`);
+    const d: any = await r.json();
+    return Object.fromEntries(Object.entries(d.fields || {}).map(([k, v]) => [k, fromValue(v)]));
+  }
+
+  /** Set these fields on a document (creating it if needed); other fields are kept. */
+  async setFields(path: string, fields: Record<string, unknown>) {
+    const mask = Object.keys(fields).map((k) => `updateMask.fieldPaths=${encodeURIComponent(k)}`).join("&");
+    const r = await fetch(`${this.root}/${path}?${mask}`, {
+      method: "PATCH", headers: { Authorization: `Bearer ${await accessToken(this.sa)}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ fields: Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, toValue(v)])) }),
+    });
+    if (!r.ok) throw new Error(`firestore ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  }
+
   /** Whether the account holder confirmed they are 18 or over (users/{uid}.adult, set by the website's age check). */
   async isAdult(uid: string): Promise<boolean> {
     const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
@@ -96,4 +115,23 @@ export class Firestore {
     }
     await this.call(":commit", { writes });
   }
+}
+
+/** Plain value → Firestore value (Dates become timestamps). */
+export function toValue(v: unknown): any {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (v instanceof Date) return { timestampValue: v.toISOString() };
+  if (typeof v === "boolean") return { booleanValue: v };
+  if (typeof v === "number") return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  return { stringValue: String(v) };
+}
+
+/** Firestore value → plain value (timestamps as ISO strings). */
+export function fromValue(v: any): unknown {
+  if ("stringValue" in v) return v.stringValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return v.doubleValue;
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("timestampValue" in v) return v.timestampValue;
+  return null;
 }

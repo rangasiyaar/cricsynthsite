@@ -4,6 +4,8 @@ import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
 import { type Account, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
+import * as B from "./billing.ts";
+import { Firestore } from "./google.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
 
@@ -92,6 +94,46 @@ async function oauth(req: Request, env: Env, url: URL, path: string): Promise<Re
   return null;
 }
 
+/** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
+async function billing(req: Request, env: Env, path: string): Promise<Response> {
+  if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const deps: B.Deps = {
+    keyId: env.RAZORPAY_KEY_ID, keySecret: env.RAZORPAY_KEY_SECRET, webhookSecret: env.RAZORPAY_WEBHOOK_SECRET,
+    store: { get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) },
+    rzp: B.razorpay(env.RAZORPAY_KEY_ID, env.RAZORPAY_KEY_SECRET), now: () => Date.now(),
+  };
+  try {
+    if (path === "/billing/webhook" && req.method === "POST") {
+      const raw = await req.text();
+      if (raw.length > MAX_BODY) return fail(req, env, 413, "Request body too large");
+      return json(req, env, await B.webhook(deps, raw, req.headers.get("X-Razorpay-Signature")));
+    }
+    const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+    if (!token) return fail(req, env, 401, "Sign in first");
+    const user = await OA.firebaseUser(env, token).catch(() => null);
+    if (!user) return fail(req, env, 401, "Sign in again");
+    let body: unknown = {};
+    if (req.method === "POST") {
+      const text = await req.text();
+      if (text.length > 16_384) return fail(req, env, 413, "Request body too large");
+      try { body = text ? JSON.parse(text) : {}; } catch { return fail(req, env, 422, "Body must be JSON"); }
+    }
+    if (path === "/billing/status" && req.method === "GET") return json(req, env, await B.status(deps, user.uid));
+    if (path === "/billing/checkout" && req.method === "POST") {
+      if (!(await fs.isAdult(user.uid))) return fail(req, env, 403, "Please confirm you're 18 or over first");
+      return json(req, env, await B.checkout(deps, user, body));
+    }
+    if (path === "/billing/verify" && req.method === "POST") return json(req, env, await B.verify(deps, user.uid, body));
+    if (path === "/billing/cancel" && req.method === "POST") return json(req, env, await B.cancel(deps, user.uid));
+    return fail(req, env, 404, "Not found");
+  } catch (e) {
+    if (e instanceof B.BillingError) return fail(req, env, e.status, e.message);
+    console.error(e);
+    return fail(req, env, 500, "Something went wrong");
+  }
+}
+
 /** Remote MCP (Streamable HTTP, JSON responses, no sessions). Needs a signed-in account (OAuth, oauth.ts) or an API
  * key (X-API-Key, Bearer cs_live_…, or ?key= in the URL). Only tools/call is counted. */
 async function mcp(req: Request, env: Env, url: URL, path: string): Promise<Response> {
@@ -142,6 +184,7 @@ export default {
       return new Response(null, { status: 204, headers: site || path.startsWith("/v1") ? headers(req, env) : open() });
     }
     if (path === "/health") return json(req, env, { ok: true });
+    if (path.startsWith("/billing/")) return billing(req, env, path);
     const o = await oauth(req, env, url, path);
     if (o) return o;
     // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in

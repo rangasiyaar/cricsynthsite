@@ -51,6 +51,10 @@ service cloud.firestore {
               ? request.resource.data.ageConfirmed == resource.data.ageConfirmed
               : request.resource.data.ageConfirmed == request.time));
 
+      // CricSynthesis Pro billing (billing/pro): written only by the API Worker from Razorpay; the account holder reads it
+      // to know whether Pro is on (proUntil) and to show their plan.
+      match /billing/{product} { allow read: if me(uid); }
+
       // API usage per day, written by the API (batched); the account holder can read it.
       match /usage/{day} { allow read: if me(uid); }
 
