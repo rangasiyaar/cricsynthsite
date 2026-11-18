@@ -1,0 +1,377 @@
+{
+ "id": "kg-v-cr-t20-kirtipur-2026-11-18",
+ "innings": [
+  {
+   "team": "Chitwan Rhinos",
+   "runs": 204,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Dev Khanal",
+     "dismissal": "c R Khan b K Karan",
+     "runs": 17,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Kamil Mishara",
+     "dismissal": "not out",
+     "runs": 120,
+     "balls": 59,
+     "fours": 5,
+     "sixes": 10
+    },
+    {
+     "name": "Dawid Malan",
+     "dismissal": "c W Bosisto b K Karan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ravi Bopara",
+     "dismissal": "b R Khan",
+     "runs": 53,
+     "balls": 42,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Bibek Kumar Yadav",
+     "dismissal": "c S Devkota b R Khan",
+     "runs": 8,
+     "balls": 3,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Kushal Malla",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jahandad Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sahan Arachchige",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "KC Karan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Santosh Yadav",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ganesh Gautam",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rashid Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sonu Devkota",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Dev Khanal",
+     "score": 22,
+     "over": "3.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Dawid Malan",
+     "score": 22,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ravi Bopara",
+     "score": 176,
+     "over": "18.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Bibek Kumar Yadav",
+     "score": 184,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 34
+  },
+  {
+   "team": "Kathmandu Gorkhas",
+   "runs": 143,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Sahil Patel",
+     "dismissal": "c D Khanal b R Dhakal",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sam Heazlett",
+     "dismissal": "b R Dhakal",
+     "runs": 3,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "William Bosisto",
+     "dismissal": "c R Kumar b U Mir",
+     "runs": 37,
+     "balls": 28,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Rashid Khan",
+     "dismissal": "c R Dhakal b K Malla",
+     "runs": 12,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sahan Arachchige",
+     "dismissal": "c K Malla b U Mir",
+     "runs": 24,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "KC Karan",
+     "dismissal": "b U Mir",
+     "runs": 1,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jahandad Khan",
+     "dismissal": "b S Khan",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sonu Devkota",
+     "dismissal": "c K Malla b R Dhakal",
+     "runs": 6,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Santosh Yadav",
+     "dismissal": "c & b R Dhakal",
+     "runs": 10,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Bhim Sharki",
+     "dismissal": "not out",
+     "runs": 30,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Ganesh Gautam",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kamal Singh Airee",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Rijan Dhakal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Salahuddin Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ranjit Kumar",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Usama Mir",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kushal Malla",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sahil Patel",
+     "score": 4,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sam Heazlett",
+     "score": 30,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "William Bosisto",
+     "score": 63,
+     "over": "9.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rashid Khan",
+     "score": 67,
+     "over": "10.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Sahan Arachchige",
+     "score": 91,
+     "over": "13.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "KC Karan",
+     "score": 92,
+     "over": "13.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jahandad Khan",
+     "score": 94,
+     "over": "14.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Sonu Devkota",
+     "score": 106,
+     "over": "15.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Santosh Yadav",
+     "score": 115,
+     "over": "17.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 7,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Chitwan Rhinos won",
+ "winner": "Chitwan Rhinos"
+}
