@@ -1,0 +1,27 @@
+name: Grant Pro
+
+# Give one account CricSynthesis Pro without a payment (reviewers, partners): master/scripts/grant-pro.ts. 0 days removes it.
+on:
+  workflow_dispatch:
+    inputs:
+      uid: { description: "Account uid (Firebase Auth)", required: true, type: string }
+      days: { description: "Days of Pro (0 removes)", required: true, default: "90", type: string }
+
+permissions:
+  contents: read
+
+jobs:
+  grant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Grant
+        working-directory: master
+        env:
+          GOOGLE_SA: ${{ secrets.FIRESTORE_SA_KEY }}
+          UID: ${{ inputs.uid }}
+          DAYS: ${{ inputs.days }}
+        run: node --experimental-strip-types --no-warnings scripts/grant-pro.ts | tee -a "$GITHUB_STEP_SUMMARY"
