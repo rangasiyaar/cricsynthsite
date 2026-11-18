@@ -1,0 +1,354 @@
+{
+ "id": "meg-v-man-t20-tba-2026-11-18",
+ "innings": [
+  {
+   "team": "Manipur",
+   "runs": 126,
+   "wickets": 10,
+   "overs": "19.5",
+   "batting": [
+    {
+     "name": "Karnajit Yumnam",
+     "dismissal": "c & b S Das",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ulenyai Khwairakpam",
+     "dismissal": "c S Das b C Sangma",
+     "runs": 10,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Pheiroijam Jotin Singh",
+     "dismissal": "lbw b C Sangma",
+     "runs": 4,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Prafullomani Singh",
+     "dismissal": "c AK Karnewar b S Das",
+     "runs": 8,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Langlonyamba Keishangbam",
+     "dismissal": "c A Chowdhary b C Sangma",
+     "runs": 43,
+     "balls": 40,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Chingakham Bidash",
+     "dismissal": "c A Chowdhary b C Sangma",
+     "runs": 7,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Ahmed Shah",
+     "dismissal": "b AK Karnewar",
+     "runs": 10,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Aqeel Ahamed",
+     "dismissal": "c Josiah Momin b Manish Sharma",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "L Kishan Singha",
+     "dismissal": "not out",
+     "runs": 28,
+     "balls": 25,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ringku Kangujam",
+     "dismissal": "c Srinivas Sharath b A Chowdhary",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yumnam Chingkhei Nganba",
+     "dismissal": "b A Chowdhary",
+     "runs": 4,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Swarajeet Das",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Chengkam Sangma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 4,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Akshay Karnewar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Akash Choudhary",
+     "overs": "3.5",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Manish Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ulenyai Khwairakpam",
+     "score": 16,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Karnajit Yumnam",
+     "score": 16,
+     "over": "2.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Pheiroijam Jotin Singh",
+     "score": 28,
+     "over": "3.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Prafullomani Singh",
+     "score": 28,
+     "over": "4.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Chingakham Bidash",
+     "score": 41,
+     "over": "5.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ahmed Shah",
+     "score": 65,
+     "over": "11.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Aqeel Ahamed",
+     "score": 68,
+     "over": "12.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Langlonyamba Keishangbam",
+     "score": 119,
+     "over": "18.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ringku Kangujam",
+     "score": 122,
+     "over": "19.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Yumnam Chingkhei Nganba",
+     "score": 126,
+     "over": "19.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 7,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 41
+  },
+  {
+   "team": "Meghalaya",
+   "runs": 127,
+   "wickets": 4,
+   "overs": "17.5",
+   "batting": [
+    {
+     "name": "Raj Biswa",
+     "dismissal": "c R Kangujam b A Ahamed",
+     "runs": 4,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nishanta Chakrabaty",
+     "dismissal": "c C Bidash b A Ahamed",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jiwanjot Singh",
+     "dismissal": "c L Keishangbam b PJ Singh",
+     "runs": 14,
+     "balls": 13,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Josiah Momin",
+     "dismissal": "not out",
+     "runs": 59,
+     "balls": 44,
+     "fours": 2,
+     "sixes": 4
+    },
+    {
+     "name": "Srinivas Sharath",
+     "dismissal": "c LK Singha b PJ Singh",
+     "runs": 38,
+     "balls": 37,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Akshay Karnewar",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Pheiroijam Jotin Singh",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 20,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Aqeel Ahamed",
+     "overs": "3.5",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chingakham Bidash",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yumnam Chingkhei Nganba",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "L Kishan Singha",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Nishanta Chakrabaty",
+     "score": 4,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Raj Biswa",
+     "score": 13,
+     "over": "3.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jiwanjot Singh",
+     "score": 30,
+     "over": "4.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Srinivas Sharath",
+     "score": 109,
+     "over": "15.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 6,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
