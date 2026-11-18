@@ -15,11 +15,14 @@ for (const [name, id] of Object.entries(offers)) {
   if (!id) { console.log(`${name}: no secret set`); continue; }
   console.log(`${name}: offer ${id.slice(0, 8)}… (${id.length} chars${id.length === 20 ? "" : ", expected 20"})`);
   for (const [k, plan] of plans) {
-    try {
-      const sub = await rzp("POST", "/subscriptions", { plan_id: plan, total_count: 1, quantity: 1, customer_notify: 0, offer_id: id,
-                                                     notes: { product: "check" } });
-      console.log(`  ${k}: ACCEPTED · subscription ${sub.id} · status ${sub.status} · offer_id ${sub.offer_id ?? "(not echoed)"}`);
-      await rzp("POST", `/subscriptions/${sub.id}/cancel`, { cancel_at_cycle_end: 0 }).catch((e) => console.log(`  (cancel: ${e.message})`));
-    } catch (e) { console.log(`  ${k}: REFUSED · ${(e as Error).message}`); }
+    for (const trial of [false, true]) {          // with the free day, the first charge is scheduled 24 h later (start_at)
+      const label = `${k}${trial ? " + free day" : ""}`;
+      try {
+        const sub = await rzp("POST", "/subscriptions", { plan_id: plan, total_count: 2, quantity: 1, customer_notify: 0, offer_id: id,
+          ...(trial ? { start_at: Math.floor(Date.now() / 1000) + 86400 } : {}), notes: { product: "check" } });
+        console.log(`  ${label}: ACCEPTED · ${sub.id} · status ${sub.status} · offer ${sub.offer_id ? "attached" : "(not echoed)"}`);
+        await rzp("POST", `/subscriptions/${sub.id}/cancel`, { cancel_at_cycle_end: 0 }).catch((e) => console.log(`  (cancel: ${e.message})`));
+      } catch (e) { console.log(`  ${label}: REFUSED · ${(e as Error).message}`); }
+    }
   }
 }
