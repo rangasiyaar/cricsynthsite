@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Icon } from "@/components/App";
 import { TAB_ICONS, sectionName, type Section } from "@/components/MatchCentre";
 import { track } from "@/lib/analytics";
-import { hasPaidPro, startCheckout, trialAvailable, useProBilling } from "@/lib/billing";
+import { hasPaidPro, trialAvailable, useProBilling } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
 import { PITCH } from "@/lib/procopy";
 import {
@@ -24,9 +24,6 @@ const Tick = () => (
 export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
   const router = useRouter();
   const [billing, setBilling] = useState<Billing>("yearly");
-  const [done, setDone] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
   const { user } = usePlan();
   const b = useProBilling(user === undefined ? undefined : user?.uid ?? null);
   const paid = hasPaidPro(b);
@@ -36,15 +33,10 @@ export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
   const hero = centre ? { eyebrow: sectionName(section), title: PITCH[section].title, sub: `${PITCH[section].body} Part of CricSynthesis Pro, free for your first day.` }
     : section === "Lab" && here.startsWith("/m/lab") ? { eyebrow: "MatchSynth Lab", title: PITCH.Lab.title, sub: `${PITCH.Lab.body} Part of CricSynthesis Pro, free for your first day.` }
     : PRO_HERO;
-  const subscribe = async () => {
-    if (user === null) { router.push(`/m/login/?next=${encodeURIComponent(here)}`); return; }
-    if (!user || busy) return;
-    setBusy(true); setErr(null);
-    track("pro_checkout", { billing, trial, where: "app" });
-    try {
-      if ((await startCheckout(billing)) === "done") { setDone(true); track("pro_subscribed", { billing, trial, where: "app" }); }
-    } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong. Please try again."); }
-    finally { setBusy(false); }
+  const subscribe = () => {
+    const to = `/m/checkout/?plan=${billing}`;
+    track("pro_cta", { billing, trial, where: "app" });
+    router.push(user === null ? `/m/login/?next=${encodeURIComponent(to)}` : to);
   };
   const options: { id: Billing; title: string; price: string; per: string; note: string; badge?: string }[] = [
     { id: "yearly", title: "Yearly", price: rupees(PRO.yearly), per: "/year", note: `${rupees(yearlyPerMonth)} a month`, badge: `Save ${rupees(yearlySaving)}` },
@@ -75,11 +67,10 @@ export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
 
       <div className="ap-cta">
         {paid ? <Link className="a-btn" href="/m/matches/">You have Pro: open a match</Link>
-          : <button type="button" className="a-btn" onClick={subscribe} disabled={busy || user === undefined}>
-              {busy ? "Opening checkout…" : user === null ? "Sign in to start" : ctaLabel(trial)}</button>}
+          : <button type="button" className="a-btn" onClick={subscribe} disabled={user === undefined}>
+              {user === null ? "Sign in to start" : ctaLabel(trial)}</button>}
       </div>
       <p className="ap-after">{paid ? "Manage your plan from Account." : trial ? afterTrial(billing) : `${rupees(billing === "monthly" ? PRO.monthly : PRO.yearly)} a ${billing === "monthly" ? "month" : "year"}. Cancel any time.`}</p>
-      {err && <div className="a-msg" role="alert" style={{ marginTop: 10 }}>{err}</div>}
 
       <div className="a-group-label" style={{ marginTop: 28 }}>How your free day works</div>
       <ol className="ap-steps ap-card">
@@ -102,15 +93,6 @@ export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
       <p className="ap-fine">{PRO_FINE_PRINT}</p>
       <button type="button" className="a-btn plain" onClick={() => (window.history.length > 2 ? router.back() : router.replace("/m/matches/"))}>Not now</button>
 
-      {done && (
-        <div className="a-sheet-wrap" role="dialog" aria-modal="true" aria-labelledby="ap-done">
-          <div className="a-sheet">
-            <h2 id="ap-done">Welcome to CricSynthesis Pro</h2>
-            <p>Every tab of every match and MatchSynth Lab are now open, in the app and on the website.</p>
-            <div className="a-sheet-btns"><button type="button" className="a-btn" onClick={() => { setDone(false); router.refresh(); }}>Let&apos;s go</button></div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

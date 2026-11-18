@@ -2,11 +2,11 @@
 // The CricSynthesis Pro offer on the website: plan switch, Free v Pro, everything in Pro, how the free day works, FAQ.
 // Copy and prices in lib/pro.ts; checkout in lib/billing.ts (Razorpay's window, then the API verifies the payment).
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { loginHref } from "@/components/Gate";
 import { ApiPlans } from "@/components/Plans";
 import { track } from "@/lib/analytics";
-import { hasPaidPro, startCheckout, trialAvailable, useProBilling, type ProBilling } from "@/lib/billing";
+import { hasPaidPro, trialAvailable, useProBilling, type ProBilling } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
 import {
   FREE_HIGHLIGHTS, PRO, PRO_FAQ, PRO_FINE_PRINT, PRO_GROUPS, PRO_HERO, PRO_HIGHLIGHTS, TRIAL_STEPS,
@@ -41,47 +41,21 @@ export function proLine(b: ProBilling): string {
   return "";
 }
 
-function Done({ onClose }: { onClose: () => void }) {
-  useEffect(() => {
-    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    document.addEventListener("keydown", esc);
-    return () => document.removeEventListener("keydown", esc);
-  }, [onClose]);
-  return (
-    <div className="pro-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="pro-done">
-      <button type="button" className="pro-modal-scrim" aria-label="Close" onClick={onClose} />
-      <div className="pro-modal">
-        <h3 id="pro-done">Welcome to CricSynthesis Pro</h3>
-        <p>Every tab of every match and MatchSynth Lab are now open on your account, on the website and in the app.</p>
-        <a className="cs-btn cs-btn--primary" href="/matches/">Open a match</a>
-      </div>
-    </div>
-  );
-}
-
 export default function ProOffer({ api = false }: { api?: boolean }) {
   const [billing, setBilling] = useState<Billing>("yearly");
-  const [done, setDone] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
   const { user, source } = usePlan();
   const b = useProBilling(user === undefined ? undefined : user?.uid ?? null);
   const paid = hasPaidPro(b);
   const trial = trialAvailable(b);        // one free day per account, checked again by the API
   const price = billing === "monthly" ? PRO.monthly : PRO.yearly;
-  const subscribe = async () => {
-    if (user === null) { window.location.assign(loginHref("/pro/")); return; }
-    if (!user || busy) return;
-    setBusy(true); setErr(null);
-    track("pro_checkout", { billing, trial });
-    try {
-      if ((await startCheckout(billing)) === "done") { setDone(true); track("pro_subscribed", { billing, trial }); }
-    } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong. Please try again."); }
-    finally { setBusy(false); }
+  const checkoutUrl = `/checkout/?plan=${billing}`;
+  const subscribe = () => {
+    track("pro_cta", { billing, trial });
+    window.location.assign(user === null ? loginHref(checkoutUrl) : checkoutUrl);
   };
   const cta = (cls: string) => paid
     ? <Link className={cls} href="/account/#subscription">Manage your plan</Link>
-    : <button type="button" className={cls} onClick={subscribe} disabled={busy || user === undefined}>{busy ? "Opening checkout…" : ctaLabel(trial)}</button>;
+    : <button type="button" className={cls} onClick={subscribe} disabled={user === undefined}>{ctaLabel(trial)}</button>;
 
   return (
     <div className="pro-page">
@@ -113,7 +87,6 @@ export default function ProOffer({ api = false }: { api?: boolean }) {
           <ul className="pro-list">{PRO_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
           {cta("cs-btn cs-btn--primary pro-cta")}
           <p className="pro-after">{paid ? proLine(b!) : trial ? afterTrial(billing) : `${rupees(price)} a ${billing === "monthly" ? "month" : "year"}. Cancel any time.`}</p>
-          {err && <p className="pro-err" role="alert">{err}</p>}
         </div>
       </section>
 
@@ -163,7 +136,6 @@ export default function ProOffer({ api = false }: { api?: boolean }) {
       </section>
 
       <p className="pro-fine">{PRO_FINE_PRINT} Secure checkout: UPI, cards and netbanking.</p>
-      {done && <Done onClose={() => setDone(false)} />}
     </div>
   );
 }

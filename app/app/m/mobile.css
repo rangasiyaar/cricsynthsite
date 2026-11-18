@@ -544,3 +544,8 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .ap-faq details[open] summary::after { content: "–"; }
 .ap-faq p { margin: 0 0 15px; font-size: 14px; line-height: 1.5; color: var(--cs-ink-2); }
 .ap-fine { text-align: center; font-size: 12.5px; color: var(--cs-ink-3); margin: 20px 8px 8px; }
+.ap-sum { display: grid; gap: 0; padding: 4px 16px; }
+.ap-sum > div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; font-size: 15px; }
+.ap-sum > div + div { border-top: 1px solid var(--cs-line); }
+.ap-sum span { color: var(--cs-ink-2); }
+.ap-sum b { text-align: right; overflow-wrap: anywhere; }

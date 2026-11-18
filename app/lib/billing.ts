@@ -78,3 +78,32 @@ export async function startCheckout(billing: Billing): Promise<"done" | "closed"
     rz.open();
   });
 }
+
+/** The checkout page's state (website /checkout/ and the app's /m/checkout/): account, plan status, and pay(). */
+export function useCheckout(billing: Billing, where: "web" | "app") {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+  const [uid, setUid] = useState<string | null | undefined>(undefined);
+  const [email, setEmail] = useState<string | null>(null);
+  useEffect(() => auth().onAuthStateChanged((u) => { setUid(u ? u.uid : null); setEmail(u?.email ?? null); }), []);
+  const b = useProBilling(uid);
+  const paid = hasPaidPro(b);
+  const trial = trialAvailable(b);
+  const pay = async () => {
+    if (busy || !uid) return;
+    setBusy(true); setErr(null);
+    void import("./analytics").then((a) => a.track("pro_checkout", { billing, trial, where }));
+    try {
+      if ((await startCheckout(billing)) === "done") {
+        setDone(true);
+        void import("./analytics").then((a) => a.track("pro_subscribed", { billing, trial, where }));
+      }
+    } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong. Please try again."); }
+    finally { setBusy(false); }
+  };
+  return { uid, email, b, paid, trial, busy, err, done, pay };
+}
+
+/** When the first charge falls if the free day starts now. */
+export const firstChargeDate = () => new Date(Date.now() + 24 * 3600_000);

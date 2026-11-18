@@ -771,3 +771,34 @@ body:has(.cs-consent) .app-promo { display: none; }
 .pro-plans-3 { max-width: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 .pro-plans-3 .pro-price { font-size: 42px; }
 .pro-lede { margin: -8px 0 24px; color: var(--cs-ink-2); font-size: 16.5px; max-width: 70ch; }
+
+/* ── Checkout (components/Checkout.tsx) ── */
+.co-page { padding: clamp(36px, 5vw, 64px) 0 72px; max-width: 1040px; margin: 0 auto; }
+.co-head h1, .co-done h1 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: clamp(34px, 4.6vw, 52px); line-height: 1; margin: 0; }
+.co-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; margin-top: 28px; align-items: start; }
+.co-card { border: 2px solid var(--cs-steel); background: var(--cs-surface); padding: 26px; display: grid; gap: 14px; }
+.co-card h2, .co-side h2 { font-family: var(--cs-head); font-weight: 600; text-transform: uppercase; font-size: 20px; letter-spacing: .03em; margin: 0; }
+.co-card .pro-switch { justify-self: start; }
+.co-line { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-top: 1px solid var(--cs-line); font-size: 15.5px; }
+.co-line span { color: var(--cs-ink-2); }
+.co-line b { text-align: right; }
+.co-plan div { display: grid; gap: 2px; }
+.co-plan small { color: var(--cs-ink-3); font-size: 13.5px; font-weight: 400; }
+.co-plan > span { font-family: var(--cs-head); font-weight: 600; font-size: 30px; color: var(--cs-ink); }
+.co-plan > span small { font-family: var(--cs-body); font-size: 14px; color: var(--cs-ink-3); }
+.co-account b { overflow-wrap: anywhere; font-weight: 600; }
+.co-note { margin: 0; padding: 10px 14px; background: var(--cs-accent-bg); color: var(--cs-steel-800); font-size: 14.5px; font-weight: 600; }
+.co-pay { width: 100%; min-height: 52px; margin-top: 4px; }
+.co-pay:disabled { opacity: .65; cursor: progress; }
+.co-secure { margin: 0; font-size: 13px; color: var(--cs-ink-3); text-align: center; }
+.co-legal { margin: 0; font-size: 12.5px; color: var(--cs-ink-3); line-height: 1.5; }
+.co-side { border: 1px solid var(--cs-line); padding: 26px; display: grid; gap: 16px; }
+.co-side .pro-list { margin: 0; }
+.co-muted { margin: 0; color: var(--cs-ink-3); font-size: 14px; }
+.co-done { max-width: 640px; margin: 0 auto; text-align: center; display: grid; justify-items: center; gap: 12px; }
+.co-done .cs-eyebrow { justify-content: center; margin: 0; }
+.co-done > p { margin: 0; color: var(--cs-ink-2); font-size: 16.5px; }
+.co-done-icon { width: 64px; height: 64px; display: grid; place-items: center; background: var(--cs-steel); color: var(--cs-paper); }
+.co-done-icon svg { width: 32px; height: 32px; }
+.co-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+@media (max-width: 800px) { .co-grid { grid-template-columns: minmax(0, 1fr); } }
