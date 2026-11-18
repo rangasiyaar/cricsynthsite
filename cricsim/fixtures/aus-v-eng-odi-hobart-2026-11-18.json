@@ -12,33 +12,33 @@
   "city": "Hobart",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England won the toss and bat first.",
   "teams": [
     {
       "name": "Australia",
       "short": "AUS",
       "players": [
-        "Travis Head",
         "Mitchell Marsh",
+        "Travis Head",
+        "Matt Renshaw",
         "Cooper Connolly",
         "Josh Inglis",
-        "Matt Renshaw",
+        "Alex Carey",
         "Cameron Green",
         "Jack Edwards",
-        "Adam Zampa",
         "Xavier Bartlett",
-        "Spencer Johnson",
-        "Riley Meredith"
+        "Mahli Beardman",
+        "Spencer Johnson"
       ],
       "roles": [
         "BAT",
-        "AR",
-        "AR",
-        "WK",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -62,17 +62,17 @@
       "name": "England",
       "short": "ENG",
       "players": [
-        "Ben Duckett",
         "Tom Banton",
+        "Ben Duckett",
         "Joe Root",
         "Harry Brook",
         "Jordan Cox",
-        "Sam Curran",
         "Will Jacks",
+        "Sam Curran",
         "Liam Dawson",
         "Gus Atkinson",
-        "Jofra Archer",
-        "Sonny Baker"
+        "Sonny Baker",
+        "Jofra Archer"
       ],
       "roles": [
         "BAT",
@@ -107,6 +107,7 @@
     "kn": 38644,
     "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-18th-november-2026-38644",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

@@ -12,36 +12,36 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Andhra won the toss and bat first.",
   "teams": [
     {
       "name": "Kerala",
       "short": "KER",
       "players": [
+        "Rohan  Kunnummal",
         "Sanju Samson",
-        "Mohammed Azharuddeen",
-        "Ahammed Imran",
+        "Govind  Pai",
         "Vishnu Vinod",
-        "Salman Nizar",
-        "Akhil Scaria",
         "Karthik B Nair",
         "Biju Narayanan",
-        "Nikhil Muraleedharan",
+        "Sharafuddeen",
+        "Abdul Basith",
         "MD Nidheesh",
-        "KM Asif"
+        "KM Asif",
+        "Salman Nizar"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "AR",
         "BOWL",
         "AR",
+        "AR",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BAT"
       ],
       "captain": "Sanju Samson",
       "squad": [
@@ -63,31 +63,31 @@
       "short": "AND",
       "players": [
         "Maramreddy Hemanth Reddy",
-        "Revanth Reddy",
-        "Ricky Bhui",
         "Seeram Rahul",
+        "Shaik Rasheed",
+        "Ricky Bhui",
         "Ashwin Hebbar",
         "SDNV Prasad",
         "KV Sasikanth",
-        "Saurabh Kumar",
+        "KS Narasimha Raju",
         "Satyanarayana Raju",
         "Bailapudi Yeswanth",
         "Cheepurapalli Stephen"
       ],
       "roles": [
         "BAT",
-        "WK",
-        "BAT",
         "AR",
         "BAT",
         "BAT",
+        "BAT",
+        "WK",
         "BOWL",
         "AR",
         "BOWL",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Seeram Rahul",
+      "captain": "Ricky Bhui",
       "squad": [
         "Maramreddy Hemanth Reddy",
         "Revanth Reddy",
@@ -107,6 +107,7 @@
     "kn": 41886,
     "url": "https://khelnow.com/live-cricket-score/kerala-vs-andhra-syed-mushtaq-ali-trophy-elite-18th-november-2026-41886",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
