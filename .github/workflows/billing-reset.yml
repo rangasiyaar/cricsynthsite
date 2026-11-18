@@ -1,0 +1,32 @@
+name: Reset subscriptions
+
+# One-off: every account back to "not subscribed" (master/scripts/reset-subscriptions.ts). Cancels each CricSynthesis Pro
+# subscription in Razorpay, deletes its billing record and removes assigned plans. Dry run unless "apply" is ticked;
+# refuses live Razorpay keys.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Actually reset (otherwise only list what would change)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Reset
+        working-directory: master
+        env:
+          GOOGLE_SA: ${{ secrets.FIRESTORE_SA_KEY }}
+          RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+          RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+          APPLY: ${{ inputs.apply && '1' || '0' }}
+        run: node --experimental-strip-types --no-warnings scripts/reset-subscriptions.ts | tee -a "$GITHUB_STEP_SUMMARY"

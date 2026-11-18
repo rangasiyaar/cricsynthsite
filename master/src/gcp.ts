@@ -48,6 +48,12 @@ export class Google {
     catch (e) { if (String(e).includes(" 404")) return null; throw e; }
   }
 
+  /** Delete a document (no error when it's already gone). */
+  async remove(path: string): Promise<void> {
+    try { await this.call(`https://firestore.googleapis.com/v1/${this.docsRoot}/${path}`, { method: "DELETE" }); }
+    catch (e) { if (!String(e).includes(" 404")) throw e; }
+  }
+
   /** Every document in a collection (paged). showMissing also lists parents that only have subcollections. */
   async list(path: string, showMissing = false): Promise<Doc[]> {
     const out: Doc[] = [];
