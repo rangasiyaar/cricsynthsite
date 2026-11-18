@@ -1,0 +1,359 @@
+{
+ "id": "del-v-bir-t20-tba-2026-11-18",
+ "innings": [
+  {
+   "team": "Delhi",
+   "runs": 224,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Priyansh Arya",
+     "dismissal": "b Prashant K Singh",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sarthak Ranjan",
+     "dismissal": "c A Kumar b S Kashyap",
+     "runs": 18,
+     "balls": 17,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Yash Dhull",
+     "dismissal": "c P Raj b R Pratap Singh",
+     "runs": 125,
+     "balls": 59,
+     "fours": 16,
+     "sixes": 7
+    },
+    {
+     "name": "Nitish Rana",
+     "dismissal": "c M Kumar b R Pratap Singh",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tejasvi Dahiya",
+     "dismissal": "c A Ashraf b R Pratap Singh",
+     "runs": 51,
+     "balls": 25,
+     "fours": 4,
+     "sixes": 4
+    },
+    {
+     "name": "Himmat Singh",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Keshav Dabas",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Prashant Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Nawaz Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Suraj Kashyap",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mayank Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Raghuvendra Pratap Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Priyansh Arya",
+     "score": 0,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sarthak Ranjan",
+     "score": 45,
+     "over": "6.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nitish Rana",
+     "score": 81,
+     "over": "10.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tejasvi Dahiya",
+     "score": 207,
+     "over": "18.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Yash Dhull",
+     "score": 209,
+     "over": "18.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  },
+  {
+   "team": "Bihar",
+   "runs": 227,
+   "wickets": 8,
+   "overs": "19.5",
+   "batting": [
+    {
+     "name": "Ayush Loharuka",
+     "dismissal": "c & b DS Rathi",
+     "runs": 50,
+     "balls": 22,
+     "fours": 7,
+     "sixes": 3
+    },
+    {
+     "name": "Ashish Kumar",
+     "dismissal": "c Y Dhull b S Singh",
+     "runs": 11,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Bipin Saurav",
+     "dismissal": "c K Dabas b DS Rathi",
+     "runs": 49,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 5
+    },
+    {
+     "name": "Altamish Ashraf",
+     "dismissal": "b S Sharma",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tarun Kumar",
+     "dismissal": "c R Dadar b K Dabas",
+     "runs": 15,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Prithvi Raj",
+     "dismissal": "runout (Y Dhull)",
+     "runs": 12,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Raghuvendra Pratap Singh",
+     "dismissal": "lbw b DS Rathi",
+     "runs": 25,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Suraj Kashyap",
+     "dismissal": "c Tejasvi Dahiya b R Dadar",
+     "runs": 11,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Prashant Singh",
+     "dismissal": "not out",
+     "runs": 13,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mayank Kumar",
+     "dismissal": "not out",
+     "runs": 24,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Simarjeet Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rajneesh Dadar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Digvesh Singh Rathi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Suyash Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Keshav Dabas",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 6
+    },
+    {
+     "name": "Nitish Rana",
+     "overs": "0.5",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ashish Kumar",
+     "score": 25,
+     "over": "2.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Bipin Saurav",
+     "score": 117,
+     "over": "7.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ayush Loharuka",
+     "score": 118,
+     "over": "7.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Altamish Ashraf",
+     "score": 124,
+     "over": "8.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Tarun Kumar",
+     "score": 138,
+     "over": "11.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Prithvi Raj",
+     "score": 161,
+     "over": "13.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Raghuvendra Pratap Singh",
+     "score": 186,
+     "over": "15.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Suraj Kashyap",
+     "score": 189,
+     "over": "16.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 10,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Bihar won",
+ "winner": "Bihar"
+}
