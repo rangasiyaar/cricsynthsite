@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. United Tigers won the toss and bowl first.",
   "teams": [
     {
       "name": "UAE Bulls",
@@ -20,20 +20,20 @@
       "players": [
         "Andre Fletcher",
         "Khawaja Nafay",
-        "Max Bryant",
-        "Kieron Pollard",
+        "Azam Khan",
         "Shadab Khan",
-        "Sunil Narine",
+        "Kieron Pollard",
         "Romario Shepherd",
         "Khushdil Shah",
+        "Sunil Narine",
+        "Tahir Zaman",
         "Mohammad Amir",
-        "Muhammad Rohid Khan",
-        "Tahir Zaman"
+        "Muhammad Rohid Khan"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
         "AR",
@@ -68,11 +68,11 @@
         "Iftikhar Ahmed",
         "Azmatullah Omarzai",
         "Faheem Ashraf",
-        "Odean Smith",
-        "Awais Ali",
+        "Abbas Afridi",
+        "Sayam Khan",
         "Zeeshan Naseer",
-        "Usman Tariq",
-        "Abbas Afridi"
+        "Ali Majid",
+        "Usman Tariq"
       ],
       "roles": [
         "BAT",
@@ -81,10 +81,10 @@
         "AR",
         "AR",
         "AR",
-        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Fakhar Zaman",
@@ -107,6 +107,7 @@
     "kn": 41639,
     "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-united-tigers-abu-dhabi-t10-league-18th-november-2026-41639",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
