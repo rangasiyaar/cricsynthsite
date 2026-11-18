@@ -107,9 +107,10 @@ export class Google {
       ...(mustExist ? { currentDocument: { exists: true } } : {}) }] }) });
   }
 
-  /** The newest documents of a top-level collection by id (ids start with a timestamp). */
-  latest(collectionId: string, limit: number): Promise<Doc[]> {
-    return this.query("", { from: [{ collectionId }], orderBy: [{ field: { fieldPath: "__name__" }, direction: "DESCENDING" }], limit });
+  /** The newest documents of a top-level collection, by a time field (ISO string). Ordering by a single field needs no
+   *  composite index; ordering by document id descending does, so we don't. */
+  latest(collectionId: string, limit: number, field = "at"): Promise<Doc[]> {
+    return this.query("", { from: [{ collectionId }], orderBy: [{ field: { fieldPath: field }, direction: "DESCENDING" }], limit });
   }
 
   /** Enable / disable an account or set its custom claims (needs the Firebase Authentication Admin role). */
