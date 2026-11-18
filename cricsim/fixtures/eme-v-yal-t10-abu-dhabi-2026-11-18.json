@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Emirates Eagles won the toss and bat first.",
   "teams": [
     {
       "name": "Emirates Eagles",
@@ -20,7 +20,7 @@
       "players": [
         "Alex Hales",
         "Kyle Mayers",
-        "Rovman Powell",
+        "Toby Albert",
         "Shimron Hetmyer",
         "Kusal Perera",
         "David Wiese",
@@ -43,7 +43,7 @@
         "BOWL",
         "AR"
       ],
-      "captain": "Rovman Powell",
+      "captain": "Chris Green",
       "squad": [
         "Alex Hales",
         "Kyle Mayers",
@@ -64,25 +64,25 @@
       "players": [
         "James Vince",
         "Andries Gous",
-        "Dasun Shanaka",
         "Tom Moores",
-        "Ansh Tandon",
         "Karim Janat",
+        "Sanjay Krishnamurthy",
         "Jason Holder",
         "David Willey",
-        "Akeal Hosein",
         "Aryan Dutt",
+        "Akeal Hosein",
+        "Khuzaima Bin Tanvir",
         "Awais Ahmad"
       ],
       "roles": [
         "BAT",
         "WK",
-        "AR",
-        "BAT",
         "BAT",
         "AR",
         "AR",
         "AR",
+        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BAT"
@@ -107,6 +107,7 @@
     "kn": 41640,
     "url": "https://khelnow.com/live-cricket-score/emirates-eagles-vs-yas-lions-abu-dhabi-t10-league-18th-november-2026-41640",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
