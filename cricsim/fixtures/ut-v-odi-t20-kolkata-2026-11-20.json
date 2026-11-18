@@ -1,0 +1,112 @@
+{
+  "id": "ut-v-odi-t20-kolkata-2026-11-20",
+  "title": "Uttarakhand v Odisha",
+  "date": "2026-11-20",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 56th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uttarakhand",
+      "short": "UT",
+      "players": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Mayank Mishra",
+        "Jagadeesha Suchith",
+        "Akash Madhwal",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Kunal Chandela",
+      "squad": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Mayank Mishra",
+        "Jagadeesha Suchith",
+        "Akash Madhwal",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ]
+    },
+    {
+      "name": "Odisha",
+      "short": "ODI",
+      "players": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Aasirwad Swain",
+        "Vageesh Sharma",
+        "Debabrata Pradhan",
+        "Badal Biswal"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Swastik Samal",
+      "squad": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Aasirwad Swain",
+        "Vageesh Sharma",
+        "Debabrata Pradhan",
+        "Badal Biswal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41908,
+    "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-odisha-syed-mushtaq-ali-trophy-elite-20th-november-2026-41908",
+    "auto": true,
+    "xis": false
+  }
+}

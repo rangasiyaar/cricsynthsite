@@ -12,34 +12,34 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Vidarbha won the toss and bowl first.",
   "teams": [
     {
       "name": "Hyderabad (India)",
       "short": "HYD",
       "players": [
-        "Bhavesh Seth",
         "Tanmay Agarwal",
         "Abhirath Reddy",
         "Aman Rao Perala",
         "Kodimela Himateja",
+        "Rahul Buddhi",
+        "Bhavesh Seth",
+        "Pranav Varma",
         "Chama Milind",
         "Tanay Thyagarajan",
-        "Pranav Varma",
         "Ajay Dev Goud",
-        "Harshith Sai",
-        "Ved Reddy Amisthapuram"
+        "Chinntla Rakshann Readdi"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
         "AR",
-        "BOWL",
         "BOWL",
         "BAT"
       ],
@@ -55,7 +55,8 @@
         "Ajay Dev Goud",
         "Harshith Sai",
         "Ved Reddy Amisthapuram"
-      ]
+      ],
+      "captain": "Chama Milind"
     },
     {
       "name": "Vidarbha",
@@ -66,10 +67,10 @@
         "Shubham Dubey",
         "Ravikumar Samarth",
         "Varun Bisht",
-        "Yash Kadam",
+        "Yash Rathod",
         "Vedant Jajoo",
         "Parth Rekhade",
-        "Praful Hinge",
+        "Adhyayan Daga",
         "Nachiket Bhute",
         "Saurabh Dubey"
       ],
@@ -79,10 +80,10 @@
         "BAT",
         "BAT",
         "BAT",
-        "AR",
+        "BAT",
         "WK",
         "AR",
-        "BOWL",
+        "AR",
         "AR",
         "BOWL"
       ],
@@ -106,6 +107,7 @@
     "kn": 41888,
     "url": "https://khelnow.com/live-cricket-score/hyderabad-(india)-vs-vidarbha-syed-mushtaq-ali-trophy-elite-18th-november-2026-41888",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

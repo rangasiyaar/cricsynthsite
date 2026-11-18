@@ -1,0 +1,112 @@
+{
+  "id": "mp-v-and-t20-chandigarh-2026-11-20",
+  "title": "Madhya Pradesh v Andhra",
+  "date": "2026-11-20",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 55th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Madhya Pradesh",
+      "short": "MP",
+      "players": [
+        "Rajat Patidar",
+        "Ankush Singh",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Apurve Dwivedi",
+        "Kumar Kartikeya"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "WK",
+        "BOWL"
+      ],
+      "captain": "Rajat Patidar",
+      "squad": [
+        "Rajat Patidar",
+        "Ankush Singh",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Apurve Dwivedi",
+        "Kumar Kartikeya"
+      ]
+    },
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Seeram Rahul",
+        "Shaik Rasheed",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Cheepurapalli Stephen"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Seeram Rahul",
+        "Shaik Rasheed",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Cheepurapalli Stephen"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41907,
+    "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-andhra-syed-mushtaq-ali-trophy-elite-20th-november-2026-41907",
+    "auto": true,
+    "xis": false
+  }
+}
