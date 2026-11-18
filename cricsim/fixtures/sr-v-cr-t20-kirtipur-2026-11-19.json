@@ -1,0 +1,112 @@
+{
+  "id": "sr-v-cr-t20-kirtipur-2026-11-19",
+  "title": "Sudurpaschim Royals v Chitwan Rhinos",
+  "date": "2026-11-19",
+  "start_time": "16:45",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Nepal Premier League · Qualifier 2",
+  "comp_key": "nepal-premier-league",
+  "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+  "venue_search": "tribhuvan university international cricket ground",
+  "city": "Kirtipur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sudurpaschim Royals",
+      "short": "SR",
+      "players": [
+        "Dipendra Singh Airee",
+        "Binod Bhandari",
+        "Aarif Sheikh",
+        "Ishan Pandey",
+        "Hemant Dhami",
+        "Abhinash Bohara",
+        "Anil Kharel",
+        "George Munsey",
+        "Scott Kuggeleijn",
+        "Tharindu Ratnayake",
+        "Thanuka Dabare"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Dipendra Singh Airee",
+      "squad": [
+        "Dipendra Singh Airee",
+        "Binod Bhandari",
+        "Aarif Sheikh",
+        "Ishan Pandey",
+        "Hemant Dhami",
+        "Abhinash Bohara",
+        "Anil Kharel",
+        "George Munsey",
+        "Scott Kuggeleijn",
+        "Tharindu Ratnayake",
+        "Thanuka Dabare"
+      ]
+    },
+    {
+      "name": "Chitwan Rhinos",
+      "short": "CR",
+      "players": [
+        "Bibek Kumar Yadav",
+        "Dawid Malan",
+        "Ranjit Kumar",
+        "Kamal Singh Airee",
+        "Kushal Malla",
+        "Kamil Mishara",
+        "Ravi Bopara",
+        "Rijan Dhakal",
+        "Usama Mir",
+        "Salahuddin Khan",
+        "Dev Khanal"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Ravi Bopara",
+      "squad": [
+        "Bibek Kumar Yadav",
+        "Dawid Malan",
+        "Ranjit Kumar",
+        "Kamal Singh Airee",
+        "Kushal Malla",
+        "Kamil Mishara",
+        "Ravi Bopara",
+        "Rijan Dhakal",
+        "Usama Mir",
+        "Salahuddin Khan",
+        "Dev Khanal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41353,
+    "url": "https://khelnow.com/live-cricket-score/sudurpaschim-royals-vs-tba-nepal-premier-league-19th-november-2026-41353",
+    "auto": true,
+    "xis": false
+  }
+}
