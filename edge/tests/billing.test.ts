@@ -126,6 +126,11 @@ test("webhook: signed events update the right account; bad signatures and old ch
   const old = ev({ ...sub, id: "sub_old", status: "cancelled" });
   assert.equal((await B.webhook(w.deps, old, await B.hmacHex("whs", old))).ignored, true);
   assert.equal(w.docs.get(doc)!.status, "active");
+  // a reset account (record deleted): a late event doesn't recreate the plan
+  w.docs.delete(doc);
+  const late = ev({ ...sub, status: "cancelled", paid_count: 0, start_at: S0 + 86400 });
+  assert.equal((await B.webhook(w.deps, late, await B.hmacHex("whs", late))).ignored, true);
+  assert.equal(w.docs.has(doc), false);
   const noSecret = { ...w.deps, webhookSecret: undefined };
   await assert.rejects(B.webhook(noSecret, raw, "x"), /not configured/);
 });

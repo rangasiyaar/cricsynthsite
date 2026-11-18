@@ -195,7 +195,9 @@ export async function webhook(deps: Deps, raw: string, signature: string | null)
   const uid = sub.notes?.uid;
   if (typeof uid !== "string" || !uid || sub.notes?.product !== "pro") return { ok: true, ignored: true };
   const prev = await deps.store.get(docPath(uid));
-  if (prev?.subscriptionId && prev.subscriptionId !== sub.id) return { ok: true, ignored: true };   // an older checkout
+  // only the account's current checkout counts: no record (never checked out here, or reset by our team) or an older
+  // subscription id means the event is ignored, so a late event can't bring back a plan that was removed
+  if (!prev?.subscriptionId || prev.subscriptionId !== sub.id) return { ok: true, ignored: true };
   await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null });
   return { ok: true };
 }
