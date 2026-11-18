@@ -1,0 +1,26 @@
+name: Check promo offers
+
+# Test mode only: checks that each promo code's Razorpay offer is accepted on our CricSynthesis Pro plans
+# (master/scripts/check-offer.ts creates a throwaway subscription with the offer and cancels it).
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Check
+        working-directory: master
+        env:
+          GOOGLE_SA: ${{ secrets.FIRESTORE_SA_KEY }}
+          RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+          RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+          OFFER_WELCOME100: ${{ secrets.RAZORPAY_OFFER_WELCOME100 }}
+          OFFER_WELCOME100_CARD: ${{ secrets.RAZORPAY_OFFER_WELCOME100_CARD }}
+        run: node --experimental-strip-types --no-warnings scripts/check-offer.ts | tee -a "$GITHUB_STEP_SUMMARY"
