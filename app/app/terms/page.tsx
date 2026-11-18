@@ -50,8 +50,9 @@ export default function Terms() {
           we never see your card or UPI details.</li>
         <li><b>Cancelling.</b> Cancel any time from your account. You keep Pro until the end of the period you&apos;ve paid for and
           you won&apos;t be charged again. If a renewal payment fails, Pro stays on for 3 days while the payment is retried.</li>
-        <li><b>Refunds.</b> A period that has started isn&apos;t refunded, except where the law requires it or you were charged in
-          error. Write to us from the <a href="/contact/">contact page</a> about any billing problem.</li>
+        <li><b>Refunds.</b> A period that has started isn&apos;t refunded, except where the law requires it, you were charged in
+          error, or Pro didn&apos;t turn on for you. Details and how to ask are in our
+          <a href="/refunds/"> Refund and Cancellation Policy</a>; delivery is covered in our <a href="/delivery/">Shipping and Delivery Policy</a>.</li>
         <li><b>Promo codes.</b> A promo code such as WELCOME100 gives the discount it states on your first payment only, for accounts
           that haven&apos;t paid for Pro before. One code per account. A code is instead of the free day: with it, your plan starts and is charged straight away. It has
           no cash value and we may end an offer at any time.

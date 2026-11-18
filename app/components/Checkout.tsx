@@ -107,7 +107,8 @@ export default function Checkout() {
           </button>
           {c.err && <p className="pro-err" role="alert">{c.err}</p>}
           <p className="co-secure">Secure payment by Razorpay · UPI, cards and netbanking · We never see your card or UPI details.</p>
-          <p className="co-legal">By continuing you agree to the <Link href="/terms/#pro">Terms</Link> and <Link href="/privacy/">Privacy policy</Link>.
+          <p className="co-legal">By continuing you agree to the <Link href="/terms/#pro">Terms</Link>, <Link href="/privacy/">Privacy policy</Link> and
+            {" "}<Link href="/refunds/">Refund and cancellation policy</Link>.
             Your plan renews automatically until you cancel from your account. For ages 18 and over.</p>
         </section>
         <aside className="co-side">

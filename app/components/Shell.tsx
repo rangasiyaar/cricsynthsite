@@ -162,6 +162,8 @@ export function Footer() {
               <Link href="/contact/" className="footer-link">Contact</Link>
               <Link href="/privacy/" className="footer-link">Privacy policy</Link>
               <Link href="/terms/" className="footer-link">Terms of service</Link>
+              <Link href="/refunds/" className="footer-link">Refunds and cancellation</Link>
+              <Link href="/delivery/" className="footer-link">Shipping and delivery</Link>
               <Link href="/credits/" className="footer-link">Data credits</Link>
               <button type="button" className="footer-link footer-link-btn" onClick={openConsent}>Cookie settings</button>
             </div>
