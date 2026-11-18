@@ -1,0 +1,112 @@
+{
+  "id": "maha-v-asm-t20-tba-2026-11-20",
+  "title": "Maharashtra v Assam",
+  "date": "2026-11-20",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 51st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "TBA, TBA",
+  "venue_search": "tba",
+  "city": "TBA",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Maharashtra",
+      "short": "MAHA",
+      "players": [
+        "Prithvi Shaw",
+        "Arshin Kulkarni",
+        "Sahil Parakh",
+        "Rahul Tripathi",
+        "Suraj Shinde",
+        "Kiran Chormale",
+        "Ramakrishna Ghosh",
+        "Vicky Ostwal",
+        "Tanay Sanghvi",
+        "Mukesh Choudhary",
+        "Prashant Solanki"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Prithvi Shaw",
+      "squad": [
+        "Prithvi Shaw",
+        "Arshin Kulkarni",
+        "Sahil Parakh",
+        "Rahul Tripathi",
+        "Suraj Shinde",
+        "Kiran Chormale",
+        "Ramakrishna Ghosh",
+        "Vicky Ostwal",
+        "Tanay Sanghvi",
+        "Mukesh Choudhary",
+        "Prashant Solanki"
+      ]
+    },
+    {
+      "name": "Assam",
+      "short": "ASM",
+      "players": [
+        "Pradyun Saikia",
+        "Rohit Mihir Sen",
+        "Denish Das",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Abdul Ajij Kuraishi",
+        "Akash Sengupta",
+        "Jitumoni Kalita",
+        "Mukhtar Hussain",
+        "Mrinmoy Dutta",
+        "Avinov Choudhury"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Denish Das",
+      "squad": [
+        "Pradyun Saikia",
+        "Rohit Mihir Sen",
+        "Denish Das",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Abdul Ajij Kuraishi",
+        "Akash Sengupta",
+        "Jitumoni Kalita",
+        "Mukhtar Hussain",
+        "Mrinmoy Dutta",
+        "Avinov Choudhury"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41901,
+    "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-assam-syed-mushtaq-ali-trophy-elite-20th-november-2026-41901",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "cg-v-up-t20-mumbai-2026-11-20",
+  "title": "Chandigarh v Uttar Pradesh",
+  "date": "2026-11-20",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 49th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Sharad Pawar Indoor Cricket Academy, Mumbai",
+  "venue_search": "sharad pawar indoor cricket academy",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chandigarh",
+      "short": "CG",
+      "players": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Bhagmender Lather",
+        "Raman Bishnoi",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Manan Vohra",
+      "squad": [
+        "Manan Vohra",
+        "Shivam Bhambri",
+        "Aarush Bhandari",
+        "Arjun Azad",
+        "Sanyam Saini",
+        "Bhagmender Lather",
+        "Raman Bishnoi",
+        "Chiragvir Dhindsa",
+        "Jagjit Singh Sandhu",
+        "Sandeep Sharma",
+        "Rohit Dhanda"
+      ]
+    },
+    {
+      "name": "Uttar Pradesh",
+      "short": "UP",
+      "players": [
+        "Karan Sharma",
+        "Divyansh Joshi",
+        "Madhav Kaushik",
+        "Sameer Rizvi",
+        "Aryan Juyal",
+        "Siddarth Yadav",
+        "Prashant Veer",
+        "Zeeshan Ansari",
+        "Bhuvneshwar Kumar",
+        "Mohsin Khan",
+        "Yash Dayal"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Karan Sharma",
+      "squad": [
+        "Karan Sharma",
+        "Divyansh Joshi",
+        "Madhav Kaushik",
+        "Sameer Rizvi",
+        "Aryan Juyal",
+        "Siddarth Yadav",
+        "Prashant Veer",
+        "Zeeshan Ansari",
+        "Bhuvneshwar Kumar",
+        "Mohsin Khan",
+        "Yash Dayal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41899,
+    "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-uttar-pradesh-syed-mushtaq-ali-trophy-elite-20th-november-2026-41899",
+    "auto": true,
+    "xis": false
+  }
+}
