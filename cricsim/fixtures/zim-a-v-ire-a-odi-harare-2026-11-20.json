@@ -1,0 +1,112 @@
+{
+  "id": "zim-a-v-ire-a-odi-harare-2026-11-20",
+  "title": "Zimbabwe A v Ireland A",
+  "date": "2026-11-20",
+  "start_time": "13:00",
+  "format": "OD",
+  "gender": "male",
+  "competition": "Ireland A tour of Zimbabwe · 2nd Unofficial ODI",
+  "comp_key": "intl-international-OD",
+  "venue": "Harare Sports Club, Harare",
+  "venue_search": "harare sports club",
+  "city": "Harare",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Zimbabwe A",
+      "short": "ZIM-A",
+      "players": [
+        "Matthew Campbell",
+        "Kudzai Maunze",
+        "Takudzwanashe Kaitano",
+        "Roy Kaia",
+        "Panashe Taruvinga",
+        "Faraz Akram",
+        "Tony Munyonga",
+        "Victor Chirwa",
+        "Milton Shumba",
+        "Tinotenda Maposa",
+        "Alex Falao"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Roy Kaia",
+      "squad": [
+        "Matthew Campbell",
+        "Kudzai Maunze",
+        "Takudzwanashe Kaitano",
+        "Roy Kaia",
+        "Panashe Taruvinga",
+        "Faraz Akram",
+        "Tony Munyonga",
+        "Victor Chirwa",
+        "Milton Shumba",
+        "Tinotenda Maposa",
+        "Alex Falao"
+      ]
+    },
+    {
+      "name": "Ireland A",
+      "short": "IRE-A",
+      "players": [
+        "Stephen Doheny",
+        "Tim Tector",
+        "Cade Carmichael",
+        "Christopher De Freitas",
+        "Benjamin Calitz",
+        "Gareth Delany",
+        "Gavin Hoey",
+        "Jai Moondra",
+        "Matthew Humphreys",
+        "Byron Mcdonough",
+        "Josh Little"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Matthew Humphreys",
+      "squad": [
+        "Stephen Doheny",
+        "Tim Tector",
+        "Cade Carmichael",
+        "Christopher De Freitas",
+        "Benjamin Calitz",
+        "Gareth Delany",
+        "Gavin Hoey",
+        "Jai Moondra",
+        "Matthew Humphreys",
+        "Byron Mcdonough",
+        "Josh Little"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41797,
+    "url": "https://khelnow.com/live-cricket-score/zimbabwe-a-vs-ireland-a-ireland-a-tour-of-zimbabwe-21st-november-2026-41797",
+    "auto": true,
+    "xis": false
+  }
+}
