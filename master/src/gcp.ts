@@ -95,9 +95,10 @@ export class Google {
   }
 
   /** Set some fields of an existing document (strings, booleans, numbers; "now" for a server timestamp). */
-  async patch(path: string, data: Record<string, string | boolean | number | null>, mustExist = true): Promise<void> {
+  async patch(path: string, data: Record<string, string | boolean | number | null | Date>, mustExist = true): Promise<void> {
     const name = `${this.docsRoot}/${path}`;
-    const enc = (v: unknown) => (v === null ? { nullValue: null } : typeof v === "boolean" ? { booleanValue: v }
+    const enc = (v: unknown) => (v === null ? { nullValue: null } : v instanceof Date ? { timestampValue: v.toISOString() }
+      : typeof v === "boolean" ? { booleanValue: v }
       : typeof v === "number" ? { integerValue: String(Math.round(v)) } : { stringValue: String(v) });
     const plain = Object.entries(data).filter(([, v]) => v !== "now");
     const stamps = Object.entries(data).filter(([, v]) => v === "now").map(([k]) => ({ fieldPath: k, setToServerValue: "REQUEST_TIME" }));

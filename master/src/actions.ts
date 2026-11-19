@@ -46,7 +46,7 @@ export function validate(a: Row | null): Action {
   throw new ActionError("Unknown action");
 }
 
-const authHint = (e: unknown) => (String((e as Error).message).includes(" 403")
+const authHint = (e: unknown) => (/ 403|INSUFFICIENT_PERMISSION/.test(String((e as Error).message))
   ? new ActionError("Grant api-worker the Firebase Authentication Admin role to change accounts", 403) : e);
 
 /** Apply an action; returns a short description for the log and the page. */
@@ -65,13 +65,15 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
         for (const k of keys) await g.patch(`users/${a.uid}/keys/${k._id}`, { plan });
         detail = { plan, keys: keys.map((k) => k._id) };
         done = `Approved ${a.plan}: ${keys.length} key${keys.length === 1 ? "" : "s"} moved to ${plan}`;
-        // API Plus and Business include CricSynthesis Pro on the website and app (the account's `plan` claim)
-        try {
-          const u: AuthUser | null = await g.user(a.uid).catch(() => null);
-          await g.updateUser(a.uid, { claims: { ...(u?.claims || {}), plan: "pro" } });
-          detail.websitePro = true;
-          done += "; CricSynthesis Pro turned on";
-        } catch { detail.websitePro = false; done += "; CricSynthesis Pro NOT turned on (needs the Firebase Authentication Admin role)"; }
+        // API Plus and Business include CricSynthesis Pro on the website and app: an assigned billing record (as
+        // "Set subscription"), unless their own Razorpay subscription already gives it
+        const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
+        const subPaid = Boolean(pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime());
+        if (!subPaid) await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: new Date(Date.UTC(2099, 11, 31)),
+                                                                   billing: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
+        await g.put(`users/${a.uid}/billing/admin`, { tier: plan === "business" ? "business" : "api-plus", tag: "paid", at: now.toISOString() });
+        detail.websitePro = true;
+        done += "; CricSynthesis Pro turned on";
       } else done = `Declined ${a.plan}`;
       if (a.note) detail.note = a.note;
       break;
@@ -97,25 +99,36 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       break;
     }
     case "user.tier": {
-      // Website / app: every tier but Free includes CricSynthesis Pro (the `plan` claim). API: the plan goes on every
-      // live key. A Razorpay subscription is never touched (the customer cancels it, or it lapses); assigned Pro from
-      // the Grant Pro workflow ends when the tier goes to Free. Recorded in billing/admin for the Paid / Assigned tag.
-      const u: AuthUser | null = await g.user(a.uid).catch(() => null);
-      if (!u) throw new ActionError("No Firebase Auth account for this ID", 404);
-      const claims = { ...(u.claims || {}) };
-      if (a.tier === "free") delete claims.plan; else claims.plan = "pro";
-      await g.updateUser(a.uid, { claims }).catch((e) => { throw authHint(e); });
+      // Website / app: every tier but Free includes CricSynthesis Pro, written as an assigned billing record
+      // (users/{uid}/billing/pro, status "comp", as the Grant Pro workflow does; Firestore only, no Auth admin role).
+      // API: the plan goes on every live key. A Razorpay subscription is never touched (the customer cancels it, or it
+      // lapses). Recorded in billing/admin for the Paid / Assigned tag.
       const plan = apiPlanFor(a.tier);
       const keys = (await g.list(`users/${a.uid}/keys`)).filter((k) => !k.revoked);
       for (const k of keys) if ((k.plan || "free") !== plan) await g.patch(`users/${a.uid}/keys/${k._id}`, { plan });
       const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
+      const subPaid = Boolean(pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime());
       const notes: string[] = [];
-      if (a.tier === "free" && pro?.status === "comp") {
-        await g.patch(`users/${a.uid}/billing/pro`, { status: "ended", proUntil: now.toISOString() });
-        notes.push("assigned Pro ended");
+      if (a.tier !== "free" && !subPaid) {
+        await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: new Date(Date.UTC(2099, 11, 31)),
+                                                     billing: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
+        notes.push("website Pro on");
+      } else if (a.tier !== "free") notes.push("website Pro stays on their Razorpay subscription");
+      if (a.tier === "free") {
+        if (pro?.status === "comp") {
+          await g.patch(`users/${a.uid}/billing/pro`, { status: "ended", proUntil: now, updated: "now" });
+          notes.push("assigned Pro ended");
+        }
+        if (subPaid) notes.push(`their own Razorpay subscription keeps Pro until ${String(pro!.proUntil).slice(0, 10)}`);
+        // an older assignment may sit in the account's `plan` claim: clear it if we can
+        const u: AuthUser | null = await g.user(a.uid).catch(() => null);
+        if (u?.claims?.plan) {
+          const claims = { ...u.claims };
+          delete claims.plan;
+          try { await g.updateUser(a.uid, { claims }); notes.push("old Pro claim removed"); }
+          catch { notes.push("an old Pro claim is still on the account (needs the Firebase Authentication Admin role to remove)"); }
+        }
       }
-      const subPaid = pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime();
-      if (a.tier === "free" && subPaid) notes.push(`their own Razorpay subscription keeps Pro until ${String(pro!.proUntil).slice(0, 10)}`);
       if (plan !== "free" && !keys.length) notes.push("no API keys yet: set it again after they create one");
       await g.put(`users/${a.uid}/billing/admin`, { tier: a.tier, tag: a.tier === "free" ? "" : a.tag, at: now.toISOString() });
       detail = { tier: a.tier, tag: a.tag, apiPlan: plan, keys: keys.map((k) => k._id), ...(a.note ? { note: a.note } : {}) };

@@ -55,7 +55,7 @@ export function subscription(apiPlan: string, web: { plan: string; source: strin
     const req = tier === "business" ? "api-business" : "api-pro";
     tag = recorded || (requests.some((r) => (r._id === req || r.plan === req) && r.status === "approved") ? "paid" : "assigned");
   } else if (tier === "pro") {
-    tag = web.source === "trial" ? "trial" : web.source === "subscription" ? (web.status === "comp" ? "assigned" : "paid")
+    tag = web.source === "trial" ? "trial" : web.source === "subscription" ? (web.status === "comp" ? recorded || "assigned" : "paid")
       : recorded || "assigned";
   }
   return { tier, tierName: TIERS[tier], tag };

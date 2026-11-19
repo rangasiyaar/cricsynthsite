@@ -265,7 +265,8 @@ test("actions: validation, approve moves live keys, wrong state refused, everyth
   };
   const r = await apply(g, "boss@example.com", validate({ type: "request.approve", uid: "u1", plan: "api-pro", note: "paid" }), new Date(1000));
   assert.match(r.done, /1 key moved to pro; CricSynthesis Pro turned on/);
-  assert.deepEqual(writes.find(([p]) => p === "auth")![1], { claims: { plan: "pro", other: 1 } });   // API Plus includes Pro
+  assert.equal(docs["users/u1/billing/pro"].status, "comp");                 // API Plus includes Pro (billing record, no Auth role)
+  assert.equal(writes.find(([p]) => p === "users/u1/billing/admin")![1].tier, "api-plus");
   assert.equal(docs["users/u1/keys/k1"].plan, "pro");
   assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
   assert.equal(docs["users/u1/requests/api-pro"].status, "approved");
@@ -315,14 +316,17 @@ test("set subscription: claim, keys, assigned Pro ended, recorded and logged", a
     updateUser: async (_: string, c: any) => { claims = c.claims; },
   };
   let r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "business", tag: "paid" }), new Date(5000));
-  assert.match(r.done, /Business API \(Paid\); 1 key on business/);
-  assert.deepEqual(claims, { other: 1, plan: "pro" });
+  assert.match(r.done, /Business API \(Paid\); 1 key on business; website Pro on/);
+  assert.equal(docs["users/u1/billing/pro"].status, "comp");
+  assert.ok(docs["users/u1/billing/pro"].proUntil.getTime() > Date.UTC(2099, 0, 1));
+  assert.deepEqual(claims, { other: 1 });                                     // no Auth admin role needed
   assert.equal(docs["users/u1/keys/k1"].plan, "business");
   assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
   assert.deepEqual(docs["users/u1/billing/admin"], { tier: "business", tag: "paid", at: new Date(5000).toISOString() });
   assert.ok(writes.some(([p, d]) => p === "adminLog/5000-user.tier" && d.email === "boss@example.com"));
+  claims = { other: 1, plan: "pro" };                                          // an older claim-based assignment
   r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned" }), new Date(6000));
-  assert.match(r.done, /CricSynthesis Free; 1 key on free; assigned Pro ended/);
+  assert.match(r.done, /CricSynthesis Free; 1 key on free; assigned Pro ended; old Pro claim removed/);
   assert.deepEqual(claims, { other: 1 });
   assert.equal(docs["users/u1/billing/pro"].status, "ended");
   // a Razorpay subscription is left alone and the admin is told
