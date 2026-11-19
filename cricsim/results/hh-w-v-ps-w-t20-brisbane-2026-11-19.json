@@ -1,0 +1,459 @@
+{
+ "id": "hh-w-v-ps-w-t20-brisbane-2026-11-19",
+ "innings": [
+  {
+   "team": "Perth Scorchers Women",
+   "runs": 148,
+   "wickets": 10,
+   "overs": "19.3",
+   "batting": [
+    {
+     "name": "Beth Mooney",
+     "dismissal": "c L Lee b N Carey",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Katie Mack",
+     "dismissal": "c C Henry b N Carey",
+     "runs": 30,
+     "balls": 29,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Sophie Devine",
+     "dismissal": "c & b LCN Smith",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chloe Piparo",
+     "dismissal": "c & b H S holmes",
+     "runs": 33,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Freya Kemp",
+     "dismissal": "c N Carey b M Strano",
+     "runs": 40,
+     "balls": 20,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Mikayla Hinkley",
+     "dismissal": "c C Henry b H Graham",
+     "runs": 14,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Chloe Ainsworth",
+     "dismissal": "c LCN Smith b M Strano",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alana King",
+     "dismissal": "runout (L Lee / M Strano)",
+     "runs": 9,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ruby Strange",
+     "dismissal": "c H Graham b LCN Smith",
+     "runs": 6,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lilly Mills",
+     "dismissal": "c M Strano b N Carey",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Amy Edgar",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Nicola Carey",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Linsey Smith",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Heather Graham",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chinelle Henry",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Lauren Smith",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Molly Strano",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Hayley Silver holmes",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Beth Mooney",
+     "score": 2,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sophie Devine",
+     "score": 5,
+     "over": "1.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Katie Mack",
+     "score": 64,
+     "over": "9.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Chloe Piparo",
+     "score": 87,
+     "over": "11.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Mikayla Hinkley",
+     "score": 121,
+     "over": "14.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chloe Ainsworth",
+     "score": 129,
+     "over": "16.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Freya Kemp",
+     "score": 131,
+     "over": "16.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Ruby Strange",
+     "score": 138,
+     "over": "17.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Lilly Mills",
+     "score": 148,
+     "over": "19.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Alana King",
+     "score": 148,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  },
+  {
+   "team": "Hobart Hurricanes Women",
+   "runs": 120,
+   "wickets": 10,
+   "overs": "17.3",
+   "batting": [
+    {
+     "name": "Lizelle Lee",
+     "dismissal": "c F Kemp b R Strange",
+     "runs": 10,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Kate Pelle",
+     "dismissal": "c KM Mack b C Ainsworth",
+     "runs": 5,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rachel Trenaman",
+     "dismissal": "lbw b SFM Devine",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nicola Carey",
+     "dismissal": "b C Ainsworth",
+     "runs": 32,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Heather Graham",
+     "dismissal": "c C Piparo b A King",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Maddy Green",
+     "dismissal": "b C Ainsworth",
+     "runs": 50,
+     "balls": 32,
+     "fours": 8,
+     "sixes": 0
+    },
+    {
+     "name": "Chinelle Henry",
+     "dismissal": "b A King",
+     "runs": 5,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hayley Silver holmes",
+     "dismissal": "c & b L Mills",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Molly Strano",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lauren Smith",
+     "dismissal": "b C Ainsworth",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Linsey Smith",
+     "dismissal": "c SFM Devine b L Mills",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chloe Ainsworth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Sophie Devine",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ruby Strange",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lilly Mills",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Alana King",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Amy Edgar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kate Pelle",
+     "score": 14,
+     "over": "2.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lizelle Lee",
+     "score": 18,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rachel Trenaman",
+     "score": 26,
+     "over": "4.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Heather Graham",
+     "score": 36,
+     "over": "6.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Nicola Carey",
+     "score": 72,
+     "over": "10.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chinelle Henry",
+     "score": 93,
+     "over": "13.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hayley Silver holmes",
+     "score": 111,
+     "over": "15.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Maddy Green",
+     "score": 117,
+     "over": "16.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Lauren Smith",
+     "score": 117,
+     "over": "16.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Linsey Smith",
+     "score": 120,
+     "over": "17.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Perth Scorchers Women won by 28 runs",
+ "winner": "Perth Scorchers Women"
+}
