@@ -12,7 +12,7 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chitwan Rhinos won the toss and bat first.",
   "teams": [
     {
       "name": "Sudurpaschim Royals",
@@ -23,12 +23,12 @@
         "Aarif Sheikh",
         "Ishan Pandey",
         "Hemant Dhami",
-        "Abhinash Bohara",
         "Anil Kharel",
+        "Dipak Bohara",
         "George Munsey",
         "Scott Kuggeleijn",
         "Tharindu Ratnayake",
-        "Thanuka Dabare"
+        "Fabian Allen"
       ],
       "roles": [
         "AR",
@@ -37,11 +37,11 @@
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
+        "BAT",
         "BAT",
         "AR",
         "BOWL",
-        "BAT"
+        "AR"
       ],
       "captain": "Dipendra Singh Airee",
       "squad": [
@@ -62,30 +62,30 @@
       "name": "Chitwan Rhinos",
       "short": "CR",
       "players": [
-        "Bibek Kumar Yadav",
-        "Dawid Malan",
-        "Ranjit Kumar",
-        "Kamal Singh Airee",
-        "Kushal Malla",
-        "Kamil Mishara",
         "Ravi Bopara",
+        "Kamil Mishara",
+        "Kushal Malla",
         "Rijan Dhakal",
-        "Usama Mir",
+        "Kamal Singh Airee",
+        "Dev Khanal",
+        "Bibek Kumar Yadav",
+        "Ranjit Kumar",
         "Salahuddin Khan",
-        "Dev Khanal"
+        "Dawid Malan",
+        "Usama Mir"
       ],
       "roles": [
-        "AR",
-        "BAT",
-        "BOWL",
-        "BOWL",
         "AR",
         "WK",
         "AR",
         "BOWL",
         "BOWL",
         "BAT",
-        "BAT"
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL"
       ],
       "captain": "Ravi Bopara",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41353,
     "url": "https://khelnow.com/live-cricket-score/sudurpaschim-royals-vs-tba-nepal-premier-league-19th-november-2026-41353",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
