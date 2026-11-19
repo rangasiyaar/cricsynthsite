@@ -1,0 +1,115 @@
+{
+  "id": "ban-a-v-hk-odi-doha-2026-11-19",
+  "title": "Bangladesh A v Hong Kong",
+  "date": "2026-11-19",
+  "start_time": "11:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 1st Match",
+  "comp_key": "intl-international-OD",
+  "venue": "University of Doha for Science and Technology, Doha",
+  "venue_search": "university of doha for science and technology",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bangladesh A",
+      "short": "BAN-A",
+      "players": [
+        "Sabbir Rahman",
+        "Mohammad Naim Sheikh",
+        "Iftakhar Hossain Ifti",
+        "Mahmudul Hasan Joy",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rakibul Hasan",
+        "Ripon Mondol",
+        "Iqbal Hasan Emon",
+        "Yasir Ali Chowdhury",
+        "Parvez Hossain Emon"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "squad": [
+        "Sabbir Rahman",
+        "Mohammad Naim Sheikh",
+        "Iftakhar Hossain Ifti",
+        "Mahmudul Hasan Joy",
+        "Yasir Ali Chowdhury",
+        "Parvez Hossain Emon",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rizwan Chowdhury",
+        "Rakibul Hasan",
+        "Ripon Mondol",
+        "Iqbal Hasan Emon",
+        "Md Rubel"
+      ]
+    },
+    {
+      "name": "Hong Kong",
+      "short": "HK",
+      "players": [
+        "Zeeshan Ali",
+        "Anshuman Rath",
+        "Shahid Wasif",
+        "Babar Hayat",
+        "Aizaz Khan",
+        "Nasrulla Rana",
+        "Yasim Murtaza",
+        "Ehsan Khan",
+        "Mohammad Ghazanfar",
+        "Ateeq Iqbal",
+        "Abdul Samad"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Zeeshan Ali",
+        "Anshuman Rath",
+        "Shahid Wasif",
+        "Babar Hayat",
+        "Aizaz Khan",
+        "Abdul Samad",
+        "Nasrulla Rana",
+        "Yasim Murtaza",
+        "Hafeez Khan",
+        "Ehsan Khan",
+        "Reyansh Sharma",
+        "Mohammad Ghazanfar",
+        "Ateeq Iqbal",
+        "Hassan Khan Mohammad"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41822,
+    "url": "https://khelnow.com/live-cricket-score/bangladesh-a-vs-hong-kong-acc-men's-asia-cup-rising-stars-19th-november-2026-41822",
+    "auto": true,
+    "xis": false
+  }
+}
