@@ -133,7 +133,9 @@ const userLink = (uid: string, email: string | null) => `<a href="#/user/${encod
 const TIER_NAMES: Record<string, string> = { free: "CricSynthesis Free", pro: "CricSynthesis Pro", "api-plus": "API Plus", business: "Business API" };
 const TAGS: Record<string, [string, "good" | "warn" | "info"]> = { paid: ["Paid", "good"], trial: ["Trial", "warn"], assigned: ["Assigned", "info"] };
 const tagBadge = (t: string | null) => (t && TAGS[t] ? badge(TAGS[t][0], TAGS[t][1]) : "");
-const tierCell = (tier: string, tag: string | null) => `${esc(TIER_NAMES[tier] || tier)} ${tagBadge(tag)}`;
+const untilText = (u: string | null) => (u ? `until ${day(u)}` : "");
+const tierCell = (tier: string, tag: string | null, until: string | null = null) =>
+  `${esc(TIER_NAMES[tier] || tier)} ${tagBadge(tag)}${until ? ` <small class="muted">${esc(untilText(until))}</small>` : ""}`;
 const planBadge = (p: string) => badge(p === "free" ? "Free" : p[0].toUpperCase() + p.slice(1), p === "free" ? "plain" : "good");
 
 // ── overview ──
@@ -178,7 +180,7 @@ async function users() {
     { key: "providers", label: "Sign-in", render: (r) => esc(provider(r.providers)), sort: (r) => r.providers.join() },
     { key: "created", label: "Joined", render: (r) => `<span title="${esc(when(r.created))}">${day(r.created)}</span>` },
     { key: "lastSeen", label: "Last seen", render: (r) => `<span title="${esc(when(r.lastSeen))}">${ago(r.lastSeen)}</span>` },
-    { key: "tier", label: "Subscription", render: (r) => tierCell(r.tier || "free", r.tag), sort: (r) => ({ free: 0, pro: 1, "api-plus": 2, business: 3 } as Row)[r.tier || "free"] * 10 + (r.tag === "paid" ? 2 : r.tag ? 1 : 0) },
+    { key: "tier", label: "Subscription", render: (r) => tierCell(r.tier || "free", r.tag, r.until), sort: (r) => ({ free: 0, pro: 1, "api-plus": 2, business: 3 } as Row)[r.tier || "free"] * 10 + (r.tag === "paid" ? 2 : r.tag ? 1 : 0) },
     { key: "activeKeys", label: "Keys", num: true, render: (r) => n(r.activeKeys) },
     { key: "mcpDays", label: "MCP", num: true, render: (r) => (r.mcpDays ? `${r.mcpDays} d` : "–") },
     { key: "calls7", label: "Calls 7d", num: true, render: (r) => n(r.calls7) },
@@ -201,7 +203,7 @@ async function users() {
   let rows = draw();
   ["#q", "#f-plan", "#f-use"].forEach((id) => $(id)!.addEventListener("input", () => { rows = draw(); }));
   $("#csv")!.addEventListener("click", () => download(`cricsynthesis-users-${new Date().toISOString().slice(0, 10)}.csv`,
-    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "tierName", "tag", "websitePlan", "apiPlan", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
+    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "tierName", "tag", "until", "websitePlan", "apiPlan", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
   wireRefresh();
 }
 
@@ -222,10 +224,13 @@ async function user(uid: string) {
           ${Object.entries(TIER_NAMES).map(([v, l]) => `<option value="${v}"${sv.subscription.tier === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>
           <select id="tag" aria-label="How they got it"><option value="assigned"${sv.subscription.tag !== "paid" ? " selected" : ""}>Assigned (free, by our team)</option>
           <option value="paid"${sv.subscription.tag === "paid" ? " selected" : ""}>Paid (outside Razorpay, e.g. invoice)</option></select>
+          <select id="days" aria-label="For how long">${[["0", "No end date"], ["7", "7 days"], ["14", "14 days"], ["30", "30 days"], ["90", "90 days"],
+            ["180", "180 days"], ["365", "1 year"], ["custom", "Custom days…"]].map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select>
+          <input id="days-n" type="number" min="1" max="3650" step="1" placeholder="Days" aria-label="Number of days" hidden style="width:80px">
           <button class="btn sm" id="tier-set">Set subscription</button></span>` : ""}</p></div></div>
   <h2 class="sec">Services and plan</h2>
   <div class="tiles">
-    ${tile("Subscription", esc(sv.subscription.name), `${tagBadge(sv.subscription.tag)} ${({ paid: "Paid", trial: "On the free day", assigned: "Assigned by our team" } as Record<string, string>)[sv.subscription.tag] || "No paid plan"}${sv.subscription.setBy?.at ? ` · set in the console ${day(sv.subscription.setBy.at)}` : ""}`)}
+    ${tile("Subscription", esc(sv.subscription.name), `${tagBadge(sv.subscription.tag)} ${({ paid: "Paid", trial: "On the free day", assigned: "Assigned by our team" } as Record<string, string>)[sv.subscription.tag] || "No paid plan"}${sv.subscription.until ? ` · ends ${when(sv.subscription.until)}` : sv.subscription.tag === "assigned" || sv.subscription.setBy?.tier === sv.subscription.tier && sv.subscription.tier !== "free" ? " · no end date" : ""}${sv.subscription.setBy?.at ? ` · set in the console ${day(sv.subscription.setBy.at)}` : ""}`)}
     ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${({ subscription: "Paid subscription", trial: "Free day", assigned: "Assigned by our team", default: "No subscription" } as Record<string, string>)[sv.website.source] || ""}${sv.website.billing?.status ? ` · ${esc(sv.website.billing.status)}${sv.website.billing.billing ? ` (${esc(sv.website.billing.billing)})` : ""}` : ""}`)}
     ${tile("API plan", planBadge(sv.api.plan), `${paidTag(sv.api.paid)} ${n(sv.api.activeKeys)} active key${sv.api.activeKeys === 1 ? "" : "s"} · ${n(sv.api.limit)} calls a day per key`)}
     ${tile("MCP connector", sv.mcp.used ? "In use" : "Not used", sv.mcp.used ? `${n(sv.mcp.days)} days in 90 · last ${day(sv.mcp.lastDay)} · today ${n(sv.mcp.today)} / ${n(sv.mcp.limit)}` : "No connector calls in 90 days")}
@@ -243,11 +248,16 @@ async function user(uid: string) {
       <dt>Billing emails</dt><dd>${yn(p.profile.notifyBilling)}</dd><dt>Updated</dt><dd>${when(p.profile.updated)}</dd></dl>` : `<p class="empty">No profile details saved.</p>`}</section></div>
   <section class="card"><h2>Timeline</h2>${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
   $("#copy")!.addEventListener("click", () => navigator.clipboard.writeText(uid));
+  $("#days")?.addEventListener("change", () => { $<HTMLInputElement>("#days-n")!.hidden = $<HTMLSelectElement>("#days")!.value !== "custom"; });
   $("#tier-set")?.addEventListener("click", () => {
     const tier = $<HTMLSelectElement>("#tier")!.value, tag = $<HTMLSelectElement>("#tag")!.value;
+    const dsel = $<HTMLSelectElement>("#days")!.value;
+    const days = dsel === "custom" ? Number($<HTMLInputElement>("#days-n")!.value) : Number(dsel);
+    if (tier !== "free" && (!Number.isInteger(days) || days < 0 || days > 3650 || (dsel === "custom" && days < 1))) { toast("Enter a whole number of days from 1 to 3650", true); return; }
+    const end = tier === "free" ? "" : days ? ` for ${days} day${days === 1 ? "" : "s"} (until ${new Date(Date.now() + days * 86400_000).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}), then back to CricSynthesis Free` : ", no end date";
     const what = tier === "free" ? "CricSynthesis Free: website Pro off, API keys on Free (a Razorpay subscription is not cancelled)"
       : `${TIER_NAMES[tier]} (${tag === "paid" ? "Paid" : "Assigned"}): website Pro on${tier === "pro" ? ", API keys on Free" : `, API keys on ${tier === "business" ? "Business" : "API Plus"}`}`;
-    act({ type: "user.tier", uid, tier, tag }, `Set ${u.email || uid} to ${what}?`, () => user(uid).then(() => wireTips(main())), true);
+    act({ type: "user.tier", uid, tier, tag, days: tier === "free" ? 0 : days }, `Set ${u.email || uid} to ${what}${end}?`, () => user(uid).then(() => wireTips(main())), true);
   });
   table($("#keys")!, [
     { key: "name", label: "Key", render: (r) => `${esc(r.name)} <small class="muted">${esc(r.slot)}</small>` },

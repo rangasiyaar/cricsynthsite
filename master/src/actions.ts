@@ -19,7 +19,9 @@ export type Action =
   | { type: "key.plan"; uid: string; slot: string; plan: string }
   | { type: "user.disable" | "user.enable"; uid: string }
   | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" }
-  | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; note?: string };
+  | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; days: number; note?: string };
+
+export const MAX_DAYS = 3650;
 
 export function validate(a: Row | null): Action {
   if (!a || typeof a.type !== "string" || !UID.test(String(a.uid || ""))) throw new ActionError("Bad action");
@@ -41,7 +43,9 @@ export function validate(a: Row | null): Action {
       return { type: a.type, uid: a.uid, plan: a.plan };
     case "user.tier":
       if (!Object.hasOwn(TIERS, a.tier) || !["assigned", "paid"].includes(a.tag)) throw new ActionError("Bad subscription");
-      return { type: a.type, uid: a.uid, tier: a.tier, tag: a.tag, note };
+      { const days = a.days == null || a.days === "" ? 0 : Number(a.days);       // 0 = no end date
+        if (!Number.isInteger(days) || days < 0 || days > MAX_DAYS) throw new ActionError(`Days must be a whole number from 1 to ${MAX_DAYS} (or none)`);
+        return { type: a.type, uid: a.uid, tier: a.tier, tag: a.tag, days: a.tier === "free" ? 0 : days, note }; }
   }
   throw new ActionError("Unknown action");
 }
@@ -104,13 +108,14 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       // API: the plan goes on every live key. A Razorpay subscription is never touched (the customer cancels it, or it
       // lapses). Recorded in billing/admin for the Paid / Assigned tag.
       const plan = apiPlanFor(a.tier);
+      const until = a.days ? new Date(now.getTime() + a.days * 86400_000) : null;   // null = no end date
       const keys = (await g.list(`users/${a.uid}/keys`)).filter((k) => !k.revoked);
       for (const k of keys) if ((k.plan || "free") !== plan) await g.patch(`users/${a.uid}/keys/${k._id}`, { plan });
       const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
       const subPaid = Boolean(pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime());
       const notes: string[] = [];
       if (a.tier !== "free" && !subPaid) {
-        await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: new Date(Date.UTC(2099, 11, 31)),
+        await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: until || new Date(Date.UTC(2099, 11, 31)),
                                                      billing: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
         notes.push("website Pro on");
       } else if (a.tier !== "free") notes.push("website Pro stays on their Razorpay subscription");
@@ -130,9 +135,11 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
         }
       }
       if (plan !== "free" && !keys.length) notes.push("no API keys yet: set it again after they create one");
-      await g.put(`users/${a.uid}/billing/admin`, { tier: a.tier, tag: a.tier === "free" ? "" : a.tag, at: now.toISOString() });
-      detail = { tier: a.tier, tag: a.tag, apiPlan: plan, keys: keys.map((k) => k._id), ...(a.note ? { note: a.note } : {}) };
+      await g.put(`users/${a.uid}/billing/admin`, { tier: a.tier, tag: a.tier === "free" ? "" : a.tag, at: now.toISOString(),
+                                                   until: until ? until.toISOString() : "" });
+      detail = { tier: a.tier, tag: a.tag, apiPlan: plan, until: until ? until.toISOString() : null, keys: keys.map((k) => k._id), ...(a.note ? { note: a.note } : {}) };
       done = `Subscription set to ${TIERS[a.tier]}${a.tier === "free" ? "" : ` (${a.tag === "paid" ? "Paid" : "Assigned"})`}`
+        + (a.tier === "free" ? "" : until ? ` for ${a.days} day${a.days === 1 ? "" : "s"} (until ${until.toISOString().slice(0, 10)})` : ", no end date")
         + (keys.length ? `; ${keys.length} key${keys.length === 1 ? "" : "s"} on ${plan}` : "") + (notes.length ? `; ${notes.join("; ")}` : "");
       break;
     }
@@ -140,4 +147,21 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
   await g.put(`adminLog/${now.getTime()}-${a.type}`, { at: now.toISOString(), email: admin, what: a.type, uid: a.uid,
     done, detail: JSON.stringify(detail) }).catch(() => {});
   return { done, detail };
+}
+
+/** Console assignments whose end date has passed go back to CricSynthesis Free (website Pro has already stopped at
+ *  proUntil; this moves the API keys back and records it). Run by the 6-hourly cron; returns the accounts moved. */
+export async function expire(g: Google, billing: Row[], now = new Date()): Promise<string[]> {
+  const due = billing.filter((b) => b._id === "admin" && b.tier && b.tier !== "free" && b.until && Date.parse(b.until) <= now.getTime());
+  const moved: string[] = [];
+  for (const b of due) {
+    const uid = String(b._path).split("/")[1];
+    if (!UID.test(uid)) continue;
+    try {
+      await apply(g, "system (subscription ended)", { type: "user.tier", uid, tier: "free", tag: "assigned", days: 0,
+                                                    note: `${TIERS[b.tier as Tier] || b.tier} ended ${String(b.until).slice(0, 10)}` }, now);
+      moved.push(uid);
+    } catch { /* try again next run */ }
+  }
+  return moved;
 }

@@ -47,7 +47,7 @@ export const apiPlanFor = (t: Tier) => TIER_API[t];
  *  Trial = the free day; Assigned = given by our team (console, Grant Pro workflow or a custom claim) without payment.
  *  admin = users/{uid}/billing/admin, written by the console's "Set subscription" action. */
 export function subscription(apiPlan: string, web: { plan: string; source: string; status?: string }, requests: Doc[] = [],
-                             admin?: Doc | null): { tier: Tier; tierName: string; tag: Tag } {
+                             admin?: Doc | null, billing?: Doc | null): { tier: Tier; tierName: string; tag: Tag; until: string | null } {
   const tier: Tier = apiPlan === "business" ? "business" : apiPlan === "pro" ? "api-plus" : web.plan === "Pro" ? "pro" : "free";
   const recorded = admin?.tier === tier && (admin.tag === "paid" || admin.tag === "assigned") ? admin.tag as Tag : null;
   let tag: Tag = null;
@@ -58,7 +58,11 @@ export function subscription(apiPlan: string, web: { plan: string; source: strin
     tag = web.source === "trial" ? "trial" : web.source === "subscription" ? (web.status === "comp" ? recorded || "assigned" : "paid")
       : recorded || "assigned";
   }
-  return { tier, tierName: TIERS[tier], tag };
+  // when it ends: the console's own end date for this tier, else an assigned Pro record's end (Grant Pro workflow);
+  // "no end date" assignments run to 2099 and show as none
+  let until: string | null = admin?.tier === tier && admin.until ? String(admin.until) : null;
+  if (!until && tier === "pro" && web.status === "comp" && billing?.proUntil && Date.parse(billing.proUntil) < Date.UTC(2090, 0, 1)) until = String(billing.proUntil);
+  return { tier, tierName: TIERS[tier], tag, until };
 }
 
 export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
@@ -96,7 +100,7 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     disabled: a?.disabled ?? false, inAuth: Boolean(a),
     company: profile?.company || null,
     websitePlan: web.plan, websitePlanSource: web.status === "comp" ? "assigned" : web.source, apiPlan,
-    ...(() => { const s = subscription(apiPlan, web, requests, admin); return { tier: s.tier, tierName: s.tierName, tag: s.tag }; })(),
+    ...(() => { const s = subscription(apiPlan, web, requests, admin, billing); return { tier: s.tier, tierName: s.tierName, tag: s.tag, until: s.until }; })(),
     paid: subscription(apiPlan, web, requests, admin).tag === "paid", websiteStatus: web.status ?? null,
     keys: keys.length, activeKeys: live.length, mcpDays, mcp30,
     today: callsToday, calls7, calls30, lastCall,
@@ -234,7 +238,7 @@ export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys:
     profile: prof ? { company: prof.company || null, useCase: prof.useCase || null, notifyProduct: prof.notifyProduct ?? null,
                       notifyUsage: prof.notifyUsage ?? null, notifyBilling: prof.notifyBilling ?? null, updated: ts(prof.updated) } : null,
     services: {
-      subscription: { tier: row.tier, name: row.tierName, tag: row.tag,
+      subscription: { tier: row.tier, name: row.tierName, tag: row.tag, until: row.until,
                       setBy: admin?.tier ? { tier: admin.tier, tag: admin.tag ?? null, at: ts(admin.at) } : null },
       website: { plan: row.websitePlan, source: row.websitePlanSource, paid: row.websitePlanSource === "subscription",
                  billing: billing ? { status: billing.status ?? null, billing: billing.billing ?? null, proUntil: ts(billing.proUntil),

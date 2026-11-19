@@ -285,14 +285,14 @@ test("actions: validation, approve moves live keys, wrong state refused, everyth
 test("subscription tiers and tags: Paid, Trial, Assigned", async () => {
   const { subscription } = await import("../src/data.ts");
   const free = { plan: "Free", source: "default" };
-  assert.deepEqual(subscription("free", free), { tier: "free", tierName: "CricSynthesis Free", tag: null });
+  assert.deepEqual(subscription("free", free), { tier: "free", tierName: "CricSynthesis Free", tag: null, until: null });
   assert.equal(subscription("free", { plan: "Pro", source: "trial", status: "trial" }).tag, "trial");
-  assert.deepEqual(subscription("free", { plan: "Pro", source: "subscription", status: "active" }), { tier: "pro", tierName: "CricSynthesis Pro", tag: "paid" });
+  assert.deepEqual(subscription("free", { plan: "Pro", source: "subscription", status: "active" }), { tier: "pro", tierName: "CricSynthesis Pro", tag: "paid", until: null });
   assert.equal(subscription("free", { plan: "Pro", source: "subscription", status: "comp" }).tag, "assigned");   // Grant Pro workflow
   assert.equal(subscription("free", { plan: "Pro", source: "assigned" }).tag, "assigned");
   assert.equal(subscription("free", { plan: "Pro", source: "assigned" }, [], { tier: "pro", tag: "paid" } as any).tag, "paid");
   assert.equal(subscription("pro", free, [{ _id: "api-pro", status: "approved" } as any]).tag, "paid");
-  assert.deepEqual(subscription("pro", free), { tier: "api-plus", tierName: "API Plus", tag: "assigned" });
+  assert.deepEqual(subscription("pro", free), { tier: "api-plus", tierName: "API Plus", tag: "assigned", until: null });
   assert.equal(subscription("business", free, [], { tier: "business", tag: "paid" } as any).tierName, "Business API");
   assert.equal(subscription("business", free, [], { tier: "pro", tag: "paid" } as any).tag, "assigned");          // stale record
 });
@@ -316,13 +316,13 @@ test("set subscription: claim, keys, assigned Pro ended, recorded and logged", a
     updateUser: async (_: string, c: any) => { claims = c.claims; },
   };
   let r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "business", tag: "paid" }), new Date(5000));
-  assert.match(r.done, /Business API \(Paid\); 1 key on business; website Pro on/);
+  assert.match(r.done, /Business API \(Paid\), no end date; 1 key on business; website Pro on/);
   assert.equal(docs["users/u1/billing/pro"].status, "comp");
   assert.ok(docs["users/u1/billing/pro"].proUntil.getTime() > Date.UTC(2099, 0, 1));
   assert.deepEqual(claims, { other: 1 });                                     // no Auth admin role needed
   assert.equal(docs["users/u1/keys/k1"].plan, "business");
   assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
-  assert.deepEqual(docs["users/u1/billing/admin"], { tier: "business", tag: "paid", at: new Date(5000).toISOString() });
+  assert.deepEqual(docs["users/u1/billing/admin"], { tier: "business", tag: "paid", at: new Date(5000).toISOString(), until: "" });
   assert.ok(writes.some(([p, d]) => p === "adminLog/5000-user.tier" && d.email === "boss@example.com"));
   claims = { other: 1, plan: "pro" };                                          // an older claim-based assignment
   r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned" }), new Date(6000));
@@ -334,4 +334,39 @@ test("set subscription: claim, keys, assigned Pro ended, recorded and logged", a
   r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned" }), new Date(7000));
   assert.match(r.done, /Razorpay subscription keeps Pro until 2099-01-01/);
   assert.equal(docs["users/u1/billing/pro"].status, "active");
+});
+
+test("subscription for N days: end date on Pro and the record, then back to Free when it passes", async () => {
+  const { validate, apply, expire, ActionError } = await import("../src/actions.ts");
+  const { subscription } = await import("../src/data.ts");
+  assert.throws(() => validate({ type: "user.tier", uid: "u1", tier: "pro", tag: "assigned", days: 2.5 }), ActionError);
+  assert.throws(() => validate({ type: "user.tier", uid: "u1", tier: "pro", tag: "assigned", days: 5000 }), ActionError);
+  assert.equal((validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned", days: 30 }) as any).days, 0);
+  const docs: Record<string, any> = { "users/u1/keys/k1": { _id: "k1", plan: "free", revoked: false } };
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    list: async (p: string) => Object.entries(docs).filter(([k]) => k.startsWith(p + "/")).map(([, v]) => v),
+    patch: async (p: string, d: any) => { docs[p] = { ...docs[p], ...d }; },
+    put: async (p: string, d: any) => { docs[p] = d; },
+    user: async () => ({ claims: {} }), updateUser: async () => {},
+  };
+  const t0 = Date.UTC(2026, 10, 19);
+  const r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "api-plus", tag: "assigned", days: 30 }), new Date(t0));
+  assert.match(r.done, /API Plus \(Assigned\) for 30 days \(until 2026-12-19\)/);
+  assert.equal(docs["users/u1/billing/pro"].proUntil.getTime(), t0 + 30 * 86400_000);         // website Pro stops on time
+  assert.equal(docs["users/u1/billing/admin"].until, new Date(t0 + 30 * 86400_000).toISOString());
+  assert.equal(docs["users/u1/keys/k1"].plan, "pro");
+  assert.equal(subscription("pro", { plan: "Pro", source: "subscription", status: "comp" }, [], docs["users/u1/billing/admin"]).until,
+               new Date(t0 + 30 * 86400_000).toISOString());
+  const billing = () => Object.entries(docs).filter(([k]) => k.includes("/billing/")).map(([k, v]) => ({ ...v, _id: k.split("/").pop(), _path: k }));
+  assert.deepEqual(await expire(g, billing(), new Date(t0 + 29 * 86400_000)), []);           // not yet
+  assert.deepEqual(await expire(g, billing(), new Date(t0 + 31 * 86400_000)), ["u1"]);
+  assert.equal(docs["users/u1/keys/k1"].plan, "free");
+  assert.equal(docs["users/u1/billing/admin"].tier, "free");
+  assert.equal(docs["users/u1/billing/pro"].status, "ended");
+  assert.deepEqual(await expire(g, billing(), new Date(t0 + 32 * 86400_000)), []);           // done once
+  // no end date: runs to 2099 and is never expired
+  await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "pro", tag: "assigned" }), new Date(t0));
+  assert.equal(docs["users/u1/billing/admin"].until, "");
+  assert.ok(docs["users/u1/billing/pro"].proUntil.getTime() > Date.UTC(2099, 0, 1));
 });

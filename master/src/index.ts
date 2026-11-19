@@ -8,7 +8,7 @@ import { accuracy, analytics, bing, CLARITY_TTL_MS, clarityFetch, clarityShape, 
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 import { check, summarize } from "./uptime.ts";
-import { ActionError, apply, validate } from "./actions.ts";
+import { ActionError, apply, expire, validate } from "./actions.ts";
 
 const SECURITY: Record<string, string> = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -53,8 +53,11 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   try { auth = await g.users(); } catch (e) {
     errors.push(`Firebase Auth: ${(e as Error).message} — grant the service account the Firebase Authentication Viewer role`);
   }
-  const [profiles, keys, requests, billing] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests"),
-                                                                  g.group("billing").catch(() => [])]);
+  let [profiles, keys, requests, billing] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests"),
+                                                                g.group("billing").catch(() => [])]);
+  // console assignments past their end date go back to Free, then the tables are read again
+  const ended = await expire(g, billing, now).catch(() => [] as string[]);
+  if (ended.length) [keys, billing] = await Promise.all([g.group("keys"), g.group("billing").catch(() => [])]);
   const uids = new Set<string>([...(auth || []).map((a) => a.uid), ...profiles.map((p) => p._id),
                                 ...keys.map((k) => k._path.split("/")[1]), ...requests.map((r) => r._path.split("/")[1])]);
   const from = daysAgo(29, now), usage: Record<string, any[]> = {};
