@@ -9,14 +9,14 @@ import type { MatchCard, ResultSummary } from "@/lib/types";
 const FILTERS = ["all", "live", "upcoming", "result"] as const;
 type Filter = (typeof FILTERS)[number];
 const NAMES: Record<Filter, string> = { all: "All", live: "Live", upcoming: "Upcoming", result: "Results" };
-const RESULTS_PAGE = 6;
+const PAGE = 6;                         // each group shows 6 (live: latest start first, upcoming: soonest, results: newest), then "Show more"
 
 export default function MatchesPage() {
   const [index, setIndex] = useState<MatchCard[] | null>(null);
   const [results, setResults] = useState<ResultSummary[] | null>(null);
   const [error, setError] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
-  const [shown, setShown] = useState(RESULTS_PAGE);
+  const [shown, setShown] = useState<Record<Status, number>>({ live: PAGE, upcoming: PAGE, result: PAGE });
   const now = useNow();
 
   useEffect(() => {
@@ -32,10 +32,15 @@ export default function MatchesPage() {
   const count: Record<Filter, number> = { all: upcoming.length + live.length + past.length, live: live.length, upcoming: upcoming.length, result: past.length };
   const show = (s: Status) => filter === "all" || filter === s;
 
+  const MORE: Record<Status, string> = { live: "Show more live matches", upcoming: "Show more upcoming matches", result: "Show more results" };
   const group = (s: Status, title: string, cards: React.ReactNode[], empty: string) => show(s) && (
     <section className="match-group">
       <div className="section-head"><h2>{title}</h2><StatusTag s={s} /></div>
-      {cards.length ? <div className="fixtures">{cards}</div> : <p className="notice">{empty}</p>}
+      {cards.length ? <div className="fixtures">{cards.slice(0, shown[s])}</div> : <p className="notice">{empty}</p>}
+      {cards.length > shown[s] && (
+        <p style={{ marginTop: 24 }}><button className="cs-btn cs-btn--secondary" onClick={() => setShown((n) => ({ ...n, [s]: n[s] + PAGE }))}>
+          <span>{MORE[s]}</span></button></p>
+      )}
     </section>
   );
 
@@ -52,16 +57,11 @@ export default function MatchesPage() {
       {error && <p className="notice">Couldn&apos;t load matches right now.</p>}
       {!error && (!index || !results) && <div className="skeleton card" style={{ minHeight: 280 }} />}
       {index && results && <>
-        {group("live", "Live", live.map((m, i) => <FixtureCard key={m.id} m={m} status="live" i={i} />),
+        {group("live", "Live", live.map((m, i) => <FixtureCard key={m.id} m={m} status="live" i={i % PAGE} />),
           "No match is under way right now.")}
-        {group("upcoming", "Upcoming", upcoming.map((m, i) => <FixtureCard key={m.id} m={m} status="upcoming" i={i} />),
+        {group("upcoming", "Upcoming", upcoming.map((m, i) => <FixtureCard key={m.id} m={m} status="upcoming" i={i % PAGE} />),
           "No upcoming matches are published yet.")}
-        {group("result", "Results", past.slice(0, shown).map((r, i) => <ResultCard key={r.id} r={r} i={i % RESULTS_PAGE} />),
-          "No results yet.")}
-        {show("result") && past.length > shown && (
-          <p style={{ marginTop: 24 }}><button className="cs-btn cs-btn--secondary" onClick={() => setShown((n) => n + RESULTS_PAGE)}>
-            <span>Show more results</span></button></p>
-        )}
+        {group("result", "Results", past.map((r, i) => <ResultCard key={r.id} r={r} i={i % PAGE} />), "No results yet.")}
       </>}
     </div>
   );
