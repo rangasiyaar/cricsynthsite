@@ -1,0 +1,112 @@
+{
+  "id": "aus-v-eng-t20i-melbourne-2026-11-21",
+  "title": "Australia v England",
+  "date": "2026-11-21",
+  "start_time": "13:45",
+  "format": "T20",
+  "gender": "male",
+  "competition": "England tour of Australia · 1st T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "Melbourne Cricket Ground, Melbourne",
+  "venue_search": "melbourne cricket ground",
+  "city": "Melbourne",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Australia",
+      "short": "AUS",
+      "players": [
+        "Mitchell Marsh",
+        "Travis Head",
+        "Matt Renshaw",
+        "Cooper Connolly",
+        "Josh Inglis",
+        "Alex Carey",
+        "Cameron Green",
+        "Jack Edwards",
+        "Xavier Bartlett",
+        "Mahli Beardman",
+        "Spencer Johnson"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Marsh",
+      "squad": [
+        "Mitchell Marsh",
+        "Travis Head",
+        "Matt Renshaw",
+        "Cooper Connolly",
+        "Josh Inglis",
+        "Alex Carey",
+        "Cameron Green",
+        "Jack Edwards",
+        "Xavier Bartlett",
+        "Mahli Beardman",
+        "Spencer Johnson"
+      ]
+    },
+    {
+      "name": "England",
+      "short": "ENG",
+      "players": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Jordan Cox",
+        "Will Jacks",
+        "Sam Curran",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Sonny Baker",
+        "Jofra Archer"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harry Brook",
+      "squad": [
+        "Tom Banton",
+        "Ben Duckett",
+        "Joe Root",
+        "Harry Brook",
+        "Jordan Cox",
+        "Will Jacks",
+        "Sam Curran",
+        "Liam Dawson",
+        "Gus Atkinson",
+        "Sonny Baker",
+        "Jofra Archer"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 38646,
+    "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-21st-november-2026-38646",
+    "auto": true,
+    "xis": false
+  }
+}
