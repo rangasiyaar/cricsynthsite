@@ -1,0 +1,112 @@
+{
+  "id": "sl-a-v-hk-odi-doha-2026-11-21",
+  "title": "Sri Lanka A v Hong Kong",
+  "date": "2026-11-21",
+  "start_time": "11:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 5th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "University of Doha for Science and Technology, Doha",
+  "venue_search": "university of doha for science and technology",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka A",
+      "short": "SL-A",
+      "players": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Chamika Heenatigala",
+        "Janith Liyanage",
+        "Lahiru Samarakoon",
+        "Wanuja Sahan",
+        "Garuka Sanketh",
+        "Vijayakanth Viyaskanth"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Pavan Rathnayake",
+      "squad": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Chamika Heenatigala",
+        "Janith Liyanage",
+        "Lahiru Samarakoon",
+        "Wanuja Sahan",
+        "Garuka Sanketh",
+        "Vijayakanth Viyaskanth"
+      ]
+    },
+    {
+      "name": "Hong Kong",
+      "short": "HK",
+      "players": [
+        "Anshuman Rath",
+        "Shahid Wasif",
+        "Yasim Murtaza",
+        "Babar Hayat",
+        "Abdul Samad",
+        "Zeeshan Ali",
+        "Aizaz Khan",
+        "Ateeq Iqbal",
+        "Ayush Shukla",
+        "Ehsan Khan",
+        "Reyansh Sharma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Yasim Murtaza",
+      "squad": [
+        "Anshuman Rath",
+        "Shahid Wasif",
+        "Yasim Murtaza",
+        "Babar Hayat",
+        "Abdul Samad",
+        "Zeeshan Ali",
+        "Aizaz Khan",
+        "Ateeq Iqbal",
+        "Ayush Shukla",
+        "Ehsan Khan",
+        "Reyansh Sharma"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41826,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-a-vs-hong-kong-acc-men's-asia-cup-rising-stars-21st-november-2026-41826",
+    "auto": true,
+    "xis": false
+  }
+}

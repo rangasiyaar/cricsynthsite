@@ -1,0 +1,112 @@
+{
+  "id": "ban-a-v-afg-a-odi-doha-2026-11-21",
+  "title": "Bangladesh A v Afghanistan A",
+  "date": "2026-11-21",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 6th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bangladesh A",
+      "short": "BAN-A",
+      "players": [
+        "Saif Hassan",
+        "Shahadat Hossain Dipu",
+        "Yasir Ali Chowdhury",
+        "Sabbir Rahman",
+        "Parvez Hossain Emon",
+        "Irfan Shukkur",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rakibul Hasan",
+        "Md Rubel",
+        "Iqbal Hasan Emon"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Saif Hassan",
+      "squad": [
+        "Saif Hassan",
+        "Shahadat Hossain Dipu",
+        "Yasir Ali Chowdhury",
+        "Sabbir Rahman",
+        "Parvez Hossain Emon",
+        "Irfan Shukkur",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rakibul Hasan",
+        "Md Rubel",
+        "Iqbal Hasan Emon"
+      ]
+    },
+    {
+      "name": "Afghanistan A",
+      "short": "AFG-A",
+      "players": [
+        "Imran Mir",
+        "Hassan Eisakhil",
+        "Ijaz Ahmadzai",
+        "Darwish Rasooli",
+        "Faisal Shinozada",
+        "Ikram Alikhil",
+        "Farmanullah Safi",
+        "Qais Ahmad",
+        "Allah Mohammad Ghazanfar",
+        "Bilal Sami",
+        "Naveed Zadran"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ikram Alikhil",
+      "squad": [
+        "Imran Mir",
+        "Hassan Eisakhil",
+        "Ijaz Ahmadzai",
+        "Darwish Rasooli",
+        "Faisal Shinozada",
+        "Ikram Alikhil",
+        "Farmanullah Safi",
+        "Qais Ahmad",
+        "Allah Mohammad Ghazanfar",
+        "Bilal Sami",
+        "Naveed Zadran"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41827,
+    "url": "https://khelnow.com/live-cricket-score/bangladesh-a-vs-afghanistan-a-acc-men's-asia-cup-rising-stars-21st-november-2026-41827",
+    "auto": true,
+    "xis": false
+  }
+}
