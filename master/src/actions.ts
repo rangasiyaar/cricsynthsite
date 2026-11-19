@@ -2,6 +2,7 @@
 // (adminLog/{time}-{type}: who, what, which account, details). Plans live on the keys (users/{uid}/keys/{slot}.plan),
 // which the API Worker reads (cached up to a minute); a website plan is the account's `plan` custom claim.
 import { PLANS } from "../../edge/src/keys.ts";
+import { apiPlanFor, type Tier, TIERS } from "./data.ts";
 import type { AuthUser, Google } from "./gcp.ts";
 
 type Row = Record<string, any>;
@@ -17,7 +18,8 @@ export type Action =
   | { type: "key.revoke"; uid: string; slot: string }
   | { type: "key.plan"; uid: string; slot: string; plan: string }
   | { type: "user.disable" | "user.enable"; uid: string }
-  | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" };
+  | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" }
+  | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; note?: string };
 
 export function validate(a: Row | null): Action {
   if (!a || typeof a.type !== "string" || !UID.test(String(a.uid || ""))) throw new ActionError("Bad action");
@@ -37,6 +39,9 @@ export function validate(a: Row | null): Action {
     case "user.website-plan":
       if (!["pro", "free", "beta"].includes(a.plan)) throw new ActionError("Bad plan");
       return { type: a.type, uid: a.uid, plan: a.plan };
+    case "user.tier":
+      if (!Object.hasOwn(TIERS, a.tier) || !["assigned", "paid"].includes(a.tag)) throw new ActionError("Bad subscription");
+      return { type: a.type, uid: a.uid, tier: a.tier, tag: a.tag, note };
   }
   throw new ActionError("Unknown action");
 }
@@ -89,6 +94,33 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       if (a.plan === "beta") delete claims.plan; else claims.plan = a.plan;
       await g.updateUser(a.uid, { claims }).catch((e) => { throw authHint(e); });
       done = a.plan === "beta" ? "Website plan back to default (their own subscription decides)" : `Website plan set to ${a.plan}`;
+      break;
+    }
+    case "user.tier": {
+      // Website / app: every tier but Free includes CricSynthesis Pro (the `plan` claim). API: the plan goes on every
+      // live key. A Razorpay subscription is never touched (the customer cancels it, or it lapses); assigned Pro from
+      // the Grant Pro workflow ends when the tier goes to Free. Recorded in billing/admin for the Paid / Assigned tag.
+      const u: AuthUser | null = await g.user(a.uid).catch(() => null);
+      if (!u) throw new ActionError("No Firebase Auth account for this ID", 404);
+      const claims = { ...(u.claims || {}) };
+      if (a.tier === "free") delete claims.plan; else claims.plan = "pro";
+      await g.updateUser(a.uid, { claims }).catch((e) => { throw authHint(e); });
+      const plan = apiPlanFor(a.tier);
+      const keys = (await g.list(`users/${a.uid}/keys`)).filter((k) => !k.revoked);
+      for (const k of keys) if ((k.plan || "free") !== plan) await g.patch(`users/${a.uid}/keys/${k._id}`, { plan });
+      const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
+      const notes: string[] = [];
+      if (a.tier === "free" && pro?.status === "comp") {
+        await g.patch(`users/${a.uid}/billing/pro`, { status: "ended", proUntil: now.toISOString() });
+        notes.push("assigned Pro ended");
+      }
+      const subPaid = pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime();
+      if (a.tier === "free" && subPaid) notes.push(`their own Razorpay subscription keeps Pro until ${String(pro!.proUntil).slice(0, 10)}`);
+      if (plan !== "free" && !keys.length) notes.push("no API keys yet: set it again after they create one");
+      await g.put(`users/${a.uid}/billing/admin`, { tier: a.tier, tag: a.tier === "free" ? "" : a.tag, at: now.toISOString() });
+      detail = { tier: a.tier, tag: a.tag, apiPlan: plan, keys: keys.map((k) => k._id), ...(a.note ? { note: a.note } : {}) };
+      done = `Subscription set to ${TIERS[a.tier]}${a.tier === "free" ? "" : ` (${a.tag === "paid" ? "Paid" : "Assigned"})`}`
+        + (keys.length ? `; ${keys.length} key${keys.length === 1 ? "" : "s"} on ${plan}` : "") + (notes.length ? `; ${notes.join("; ")}` : "");
       break;
     }
   }

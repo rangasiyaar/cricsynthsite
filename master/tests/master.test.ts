@@ -99,7 +99,10 @@ test("snapshot totals, series, limit hits and plans", () => {
   const u2 = s.users.find((u) => u.uid === "u2")!;
   assert.equal(u2.company, "Acme");
   assert.equal(u2.apiPlan, "pro");
-  assert.equal(u2.paid, true);
+  assert.equal(u2.tier, "api-plus");                                  // API Plus key set by our team, no approved request
+  assert.equal(u2.tag, "assigned");
+  assert.equal(u2.paid, false);
+  assert.equal(s.totals.plans.tiers["api-plus"], 1);
   assert.equal(u2.calls30, 1000);
   assert.equal(s.users.find((u) => u.uid === "u9")!.inAuth, false);
   assert.equal(s.keys.find((k) => k.prefix === "cs_live_ab")!.today, 210);
@@ -275,4 +278,56 @@ test("actions: validation, approve moves live keys, wrong state refused, everyth
   // the route needs a session and the same origin
   assert.equal((await call("/api/action", { method: "POST", body: "{}" })).status, 401);
   assert.equal((await call("/api/log")).status, 401);
+});
+
+
+test("subscription tiers and tags: Paid, Trial, Assigned", async () => {
+  const { subscription } = await import("../src/data.ts");
+  const free = { plan: "Free", source: "default" };
+  assert.deepEqual(subscription("free", free), { tier: "free", tierName: "CricSynthesis Free", tag: null });
+  assert.equal(subscription("free", { plan: "Pro", source: "trial", status: "trial" }).tag, "trial");
+  assert.deepEqual(subscription("free", { plan: "Pro", source: "subscription", status: "active" }), { tier: "pro", tierName: "CricSynthesis Pro", tag: "paid" });
+  assert.equal(subscription("free", { plan: "Pro", source: "subscription", status: "comp" }).tag, "assigned");   // Grant Pro workflow
+  assert.equal(subscription("free", { plan: "Pro", source: "assigned" }).tag, "assigned");
+  assert.equal(subscription("free", { plan: "Pro", source: "assigned" }, [], { tier: "pro", tag: "paid" } as any).tag, "paid");
+  assert.equal(subscription("pro", free, [{ _id: "api-pro", status: "approved" } as any]).tag, "paid");
+  assert.deepEqual(subscription("pro", free), { tier: "api-plus", tierName: "API Plus", tag: "assigned" });
+  assert.equal(subscription("business", free, [], { tier: "business", tag: "paid" } as any).tierName, "Business API");
+  assert.equal(subscription("business", free, [], { tier: "pro", tag: "paid" } as any).tag, "assigned");          // stale record
+});
+
+test("set subscription: claim, keys, assigned Pro ended, recorded and logged", async () => {
+  const { validate, apply, ActionError } = await import("../src/actions.ts");
+  assert.throws(() => validate({ type: "user.tier", uid: "u1", tier: "gold", tag: "paid" }), ActionError);
+  assert.throws(() => validate({ type: "user.tier", uid: "u1", tier: "pro", tag: "trial" }), ActionError);
+  const docs: Record<string, any> = {
+    "users/u1/keys/k1": { _id: "k1", plan: "free", revoked: false }, "users/u1/keys/k2": { _id: "k2", plan: "free", revoked: true },
+    "users/u1/billing/pro": { status: "comp", proUntil: "2099-01-01T00:00:00Z" },
+  };
+  const writes: [string, any][] = [];
+  let claims: any = { other: 1 };
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    list: async (p: string) => Object.entries(docs).filter(([k]) => k.startsWith(p + "/")).map(([, v]) => v),
+    patch: async (p: string, d: any) => { writes.push([p, d]); docs[p] = { ...docs[p], ...d }; },
+    put: async (p: string, d: any) => { writes.push([p, d]); docs[p] = d; },
+    user: async () => ({ claims }),
+    updateUser: async (_: string, c: any) => { claims = c.claims; },
+  };
+  let r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "business", tag: "paid" }), new Date(5000));
+  assert.match(r.done, /Business API \(Paid\); 1 key on business/);
+  assert.deepEqual(claims, { other: 1, plan: "pro" });
+  assert.equal(docs["users/u1/keys/k1"].plan, "business");
+  assert.equal(docs["users/u1/keys/k2"].plan, "free");                       // revoked key untouched
+  assert.deepEqual(docs["users/u1/billing/admin"], { tier: "business", tag: "paid", at: new Date(5000).toISOString() });
+  assert.ok(writes.some(([p, d]) => p === "adminLog/5000-user.tier" && d.email === "boss@example.com"));
+  r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned" }), new Date(6000));
+  assert.match(r.done, /CricSynthesis Free; 1 key on free; assigned Pro ended/);
+  assert.deepEqual(claims, { other: 1 });
+  assert.equal(docs["users/u1/billing/pro"].status, "ended");
+  // a Razorpay subscription is left alone and the admin is told
+  docs["users/u1/billing/pro"] = { status: "active", subscriptionId: "sub_1", proUntil: "2099-01-01T00:00:00Z" };
+  r = await apply(g, "boss@example.com", validate({ type: "user.tier", uid: "u1", tier: "free", tag: "assigned" }), new Date(7000));
+  assert.match(r.done, /Razorpay subscription keeps Pro until 2099-01-01/);
+  assert.equal(docs["users/u1/billing/pro"].status, "active");
 });

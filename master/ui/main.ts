@@ -130,6 +130,10 @@ function wireRefresh() {
   });
 }
 const userLink = (uid: string, email: string | null) => `<a href="#/user/${encodeURIComponent(uid)}">${esc(email || uid)}</a>`;
+const TIER_NAMES: Record<string, string> = { free: "CricSynthesis Free", pro: "CricSynthesis Pro", "api-plus": "API Plus", business: "Business API" };
+const TAGS: Record<string, [string, "good" | "warn" | "info"]> = { paid: ["Paid", "good"], trial: ["Trial", "warn"], assigned: ["Assigned", "info"] };
+const tagBadge = (t: string | null) => (t && TAGS[t] ? badge(TAGS[t][0], TAGS[t][1]) : "");
+const tierCell = (tier: string, tag: string | null) => `${esc(TIER_NAMES[tier] || tier)} ${tagBadge(tag)}`;
 const planBadge = (p: string) => badge(p === "free" ? "Free" : p[0].toUpperCase() + p.slice(1), p === "free" ? "plain" : "good");
 
 // ── overview ──
@@ -139,7 +143,8 @@ async function overview() {
     ${tile("Users", n(t.users), `+${n(t.signups.d7)} this week · ${n(t.verified)} verified`, "#/users")}
     ${tile("Sign-ups", n(t.signups.d1), `today · ${n(t.signups.d7)} in 7 days · ${n(t.signups.d30)} in 30`)}
     ${tile("Active users", n(t.active.d1), `today · ${n(t.active.d7)} in 7 days · ${n(t.active.d30)} in 30`)}
-    ${tile("Paid plans", n(t.plans.paid), `CricSynthesis Pro ${n(t.plans.website.subscribed ?? 0)} (+${n(t.plans.website.trial ?? 0)} on a free day) · API Plus ${n(t.plans.api.pro)} · Business ${n(t.plans.api.business)}`)}
+    ${tile("Paid plans", n(t.plans.paid), t.plans.tiers ? `CricSynthesis Pro ${n(t.plans.tiers.pro)} · API Plus ${n(t.plans.tiers["api-plus"])} · Business API ${n(t.plans.tiers.business)} · ${n(t.plans.tags.trial)} on trial · ${n(t.plans.tags.assigned)} assigned`
+      : `CricSynthesis Pro ${n(t.plans.website.subscribed ?? 0)} (+${n(t.plans.website.trial ?? 0)} on a free day) · API Plus ${n(t.plans.api.pro)} · Business ${n(t.plans.api.business)}`)}
     ${tile("API keys", n(t.keys.active), `${n(t.keys.used7)} used this week · ${n(t.keys.revoked)} revoked`, "#/keys")}
     ${tile("Calls today", n(t.calls.today), `${n(t.calls.d7)} in 7 days · ${n(t.calls.d30)} in 30`, "#/usage")}
     ${tile("MCP connector", n(t.mcpUsers30), `accounts in 30 days · ${n(t.calls.mcp30)} tool calls`)}
@@ -164,7 +169,7 @@ async function users() {
   const s = await snapshot();
   main().innerHTML = head("Users", s) + `<div class="filters">
     <input id="q" type="search" placeholder="Search email, name, company or account ID" aria-label="Search">
-    <select id="f-plan" aria-label="Plan"><option value="">All plans</option><option value="paid">Paid</option><option value="free">Free API plan</option><option value="pro">API Pro</option><option value="business">API Business</option></select>
+    <select id="f-plan" aria-label="Subscription"><option value="">All subscriptions</option>${Object.entries(TIER_NAMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}<option value="tag:paid">Paid</option><option value="tag:trial">Trial</option><option value="tag:assigned">Assigned</option></select>
     <select id="f-use" aria-label="Activity"><option value="">Any activity</option><option value="keys">Has API keys</option><option value="calls">Made calls (30d)</option><option value="mcp">Used MCP (30d)</option><option value="active7">Seen in 7 days</option><option value="req">Open request</option><option value="noauth">Not in Firebase Auth</option></select>
     <span id="count" class="muted"></span><button id="csv" class="btn ghost sm">Export CSV</button></div><div id="tbl"></div>`;
   const cols: Col<Row>[] = [
@@ -173,7 +178,7 @@ async function users() {
     { key: "providers", label: "Sign-in", render: (r) => esc(provider(r.providers)), sort: (r) => r.providers.join() },
     { key: "created", label: "Joined", render: (r) => `<span title="${esc(when(r.created))}">${day(r.created)}</span>` },
     { key: "lastSeen", label: "Last seen", render: (r) => `<span title="${esc(when(r.lastSeen))}">${ago(r.lastSeen)}</span>` },
-    { key: "apiPlan", label: "Plan", render: (r) => `API ${planBadge(r.apiPlan)}${r.websitePlanSource === "assigned" ? " " + badge(`Site ${r.websitePlan}`, "good") : ""}${r.paid ? " " + badge("Paid", "info") : ""}`, sort: (r) => (r.paid ? 10 : 0) + ({ free: 0, pro: 1, business: 2 } as Row)[r.apiPlan] },
+    { key: "tier", label: "Subscription", render: (r) => tierCell(r.tier || "free", r.tag), sort: (r) => ({ free: 0, pro: 1, "api-plus": 2, business: 3 } as Row)[r.tier || "free"] * 10 + (r.tag === "paid" ? 2 : r.tag ? 1 : 0) },
     { key: "activeKeys", label: "Keys", num: true, render: (r) => n(r.activeKeys) },
     { key: "mcpDays", label: "MCP", num: true, render: (r) => (r.mcpDays ? `${r.mcpDays} d` : "–") },
     { key: "calls7", label: "Calls 7d", num: true, render: (r) => n(r.calls7) },
@@ -186,7 +191,7 @@ async function users() {
     const plan = $<HTMLSelectElement>("#f-plan")!.value, use = $<HTMLSelectElement>("#f-use")!.value;
     const rows = (s.users as Row[]).filter((u) =>
       (!q || [u.email, u.name, u.company, u.uid].some((x) => String(x || "").toLowerCase().includes(q)))
-      && (!plan || (plan === "paid" ? u.paid : u.apiPlan === plan))
+      && (!plan || (plan.startsWith("tag:") ? u.tag === plan.slice(4) : (u.tier || "free") === plan))
       && (!use || (use === "keys" ? u.activeKeys > 0 : use === "calls" ? u.calls30 > 0 : use === "mcp" ? u.mcpDays > 0
                   : use === "active7" ? String(u.lastSeen || "") >= since7 : use === "req" ? u.requestsOpen > 0 : !u.inAuth)));
     $("#count")!.textContent = `${n(rows.length)} of ${n(s.users.length)}`;
@@ -196,7 +201,7 @@ async function users() {
   let rows = draw();
   ["#q", "#f-plan", "#f-use"].forEach((id) => $(id)!.addEventListener("input", () => { rows = draw(); }));
   $("#csv")!.addEventListener("click", () => download(`cricsynthesis-users-${new Date().toISOString().slice(0, 10)}.csv`,
-    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "websitePlan", "apiPlan", "paid", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
+    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "tierName", "tag", "websitePlan", "apiPlan", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
   wireRefresh();
 }
 
@@ -213,10 +218,14 @@ async function user(uid: string) {
       · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p>
       <p class="acts">${u.inAuth ? (u.disabled ? actBtn("Enable account", { type: "user.enable", uid }, `Enable ${u.email || uid}? They can sign in again.`)
         : actBtn("Disable account", { type: "user.disable", uid }, `Disable ${u.email || uid}? They are signed out and can't sign in; their API keys keep working until revoked.`, "danger")) : ""}
-        ${u.inAuth ? `<label class="muted">Website plan <select data-act='${esc(JSON.stringify({ type: "user.website-plan", uid }))}' data-cur="${esc(id?.claims?.plan || "beta")}" data-q="Set website plan">
-          ${[["beta", "Their subscription decides"], ["pro", "Pro (assigned, free)"], ["free", "Free (assigned)"]].map(([v, l]) => `<option value="${v}"${(id?.claims?.plan || "beta") === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>` : ""}</p></div></div>
+        ${u.inAuth ? `<span class="sub-set"><label class="muted">Subscription <select id="tier" aria-label="Subscription tier">
+          ${Object.entries(TIER_NAMES).map(([v, l]) => `<option value="${v}"${sv.subscription.tier === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>
+          <select id="tag" aria-label="How they got it"><option value="assigned"${sv.subscription.tag !== "paid" ? " selected" : ""}>Assigned (free, by our team)</option>
+          <option value="paid"${sv.subscription.tag === "paid" ? " selected" : ""}>Paid (outside Razorpay, e.g. invoice)</option></select>
+          <button class="btn sm" id="tier-set">Set subscription</button></span>` : ""}</p></div></div>
   <h2 class="sec">Services and plan</h2>
   <div class="tiles">
+    ${tile("Subscription", esc(sv.subscription.name), `${tagBadge(sv.subscription.tag)} ${({ paid: "Paid", trial: "On the free day", assigned: "Assigned by our team" } as Record<string, string>)[sv.subscription.tag] || "No paid plan"}${sv.subscription.setBy?.at ? ` · set in the console ${day(sv.subscription.setBy.at)}` : ""}`)}
     ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${({ subscription: "Paid subscription", trial: "Free day", assigned: "Assigned by our team", default: "No subscription" } as Record<string, string>)[sv.website.source] || ""}${sv.website.billing?.status ? ` · ${esc(sv.website.billing.status)}${sv.website.billing.billing ? ` (${esc(sv.website.billing.billing)})` : ""}` : ""}`)}
     ${tile("API plan", planBadge(sv.api.plan), `${paidTag(sv.api.paid)} ${n(sv.api.activeKeys)} active key${sv.api.activeKeys === 1 ? "" : "s"} · ${n(sv.api.limit)} calls a day per key`)}
     ${tile("MCP connector", sv.mcp.used ? "In use" : "Not used", sv.mcp.used ? `${n(sv.mcp.days)} days in 90 · last ${day(sv.mcp.lastDay)} · today ${n(sv.mcp.today)} / ${n(sv.mcp.limit)}` : "No connector calls in 90 days")}
@@ -234,6 +243,12 @@ async function user(uid: string) {
       <dt>Billing emails</dt><dd>${yn(p.profile.notifyBilling)}</dd><dt>Updated</dt><dd>${when(p.profile.updated)}</dd></dl>` : `<p class="empty">No profile details saved.</p>`}</section></div>
   <section class="card"><h2>Timeline</h2>${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
   $("#copy")!.addEventListener("click", () => navigator.clipboard.writeText(uid));
+  $("#tier-set")?.addEventListener("click", () => {
+    const tier = $<HTMLSelectElement>("#tier")!.value, tag = $<HTMLSelectElement>("#tag")!.value;
+    const what = tier === "free" ? "CricSynthesis Free: website Pro off, API keys on Free (a Razorpay subscription is not cancelled)"
+      : `${TIER_NAMES[tier]} (${tag === "paid" ? "Paid" : "Assigned"}): website Pro on${tier === "pro" ? ", API keys on Free" : `, API keys on ${tier === "business" ? "Business" : "API Plus"}`}`;
+    act({ type: "user.tier", uid, tier, tag }, `Set ${u.email || uid} to ${what}?`, () => user(uid).then(() => wireTips(main())), true);
+  });
   table($("#keys")!, [
     { key: "name", label: "Key", render: (r) => `${esc(r.name)} <small class="muted">${esc(r.slot)}</small>` },
     { key: "prefix", label: "Prefix", render: (r) => `<code>${esc(r.prefix)}…</code>` },
@@ -383,7 +398,7 @@ async function ux() {
 // ── audit log ──
 const ACT_NAMES: Record<string, string> = { signin: "Signed in", "request.approve": "Approved request", "request.decline": "Declined request",
   "key.revoke": "Revoked key", "key.plan": "Changed key plan", "user.disable": "Disabled account", "user.enable": "Enabled account",
-  "user.website-plan": "Changed website plan" };
+  "user.website-plan": "Changed website plan", "user.tier": "Set subscription" };
 async function log() {
   const l = await api("/api/log");
   main().innerHTML = head("Audit log") + `<p class="muted">Every admin sign-in and action, newest first (last 200).</p><div id="tbl"></div>`;

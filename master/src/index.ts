@@ -149,11 +149,11 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
       const uid = url.searchParams.get("uid") || "";
       if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid)) return fail(422, "Bad uid");
       const g = google(env), now = new Date();
-      const [a, prof, keys, requests, usage, billing] = await Promise.all([
+      const [a, prof, keys, requests, usage, billing, admin] = await Promise.all([
         g.user(uid).catch(() => null), g.get(`users/${uid}`), g.list(`users/${uid}/keys`), g.list(`users/${uid}/requests`), g.usage(uid, daysAgo(89, now)),
-        g.get(`users/${uid}/billing/pro`).catch(() => null)]);
+        g.get(`users/${uid}/billing/pro`).catch(() => null), g.get(`users/${uid}/billing/admin`).catch(() => null)]);
       if (!a && !prof && !keys.length && !usage.length) return fail(404, "No such account");
-      return json(profile(uid, a, prof, keys, requests, usage, now, billing));
+      return json(profile(uid, a, prof, keys, requests, usage, now, billing, admin));
     }
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));

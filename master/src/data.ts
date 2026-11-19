@@ -36,6 +36,31 @@ export function websitePlan(u: AuthUser | null, billing?: Doc | null, now = new 
   return { plan: "Free", source: "default", ...(billing?.status ? { status: billing.status } : {}) };
 }
 
+export const TIERS = { free: "CricSynthesis Free", pro: "CricSynthesis Pro", "api-plus": "API Plus", business: "Business API" } as const;
+export type Tier = keyof typeof TIERS;
+export type Tag = "paid" | "trial" | "assigned" | null;
+const TIER_API: Record<Tier, string> = { free: "free", pro: "free", "api-plus": "pro", business: "business" };
+export const apiPlanFor = (t: Tier) => TIER_API[t];
+
+/** One subscription per account for the console: the highest of the API plan (live keys) and website Pro, with how they
+ *  got it. Paid = a Razorpay subscription, an approved API Plus / Business request, or recorded as paid by our team;
+ *  Trial = the free day; Assigned = given by our team (console, Grant Pro workflow or a custom claim) without payment.
+ *  admin = users/{uid}/billing/admin, written by the console's "Set subscription" action. */
+export function subscription(apiPlan: string, web: { plan: string; source: string; status?: string }, requests: Doc[] = [],
+                             admin?: Doc | null): { tier: Tier; tierName: string; tag: Tag } {
+  const tier: Tier = apiPlan === "business" ? "business" : apiPlan === "pro" ? "api-plus" : web.plan === "Pro" ? "pro" : "free";
+  const recorded = admin?.tier === tier && (admin.tag === "paid" || admin.tag === "assigned") ? admin.tag as Tag : null;
+  let tag: Tag = null;
+  if (tier === "api-plus" || tier === "business") {
+    const req = tier === "business" ? "api-business" : "api-pro";
+    tag = recorded || (requests.some((r) => (r._id === req || r.plan === req) && r.status === "approved") ? "paid" : "assigned");
+  } else if (tier === "pro") {
+    tag = web.source === "trial" ? "trial" : web.source === "subscription" ? (web.status === "comp" ? "assigned" : "paid")
+      : recorded || "assigned";
+  }
+  return { tier, tierName: TIERS[tier], tag };
+}
+
 export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
   const slot = k._id;
   let t = 0, d30 = 0;
@@ -51,7 +76,7 @@ export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
 
 /** The per-user summary row (users table) for one account. */
 export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefined, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
-                        billing?: Doc | null) {
+                        billing?: Doc | null, admin?: Doc | null) {
   const today = dayKey(now), from7 = daysAgo(6, now), from30 = daysAgo(29, now);
   const live = keys.filter((k) => !k.revoked);
   const apiPlan = live.reduce((p, k) => ((RANK[k.plan] ?? 0) > (RANK[p] ?? 0) ? k.plan : p), "free");
@@ -70,8 +95,9 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     providers: a?.providers ?? [], created: a?.created ?? null, lastLogin: a?.lastLogin ?? null, lastSeen,
     disabled: a?.disabled ?? false, inAuth: Boolean(a),
     company: profile?.company || null,
-    websitePlan: web.plan, websitePlanSource: web.source, apiPlan,
-    paid: apiPlan !== "free" || web.source === "assigned" || web.source === "subscription", websiteStatus: web.status ?? null,
+    websitePlan: web.plan, websitePlanSource: web.status === "comp" ? "assigned" : web.source, apiPlan,
+    ...(() => { const s = subscription(apiPlan, web, requests, admin); return { tier: s.tier, tierName: s.tierName, tag: s.tag }; })(),
+    paid: subscription(apiPlan, web, requests, admin).tag === "paid", websiteStatus: web.status ?? null,
     keys: keys.length, activeKeys: live.length, mcpDays, mcp30,
     today: callsToday, calls7, calls30, lastCall,
     requestsOpen: requests.filter((r) => r.status === "pending").length,
@@ -92,9 +118,10 @@ export function snapshot(inp: Inputs) {
   const profBy = new Map(inp.profiles.map((p) => [p._id, p]));
   const keysBy = group(inp.keys), reqBy = group(inp.requests);
   const uids = new Set<string>([...authBy.keys(), ...profBy.keys(), ...keysBy.keys(), ...reqBy.keys(), ...Object.keys(inp.usage)]);
-  const billBy = new Map((inp.billing || []).map((b) => [uidOf(b._path), b]));
+  const billBy = new Map((inp.billing || []).filter((b) => b._id !== "admin").map((b) => [uidOf(b._path), b]));
+  const adminBy = new Map((inp.billing || []).filter((b) => b._id === "admin").map((b) => [uidOf(b._path), b]));
   const users = [...uids].map((uid) => userRow(uid, authBy.get(uid) || null, profBy.get(uid), keysBy.get(uid) || [],
-                                               reqBy.get(uid) || [], inp.usage[uid] || [], now, billBy.get(uid)));
+                                               reqBy.get(uid) || [], inp.usage[uid] || [], now, billBy.get(uid), adminBy.get(uid)));
   const emailOf = new Map(users.map((u) => [u.uid, u.email]));
 
   const keys = inp.keys.map((k) => ({ ...keyRow(k, inp.usage[uidOf(k._path)] || [], today, from30), email: emailOf.get(uidOf(k._path)) ?? null }));
@@ -140,7 +167,9 @@ export function snapshot(inp: Inputs) {
       plans: { website: { pro_assigned: count((u) => u.websitePlanSource === "assigned"), subscribed: count((u) => u.websitePlanSource === "subscription"),
                           trial: count((u) => u.websitePlanSource === "trial") },
                api: { free: count((u) => u.apiPlan === "free"), pro: count((u) => u.apiPlan === "pro"), business: count((u) => u.apiPlan === "business") },
-               paid: count((u) => u.paid) },
+               paid: count((u) => u.paid),
+               tiers: Object.fromEntries(Object.keys(TIERS).map((t) => [t, count((u) => u.tier === t)])),
+               tags: { paid: count((u) => u.tag === "paid"), trial: count((u) => u.tag === "trial"), assigned: count((u) => u.tag === "assigned") } },
       calls: { today: users.reduce((s, u) => s + u.today, 0), d7: users.reduce((s, u) => s + u.calls7, 0),
                d30: users.reduce((s, u) => s + u.calls30, 0), mcp30: users.reduce((s, u) => s + u.mcp30, 0) },
       mcpUsers30: count((u) => u.mcpDays > 0),
@@ -160,9 +189,9 @@ export type Snapshot = ReturnType<typeof snapshot> & { errors?: string[] };
 
 /** One account in full: identity, plans and services, keys, usage by day / key / endpoint, requests, timeline. */
 export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
-                        billing?: Doc | null) {
+                        billing?: Doc | null, admin?: Doc | null) {
   const today = dayKey(now), from30 = daysAgo(29, now);
-  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now, billing);
+  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now, billing, admin);
   const series: Row[] = [];
   const byDay = new Map(usage.map((u) => [u._id, u]));
   for (let i = 89; i >= 0; i--) {
@@ -205,7 +234,9 @@ export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys:
     profile: prof ? { company: prof.company || null, useCase: prof.useCase || null, notifyProduct: prof.notifyProduct ?? null,
                       notifyUsage: prof.notifyUsage ?? null, notifyBilling: prof.notifyBilling ?? null, updated: ts(prof.updated) } : null,
     services: {
-      website: { plan: row.websitePlan, source: row.websitePlanSource, paid: row.websitePlanSource === "subscription" || row.websitePlanSource === "assigned",
+      subscription: { tier: row.tier, name: row.tierName, tag: row.tag,
+                      setBy: admin?.tier ? { tier: admin.tier, tag: admin.tag ?? null, at: ts(admin.at) } : null },
+      website: { plan: row.websitePlan, source: row.websitePlanSource, paid: row.websitePlanSource === "subscription",
                  billing: billing ? { status: billing.status ?? null, billing: billing.billing ?? null, proUntil: ts(billing.proUntil),
                                       trialEnd: ts(billing.trialEnd), currentEnd: ts(billing.currentEnd), cancelAtEnd: billing.cancelAtEnd === true,
                                       subscriptionId: billing.subscriptionId ?? null } : null },
