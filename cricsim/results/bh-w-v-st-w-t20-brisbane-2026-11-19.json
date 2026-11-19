@@ -1,0 +1,293 @@
+{
+ "id": "bh-w-v-st-w-t20-brisbane-2026-11-19",
+ "innings": [
+  {
+   "team": "Brisbane Heat Women",
+   "runs": 225,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Grace Harris",
+     "dismissal": "not out",
+     "runs": 121,
+     "balls": 67,
+     "fours": 9,
+     "sixes": 9
+    },
+    {
+     "name": "Charli Knott",
+     "dismissal": "c T Wilson b S Bates",
+     "runs": 62,
+     "balls": 34,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Georgia Redmayne",
+     "dismissal": "c P Litchfield b S Bates",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Orla Prendergast",
+     "dismissal": "st T Wilson b S Bates",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yastika Bhatia",
+     "dismissal": "not out",
+     "runs": 29,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lauren Bell",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Samantha Bates",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nicola Hancock",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Jemma Barsby",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nadine de Klerk",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Georgia Voll",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Charli Knott",
+     "score": 118,
+     "over": "11.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Georgia Redmayne",
+     "score": 118,
+     "over": "11.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Orla Prendergast",
+     "score": 118,
+     "over": "11.4"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 7,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 60
+  },
+  {
+   "team": "Sydney Thunder Women",
+   "runs": 226,
+   "wickets": 4,
+   "overs": "19.2",
+   "batting": [
+    {
+     "name": "Phoebe Litchfield",
+     "dismissal": "b S Ginger",
+     "runs": 28,
+     "balls": 17,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Georgia Voll",
+     "dismissal": "c S Ginger b C White",
+     "runs": 8,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Anika Learoyd",
+     "dismissal": "not out",
+     "runs": 60,
+     "balls": 43,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Heather Knight",
+     "dismissal": "c S Ginger b C Knott",
+     "runs": 44,
+     "balls": 29,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Nadine de Klerk",
+     "dismissal": "b S Ginger",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Harris",
+     "dismissal": "not out",
+     "runs": 63,
+     "balls": 20,
+     "fours": 7,
+     "sixes": 5
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lucy Hamilton",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Orla Prendergast",
+     "overs": "3.2",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Catherine White",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sianna Ginger",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sarah Glenn",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Charli Knott",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Grace Harris",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Georgia Voll",
+     "score": 32,
+     "over": "2.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Phoebe Litchfield",
+     "score": 51,
+     "over": "4.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Heather Knight",
+     "score": 134,
+     "over": "13.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nadine de Klerk",
+     "score": 145,
+     "over": "14.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 17,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Sydney Thunder Women won",
+ "winner": "Sydney Thunder Women"
+}
