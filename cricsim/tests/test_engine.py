@@ -670,3 +670,32 @@ def test_edge_prepares_answers_without_counts(world, tmp_path, monkeypatch):
     assert {x["inn"] for x in s} == {1, 2} and all(0 <= x["win"][0] + x["win"][1] <= 1.0001 for x in s)
     again = edge.build_all(world["model"], mdir, tmp_path / "cov", None, tmp_path / "b", tmp_path / "a", now=now)
     assert again["kept"] == 1 and again["built"] == 0
+
+
+def test_matchup_captain_and_captains_lab(world, tmp_path):
+    from click.testing import CliRunner
+    from cricsim.engine.captains import main as captains
+    m = world["model"]
+    spec = _spec(world["world"])
+    base = simulate(m, spec, n=400, seed=3)
+    try:
+        m.meta["sim"] = {"matchup": 0.0}
+        same = simulate(m, spec, n=400, seed=3)
+        assert (same.parts[0].innings[0].bowl_balls == base.parts[0].innings[0].bowl_balls).all()   # off = unchanged
+        m.meta["sim"] = {"matchup": 3.0}
+        tac = simulate(m, spec, n=400, seed=3)
+    finally:
+        m.meta.pop("sim", None)
+    inn = tac.parts[0].innings[0]
+    assert not (inn.bowl_balls == base.parts[0].innings[0].bowl_balls).all()
+    quota = spec.rules["quota"] * spec.rules["bpo"]
+    assert inn.bowl_balls.max() <= quota and (inn.bowl_balls.sum(1) <= spec.rules["overs"] * spec.rules["bpo"]).all()
+    out = tmp_path / "cap" / "T20"
+    r = CliRunner().invoke(captains, ["--parquet", str(world["parquet"]), "--latest", "3", "--sims", "60",
+                                      "--part", "tactics", "--only", "Bowler for the batter on strike (1)",
+                                      "--out", str(out), "--memory", "1GB"])
+    assert r.exit_code == 0, r.output
+    res = json.loads(out.with_suffix(".json").read_text())
+    assert list(res["variants"]) == ["Current", "Bowler for the batter on strike (1)"]
+    assert res["variants"]["Bowler for the batter on strike (1)"]["sim"] == {"matchup": 1.0}
+    assert "Captains lab · T20 · tactics" in r.output and "captain and vice-captain" in r.output

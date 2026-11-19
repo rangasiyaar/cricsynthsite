@@ -113,6 +113,9 @@ only run once the repo variable `GCP_ENABLED=true` is set.
   browser port `app/lib/engine/sim.ts` must mirror `simulate.py` — `test_browser_parity.py` enforces it.
 - Only Pattern Lab effects that verified as real go into the ball model; myths stay out.
 - Judge changes by the backtest (Engine workflow): result Brier, total-score PIT/coverage, player-run groups.
+- Captain decisions (who bowls each over, `matchup` = bowler for the batter on strike, batting order by stage) are sim settings in
+  `simulate.py`; the Captains lab workflow (`cricsim/engine/captains.py`) scores each variant per family (T20 / OD) on the same
+  matches, incl. every fantasy C/VC rule. A setting made default must also go into `sim.ts` and `cricmcp/.../sim.py` (parity).
 
 ## Rules for new work
 

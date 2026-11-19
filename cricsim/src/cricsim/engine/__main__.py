@@ -97,6 +97,7 @@ def simulate(model_dir: Path, spec_file: Path, n: int, out: Path | None) -> None
 @click.option("--plan-eps", type=float, default=None, help="Variant: overs plan, extra chance per usual over")
 @click.option("--listed-bonus", type=float, default=None, help="Variant: weight added for a listed bowler")
 @click.option("--roles", is_flag=True, help="Mark who may bowl (here: who did), as fixture roles do live")
+@click.option("--matchup", type=float, default=None, help="Variant: captains pick the bowler for the batter on strike (strength)")
 @click.option("--recent-role", type=float, default=None, help="Variant: weight of the last 5 matches in role (0..1)")
 @click.option("--sims", default=1000)
 @click.option("--fantasy-rows", "fantasy_rows", is_flag=True,
@@ -112,7 +113,7 @@ def backtest(parquet: Path, cutoff, end, matches: int, latest: int, latest_forma
              venue_half_life: float | None, era_wickets: str | None, era_gender: bool | None,
              team_day: bool | None, chase_wickets: bool | None, collapse: bool | None, bat_switch: bool | None,
              era_team_type: bool | None, era_ahead: float | None, twelve: bool,
-             dyn_order: float | None, rule_split: bool | None, impact12: bool, fielding: str | None,
+             dyn_order: float | None, matchup: float | None, rule_split: bool | None, impact12: bool, fielding: str | None,
              fantasy_rows: bool, stack_rows: bool, out: Path, memory: str) -> None:
     """Fit before the cutoff, simulate later matches, score the forecasts."""
     from cricsim.engine.backtest import run_backtest, write_report
@@ -146,7 +147,7 @@ def backtest(parquet: Path, cutoff, end, matches: int, latest: int, latest_forma
                                                          ("overs_plan", overs_plan), ("plan_eps", plan_eps),
                                                          ("plan_power", plan_power), ("form", form),
                                                          ("era_wickets", era_wickets), ("team_day", team_day),
-                                                         ("era_ahead", era_ahead), ("dyn_order", dyn_order),
+                                                         ("era_ahead", era_ahead), ("dyn_order", dyn_order), ("matchup", matchup),
                                                          ("impact12", impact12 or None), ("fielding", fielding))
                                       if v is not None},
                        order=order, roles=roles, twelve=twelve, fantasy_rows=fantasy_rows, stack_rows=stack_rows,

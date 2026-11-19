@@ -43,6 +43,9 @@ PLAN_EPS = 0.05          # overs-plan draw: extra chance beyond a bowler's usual
                          # (a flat chance spread the last overs over batters who bowl once a season: 8.7 bowlers)
 PLAN_POWER = 2.0         # the next planned over goes to the bowler furthest below his usual overs, squared: captains
                          # finish their frontliners' spells before turning to part-timers (6.2 bowlers on a typical attack)
+MATCHUP = 0.0            # >0: captains bring on the bowler who suits the batter on strike: each bowler's weight for a
+                         # new over × exp(MATCHUP × that pair's edge beyond the bowler's usual level; wickets up,
+                         # boundaries down). Variant until the captains lab backs it (browser / MCP copies don't have it)
 PLAN_WEIGHT = 0.01       # each innings starts from a bowling plan: a bowler whose average weight is below this is
                          # only in it some of the time (backtest: 7.3 bowlers used v 6.2 real, wickets spread thin)
 
@@ -216,6 +219,13 @@ class _Tables:
         self.overs_plan = bool(sim.get("overs_plan", OVERS_PLAN))
         self.plan_eps = float(sim.get("plan_eps", PLAN_EPS))
         self.plan_power = float(sim.get("plan_power", PLAN_POWER))
+        # matchup edge per (batter slot, bowler): this pair's wicket and boundary logits beyond what the bowler does
+        # against the batting side on average (the bowler's own level is already in his usage)
+        mu = float(sim.get("matchup", MATCHUP) or 0)
+        self.matchup = None
+        if mu:
+            e = pair[..., S.WKT] - 0.5 * (pair[..., S.FOUR] + pair[..., S.SIX])
+            self.matchup = np.exp(mu * (e - e.mean(0, keepdims=True)))          # (batters, bowlers)
         self.dismissal = model.dismissal[fam][kind].astype(np.float64)        # (11, kinds)
         self.wide_runs = model.wide_runs[fam].astype(np.float64)
         self.bye_runs = model.bye_runs[fam].astype(np.float64)
@@ -352,6 +362,8 @@ def simulate_innings(rng: np.random.Generator, T: _Tables, n: int, rules: dict, 
                 planned = w * plan[sel]
                 keep = planned.sum(1) > 0            # plan exhausted → anyone else who may bowl
                 w[keep] = planned[keep]
+            if T.matchup is not None:            # the bowler for the batter on strike
+                w = w * T.matchup[np.minimum(striker[sel], T.matchup.shape[0] - 1)]
             empty = w.sum(1) == 0
             if empty.any():
                 w[empty] = (quota - used[sel[empty]] > 0).astype(float) + 1e-9

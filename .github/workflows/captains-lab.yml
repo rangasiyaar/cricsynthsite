@@ -1,0 +1,64 @@
+name: Captains lab
+
+# How the simulated captains run the game (who bowls each over, the bowler for the batter on strike, who walks in
+# next), for T20-type and one-day matches: one model per family, every captain setting on the same latest matches,
+# scored on who bowls, wickets, runs, totals, results and fantasy points (incl. every captain / vice-captain rule).
+# cricsim.engine.captains; tables in the run summary, JSON as an artifact.
+on:
+  push:
+    branches: [claude/cricsynthesis-platform]
+    paths: [".github/workflows/captains-lab.yml", "cricsim/src/cricsim/engine/captains.py"]
+  workflow_dispatch:
+    inputs:
+      t20: { description: "T20-type matches (latest N)", default: "300" }
+      od: { description: "One-day matches (latest N)", default: "150" }
+      sims: { description: "Simulations per match", default: "500" }
+
+permissions:
+  contents: read
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [T20, OD]
+        part: [bowling, tactics]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras
+      - name: Day key
+        id: day
+        run: echo "key=parquet-$(date -u +%Y-%m-%d)-${{ hashFiles('cricdata/src/**') }}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: data/parquet
+          key: ${{ steps.day.outputs.key }}
+      - name: Data
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          uv run cricdata download --kind all --dest data/raw
+          uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
+            --names data/raw/names.csv --out data/parquet
+          uv run cricdata attributes --out data/parquet
+          rm -rf data/raw
+      - name: Captains lab
+        env:
+          N: ${{ matrix.family == 'OD' && (inputs.od || '150') || (inputs.t20 || '300') }}
+          SIMS: ${{ inputs.sims || '500' }}
+        run: |
+          set -o pipefail
+          uv run python -m cricsim.engine.captains --parquet data/parquet --family ${{ matrix.family }} \
+            --part ${{ matrix.part }} --latest "$N" --sims "$SIMS" --out data/captains/${{ matrix.family }}-${{ matrix.part }} \
+            --memory 3GB 2> >(grep -E "variant|fitting|ERROR|Traceback|Error" >&2) | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captains-${{ matrix.family }}-${{ matrix.part }}
+          path: data/captains/
+          if-no-files-found: ignore
+          retention-days: 30
