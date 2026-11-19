@@ -12,28 +12,28 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. UAE Bulls won the toss and bowl first.",
   "teams": [
     {
       "name": "UAE Bulls",
       "short": "DB",
       "players": [
         "Andre Fletcher",
-        "Khawaja Nafay",
-        "Max Bryant",
+        "Finn Allen",
+        "Azam Khan",
         "Kieron Pollard",
         "Shadab Khan",
-        "Sunil Narine",
         "Romario Shepherd",
         "Khushdil Shah",
+        "Sunil Narine",
+        "Tahir Zaman",
         "Mohammad Amir",
-        "Muhammad Rohid Khan",
-        "Tahir Zaman"
+        "Muhammad Rohid Khan"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
         "AR",
@@ -63,11 +63,11 @@
       "short": "ARA",
       "players": [
         "Paul Walter",
-        "Quentin Sampson",
-        "Liam Livingstone",
         "Moeen Ali",
+        "Liam Livingstone",
         "Andre Russell",
         "Sam Billings",
+        "Quentin Sampson",
         "Alishan Sharafu",
         "Dwaine Pretorius",
         "Richard Gleeson",
@@ -76,11 +76,11 @@
       ],
       "roles": [
         "AR",
-        "BAT",
         "AR",
         "AR",
         "AR",
         "WK",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41641,
     "url": "https://khelnow.com/live-cricket-score/uae-bulls-vs-arabian-aces-abu-dhabi-t10-league-19th-november-2026-41641",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
