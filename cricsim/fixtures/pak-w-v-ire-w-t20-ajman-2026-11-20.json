@@ -1,0 +1,112 @@
+{
+  "id": "pak-w-v-ire-w-t20-ajman-2026-11-20",
+  "title": "Pakistan Women v Ireland Women",
+  "date": "2026-11-20",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Super Six",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Women",
+      "short": "PAK-W",
+      "players": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Tasmia Rubab",
+        "Momina Riasat"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Muneeba Ali",
+      "squad": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Tasmia Rubab",
+        "Momina Riasat"
+      ]
+    },
+    {
+      "name": "Ireland Women",
+      "short": "IRE-W",
+      "players": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Abbi Harrison",
+        "Georgina Dempsey",
+        "Cara Murray",
+        "Jane Maguire",
+        "Lara McBride",
+        "Aimee Maguire"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Gaby Lewis",
+      "squad": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Abbi Harrison",
+        "Georgina Dempsey",
+        "Cara Murray",
+        "Jane Maguire",
+        "Lara McBride",
+        "Aimee Maguire"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41973,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-women-vs-ireland-women-icc-women's-emerging-nations-trophy-20th-november-2026-41973",
+    "auto": true,
+    "xis": false
+  }
+}

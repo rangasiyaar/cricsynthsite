@@ -1,0 +1,112 @@
+{
+  "id": "sco-w-v-ned-w-t20-ajman-2026-11-20",
+  "title": "Scotland Women v Netherlands Women",
+  "date": "2026-11-20",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Super Six",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Scotland Women",
+      "short": "SCO-W",
+      "players": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kathryn Bryce",
+      "squad": [
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
+        "Pippa Sproul",
+        "Megan McColl",
+        "Priyanaz Chatterji",
+        "Kirstie Gordon",
+        "Abtaha Maqsood",
+        "Hannah Rainey",
+        "Chloe Abel"
+      ]
+    },
+    {
+      "name": "Netherlands Women",
+      "short": "NED-W",
+      "players": [
+        "Frederique Overdijk",
+        "Hannah Landheer",
+        "Iris Zwilling",
+        "Babette de Leede",
+        "Heather Siegers",
+        "Sterre Kalis",
+        "Myrthe van den Raad",
+        "Phebe Molkenboer",
+        "Robine Rijke",
+        "Silver Siegers",
+        "Sanya Khurana"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Babette de Leede",
+      "squad": [
+        "Frederique Overdijk",
+        "Hannah Landheer",
+        "Iris Zwilling",
+        "Babette de Leede",
+        "Heather Siegers",
+        "Sterre Kalis",
+        "Myrthe van den Raad",
+        "Phebe Molkenboer",
+        "Robine Rijke",
+        "Silver Siegers",
+        "Sanya Khurana"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41971,
+    "url": "https://khelnow.com/live-cricket-score/scotland-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-20th-november-2026-41971",
+    "auto": true,
+    "xis": false
+  }
+}
