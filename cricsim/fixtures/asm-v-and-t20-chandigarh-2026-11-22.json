@@ -1,0 +1,112 @@
+{
+  "id": "asm-v-and-t20-chandigarh-2026-11-22",
+  "title": "Assam v Andhra",
+  "date": "2026-11-22",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 77th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Chandigarh",
+  "venue_search": "maharaja yadavindra singh international cricket stadium",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Assam",
+      "short": "ASM",
+      "players": [
+        "Ayush Agarwal",
+        "Bishal Saha",
+        "Denish Das",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Mukhtar Hussain",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Denish Das",
+      "squad": [
+        "Ayush Agarwal",
+        "Bishal Saha",
+        "Denish Das",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Mukhtar Hussain",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta"
+      ]
+    },
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Seeram Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Satyanarayana Raju",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Seeram Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Satyanarayana Raju",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41929,
+    "url": "https://khelnow.com/live-cricket-score/assam-vs-andhra-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41929",
+    "auto": true,
+    "xis": false
+  }
+}

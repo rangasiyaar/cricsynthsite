@@ -1,0 +1,112 @@
+{
+  "id": "tn-v-bir-t20-indore-2026-11-22",
+  "title": "Tamil Nadu v Bihar",
+  "date": "2026-11-22",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 79th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar cricket stadium",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Tamil Nadu",
+      "short": "TN",
+      "players": [
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Balasubramaniam Sachin",
+        "Shahrukh Khan",
+        "Andre Siddarth",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "M. Siddharth",
+        "Ragupathy Silambarasan",
+        "Rithik Easwaran"
+      ],
+      "roles": [
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sai Kishore",
+      "squad": [
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Balasubramaniam Sachin",
+        "Shahrukh Khan",
+        "Andre Siddarth",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "M. Siddharth",
+        "Ragupathy Silambarasan",
+        "Rithik Easwaran"
+      ]
+    },
+    {
+      "name": "Bihar",
+      "short": "BIR",
+      "players": [
+        "Bipin Saurav",
+        "Ayush Loharuka",
+        "Nawaz Khan",
+        "Prashant Singh",
+        "Tarun Kumar",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Suraj Kashyap",
+        "Amod Yadav",
+        "Mayank Kumar",
+        "Ashish Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Suraj Kashyap",
+      "squad": [
+        "Bipin Saurav",
+        "Ayush Loharuka",
+        "Nawaz Khan",
+        "Prashant Singh",
+        "Tarun Kumar",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Suraj Kashyap",
+        "Amod Yadav",
+        "Mayank Kumar",
+        "Ashish Kumar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41931,
+    "url": "https://khelnow.com/live-cricket-score/tamil-nadu-vs-bihar-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41931",
+    "auto": true,
+    "xis": false
+  }
+}
