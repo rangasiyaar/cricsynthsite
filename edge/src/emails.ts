@@ -116,8 +116,8 @@ export function proStarted(d: { name?: string | null; billing: "monthly" | "year
     : [["Plan", `CricSynthesis Pro, ${plan}`], ["Paid today", rupees(d.amount)], ["Renews", `${day(d.firstCharge)}, ${rupees(d.amount)} a ${per}`],
        ["Cancel", "Any time, in one tap from your account"]];
   const after = d.trial
-    ? `Not for you? Cancel before ${dayTime(d.firstCharge)} and you won't be charged. The ₹5 Razorpay took to set up autopay is refunded automatically.`
-    : `Razorpay emails you a receipt for every payment. Cancelling stops the next renewal; you keep Pro until the end of the ${per} you've paid for.`;
+    ? `Not for you? Cancel before ${dayTime(d.firstCharge)} and you won't be charged. The ₹5 autopay check is refunded automatically.`
+    : `You'll get a receipt by email for every payment. Cancelling stops the next renewal; you keep Pro until the end of the ${per} you've paid for.`;
   return {
     subject: d.trial ? "Your CricSynthesis Pro free day has started" : "Welcome to CricSynthesis Pro",
     html: layout(p(intro) + facts(rows) + p(after) + links("Make the most of it", [
@@ -134,7 +134,7 @@ export function proStarted(d: { name?: string | null; billing: "monthly" | "year
 export function paymentFailed(d: { name?: string | null; billing: "monthly" | "yearly"; amount: number; graceUntil: Date }): Email {
   const intro = `We couldn't take your ${d.billing} CricSynthesis Pro payment of ${rupees(d.amount)}. This usually happens when a UPI Autopay ` +
     `mandate was paused, a card expired or there wasn't enough balance.`;
-  const what = `Razorpay will try again automatically. You keep Pro until ${day(d.graceUntil)}; if the payment still hasn't gone through by ` +
+  const what = `We'll try the payment again automatically. You keep Pro until ${day(d.graceUntil)}; if the payment still hasn't gone through by ` +
     `then, Pro switches off until you subscribe again.`;
   return {
     subject: "Action needed: your CricSynthesis Pro payment didn't go through",
@@ -277,12 +277,12 @@ export function accountDeleted(d: { name?: string | null }): Email {
     subject: "Your CricSynthesis account has been deleted",
     html: layout(p(`Hi ${esc(firstName(d.name))},`) +
       p(`As you asked, we've deleted your CricSynthesis account and the data linked to it: your profile, API keys, usage history and requests. You've been signed out everywhere.`) +
-      p(`Payment records are kept by Razorpay, as the law requires for financial transactions. If you subscribed to Pro, the subscription was cancelled first, so nothing more will be charged.`) +
+      p(`Records of past payments are kept only as long as the law requires for financial transactions. If you subscribed to Pro, the subscription was cancelled first, so nothing more will be charged.`) +
       p(`Thank you for using CricSynthesis. You're welcome back any time with a new account.`),
       { eyebrow: "Account", heading: "Your account has been deleted.", title: "Account deleted", reason: "you asked us to delete your CricSynthesis account",
         cta: "Visit CricSynthesis", ctaUrl: SITE }),
     text: `Hi ${firstName(d.name)},\n\nAs you asked, we've deleted your CricSynthesis account and the data linked to it: your profile, API keys, usage history and requests.\n\n` +
-      `Payment records are kept by Razorpay, as the law requires. Any Pro subscription was cancelled first, so nothing more will be charged.\n\nThank you for using CricSynthesis.${sign}`,
+      `Records of past payments are kept only as long as the law requires. Any Pro subscription was cancelled first, so nothing more will be charged.\n\nThank you for using CricSynthesis.${sign}`,
   };
 }
 
