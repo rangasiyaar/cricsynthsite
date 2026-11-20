@@ -1,0 +1,112 @@
+{
+  "id": "ets-v-nc-odi-benoni-2026-11-22",
+  "title": "Eastern Storm v Northern Cape",
+  "date": "2026-11-22",
+  "start_time": "13:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "CSA One-Day Challenge Division II · 9th Match",
+  "comp_key": "csa-one-day-challenge-division-ii",
+  "venue": "Willowmoore Park, Benoni",
+  "venue_search": "willowmoore park",
+  "city": "Benoni",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Eastern Storm",
+      "short": "ETS",
+      "players": [
+        "Jurie Snyman",
+        "Ronan Hermann",
+        "Christopher Britz",
+        "Kabelo Sekhukhune",
+        "Dewan Marais",
+        "Aryan Gopalan",
+        "Tiaan Kuhn",
+        "Brayden Hicks",
+        "Amaan Khan",
+        "Tumelo Simelane",
+        "Thabiso Lekhoana"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Christopher Britz",
+      "squad": [
+        "Jurie Snyman",
+        "Ronan Hermann",
+        "Christopher Britz",
+        "Kabelo Sekhukhune",
+        "Dewan Marais",
+        "Aryan Gopalan",
+        "Tiaan Kuhn",
+        "Brayden Hicks",
+        "Amaan Khan",
+        "Tumelo Simelane",
+        "Thabiso Lekhoana"
+      ]
+    },
+    {
+      "name": "Northern Cape",
+      "short": "NC",
+      "players": [
+        "Steve Stolk",
+        "Nonelela Yikha",
+        "Kyle Jacobs",
+        "Gerhardus Maree",
+        "Jordan Neill",
+        "Tshepo Ntuli",
+        "Johannes van Dyk",
+        "Orapeleng Motlhoaring",
+        "Abel Mokwena",
+        "Hernus Marais",
+        "Romano Terblanche"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "AR"
+      ],
+      "captain": "Tshepo Ntuli",
+      "squad": [
+        "Steve Stolk",
+        "Nonelela Yikha",
+        "Kyle Jacobs",
+        "Gerhardus Maree",
+        "Jordan Neill",
+        "Tshepo Ntuli",
+        "Johannes van Dyk",
+        "Orapeleng Motlhoaring",
+        "Abel Mokwena",
+        "Hernus Marais",
+        "Romano Terblanche"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40953,
+    "url": "https://khelnow.com/live-cricket-score/eastern-storm-vs-northern-cape-csa-one-day-challenge-division-ii-22nd-november-2026-40953",
+    "auto": true,
+    "xis": false
+  }
+}

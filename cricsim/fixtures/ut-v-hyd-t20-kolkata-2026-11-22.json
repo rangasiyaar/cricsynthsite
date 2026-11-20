@@ -1,0 +1,111 @@
+{
+  "id": "ut-v-hyd-t20-kolkata-2026-11-22",
+  "title": "Uttarakhand v Hyderabad (India)",
+  "date": "2026-11-22",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 76th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uttarakhand",
+      "short": "UT",
+      "players": [
+        "Kunal Chandela",
+        "Aanjaneya Suryavanshi",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Jagadeesha Suchith",
+        "Mayank Mishra",
+        "Ravinder Negi",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Kunal Chandela",
+      "squad": [
+        "Kunal Chandela",
+        "Aanjaneya Suryavanshi",
+        "Avneesh Sudha",
+        "Vijay Sharma",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Jagadeesha Suchith",
+        "Mayank Mishra",
+        "Ravinder Negi",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi"
+      ]
+    },
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41928,
+    "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-hyderabad-(india)-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41928",
+    "auto": true,
+    "xis": false
+  }
+}

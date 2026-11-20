@@ -1,0 +1,112 @@
+{
+  "id": "lmp-v-kzni-odi-polokwane-2026-11-22",
+  "title": "Limpopo v KwaZulu-Natal Inland",
+  "date": "2026-11-22",
+  "start_time": "13:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "CSA One-Day Challenge Division II · 8th Match",
+  "comp_key": "csa-one-day-challenge-division-ii",
+  "venue": "Polokwane Cricket Club Ground, Polokwane",
+  "venue_search": "polokwane cricket club ground",
+  "city": "Polokwane",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Limpopo",
+      "short": "LMP",
+      "players": [
+        "Tylor Trenoweth",
+        "Ernest Kemm",
+        "Liam Peters",
+        "Abdullah Bayoumy",
+        "Christoffel Klijnhans",
+        "Ximus du Plooy",
+        "Shelton Ngobeni",
+        "Kyle Landsberg",
+        "Marcello Piedt",
+        "Irvin Hlompo Modimokoane",
+        "Lesego Kokohlabana"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ernest Kemm",
+      "squad": [
+        "Tylor Trenoweth",
+        "Ernest Kemm",
+        "Liam Peters",
+        "Abdullah Bayoumy",
+        "Christoffel Klijnhans",
+        "Ximus du Plooy",
+        "Shelton Ngobeni",
+        "Kyle Landsberg",
+        "Marcello Piedt",
+        "Irvin Hlompo Modimokoane",
+        "Lesego Kokohlabana"
+      ]
+    },
+    {
+      "name": "KwaZulu-Natal Inland",
+      "short": "KZNI",
+      "players": [
+        "Malcolm Nofal",
+        "Ludwig Kaestner",
+        "Kagiso Rapulana",
+        "Daelen Fynn",
+        "Cameron Dean Shekleton",
+        "Jesse Albanie",
+        "Muhammed Bulbulia",
+        "Bamanye Xenxe",
+        "Chad Laycock",
+        "Liyema Waqu",
+        "Jack Lees"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Cameron Dean Shekleton",
+      "squad": [
+        "Malcolm Nofal",
+        "Ludwig Kaestner",
+        "Kagiso Rapulana",
+        "Daelen Fynn",
+        "Cameron Dean Shekleton",
+        "Jesse Albanie",
+        "Muhammed Bulbulia",
+        "Bamanye Xenxe",
+        "Chad Laycock",
+        "Liyema Waqu",
+        "Jack Lees"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40952,
+    "url": "https://khelnow.com/live-cricket-score/limpopo-vs-kwazulu-natal-inland-csa-one-day-challenge-division-ii-22nd-november-2026-40952",
+    "auto": true,
+    "xis": false
+  }
+}

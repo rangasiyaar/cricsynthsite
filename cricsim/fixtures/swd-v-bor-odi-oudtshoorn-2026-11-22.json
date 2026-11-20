@@ -1,0 +1,112 @@
+{
+  "id": "swd-v-bor-odi-oudtshoorn-2026-11-22",
+  "title": "South Western Districts v Border",
+  "date": "2026-11-22",
+  "start_time": "13:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "CSA One-Day Challenge Division II · 7th Match",
+  "comp_key": "csa-one-day-challenge-division-ii",
+  "venue": "Recreation Ground, Oudtshoorn",
+  "venue_search": "recreation ground",
+  "city": "Oudtshoorn",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "South Western Districts",
+      "short": "SWD",
+      "players": [
+        "Yaseen Vallie",
+        "Janneman Malan",
+        "Edward Moore",
+        "Nathan Engelbrecht",
+        "Bennie Hansen",
+        "Modise Maloka",
+        "Liam Alder",
+        "Leo Sadler",
+        "Jade Richter",
+        "Banele Cele",
+        "Nhlakanipho Mpungose"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Yaseen Vallie",
+      "squad": [
+        "Yaseen Vallie",
+        "Janneman Malan",
+        "Edward Moore",
+        "Nathan Engelbrecht",
+        "Bennie Hansen",
+        "Modise Maloka",
+        "Liam Alder",
+        "Leo Sadler",
+        "Jade Richter",
+        "Banele Cele",
+        "Nhlakanipho Mpungose"
+      ]
+    },
+    {
+      "name": "Border",
+      "short": "BOR",
+      "players": [
+        "Jerome Bossr",
+        "Nathan Roux",
+        "Jason Niemand",
+        "Michael Copeland",
+        "Christiaan du Toit",
+        "Mncedisi Malika",
+        "Ayabulela Gqamane",
+        "Jan Coetzer",
+        "Alindile Mhletywa",
+        "Sithembile Langa",
+        "Kgaudisa Molefe"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jerome Bossr",
+      "squad": [
+        "Jerome Bossr",
+        "Nathan Roux",
+        "Jason Niemand",
+        "Michael Copeland",
+        "Christiaan du Toit",
+        "Mncedisi Malika",
+        "Ayabulela Gqamane",
+        "Jan Coetzer",
+        "Alindile Mhletywa",
+        "Sithembile Langa",
+        "Kgaudisa Molefe"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40951,
+    "url": "https://khelnow.com/live-cricket-score/south-western-districts-vs-border-csa-one-day-challenge-division-ii-22nd-november-2026-40951",
+    "auto": true,
+    "xis": false
+  }
+}
