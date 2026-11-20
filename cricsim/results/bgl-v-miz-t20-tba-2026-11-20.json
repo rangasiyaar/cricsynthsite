@@ -1,0 +1,346 @@
+{
+ "id": "bgl-v-miz-t20-tba-2026-11-20",
+ "innings": [
+  {
+   "team": "Bengal",
+   "runs": 196,
+   "wickets": 2,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Abishek Porel",
+     "dismissal": "c J Anderson b Lalthianawma",
+     "runs": 52,
+     "balls": 30,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Karan Lal",
+     "dismissal": "c Manender Singh b Lalthianawma",
+     "runs": 67,
+     "balls": 41,
+     "fours": 9,
+     "sixes": 1
+    },
+    {
+     "name": "Shakir Habib Gandhi",
+     "dismissal": "not out",
+     "runs": 42,
+     "balls": 27,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Rishabh Chaudhary",
+     "dismissal": "not out",
+     "runs": 33,
+     "balls": 22,
+     "fours": 4,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kuldip Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "B Lalnunfela",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Khiangte Vanrotlinga",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lalthianawma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sumit Lama",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chinmay Sutar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Abishek Porel",
+     "score": 99,
+     "over": "9.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Karan Lal",
+     "score": 126,
+     "over": "13.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 1,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 51
+  },
+  {
+   "team": "Mizoram",
+   "runs": 103,
+   "wickets": 10,
+   "overs": "18.2",
+   "batting": [
+    {
+     "name": "Jehu Anderson",
+     "dismissal": "b M Shami",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sahil Sharma",
+     "dismissal": "c R Chaudhary b M Kumar",
+     "runs": 3,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chinmay Sutar",
+     "dismissal": "c K Lal b R Chaudhary",
+     "runs": 61,
+     "balls": 43,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Manender Singh",
+     "dismissal": "c SD Chatterjee b R Chaudhary",
+     "runs": 21,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Joseph Lalthankhuma",
+     "dismissal": "b R Chaudhary",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "B Lalnunfela",
+     "dismissal": "c Shakir Habib Gandhi b SS Ghosh",
+     "runs": 7,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "J Biakthanpuia",
+     "dismissal": "c A Easwaran b R Chaudhary",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Khiangte Vanrotlinga",
+     "dismissal": "b K Lal",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kuldip Yadav",
+     "dismissal": "b K Lal",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sumit Lama",
+     "dismissal": "c A Porel b K Lal",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalthianawma",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammad Shami",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mukesh Kumar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sayan Ghosh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Pradipta Pramanik",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rishabh Chaudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Karan Lal",
+     "overs": "2.2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jehu Anderson",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Sahil Sharma",
+     "score": 19,
+     "over": "4.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Manender Singh",
+     "score": 64,
+     "over": "10.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Joseph Lalthankhuma",
+     "score": 64,
+     "over": "10.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Chinmay Sutar",
+     "score": 93,
+     "over": "14.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "J Biakthanpuia",
+     "score": 93,
+     "over": "14.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Khiangte Vanrotlinga",
+     "score": 98,
+     "over": "16.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kuldip Yadav",
+     "score": 98,
+     "over": "16.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "B Lalnunfela",
+     "score": 100,
+     "over": "17.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Sumit Lama",
+     "score": 103,
+     "over": "18.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Bengal won by 93 runs",
+ "winner": "Bengal"
+}
