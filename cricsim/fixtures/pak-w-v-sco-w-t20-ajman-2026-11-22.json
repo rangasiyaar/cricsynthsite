@@ -1,0 +1,112 @@
+{
+  "id": "pak-w-v-sco-w-t20-ajman-2026-11-22",
+  "title": "Pakistan Women v Scotland Women",
+  "date": "2026-11-22",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Super Six",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan Women",
+      "short": "PAK-W",
+      "players": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Tasmia Rubab",
+        "Momina Riasat"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Muneeba Ali",
+      "squad": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Gull Feroza",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Nashra Sandhu",
+        "Tasmia Rubab",
+        "Momina Riasat"
+      ]
+    },
+    {
+      "name": "Scotland Women",
+      "short": "SCO-W",
+      "players": [
+        "Katherine Fraser",
+        "Darcey Carter",
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Pippa Sproul",
+        "Priyanaz Chatterji",
+        "Isabella Watson",
+        "Kirstie Gordon",
+        "Chloe Abel",
+        "Hannah Rainey",
+        "Abtaha Maqsood"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kathryn Bryce",
+      "squad": [
+        "Katherine Fraser",
+        "Darcey Carter",
+        "Kathryn Bryce",
+        "Sarah Bryce",
+        "Pippa Sproul",
+        "Priyanaz Chatterji",
+        "Isabella Watson",
+        "Kirstie Gordon",
+        "Chloe Abel",
+        "Hannah Rainey",
+        "Abtaha Maqsood"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41975,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-women-vs-scotland-women-icc-women's-emerging-nations-trophy-22nd-november-2026-41975",
+    "auto": true,
+    "xis": false
+  }
+}

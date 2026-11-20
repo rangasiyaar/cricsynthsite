@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Nagaland won the toss and bat first.",
   "teams": [
     {
       "name": "Services",
@@ -26,9 +26,9 @@
         "Mohit Jangra",
         "Arjun Sharma",
         "Arun Bamal",
-        "Irfan Khan",
+        "Mohit Kumar",
         "Raj Bahadur",
-        "Mohit Kumar"
+        "Amit Shukla"
       ],
       "roles": [
         "BAT",
@@ -41,7 +41,7 @@
         "AR",
         "BOWL",
         "AR",
-        "BOWL"
+        "BAT"
       ],
       "captain": "Nakul Sharma",
       "squad": [
@@ -62,29 +62,29 @@
       "name": "Nagaland",
       "short": "NAG",
       "players": [
+        "Tohuka Zhimo",
         "Hokaito Zhimomi",
         "Rongsen Jonathan",
         "Joshua Ozukum",
         "Chetan Bist",
-        "Sedezhalie Rupero",
-        "Tohuka Zhimo",
         "Anil Gupta",
         "Imliwati Lemtur",
         "Nagaho Chishi",
         "Neizekho Rupreo",
-        "Akavi Yeptho"
+        "Akavi Yeptho",
+        "Sedezhalie Rupero"
       ],
       "roles": [
+        "BAT",
         "BAT",
         "AR",
         "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
         "BOWL",
+        "BAT",
         "BAT"
       ],
       "captain": "Hokaito Zhimomi",
@@ -107,6 +107,7 @@
     "kn": 41855,
     "url": "https://khelnow.com/live-cricket-score/services-vs-nagaland-syed-mushtaq-ali-trophy-plate-20th-november-2026-41855",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

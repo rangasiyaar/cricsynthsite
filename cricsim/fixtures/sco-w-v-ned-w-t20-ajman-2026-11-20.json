@@ -12,31 +12,31 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Netherlands Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Scotland Women",
       "short": "SCO-W",
       "players": [
+        "Katherine Fraser",
+        "Darcey Carter",
         "Kathryn Bryce",
         "Sarah Bryce",
-        "Darcey Carter",
-        "Katherine Fraser",
         "Pippa Sproul",
-        "Megan McColl",
         "Priyanaz Chatterji",
+        "Isabella Watson",
         "Kirstie Gordon",
-        "Abtaha Maqsood",
+        "Chloe Abel",
         "Hannah Rainey",
-        "Chloe Abel"
+        "Abtaha Maqsood"
       ],
       "roles": [
         "AR",
+        "AR",
+        "AR",
         "WK",
-        "AR",
-        "AR",
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
         "BOWL",
@@ -62,32 +62,32 @@
       "name": "Netherlands Women",
       "short": "NED-W",
       "players": [
-        "Frederique Overdijk",
-        "Hannah Landheer",
-        "Iris Zwilling",
-        "Babette de Leede",
-        "Heather Siegers",
         "Sterre Kalis",
-        "Myrthe van den Raad",
+        "Sanya Khurana",
         "Phebe Molkenboer",
+        "Rosalie Lawrence",
+        "Frederique Overdijk",
+        "Iris Zwilling",
+        "Myrthe van den Raad",
         "Robine Rijke",
+        "Caroline de Lange",
         "Silver Siegers",
-        "Sanya Khurana"
+        "Hannah Landheer"
       ],
       "roles": [
-        "AR",
-        "BOWL",
-        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
         "WK",
         "AR",
-        "BAT",
         "AR",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
-        "BAT"
+        "BOWL",
+        "BOWL"
       ],
-      "captain": "Babette de Leede",
+      "captain": "Sterre Kalis",
       "squad": [
         "Frederique Overdijk",
         "Hannah Landheer",
@@ -107,6 +107,7 @@
     "kn": 41971,
     "url": "https://khelnow.com/live-cricket-score/scotland-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-20th-november-2026-41971",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
