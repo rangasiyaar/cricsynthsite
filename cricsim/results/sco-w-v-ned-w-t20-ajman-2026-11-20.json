@@ -1,0 +1,343 @@
+{
+ "id": "sco-w-v-ned-w-t20-ajman-2026-11-20",
+ "innings": [
+  {
+   "team": "Scotland Women",
+   "runs": 154,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Darcey Carter",
+     "dismissal": "b Caroline de Lange",
+     "runs": 19,
+     "balls": 23,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Katherine Fraser",
+     "dismissal": "c & b S Khurana",
+     "runs": 25,
+     "balls": 25,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Kathryn Bryce",
+     "dismissal": "b H Landheer",
+     "runs": 34,
+     "balls": 31,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sarah Bryce",
+     "dismissal": "c M van den Raad b Caroline de Lange",
+     "runs": 19,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pippa Sproul",
+     "dismissal": "not out",
+     "runs": 23,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Priyanaz Chatterji",
+     "dismissal": "c Robine Rijke b I Zwilling",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Isabella Watson",
+     "dismissal": "c Caroline de Lange b I Zwilling",
+     "runs": 5,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kirstie Gordon",
+     "dismissal": "runout (M van den Raad / I Zwilling)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Iris Zwilling",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Myrthe van den Raad",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 3,
+     "wides": 5
+    },
+    {
+     "name": "Robine Rijke",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sanya Khurana",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Caroline de Lange",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Silver Siegers",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Frederique Overdijk",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hannah Landheer",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Katherine Fraser",
+     "score": 60,
+     "over": "6.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Darcey Carter",
+     "score": 78,
+     "over": "9.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sarah Bryce",
+     "score": 108,
+     "over": "13.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kathryn Bryce",
+     "score": 123,
+     "over": "16.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Priyanaz Chatterji",
+     "score": 130,
+     "over": "17.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Isabella Watson",
+     "score": 153,
+     "over": "19.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Kirstie Gordon",
+     "score": 154,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 6,
+    "lb": 2,
+    "w": 12,
+    "nb": 4,
+    "p": 0
+   },
+   "powerplay_runs": 60
+  },
+  {
+   "team": "Netherlands Women",
+   "runs": 155,
+   "wickets": 3,
+   "overs": "19.4",
+   "batting": [
+    {
+     "name": "Phebe Molkenboer",
+     "dismissal": "st SJ Bryce b KE Bryce",
+     "runs": 43,
+     "balls": 44,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Sanya Khurana",
+     "dismissal": "runout (KL Gordon / P Sproul)",
+     "runs": 41,
+     "balls": 36,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Sterre Kalis",
+     "dismissal": "not out",
+     "runs": 52,
+     "balls": 27,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Frederique Overdijk",
+     "dismissal": "runout (K Fraser / SJ Bryce)",
+     "runs": 8,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Robine Rijke",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kirstie Gordon",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kathryn Bryce",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hannah Rainey",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Katherine Fraser",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Abtaha Maqsood",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chloe Abel",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Priyanaz Chatterji",
+     "overs": "1.4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sanya Khurana",
+     "score": 88,
+     "over": "12.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Phebe Molkenboer",
+     "score": 94,
+     "over": "13.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Frederique Overdijk",
+     "score": 130,
+     "over": "16.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
