@@ -1,0 +1,112 @@
+{
+  "id": "sikm-v-meg-t20-sovima-2026-11-22",
+  "title": "Sikkim v Meghalaya",
+  "date": "2026-11-22",
+  "start_time": "08:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Plate · 14th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-plate",
+  "venue": "Sovima Cricket Ground, Sovima",
+  "venue_search": "sovima cricket ground",
+  "city": "Sovima",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sikkim",
+      "short": "SIKM",
+      "players": [
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "C Kranthi Kumar",
+        "Gurinder Singh",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Amit Rajera",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Lee Yong Lepcha",
+      "squad": [
+        "Robin Limboo",
+        "Lee Yong Lepcha",
+        "C Kranthi Kumar",
+        "Gurinder Singh",
+        "Satyajeet Bachhav",
+        "Ashish Thapa",
+        "Ankur Malik",
+        "Parth Palawat",
+        "Amit Rajera",
+        "Abishek Kumar",
+        "Palzor Tamang"
+      ]
+    },
+    {
+      "name": "Meghalaya",
+      "short": "MEG",
+      "players": [
+        "Srinivas Sharath",
+        "Jiwanjot Singh",
+        "Josiah Momin",
+        "Raj Biswa",
+        "Nishanta Chakrabaty",
+        "Akshay Karnewar",
+        "Swarajeet Das",
+        "Akash Choudhary",
+        "Riboklang Hynniewta",
+        "Manish Sharma",
+        "Chengkam Sangma"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Srinivas Sharath",
+      "squad": [
+        "Srinivas Sharath",
+        "Jiwanjot Singh",
+        "Josiah Momin",
+        "Raj Biswa",
+        "Nishanta Chakrabaty",
+        "Akshay Karnewar",
+        "Swarajeet Das",
+        "Akash Choudhary",
+        "Riboklang Hynniewta",
+        "Manish Sharma",
+        "Chengkam Sangma"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41860,
+    "url": "https://khelnow.com/live-cricket-score/sikkim-vs-meghalaya-syed-mushtaq-ali-trophy-plate-22nd-november-2026-41860",
+    "auto": true,
+    "xis": false
+  }
+}
