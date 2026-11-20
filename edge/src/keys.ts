@@ -61,12 +61,44 @@ export async function lookup(env: Env, key: string): Promise<Account | null> {
   if (reads.length >= READS_PER_MIN) return null;            // over budget: refuse rather than read
   reads.push(now);
   const doc = await new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT).findKey(hash);
-  const rec = doc && !doc.revoked && PLANS[doc.plan]
-    ? { hash, plan: doc.plan, owner: doc.owner, slot: doc.slot, limits: PLANS[doc.plan] } : null;
+  let rec: Account | null = null;
+  if (doc && !doc.revoked && PLANS[doc.plan]) {
+    // the account's plan counts too: a key made after an upgrade gets the account's plan, not Free
+    const plan = higher(doc.plan, doc.owner ? await accountPlan(env, doc.owner) : "free");
+    rec = { hash, plan, owner: doc.owner, slot: doc.slot, limits: PLANS[plan] };
+  }
   if (cache.size >= MAX_CACHE) for (const k of [...cache.keys()].slice(0, MAX_CACHE / 10)) cache.delete(k);
   cache.set(hash, { t: now, rec });
   return rec;
 }
+
+const RANK: Record<string, number> = { free: 0, pro: 1, business: 2 };
+export const higher = (a: string, b: string) => ((RANK[b] ?? 0) > (RANK[a] ?? 0) ? b : a);
+const TIER_PLAN: Record<string, string> = { "api-plus": "pro", business: "business" };   // billing/admin tier → API plan
+const plans = new Map<string, { t: number; plan: string }>();
+
+/** The account's API plan set by our team (users/{uid}/billing/admin: console subscriptions and approved upgrades),
+ *  cached like keys; "free" when there is none or it can't be read. */
+export async function accountPlan(env: Env, uid: string): Promise<string> {
+  const now = Date.now();
+  const c = plans.get(uid);
+  if (c && now - c.t < TTL_MS) return c.plan;
+  let plan = "free";
+  if (env.GOOGLE_SA) {
+    try {
+      const d = await new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT).getDoc(`users/${uid}/billing/admin`);
+      const until = d?.until ? Date.parse(String(d.until)) : NaN;
+      if (d && TIER_PLAN[String(d.tier)] && !(Number.isFinite(until) && until <= now)) plan = TIER_PLAN[String(d.tier)];
+    } catch { /* keep free */ }
+  }
+  if (plans.size >= MAX_CACHE) for (const k of [...plans.keys()].slice(0, MAX_CACHE / 10)) plans.delete(k);
+  plans.set(uid, { t: now, plan });
+  return plan;
+}
+
+/** The daily limit is per account: every key of an account and its MCP sign-in share one counter (deleting and
+ *  re-creating keys starts nothing over). Keys without an owner (STATIC_KEYS) count on their own. */
+export const counterId = (acct: Pick<Account, "hash" | "owner">) => (acct.owner ? `acct:${acct.owner}` : acct.hash);
 
 /** A short field-safe name for an endpoint or tool, for the per-endpoint usage counts the admin console reads:
  *  "GET /v1/players/{id}/rating" → "players_rating", "POST /v1/simulate" → "post_simulate", MCP tool "par_score" → "mcp_par_score". */
@@ -77,15 +109,16 @@ export function endpointSlug(method: string, path: string): string {
 }
 export const toolSlug = (tool: string) => ("mcp_" + tool.toLowerCase().replace(/[^a-z0-9_]+/g, "_")).slice(0, 64);
 
-/** Count one request for this key; returns today's count (UTC). */
+/** Count one request for this key's account; returns the account's count today (UTC). */
 export async function hit(env: Env, acct: Account, category: string, endpoint = "other"): Promise<number> {
-  const stub = env.USAGE.get(env.USAGE.idFromName(acct.hash));
+  const stub = env.USAGE.get(env.USAGE.idFromName(counterId(acct)));
   const r = await stub.fetch("https://usage/hit", { method: "POST", body: JSON.stringify(
     { owner: acct.owner, slot: acct.slot, cat: CATEGORY_SLUGS[category] || "other", ep: endpoint }) });
   return ((await r.json()) as { n: number }).n;
 }
 
-/** One per API key: today's count, plus what hasn't been written to the dashboard yet. */
+/** One per account (counterId): today's count across all its keys, plus what hasn't been written to the dashboard yet,
+ *  kept per key so the dashboard still shows each key's share. */
 export class Usage {
   state: DurableObjectState; env: Env;
   constructor(state: DurableObjectState, env: Env) { this.state = state; this.env = env; }
@@ -100,8 +133,8 @@ export class Usage {
     today.n += 1;
     await st.put("today", today);
     if (owner && slot && this.env.GOOGLE_SA) {
-      const p = (await st.get<any>("pending")) || { owner, slot, days: {} };
-      const d = (p.days[day] ||= { total: 0, cats: {}, eps: {}, last: "" });
+      const p = (await st.get<any>("pending")) || { owner, days: {} };
+      const d = (p.days[`${day}|${slot}`] ||= { total: 0, cats: {}, eps: {}, last: "" });
       d.total += 1;
       d.cats[cat] = (d.cats[cat] || 0) + 1;
       d.eps ||= {};
@@ -120,12 +153,16 @@ export class Usage {
     await this.state.storage.delete("pending");
     const fs = new Firestore(this.env.GOOGLE_SA, this.env.FIRESTORE_PROJECT);
     try {
-      for (const [day, d] of Object.entries<any>(p.days)) await fs.addUsage(p.owner, day, p.slot, d.total, d.cats, d.last, d.eps || {});
+      for (const [k, d] of Object.entries<any>(p.days)) {
+        const [day, slot] = k.includes("|") ? k.split("|") : [k, p.slot];      // p.slot: a per-key counter from before
+        await fs.addUsage(p.owner, day, slot, d.total, d.cats, d.last, d.eps || {});
+      }
     } catch {
       // never lose counts over a failed write: put them back and retry in a minute
-      const again = (await this.state.storage.get<any>("pending")) || { owner: p.owner, slot: p.slot, days: {} };
-      for (const [day, d] of Object.entries<any>(p.days)) {
-        const x = (again.days[day] ||= { total: 0, cats: {}, eps: {}, last: d.last });
+      const again = (await this.state.storage.get<any>("pending")) || { owner: p.owner, days: {} };
+      for (const [k, d] of Object.entries<any>(p.days)) {
+        const key = k.includes("|") ? k : `${k}|${p.slot}`;
+        const x = (again.days[key] ||= { total: 0, cats: {}, eps: {}, last: d.last });
         x.total += d.total;
         for (const [c, n] of Object.entries<number>(d.cats)) x.cats[c] = (x.cats[c] || 0) + n;
         x.eps ||= {};

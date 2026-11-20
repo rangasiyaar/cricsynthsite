@@ -74,7 +74,7 @@ test("keys, sign-in and the account allowance", async () => {
   let last: any;
   for (let i = 0; i < 201; i++) last = await call("venues", {}, { token: other });
   assert.equal(last.isError, true);
-  assert.match(last.content[0].text, /200 tool calls/);
+  assert.match(last.content[0].text, /200 calls reached for your account/);
   assert.equal((await call("venues", {}, { token: await tokenFor("user-3") })).isError, undefined);
 });
 

@@ -2,7 +2,7 @@
 // website's /data), does light arithmetic, never simulates. See infra/EDGE_PLAN.md.
 import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
-import { type Account, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
+import { type Account, accountPlan, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
 import * as B from "./billing.ts";
 import { Firestore } from "./google.ts";
@@ -154,7 +154,10 @@ async function mcp(req: Request, env: Env, url: URL, path: string): Promise<Resp
     acct = await lookup(env, key);
   } else if (bearer) {
     const uid = await OA.accessUser(env, url.origin, bearer).catch(() => null);
-    if (uid) acct = { hash: "uid:" + uid, plan: "account", owner: uid, slot: "mcp", limits: { ...PLANS.free, daily_requests: MCP_DAILY } };
+    if (uid) {                                  // signed in without a key: the account's plan (Free: MCP_DAILY a day)
+      const plan = await accountPlan(env, uid);
+      acct = { hash: "uid:" + uid, plan, owner: uid, slot: "mcp", limits: plan === "free" ? { ...PLANS.free, daily_requests: MCP_DAILY } : PLANS[plan] };
+    }
   }
   if (!acct) {
     const h = headers(req, env, { "Content-Type": "application/json", "WWW-Authenticate": OA.challenge(url.origin, path) });
@@ -165,7 +168,7 @@ async function mcp(req: Request, env: Env, url: URL, path: string): Promise<Resp
   const allow = async (tool: string): Promise<string | null> => {
     const n = await hit(env, acct!, toolCategory(tool), toolSlug(tool));
     return n > acct!.limits.daily_requests
-      ? `Daily limit of ${acct!.limits.daily_requests} tool calls reached${acct!.slot === "mcp" ? " for your account" : ` for the ${acct!.plan} plan`}.` : null;
+      ? `Daily limit of ${acct!.limits.daily_requests} calls reached for your account today (shared by all your keys and the connector).` : null;
   };
   const a = getAnalytics(env);
   const msgs = Array.isArray(body) ? body.slice(0, 20) : [body];
@@ -205,7 +208,7 @@ export default {
     if (!acct) return fail(req, env, 401, "Missing or invalid API key");
     const n = await hit(env, acct, m.route.tag, endpointSlug(m.route.method, m.route.path));
     if (n > acct.limits.daily_requests) {
-      return fail(req, env, 429, `Daily limit of ${acct.limits.daily_requests} requests reached for the ${acct.plan} plan`);
+      return fail(req, env, 429, `Daily limit of ${acct.limits.daily_requests} requests reached for your account today (shared by all your keys)`);
     }
 
     let body: unknown = null;
