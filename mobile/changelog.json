@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.14",
+  "date": "2026-11-20",
+  "notes": [
+   "The Pro screen shows Free and Pro side by side, with the start button right below them"
+  ]
+ },
+ {
   "version": "0.3.13",
   "date": "2026-11-20",
   "notes": [

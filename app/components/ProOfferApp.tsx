@@ -57,23 +57,24 @@ export default function ProOfferApp({ section = "Lab" }: { section?: string }) {
         ))}
       </div>
 
-      <div className="ap-card ap-plan is-pro">
-        <span className="ap-badge">1 day free</span>
-        <h2>{PRO.name}</h2>
-        <div className="ap-price">{rupees(price)}<small>/{billing === "monthly" ? "month" : "year"}</small></div>
-        <p className="ap-note">{billing === "yearly" ? <>Just {rupees(yearlyPerMonth)} a month. You save {rupees(yearlySaving)}.</>
-          : <>Switch to yearly and save {rupees(yearlySaving)}.</>}</p>
-        <ul className="ap-list">{PRO_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
-        <div className="ap-cta">{cta()}</div>
-        <p className="ap-after">{after}</p>
+      <div className="ap-plans">
+        <div className="ap-card ap-plan">
+          <h2>Free</h2>
+          <div className="ap-price">{rupees(0)}</div>
+          <p className="ap-note">No account needed</p>
+          <ul className="ap-list">{FREE_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
+        </div>
+        <div className="ap-card ap-plan is-pro">
+          <span className="ap-badge">1 day free</span>
+          <h2>Pro</h2>
+          <div className="ap-price">{rupees(price)}<small>/{billing === "monthly" ? "mo" : "yr"}</small></div>
+          <p className="ap-note">{billing === "yearly" ? <>{rupees(yearlyPerMonth)} a month, save {rupees(yearlySaving)}</>
+            : <>Save {rupees(yearlySaving)} yearly</>}</p>
+          <ul className="ap-list">{PRO_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
+        </div>
       </div>
-
-      <div className="ap-card ap-plan">
-        <h2>Free</h2>
-        <div className="ap-price">{rupees(0)}</div>
-        <p className="ap-note">No account needed</p>
-        <ul className="ap-list">{FREE_HIGHLIGHTS.map((l) => <li key={l}><Tick />{l}</li>)}</ul>
-      </div>
+      <div className="ap-cta">{cta()}</div>
+      <p className="ap-after">{after}</p>
 
       <div className="a-group-label" style={{ marginTop: 28 }}>Everything in Pro</div>
       {PRO_GROUPS.map((g) => (
