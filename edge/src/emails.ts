@@ -256,18 +256,19 @@ export function keyCreated(d: { name?: string | null; keyName: string; prefix: s
   };
 }
 
-export function limitReached(d: { name?: string | null; keyName: string; prefix: string; limit: number; plan: "free" | "pro" | "business" }): Email {
-  const nextPlan = d.plan === "free" ? `${b("API Plus")} gives 20,000 requests a day per key (${rupees(4999)} a month) and includes CricSynthesis Pro.`
+export function limitReached(d: { name?: string | null; limit: number; plan: "free" | "pro" | "business"; keys: number }): Email {
+  const nextPlan = d.plan === "free" ? `${b("API Plus")} gives your account 20,000 requests a day (${rupees(4999)} a month) and includes CricSynthesis Pro.`
     : d.plan === "pro" ? `${b("Business API")} gives higher limits, priced for your volume.` : `Reply to this email and we'll look at higher limits with you.`;
+  const shared = d.keys > 1 ? `, shared by your ${d.keys} keys and the AI-assistant connector` : "";
   return {
-    subject: `Your API key reached its daily limit`,
+    subject: `Your account reached today's API limit`,
     html: layout(p(`Hi ${esc(firstName(d.name))},`) +
-      p(`Your key ${b(esc(d.keyName))} (<code>${esc(d.prefix)}…</code>) used all ${d.limit.toLocaleString("en-IN")} of today's requests. Requests with it are refused until the limit resets at 05:30 IST (midnight UTC).`) +
+      p(`Your account used all ${d.limit.toLocaleString("en-IN")} of today's API requests${shared}. Further requests are refused until the limit resets at 05:30 IST (midnight UTC).`) +
       p(`Need more? ${nextPlan}`),
       { eyebrow: "Usage alert", heading: "Daily limit reached.", title: "API usage alert", reason: "you have usage alerts on in your CricSynthesis account",
         links: API_LINKS, cta: d.plan === "business" ? "See your usage" : "See plans", ctaUrl: d.plan === "business" ? `${SITE}/account/` : `${SITE}/pricing/#api`,
-        extraNotice: ["Usage alerts.", `You get at most one of these a day per key. Turn them off under Email preferences in <a href="${SITE}/account/" style="${FLINK}">your account</a>.`] }),
-    text: `Hi ${firstName(d.name)},\n\nYour key ${d.keyName} (${d.prefix}…) used all ${d.limit} of today's requests. It resets at 05:30 IST (midnight UTC).\n\n` +
+        extraNotice: ["Usage alerts.", `You get at most one of these a day. Turn them off under Email preferences in <a href="${SITE}/account/" style="${FLINK}">your account</a>.`] }),
+    text: `Hi ${firstName(d.name)},\n\nYour account used all ${d.limit} of today's API requests${shared}. It resets at 05:30 IST (midnight UTC).\n\n` +
       `Plans: ${SITE}/pricing/#api\n\nTurn usage alerts off in your account: ${SITE}/account/${sign}`,
   };
 }

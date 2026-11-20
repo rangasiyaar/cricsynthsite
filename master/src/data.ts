@@ -25,6 +25,15 @@ export function limitFor(slot: string, plan: string): number {
   return slot === "mcp" ? MCP_DAILY : (PLANS[plan] || PLANS.free).daily_requests;
 }
 
+/** The account's daily limit (the API counts per account, all keys and the MCP connector together): its best live
+ *  key's plan, or the connector's allowance for an account without keys. */
+export function accountLimit(keys: Doc[]): number {
+  const live = keys.filter((k) => !k.revoked);
+  if (!live.length) return MCP_DAILY;
+  const plan = live.reduce((p, k) => ((RANK[k.plan] ?? 0) > (RANK[p] ?? 0) ? k.plan : p), "free");
+  return (PLANS[plan] || PLANS.free).daily_requests;
+}
+
 /** As app/lib/firebase.ts usePlan: a paid subscription (proUntil in the future), else an assigned claim, else Free. */
 export function websitePlan(u: AuthUser | null, billing?: Doc | null, now = new Date()): { plan: string; source: string; status?: string } {
   const until = billing?.proUntil ? Date.parse(billing.proUntil) : NaN;
@@ -135,7 +144,6 @@ export function snapshot(inp: Inputs) {
   for (let i = 29; i >= 0; i--) days[daysAgo(i, now)] = { day: daysAgo(i, now), signups: 0, calls: 0, api: 0, mcp: 0, active: 0 };
   const cats: Record<string, number> = {}, eps: Record<string, number> = {};
   const limitHits: Row[] = [];
-  const planOf = new Map(inp.keys.map((k) => [`${uidOf(k._path)}/${k._id}`, k.plan || "free"]));
   for (const [uid, docs] of Object.entries(inp.usage)) {
     for (const u of docs) {
       if (u._id < from30) continue;
@@ -144,10 +152,8 @@ export function snapshot(inp: Inputs) {
       if (d) { d.calls += total; d.mcp += mcp; d.api += total - mcp; if (total) d.active += 1; }
       for (const [c, n] of Object.entries<number>(u.cats || {})) cats[c] = (cats[c] || 0) + Number(n);
       for (const [e, n] of Object.entries<number>(u.eps || {})) eps[e] = (eps[e] || 0) + Number(n);
-      for (const [slot, n] of Object.entries<number>(u.keys || {})) {
-        const limit = limitFor(slot, planOf.get(`${uid}/${slot}`) || "free");
-        if (Number(n) >= limit) limitHits.push({ uid, email: emailOf.get(uid) ?? null, day: u._id, slot, calls: Number(n), limit });
-      }
+      const limit = accountLimit(keysBy.get(uid) || []);
+      if (total >= limit) limitHits.push({ uid, email: emailOf.get(uid) ?? null, day: u._id, slot: "all", calls: total, limit });
     }
   }
   for (const u of users) if (u.created && days[u.created.slice(0, 10)]) days[u.created.slice(0, 10)].signups += 1;
@@ -177,7 +183,7 @@ export function snapshot(inp: Inputs) {
       calls: { today: users.reduce((s, u) => s + u.today, 0), d7: users.reduce((s, u) => s + u.calls7, 0),
                d30: users.reduce((s, u) => s + u.calls30, 0), mcp30: users.reduce((s, u) => s + u.mcp30, 0) },
       mcpUsers30: count((u) => u.mcpDays > 0),
-      nearLimit: keys.filter((k) => !k.revoked && k.today >= 0.8 * k.limit).length,
+      nearLimit: users.filter((u) => u.today >= 0.8 * accountLimit(keysBy.get(u.uid) || [])).length,
       requestsOpen: requests.filter((r) => r.status === "pending").length,
     },
     series: Object.values(days),
@@ -204,16 +210,13 @@ export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys:
   }
   const eps: Record<string, number> = {}, cats: Record<string, number> = {};
   const limitDays: Row[] = [];
-  const planOf = new Map(keys.map((k) => [k._id, k.plan || "free"]));
   for (const u of usage) {
     if (u._id < from30) continue;
     for (const [e, n] of Object.entries<number>(u.eps || {})) eps[e] = (eps[e] || 0) + Number(n);
     for (const [c, n] of Object.entries<number>(u.cats || {})) cats[c] = (cats[c] || 0) + Number(n);
   }
-  for (const u of usage) for (const [slot, n] of Object.entries<number>(u.keys || {})) {
-    const limit = limitFor(slot, planOf.get(slot) || "free");
-    if (Number(n) >= limit) limitDays.push({ day: u._id, slot, calls: Number(n), limit });
-  }
+  const acctLimit = accountLimit(keys);
+  for (const u of usage) if (Number(u.total || 0) >= acctLimit) limitDays.push({ day: u._id, slot: "all", calls: Number(u.total || 0), limit: acctLimit });
   const keyRows = keys.map((k) => keyRow(k, usage, today, from30));
   const mcpRows = usage.filter((u) => Number(u.keys?.mcp || 0) > 0).map((u) => u._id).sort();
   const reqs = requests.map((r) => ({ plan: r.plan || r._id, volume: r.volume || null, note: r.note || "", status: r.status || "pending",

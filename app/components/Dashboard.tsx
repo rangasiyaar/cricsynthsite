@@ -102,8 +102,8 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
   const apiPlan = apiPlanOf(keys ?? []);
   const today = usage?.[usage.length - 1];
   const limit = API_PLANS[apiPlan].daily;
-  // the daily limit is per key: the busiest key decides how close the account is to being throttled
-  const busiest = today ? Math.max(0, ...Object.values(today.keys)) : 0;
+  // the daily limit is per account: all keys and the MCP connector share it
+  const used = today ? today.total : 0;
   return (
     <>
       <div className="dash-head">
@@ -125,9 +125,9 @@ function DashboardFor({ user, plan, source }: { user: User; plan: string; source
         <h2 className="dash-section-title">{section}</h2>
         <div className="dash-main">
           {err && <p className="notice" role="alert">{err}</p>}
-          {busiest >= 0.8 * limit && (section === "Overview" || section === "Usage") && (
+          {used >= 0.8 * limit && (section === "Overview" || section === "Usage") && (
             <p className="notice dash-alert" role="status">
-              A key has used {fmtN(busiest)} of its {fmtN(limit)} requests today. Requests over the limit return HTTP 429 until
+              Your account has used {fmtN(used)} of its {fmtN(limit)} requests today. Requests over the limit return HTTP 429 until
               {" "}05:30 IST. <button type="button" className="linkbtn" onClick={() => go("Subscription")}>Raise your limit</button>
             </p>
           )}
@@ -174,7 +174,7 @@ export function Overview({ plan, source, keys, usage, apiPlan, go }: {
         <div className="card">
           <div className="cs-k">API keys</div>
           <div className="stat dash-stat">{keys ? active : "—"}<span className="dash-of"> / {SLOTS.length}</span></div>
-          <p className="small muted">{API_PLANS[apiPlan].label} API plan: {fmtN(API_PLANS[apiPlan].daily)} requests a day per key.</p>
+          <p className="small muted">{API_PLANS[apiPlan].label} API plan: {fmtN(API_PLANS[apiPlan].daily)} requests a day for your account, shared by all your keys.</p>
           <div className="card-foot"><button type="button" className="btn ghost" onClick={() => go("API keys")}>Manage keys</button></div>
         </div>
       </div>
@@ -252,7 +252,7 @@ export function Usage({ keys, usage, apiPlan, go }: { keys: ApiKey[] | null; usa
         <div className="card"><div className="cs-k">Requests</div><div className="stat dash-stat">{fmtN(total)}</div>
           <p className="small muted">In the last {span} days, across all keys.</p></div>
         <div className="card"><div className="cs-k">Today</div><div className="stat dash-stat">{fmtN(today.total)}</div>
-          <p className="small muted">Limit {fmtN(limit)} a day per key on the {API_PLANS[apiPlan].label} plan.</p></div>
+          <p className="small muted">Of {fmtN(limit)} a day for your account on the {API_PLANS[apiPlan].label} plan, shared by all keys.</p></div>
         <div className="card"><div className="cs-k">Busiest day</div><div className="stat dash-stat">{peak.total ? fmtN(peak.total) : "—"}</div>
           <p className="small muted">{peak.total ? fmtDay(peak.day, true) : "No requests yet."}</p></div>
       </div>
@@ -271,12 +271,12 @@ export function Usage({ keys, usage, apiPlan, go }: { keys: ApiKey[] | null; usa
             <div className="table-wrap"><table>
               <thead><tr><th>Key</th><th className="num">Today</th><th className="num">{span} days</th></tr></thead>
               <tbody>{keys.map((k) => {
-                const t = today.keys[k.slot] ?? 0, cap = API_PLANS[k.plan]?.daily ?? limit;
+                const t = today.keys[k.slot] ?? 0, cap = limit;      // each key's share of the account's daily limit
                 return (
                   <tr key={k.slot} className={k.revoked ? "revoked" : undefined}>
                     <td><div>{k.name}</div><code className="small muted">{k.prefix}…</code>
                       {!k.revoked && <Meter frac={t / cap} label={`${k.name}: ${t} of ${cap} today`} />}</td>
-                    <td className="num">{fmtN(t)}<div className="small muted">of {fmtN(cap)}</div></td>
+                    <td className="num">{fmtN(t)}<div className="small muted">{cap ? `${Math.round((100 * t) / cap)}% of limit` : ""}</div></td>
                     <td className="num">{fmtN(byKey(k.slot, days))}</td>
                   </tr>
                 );
@@ -408,7 +408,7 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
       </div>
 
       <div className="card">
-        <div className="card-head"><h3>API plan</h3><span className="small muted">Daily limits apply per key</span></div>
+        <div className="card-head"><h3>API plan</h3><span className="small muted">Daily limits apply per account, shared by all keys</span></div>
         <div className="grid g3 dash-tiers">
           {API_TIERS.map((t) => {
             const current = t.id === apiPlan;
@@ -530,7 +530,7 @@ export function Keys({ uid, keys, usage, refresh, setErr }: {
           <dl className="dash-dl">
             <div><dt>Header</dt><dd><code>X-API-Key: cs_live_…</code></dd></div>
             <div><dt>Base URL</dt><dd><code>{API}/v1</code></dd></div>
-            <div><dt>Limits</dt><dd>Per key, reset 05:30 IST</dd></div>
+            <div><dt>Limits</dt><dd>Per account (all keys together), reset 05:30 IST</dd></div>
           </dl>
           <p className="small muted">Keep keys on your server, never in an app or web page. If a key leaks, revoke it and create a
             new one. Higher limits are on the <Link href="/account/#subscription">Subscription</Link> tab.</p>
@@ -572,7 +572,7 @@ export function Keys({ uid, keys, usage, refresh, setErr }: {
 }
 
 const NOTIFY: [keyof Notify, string, string][] = [
-  ["notifyUsage", "Usage alerts", "When a key keeps reaching its daily limit."],
+  ["notifyUsage", "Usage alerts", "When your account reaches its daily limit."],
   ["notifyBilling", "Plan and billing", "Upgrade requests, pricing and invoices."],
   ["notifyProduct", "Product updates", "New endpoints, competitions and features. A few times a year."],
 ];

@@ -279,7 +279,7 @@ async function user(uid: string) {
     { key: "act", label: "", sort: () => null, render: (r) => reqActs(uid, r.plan, r.status, u.email) }], p.requests, { empty: "No upgrade requests." });
   wireActions(main(), () => user(uid).then(() => wireTips(main())));
 }
-const slotName = (s: string) => (s === "mcp" ? "MCP connector" : esc(s));
+const slotName = (s: string) => (s === "mcp" ? "MCP connector" : s === "all" ? "All keys" : esc(s));
 const reqActs = (uid: string, plan: string, status: string, email: string | null) => status !== "pending" ? "" :
   actBtn("Approve", { type: "request.approve", uid, plan }, `Approve ${plan} for ${email || uid}? All their live keys move to ${plan === "api-business" ? "business" : "pro"}.`, "", true)
   + " " + actBtn("Decline", { type: "request.decline", uid, plan }, `Decline ${plan} for ${email || uid}?`, "danger", true);

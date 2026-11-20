@@ -94,7 +94,7 @@ test("snapshot totals, series, limit hits and plans", () => {
   assert.equal(s.series.length, 30);
   assert.equal(s.series.at(-1)!.calls, 250);
   assert.equal(s.series.at(-1)!.signups, 1);
-  assert.deepEqual(s.limitHits.map((h) => `${h.uid}/${h.slot}`), ["u1/k1"]);    // free key over 200; pro key under 5,000
+  assert.deepEqual(s.limitHits.map((h) => `${h.uid}/${h.slot}`), ["u1/all"]);  // per account: u1 (free) over 200; u2 (API Plus) under 20,000
   assert.equal(s.endpoints[0].ep, "cards_match");
   const u2 = s.users.find((u) => u.uid === "u2")!;
   assert.equal(u2.company, "Acme");
