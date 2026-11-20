@@ -58,6 +58,7 @@ jobs:
           S_GH_TOKEN: ${{ secrets.MASTER_GH_TOKEN }}
           S_CLARITY_TOKEN: ${{ secrets.CLARITY_TOKEN }}
           S_BING_API_KEY: ${{ secrets.BING_API_KEY }}
+          S_RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           [ -n "$S_ADMIN_EMAILS" ] && echo "::add-mask::$S_ADMIN_EMAILS"
           umask 077

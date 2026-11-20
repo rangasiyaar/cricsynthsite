@@ -2,6 +2,7 @@
 // (adminLog/{time}-{type}: who, what, which account, details). Plans live on the keys (users/{uid}/keys/{slot}.plan),
 // which the API Worker reads (cached up to a minute); a website plan is the account's `plan` custom claim.
 import { PLANS } from "../../edge/src/keys.ts";
+import * as E from "../../edge/src/emails.ts";
 import { apiPlanFor, type Tier, TIERS } from "./data.ts";
 import type { AuthUser, Google } from "./gcp.ts";
 
@@ -19,7 +20,24 @@ export type Action =
   | { type: "key.plan"; uid: string; slot: string; plan: string }
   | { type: "user.disable" | "user.enable"; uid: string }
   | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" }
-  | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; days: number; note?: string };
+  | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; days: number; note?: string }
+  | { type: "user.delete"; uid: string };
+
+/** Sends an account email to `uid` (looked up in Firebase Auth); returns whether it went. Set by the Worker from
+ *  RESEND_API_KEY; without it no email is sent. */
+export type Mailer = (uid: string, build: (name: string | null) => E.Email, to?: { email: string; name: string | null }) => Promise<boolean>;
+
+export function mailer(g: Google, key: string | undefined): Mailer {
+  return async (uid, build, to) => {
+    if (!key) return false;
+    try {
+      const u = to || await g.user(uid).then((x) => (x?.email ? { email: x.email, name: x.name } : null));
+      if (!u) return false;
+      await E.send(key, u.email, build(u.name));
+      return true;
+    } catch (e) { console.error("email", (e as Error).message); return false; }
+  };
+}
 
 export const MAX_DAYS = 3650;
 
@@ -36,7 +54,7 @@ export function validate(a: Row | null): Action {
     case "key.plan":
       if (!SLOT.test(a.slot) || !PLANS[a.plan]) throw new ActionError("Bad key or plan");
       return { type: a.type, uid: a.uid, slot: a.slot, plan: a.plan };
-    case "user.disable": case "user.enable":
+    case "user.disable": case "user.enable": case "user.delete":
       return { type: a.type, uid: a.uid };
     case "user.website-plan":
       if (!["pro", "free", "beta"].includes(a.plan)) throw new ActionError("Bad plan");
@@ -54,7 +72,7 @@ const authHint = (e: unknown) => (/ 403|INSUFFICIENT_PERMISSION/.test(String((e 
   ? new ActionError("Grant api-worker the Firebase Authentication Admin role to change accounts", 403) : e);
 
 /** Apply an action; returns a short description for the log and the page. */
-export async function apply(g: Google, admin: string, a: Action, now = new Date()): Promise<{ done: string; detail: Row }> {
+export async function apply(g: Google, admin: string, a: Action, now = new Date(), mail?: Mailer): Promise<{ done: string; detail: Row }> {
   let done = "", detail: Row = {};
   switch (a.type) {
     case "request.approve": case "request.decline": {
@@ -80,6 +98,14 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
         done += "; CricSynthesis Pro turned on";
       } else done = `Declined ${a.plan}`;
       if (a.note) detail.note = a.note;
+      if (mail) {
+        const plan = a.plan === "api-business" ? "business" : "api-plus";
+        const ok = await mail(a.uid, (name) => status === "approved"
+          ? E.upgradeApproved({ name, plan, keys: (detail.keys || []).length, note: a.note })
+          : E.upgradeDeclined({ name, plan, note: a.note }));
+        detail.emailed = ok;
+        done += ok ? "; emailed them" : "; no email sent";
+      }
       break;
     }
     case "key.revoke":
@@ -137,10 +163,34 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       if (plan !== "free" && !keys.length) notes.push("no API keys yet: set it again after they create one");
       await g.put(`users/${a.uid}/billing/admin`, { tier: a.tier, tag: a.tier === "free" ? "" : a.tag, at: now.toISOString(),
                                                    until: until ? until.toISOString() : "" });
+      if (mail && a.tier !== "free") {
+        const tier = a.tier as "pro" | "api-plus" | "business";
+        notes.push((await mail(a.uid, (name) => E.subscriptionGiven({ name, tier, until, note: a.note }))) ? "emailed them" : "no email sent");
+      }
       detail = { tier: a.tier, tag: a.tag, apiPlan: plan, until: until ? until.toISOString() : null, keys: keys.map((k) => k._id), ...(a.note ? { note: a.note } : {}) };
       done = `Subscription set to ${TIERS[a.tier]}${a.tier === "free" ? "" : ` (${a.tag === "paid" ? "Paid" : "Assigned"})`}`
         + (a.tier === "free" ? "" : until ? ` for ${a.days} day${a.days === 1 ? "" : "s"} (until ${until.toISOString().slice(0, 10)})` : ", no end date")
         + (keys.length ? `; ${keys.length} key${keys.length === 1 ? "" : "s"} on ${plan}` : "") + (notes.length ? `; ${notes.join("; ")}` : "");
+      break;
+    }
+    case "user.delete": {
+      // A paying subscriber is cancelled in Razorpay first (we can't cancel it from here), so nothing is charged after.
+      const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
+      if (pro?.subscriptionId && ["trial", "active", "past_due"].includes(String(pro.status)) && pro.cancelAtEnd !== true) {
+        throw new ActionError("They have a live Pro subscription: cancel it in the Razorpay dashboard first, then delete the account", 409);
+      }
+      const u: AuthUser | null = await g.user(a.uid).catch(() => null);
+      const removed: string[] = [];
+      for (const sub of ["keys", "requests", "billing"]) {
+        for (const d of await g.list(`users/${a.uid}/${sub}`).catch(() => [])) { await g.remove(d._path); removed.push(d._path); }
+      }
+      for (const d of await g.usage(a.uid, "2000-01-01").catch(() => [])) { await g.remove(d._path); removed.push(d._path); }
+      await g.remove(`users/${a.uid}`);
+      let signIn = "sign-in account deleted";
+      try { await g.deleteUser(a.uid); } catch { signIn = "sign-in account NOT deleted (needs the Firebase Authentication Admin role: delete it in Firebase Console → Authentication)"; }
+      const emailed = u?.email && mail ? await mail(a.uid, (name) => E.accountDeleted({ name }), { email: u.email, name: u.name }) : false;
+      detail = { email: u?.email ?? null, documents: removed.length, emailed };
+      done = `Account data deleted (${removed.length + 1} documents); ${signIn}; ${emailed ? "confirmation emailed" : "no email sent"}`;
       break;
     }
   }
@@ -164,4 +214,31 @@ export async function expire(g: Google, billing: Row[], now = new Date()): Promi
     } catch { /* try again next run */ }
   }
   return moved;
+}
+
+/** The 6-hourly account emails: a reminder 3 days before a subscription our team gave ends, and "Pro has ended" once
+ *  a Razorpay subscription's access has stopped (cancelled, halted or expired). Each is recorded so it goes once. */
+export async function notices(g: Google, billing: Row[], mail: Mailer, now = new Date()): Promise<string[]> {
+  const t = now.getTime(), sent: string[] = [];
+  for (const b of billing) {
+    const uid = String(b._path).split("/")[1];
+    if (!UID.test(uid)) continue;
+    try {
+      if (b._id === "admin" && b.tier && b.tier !== "free" && b.until && b.endingMailed !== b.until) {
+        const until = Date.parse(b.until);
+        if (until > t && until - t <= 3 * 86400_000) {
+          if (await mail(uid, (name) => E.subscriptionEnding({ name, tier: b.tier, until: new Date(until) }))) sent.push(`${uid}: ending`);
+          await g.patch(b._path.replace(/^.*?users\//, "users/"), { endingMailed: b.until });
+        }
+      }
+      if (b._id === "pro" && b.subscriptionId && b.status !== "comp" && b.mailEnded !== b.subscriptionId && b.mailStarted) {
+        const until = Date.parse(b.proUntil);
+        if (until <= t && t - until < 7 * 86400_000) {
+          if (await mail(uid, (name) => E.proEnded({ name }))) sent.push(`${uid}: ended`);
+          await g.patch(b._path.replace(/^.*?users\//, "users/"), { mailEnded: b.subscriptionId });
+        }
+      }
+    } catch (e) { console.error("notice", uid, (e as Error).message); }
+  }
+  return sent;
 }

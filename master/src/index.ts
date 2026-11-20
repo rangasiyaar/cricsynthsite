@@ -8,7 +8,7 @@ import { accuracy, analytics, bing, CLARITY_TTL_MS, clarityFetch, clarityShape, 
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 import { check, summarize } from "./uptime.ts";
-import { ActionError, apply, expire, validate } from "./actions.ts";
+import { ActionError, apply, expire, mailer, notices, validate } from "./actions.ts";
 
 const SECURITY: Record<string, string> = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -58,6 +58,8 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   // console assignments past their end date go back to Free, then the tables are read again
   const ended = await expire(g, billing, now).catch(() => [] as string[]);
   if (ended.length) [keys, billing] = await Promise.all([g.group("keys"), g.group("billing").catch(() => [])]);
+  // reminders before a given subscription ends, and "Pro has ended" (each once)
+  await notices(g, billing, mailer(g, env.RESEND_API_KEY), now).catch((e) => errors.push(`emails: ${(e as Error).message}`));
   const uids = new Set<string>([...(auth || []).map((a) => a.uid), ...profiles.map((p) => p._id),
                                 ...keys.map((k) => k._path.split("/")[1]), ...requests.map((r) => r._path.split("/")[1])]);
   const from = daysAgo(29, now), usage: Record<string, any[]> = {};
@@ -137,7 +139,8 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     if (req.headers.get("Origin") !== url.origin) return fail(403, "Bad origin");
     try {
       const a = validate((await req.json().catch(() => null)) as Record<string, unknown>);
-      const r = await apply(google(env), s.email, a);
+      const g = google(env);
+      const r = await apply(g, s.email, a, new Date(), mailer(g, env.RESEND_API_KEY));
       snapStale = true;
       return json({ ok: true, ...r });
     } catch (e) {

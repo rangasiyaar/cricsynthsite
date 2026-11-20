@@ -86,6 +86,17 @@ export class Firestore {
   }
 
   /** Whether the account holder confirmed they are 18 or over (users/{uid}.adult, set by the website's age check). */
+  /** The account's email and name from Firebase Auth (for account emails); null if it doesn't exist. */
+  async authUser(uid: string): Promise<{ email: string | null; name: string | null } | null> {
+    const r = await fetch(`https://identitytoolkit.googleapis.com/v1/projects/${this.project}/accounts:lookup`, {
+      method: "POST", body: JSON.stringify({ localId: [uid] }),
+      headers: { Authorization: `Bearer ${await accessToken(this.sa, "https://www.googleapis.com/auth/cloud-platform")}`, "Content-Type": "application/json" },
+    });
+    if (!r.ok) throw new Error(`identitytoolkit ${r.status}`);
+    const u = ((await r.json()) as any).users?.[0];
+    return u ? { email: u.email ?? null, name: u.displayName ?? null } : null;
+  }
+
   async isAdult(uid: string): Promise<boolean> {
     const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
                           { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });

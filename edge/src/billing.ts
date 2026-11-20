@@ -31,7 +31,14 @@ export interface Store {
   set(path: string, fields: Rec): Promise<void>;
 }
 
+/** Account emails the billing flow asks for (sent by notify.ts; each recorded on the billing doc so it goes once). */
+export type Notice =
+  | { kind: "started"; billing: Billing; amount: number; trial: boolean; firstCharge: Date }
+  | { kind: "cancelled"; until: Date; trial: boolean }
+  | { kind: "failed"; billing: Billing; amount: number; graceUntil: Date };
+
 export interface Deps {
+  notify?: (uid: string, n: Notice) => Promise<unknown>;
   keyId: string; keySecret: string; webhookSecret?: string;
   store: Store;
   rzp: (method: string, path: string, body?: unknown) => Promise<any>;
@@ -155,7 +162,19 @@ export async function verify(deps: Deps, uid: string, body: any) {
   if (prev?.subscriptionId !== subId) throw new BillingError(400, "This payment is for a different checkout");
   const sub = await deps.rzp("GET", `/subscriptions/${encodeURIComponent(subId)}`);
   if (sub?.notes?.uid !== uid) throw new BillingError(400, "This payment is for a different account");
-  return publicView(await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null, cancelAtEnd: false }), deps.now());
+  const d = await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null, cancelAtEnd: false });
+  await startedMail(deps, uid, d);
+  return publicView(d, deps.now());
+}
+
+/** "Pro started", once per subscription (from verify or, if the page closed first, the webhook). */
+async function startedMail(deps: Deps, uid: string, d: Rec) {
+  if (!deps.notify || d.mailStarted === d.subscriptionId || !["trial", "active"].includes(String(d.status))) return;
+  const billing: Billing = d.billing === "yearly" ? "yearly" : "monthly", trial = d.status === "trial";
+  const first = ms(trial ? d.trialEnd : d.currentEnd);
+  await deps.store.set(docPath(uid), { mailStarted: d.subscriptionId });
+  await deps.notify(uid, { kind: "started", billing, amount: PRICE[billing] / 100, trial,
+                           firstCharge: new Date(Number.isFinite(first) ? first : deps.now() + TRIAL_S * 1000) });
 }
 
 /** Cancel: a paid plan at the end of its period; a free day at once (Pro stays on until the free day ends). */
@@ -167,7 +186,10 @@ export async function cancel(deps: Deps, uid: string) {
   if (["cancelled", "completed", "expired"].includes(cur.status)) return publicView(await save(deps, uid, cur), deps.now());
   const atEnd = cur.status === "active";
   const sub = await deps.rzp("POST", `/subscriptions/${encodeURIComponent(subId)}/cancel`, { cancel_at_cycle_end: atEnd ? 1 : 0 });
-  return publicView(await save(deps, uid, sub, atEnd ? { cancelAtEnd: true } : {}), deps.now());
+  const d = await save(deps, uid, sub, atEnd ? { cancelAtEnd: true } : {});
+  const until = ms(atEnd ? d.currentEnd : d.proUntil);
+  if (deps.notify && Number.isFinite(until)) await deps.notify(uid, { kind: "cancelled", until: new Date(until), trial: cur.status === "authenticated" });
+  return publicView(d, deps.now());
 }
 
 /** The account's Pro billing; refreshed from Razorpay when it's older than 30 minutes or Pro is about to lapse. */
@@ -198,6 +220,15 @@ export async function webhook(deps: Deps, raw: string, signature: string | null)
   // only the account's current checkout counts: no record (never checked out here, or reset by our team) or an older
   // subscription id means the event is ignored, so a late event can't bring back a plan that was removed
   if (!prev?.subscriptionId || prev.subscriptionId !== sub.id) return { ok: true, ignored: true };
-  await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null });
+  const d = await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null });
+  await startedMail(deps, uid, d);
+  // a renewal that didn't go through: once per billing period
+  const period = d.currentEnd instanceof Date ? d.currentEnd.toISOString() : String(d.currentEnd ?? "");
+  if (deps.notify && d.status === "past_due" && prev.mailFailed !== period) {
+    const billing: Billing = d.billing === "yearly" ? "yearly" : "monthly", grace = ms(d.proUntil);
+    await deps.store.set(docPath(uid), { mailFailed: period });
+    await deps.notify(uid, { kind: "failed", billing, amount: PRICE[billing] / 100,
+                             graceUntil: new Date(Number.isFinite(grace) ? grace : deps.now() + GRACE_S * 1000) });
+  }
   return { ok: true };
 }

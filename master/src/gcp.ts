@@ -115,6 +115,11 @@ export class Google {
   }
 
   /** Enable / disable an account or set its custom claims (needs the Firebase Authentication Admin role). */
+  /** Delete a Firebase Auth account (needs the Firebase Authentication Admin role). */
+  async deleteUser(uid: string): Promise<void> {
+    await this.call(`https://identitytoolkit.googleapis.com/v1/projects/${this.project}/accounts:delete`, { method: "POST", body: JSON.stringify({ localId: uid }) });
+  }
+
   async updateUser(uid: string, change: { disabled?: boolean; claims?: Row }): Promise<void> {
     await this.call(`https://identitytoolkit.googleapis.com/v1/projects/${this.project}/accounts:update`, { method: "POST", body: JSON.stringify({
       localId: uid, ...(change.disabled !== undefined ? { disableUser: change.disabled } : {}),

@@ -60,7 +60,10 @@ jobs:
           RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
+          RESEND: ${{ secrets.RESEND_API_KEY }}
         run: |
+          # account emails (emails.ts): set whenever the secret exists, independent of the payment keys
+          if [ -n "$RESEND" ]; then node -e 'process.stdout.write(JSON.stringify({RESEND_API_KEY: process.env.RESEND}))' > /tmp/rs.json && npx wrangler secret bulk /tmp/rs.json; rm -f /tmp/rs.json; echo "Account emails: on" >> "$GITHUB_STEP_SUMMARY"; else echo "::notice::No RESEND_API_KEY: account emails are off."; fi
           [ -n "$RZP_ID" ] && [ -n "$RZP_SECRET" ] || { echo "::notice::No Razorpay keys yet: checkout stays off."; exit 0; }
           node -e 'const e=process.env, o={RAZORPAY_KEY_ID:e.RZP_ID, RAZORPAY_KEY_SECRET:e.RZP_SECRET}; if (e.RZP_WEBHOOK) o.RAZORPAY_WEBHOOK_SECRET=e.RZP_WEBHOOK; process.stdout.write(JSON.stringify(o))' > /tmp/rzp.json
           npx wrangler secret bulk /tmp/rzp.json

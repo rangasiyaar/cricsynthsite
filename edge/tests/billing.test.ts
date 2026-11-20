@@ -147,3 +147,32 @@ test("status refreshes a stale record from Razorpay", async () => {
   assert.equal((await B.status(w.deps, "u1")).status, "halted");
   assert.deepEqual(await B.status(w.deps, "nobody"), { status: "none", pro: false, trialAvailable: true });
 });
+
+test("account emails: Pro started once per subscription, cancelled, and a failed renewal once per period", async () => {
+  const w = world();
+  const sent: B.Notice[] = [];
+  w.deps.notify = async (_uid, n) => { sent.push(n); };
+  const r = await B.checkout(w.deps, user, { billing: "monthly" });
+  w.subs.get(r.subscription_id).status = "authenticated";
+  const sig = await B.hmacHex("sek", `pay_1|${r.subscription_id}`);
+  const body = { razorpay_payment_id: "pay_1", razorpay_subscription_id: r.subscription_id, razorpay_signature: sig };
+  await B.verify(w.deps, "u1", body);
+  await B.verify(w.deps, "u1", body);                                  // a repeat doesn't send it again
+  assert.deepEqual(sent.map((n) => n.kind), ["started"]);
+  assert.equal((sent[0] as any).trial, true);
+  assert.equal((sent[0] as any).amount, 349);
+  assert.equal((sent[0] as any).firstCharge.getTime(), (S0 + B.TRIAL_S) * 1000);
+  // the renewal fails: one email for the period, even if Razorpay sends the event twice
+  const sub = { id: r.subscription_id, status: "pending", paid_count: 1, current_end: S0 + 30 * 86400, notes: { uid: "u1", product: "pro", billing: "monthly" } };
+  const raw = JSON.stringify({ event: "subscription.pending", payload: { subscription: { entity: sub } } });
+  await B.webhook(w.deps, raw, await B.hmacHex("whs", raw));
+  await B.webhook(w.deps, raw, await B.hmacHex("whs", raw));
+  assert.deepEqual(sent.map((n) => n.kind), ["started", "failed"]);
+  assert.equal((sent[1] as any).graceUntil.getTime(), (S0 + 33 * 86400) * 1000);
+  // cancelling: the email says until when
+  Object.assign(w.subs.get(r.subscription_id), { status: "active", paid_count: 1, current_end: S0 + 30 * 86400 });
+  await B.cancel(w.deps, "u1");
+  assert.equal(sent.at(-1)!.kind, "cancelled");
+  assert.equal((sent.at(-1) as any).until.getTime(), (S0 + 30 * 86400) * 1000);
+  assert.equal((sent.at(-1) as any).trial, false);
+});

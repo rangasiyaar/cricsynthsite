@@ -220,6 +220,7 @@ async function user(uid: string) {
       · Joined ${day(u.created)} · Last sign-in ${ago(id?.lastLogin)} · Last seen ${ago(u.lastSeen)}</p>
       <p class="acts">${u.inAuth ? (u.disabled ? actBtn("Enable account", { type: "user.enable", uid }, `Enable ${u.email || uid}? They can sign in again.`)
         : actBtn("Disable account", { type: "user.disable", uid }, `Disable ${u.email || uid}? They are signed out and can't sign in; their API keys keep working until revoked.`, "danger")) : ""}
+        <button class="btn ghost xs danger" id="del-acct">Delete account</button>
         ${u.inAuth ? `<span class="sub-set"><label class="muted">Subscription <select id="tier" aria-label="Subscription tier">
           ${Object.entries(TIER_NAMES).map(([v, l]) => `<option value="${v}"${sv.subscription.tier === v ? " selected" : ""}>${l}</option>`).join("")}</select></label>
           <select id="tag" aria-label="How they got it"><option value="assigned"${sv.subscription.tag !== "paid" ? " selected" : ""}>Assigned (free, by our team)</option>
@@ -248,6 +249,11 @@ async function user(uid: string) {
       <dt>Billing emails</dt><dd>${yn(p.profile.notifyBilling)}</dd><dt>Updated</dt><dd>${when(p.profile.updated)}</dd></dl>` : `<p class="empty">No profile details saved.</p>`}</section></div>
   <section class="card"><h2>Timeline</h2>${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
   $("#copy")!.addEventListener("click", () => navigator.clipboard.writeText(uid));
+  $("#del-acct")?.addEventListener("click", () => {
+    const typed = prompt(`Delete ${u.email || uid} for good?\n\nThis removes their profile, API keys, usage, requests and billing records, deletes the sign-in account and emails them a confirmation. It can't be undone.\n\nType DELETE to continue.`);
+    if (typed !== "DELETE") return;
+    act({ type: "user.delete", uid }, `Last check: delete ${u.email || uid} now?`, () => { location.hash = "#/users"; });
+  });
   $("#days")?.addEventListener("change", () => { $<HTMLInputElement>("#days-n")!.hidden = $<HTMLSelectElement>("#days")!.value !== "custom"; });
   $("#tier-set")?.addEventListener("click", () => {
     const tier = $<HTMLSelectElement>("#tier")!.value, tag = $<HTMLSelectElement>("#tag")!.value;
@@ -408,7 +414,7 @@ async function ux() {
 // ── audit log ──
 const ACT_NAMES: Record<string, string> = { signin: "Signed in", "request.approve": "Approved request", "request.decline": "Declined request",
   "key.revoke": "Revoked key", "key.plan": "Changed key plan", "user.disable": "Disabled account", "user.enable": "Enabled account",
-  "user.website-plan": "Changed website plan", "user.tier": "Set subscription" };
+  "user.website-plan": "Changed website plan", "user.tier": "Set subscription", "user.delete": "Deleted account" };
 async function log() {
   const l = await api("/api/log");
   main().innerHTML = head("Audit log") + `<p class="muted">Every admin sign-in and action, newest first (last 200).</p><div id="tbl"></div>`;

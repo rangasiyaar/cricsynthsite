@@ -28,6 +28,7 @@ export interface Env {
   RAZORPAY_KEY_ID?: string;           // secrets: CricSynthesis Pro checkout (billing.ts); test keys start rzp_test_
   RAZORPAY_KEY_SECRET?: string;
   RAZORPAY_WEBHOOK_SECRET?: string;
+  RESEND_API_KEY?: string;              // account emails (emails.ts, notify.ts); without it nothing is sent
 }
 
 export type Account = { hash: string; plan: string; owner: string | null; slot: string | null; limits: typeof PLANS[string] };

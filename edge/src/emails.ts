@@ -256,10 +256,11 @@ export function keyCreated(d: { name?: string | null; keyName: string; prefix: s
   };
 }
 
-export function limitReached(d: { name?: string | null; limit: number; plan: "free" | "pro" | "business"; keys: number }): Email {
+export function limitReached(d: { name?: string | null; limit: number; plan: "free" | "pro" | "business"; keys?: number }): Email {
   const nextPlan = d.plan === "free" ? `${b("API Plus")} gives your account 20,000 requests a day (${rupees(4999)} a month) and includes CricSynthesis Pro.`
     : d.plan === "pro" ? `${b("Business API")} gives higher limits, priced for your volume.` : `Reply to this email and we'll look at higher limits with you.`;
-  const shared = d.keys > 1 ? `, shared by your ${d.keys} keys and the AI-assistant connector` : "";
+  const shared = d.keys === undefined ? ", shared by all your keys and the AI-assistant connector"
+    : d.keys > 1 ? `, shared by your ${d.keys} keys and the AI-assistant connector` : "";
   return {
     subject: `Your account reached today's API limit`,
     html: layout(p(`Hi ${esc(firstName(d.name))},`) +

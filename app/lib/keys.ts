@@ -4,7 +4,8 @@
 import {
   collection, deleteDoc, doc, documentId, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where, type Timestamp,
 } from "firebase/firestore";
-import { db } from "./firebase";
+import { API } from "./apiref";
+import { auth, db } from "./firebase";
 
 export const SLOTS = ["k1", "k2", "k3", "k4", "k5"] as const;
 export const API_PLANS: Record<string, { daily: number; sims: number; label: string }> = {
@@ -58,6 +59,10 @@ export async function createKey(uid: string, name: string, used: string[]): Prom
     name: name.trim().slice(0, 40) || "Untitled key", prefix: key.slice(0, 12), hash: await sha256(key),
     plan: "free", created: serverTimestamp(), revoked: false,
   });
+  // security email to the owner ("a new API key was created"); never blocks or fails key creation
+  void auth().currentUser?.getIdToken().then((t) => fetch(`${API}/account/key-created`, {
+    method: "POST", headers: { Authorization: `Bearer ${t}`, "Content-Type": "application/json" }, body: JSON.stringify({ slot }),
+  })).catch(() => {});
   return key;
 }
 

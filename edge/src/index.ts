@@ -5,6 +5,8 @@ import { catalog, HttpError, match, Query } from "./api.ts";
 import { type Account, accountPlan, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
 import * as B from "./billing.ts";
+import * as E from "./emails.ts";
+import { mail } from "./notify.ts";
 import { Firestore } from "./google.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
@@ -94,6 +96,35 @@ async function oauth(req: Request, env: Env, url: URL, path: string): Promise<Re
   return null;
 }
 
+/** The first request over the account's daily limit (the counter passes it once a day) emails the owner, if their
+ *  "Usage alerts" switch is on. */
+async function limitMail(env: Env, acct: Account, n: number) {
+  if (!acct.owner || n !== acct.limits.daily_requests + 1) return;
+  const plan = (["free", "pro", "business"].includes(acct.plan) ? acct.plan : "free") as "free" | "pro" | "business";
+  await mail(env, acct.owner, (name) => E.limitReached({ name, limit: acct.limits.daily_requests, plan }), null, "notifyUsage");
+}
+
+/** The account page tells us right after it creates an API key: the owner gets a security email, once per key, and
+ *  only for a key that really exists, isn't revoked and was created in the last 15 minutes. */
+async function keyCreated(req: Request, env: Env): Promise<Response> {
+  if (!env.GOOGLE_SA) return fail(req, env, 503, "Not available");
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+  if (!user) return fail(req, env, 401, "Sign in first");
+  let slot = "";
+  try { slot = String(((await req.json()) as any)?.slot || ""); } catch { /* checked below */ }
+  if (!/^k[1-5]$/.test(slot)) return fail(req, env, 422, "Bad key");
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const path = `users/${user.uid}/keys/${slot}`;
+  const k = await fs.getDoc(path);
+  const created = Date.parse(String(k?.created ?? ""));
+  if (!k || k.revoked === true || k.mailed === true || !(Date.now() - created < 15 * 60_000)) return json(req, env, { sent: false });
+  await fs.setFields(path, { mailed: true });
+  const sent = await mail(env, user.uid, (name) => E.keyCreated({ name, keyName: String(k.name || "Untitled key"),
+    prefix: String(k.prefix || ""), at: new Date(created) }), { email: user.email });
+  return json(req, env, { sent });
+}
+
 /** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
 async function billing(req: Request, env: Env, path: string): Promise<Response> {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
@@ -102,6 +133,8 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
     keyId: env.RAZORPAY_KEY_ID, keySecret: env.RAZORPAY_KEY_SECRET, webhookSecret: env.RAZORPAY_WEBHOOK_SECRET,
     store: { get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) },
     rzp: B.razorpay(env.RAZORPAY_KEY_ID, env.RAZORPAY_KEY_SECRET), now: () => Date.now(),
+    notify: (uid, n) => mail(env, uid, (name) => n.kind === "started" ? E.proStarted({ name, ...n })
+      : n.kind === "cancelled" ? E.proCancelled({ name, ...n }) : E.paymentFailed({ name, ...n })),
   };
   try {
     if (path === "/billing/webhook" && req.method === "POST") {
@@ -167,6 +200,7 @@ async function mcp(req: Request, env: Env, url: URL, path: string): Promise<Resp
   }
   const allow = async (tool: string): Promise<string | null> => {
     const n = await hit(env, acct!, toolCategory(tool), toolSlug(tool));
+    await limitMail(env, acct!, n);
     return n > acct!.limits.daily_requests
       ? `Daily limit of ${acct!.limits.daily_requests} calls reached for your account today (shared by all your keys and the connector).` : null;
   };
@@ -188,6 +222,7 @@ export default {
     }
     if (path === "/health") return json(req, env, { ok: true });
     if (path.startsWith("/billing/")) return billing(req, env, path);
+    if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
     const o = await oauth(req, env, url, path);
     if (o) return o;
     // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in
@@ -207,6 +242,7 @@ export default {
     const acct = key ? await lookup(env, key) : null;
     if (!acct) return fail(req, env, 401, "Missing or invalid API key");
     const n = await hit(env, acct, m.route.tag, endpointSlug(m.route.method, m.route.path));
+    await limitMail(env, acct, n);
     if (n > acct.limits.daily_requests) {
       return fail(req, env, 429, `Daily limit of ${acct.limits.daily_requests} requests reached for your account today (shared by all your keys)`);
     }

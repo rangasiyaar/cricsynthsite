@@ -12,6 +12,7 @@ export interface Env {
   SITE_URL?: string;                  // the public site (its /data files)
   SITE_HOST?: string;                 // the zone / Web Analytics host
   BING_API_KEY?: string;              // optional secret: Bing Webmaster Tools API key
+  RESEND_API_KEY?: string;            // secret: account emails (upgrade decisions, subscriptions, account deleted)
   SC_SITE?: string;                   // Search Console property ("sc-domain:cricsynthesis.in")
   GA_PROPERTY?: string;               // Google Analytics 4 property id (a number; not secret)
   GH_REPO?: string;
