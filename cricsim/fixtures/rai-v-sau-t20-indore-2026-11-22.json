@@ -1,0 +1,112 @@
+{
+  "id": "rai-v-sau-t20-indore-2026-11-22",
+  "title": "Railways v Saurashtra",
+  "date": "2026-11-22",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 66th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Daly College Ground, Indore",
+  "venue_search": "daly college ground",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Garv Sangwan",
+        "Upendra Yadav",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Atal Bihari Rai",
+        "Kritagya Singh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Mohammad Saif",
+      "squad": [
+        "Jayant Lakhan",
+        "Mohammad Saif",
+        "Ravi Singh",
+        "Garv Sangwan",
+        "Upendra Yadav",
+        "Toufik Uddin Mondal",
+        "Mohit Raut",
+        "Pradhyumn Parikh",
+        "Zubair Ali",
+        "Atal Bihari Rai",
+        "Kritagya Singh"
+      ]
+    },
+    {
+      "name": "Saurashtra",
+      "short": "SAU",
+      "players": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Ruchit Ahir",
+        "Siddhant Rana",
+        "Chetan Sakariya",
+        "Harvansh Singh Pangalia",
+        "Krains Fuletra",
+        "Parth Bhut",
+        "Samar Gajjar"
+      ],
+      "roles": [
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Jaydev Unadkat",
+      "squad": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Ruchit Ahir",
+        "Siddhant Rana",
+        "Chetan Sakariya",
+        "Harvansh Singh Pangalia",
+        "Krains Fuletra",
+        "Parth Bhut",
+        "Samar Gajjar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41918,
+    "url": "https://khelnow.com/live-cricket-score/railways-vs-saurashtra-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41918",
+    "auto": true,
+    "xis": false
+  }
+}

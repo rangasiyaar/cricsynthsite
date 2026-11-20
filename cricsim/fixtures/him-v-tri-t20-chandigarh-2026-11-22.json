@@ -1,0 +1,112 @@
+{
+  "id": "him-v-tri-t20-chandigarh-2026-11-22",
+  "title": "Himachal Pradesh v Tripura",
+  "date": "2026-11-22",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 65th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Himachal Pradesh",
+      "short": "HIM",
+      "players": [
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Innesh Mahajan",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Ekant Sen",
+        "Jitender Rana"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Pukhraj Mann",
+      "squad": [
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Innesh Mahajan",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Ekant Sen",
+        "Jitender Rana"
+      ]
+    },
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Bikramkumar Das",
+        "Tanmoy Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Bikramjit Debnath",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Bikramkumar Das",
+        "Tanmoy Das",
+        "Sridam Paul",
+        "Mandeep Singh",
+        "Manisankar  Murasingh",
+        "Sentu Sarkar",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Bikramjit Debnath",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41917,
+    "url": "https://khelnow.com/live-cricket-score/himachal-pradesh-vs-tripura-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41917",
+    "auto": true,
+    "xis": false
+  }
+}
