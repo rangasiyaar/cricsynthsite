@@ -1,0 +1,330 @@
+{
+ "id": "as-w-v-mr-w-t20-adelaide-2026-11-20",
+ "innings": [
+  {
+   "team": "Melbourne Renegades Women",
+   "runs": 165,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Olivia Porter",
+     "dismissal": "c ME Bouchier b T McGrath",
+     "runs": 12,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Hayley Matthews",
+     "dismissal": "c M Schutt b AC Mushangwe",
+     "runs": 16,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Courtney Webb",
+     "dismissal": "runout (ED Broughe)",
+     "runs": 30,
+     "balls": 26,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Sophie Molineux",
+     "dismissal": "not out",
+     "runs": 63,
+     "balls": 38,
+     "fours": 8,
+     "sixes": 2
+    },
+    {
+     "name": "Georgia Wareham",
+     "dismissal": "runout (BE Patterson / ME Bouchier)",
+     "runs": 27,
+     "balls": 16,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Chloe Tryon",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Megan Schutt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ella Wilson",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anesu Mushangwe",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Eleanor Larosa",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Amanda Wellington",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tahlia McGrath",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hayley Matthews",
+     "score": 24,
+     "over": "3.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Olivia Porter",
+     "score": 34,
+     "over": "6.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Courtney Webb",
+     "score": 91,
+     "over": "13.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Georgia Wareham",
+     "score": 146,
+     "over": "18.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 32
+  },
+  {
+   "team": "Adelaide Strikers Women",
+   "runs": 168,
+   "wickets": 5,
+   "overs": "19.5",
+   "batting": [
+    {
+     "name": "Emma de Broughe",
+     "dismissal": "b TJ Vlaeminck",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Maia Bouchier",
+     "dismissal": "c CL Tryon b G Wareham",
+     "runs": 7,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Wolvaardt",
+     "dismissal": "b DJS Dottin",
+     "runs": 91,
+     "balls": 58,
+     "fours": 11,
+     "sixes": 1
+    },
+    {
+     "name": "Tahlia McGrath",
+     "dismissal": "b S Molineux",
+     "runs": 46,
+     "balls": 35,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Madeline Penna",
+     "dismissal": "c & b G Wareham",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bridget Patterson",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Eleanor Larosa",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 1,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Tayla Vlaeminck",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sophie Molineux",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Georgia Wareham",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Milly Illingworth",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hayley Matthews",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Deandra Dottin",
+     "overs": "2.5",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chloe Tryon",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tess Flintoff",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Emma de Broughe",
+     "score": 0,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Maia Bouchier",
+     "score": 27,
+     "over": "4.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Tahlia McGrath",
+     "score": 127,
+     "over": "15.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Madeline Penna",
+     "score": 128,
+     "over": "16.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Laura Wolvaardt",
+     "score": 164,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Adelaide Strikers Women won by 5 wickets",
+ "winner": "Adelaide Strikers Women"
+}
