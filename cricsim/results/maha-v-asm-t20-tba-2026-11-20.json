@@ -1,0 +1,382 @@
+{
+ "id": "maha-v-asm-t20-tba-2026-11-20",
+ "innings": [
+  {
+   "team": "Assam",
+   "runs": 172,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Ayush Agarwal",
+     "dismissal": "c R Ghosh b V Shelar",
+     "runs": 8,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Bishal Saha",
+     "dismissal": "lbw b R Ghosh",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sibsankar Roy",
+     "dismissal": "c P Shaw b PH Solanki",
+     "runs": 31,
+     "balls": 26,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Denish Das",
+     "dismissal": "c H Walunj b V Shelar",
+     "runs": 61,
+     "balls": 33,
+     "fours": 4,
+     "sixes": 4
+    },
+    {
+     "name": "Rohit Mihir Sen",
+     "dismissal": "c P Shaw b R Ghosh",
+     "runs": 12,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Saahil Jain",
+     "dismissal": "lbw b R Ghosh",
+     "runs": 11,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Akash Sengupta",
+     "dismissal": "b R Ghosh",
+     "runs": 16,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Mukhtar Hussain",
+     "dismissal": "b V Shelar",
+     "runs": 6,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Jitumoni Kalita",
+     "dismissal": "c S Veer b M Choudhary",
+     "runs": 11,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Roshan Alam",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mrinmoy Dutta",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mukesh Choudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Vivek Shelar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Prashant Solanki",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Siddhesh Veer",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hitesh Walunj",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Bishal Saha",
+     "score": 9,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ayush Agarwal",
+     "score": 12,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sibsankar Roy",
+     "score": 81,
+     "over": "9.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Rohit Mihir Sen",
+     "score": 113,
+     "over": "13.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Denish Das",
+     "score": 119,
+     "over": "14.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Saahil Jain",
+     "score": 147,
+     "over": "17.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Akash Sengupta",
+     "score": 152,
+     "over": "17.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Mukhtar Hussain",
+     "score": 154,
+     "over": "18.1"
+    },
+    {
+     "wicket": 9,
+     "batter": "Jitumoni Kalita",
+     "score": 169,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 48
+  },
+  {
+   "team": "Maharashtra",
+   "runs": 173,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Prithvi Shaw",
+     "dismissal": "c Akash Sengupta b JN Kalita",
+     "runs": 29,
+     "balls": 24,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Sahil Parakh",
+     "dismissal": "c SA Roy b M Hussain",
+     "runs": 8,
+     "balls": 4,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Rushikesh Sonavne",
+     "dismissal": "st A Agarwal b JN Kalita",
+     "runs": 54,
+     "balls": 32,
+     "fours": 4,
+     "sixes": 4
+    },
+    {
+     "name": "Ruturaj Gaikwad",
+     "dismissal": "not out",
+     "runs": 44,
+     "balls": 35,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Arshin Kulkarni",
+     "dismissal": "c B Saha b JN Kalita",
+     "runs": 13,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Ramakrishna Ghosh",
+     "dismissal": "runout (D Das)",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Siddhesh Veer",
+     "dismissal": "not out",
+     "runs": 18,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mukhtar Hussain",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mrinmoy Dutta",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Akash Sengupta",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Roshan Alam",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Denish Das",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jitumoni Kalita",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sahil Parakh",
+     "score": 9,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prithvi Shaw",
+     "score": 90,
+     "over": "9.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Rushikesh Sonavne",
+     "score": 101,
+     "over": "11.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Arshin Kulkarni",
+     "score": 136,
+     "over": "15.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ramakrishna Ghosh",
+     "score": 145,
+     "over": "16.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Maharashtra won",
+ "winner": "Maharashtra"
+}
