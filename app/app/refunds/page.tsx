@@ -33,7 +33,6 @@ export default function Refunds() {
         <li><b>Service not delivered.</b> If you paid but Pro didn&apos;t turn on for your account and we can&apos;t fix it within 2 working
           days of you telling us, we refund that payment in full.</li>
         <li><b>Where the law requires it.</b> Nothing in this policy limits a refund you are entitled to under applicable law.</li>
-        <li><b>Promo codes.</b> A discount from a promo code (such as WELCOME100) has no cash value and isn&apos;t refunded separately.</li>
       </ul>
 
       <h2>3. How to ask for a refund</h2>

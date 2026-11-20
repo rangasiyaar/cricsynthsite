@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.16",
+  "date": "2026-11-20",
+  "notes": [
+   "A simpler checkout: pick monthly or yearly and start your free day",
+   "Checkout shows the ₹5 autopay check Razorpay takes to verify your card or UPI ID, refunded straight away"
+  ]
+ },
+ {
   "version": "0.3.15",
   "date": "2026-11-20",
   "notes": [

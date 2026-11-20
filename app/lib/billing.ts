@@ -46,9 +46,6 @@ async function call(path: string, body?: unknown) {
 }
 
 export const refreshBilling = () => call("status");
-export type Promo = { code: string; off: number; label: string; firstCharge: number };
-/** Check a promo code for this account (amounts in paise). Throws with the reason when it can't be used. */
-export const checkPromo = (code: string, billing: Billing): Promise<Promo> => call("promo", { code, billing });
 export const cancelPro = () => call("cancel", {});
 
 type RazorpayResponse = { razorpay_payment_id: string; razorpay_subscription_id: string; razorpay_signature: string };
@@ -67,12 +64,12 @@ function loadCheckout(): Promise<void> {
 }
 
 /** Opens Razorpay's checkout for CricSynthesis Pro. Resolves "done" once the payment is verified, "closed" if they closed it. */
-export async function startCheckout(billing: Billing, promo?: string | null): Promise<"done" | "closed"> {
-  const [c] = await Promise.all([call("checkout", { billing, ...(promo ? { promo } : {}) }), loadCheckout()]);
+export async function startCheckout(billing: Billing): Promise<"done" | "closed"> {
+  const [c] = await Promise.all([call("checkout", { billing }), loadCheckout()]);
   return new Promise((resolve, reject) => {
     const rz = new window.Razorpay!({
       key: c.key, subscription_id: c.subscription_id, name: "CricSynthesis", image: "https://cricsynthesis.in/brand-logo.png",
-      description: `CricSynthesis Pro (${billing})${c.trial ? " · 1 day free" : ""}${c.promo ? ` · ${c.promo.code}` : ""}`,
+      description: `CricSynthesis Pro (${billing})${c.trial ? " · 1 day free" : ""}`,
       prefill: { email: c.email || "" }, theme: { color: "#416180" }, notes: { product: "pro" },
       handler: (resp: RazorpayResponse) => { call("verify", resp).then(() => resolve("done"), reject); },
       modal: { ondismiss: () => resolve("closed"), confirm_close: true },
@@ -83,7 +80,7 @@ export async function startCheckout(billing: Billing, promo?: string | null): Pr
 }
 
 /** The checkout page's state (website /checkout/ and the app's /m/checkout/): account, plan status, and pay(). */
-export function useCheckout(billing: Billing, where: "web" | "app", promo?: string | null) {
+export function useCheckout(billing: Billing, where: "web" | "app") {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -98,7 +95,7 @@ export function useCheckout(billing: Billing, where: "web" | "app", promo?: stri
     setBusy(true); setErr(null);
     void import("./analytics").then((a) => a.track("pro_checkout", { billing, trial, where }));
     try {
-      if ((await startCheckout(billing, promo)) === "done") {
+      if ((await startCheckout(billing)) === "done") {
         setDone(true);
         void import("./analytics").then((a) => a.track("pro_subscribed", { billing, trial, where }));
       }
@@ -110,23 +107,3 @@ export function useCheckout(billing: Billing, where: "web" | "app", promo?: stri
 
 /** When the first charge falls if the free day starts now. */
 export const firstChargeDate = () => new Date(Date.now() + 24 * 3600_000);
-
-/** The checkout's promo code: typed or from ?promo=, checked with the API (and again whenever the plan changes). */
-export function usePromo(billing: Billing, initial: string | null, signedIn: boolean) {
-  const [code, setCode] = useState(initial ?? "");
-  const [applied, setApplied] = useState<Promo | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [open, setOpen] = useState(!!initial);
-  const check = async (c: string) => {
-    if (!c.trim()) return;
-    setBusy(true); setErr(null);
-    try { setApplied(await checkPromo(c.trim(), billing)); }
-    catch (e) { setApplied(null); setErr(e instanceof Error ? e.message : "That code couldn't be checked."); }
-    finally { setBusy(false); }
-  };
-  // apply a code from the link once signed in, and re-price it when the plan changes
-  useEffect(() => { if (signedIn && (applied?.code || (initial && !err))) void check(applied?.code || initial || ""); }, [billing, signedIn]); // eslint-disable-line react-hooks/exhaustive-deps
-  return { code, setCode, applied, err, busy, open, setOpen, apply: () => check(code),
-           remove: () => { setApplied(null); setCode(""); setErr(null); } };
-}

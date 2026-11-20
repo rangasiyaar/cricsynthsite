@@ -147,31 +147,3 @@ test("status refreshes a stale record from Razorpay", async () => {
   assert.equal((await B.status(w.deps, "u1")).status, "halted");
   assert.deepEqual(await B.status(w.deps, "nobody"), { status: "none", pro: false, trialAvailable: true });
 });
-
-test("WELCOME100: ₹100 off the first payment, first subscription only, needs its Razorpay offer", async () => {
-  const w = world();
-  await assert.rejects(B.checkout(w.deps, user, { billing: "monthly", promo: "welcome100" }), /isn't available/);   // no offer set up
-  w.deps.offers = { WELCOME100: "offer_ABCDEFGHIJKLMNOP" };
-  assert.deepEqual(await B.promo(w.deps, "u1", { code: " welcome100 ", billing: "monthly" }),
-                   { code: "WELCOME100", off: 10_000, label: "₹100 off your first payment", firstCharge: 24_900, billing: "monthly", replacesFreeDay: true });
-  await assert.rejects(B.promo(w.deps, "u1", { code: "NOPE" }), /isn't valid/);
-  const r = await B.checkout(w.deps, user, { billing: "yearly", promo: "WELCOME100" });
-  assert.equal(r.promo!.firstCharge, 366_900);
-  assert.equal(r.trial, false);                                   // the code replaces the free day: charged today
-  const sent = w.subs.get(r.subscription_id);
-  assert.equal(sent.start_at, null);
-  assert.equal(sent.notes.promo, "WELCOME100");
-  // once the account has paid, the code no longer applies
-  Object.assign(sent, { status: "active", paid_count: 1, current_end: S0 + 365 * 86400 });
-  const sig = await B.hmacHex("sek", `pay_1|${r.subscription_id}`);
-  await B.verify(w.deps, "u1", { razorpay_payment_id: "pay_1", razorpay_subscription_id: r.subscription_id, razorpay_signature: sig });
-  await assert.rejects(B.promo(w.deps, "u1", { code: "WELCOME100", billing: "monthly" }), /first subscription only/);
-});
-
-test("promo offers follow the key mode: live keys only use the _LIVE offer", async () => {
-  const { offersFor } = await import("../src/index.ts");
-  const env: any = { RAZORPAY_KEY_ID: "rzp_test_x", RAZORPAY_OFFER_WELCOME100: "offer_TEST", RAZORPAY_OFFER_WELCOME100_LIVE: "offer_LIVE" };
-  assert.deepEqual(offersFor(env), { WELCOME100: "offer_TEST" });
-  assert.deepEqual(offersFor({ ...env, RAZORPAY_KEY_ID: "rzp_live_x" }), { WELCOME100: "offer_LIVE" });
-  assert.deepEqual(offersFor({ ...env, RAZORPAY_KEY_ID: "rzp_live_x", RAZORPAY_OFFER_WELCOME100_LIVE: undefined }), {});   // test id never used live
-});

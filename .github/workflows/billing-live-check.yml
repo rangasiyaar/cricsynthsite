@@ -1,7 +1,7 @@
 name: Check Razorpay keys
 
 # Read-only: which mode the Razorpay keys in GitHub secrets are, that Razorpay accepts them, the plans on the account,
-# and whether the webhook secret and promo offers are set (master/scripts/check-live.ts). Creates and charges nothing.
+# and whether the webhook secret is set (master/scripts/check-live.ts). Creates and charges nothing.
 on: workflow_dispatch
 
 permissions:
@@ -22,6 +22,4 @@ jobs:
           RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
-          RZP_OFFER_WELCOME100: ${{ secrets.RAZORPAY_OFFER_WELCOME100 }}
-          RZP_OFFER_WELCOME100_LIVE: ${{ secrets.RAZORPAY_OFFER_WELCOME100_LIVE }}
         run: node --experimental-strip-types --no-warnings scripts/check-live.ts | tee -a "$GITHUB_STEP_SUMMARY"

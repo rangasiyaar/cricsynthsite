@@ -100,7 +100,6 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
   const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
   const deps: B.Deps = {
     keyId: env.RAZORPAY_KEY_ID, keySecret: env.RAZORPAY_KEY_SECRET, webhookSecret: env.RAZORPAY_WEBHOOK_SECRET,
-    offers: offersFor(env),
     store: { get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) },
     rzp: B.razorpay(env.RAZORPAY_KEY_ID, env.RAZORPAY_KEY_SECRET), now: () => Date.now(),
   };
@@ -125,7 +124,6 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
       if (!(await fs.isAdult(user.uid))) return fail(req, env, 403, "Please confirm you're 18 or over first");
       return json(req, env, await B.checkout(deps, user, body));
     }
-    if (path === "/billing/promo" && req.method === "POST") return json(req, env, await B.promo(deps, user.uid, body));
     if (path === "/billing/verify" && req.method === "POST") return json(req, env, await B.verify(deps, user.uid, body));
     if (path === "/billing/cancel" && req.method === "POST") return json(req, env, await B.cancel(deps, user.uid));
     return fail(req, env, 404, "Not found");
@@ -236,11 +234,3 @@ export default {
     }
   },
 } satisfies ExportedHandler<Env>;
-
-/** Promo codes' Razorpay offers for the mode the keys are in: test and live offers have different ids, so live keys
- *  only use the _LIVE secret (an old test offer id would make Razorpay refuse the checkout). */
-export function offersFor(env: Env): Record<string, string> {
-  const live = (env.RAZORPAY_KEY_ID || "").startsWith("rzp_live_");
-  const id = live ? env.RAZORPAY_OFFER_WELCOME100_LIVE : env.RAZORPAY_OFFER_WELCOME100;
-  return id ? { WELCOME100: id } : {};
-}

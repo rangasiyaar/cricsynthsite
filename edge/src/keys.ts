@@ -28,8 +28,6 @@ export interface Env {
   RAZORPAY_KEY_ID?: string;           // secrets: CricSynthesis Pro checkout (billing.ts); test keys start rzp_test_
   RAZORPAY_KEY_SECRET?: string;
   RAZORPAY_WEBHOOK_SECRET?: string;
-  RAZORPAY_OFFER_WELCOME100?: string;   // the Razorpay test-mode offer behind promo code WELCOME100
-  RAZORPAY_OFFER_WELCOME100_LIVE?: string;   // the live-mode offer (used when RAZORPAY_KEY_ID is a live key)
 }
 
 export type Account = { hash: string; plan: string; owner: string | null; slot: string | null; limits: typeof PLANS[string] };

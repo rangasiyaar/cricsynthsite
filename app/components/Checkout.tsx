@@ -6,8 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { loginHref } from "@/components/Gate";
 import { BillingSwitch, proLine } from "@/components/ProOffer";
-import { firstChargeDate, useCheckout, usePromo } from "@/lib/billing";
-import { usePlan } from "@/lib/firebase";
+import { firstChargeDate, useCheckout } from "@/lib/billing";
 import { AUTOPAY_CHECK, PRO, PRO_HIGHLIGHTS, rupees, yearlyPerMonth, yearlySaving, type Billing } from "@/lib/pro";
 
 const day = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "");
@@ -24,15 +23,11 @@ export default function Checkout() {
   const params = useSearchParams();
   const router = useRouter();
   const billing: Billing = params.get("plan") === "yearly" ? "yearly" : "monthly";
-  const promoParam = params.get("promo");
-  const setBilling = (b: Billing) => router.replace(`/checkout/?plan=${b}${promoParam ? `&promo=${encodeURIComponent(promoParam)}` : ""}`, { scroll: false });
-  const signedIn = !!usePlan().user;
-  const pr = usePromo(billing, promoParam, signedIn);
-  const c = useCheckout(billing, "web", pr.applied?.code ?? null);
-  useEffect(() => { if (c.uid === null) window.location.replace(loginHref(`/checkout/?plan=${billing}${promoParam ? `&promo=${encodeURIComponent(promoParam)}` : ""}`)); }, [c.uid, billing, promoParam]);
+  const setBilling = (b: Billing) => router.replace(`/checkout/?plan=${b}`, { scroll: false });
+  const c = useCheckout(billing, "web");
+  useEffect(() => { if (c.uid === null) window.location.replace(loginHref(`/checkout/?plan=${billing}`)); }, [c.uid, billing]);
   const price = billing === "monthly" ? PRO.monthly : PRO.yearly;
-  const first = pr.applied ? pr.applied.firstCharge / 100 : price;
-  const trial = c.trial && !pr.applied;            // a promo code is instead of the free day (Razorpay can't combine them)
+  const trial = c.trial;
   const per = billing === "monthly" ? "month" : "year";
 
   if (c.uid === undefined || c.uid === null || c.b === undefined) {
@@ -80,31 +75,14 @@ export default function Checkout() {
             </>
           ) : (
             <>
-              <div className="co-line"><span>Due today</span><b>{pr.applied ? <><s className="co-was">{rupees(price)}</s> {rupees(first)}</> : rupees(price)}</b></div>
+              <div className="co-line"><span>Due today</span><b>{rupees(price)}</b></div>
               <div className="co-line"><span>Then</span><b>{rupees(price)} every {per}, until you cancel</b></div>
-              <p className="co-note">{pr.applied
-                ? (c.trial ? `${pr.applied.code} is instead of your free day: your plan starts today at ${rupees(first)}. Remove the code to start with a free day.`
-                           : `Your plan starts today at ${rupees(first)}, then ${rupees(price)} a ${per}.`)
-                : "You've already had your free day, so your plan starts today."}</p>
+              <p className="co-note">You&apos;ve already had your free day, so your plan starts today.</p>
             </>
           )}
-          <div className="co-line co-promo">
-            {pr.applied ? (
-              <><span><b>{pr.applied.code}</b> · {pr.applied.label}</span>
-                <button type="button" className="linkbtn" onClick={pr.remove}>Remove</button></>
-            ) : pr.open ? (
-              <form className="co-promo-form" onSubmit={(e) => { e.preventDefault(); void pr.apply(); }}>
-                <label htmlFor="promo" className="sr-only">Promo code</label>
-                <input id="promo" value={pr.code} onChange={(e) => pr.setCode(e.target.value.toUpperCase())} placeholder="Promo code"
-                       autoComplete="off" autoCapitalize="characters" maxLength={24} />
-                <button type="submit" className="cs-btn cs-btn--secondary" disabled={pr.busy || !pr.code.trim()}>{pr.busy ? "Checking…" : "Apply"}</button>
-              </form>
-            ) : <button type="button" className="linkbtn" onClick={() => pr.setOpen(true)}>Have a promo code?</button>}
-          </div>
-          {pr.err && <p className="pro-err" role="alert" style={{ margin: 0 }}>{pr.err}</p>}
           <div className="co-line co-account"><span>Account</span><b>{c.email}</b></div>
           <button type="button" className="cs-btn cs-btn--primary co-pay" onClick={c.pay} disabled={c.busy}>
-            <Lock />{c.busy ? "Opening secure payment…" : trial ? "Start your free day" : `Pay ${rupees(first)}`}
+            <Lock />{c.busy ? "Opening secure payment…" : trial ? "Start your free day" : `Pay ${rupees(price)}`}
           </button>
           {c.err && <p className="pro-err" role="alert">{c.err}</p>}
           <p className="co-secure">Secure payment by Razorpay · UPI, cards and netbanking · We never see your card or UPI details.</p>
