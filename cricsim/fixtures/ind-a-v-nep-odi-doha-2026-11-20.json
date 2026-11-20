@@ -12,36 +12,36 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Nepal won the toss and bowl first.",
   "teams": [
     {
       "name": "India A",
       "short": "IND-A",
       "players": [
-        "Prabhsimran Singh",
-        "Kumar Kushagra",
+        "Vaibhav Sooryavanshi",
+        "N. Tilak Varma",
         "Abhishek Sharma",
+        "Kumar Kushagra",
         "Rinku Singh",
+        "Ayush Badoni",
+        "Suryansh Shedge",
         "Shahbaz Ahamad",
-        "Tanush Kotian",
-        "Harsh Dubey",
-        "Arshad Khan",
+        "Vipraj Nigam",
         "Harshit Rana",
-        "Prince Yadav",
-        "N. Tilak Varma"
+        "Prince Yadav"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
+        "WK",
+        "BAT",
         "BAT",
         "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "squad": [
         "Prabhsimran Singh",
@@ -59,36 +59,37 @@
         "Suryansh Shedge",
         "Harshit Rana",
         "Prince Yadav"
-      ]
+      ],
+      "captain": "N. Tilak Varma"
     },
     {
       "name": "Nepal",
       "short": "NEP",
       "players": [
+        "Arjun Kumal",
+        "Sandeep Lamichhane",
+        "Kushal Bhurtel",
+        "Basir Ahamad",
         "Lokesh Bam",
         "Deepak Dumre",
-        "Kushal Bhurtel",
-        "Dev Khanal",
-        "Ishan Pandey",
-        "Arjun Kumal",
+        "Lalit Rajbanshi",
+        "Nandan Yadav",
         "Pawan Sarraf",
         "Rashid Khan",
-        "Sompal Kami",
-        "Nandan Yadav",
-        "Sundeep Jora"
+        "Pratis GC"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "AR",
         "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
         "BOWL",
         "BOWL",
-        "BAT"
+        "AR",
+        "BOWL",
+        "BOWL"
       ],
       "squad": [
         "Lokesh Bam",
@@ -106,13 +107,15 @@
         "Lalit Rajbanshi",
         "Basir Ahamad",
         "Abhishesh Gautam"
-      ]
+      ],
+      "captain": "Sandeep Lamichhane"
     }
   ],
   "live": {
     "kn": 41825,
     "url": "https://khelnow.com/live-cricket-score/india-a-vs-nepal-acc-men's-asia-cup-rising-stars-20th-november-2026-41825",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
