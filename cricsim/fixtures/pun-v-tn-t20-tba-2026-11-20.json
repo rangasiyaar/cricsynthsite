@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Tamil Nadu won the toss and bowl first.",
   "teams": [
     {
       "name": "Punjab",
@@ -20,28 +20,28 @@
       "players": [
         "Vihaan Malhotra",
         "Anmolpreet Singh",
+        "Sanvir Singh",
         "Uday Saharan",
         "Ramandeep Singh",
         "Salil Arora",
-        "Sanvir Singh",
+        "Krish Bhagat",
         "Harpreet Brar",
-        "Raghu Sharma",
+        "Kartik Chadha",
         "Sukhdeep Singh Bajwa",
-        "Sahil Bhaskar",
-        "Arjun Rajput"
+        "Umesh Yadav"
       ],
       "roles": [
         "AR",
         "BAT",
+        "AR",
         "BAT",
         "AR",
         "WK",
         "AR",
         "BOWL",
-        "BOWL",
         "AR",
-        "BOWL",
-        "AR"
+        "AR",
+        "BOWL"
       ],
       "captain": "Ramandeep Singh",
       "squad": [
@@ -62,30 +62,30 @@
       "name": "Tamil Nadu",
       "short": "TN",
       "players": [
-        "Amith Sathvik",
-        "Tushar Raheja",
-        "B Sachin",
         "Sai Kishore",
         "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Balasubramaniam Sachin",
         "Shahrukh Khan",
-        "Sunny Sandhu",
+        "Andre Siddarth",
         "Ravi Rajkumar",
         "Gurjapneet Singh",
-        "Varun Chakaravarthy",
-        "V Athisayaraj Davidson"
+        "M. Siddharth",
+        "Ragupathy Silambarasan",
+        "Rithik Easwaran"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
         "BOWL",
         "WK",
         "BAT",
-        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BAT"
       ],
       "captain": "Sai Kishore",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41902,
     "url": "https://khelnow.com/live-cricket-score/punjab-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-20th-november-2026-41902",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
