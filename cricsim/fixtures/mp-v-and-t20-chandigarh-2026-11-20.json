@@ -12,7 +12,7 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Andhra won the toss and bat first.",
   "teams": [
     {
       "name": "Madhya Pradesh",
@@ -22,8 +22,8 @@
         "Ankush Singh",
         "Akshat Raghuwanshi",
         "Aniket Verma",
-        "Shivam Shukla",
         "Shivang Kumar",
+        "Shivam Shukla",
         "Rahul Batham",
         "Tripuresh Singh",
         "Avesh Khan",
@@ -35,8 +35,8 @@
         "AR",
         "BAT",
         "BAT",
-        "BOWL",
         "AR",
+        "BOWL",
         "AR",
         "AR",
         "BOWL",
@@ -63,29 +63,29 @@
       "short": "AND",
       "players": [
         "Maramreddy Hemanth Reddy",
-        "Seeram Rahul",
         "Shaik Rasheed",
+        "Seeram Rahul",
         "Ricky Bhui",
         "Ashwin Hebbar",
         "SDNV Prasad",
         "KV Sasikanth",
-        "KS Narasimha Raju",
         "Satyanarayana Raju",
+        "KS Narasimha Raju",
         "Bailapudi Yeswanth",
-        "Cheepurapalli Stephen"
+        "Saurabh Kumar"
       ],
       "roles": [
-        "BAT",
         "AR",
         "BAT",
+        "AR",
         "BAT",
         "BAT",
         "WK",
         "BOWL",
-        "AR",
         "BOWL",
+        "BAT",
         "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Ricky Bhui",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41907,
     "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-andhra-syed-mushtaq-ali-trophy-elite-20th-november-2026-41907",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

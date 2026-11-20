@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-pdy-t20-chandigarh-2026-11-22",
+  "title": "Kerala v Puducherry",
+  "date": "2026-11-22",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 72nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Chandigarh",
+  "venue_search": "maharaja yadavindra singh international cricket stadium",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "MD Nidheesh",
+        "KM Asif",
+        "Salman Nizar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "MD Nidheesh",
+        "KM Asif",
+        "Salman Nizar"
+      ]
+    },
+    {
+      "name": "Puducherry",
+      "short": "PDY",
+      "players": [
+        "Pranay Singh",
+        "Sagar Trivedi",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Ramamoorthy Ragavan",
+        "Pougajendy Akash",
+        "Ankit Sharma"
+      ],
+      "roles": [
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Aman Hakim Khan",
+      "squad": [
+        "Pranay Singh",
+        "Sagar Trivedi",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Ramamoorthy Ragavan",
+        "Pougajendy Akash",
+        "Ankit Sharma"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41924,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-puducherry-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41924",
+    "auto": true,
+    "xis": false
+  }
+}

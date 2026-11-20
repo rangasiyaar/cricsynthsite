@@ -1,0 +1,112 @@
+{
+  "id": "del-v-har-t20-indore-2026-11-22",
+  "title": "Delhi v Haryana",
+  "date": "2026-11-22",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 71st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar cricket stadium",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Priyansh Arya",
+        "Sarthak Ranjan",
+        "Tejasvi Dahiya",
+        "Himmat Singh",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Keshav Dabas",
+        "Digvesh Singh Rathi",
+        "Simarjeet Singh",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Priyansh Arya",
+      "squad": [
+        "Priyansh Arya",
+        "Sarthak Ranjan",
+        "Tejasvi Dahiya",
+        "Himmat Singh",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Keshav Dabas",
+        "Digvesh Singh Rathi",
+        "Simarjeet Singh",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Yashvardhan Dalal",
+        "Arsh Ranga",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Yashvardhan Dalal",
+        "Arsh Ranga",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Himanshu Kumar",
+        "Yuzvendra Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41923,
+    "url": "https://khelnow.com/live-cricket-score/delhi-vs-haryana-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41923",
+    "auto": true,
+    "xis": false
+  }
+}
