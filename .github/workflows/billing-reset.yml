@@ -10,6 +10,10 @@ on:
         description: "Actually reset (otherwise only list what would change)"
         type: boolean
         default: false
+      keep_assigned:
+        description: "Keep Pro given by our team (reviewers, console assignments); only remove their test subscription ids"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -29,4 +33,5 @@ jobs:
           RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           APPLY: ${{ inputs.apply && '1' || '0' }}
+          KEEP_ASSIGNED: ${{ inputs.keep_assigned && '1' || '0' }}
         run: node --experimental-strip-types --no-warnings scripts/reset-subscriptions.ts | tee -a "$GITHUB_STEP_SUMMARY"

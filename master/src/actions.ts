@@ -74,7 +74,7 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
         const pro = await g.get(`users/${a.uid}/billing/pro`).catch(() => null);
         const subPaid = Boolean(pro?.subscriptionId && pro.status !== "comp" && pro.proUntil && Date.parse(pro.proUntil) > now.getTime());
         if (!subPaid) await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: new Date(Date.UTC(2099, 11, 31)),
-                                                                   billing: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
+                                                                   billing: null, subscriptionId: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
         await g.put(`users/${a.uid}/billing/admin`, { tier: plan === "business" ? "business" : "api-plus", tag: "paid", at: now.toISOString() });
         detail.websitePro = true;
         done += "; CricSynthesis Pro turned on";
@@ -116,7 +116,7 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       const notes: string[] = [];
       if (a.tier !== "free" && !subPaid) {
         await g.patch(`users/${a.uid}/billing/pro`, { product: "pro", status: "comp", proUntil: until || new Date(Date.UTC(2099, 11, 31)),
-                                                     billing: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
+                                                     billing: null, subscriptionId: null, trialUsed: true, cancelAtEnd: false, updated: "now" }, false);
         notes.push("website Pro on");
       } else if (a.tier !== "free") notes.push("website Pro stays on their Razorpay subscription");
       if (a.tier === "free") {
