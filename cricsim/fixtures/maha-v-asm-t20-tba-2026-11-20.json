@@ -12,29 +12,29 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Maharashtra won the toss and bowl first.",
   "teams": [
     {
       "name": "Maharashtra",
       "short": "MAHA",
       "players": [
         "Prithvi Shaw",
-        "Arshin Kulkarni",
         "Sahil Parakh",
-        "Rahul Tripathi",
-        "Suraj Shinde",
-        "Kiran Chormale",
+        "Ruturaj Gaikwad",
+        "Arshin Kulkarni",
+        "Rushikesh Sonavne",
+        "Siddhesh Veer",
         "Ramakrishna Ghosh",
-        "Vicky Ostwal",
-        "Tanay Sanghvi",
+        "Hitesh Walunj",
+        "Prashant Solanki",
         "Mukesh Choudhary",
-        "Prashant Solanki"
+        "Vivek Shelar"
       ],
       "roles": [
         "BAT",
+        "BAT",
+        "BAT",
         "AR",
-        "BAT",
-        "BAT",
         "WK",
         "AR",
         "AR",
@@ -43,7 +43,7 @@
         "BOWL",
         "BOWL"
       ],
-      "captain": "Prithvi Shaw",
+      "captain": "Ruturaj Gaikwad",
       "squad": [
         "Prithvi Shaw",
         "Arshin Kulkarni",
@@ -62,29 +62,29 @@
       "name": "Assam",
       "short": "ASM",
       "players": [
-        "Pradyun Saikia",
-        "Rohit Mihir Sen",
+        "Ayush Agarwal",
+        "Bishal Saha",
         "Denish Das",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
         "Sibsankar Roy",
         "Saahil Jain",
-        "Abdul Ajij Kuraishi",
         "Akash Sengupta",
-        "Jitumoni Kalita",
         "Mukhtar Hussain",
-        "Mrinmoy Dutta",
-        "Avinov Choudhury"
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta"
       ],
       "roles": [
-        "BAT",
         "WK",
         "BAT",
         "BAT",
+        "BAT",
         "BOWL",
+        "BAT",
         "BOWL",
         "AR",
         "AR",
         "AR",
-        "BOWL",
         "BOWL"
       ],
       "captain": "Denish Das",
@@ -107,6 +107,7 @@
     "kn": 41901,
     "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-assam-syed-mushtaq-ali-trophy-elite-20th-november-2026-41901",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
