@@ -1,0 +1,118 @@
+{
+  "id": "ind-a-v-nep-odi-doha-2026-11-20",
+  "title": "India A v Nepal",
+  "date": "2026-11-20",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 4th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India A",
+      "short": "IND-A",
+      "players": [
+        "Prabhsimran Singh",
+        "Kumar Kushagra",
+        "Abhishek Sharma",
+        "Rinku Singh",
+        "Shahbaz Ahamad",
+        "Tanush Kotian",
+        "Harsh Dubey",
+        "Arshad Khan",
+        "Harshit Rana",
+        "Prince Yadav",
+        "N. Tilak Varma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Prabhsimran Singh",
+        "Kumar Kushagra",
+        "Abhishek Sharma",
+        "Rinku Singh",
+        "N. Tilak Varma",
+        "Vaibhav Sooryavanshi",
+        "Shahbaz Ahamad",
+        "Ayush Badoni",
+        "Arshad Khan",
+        "Tanush Kotian",
+        "Harsh Dubey",
+        "Vipraj Nigam",
+        "Suryansh Shedge",
+        "Harshit Rana",
+        "Prince Yadav"
+      ]
+    },
+    {
+      "name": "Nepal",
+      "short": "NEP",
+      "players": [
+        "Lokesh Bam",
+        "Deepak Dumre",
+        "Kushal Bhurtel",
+        "Dev Khanal",
+        "Ishan Pandey",
+        "Arjun Kumal",
+        "Pawan Sarraf",
+        "Rashid Khan",
+        "Sompal Kami",
+        "Nandan Yadav",
+        "Sundeep Jora"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Lokesh Bam",
+        "Deepak Dumre",
+        "Kushal Bhurtel",
+        "Rashid Khan",
+        "Dev Khanal",
+        "Sundeep Jora",
+        "Ishan Pandey",
+        "Arjun Kumal",
+        "Sompal Kami",
+        "Nandan Yadav",
+        "Pawan Sarraf",
+        "Sandeep Lamichhane",
+        "Lalit Rajbanshi",
+        "Basir Ahamad",
+        "Abhishesh Gautam"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41825,
+    "url": "https://khelnow.com/live-cricket-score/india-a-vs-nepal-acc-men's-asia-cup-rising-stars-20th-november-2026-41825",
+    "auto": true,
+    "xis": false
+  }
+}
