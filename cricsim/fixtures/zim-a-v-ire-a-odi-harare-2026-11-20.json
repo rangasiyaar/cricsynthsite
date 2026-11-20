@@ -12,36 +12,36 @@
   "city": "Harare",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Ireland A won the toss and bat first.",
   "teams": [
     {
       "name": "Zimbabwe A",
       "short": "ZIM-A",
       "players": [
-        "Matthew Campbell",
-        "Kudzai Maunze",
-        "Takudzwanashe Kaitano",
-        "Roy Kaia",
         "Panashe Taruvinga",
-        "Faraz Akram",
-        "Tony Munyonga",
+        "Brandon Senzere",
         "Victor Chirwa",
-        "Milton Shumba",
+        "Matthew Campbell",
+        "Roy Kaia",
+        "Faraz Akram",
+        "Takudzwanashe Kaitano",
         "Tinotenda Maposa",
-        "Alex Falao"
+        "Alex Falao",
+        "Clive Madande",
+        "Milton Shumba"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "BOWL",
         "AR",
-        "BAT",
         "BOWL",
         "BAT",
         "AR",
-        "BOWL"
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT"
       ],
       "captain": "Roy Kaia",
       "squad": [
@@ -68,11 +68,11 @@
         "Christopher De Freitas",
         "Benjamin Calitz",
         "Gareth Delany",
-        "Gavin Hoey",
-        "Jai Moondra",
+        "Jordan Neill",
+        "Liam McCarthy",
         "Matthew Humphreys",
-        "Byron Mcdonough",
-        "Josh Little"
+        "Josh Little",
+        "Matt Hollard"
       ],
       "roles": [
         "BAT",
@@ -81,7 +81,7 @@
         "BAT",
         "WK",
         "AR",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41797,
     "url": "https://khelnow.com/live-cricket-score/zimbabwe-a-vs-ireland-a-ireland-a-tour-of-zimbabwe-21st-november-2026-41797",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
