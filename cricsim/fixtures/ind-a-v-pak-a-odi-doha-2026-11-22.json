@@ -1,0 +1,112 @@
+{
+  "id": "ind-a-v-pak-a-odi-doha-2026-11-22",
+  "title": "India A v Pakistan A",
+  "date": "2026-11-22",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 8th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India A",
+      "short": "IND-A",
+      "players": [
+        "Yashasvi Jaiswal",
+        "Sai Sudharsan",
+        "Devdutt Padikkal",
+        "Dhruv Jurel",
+        "N. Tilak Varma",
+        "Ravindra Jadeja",
+        "Washington Sundar",
+        "Prasidh Krishna",
+        "Jasprit Bumrah",
+        "Mukesh Kumar",
+        "Mukesh Choudhary"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Dhruv Jurel",
+      "squad": [
+        "Yashasvi Jaiswal",
+        "Sai Sudharsan",
+        "Devdutt Padikkal",
+        "Dhruv Jurel",
+        "N. Tilak Varma",
+        "Ravindra Jadeja",
+        "Washington Sundar",
+        "Prasidh Krishna",
+        "Jasprit Bumrah",
+        "Mukesh Kumar",
+        "Mukesh Choudhary"
+      ]
+    },
+    {
+      "name": "Pakistan A",
+      "short": "PAK-A",
+      "players": [
+        "Abdul Samad",
+        "Saad Masood",
+        "Rohail Nazir",
+        "Maaz Sadaqat",
+        "Hasan Nawaz",
+        "Shamyl Hussain",
+        "Mohammad Imran Randhawa",
+        "Farhan Yousaf",
+        "Sufyan Moqim",
+        "Ahmed Daniyal",
+        "Ali Raza"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Abdul Samad",
+      "squad": [
+        "Abdul Samad",
+        "Saad Masood",
+        "Rohail Nazir",
+        "Maaz Sadaqat",
+        "Hasan Nawaz",
+        "Shamyl Hussain",
+        "Mohammad Imran Randhawa",
+        "Farhan Yousaf",
+        "Sufyan Moqim",
+        "Ahmed Daniyal",
+        "Ali Raza"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41829,
+    "url": "https://khelnow.com/live-cricket-score/india-a-vs-pakistan-a-acc-men's-asia-cup-rising-stars-22nd-november-2026-41829",
+    "auto": true,
+    "xis": false
+  }
+}
