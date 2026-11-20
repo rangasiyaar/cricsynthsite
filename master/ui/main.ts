@@ -1,6 +1,6 @@
 // CricSynthesis admin console: sign-in, hash routes and the read-only views.
-import { initializeApp } from "firebase/app";
-import { browserPopupRedirectResolver, GoogleAuthProvider, inMemoryPersistence, initializeAuth, signInWithPopup, signOut } from "firebase/auth";
+import { initializeApp } from "@firebase/app";
+import { browserPopupRedirectResolver, GoogleAuthProvider, inMemoryPersistence, initializeAuth, signInWithPopup, signOut } from "@firebase/auth";
 import { bars, ranked, wireTips } from "./charts.ts";
 import { type Col, table } from "./table.ts";
 import { $, $$, ago, badge, csv, day, download, esc, n, pct, provider, tile, when } from "./util.ts";
