@@ -1,0 +1,116 @@
+{
+  "id": "pak-a-v-uae-odi-doha-2026-11-20",
+  "title": "Pakistan A v United Arab Emirates",
+  "date": "2026-11-20",
+  "start_time": "11:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 3rd Match",
+  "comp_key": "intl-international-OD",
+  "venue": "University of Doha for Science and Technology, Doha",
+  "venue_search": "university of doha for science and technology",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan A",
+      "short": "PAK-A",
+      "players": [
+        "Rohail Nazir",
+        "Farhan Yousaf",
+        "Hasan Nawaz",
+        "Abdul Samad",
+        "Saad Masood",
+        "Mohammad Imran Randhawa",
+        "Danish Aziz",
+        "Sufyan Moqim",
+        "Mohammad Hasnain",
+        "Ali Raza",
+        "Haider Ali"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Rohail Nazir",
+        "Farhan Yousaf",
+        "Hasan Nawaz",
+        "Abdul Samad",
+        "Haider Ali",
+        "Shahzaib Khan",
+        "Shamyl Hussain",
+        "Saad Masood",
+        "Mohammad Imran Randhawa",
+        "Maaz Sadaqat",
+        "Danish Aziz",
+        "Sufyan Moqim",
+        "Mohammad Hasnain",
+        "Ali Raza",
+        "Ahmed Daniyal"
+      ]
+    },
+    {
+      "name": "United Arab Emirates",
+      "short": "UAE",
+      "players": [
+        "Muhammad Shahdad",
+        "Basil Hameed",
+        "Awais Ali Shah",
+        "Aryansh Sharma",
+        "Ansh Tandon",
+        "Ethan Dsouza",
+        "Sohaib Khan",
+        "Noorullah Ayobi",
+        "Uddish Suri",
+        "Ibrar Ahmad",
+        "Ayaan Misbah"
+      ],
+      "roles": [
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "squad": [
+        "Aryansh Sharma",
+        "Ansh Tandon",
+        "Ethan Dsouza",
+        "Sohaib Khan",
+        "Noorullah Ayobi",
+        "Ayaan Misbah",
+        "Basil Hameed",
+        "Muhammad Shahdad",
+        "Awais Ali Shah",
+        "Uddish Suri",
+        "Ibrar Ahmad",
+        "Zahid Ali",
+        "Omid Rahman"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41824,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-a-vs-united-arab-emirates-acc-men's-asia-cup-rising-stars-20th-november-2026-41824",
+    "auto": true,
+    "xis": false
+  }
+}

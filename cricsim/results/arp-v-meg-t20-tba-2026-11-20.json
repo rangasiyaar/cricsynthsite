@@ -1,0 +1,321 @@
+{
+ "id": "arp-v-meg-t20-tba-2026-11-20",
+ "innings": [
+  {
+   "team": "Meghalaya",
+   "runs": 179,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Raj Biswa",
+     "dismissal": "c Neelam Obi b N Tempol",
+     "runs": 86,
+     "balls": 57,
+     "fours": 10,
+     "sixes": 3
+    },
+    {
+     "name": "Jiwanjot Singh",
+     "dismissal": "c T Doria b Y Niya",
+     "runs": 5,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nishanta Chakrabaty",
+     "dismissal": "c A Sahani b L Sonia",
+     "runs": 24,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Josiah Momin",
+     "dismissal": "not out",
+     "runs": 32,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Akshay Karnewar",
+     "dismissal": "not out",
+     "runs": 26,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 2
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Yab Niya",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Darge Bagra",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Akhilesh Sahani",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Techi Neri",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Likha Sonia",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Techi Doria",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nabam Tempol",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Jiwanjot Singh",
+     "score": 21,
+     "over": "4.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nishanta Chakrabaty",
+     "score": 79,
+     "over": "10.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Raj Biswa",
+     "score": 133,
+     "over": "15.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  },
+  {
+   "team": "Arunachal Pradesh",
+   "runs": 144,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Neelam Obi",
+     "dismissal": "c AK Karnewar b Manish Sharma",
+     "runs": 13,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Kamsha Yangfo",
+     "dismissal": "st Srinivas Sharath b AK Karnewar",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Techi Neri",
+     "dismissal": "b AK Karnewar",
+     "runs": 12,
+     "balls": 6,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Techi Doria",
+     "dismissal": "c AK Karnewar b A Chowdhary",
+     "runs": 19,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Salil Malhotra",
+     "dismissal": "not out",
+     "runs": 61,
+     "balls": 47,
+     "fours": 9,
+     "sixes": 0
+    },
+    {
+     "name": "Techi Sania",
+     "dismissal": "c Srinivas Sharath b S Das",
+     "runs": 14,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Akhilesh Sahani",
+     "dismissal": "c C Sangma b A Sen",
+     "runs": 13,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Likha Sonia",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chengkam Sangma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Akshay Karnewar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Swarajeet Das",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Manish Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Akash Choudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amiangshu Sen",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kamsha Yangfo",
+     "score": 8,
+     "over": "1.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Techi Neri",
+     "score": 22,
+     "over": "3.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Neelam Obi",
+     "score": 39,
+     "over": "5.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Techi Doria",
+     "score": 67,
+     "over": "8.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Techi Sania",
+     "score": 92,
+     "over": "12.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Akhilesh Sahani",
+     "score": 142,
+     "over": "19.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Meghalaya won",
+ "winner": "Meghalaya"
+}
