@@ -1,0 +1,401 @@
+{
+ "id": "pun-v-tn-t20-tba-2026-11-20",
+ "innings": [
+  {
+   "team": "Punjab",
+   "runs": 165,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Vihaan Malhotra",
+     "dismissal": "b Ragupathy Silambarasan",
+     "runs": 12,
+     "balls": 9,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Anmolpreet Singh",
+     "dismissal": "b M. Siddharth",
+     "runs": 22,
+     "balls": 20,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Uday Saharan",
+     "dismissal": "b M. Siddharth",
+     "runs": 16,
+     "balls": 16,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Salil Arora",
+     "dismissal": "b M. Siddharth",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ramandeep Singh",
+     "dismissal": "c R Sai Kishore b R Rajkumar",
+     "runs": 36,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Harpreet Brar",
+     "dismissal": "b R Rajkumar",
+     "runs": 4,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sanvir Singh",
+     "dismissal": "not out",
+     "runs": 34,
+     "balls": 21,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Krish Bhagat",
+     "dismissal": "c R Sai Kishore b Ragupathy Silambarasan",
+     "runs": 15,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Sukhdeep Singh Bajwa",
+     "dismissal": "not out",
+     "runs": 20,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 2
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Gurjapneet Singh",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ragupathy Silambarasan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sai Kishore",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "M. Siddharth",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 20,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ravi Rajkumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Vihaan Malhotra",
+     "score": 13,
+     "over": "1.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Uday Saharan",
+     "score": 43,
+     "over": "5.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Salil Arora",
+     "score": 45,
+     "over": "5.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Anmolpreet Singh",
+     "score": 66,
+     "over": "9.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Harpreet Brar",
+     "score": 85,
+     "over": "12.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ramandeep Singh",
+     "score": 104,
+     "over": "14.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Krish Bhagat",
+     "score": 136,
+     "over": "17.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "Tamil Nadu",
+   "runs": 160,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Amith Sathvik",
+     "dismissal": "b U Yadav",
+     "runs": 8,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Balasubramaniam Sachin",
+     "dismissal": "c S Singh b K Chadha",
+     "runs": 70,
+     "balls": 42,
+     "fours": 6,
+     "sixes": 4
+    },
+    {
+     "name": "Narayan Jagadeesan",
+     "dismissal": "c H Brar b K Bhagat",
+     "runs": 14,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Andre Siddarth",
+     "dismissal": "c SS Bajwa b K Chadha",
+     "runs": 28,
+     "balls": 22,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Rithik Easwaran",
+     "dismissal": "c S Arora b K Chadha",
+     "runs": 5,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ravi Rajkumar",
+     "dismissal": "c K Chadha b H Brar",
+     "runs": 9,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Shahrukh Khan",
+     "dismissal": "b SS Bajwa",
+     "runs": 10,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sai Kishore",
+     "dismissal": "b SS Bajwa",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gurjapneet Singh",
+     "dismissal": "c H Brar b K Bhagat",
+     "runs": 9,
+     "balls": 11,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "M. Siddharth",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ragupathy Silambarasan",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Umesh Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sukhdeep Singh Bajwa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Krish Bhagat",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Harpreet Brar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kartik Chadha",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Vihaan Malhotra",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Amith Sathvik",
+     "score": 8,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Narayan Jagadeesan",
+     "score": 27,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Andre Siddarth",
+     "score": 110,
+     "over": "11.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Balasubramaniam Sachin",
+     "score": 127,
+     "over": "13.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rithik Easwaran",
+     "score": 128,
+     "over": "13.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ravi Rajkumar",
+     "score": 136,
+     "over": "14.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Sai Kishore",
+     "score": 142,
+     "over": "16.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Shahrukh Khan",
+     "score": 157,
+     "over": "18.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Gurjapneet Singh",
+     "score": 157,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 0,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Punjab won",
+ "winner": "Punjab"
+}
