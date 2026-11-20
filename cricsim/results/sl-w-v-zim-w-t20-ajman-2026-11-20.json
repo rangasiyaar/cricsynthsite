@@ -1,0 +1,314 @@
+{
+ "id": "sl-w-v-zim-w-t20-ajman-2026-11-20",
+ "innings": [
+  {
+   "team": "Zimbabwe Women",
+   "runs": 68,
+   "wickets": 10,
+   "overs": "19.1",
+   "batting": [
+    {
+     "name": "Kelis Ndhlovu",
+     "dismissal": "c VR Gunaratne b SP Sandeepani",
+     "runs": 19,
+     "balls": 24,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Modester Mupachikwa",
+     "dismissal": "b K Dilhari",
+     "runs": 15,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chipo Mugeri Tiripano",
+     "dismissal": "c ID Witharana b K Dilhari",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Beloved Biza",
+     "dismissal": "lbw b K Dilhari",
+     "runs": 3,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Josephine Nkomo",
+     "dismissal": "c H Samarawickrama b NM Meepage",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chiedza Dhururu",
+     "dismissal": "b NM Meepage",
+     "runs": 0,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nyasha Gwanzura",
+     "dismissal": "b SMS Kumari",
+     "runs": 4,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Christine Mutasa",
+     "dismissal": "c H Samarawickrama b SP Sandeepani",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nomvelo Sibanda",
+     "dismissal": "runout (H Samarawickrama)",
+     "runs": 6,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tendai Makusha",
+     "dismissal": "c K Dilhari b C Vimukthi",
+     "runs": 4,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Olinder Chare",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kavisha Dilhari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chethana Vimukthi",
+     "overs": "3.1",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sugandika Kumari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sathya Sandeepani",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 14,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Nimasha Madushani Meepage",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 9,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Modester Mupachikwa",
+     "score": 30,
+     "over": "6.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Chipo Mugeri Tiripano",
+     "score": 30,
+     "over": "6.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Beloved Biza",
+     "score": 38,
+     "over": "8.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Josephine Nkomo",
+     "score": 39,
+     "over": "9.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Kelis Ndhlovu",
+     "score": 39,
+     "over": "10.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Chiedza Dhururu",
+     "score": 39,
+     "over": "11.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Christine Mutasa",
+     "score": 46,
+     "over": "12.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Nyasha Gwanzura",
+     "score": 47,
+     "over": "14.1"
+    },
+    {
+     "wicket": 9,
+     "batter": "Tendai Makusha",
+     "score": 54,
+     "over": "15.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "Nomvelo Sibanda",
+     "score": 68,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 30
+  },
+  {
+   "team": "Sri Lanka Women",
+   "runs": 69,
+   "wickets": 1,
+   "overs": "11.3",
+   "batting": [
+    {
+     "name": "Vishmi Rajapaksha Gunaratne",
+     "dismissal": "not out",
+     "runs": 39,
+     "balls": 35,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Hasini Perera",
+     "dismissal": "c N Sibanda b B Biza",
+     "runs": 22,
+     "balls": 30,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Harshitha Samarawickrama",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Nomvelo Sibanda",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Christine Mutasa",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Tendai Makusha",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Olinder Chare",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Beloved Biza",
+     "overs": "1.3",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hasini Perera",
+     "score": 61,
+     "over": "9.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 5,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Sri Lanka Women won",
+ "winner": "Sri Lanka Women"
+}
