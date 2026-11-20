@@ -1,0 +1,442 @@
+{
+ "id": "zim-a-v-ire-a-odi-harare-2026-11-20",
+ "innings": [
+  {
+   "team": "Ireland A",
+   "runs": 254,
+   "wickets": 10,
+   "overs": "49.4",
+   "batting": [
+    {
+     "name": "Tim Tector",
+     "dismissal": "c C Madande b F Akram",
+     "runs": 1,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Stephen Doheny",
+     "dismissal": "c C Madande b T Maposa",
+     "runs": 15,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Cade Carmichael",
+     "dismissal": "c P Taruvinga b T Maposa",
+     "runs": 27,
+     "balls": 29,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Christopher De Freitas",
+     "dismissal": "c F Akram b A Falao",
+     "runs": 10,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Benjamin Calitz",
+     "dismissal": "c & b T Maposa",
+     "runs": 4,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Gareth Delany",
+     "dismissal": "c M Shumba b A Falao",
+     "runs": 112,
+     "balls": 119,
+     "fours": 9,
+     "sixes": 3
+    },
+    {
+     "name": "Jordan Neill",
+     "dismissal": "c M Campbell b A Falao",
+     "runs": 50,
+     "balls": 71,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Matthew Humphreys",
+     "dismissal": "b T Maposa",
+     "runs": 12,
+     "balls": 12,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Liam McCarthy",
+     "dismissal": "b F Akram",
+     "runs": 8,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Josh Little",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Matt Hollard",
+     "dismissal": "b T Maposa",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Victor Chirwa",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Faraz Akram",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 62,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tinotenda Maposa",
+     "overs": "9.4",
+     "maidens": 1,
+     "runs": 54,
+     "wickets": 5,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Alex Falao",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Brandon Senzere",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Tector",
+     "score": 1,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Stephen Doheny",
+     "score": 44,
+     "over": "9.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Cade Carmichael",
+     "score": 45,
+     "over": "9.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Benjamin Calitz",
+     "score": 52,
+     "over": "11.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Christopher De Freitas",
+     "score": 73,
+     "over": "14.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Jordan Neill",
+     "score": 190,
+     "over": "39.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Matthew Humphreys",
+     "score": 214,
+     "over": "43.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Gareth Delany",
+     "score": 245,
+     "over": "47.6"
+    },
+    {
+     "wicket": 9,
+     "batter": "Liam McCarthy",
+     "score": 245,
+     "over": "48.1"
+    },
+    {
+     "wicket": 10,
+     "batter": "Matt Hollard",
+     "score": 254,
+     "over": "49.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 3,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "Zimbabwe A",
+   "runs": 260,
+   "wickets": 9,
+   "overs": "47",
+   "batting": [
+    {
+     "name": "Matthew Campbell",
+     "dismissal": "c Matt Hollard b L McCarthy",
+     "runs": 12,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Brandon Senzere",
+     "dismissal": "b M Humphreys",
+     "runs": 33,
+     "balls": 43,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Panashe Taruvinga",
+     "dismissal": "c B Calitz b Matt Hollard",
+     "runs": 39,
+     "balls": 35,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Takudzwanashe Kaitano",
+     "dismissal": "lbw b G Delany",
+     "runs": 33,
+     "balls": 32,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Roy Kaia",
+     "dismissal": "c S Doheny b L McCarthy",
+     "runs": 16,
+     "balls": 19,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Milton Shumba",
+     "dismissal": "st B Calitz b M Humphreys",
+     "runs": 19,
+     "balls": 25,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Clive Madande",
+     "dismissal": "c B Calitz b Matt Hollard",
+     "runs": 43,
+     "balls": 55,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Faraz Akram",
+     "dismissal": "c B Calitz b L McCarthy",
+     "runs": 30,
+     "balls": 28,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Victor Chirwa",
+     "dismissal": "not out",
+     "runs": 14,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Tinotenda Maposa",
+     "dismissal": "c B Calitz b L McCarthy",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alex Falao",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jordan Neill",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Liam McCarthy",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 66,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Josh Little",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matt Hollard",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 2
+    },
+    {
+     "name": "Matthew Humphreys",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gareth Delany",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Tim Tector",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Matthew Campbell",
+     "score": 21,
+     "over": "5.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Brandon Senzere",
+     "score": 84,
+     "over": "15.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Panashe Taruvinga",
+     "score": 92,
+     "over": "16.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Roy Kaia",
+     "score": 137,
+     "over": "22.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Takudzwanashe Kaitano",
+     "score": 149,
+     "over": "25.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Milton Shumba",
+     "score": 185,
+     "over": "33.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Clive Madande",
+     "score": 238,
+     "over": "41.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Faraz Akram",
+     "score": 249,
+     "over": "44.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Tinotenda Maposa",
+     "score": 249,
+     "over": "44.4"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 4,
+    "w": 12,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
