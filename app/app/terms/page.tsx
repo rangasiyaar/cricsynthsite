@@ -44,8 +44,9 @@ export default function Terms() {
         <li><b>What it is.</b> A subscription that opens every match-centre tab for every match we cover, and MatchSynth Lab, on the
           website and in the app. Each match&apos;s Overview stays free.</li>
         <li><b>Price.</b> ₹349 a month or ₹3,769 a year, in Indian rupees. The price shown at checkout is the price you pay.</li>
-        <li><b>Free day.</b> New accounts can try Pro free for one day, once per account. You add a payment method to start; the
-          first charge is taken when the free day ends unless you cancel before then.</li>
+        <li><b>Free day.</b> New accounts can try Pro free for one day, once per account. You add a payment method to start; to set
+          up autopay, Razorpay takes ₹5 to check it and refunds it straight away. The first charge is taken when the free day ends
+          unless you cancel before then.</li>
         <li><b>Renewal.</b> Your plan renews automatically each month or year until you cancel. Payments are handled by Razorpay;
           we never see your card or UPI details.</li>
         <li><b>Cancelling.</b> Cancel any time from your account. You keep Pro until the end of the period you&apos;ve paid for and

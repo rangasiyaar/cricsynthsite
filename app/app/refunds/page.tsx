@@ -16,7 +16,8 @@ export default function Refunds() {
         <li><b>Any time, in one tap.</b> Cancel from your account: on the website under Account → Subscription, or in the app under
           Account → Plan. No email or call needed.</li>
         <li><b>During the free day.</b> If you cancel before your free day ends, you are not charged at all. Pro stays on until the
-          free day ends.</li>
+          free day ends. The ₹5 autopay check taken when you start is refunded automatically by Razorpay, whether or not you
+          cancel.</li>
         <li><b>On a paid plan.</b> Cancelling stops the next renewal. You keep Pro until the end of the month or year you have
           already paid for, and you won&apos;t be charged again.</li>
         <li><b>UPI Autopay and card mandates.</b> Cancelling also stops the mandate we use for renewals. You can also revoke a UPI

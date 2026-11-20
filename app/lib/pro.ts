@@ -4,6 +4,10 @@
 
 export type Billing = "monthly" | "yearly";
 
+/** Razorpay's autopay check when the first charge is later (the free day): taken to verify the card or UPI ID and
+ *  refunded straight away by Razorpay. Fixed by Razorpay, not by us. */
+export const AUTOPAY_CHECK = 5;
+
 export const PRO = {
   name: "CricSynthesis Pro",
   monthly: 349,
@@ -73,14 +77,14 @@ export const PRO_GROUPS: { title: string; items: string[] }[] = [
 ];
 
 export const TRIAL_STEPS = [
-  { when: "Today", text: "Start your free day. Everything in Pro opens straight away." },
+  { when: "Today", text: "Start your free day. Everything in Pro opens straight away. Setting up autopay takes a ₹5 check that's refunded straight away." },
   { when: "Any time that day", text: "Not for you? Cancel in one tap from your account and you won't be charged." },
   { when: "Tomorrow", text: `Your plan starts and you're charged. Cancel any time before then and you pay nothing.` },
 ];
 
 export const PRO_FAQ: { q: string; a: string }[] = [
   { q: "Do I have to pay for the free day?",
-    a: "No. You add a payment method to start, but nothing is charged during your free day. Cancel before it ends and you pay nothing." },
+    a: "No. To set up autopay, Razorpay takes ₹5 to check your card or UPI ID and refunds it straight away. Nothing else is charged during your free day, and if you cancel before it ends you pay nothing." },
   { q: "Can I cancel any time?",
     a: "Yes, in one tap from your account. You keep Pro until the end of the period you've paid for." },
   { q: "How can I pay?",

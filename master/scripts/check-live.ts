@@ -15,7 +15,8 @@ try {
   for (const p of plans.items || []) console.log(`- ${p.id}: ${p.item?.name} · ₹${(p.item?.amount ?? 0) / 100} every ${p.interval} ${p.period}`);
 } catch (e) { console.log(`Razorpay REFUSED the keys: ${(e as Error).message}`); process.exitCode = 1; }
 console.log(`Webhook secret: ${env.RZP_WEBHOOK ? "set" : "NOT set"}`);
-console.log(`WELCOME100 offer: ${env.RZP_OFFER_WELCOME100 ? (env.RZP_OFFER_WELCOME100.startsWith("offer_") ? "set" : "set, but not an offer_ id") : "not set (code shows as unavailable)"}`);
+const offer = mode === "LIVE" ? env.RZP_OFFER_WELCOME100_LIVE : env.RZP_OFFER_WELCOME100;
+console.log(`WELCOME100 offer (${mode === "LIVE" ? "RAZORPAY_OFFER_WELCOME100_LIVE" : "RAZORPAY_OFFER_WELCOME100"}): ${offer ? (offer.startsWith("offer_") ? "set" : "set, but not an offer_ id") : "not set (code shows as unavailable)"}`);
 if (env.GOOGLE_SA) {
   const cfg = await new Google(env.GOOGLE_SA).get("billingConfig/razorpay").catch(() => null);
   const stored = Object.entries(cfg || {}).filter(([k]) => !k.startsWith("_"));

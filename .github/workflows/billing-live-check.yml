@@ -23,4 +23,5 @@ jobs:
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
           RZP_OFFER_WELCOME100: ${{ secrets.RAZORPAY_OFFER_WELCOME100 }}
+          RZP_OFFER_WELCOME100_LIVE: ${{ secrets.RAZORPAY_OFFER_WELCOME100_LIVE }}
         run: node --experimental-strip-types --no-warnings scripts/check-live.ts | tee -a "$GITHUB_STEP_SUMMARY"

@@ -8,7 +8,7 @@ import { loginHref } from "@/components/Gate";
 import { BillingSwitch, proLine } from "@/components/ProOffer";
 import { firstChargeDate, useCheckout, usePromo } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
-import { PRO, PRO_HIGHLIGHTS, rupees, yearlyPerMonth, yearlySaving, type Billing } from "@/lib/pro";
+import { AUTOPAY_CHECK, PRO, PRO_HIGHLIGHTS, rupees, yearlyPerMonth, yearlySaving, type Billing } from "@/lib/pro";
 
 const day = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : "");
 const Tick = () => (
@@ -74,8 +74,9 @@ export default function Checkout() {
           {trial ? (
             <>
               <div className="co-line"><span>Due today</span><b>{rupees(0)}</b></div>
+              <div className="co-line"><span>Autopay check (refunded)</span><b>{rupees(AUTOPAY_CHECK)}</b></div>
               <div className="co-line"><span>From {day(firstChargeDate())}</span><b>{rupees(price)} a {per}</b></div>
-              <p className="co-note">Your free day starts now. Cancel before {day(firstChargeDate())} and you won&apos;t be charged.</p>
+              <p className="co-note">Your free day starts now. To set up autopay, Razorpay takes {rupees(AUTOPAY_CHECK)} to check your card or UPI ID and refunds it straight away. Cancel before {day(firstChargeDate())} and you won&apos;t be charged.</p>
             </>
           ) : (
             <>

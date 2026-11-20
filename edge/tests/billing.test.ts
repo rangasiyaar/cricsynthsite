@@ -167,3 +167,11 @@ test("WELCOME100: ₹100 off the first payment, first subscription only, needs i
   await B.verify(w.deps, "u1", { razorpay_payment_id: "pay_1", razorpay_subscription_id: r.subscription_id, razorpay_signature: sig });
   await assert.rejects(B.promo(w.deps, "u1", { code: "WELCOME100", billing: "monthly" }), /first subscription only/);
 });
+
+test("promo offers follow the key mode: live keys only use the _LIVE offer", async () => {
+  const { offersFor } = await import("../src/index.ts");
+  const env: any = { RAZORPAY_KEY_ID: "rzp_test_x", RAZORPAY_OFFER_WELCOME100: "offer_TEST", RAZORPAY_OFFER_WELCOME100_LIVE: "offer_LIVE" };
+  assert.deepEqual(offersFor(env), { WELCOME100: "offer_TEST" });
+  assert.deepEqual(offersFor({ ...env, RAZORPAY_KEY_ID: "rzp_live_x" }), { WELCOME100: "offer_LIVE" });
+  assert.deepEqual(offersFor({ ...env, RAZORPAY_KEY_ID: "rzp_live_x", RAZORPAY_OFFER_WELCOME100_LIVE: undefined }), {});   // test id never used live
+});
