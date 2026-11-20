@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Baroda won the toss and bowl first.",
   "teams": [
     {
       "name": "Rajasthan",
@@ -28,7 +28,7 @@
         "Manav Suthar",
         "Rahul Chahar",
         "Himanshu Rana",
-        "Himanshu Nehra"
+        "Pratap Singh"
       ],
       "roles": [
         "BAT",
@@ -41,7 +41,7 @@
         "AR",
         "BOWL",
         "BOWL",
-        "BAT"
+        "AR"
       ],
       "captain": "Deepak Chahar",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41915,
     "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-baroda-syed-mushtaq-ali-trophy-elite-20th-november-2026-41915",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
