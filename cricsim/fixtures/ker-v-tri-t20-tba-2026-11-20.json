@@ -12,7 +12,7 @@
   "city": "TBA",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Tripura won the toss and bat first.",
   "teams": [
     {
       "name": "Kerala",
@@ -22,26 +22,26 @@
         "Sanju Samson",
         "Govind  Pai",
         "Vishnu Vinod",
+        "Salman Nizar",
         "Karthik B Nair",
         "Biju Narayanan",
-        "Sharafuddeen",
         "Abdul Basith",
+        "Sharafuddeen",
         "MD Nidheesh",
-        "KM Asif",
-        "Salman Nizar"
+        "KM Asif"
       ],
       "roles": [
         "BAT",
         "BAT",
         "AR",
         "WK",
-        "AR",
+        "BAT",
+        "BAT",
         "BOWL",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Sanju Samson",
       "squad": [
@@ -62,30 +62,30 @@
       "name": "Tripura",
       "short": "TRI",
       "players": [
-        "Bikramkumar Das",
+        "Arkaprabha Sinha",
+        "Tanmoy Das",
         "Sridam Paul",
         "Mandeep Singh",
-        "Lakshay Thareja",
         "Manisankar  Murasingh",
-        "Sentu Sarkar",
+        "Sandip Sarkar",
         "Arindam Barman",
-        "Saurabh Das",
-        "Pravez Sultan",
-        "Viki Saha",
-        "Abhijit Sarkar"
+        "Bikramjit Debnath",
+        "Danveer Singh",
+        "Abhijit Sarkar",
+        "Chiranjit Paul"
       ],
       "roles": [
-        "BAT",
+        "WK",
         "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
         "BAT",
         "BAT",
         "BOWL",
-        "WK",
-        "BAT",
         "AR",
-        "AR",
-        "BAT",
-        "AR"
+        "BOWL"
       ],
       "captain": "Manisankar  Murasingh",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41912,
     "url": "https://khelnow.com/live-cricket-score/kerala-vs-tripura-syed-mushtaq-ali-trophy-elite-20th-november-2026-41912",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
