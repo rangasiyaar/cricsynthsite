@@ -7,7 +7,7 @@ import "./design.css";
 import { SiteFrame } from "@/components/Shell";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
 
-const HOME_DESC = "Before every match: who's likely to win, what each side should score and which players to watch. Free cricket forecasts, checked against every result.";
+const HOME_DESC = "Before every match: win chances, likely scores, when wickets fall, player match-ups, how the ground plays and fantasy picks, all in one match centre.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
