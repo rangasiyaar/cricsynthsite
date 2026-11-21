@@ -37,11 +37,12 @@ body{width:1080px;height:1920px;background:var(--s95);font-family:Barlow,sans-se
 .cv{position:absolute;top:0;left:22px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:700;font-size:28px;z-index:3;border:3px solid var(--s95)}
 .cv.c{background:var(--clay);color:#fff}.cv.v{background:var(--paper);color:var(--s9)}
 .foot{height:160px;background:#0e1824;border-top:1px solid #22364a;display:flex;align-items:center;justify-content:space-between;padding:0 56px}
-.logo{display:flex;align-items:center;gap:16px}
-.logo svg{width:62px;height:62px;color:var(--light)}
-.logo .w{font-family:'Barlow Condensed';font-weight:600;font-size:44px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
+.logo{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.logo .lk{display:flex;align-items:center;gap:20px;color:var(--paper)}
+.logo svg{width:68px;height:68px;color:var(--light);display:block}
+.logo .w{font-family:'Barlow Condensed';font-weight:600;font-size:50px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
 .logo .w span{color:var(--light)}
-.logo .t{font-size:20px;color:#8ea6bd;margin-top:4px;letter-spacing:.04em}
+.logo .t{font-size:21px;color:#8ea6bd;letter-spacing:.04em}
 .meta{text-align:right;font-size:24px;color:#a9bed2;line-height:1.35}
 .meta b{color:#fff;font-weight:600}
 .note{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:22px;color:rgba(232,241,250,.6)}
@@ -64,7 +65,7 @@ body{width:1080px;height:1920px;background:var(--s95);font-family:Barlow,sans-se
 </div>
 
 <div class="foot">
-  <div class="logo"><svg><use href="#mark"/></svg><div><div class="w">Cric<span>Synthesis</span></div><div class="t">AI-Powered Cricket Intelligence</div></div></div>
+  <div class="logo"><div class="lk"><svg><use href="#mark"/></svg><div class="w">Cric<span>Synthesis</span></div></div><div class="t">AI-Powered Cricket Intelligence</div></div>
   <div class="meta" id="meta"></div>
 </div>
 

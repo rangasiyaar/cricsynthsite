@@ -44,11 +44,12 @@
 .note { position: relative; text-align: center; font-size: 11px; color: rgba(232, 241, 250, .62); margin: 4px 12px 0; line-height: 1.35; }
 .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: #0e1824;
         border-top: 1px solid #22364a; }
-.brand { display: flex; align-items: center; gap: 9px; color: #fff; flex: none; }
-.brand svg { width: 28px; height: 28px; color: #94bce3; flex: none; display: block; }
+.brand { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; flex: none; }
+.lockup { display: inline-flex; align-items: center; gap: 8px; color: #f2f2f3; }
+.lockup svg { width: 27px; height: 27px; color: #94bce3; flex: none; display: block; }
 .word { font-family: "Barlow Condensed", Barlow, sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .04em; text-transform: uppercase; line-height: 1; }
 .word b { font-weight: 600; color: #94bce3; }
-.tagline { font-size: 10.5px; color: #8ea6bd; letter-spacing: .04em; margin-top: 3px; white-space: nowrap; }
+.tagline { font-size: 10.5px; color: #8ea6bd; letter-spacing: .04em; white-space: nowrap; }
 .meta { text-align: right; font-size: 11.5px; color: #a9bed2; line-height: 1.35; min-width: 0; }
 .meta b { display: block; color: #fff; font-weight: 600; font-size: 13px; }
 @media (max-width: 440px) { .foot { flex-direction: column; align-items: flex-start; } .meta { text-align: left; } }

@@ -88,8 +88,10 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
         <p className={s.note}>{note ?? "Projected fantasy points (C 2×, VC 1.5×). Check the XIs before locking."}</p>
       </div>
       <figcaption className={s.foot}>
-        <span className={s.brand}><Mark /><span><span className={s.word}>Cric<b>Synthesis</b></span>
-          <span className={s.tagline} style={{ display: "block" }}>AI-Powered Cricket Intelligence</span></span></span>
+        <span className={s.brand}>
+          <span className={s.lockup}><Mark /><span className={s.word}>Cric<b>Synthesis</b></span></span>
+          <span className={s.tagline}>AI-Powered Cricket Intelligence</span>
+        </span>
         <span className={s.meta}>{match?.title && <b>{match.title}</b>}{sub && <>{sub}<br /></>}cricsynthesis.in</span>
       </figcaption>
     </figure>
