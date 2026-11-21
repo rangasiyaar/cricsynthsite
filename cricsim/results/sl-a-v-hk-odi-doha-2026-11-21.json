@@ -1,0 +1,437 @@
+{
+ "id": "sl-a-v-hk-odi-doha-2026-11-21",
+ "innings": [
+  {
+   "team": "Sri Lanka A",
+   "runs": 284,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Lasith Croospulle",
+     "dismissal": "b Ehsan Khan",
+     "runs": 75,
+     "balls": 70,
+     "fours": 9,
+     "sixes": 2
+    },
+    {
+     "name": "Sineth Jayawardena",
+     "dismissal": "c Anshuman Rath b Ehsan Khan",
+     "runs": 3,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nishan Madushka",
+     "dismissal": "c Anshuman Rath b M Ghazanfar",
+     "runs": 64,
+     "balls": 83,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Pavan Rathnayake",
+     "dismissal": "c Yasim Murtaza b A Khan",
+     "runs": 51,
+     "balls": 50,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Nipun Dananjaya",
+     "dismissal": "c Yasim Murtaza b A Shukla",
+     "runs": 27,
+     "balls": 31,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Janith Liyanage",
+     "dismissal": "c Zeeshan Ali b A Khan",
+     "runs": 52,
+     "balls": 33,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Wanuja Sahan",
+     "dismissal": "c & b Yasim Murtaza",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chamika Heenatigala",
+     "dismissal": "runout (Zeeshan Ali)",
+     "runs": 4,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Vijayakanth Viyaskanth",
+     "dismissal": "b A Khan",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Duvindu Ranatunga",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dulaj Samuditha",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ayush Shukla",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 82,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ehsan Khan",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Yasim Murtaza",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aizaz Khan",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mohammad Ghazanfar",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anshuman Rath",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sineth Jayawardena",
+     "score": 18,
+     "over": "3.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lasith Croospulle",
+     "score": 122,
+     "over": "23.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Nishan Madushka",
+     "score": 165,
+     "over": "31.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Pavan Rathnayake",
+     "score": 205,
+     "over": "38.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Nipun Dananjaya",
+     "score": 240,
+     "over": "44.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Wanuja Sahan",
+     "score": 244,
+     "over": "45.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Janith Liyanage",
+     "score": 280,
+     "over": "48.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Vijayakanth Viyaskanth",
+     "score": 280,
+     "over": "48.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Chamika Heenatigala",
+     "score": 282,
+     "over": "49.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 56
+  },
+  {
+   "team": "Hong Kong",
+   "runs": 260,
+   "wickets": 9,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Zeeshan Ali",
+     "dismissal": "b Dulaj Samuditha",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Anshuman Rath",
+     "dismissal": "c W Sahan b V Viyaskanth",
+     "runs": 75,
+     "balls": 91,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Babar Hayat",
+     "dismissal": "runout (N Madushka / N Dananjaya)",
+     "runs": 86,
+     "balls": 114,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Shahid Wasif",
+     "dismissal": "c D Ranatunga b N Dananjaya",
+     "runs": 3,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Reyansh Sharma",
+     "dismissal": "c V Viyaskanth b W Sahan",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abdul Samad",
+     "dismissal": "runout (W Sahan)",
+     "runs": 21,
+     "balls": 24,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Aizaz Khan",
+     "dismissal": "c N Dananjaya b W Sahan",
+     "runs": 30,
+     "balls": 27,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Yasim Murtaza",
+     "dismissal": "not out",
+     "runs": 15,
+     "balls": 17,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ehsan Khan",
+     "dismissal": "b Dulaj Samuditha",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ayush Shukla",
+     "dismissal": "c C Heenatigala b Dulaj Samuditha",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Dulaj Samuditha",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Janith Liyanage",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Duvindu Ranatunga",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Wanuja Sahan",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Nipun Dananjaya",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 54,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Vijayakanth Viyaskanth",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chamika Heenatigala",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Zeeshan Ali",
+     "score": 2,
+     "over": "0.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Babar Hayat",
+     "score": 172,
+     "over": "34.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Anshuman Rath",
+     "score": 174,
+     "over": "35.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Reyansh Sharma",
+     "score": 177,
+     "over": "36.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shahid Wasif",
+     "score": 177,
+     "over": "37.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aizaz Khan",
+     "score": 232,
+     "over": "44.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Abdul Samad",
+     "score": 244,
+     "over": "46.4"
+    },
+    {
+     "wicket": 8,
+     "batter": "Ehsan Khan",
+     "score": 248,
+     "over": "47.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ayush Shukla",
+     "score": 260,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 21,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
