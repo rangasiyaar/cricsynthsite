@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CricSynthesis Business API, 45 s</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* 45 s, 1920×1080, 120 BPM. One world the camera pans through; every style is computed in seek(t). */
+:root{--S:#5980a6;--L:#94bce3;--C:#d9895f;--W:#f2f2f3;--B:#07080a;--K:#0f1217;--K2:#171b21;--line:#2a3038;--mut:#9aa3ad;
+  --H:"Barlow Condensed",system-ui,sans-serif;--T:"Barlow",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--B)}
+#root{position:absolute;inset:0;overflow:hidden;background:var(--B);
+  background-image:radial-gradient(circle,rgba(242,242,243,.05) 1.4px,transparent 1.6px);background-size:48px 48px}
+#world{position:absolute;left:0;top:0;width:20000px;height:1080px}
+.panel{position:absolute;top:0;width:1920px;height:1080px}
+.a{position:absolute}
+.rv{position:absolute;overflow:hidden}
+.rv>div{will-change:auto}
+.sec{font:600 26px/1 var(--H);letter-spacing:.2em;text-transform:uppercase;color:var(--L)}
+.hd{font:700 92px/.95 var(--H);text-transform:uppercase;color:var(--W)}
+.bd{font:500 30px/1.38 var(--T);color:#c3cad2}
+.card{position:absolute;background:var(--K);border:1px solid var(--line);border-radius:26px}
+.k{font:600 20px/1 var(--H);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.num{font-family:var(--H);font-weight:700;font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;gap:10px;font:600 22px/1 var(--H);letter-spacing:.1em;text-transform:uppercase;padding:9px 14px;border-radius:8px}
+.mono{font:500 30px/1.5 var(--T)}
+#hud{position:absolute;left:80px;top:56px;display:flex;align-items:center;gap:14px;font:600 30px/1 var(--H);letter-spacing:.06em;color:var(--W)}
+#hud svg{width:36px;height:36px;color:var(--L)}
+#hud b{font-weight:600;color:var(--L)}
+#hud em{font-style:normal;margin-left:10px;background:var(--S);color:var(--W);font:600 20px/1 var(--H);letter-spacing:.14em;padding:8px 11px;border-radius:6px}
+#prog{position:absolute;left:160px;right:160px;top:1000px;height:2px;background:#232830}
+.node{position:absolute;top:-7px;width:16px;height:16px;border-radius:50%;background:#232830}
+.nodeL{position:absolute;top:22px;font:600 18px/1 var(--H);letter-spacing:.14em;text-transform:uppercase;color:#5c656f;white-space:nowrap;transform:translateX(-50%)}
+#ball{position:absolute;background:#fff;border-radius:50%}
+.band{position:absolute;top:0;height:1080px}
+#big{position:absolute;left:0;width:1920px;text-align:center;overflow:hidden;white-space:nowrap;font:700 230px/1 var(--H);text-transform:uppercase;color:var(--B)}
+#big i{display:inline-block;font-style:normal}
+#lockup{position:absolute;inset:0}
+#wm{position:absolute;overflow:hidden;white-space:nowrap;font:600 116px/1 var(--H);letter-spacing:.04em;color:var(--W)}
+#wm b{font-weight:600;color:var(--L)}
+#sub2{position:absolute;left:0;width:1920px;text-align:center;overflow:hidden;font:600 40px/1 var(--H);letter-spacing:.3em;text-transform:uppercase;color:var(--W)}
+#url{position:absolute;left:0;width:1920px;text-align:center;overflow:hidden;font:600 56px/1 var(--H);letter-spacing:.06em;color:var(--B)}
+.tile{position:absolute;width:560px;height:300px;background:var(--K);border-radius:22px;overflow:hidden}
+.tile .tt{position:absolute;left:36px;top:180px;font:700 52px/1 var(--H);text-transform:uppercase;color:var(--W)}
+.tile .td{position:absolute;left:38px;top:240px;font:500 26px/1 var(--T);color:var(--L)}
+.bub{position:absolute;padding:20px 26px;border-radius:22px;font:500 30px/1.3 var(--T);max-width:620px}
+</style></head><body>
+<div id="root">
+<div id="world">
+  <!-- ═ 0 · hook (screen centre) ═ -->
+  <div class="panel" id="p0" style="left:0">
+    <div class="a" id="pitch" style="background:var(--W)"></div>
+    <div class="rv" id="h0tag" style="left:260px;top:290px;height:64px;width:600px"><div class="chip" style="background:var(--S);color:var(--W);font-size:30px;padding:14px 20px">CricSynthesis · Business API</div></div>
+    <div class="rv" id="h0a" style="left:260px;top:380px;height:160px;width:1500px"><div class="hd" style="font-size:150px">Cricket forecasts</div></div>
+    <div class="rv" id="h0b" style="left:260px;top:566px;height:160px;width:1500px"><div class="hd" style="font-size:150px;color:var(--L)">for your product.</div></div>
+    <div class="rv" id="h0c" style="left:262px;top:748px;height:50px;width:1400px"><div class="bd" style="font-size:38px">One API for newsrooms, fantasy apps and analysts.</div></div>
+  </div>
+
+  <!-- ═ 1 · match forecasts ═ -->
+  <div class="panel" id="p1" style="left:2200px">
+    <div class="rv" style="left:120px;top:220px;height:30px;width:520px" id="s1a"><div class="sec">01 · Match forecasts</div></div>
+    <div class="rv" style="left:120px;top:270px;height:290px;width:540px" id="s1b"><div class="hd">Every match, before the toss.</div></div>
+    <div class="rv" style="left:120px;top:590px;height:220px;width:500px" id="s1c"><div class="bd">Win probability, projected runs, wickets by over and the match-ups that matter, for every match we cover.</div></div>
+    <div class="card" id="mc" style="left:700px;top:170px;width:1100px;height:760px">
+      <div class="rv" id="mcH" style="left:44px;top:40px;height:60px;width:1000px"><div style="display:flex;align-items:baseline;gap:18px"><span class="num" style="font-size:52px;color:var(--W)">IND v AUS</span><span class="k">T20 · Pre-match</span></div></div>
+      <div class="a" id="mcW" style="left:44px;top:130px;width:1012px">
+        <div class="k">Win probability</div>
+        <div style="display:flex;justify-content:space-between;margin-top:14px"><span class="num" id="w1" style="font-size:64px;color:var(--L)">50%</span><span class="num" id="w2" style="font-size:64px;color:var(--C)">50%</span></div>
+        <div style="display:flex;height:16px;border-radius:8px;overflow:hidden;margin-top:10px;background:#232830"><i id="wb1" style="background:var(--L)"></i><i style="flex:1"></i><i id="wb2" style="background:var(--C)"></i></div></div>
+      <div class="a" id="mcR" style="left:44px;top:300px;width:1012px">
+        <div class="k">Projected runs · likely range</div>
+        <svg width="1012" height="150" viewBox="0 0 1012 150" style="margin-top:12px">
+          <g fill="#5c656f" font-family="Barlow Condensed" font-weight="600" font-size="18"><text x="160" y="145">120</text><text x="460" y="145">170</text><text x="760" y="145">220</text></g>
+          <line x1="170" x2="1012" y1="128" y2="128" stroke="#232830" stroke-width="2"/>
+          <text x="0" y="44" fill="#f2f2f3" font-family="Barlow Condensed" font-weight="700" font-size="34">IND</text>
+          <text x="0" y="104" fill="#f2f2f3" font-family="Barlow Condensed" font-weight="700" font-size="34">AUS</text>
+          <rect id="rg1" x="0" y="26" height="14" rx="7" fill="#94bce3" opacity=".55"/><circle id="rd1" cy="33" r="13" fill="#94bce3"/>
+          <rect id="rg2" x="0" y="86" height="14" rx="7" fill="#d9895f" opacity=".55"/><circle id="rd2" cy="93" r="13" fill="#d9895f"/>
+          <text id="rn1" x="1012" y="46" text-anchor="end" fill="#f2f2f3" font-family="Barlow Condensed" font-weight="700" font-size="40">0</text>
+          <text id="rn2" x="1012" y="106" text-anchor="end" fill="#f2f2f3" font-family="Barlow Condensed" font-weight="700" font-size="40">0</text>
+        </svg></div>
+      <div class="a" id="mcO" style="left:44px;top:500px;width:1012px">
+        <div style="display:flex;justify-content:space-between"><span class="k">Wickets by over</span><span class="k" style="color:var(--C)">Most likely: overs 16–19</span></div>
+        <div id="ovs" style="display:grid;grid-template-columns:repeat(20,1fr);gap:6px;align-items:end;height:96px;margin-top:16px"></div></div>
+      <div class="a" id="mcM" style="left:44px;top:672px;width:1012px;display:flex;justify-content:space-between;align-items:center">
+        <span class="chip" style="background:#1c2229;color:var(--W)">Key match-up · Top order v leg-spin <b style="color:var(--L);margin-left:6px">58 : 42</b></span>
+        <span class="k" style="letter-spacing:.06em;text-transform:none;font-size:22px">GET /v1/matches/{id}</span></div>
+    </div>
+  </div>
+
+  <!-- ═ 2 · players ═ -->
+  <div class="panel" id="p2" style="left:4400px">
+    <div class="rv" style="left:120px;top:220px;height:30px;width:520px" id="s2a"><div class="sec">02 · Players</div></div>
+    <div class="rv" style="left:120px;top:270px;height:290px;width:540px" id="s2b"><div class="hd">Every player, rated for this match.</div></div>
+    <div class="rv" style="left:120px;top:590px;height:220px;width:500px" id="s2c"><div class="bd">Ratings against the average player, form, batter v bowler match-ups and fantasy points.</div></div>
+    <div class="card" id="pc" style="left:700px;top:170px;width:1100px;height:760px">
+      <div class="a" style="left:44px;top:40px;width:1012px;display:flex;justify-content:space-between"><span class="k">Player rating · 1.00 = average</span><span class="k">Fantasy pts</span></div>
+      <div id="prows" class="a" style="left:44px;top:90px;width:1012px"></div>
+      <div class="a" id="avg" style="top:84px;width:2px;background:#5c656f"></div>
+    </div>
+  </div>
+
+  <!-- ═ 3 · grounds + simulation ═ -->
+  <div class="panel" id="p3" style="left:6600px">
+    <div class="rv" style="left:120px;top:220px;height:30px;width:520px" id="s3a"><div class="sec">03 · Grounds &amp; simulation</div></div>
+    <div class="rv" style="left:120px;top:270px;height:290px;width:540px" id="s3b"><div class="hd">Know the ground. Test the what-ifs.</div></div>
+    <div class="rv" style="left:120px;top:590px;height:220px;width:500px" id="s3c"><div class="bd">Typical scores and pace v spin at each venue, plus a simulator for the toss, conditions and line-ups.</div></div>
+    <div class="card" id="gc" style="left:700px;top:170px;width:530px;height:760px">
+      <div class="k" style="position:absolute;left:40px;top:40px">This ground</div>
+      <svg class="a" style="left:40px;top:80px" width="450" height="300" viewBox="0 0 450 300">
+        <ellipse id="gOv" cx="225" cy="150" rx="210" ry="135" fill="none" stroke="#94bce3" stroke-width="3"/>
+        <ellipse cx="225" cy="150" rx="110" ry="70" fill="none" stroke="#2a3038" stroke-width="2" stroke-dasharray="6 8"/>
+        <rect id="gPt" x="214" y="110" width="22" height="80" rx="3" fill="#f2f2f3"/>
+      </svg>
+      <div class="a" style="left:40px;top:410px;width:450px">
+        <div class="k">Typical first innings</div><div class="num" id="par" style="font-size:72px;color:var(--W);margin-top:8px">0</div></div>
+      <div class="a" style="left:40px;top:560px;width:450px">
+        <div class="k">Pace v spin · wickets</div>
+        <div style="display:flex;height:16px;border-radius:8px;overflow:hidden;margin-top:14px;background:#232830"><i id="pv1" style="background:var(--L)"></i><i style="flex:1"></i><i id="pv2" style="background:var(--C)"></i></div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px" class="k"><span>Pace 41%</span><span style="color:var(--C)">Spin 59%</span></div></div>
+    </div>
+    <div class="card" id="sc" style="left:1270px;top:170px;width:530px;height:760px">
+      <div class="k" style="position:absolute;left:40px;top:40px">What-if · IND projected</div>
+      <div class="num a" id="sim" style="left:40px;top:80px;font-size:150px;color:var(--W)">184</div>
+      <div class="a chip" id="simd" style="left:300px;top:130px;background:#1c2229;color:var(--C)">—</div>
+      <div id="tgs" class="a" style="left:40px;top:330px;width:450px"></div>
+    </div>
+  </div>
+
+  <!-- ═ 4 · developers ═ -->
+  <div class="panel" id="p4" style="left:8800px">
+    <div class="rv" style="left:120px;top:220px;height:30px;width:520px" id="s4a"><div class="sec">04 · For developers</div></div>
+    <div class="rv" style="left:120px;top:270px;height:290px;width:540px" id="s4b"><div class="hd">One key. Clean JSON.</div></div>
+    <div class="rv" style="left:120px;top:500px;height:260px;width:500px" id="s4c"><div class="bd">Analytics, simulation and graphics endpoints over HTTPS. Or connect an AI assistant through MCP.</div></div>
+    <div class="card" id="cw" style="left:700px;top:150px;width:700px;height:520px;background:#0b0e12">
+      <div class="a" style="left:24px;top:22px;display:flex;gap:8px"><i style="width:12px;height:12px;border-radius:50%;background:#2a3038;display:block"></i><i style="width:12px;height:12px;border-radius:50%;background:#2a3038;display:block"></i><i style="width:12px;height:12px;border-radius:50%;background:#2a3038;display:block"></i></div>
+      <div class="a mono" id="req" style="left:36px;top:66px;color:var(--W);white-space:pre"></div>
+      <div class="a mono" id="res" style="left:36px;top:130px;color:#c3cad2;white-space:pre;font-size:28px"></div>
+    </div>
+    <div class="card" id="eps" style="left:1430px;top:150px;width:370px;height:520px">
+      <div class="k" style="position:absolute;left:30px;top:30px">Endpoints</div>
+      <div id="epl" class="a" style="left:30px;top:76px;width:320px"></div>
+    </div>
+    <div class="card" id="svgc" style="left:700px;top:700px;width:520px;height:250px;background:#f2f2f3;border:0">
+      <div class="a k" style="left:30px;top:26px;color:#5c656f">win.svg · Graphics API</div>
+      <div class="a num" style="left:30px;top:66px;font-size:46px;color:#1d1f20;display:flex;gap:300px"><span>IND</span><span>AUS</span></div>
+      <div class="a" style="left:30px;top:128px;width:460px;height:16px;border-radius:8px;overflow:hidden;display:flex"><i style="flex:62;background:#416180"></i><i style="flex:38;background:#b0613a"></i></div>
+      <div class="a num" style="left:30px;top:160px;width:460px;font-size:52px;display:flex;justify-content:space-between"><span style="color:#416180">62%</span><span style="color:#b0613a">38%</span></div>
+    </div>
+    <div class="bub" id="b1" style="left:1300px;top:730px;background:#1c2229;color:var(--W)">Who's likely to win tonight?</div>
+    <div class="bub" id="b2" style="left:1250px;top:842px;max-width:560px;background:var(--S);color:var(--W)">India, 62%. Projected 184 (166–201).</div>
+  </div>
+
+  <!-- ═ 5 · Business API plan ═ -->
+  <div class="panel" id="p5" style="left:11000px">
+    <div class="rv" style="left:120px;top:220px;height:30px;width:520px" id="s5a"><div class="sec">05 · Business API plan</div></div>
+    <div class="rv" style="left:120px;top:270px;height:290px;width:540px" id="s5b"><div class="hd">Built around your product.</div></div>
+    <div class="rv" style="left:120px;top:590px;height:220px;width:500px" id="s5c"><div class="bd">For publishers, broadcasters, fantasy and sports apps. Set up with your team.</div></div>
+    <div id="tiles"></div>
+  </div>
+</div>
+
+<!-- screen-space layers -->
+<div id="hud"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></svg><span>CRIC<b>SYNTHESIS</b></span><em>BUSINESS API</em></div>
+<div id="prog"></div>
+<div id="bands"></div>
+<div id="big"></div>
+<div id="url">cricsynthesis.in/contact</div>
+<svg id="lockup" width="1920" height="1080" viewBox="0 0 1920 1080"><g fill="none" stroke="#94bce3" stroke-width="12">
+  <path id="m1" d="M556 467 L583 494 L556 521" stroke-linecap="square"/><path id="m2" d="M610 467 V542 M634 467 V542 M658 467 V542 M604 455 H631 M637 455 H664"/></g></svg>
+<div id="wm" style="left:690px;top:438px;height:120px">CRIC<b>SYNTHESIS</b></div>
+<div id="sub2" style="top:600px;height:44px">Business API</div>
+<div id="ball"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=x=>Math.max(0,Math.min(1,x)), lerp=(a,b,u)=>a+(b-a)*u;
+const ex=u=>u<=0?0:u>=1?1:(1-Math.pow(2,-10*u))/(1-Math.pow(2,-10));
+const eio=u=>{u=cl(u);return u<.5?ex(u*2)/2:.5+ex(u*2-1)/2};
+const S='#5980a6',L='#94bce3',C='#d9895f',W='#f2f2f3';
+// reveal: wipe up from a clip edge
+function rv(el,t,at,out=99,d=.4){const p=ex((t-at)/d), q=ex((t-out)/.3); const c=el.firstElementChild;
+  c.style.transform=`translateY(${(1-p)*105-q*105}%)`; el.style.visibility=p>0&&q<1?'visible':'hidden'}
+function pop(el,t,at,d=.35,dy=30){const p=ex((t-at)/d); el.style.opacity=p>0?1:0; el.style.clipPath=`inset(${(1-p)*100}% 0 0 0 round 22px)`; el.style.transform=`translateY(${(1-p)*dy}px)`}
+
+// ── build static rows ──
+const ovH=[.30,.26,.34,.38,.42,.48,.36,.32,.35,.38,.40,.44,.47,.52,.58,.74,.82,.90,1,.70];
+const ovEls=ovH.map((h,i)=>{const d=document.createElement('i');d.style.cssText=`display:block;border-radius:4px;background:${i>=15&&i<=18?C:'#2f4256'}`;$('ovs').appendChild(d);return d});
+const PL=[["Opener",1.34,61],["No. 3 bat",1.22,52],["Lead spinner",1.18,49],["Strike bowler",1.12,47],["All-rounder",1.08,45],["Finisher",1.03,41],["Wicketkeeper",.96,36],["Death bowler",.91,33]];
+const prow=PL.map(([n,r,f],i)=>{const d=document.createElement('div');d.style.cssText=`position:absolute;left:0;top:${i*80}px;width:1012px;height:64px`;
+  d.innerHTML=`<div style="position:absolute;left:0;top:18px;font:600 30px/1 Barlow;color:#f2f2f3">${n}</div><div class="cap" style="position:absolute;left:236px;top:14px;width:36px;height:36px;border-radius:50%;font:700 18px/36px 'Barlow Condensed';text-align:center;color:#fff"></div>
+  <div style="position:absolute;left:290px;top:24px;width:560px;height:16px;border-radius:8px;background:#1c2229"></div><div class="bar" style="position:absolute;left:290px;top:24px;height:16px;border-radius:8px;background:${i<2?L:'#3f5a75'}"></div>
+  <div class="rt num" style="position:absolute;left:866px;top:12px;font-size:38px;color:#f2f2f3"></div><div class="fp num" style="position:absolute;right:0;top:12px;font-size:38px;color:${i<2?C:'#9aa3ad'}"></div>`;
+  $('prows').appendChild(d);return d});
+const RMAX=1.5, rx=r=>290+560*r/RMAX;
+const TG=[["Toss","Bat first","Bowl first",18.5,-8],["Dew","Off","On",19.5,-7],["XI","As named","+ spinner",20.5,4]];
+const tgEls=TG.map(([n,a,b],i)=>{const d=document.createElement('div');d.style.cssText=`position:absolute;left:0;top:${i*130}px;width:450px;height:100px`;
+  d.innerHTML=`<div class="k">${n}</div><div style="position:absolute;left:0;top:34px;width:450px;height:60px;border-radius:30px;background:#1c2229"></div><div class="kn" style="position:absolute;top:38px;width:221px;height:52px;border-radius:26px;background:#5980a6"></div>
+  <div style="position:absolute;left:0;top:52px;width:225px;text-align:center;font:600 26px/1 Barlow;color:#f2f2f3">${a}</div><div style="position:absolute;left:225px;top:52px;width:225px;text-align:center;font:600 26px/1 Barlow;color:#f2f2f3">${b}</div>`;
+  $('tgs').appendChild(d);return d});
+const EP=["/v1/matches","/v1/matches/{id}","/v1/matches/{id}/fantasy","/v1/players/compare","/v1/players/{id}/phases","/v1/matchups","/v1/teams/profile","/v1/graphics/…"];
+const epEls=EP.map((e,i)=>{const d=document.createElement('div');d.style.cssText=`position:absolute;left:0;top:${i*52}px;font:500 24px/1 Barlow;color:#c3cad2;white-space:nowrap`;d.textContent=e;$('epl').appendChild(d);return d});
+const TL=[["Your own limits","Set to your traffic",S,"gauge"],["Live dashboard","Built around your fixtures",L,"spark"],["Integration help","Site, app, CMS or graphics desk",C,"nodes"],["Priority support","Talk to the people who built it",W,"chat"]];
+const TP=[[700,170],[1300,170],[700,510],[1300,510]];
+const tiles=TL.map(([a,b,c,v],i)=>{const d=document.createElement('div');d.className='tile';d.style.left=TP[i][0]+'px';d.style.top=TP[i][1]+'px';d.style.boxShadow=`inset 0 0 0 2px ${c}`;
+  const vis={gauge:`<div style="position:absolute;left:38px;top:60px;width:480px;height:22px;border-radius:11px;background:#1c2229"></div><div class="vz" style="position:absolute;left:38px;top:60px;height:22px;border-radius:11px;background:${c}"></div><div style="position:absolute;left:38px;top:100px;font:600 22px/1 'Barlow Condensed';letter-spacing:.12em;color:#9aa3ad">CALLS TODAY · YOUR LIMIT</div>`,
+    spark:`<svg style="position:absolute;left:38px;top:40px" width="480" height="110" viewBox="0 0 480 110"><path class="vz" d="M0 95 L60 80 L120 86 L180 60 L240 66 L300 40 L360 48 L420 22 L480 12" fill="none" stroke="${c}" stroke-width="5" stroke-linejoin="round"/></svg>`,
+    nodes:`<svg style="position:absolute;left:38px;top:40px" width="480" height="110" viewBox="0 0 480 110"><g class="vz"><line x1="60" y1="55" x2="420" y2="55" stroke="${c}" stroke-width="4"/><circle cx="60" cy="55" r="24" fill="${c}"/><circle cx="240" cy="55" r="24" fill="${c}"/><circle cx="420" cy="55" r="24" fill="${c}"/></g><g font-family="Barlow Condensed" font-weight="600" font-size="20" fill="#9aa3ad" text-anchor="middle"><text x="60" y="108">SITE</text><text x="240" y="108">APP</text><text x="420" y="108">CMS</text></g></svg>`,
+    chat:`<svg style="position:absolute;left:38px;top:40px" width="480" height="110" viewBox="0 0 480 110"><g class="vz"><rect x="0" y="10" width="250" height="56" rx="20" fill="#1c2229"/><rect x="200" y="50" width="280" height="56" rx="20" fill="${c}"/></g></svg>`}[v];
+  d.innerHTML=vis+`<div class="tt">${a}</div><div class="td">${b}</div>`;$('tiles').appendChild(d);return d});
+const nodes=["Forecasts","Players","Grounds","Developers","Business API"].map((n,i)=>{const d=document.createElement('div');d.className='node';d.style.left=(i*400-8)+'px';d.innerHTML=`<div class="nodeL" style="left:8px">${n}</div>`;$('prog').appendChild(d);return d});
+const bands=[S,L,C,W].map(c=>{const d=document.createElement('div');d.className='band';d.style.background=c;$('bands').appendChild(d);return d});
+const m1=$('m1'),m2=$('m2'),L1=m1.getTotalLength(),L2=m2.getTotalLength();
+
+// ── timeline ──
+const SC=[0,4,10,16,22,29,36,42];          // section starts
+const PAN=[[4,2200],[10,4400],[16,6600],[22,8800],[29,11000]];
+function camX(t){let x=0;for(const [at,to] of PAN){const from=x;x=lerp(from,to,eio((t-at)/.7))}return x}
+
+function bigSlot(t){
+  const W8=["Your fixtures.","Our numbers.","Business API.","Book a call."], T8=[36.5,37.5,38.5,39.5];
+  let k=-1;T8.forEach((x,i)=>{if(t>=x)k=i}); const cur=k<0?'':W8[k], prev=k<=0?'':W8[k-1], T=k<0?0:T8[k];
+  const mk=(s,f)=>[...s].map((c,i)=>`<i style="transform:translateY(${f(i)}%)">${c===' '?'&nbsp;':c}</i>`).join('');
+  const p=i=>ex((t-T-i*.012)/.24);
+  $('big').innerHTML=`<div style="position:absolute;left:0;right:0">${mk(prev,i=>-110*p(i))}</div><div style="position:absolute;left:0;right:0">${mk(cur,i=>110*(1-p(i)))}</div>`;
+}
+
+window.seek=function(t){
+  t=((t%45)+45)%45;
+  $('world').style.transform=`translateX(${-camX(t)}px)`; $('world').style.display=t>=36.4&&t<44.99?'none':'block';
+  // ── 0 hook ──
+  const pl=ex((t-.5)/.45), pc=ex((t-3.6)/.4);
+  const pw=lerp(44,1400,pl)*(1-pc), ph=lerp(44,6,pl), pleft=pc>0?260:960-lerp(44,1400,pl)/2;
+  $('pitch').style.cssText=`position:absolute;background:#f2f2f3;left:${pleft}px;top:${lerp(540,553,pl)-ph/2}px;width:${pw}px;height:${ph}px;border-radius:${ph/2}px;display:${t>=.5&&t<4.1?'block':'none'}`;
+  rv($('h0a'),t,1.0); rv($('h0b'),t,1.5); rv($('h0tag'),t,2.5); rv($('h0c'),t,3.0);
+  // ── 1 match forecasts ──
+  rv($('s1a'),t,4.5);rv($('s1b'),t,4.7);rv($('s1c'),t,5.0);
+  pop($('mc'),t,4.4,.45,40);
+  rv($('mcH'),t,5.0);
+  const wp=ex((t-5.5)/.9); const w=lerp(50,62,wp); $('w1').textContent=Math.round(w)+'%'; $('w2').textContent=Math.round(100-w)+'%';
+  $('wb1').style.width=(w*ex((t-5.4)/.4))+'%'; $('wb2').style.width=((100-w)*ex((t-5.4)/.4))+'%'; $('mcW').style.opacity=t>=5.4?1:0;
+  const sx=v=>170+(v-120)/100*842*(842/842);
+  const rp=ex((t-6.5)/.8); $('mcR').style.opacity=t>=6.4?1:0;
+  [[166,201,184,'1'],[153,189,172,'2']].forEach(([a,b,m,k])=>{const g=$('rg'+k),d=$('rd'+k);const xa=sx(lerp(m,a,rp)),xb=sx(lerp(m,b,rp));
+    g.setAttribute('x',xa);g.setAttribute('width',Math.max(0,xb-xa));d.setAttribute('cx',sx(m));d.setAttribute('r',13*ex((t-6.45)/.3));$('rn'+k).textContent=Math.round(m*ex((t-6.5)/.7))});
+  $('mcO').style.opacity=t>=7.4?1:0; ovEls.forEach((e,i)=>{e.style.height=(96*ovH[i]*ex((t-7.5-i*.025)/.35))+'px'});
+  $('mcM').style.clipPath=`inset(0 ${(1-ex((t-8.5)/.4))*100}% 0 0)`;
+  // ── 2 players ──
+  rv($('s2a'),t,10.5);rv($('s2b'),t,10.7);rv($('s2c'),t,11.0);
+  pop($('pc'),t,10.4,.45,40);
+  prow.forEach((d,i)=>{const p=ex((t-10.9-i*.12)/.45); d.style.opacity=p>0?1:0; d.style.transform=`translateX(${(1-p)*40}px)`;
+    const g=ex((t-11.2-i*.12)/.6); d.querySelector('.bar').style.width=(560*PL[i][1]/RMAX*g)+'px'; d.querySelector('.rt').textContent=(PL[i][1]*g).toFixed(2);
+    const f=ex((t-13.5-i*.06)/.5); d.querySelector('.fp').textContent=f>0?Math.round(PL[i][2]*f):'';
+    const cap=d.querySelector('.cap'); const cp=ex((t-14.5-(i===1?.25:0))/.3); cap.textContent=i===0?'C':i===1?'VC':''; cap.style.background=i===0?S:C; cap.style.transform=`scale(${i<2?cp:0})`});
+  const ap=ex((t-12.6)/.5); $('avg').style.left=(44+rx(1.0))+'px'; $('avg').style.height=(640*ap)+'px';
+  // ── 3 grounds & simulation ──
+  rv($('s3a'),t,16.5);rv($('s3b'),t,16.7);rv($('s3c'),t,17.0);
+  pop($('gc'),t,16.4,.45,40); pop($('sc'),t,16.8,.45,40);
+  const gl=ex((t-16.8)/.8), per=2*Math.PI*Math.sqrt((210*210+135*135)/2); $('gOv').style.strokeDasharray=per; $('gOv').style.strokeDashoffset=per*(1-gl);
+  $('par').textContent=Math.round(168*ex((t-17.3)/.7)); $('pv1').style.width=(41*ex((t-17.8)/.5))+'%'; $('pv2').style.width=(59*ex((t-17.8)/.5))+'%';
+  let sim=184,delta=null; TG.forEach(([n,a,b,at,dv],i)=>{const p=ex((t-at)/.3); tgEls[i].querySelector('.kn').style.left=(4+221*p)+'px'; if(t>=at){sim+=dv*ex((t-at)/.5);delta=dv}});
+  tgEls.forEach((e,i)=>{const p=ex((t-17.6-i*.15)/.35); e.style.opacity=p>0?1:0; e.style.transform=`translateY(${(1-p)*20}px)`});
+  $('sim').textContent=Math.round(sim); $('simd').textContent=delta===null?'Base case':(delta>0?'+':'')+delta+' runs'; $('simd').style.color=delta===null?'#9aa3ad':(delta>0?L:C);
+  // ── 4 developers ──
+  rv($('s4a'),t,22.5);rv($('s4b'),t,22.7);rv($('s4c'),t,23.0);
+  pop($('cw'),t,22.4,.45,40); pop($('eps'),t,24.4,.45,40);
+  const rq='GET /v1/matches/{id}\n  -H "X-API-Key: cs_live_…"'; const nq=Math.floor(cl((t-22.8)/.7)*rq.length);
+  $('req').innerHTML=rq.slice(0,nq).replace('GET','<b style="color:#94bce3">GET</b>');
+  const RL=['','200 OK','{','  "win": { "IND": 0.62, "AUS": 0.38 },','  "runs": {','    "IND": { "median": 184, "range": [166, 201] }','  },','  "danger_overs": [16, 19]','}'];
+  const nr=t<23.6?0:Math.min(RL.length,1+Math.floor((t-23.6)/.1));
+  $('res').innerHTML=RL.slice(0,nr).map(l=>l==='200 OK'?'<span style="color:#9fd0b4">200 OK · JSON</span>':l.replace(/("[a-z_A-Z]+")/g,'<span style="color:#94bce3">$1</span>').replace(/(\b\d[\d.]*\b)/g,'<span style="color:#d9895f">$1</span>')).join('\n');
+  epEls.forEach((e,i)=>{const p=ex((t-24.7-i*.09)/.3); e.style.transform=`translateX(${(1-p)*30}px)`; e.style.opacity=p>0?1:0});
+  pop($('svgc'),t,25.8,.45,40);
+  pop($('b1'),t,27.0,.35,20); pop($('b2'),t,27.6,.35,20);
+  // ── 5 Business API plan ──
+  rv($('s5a'),t,29.5);rv($('s5b'),t,29.7);rv($('s5c'),t,30.0);
+  tiles.forEach((d,i)=>{const at=30.0+i*1.0; pop(d,t,at,.45,40); const v=d.querySelector('.vz');const q=ex((t-at-.3)/.8);
+    if(i===0) v.style.width=(480*.72*q)+'px'; if(i===1){v.style.strokeDasharray=700;v.style.strokeDashoffset=700*(1-q)}
+    if(i===2) v.style.clipPath=`inset(0 ${(1-q)*100}% 0 0)`; if(i===3) v.style.clipPath=`inset(0 ${(1-q)*100}% 0 0)`});
+  // ── HUD + progress ball ──
+  const hin=ex((t-4.2)/.4), hout=ex((t-35.6)/.4);
+  $('hud').style.transform=`translateY(${(1-hin)*-120+hout*-120}px)`;
+  const pin=ex((t-3.9)/.5), pout=ex((t-35.7)/.3); $('prog').style.transform=`translateY(${(1-pin)*120+pout*120}px)`;
+  let sec=-1; [4,10,16,22,29].forEach((x,i)=>{if(t>=x)sec=i});
+  nodes.forEach((n,i)=>{const on=i<=sec; n.style.background=on?(i===sec?L:'#5980a6'):'#232830'; n.querySelector('.nodeL').style.color=i===sec?'#f2f2f3':'#5c656f'});
+  // the ball: centre → hook line → progress line, rolling node to node → bands
+  let bx=960,by=540,bs=44,bvis=true;
+  if(t<.5){bs=44*(1+.28*(1-Math.exp(-t*40))*Math.exp(-t*9))}
+  else if(t<3.6){bvis=false}
+  else if(t<4.4){const u=eio((t-3.75)/.65); bx=lerp(260,160,u)-Math.sin(Math.PI*u)*140; by=lerp(553,1001,u); bs=lerp(10,26,u); bvis=t>=3.75}
+  else if(t<36){bs=26; by=1001+(1-pin)*120+pout*120; let x=160;[[10,560],[16,960],[22,1360],[29,1760]].forEach(([at,to])=>{x=lerp(x,to,eio((t-at)/.7))}); bx=x; if(t>=35.7)bvis=false}
+  else if(t<42.2){bvis=false}
+  else if(t<42.36){const u=ex((t-42.2)/.16); bx=lerp(960,606,u); by=lerp(540,500,u); bs=lerp(44,0,ex((t-42.24)/.12))}
+  else if(t<44.4){bvis=false}
+  else {const g=ex((t-44.4)/.15), m=ex((t-44.5)/.35); bs=44*g; bx=lerp(606,960,m); by=lerp(500,540,m)}
+  if(t>=42.0&&t<42.2){bvis=true; bx=960; by=540; bs=44}
+  const b=$('ball'); b.style.display=bvis&&bs>.5?'block':'none'; b.style.left=(bx-bs/2)+'px'; b.style.top=(by-bs/2)+'px'; b.style.width=bs+'px'; b.style.height=bs+'px';
+  // ── 6 close: bands, big type, url, collapse to the ball ──
+  const bshow=t>=36&&t<42.2, grow=ex((t-36)/.4), coll=ex((t-41.4)/.3), pin2=ex((t-41.8)/.2);
+  bands.forEach((d,i)=>{d.style.display=bshow&&(i===0||coll<1)?'block':'none';
+    let x=i*480,w=480,y=lerp(1080,0,grow),h=1080;
+    y=lerp(y,537,coll); h=lerp(h,6,coll);
+    if(coll>=1&&i===0){x=lerp(0,938,pin2); w=lerp(1920,44,pin2); y=lerp(537,518,pin2); h=lerp(6,44,pin2)}
+    else if(coll>0){d.style.background=mix(['#5980a6','#94bce3','#d9895f','#f2f2f3'][i],'#f2f2f3',coll)}
+    if(coll===0)d.style.background=['#5980a6','#94bce3','#d9895f','#f2f2f3'][i];
+    d.style.left=x+'px';d.style.width=w+'px';d.style.top=y+'px';d.style.height=h+'px';d.style.borderRadius=(coll>=1?22*pin2:0)+'px'});
+  $('big').style.display=t>=36.4&&t<41.7?'block':'none'; $('big').style.top='380px'; $('big').style.height='240px'; bigSlot(t); $('big').style.transform=`scaleY(${1-ex((t-41.4)/.3)})`;
+  const up=ex((t-40.0)/.4)*(1-ex((t-41.3)/.2)); $('url').style.top='680px'; $('url').style.height='64px'; $('url').style.clipPath=`inset(${(1-up)*100}% 0 0 0)`; $('url').style.display=t>=40&&t<41.6?'block':'none';
+  // ── 7 end title ──
+  const draw=ex((t-42.22)/.3)*(1-ex((t-44.2)/.2));
+  m1.style.strokeDasharray=L1; m1.style.strokeDashoffset=L1*(1-draw); m2.style.strokeDasharray=L2; m2.style.strokeDashoffset=L2*(1-draw);
+  $('lockup').style.display=t>=42.2?'block':'none';
+  const wm=ex((t-42.4)/.32)*(1-ex((t-44.1)/.2)); $('wm').style.width=(700*wm)+'px'; $('wm').style.display=t>=42.3?'block':'none';
+  const sb=ex((t-42.6)/.3)*(1-ex((t-44.0)/.2)); $('sub2').style.clipPath=`inset(${(1-sb)*100}% 0 0 0)`; $('sub2').style.display=t>=42.5?'block':'none';
+};
+function mix(a,b,u){const h=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16));const A=h(a),B=h(b);return `rgb(${A.map((v,i)=>Math.round(lerp(v,B[i],u))).join(',')})`}
+
+// ── soundtrack: 120 BPM, energetic: four-on-the-floor kick, claps on 2 and 4, offbeat hats, ducked bass, chord stabs, riser and drop ──
+window.makeAudio=async function(){
+  const SR=48000,D=45,N=SR*D,ctx=new OfflineAudioContext(2,N,SR);
+  const master=ctx.createDynamicsCompressor(); master.threshold.value=-14; master.ratio.value=3; master.connect(ctx.destination);
+  const bus=ctx.createGain(); bus.gain.value=.9; bus.connect(master);
+  const nb=ctx.createBuffer(1,SR*2,SR),nd=nb.getChannelData(0);let s=7;for(let i=0;i<nd.length;i++){s=(s*16807)%2147483647;nd[i]=s/1073741823.5-1}
+  const env=(g,t,a,peak,d)=>{g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d)};
+  const noise=(t,d,type,f,q,peak,a=.002)=>{const n=ctx.createBufferSource();n.buffer=nb;const fl=ctx.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=ctx.createGain();env(g,t,a,peak,d);n.connect(fl).connect(g).connect(bus);n.start(t);n.stop(t+d+.05)};
+  const kick=(t,peak=.9)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);env(g,t,.003,peak,.38);o.connect(g).connect(bus);o.start(t);o.stop(t+.42);noise(t,.012,'highpass',3000,.7,.18)};
+  const mid=n=>440*Math.pow(2,(n-69)/12);
+  const CH=[[57,60,64],[53,57,60],[48,52,55],[55,59,62]], RT=[33,29,36,31];
+  // pad + stabs through the film
+  for(let bar=0;bar<22;bar++){const t=bar*2, ch=CH[bar%4];
+    ch.forEach(n=>{const o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=mid(n);const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=t<4?700:1400;const g=ctx.createGain();
+      g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.022,t+.3);g.gain.setValueAtTime(.022,t+1.7);g.gain.linearRampToValueAtTime(.0001,t+2);o.connect(lp).connect(g).connect(bus);o.start(t);o.stop(t+2.05)});
+    if(t>=4&&t<42) for(const off of [0,.75,1.5]) ch.forEach(n=>{const o=ctx.createOscillator();o.type='square';o.frequency.value=mid(n+12);const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2600;const g=ctx.createGain();env(g,t+off,.004,.025,.18);o.connect(lp).connect(g).connect(bus);o.start(t+off);o.stop(t+off+.22)});}
+  for(let i=0;i<90;i++){const t=i*.5;
+    const drums=(t>=4&&t<36)||(t>=36&&t<42);
+    if(t<4){ if(t>=2) kick(t,.55) }
+    else if(drums){ kick(t, t>=36?1:.9);
+      noise(t+.25,.12,'highpass',7000,.7,t>=22?.16:.11);                            // offbeat open hat
+      if(i%2===1) {noise(t,.16,'bandpass',1800,.8,.32,.003);noise(t+.012,.12,'bandpass',1500,.8,.2,.003)} // clap on 2 and 4
+      if(t>=22) for(const q of [.125,.375]) noise(t+q,.03,'highpass',9000,.7,.06);     // 16th hats in the second half
+      // ducked offbeat bass
+      const bar=Math.floor(t/2)%4; const o=ctx.createOscillator();o.type='sawtooth';o.frequency.value=mid(RT[bar]);const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=t>=36?900:600;lp.Q.value=4;
+      const g=ctx.createGain();env(g,t+.25,.01,.2,.22);o.connect(lp).connect(g).connect(bus);o.start(t+.25);o.stop(t+.5);}
+  }
+  // hits on section changes
+  for(const t of [4,10,16,22,29]){noise(t,.6,'lowpass',5000,.5,.22,.004);const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(40,t+.6);env(g,t,.004,.35,.7);o.connect(g).connect(bus);o.start(t);o.stop(t+.75)}
+  // riser into the drop at 36
+  {const n=ctx.createBufferSource();n.buffer=nb;n.loop=true;const f=ctx.createBiquadFilter();f.type='bandpass';f.Q.value=1.5;f.frequency.setValueAtTime(300,34);f.frequency.exponentialRampToValueAtTime(8000,36);
+   const g=ctx.createGain();g.gain.setValueAtTime(.0001,34);g.gain.exponentialRampToValueAtTime(.35,35.97);g.gain.setValueAtTime(.0001,36);n.connect(f).connect(g).connect(bus);n.start(34);n.stop(36);
+   noise(36,1.4,'highpass',2500,.5,.4,.003);}
+  // logo chime and a clean tail so the loop restarts quietly
+  for(const [f,d] of [[880,0],[1320,.07],[1760,.14]]){const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;const t=42.22+d;env(g,t,.01,.16,1.2);o.connect(g).connect(bus);o.start(t);o.stop(t+1.3)}
+  const buf=await ctx.startRendering();const Lc=buf.getChannelData(0),Rc=buf.getChannelData(1);let pk=0;for(let i=0;i<N;i++)pk=Math.max(pk,Math.abs(Lc[i]),Math.abs(Rc[i]));
+  const sc=.9/pk,out=new DataView(new ArrayBuffer(44+N*4)),w=(o,s)=>[...s].forEach((c,i)=>out.setUint8(o+i,c.charCodeAt(0)));
+  w(0,'RIFF');out.setUint32(4,36+N*4,true);w(8,'WAVE');w(12,'fmt ');out.setUint32(16,16,true);out.setUint16(20,1,true);out.setUint16(22,2,true);out.setUint32(24,SR,true);out.setUint32(28,SR*4,true);out.setUint16(32,4,true);out.setUint16(34,16,true);w(36,'data');out.setUint32(40,N*4,true);
+  const fade=Math.round(SR*.03);for(let i=0;i<N;i++){const f=i<fade?i/fade:i>N-fade?(N-i)/fade:1;out.setInt16(44+i*4,Math.max(-1,Math.min(1,Lc[i]*sc*f))*32767,true);out.setInt16(46+i*4,Math.max(-1,Math.min(1,Rc[i]*sc*f))*32767,true)}
+  let bin='';const u8=new Uint8Array(out.buffer);for(let i=0;i<u8.length;i+=8192)bin+=String.fromCharCode.apply(null,u8.subarray(i,i+8192));return btoa(bin);
+};
+seek(0);
+</script>
+</body></html>
