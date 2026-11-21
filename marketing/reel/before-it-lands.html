@@ -194,6 +194,12 @@ window.makeAudio=async function(){
   // slow, faint whoosh of the coin each half turn
   for(let t0=1.5;t0<15.4;t0+=2.33){const n=ctx.createBufferSource();n.buffer=nb;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=900;bp.Q.value=1.2;const gg=ctx.createGain();
     gg.gain.setValueAtTime(.0001,t0);gg.gain.exponentialRampToValueAtTime(.012,t0+.9);gg.gain.exponentialRampToValueAtTime(.0001,t0+2);n.connect(bp).connect(gg).connect(out);n.start(t0);n.stop(t0+2.1)}
+  // the ring, as the logo appears: inharmonic partials of a struck coin
+  {const t=16.6;
+  [[2093,1.0,3.2],[3417,.55,2.4],[5125,.35,1.6],[6911,.2,1.1],[8590,.12,.8]].forEach(([f,a,d])=>{const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();
+    gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.12*a,t+.003);gg.gain.exponentialRampToValueAtTime(.0001,t+d);
+    const pan=ctx.createStereoPanner();pan.pan.value=(f%3-1)*.15;o.connect(gg).connect(pan).connect(out);o.start(t);o.stop(t+d+.05)});
+  const n=ctx.createBufferSource();n.buffer=nb;const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=4000;const gg=ctx.createGain();gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.08,t+.002);gg.gain.exponentialRampToValueAtTime(.0001,t+.05);n.connect(hp).connect(gg).connect(out);n.start(t);n.stop(t+.1)}
   const buf=await ctx.startRendering();const L=buf.getChannelData(0),R=buf.getChannelData(1);let pk=0;for(let i=0;i<N;i++)pk=Math.max(pk,Math.abs(L[i]),Math.abs(R[i]));
   const sc=.85/pk,dv=new DataView(new ArrayBuffer(44+N*4)),w=(o,x)=>[...x].forEach((ch,i)=>dv.setUint8(o+i,ch.charCodeAt(0)));
   w(0,'RIFF');dv.setUint32(4,36+N*4,true);w(8,'WAVE');w(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);dv.setUint32(24,SR,true);dv.setUint32(28,SR*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);w(36,'data');dv.setUint32(40,N*4,true);
