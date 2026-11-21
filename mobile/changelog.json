@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.17",
+  "date": "2026-11-21",
+  "notes": [
+   "Fantasy teams on a pitch: every pick with projected points, captain and vice-captain at a glance",
+   "Each team still opens as a list under \"Show as a list\""
+  ]
+ },
+ {
   "version": "0.3.16",
   "date": "2026-11-20",
   "notes": [
@@ -86,55 +94,91 @@
    "Players to watch on the Match Overview fills its row, with no gaps"
   ]
  },
-  {"version": "0.3.5", "date": "2026-11-07", "notes": [
-    "A new Match Overview: projected scores, a runs-per-over chart with expected wickets, when wickets fall, players to watch, the ground and fantasy picks on one screen",
-    "Every chart now has clear axes",
-    "Live matches that run past midnight stay in the Live list"
-  ]},
-  {"version": "0.3.4", "date": "2026-11-05", "notes": [
-    "The bottom bar is now a floating rounded strip",
-    "Match screen tags all the same height",
-    "Clearer Pro badge on Open in MatchSynth Lab in dark mode",
-    "Shorter update alerts, sent once the new version is ready to install"
-  ]},
-  {"version": "0.3.3", "date": "2026-11-05", "notes": [
-    "Matching corners everywhere: tags, buttons, cards and charts follow one style",
-    "Captain and vice-captain badges look alike in the fantasy team"
-  ]},
-  {"version": "0.3.2", "date": "2026-11-05", "notes": [
-    "A fresh Material look for match cards, menus and the bottom bar",
-    "Three tabs: Matches, Fantasy and MatchSynth Lab, with a new Lab icon",
-    "Match cards: countdown between the teams, full ground names, cleaner layout",
-    "Open in MatchSynth Lab right from the top of each match",
-    "Alerts when a new version of the app is out; Match alerts now in the menu"
-  ]},
-  {"version": "0.3.1", "date": "2026-11-05", "notes": [
-    "New bottom tabs: Matches, Fantasy, Lab and Alerts",
-    "Fantasy tab: every upcoming and live match, straight to its fantasy picks",
-    "Alerts tab: choose which match alerts you get",
-    "\"Lineup Out\" tag once the playing XIs are named",
-    "Matches open on Live or Upcoming; the side menu no longer hides behind the tabs"
-  ]},
-  {"version": "0.3.0", "date": "2026-11-05", "notes": [
-    "Tabs along the bottom: Matches, Results, Lab and Account",
-    "Swipe left or right to move between a match's tabs",
-    "An \"XIs in\" tag on every match, which updates by itself when the teams are named",
-    "New alerts: a match starting soon, today's matches, results, and the captain in the XIs alert",
-    "Cleaner screens with less text"
-  ]},
-  {"version": "0.2.2", "date": "2026-11-03", "notes": [
-    "The menu opens from your profile icon, in place of the three lines",
-    "Match screens no longer have a share button at the top",
-    "The update prompt waits until the app has opened and lists what's new"
-  ]},
-  {"version": "0.2.1", "date": "2026-11-03", "notes": [
-    "Plainer headings across the match screens",
-    "Tabs renamed: Venue, and Batter v bowler"
-  ]},
-  {"version": "0.2.0", "date": "2026-11-03", "notes": [
-    "The app tells you when a new version is out",
-    "Version number in the side menu and settings",
-    "Share the app opens Android's share sheet",
-    "Match alerts work on Android 13 and later, and show while the app is open"
-  ]}
+ {
+  "version": "0.3.5",
+  "date": "2026-11-07",
+  "notes": [
+   "A new Match Overview: projected scores, a runs-per-over chart with expected wickets, when wickets fall, players to watch, the ground and fantasy picks on one screen",
+   "Every chart now has clear axes",
+   "Live matches that run past midnight stay in the Live list"
+  ]
+ },
+ {
+  "version": "0.3.4",
+  "date": "2026-11-05",
+  "notes": [
+   "The bottom bar is now a floating rounded strip",
+   "Match screen tags all the same height",
+   "Clearer Pro badge on Open in MatchSynth Lab in dark mode",
+   "Shorter update alerts, sent once the new version is ready to install"
+  ]
+ },
+ {
+  "version": "0.3.3",
+  "date": "2026-11-05",
+  "notes": [
+   "Matching corners everywhere: tags, buttons, cards and charts follow one style",
+   "Captain and vice-captain badges look alike in the fantasy team"
+  ]
+ },
+ {
+  "version": "0.3.2",
+  "date": "2026-11-05",
+  "notes": [
+   "A fresh Material look for match cards, menus and the bottom bar",
+   "Three tabs: Matches, Fantasy and MatchSynth Lab, with a new Lab icon",
+   "Match cards: countdown between the teams, full ground names, cleaner layout",
+   "Open in MatchSynth Lab right from the top of each match",
+   "Alerts when a new version of the app is out; Match alerts now in the menu"
+  ]
+ },
+ {
+  "version": "0.3.1",
+  "date": "2026-11-05",
+  "notes": [
+   "New bottom tabs: Matches, Fantasy, Lab and Alerts",
+   "Fantasy tab: every upcoming and live match, straight to its fantasy picks",
+   "Alerts tab: choose which match alerts you get",
+   "\"Lineup Out\" tag once the playing XIs are named",
+   "Matches open on Live or Upcoming; the side menu no longer hides behind the tabs"
+  ]
+ },
+ {
+  "version": "0.3.0",
+  "date": "2026-11-05",
+  "notes": [
+   "Tabs along the bottom: Matches, Results, Lab and Account",
+   "Swipe left or right to move between a match's tabs",
+   "An \"XIs in\" tag on every match, which updates by itself when the teams are named",
+   "New alerts: a match starting soon, today's matches, results, and the captain in the XIs alert",
+   "Cleaner screens with less text"
+  ]
+ },
+ {
+  "version": "0.2.2",
+  "date": "2026-11-03",
+  "notes": [
+   "The menu opens from your profile icon, in place of the three lines",
+   "Match screens no longer have a share button at the top",
+   "The update prompt waits until the app has opened and lists what's new"
+  ]
+ },
+ {
+  "version": "0.2.1",
+  "date": "2026-11-03",
+  "notes": [
+   "Plainer headings across the match screens",
+   "Tabs renamed: Venue, and Batter v bowler"
+  ]
+ },
+ {
+  "version": "0.2.0",
+  "date": "2026-11-03",
+  "notes": [
+   "The app tells you when a new version is out",
+   "Version number in the side menu and settings",
+   "Share the app opens Android's share sheet",
+   "Match alerts work on Android 13 and later, and show while the app is open"
+  ]
+ }
 ]
