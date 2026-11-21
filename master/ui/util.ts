@@ -41,3 +41,20 @@ export function download(name: string, text: string, type = "text/csv") {
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
+
+/** Change between two periods as a badge: ▲ 12% (good when up, unless lowerBetter); "–" when there's nothing to compare. */
+export function delta(cur: number, prev: number, lowerBetter = false): string {
+  if (!prev && !cur) return `<span class="dl0">no change</span>`;
+  if (!prev) return `<span class="dlt up">new</span>`;
+  const d = (cur - prev) / prev, up = d >= 0, good = lowerBetter ? !up : up;
+  if (Math.abs(d) < 0.005) return `<span class="dl0">no change</span>`;
+  return `<span class="dlt ${good ? "up" : "down"}">${up ? "▲" : "▼"} ${Math.abs(d * 100) >= 100 ? Math.round(Math.abs(d * 100)) : Math.abs(d * 100).toFixed(Math.abs(d) < 0.1 ? 1 : 0)}%</span>`;
+}
+
+/** A headline metric card: label, big value, change badge, a note and an optional sparkline. */
+export function kpi(o: { label: string; value: string; delta?: string; note?: string; spark?: string; href?: string; icon?: string }): string {
+  const inner = `<div class="k-top"><span class="k-l">${o.icon ? `<span class="k-ico">${o.icon}</span>` : ""}${esc(o.label)}</span>${o.href ? `<span class="k-go" aria-hidden="true">→</span>` : ""}</div>
+    <div class="k-row"><div class="k-v">${o.value}</div>${o.spark ? `<div class="k-spark">${o.spark}</div>` : ""}</div>
+    <div class="k-foot">${o.delta || ""}${o.note ? `<span class="k-n">${o.note}</span>` : ""}</div>`;
+  return o.href ? `<a class="kpi" href="${esc(o.href)}">${inner}</a>` : `<div class="kpi">${inner}</div>`;
+}
