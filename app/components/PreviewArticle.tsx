@@ -26,7 +26,7 @@ function BlockView({ b }: { b: Block }) {
     </table></div>);
   if ("pitch" in b) return (
     <div style={{ margin: "18px 0" }}>
-      <FantasyPitch players={b.pitch.players} captain={b.pitch.captain} vice={b.pitch.vice} short={b.pitch.short} total={b.pitch.total}
+      <FantasyPitch players={b.pitch.players} captain={b.pitch.captain} vice={b.pitch.vice} short={b.pitch.short} total={b.pitch.total} match={b.pitch.match}
                     note={b.pitch.xis ? "Projected points (C 2×, VC 1.5×) with the playing XIs." : "Projected points (C 2×, VC 1.5×) with probable XIs: check them at the toss."} />
     </div>
   );

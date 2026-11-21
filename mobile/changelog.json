@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.18",
+  "date": "2026-11-21",
+  "notes": [
+   "Fantasy team cards now show the match, series and start time"
+  ]
+ },
+ {
   "version": "0.3.17",
   "date": "2026-11-21",
   "notes": [

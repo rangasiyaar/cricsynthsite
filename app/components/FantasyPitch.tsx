@@ -4,7 +4,18 @@ import s from "./FantasyPitch.module.css";
 
 export type PitchPlayer = { id: string; name: string; team: number; role?: string | null; expected: number };
 type Props = { players: PitchPlayer[]; captain: string; vice: string; short: [string, string] | string[]; total: number;
-               note?: string; label?: string };
+               note?: string; label?: string;
+               match?: { title?: string; competition?: string; date?: string; start_time?: string } };
+
+/** "2026-11-22" + "15:30" → "22 Nov, 3:30 PM IST". */
+function when(date?: string, time?: string): string {
+  if (!date) return "";
+  const d = new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+  const m = time?.match(/^(\d{1,2}):(\d{2})/);
+  if (!m) return d;
+  const h = +m[1];
+  return `${d}, ${h % 12 || 12}:${m[2]} ${h < 12 ? "AM" : "PM"} IST`;
+}
 
 const ROWS: [string, string, string][] = [["WK", "Wicket-keeper", "Wicket-keepers"], ["BAT", "Batter", "Batters"],
                                           ["AR", "All-rounder", "All-rounders"], ["BOWL", "Bowler", "Bowlers"]];
@@ -35,7 +46,9 @@ const Mark = () => (
     <path d="M4 15L13 24L4 33" strokeLinecap="square" /><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40" /></svg>
 );
 
-export default function FantasyPitch({ players, captain, vice, short, total, note, label = "Projected points" }: Props) {
+export default function FantasyPitch({ players, captain, vice, short, total, note, label = "Projected points", match }: Props) {
+  const series = (match?.competition ?? "").split(" · ")[0].replace(/^(ACC|ICC) /, "").replace(/^Men's /, "");
+  const sub = [series, when(match?.date, match?.start_time)].filter(Boolean).join(" · ");
   const nA = players.filter((p) => p.team === 0).length;
   const mult = (id: string) => (id === captain ? 2 : id === vice ? 1.5 : 1);
   const known = new Set(ROWS.map((r) => r[0]));
@@ -69,10 +82,12 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
             })}</div>
           </div>
         ))}
+        <p className={s.note}>{note ?? "Projected fantasy points (C 2×, VC 1.5×). Check the XIs before locking."}</p>
       </div>
       <figcaption className={s.foot}>
-        <span>{note ?? "Projected fantasy points (C 2×, VC 1.5×). Check the XIs before locking."}</span>
-        <span className={s.brand}><Mark /><span>Cric<b>Synthesis</b></span></span>
+        <span className={s.brand}><Mark /><span><span className={s.word}>Cric<b>Synthesis</b></span>
+          <span className={s.tagline} style={{ display: "block" }}>AI-Powered Cricket Intelligence</span></span></span>
+        <span className={s.meta}>{match?.title && <b>{match.title}</b>}{sub && <>{sub}<br /></>}cricsynthesis.in</span>
       </figcaption>
     </figure>
   );

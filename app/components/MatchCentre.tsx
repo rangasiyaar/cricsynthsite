@@ -449,6 +449,7 @@ function FantasyCard({ doc, t }: { doc: MatchDoc; t: FantasyTeam }) {
   return (
     <>
       <FantasyPitch players={players} captain={t.captain} vice={t.vice_captain} short={doc.match.teams.map((x) => x.short)} total={t.expected}
+                    match={{ ...doc.match, title: doc.match.title ?? doc.match.teams.map((x) => x.name).join(" v ") }}
                     note={doc.match.xis ? "Projected points (C 2×, VC 1.5×) with the playing XIs." : "Projected points (C 2×, VC 1.5×) with expected XIs: check them before locking."} />
       <details className="fz-list" style={{ marginTop: 10 }}>
         <summary className="small">Show as a list</summary>
