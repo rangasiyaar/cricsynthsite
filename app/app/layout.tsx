@@ -7,7 +7,7 @@ import "./design.css";
 import { SiteFrame } from "@/components/Shell";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
 
-const HOME_DESC = "AI-Powered Cricket Intelligence: who wins, the likely scores and the players to watch. Free pre-match forecasts for upcoming cricket matches, checked against every result.";
+const HOME_DESC = "Before every match: who's likely to win, what each side should score and which players to watch. Free cricket forecasts, checked against every result.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
