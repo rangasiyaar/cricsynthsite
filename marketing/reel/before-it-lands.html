@@ -8,6 +8,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 canvas{display:block}
 </style></head><body>
 <canvas id="c" width="1080" height="1920"></canvas>
+<div aria-hidden="true" style="position:absolute;left:-9999px;top:0"><span style="font:600 92px 'Barlow Condensed'">CRICSYNTHESIS</span><span style="font:300 58px Barlow">Some</span><span style="font:400 38px Barlow">cricsynthesis.in</span></div>
 <script>
 const W=1080,H=1920,cv=document.getElementById('c'),g=cv.getContext('2d');
 const cl=x=>Math.max(0,Math.min(1,x)), lerp=(a,b,u)=>a+(b-a)*u, sm=u=>{u=cl(u);return u*u*(3-2*u)};
@@ -23,6 +24,29 @@ const crowd=document.createElement('canvas'); crowd.width=W*1.3; crowd.height=90
       c.beginPath();c.arc(x,y-24*sc,12*sc,0,Math.PI*2);c.fill();
       c.beginPath();c.ellipse(x,y+4*sc,22*sc,20*sc,0,Math.PI,0);c.fill();
       if(rnd()<.12){c.lineWidth=7*sc;c.strokeStyle=c.fillStyle;c.lineCap='round';c.beginPath();c.moveTo(x+14*sc,y-6*sc);c.lineTo(x+22*sc+rnd()*6,y-62*sc);c.stroke()}}}}
+// ── stadium at night: stands, field and floodlight towers, drawn once and softly out of focus ──
+const stadium=document.createElement('canvas'); stadium.width=W*1.2; stadium.height=H*1.1;
+{const c=stadium.getContext('2d'), SW=stadium.width, SH=stadium.height, cx=SW/2;
+  const sky=c.createLinearGradient(0,0,0,SH*.55); sky.addColorStop(0,'#05080e'); sky.addColorStop(1,'#0f1a28'); c.fillStyle=sky; c.fillRect(0,0,SW,SH);
+  // roof line and upper tier
+  c.fillStyle='#0a111b'; c.beginPath(); c.moveTo(0,640); c.quadraticCurveTo(cx,520,SW,640); c.lineTo(SW,SH); c.lineTo(0,SH); c.fill();
+  // tiers: curved bands with seat rows and a scattering of crowd
+  for(let tier=0;tier<3;tier++){const y0=700+tier*300, y1=y0+260, l=12+tier*5;
+    c.fillStyle=`rgb(${l},${l+7},${l+16})`; c.beginPath(); c.moveTo(0,y0); c.quadraticCurveTo(cx,y0-110,SW,y0); c.lineTo(SW,y1); c.quadraticCurveTo(cx,y1-110,0,y1); c.fill();
+    for(let r=0;r<11;r++){const yy=y0+12+r*23; c.strokeStyle=`rgba(${l+20},${l+30},${l+44},.55)`; c.lineWidth=2; c.beginPath(); c.moveTo(0,yy); c.quadraticCurveTo(cx,yy-110,SW,yy); c.stroke();
+      for(let i=0;i<70;i++){const x=rnd()*SW, k=(x-cx)/cx, yc=yy-110*(1-k*k)+ (rnd()*8-4); if(rnd()<.55){c.fillStyle=`rgba(${120+rnd()*80|0},${130+rnd()*80|0},${150+rnd()*70|0},${.08+rnd()*.12})`; c.fillRect(x,yc-7,4,6)}}}
+    c.fillStyle='rgba(148,188,227,.06)'; c.fillRect(0,y1-6,SW,6);}
+  // field: dark grass with mowing stripes, seen from low
+  const fy=1640; const fg=c.createLinearGradient(0,fy,0,SH); fg.addColorStop(0,'#0e2219'); fg.addColorStop(1,'#071510'); c.fillStyle=fg;
+  c.beginPath(); c.moveTo(0,fy+40); c.quadraticCurveTo(cx,fy-40,SW,fy+40); c.lineTo(SW,SH); c.lineTo(0,SH); c.fill();
+  c.save(); c.clip(); for(let i=-10;i<20;i++){c.fillStyle=i%2?'rgba(255,255,255,.025)':'rgba(0,0,0,.05)'; c.beginPath(); c.moveTo(cx+i*120-600,SH); c.lineTo(cx+i*60-300,fy-40); c.lineTo(cx+i*60-240,fy-40); c.lineTo(cx+i*120-480,SH); c.fill()} c.restore();
+  // floodlight towers (left and right) with lamp banks
+  for(const [tx,dir] of [[150,1],[SW-150,-1]]){
+    c.strokeStyle='#1b2633'; c.lineWidth=10; c.beginPath(); c.moveTo(tx,330); c.lineTo(tx-dir*30,1400); c.stroke();
+    c.lineWidth=3; for(let y=380;y<1380;y+=70){c.beginPath(); c.moveTo(tx-dir*(y-330)/1070*30-14,y); c.lineTo(tx-dir*(y-330)/1070*30+14,y+70); c.stroke()}
+    c.fillStyle='#1b2633'; c.fillRect(tx-110,250,220,100);
+    for(let r=0;r<3;r++)for(let q=0;q<6;q++){c.fillStyle='#e9f3ff'; c.fillRect(tx-100+q*35,258+r*30,28,22)}}
+}
 // dust motes (fixed seeds, drift almost nothing: the world is frozen)
 const motes=[...Array(90)].map(()=>({x:rnd()*W,y:rnd()*H,z:rnd(),p:rnd()*6.28}));
 // bokeh floodlights
@@ -34,7 +58,7 @@ function mark(c,s,col,lw){c.save();c.scale(s/48,s/48);c.translate(-24,-24);c.str
   c.beginPath();[22,30,38].forEach(x=>{c.moveTo(x,15);c.lineTo(x,40)});c.moveTo(20,11);c.lineTo(29,11);c.moveTo(31,11);c.lineTo(40,11);c.stroke();c.restore()}
 
 // ── the toss: thumb flick at 1.4 s, a fast flip that ramps into extreme slow motion ──
-const T0=1.4, REST=[742,1478], HOVER=[540,820];
+const T0=0.5, REST=[560,2150], HOVER=[540,820];
 function tossPos(t){
   if(t<T0) return REST;
   const u=1-Math.exp(-(t-T0)*2.6);                       // fast launch, then the world slows to a near stop
@@ -70,7 +94,7 @@ function hand(c,t){
 // ── the coin: flips end over end about a horizontal axis, lit from the upper left ──
 function coin(c,t){
   const R=185,T=20, th=tossPhase(t), [cx,cy]=tossPos(t);
-  const sz=lerp(.55,1,cl((cy-REST[1])/(HOVER[1]-REST[1])));  // nearer the camera as it rises
+  const sz=lerp(1.5,1,cl((cy-REST[1])/(HOVER[1]-REST[1])));  // nearer the camera as it rises
   const co=Math.cos(th), si=Math.sin(th), w=Math.max(.0001,Math.abs(co));
   c.save(); c.translate(cx,cy); c.rotate(-.12); c.scale(sz,sz);
   const facing=cl(.5+.5*Math.cos(th-0.55)), glint=Math.pow(cl(Math.cos(th-0.55)),24);
@@ -105,8 +129,12 @@ function scene(t){
   g.fillStyle='#03050a'; g.fillRect(0,0,W,H);
   const sky=g.createRadialGradient(540,260,40,540,260,1300);sky.addColorStop(0,'#1a2a3c');sky.addColorStop(.45,'#0b1320');sky.addColorStop(1,'#03050a');g.fillStyle=sky;g.fillRect(0,0,W,H);
   g.save(); g.translate(540,960); g.scale(z,z); g.translate(-540+px*.4,-960);
-  bokeh.forEach(b=>{const r=g.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);r.addColorStop(0,`rgba(214,235,255,${b.a})`);r.addColorStop(.7,`rgba(214,235,255,${b.a*.6})`);r.addColorStop(1,'rgba(214,235,255,0)');g.fillStyle=r;g.beginPath();g.arc(b.x,b.y,b.r,0,Math.PI*2);g.fill()});
-  g.drawImage(crowd,-150,1020);
+  g.drawImage(stadium,-W*.1,-H*.05);
+  // floodlight glow and beams
+  for(const [lx,ly] of [[30,330],[1050,330]]){
+    const gl=g.createRadialGradient(lx,ly,0,lx,ly,360);gl.addColorStop(0,'rgba(233,243,255,.55)');gl.addColorStop(.25,'rgba(181,217,253,.18)');gl.addColorStop(1,'rgba(181,217,253,0)');g.fillStyle=gl;g.fillRect(lx-360,ly-360,720,720);
+    const bm=g.createLinearGradient(lx,ly,540,1500);bm.addColorStop(0,'rgba(214,235,255,.10)');bm.addColorStop(1,'rgba(214,235,255,0)');g.fillStyle=bm;
+    g.beginPath();g.moveTo(lx,ly);g.lineTo(lx<540?980:100,1500);g.lineTo(lx<540?380:700,1700);g.closePath();g.fill();}
   g.restore();
   // haze over the crowd
   const hz=g.createLinearGradient(0,1000,0,1920);hz.addColorStop(0,'rgba(3,5,10,0)');hz.addColorStop(1,'rgba(3,5,10,.75)');g.fillStyle=hz;g.fillRect(0,0,W,H);
@@ -114,7 +142,6 @@ function scene(t){
   // suspended dust
   motes.forEach(m=>{const x=m.x+Math.sin(m.p+t*.05)*3, y=m.y-t*.6*m.z, s=.8+m.z*2.6, a=.05+.22*m.z*(.6+.4*Math.sin(m.p+t*.3));
     g.fillStyle=`rgba(214,235,255,${a})`;g.beginPath();g.arc(x,y,s,0,Math.PI*2);g.fill()});
-  hand(g,t);
   coin(g,t);
   g.restore();
   // vignette
@@ -167,14 +194,6 @@ window.makeAudio=async function(){
   // slow, faint whoosh of the coin each half turn
   for(let t0=1.5;t0<15.4;t0+=2.33){const n=ctx.createBufferSource();n.buffer=nb;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=900;bp.Q.value=1.2;const gg=ctx.createGain();
     gg.gain.setValueAtTime(.0001,t0);gg.gain.exponentialRampToValueAtTime(.012,t0+.9);gg.gain.exponentialRampToValueAtTime(.0001,t0+2);n.connect(bp).connect(gg).connect(out);n.start(t0);n.stop(t0+2.1)}
-  // the ring: inharmonic partials of a struck coin
-  const t=15.5;
-  [[2093,1.0,3.2],[3417,.55,2.4],[5125,.35,1.6],[6911,.2,1.1],[8590,.12,.8]].forEach(([f,a,d])=>{const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();
-    gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.12*a,t+.003);gg.gain.exponentialRampToValueAtTime(.0001,t+d);
-    const pan=ctx.createStereoPanner();pan.pan.value=(f%3-1)*.15;o.connect(gg).connect(pan).connect(out);o.start(t);o.stop(t+d+.05)});
-  {const n=ctx.createBufferSource();n.buffer=nb;const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=4000;const gg=ctx.createGain();gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.08,t+.002);gg.gain.exponentialRampToValueAtTime(.0001,t+.05);n.connect(hp).connect(gg).connect(out);n.start(t);n.stop(t+.1)}
-  // soft tone with the logo
-  for(const [f,d] of [[440,0],[660,.1]]){const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();const t1=16.7+d;gg.gain.setValueAtTime(.0001,t1);gg.gain.exponentialRampToValueAtTime(.06,t1+.4);gg.gain.exponentialRampToValueAtTime(.0001,t1+3);o.connect(gg).connect(out);o.start(t1);o.stop(t1+3.1)}
   const buf=await ctx.startRendering();const L=buf.getChannelData(0),R=buf.getChannelData(1);let pk=0;for(let i=0;i<N;i++)pk=Math.max(pk,Math.abs(L[i]),Math.abs(R[i]));
   const sc=.85/pk,dv=new DataView(new ArrayBuffer(44+N*4)),w=(o,x)=>[...x].forEach((ch,i)=>dv.setUint8(o+i,ch.charCodeAt(0)));
   w(0,'RIFF');dv.setUint32(4,36+N*4,true);w(8,'WAVE');w(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);dv.setUint32(24,SR,true);dv.setUint32(28,SR*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);w(36,'data');dv.setUint32(40,N*4,true);
