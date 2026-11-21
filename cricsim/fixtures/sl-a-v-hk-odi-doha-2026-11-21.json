@@ -12,7 +12,7 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sri Lanka A won the toss and bat first.",
   "teams": [
     {
       "name": "Sri Lanka A",
@@ -23,11 +23,11 @@
         "Nishan Madushka",
         "Pavan Rathnayake",
         "Nipun Dananjaya",
-        "Chamika Heenatigala",
         "Janith Liyanage",
-        "Lahiru Samarakoon",
+        "Chamika Heenatigala",
+        "Dulaj Samuditha",
         "Wanuja Sahan",
-        "Garuka Sanketh",
+        "Duvindu Ranatunga",
         "Vijayakanth Viyaskanth"
       ],
       "roles": [
@@ -38,7 +38,7 @@
         "BAT",
         "AR",
         "AR",
-        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL"
@@ -62,30 +62,30 @@
       "name": "Hong Kong",
       "short": "HK",
       "players": [
+        "Zeeshan Ali",
         "Anshuman Rath",
+        "Babar Hayat",
+        "Reyansh Sharma",
+        "Aizaz Khan",
+        "Abdul Samad",
         "Shahid Wasif",
         "Yasim Murtaza",
-        "Babar Hayat",
-        "Abdul Samad",
-        "Zeeshan Ali",
-        "Aizaz Khan",
-        "Ateeq Iqbal",
-        "Ayush Shukla",
+        "Mohammad Ghazanfar",
         "Ehsan Khan",
-        "Reyansh Sharma"
+        "Ayush Shukla"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "AR",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "AR"
+        "BOWL"
       ],
       "captain": "Yasim Murtaza",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41826,
     "url": "https://khelnow.com/live-cricket-score/sri-lanka-a-vs-hong-kong-acc-men's-asia-cup-rising-stars-21st-november-2026-41826",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
