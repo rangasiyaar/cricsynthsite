@@ -24,8 +24,10 @@ function world() {
     rzp: async (method, path, body: any) => {
       calls.push(`${method} ${path}`);
       if (method === "POST" && path === "/plans") return { id: `plan_${++n}` };
+      if (method === "POST" && path === "/customers") return { id: `cust_${body.email}` };
       if (method === "POST" && path === "/subscriptions") {
-        const s = { id: `sub_${++n}`, status: "created", paid_count: 0, start_at: body.start_at ?? null, current_end: null, notes: body.notes };
+        const s = { id: `sub_${++n}`, status: "created", paid_count: 0, start_at: body.start_at ?? null, current_end: null, notes: body.notes,
+                    customer_id: body.customer_id ?? null };
         subs.set(s.id, s);
         return s;
       }
@@ -52,8 +54,12 @@ test("first checkout gets a free day, creates the plan once, and reuses it", asy
   assert.equal(r.amount, 34_900);
   assert.equal(w.subs.get(r.subscription_id).start_at, S0 + B.TRIAL_S);
   assert.equal(w.docs.get(doc)!.status, "created");
-  await B.checkout(w.deps, user, { billing: "monthly" });           // abandoned first checkout: a new one, same plan
+  assert.equal(w.subs.get(r.subscription_id).customer_id, "cust_fan@example.com");   // shows who it's for at Razorpay
+  assert.equal(w.docs.get(doc)!.customerId, "cust_fan@example.com");
+  const again = await B.checkout(w.deps, user, { billing: "monthly" });   // abandoned first checkout: a new one, same plan
   assert.equal(w.calls.filter((c) => c === "POST /plans").length, 1);
+  assert.equal(w.calls.filter((c) => c === "POST /customers").length, 1);  // the customer is kept and reused
+  assert.equal(w.subs.get(again.subscription_id).customer_id, "cust_fan@example.com");
   await assert.rejects(B.checkout(w.deps, user, { billing: "weekly" }), /monthly or yearly/);
 });
 

@@ -132,6 +132,18 @@ async function save(deps: Deps, uid: string, sub: any, extra: Rec = {}) {
   return { ...prev, ...fields };
 }
 
+/** The account's Razorpay customer, so the subscription shows who it's for from the start (not "No customer yet").
+ *  Kept on the billing doc; Razorpay returns the existing customer for an email it already has. Never blocks checkout. */
+async function customer(deps: Deps, user: { uid: string; email: string | null }, prev: Rec | null): Promise<string | null> {
+  if (typeof prev?.customerId === "string" && prev.customerId) return prev.customerId;
+  if (!user.email) return null;
+  try {
+    const c = await deps.rzp("POST", "/customers", { name: user.email.split("@")[0].slice(0, 50), email: user.email,
+                                                     fail_existing: "0", notes: { uid: user.uid } });
+    return typeof c?.id === "string" ? c.id : null;
+  } catch { return null; }
+}
+
 /** Start a subscription for the website's checkout. */
 export async function checkout(deps: Deps, user: { uid: string; email: string | null }, body: any) {
   const billing: Billing = body?.billing === "monthly" ? "monthly" : body?.billing === "yearly" ? "yearly" : (() => {
@@ -141,13 +153,16 @@ export async function checkout(deps: Deps, user: { uid: string; email: string | 
   const view = publicView(prev, now);
   if (view.pro && prev?.status !== "created" && prev?.status !== "cancelled") throw new BillingError(409, "You already have CricSynthesis Pro.");
   const trial = view.trialAvailable;
+  const customerId = await customer(deps, user, prev);
   const sub = await deps.rzp("POST", "/subscriptions", {
     plan_id: await planId(deps, billing), total_count: CYCLES[billing], quantity: 1, customer_notify: 1,
+    ...(customerId ? { customer_id: customerId } : {}),
     ...(trial ? { start_at: Math.floor(now / 1000) + TRIAL_S } : {}),
     notes: { uid: user.uid, product: "pro", billing },
   });
   // keep any access still running (e.g. a cancelled plan's last days) until the new subscription is confirmed
   await deps.store.set(docPath(user.uid), { product: "pro", subscriptionId: sub.id, rzStatus: sub.status, billing,
+                                            ...(customerId ? { customerId } : {}),
                                             ...(view.pro ? {} : { status: "created" }), updated: new Date(now) });
   return { key: deps.keyId, subscription_id: sub.id, trial, billing, amount: PRICE[billing], email: user.email };
 }
