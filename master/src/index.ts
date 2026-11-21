@@ -37,7 +37,7 @@ const google = (env: Env) => {
   return new Google(env.GOOGLE_SA, project(env));
 };
 
-/** Read everything and build the snapshot (about one read per document, plus one query per account for usage). */
+/** Read everything and build the snapshot: a fixed handful of requests whatever the number of accounts (Workers on the free plan may make 50 per call). */
 export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   const g = google(env), errors: string[] = [];
   let auth: AuthUser[] | null = null;
