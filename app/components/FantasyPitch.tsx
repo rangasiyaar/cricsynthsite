@@ -31,8 +31,8 @@ function Figure({ team }: { team: number }) {
 }
 
 const Mark = () => (
-  <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="4">
-    <path d="M4 15L13 24L4 33" strokeLinecap="square" /><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40" /></g></svg>
+  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="4" aria-hidden="true">
+    <path d="M4 15L13 24L4 33" strokeLinecap="square" /><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40" /></svg>
 );
 
 export default function FantasyPitch({ players, captain, vice, short, total, note, label = "Projected points" }: Props) {
@@ -72,7 +72,7 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
       </div>
       <figcaption className={s.foot}>
         <span>{note ?? "Projected fantasy points (C 2×, VC 1.5×). Check the XIs before locking."}</span>
-        <span className={s.brand}><Mark />CricSynthesis</span>
+        <span className={s.brand}><Mark /><span>Cric<b>Synthesis</b></span></span>
       </figcaption>
     </figure>
   );
