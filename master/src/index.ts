@@ -166,7 +166,7 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
     case "/api/messages": {
       const rows = await google(env).latest("contactMessages", 300);
       return json({ messages: rows.map((r) => ({ id: r._id, at: r.at, name: r.name, email: r.email, topic: r.topic, company: r.company || null,
-        message: r.message, status: r.status || "new", statusBy: r.statusBy || null, statusAt: r.statusAt || null,
+        message: r.message, status: r.status || "new", read: r.read === true, statusBy: r.statusBy || null, statusAt: r.statusAt || null,
         country: r.country || null, uid: r.uid || null, page: r.page || null })) });
     }
     case "/api/meters": return json(await cached("meters", 600, () => meters(env, google(env))));

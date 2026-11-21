@@ -22,7 +22,9 @@ export type Action =
   | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" }
   | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; days: number; note?: string }
   | { type: "user.delete"; uid: string }
-  | { type: "contact.status"; uid: ""; id: string; status: ContactStatus };
+  | { type: "contact.status"; uid: ""; id: string; status: ContactStatus }
+  | { type: "contact.read"; uid: ""; id: string; read: boolean }
+  | { type: "contact.delete"; uid: ""; id: string };
 
 /** Contact form messages (contactMessages/{id}, written by the API Worker's POST /contact). */
 export const CONTACT_STATUS = { new: "New", replied: "Replied", closed: "Closed" } as const;
@@ -50,9 +52,18 @@ export const MAX_DAYS = 3650;
 export const MAX_PER_RUN = 4;
 
 export function validate(a: Row | null): Action {
-  if (a?.type === "contact.status") {                     // a message, not an account
-    if (!MSG_ID.test(String(a.id || "")) || !Object.hasOwn(CONTACT_STATUS, a.status)) throw new ActionError("Bad message or status");
-    return { type: a.type, uid: "", id: a.id, status: a.status };
+  if (typeof a?.type === "string" && a.type.startsWith("contact.")) {     // a message, not an account
+    if (!MSG_ID.test(String(a.id || ""))) throw new ActionError("Bad message");
+    if (a.type === "contact.status") {
+      if (!Object.hasOwn(CONTACT_STATUS, a.status)) throw new ActionError("Bad status");
+      return { type: a.type, uid: "", id: a.id, status: a.status };
+    }
+    if (a.type === "contact.read") {
+      if (typeof a.read !== "boolean") throw new ActionError("Bad read flag");
+      return { type: a.type, uid: "", id: a.id, read: a.read };
+    }
+    if (a.type === "contact.delete") return { type: a.type, uid: "", id: a.id };
+    throw new ActionError("Unknown action");
   }
   if (!a || typeof a.type !== "string" || !UID.test(String(a.uid || ""))) throw new ActionError("Bad action");
   const note = a.note == null ? undefined : String(a.note).slice(0, NOTE_MAX);
@@ -206,12 +217,22 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       break;
     }
   }
-  if (a.type === "contact.status") {
+  if (a.type === "contact.status" || a.type === "contact.read" || a.type === "contact.delete") {
     const m = await g.get(`contactMessages/${a.id}`);
     if (!m) throw new ActionError("No such message", 404);
-    await g.patch(`contactMessages/${a.id}`, { status: a.status, statusBy: admin, statusAt: now.toISOString() });
-    done = `Message from ${m.email} marked ${CONTACT_STATUS[a.status].toLowerCase()}`;
-    detail = { id: a.id, email: m.email, status: a.status };
+    if (a.type === "contact.status") {
+      await g.patch(`contactMessages/${a.id}`, { status: a.status, statusBy: admin, statusAt: now.toISOString(), read: true });
+      done = `Message from ${m.email} marked ${CONTACT_STATUS[a.status].toLowerCase()}`;
+      detail = { id: a.id, email: m.email, status: a.status };
+    } else if (a.type === "contact.read") {
+      await g.patch(`contactMessages/${a.id}`, { read: a.read });
+      done = `Message from ${m.email} marked ${a.read ? "read" : "unread"}`;
+      detail = { id: a.id, email: m.email, read: a.read };
+    } else {
+      await g.remove(`contactMessages/${a.id}`);
+      done = `Message from ${m.email} deleted`;
+      detail = { id: a.id, email: m.email, topic: m.topic ?? null, at: m.at ?? null };   // the message text itself isn't kept
+    }
   }
   await g.put(`adminLog/${now.getTime()}-${a.type}`, { at: now.toISOString(), email: admin, what: a.type, uid: a.uid,
     done, detail: JSON.stringify(detail) }).catch(() => {});

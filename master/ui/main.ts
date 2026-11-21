@@ -352,8 +352,9 @@ async function requests() {
 const MSG_STATUS: Record<string, [string, "warn" | "good" | "plain"]> = { new: ["New", "warn"], replied: ["Replied", "good"], closed: ["Closed", "plain"] };
 async function messages(filter = "") {
   const all = ((await api("/api/messages")).messages || []) as Row[];
-  const show = filter === "all" ? all : all.filter((m) => m.status === (filter || "new"));
+  const show = filter === "all" ? all : filter === "unread" ? all.filter((m) => !m.read) : all.filter((m) => m.status === (filter || "new"));
   const count = (st: string) => all.filter((m) => m.status === st).length;
+  const unread = all.filter((m) => !m.read).length;
   const tab = (k: string, label: string) => `<a class="btn ${k === (filter || "new") ? "" : "ghost"} sm" href="#/messages/${k}">${label}</a>`;
   const reply = (m: Row) => `mailto:${encodeURIComponent(m.email)}?subject=${encodeURIComponent(`Re: your message to CricSynthesis (${m.topic})`)}` +
     `&body=${encodeURIComponent(`Hi ${String(m.name || "").split(/\s+/)[0]},\n\n\n\n---\nYou wrote on ${day(m.at)}:\n${m.message}`)}`;
@@ -362,17 +363,25 @@ async function messages(filter = "") {
     m.status !== "replied" ? actBtn("Mark replied", { type: "contact.status", id: m.id, status: "replied" }, `Mark the message from ${m.email} as replied?`) : "",
     m.status !== "closed" ? actBtn("Close", { type: "contact.status", id: m.id, status: "closed" }, `Close the message from ${m.email} (no reply needed)?`) : "",
     m.status !== "new" ? actBtn("Reopen", { type: "contact.status", id: m.id, status: "new" }, `Move the message from ${m.email} back to New?`) : "",
+    `<button class="btn ghost xs" data-read='${esc(JSON.stringify({ type: "contact.read", id: m.id, read: !m.read }))}'>${m.read ? "Mark unread" : "Mark read"}</button>`,
+    actBtn("Delete", { type: "contact.delete", id: m.id }, `Delete the message from ${m.email} for good? It can't be recovered.`, "danger"),
   ].join(" ");
   main().innerHTML = head("Messages") + `<p class="muted">Sent through the contact form on cricsynthesis.in/contact. Each sender got a "thanks, we'll get back to you" email. Reply from your own inbox, then mark it replied.</p>
-    <p class="msg-tabs">${tab("new", `New (${count("new")})`)} ${tab("replied", `Replied (${count("replied")})`)} ${tab("closed", `Closed (${count("closed")})`)} ${tab("all", `All (${all.length})`)}</p>
-    ${show.length ? show.map((m) => `<article class="card msg">
+    <p class="msg-tabs">${tab("new", `New (${count("new")})`)} ${tab("replied", `Replied (${count("replied")})`)} ${tab("closed", `Closed (${count("closed")})`)} ${tab("unread", `Unread (${unread})`)} ${tab("all", `All (${all.length})`)}</p>
+    ${show.length ? show.map((m) => `<article class="card msg${m.read ? "" : " unread"}">
       <div class="msg-head"><div><b>${esc(m.name)}</b> · <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>${m.company ? ` · ${esc(m.company)}` : ""}
         ${m.uid ? ` · ${userLink(m.uid, "account")}` : ""}</div>
-        <div class="muted">${badge(MSG_STATUS[m.status]?.[0] || m.status, MSG_STATUS[m.status]?.[1] || "plain")} ${esc(m.topic)} · <span title="${esc(m.at)}">${when(m.at)}</span>${m.country ? ` · ${esc(m.country)}` : ""}</div></div>
+        <div class="muted">${m.read ? "" : `${badge("Unread", "info")} `}${badge(MSG_STATUS[m.status]?.[0] || m.status, MSG_STATUS[m.status]?.[1] || "plain")} ${esc(m.topic)} · <span title="${esc(m.at)}">${when(m.at)}</span>${m.country ? ` · ${esc(m.country)}` : ""}</div></div>
       <p class="msg-body">${esc(m.message)}</p>
       <div class="msg-foot">${acts(m)}${m.statusBy ? `<span class="muted">${esc(MSG_STATUS[m.status]?.[0] || m.status)} by ${esc(m.statusBy)} ${when(m.statusAt)}</span>` : ""}</div>
     </article>`).join("") : `<p class="empty">${filter === "all" ? "No messages yet." : "Nothing here."}</p>`}`;
   wireActions(main(), () => route());
+  // read / unread: no confirmation, it's harmless and easy to undo
+  $$<HTMLButtonElement>("button[data-read]", main()).forEach((b) => b.addEventListener("click", async () => {
+    b.disabled = true;
+    try { await api("/api/action", { method: "POST", body: JSON.stringify(JSON.parse(b.dataset.read!)) }); route(); }
+    catch (e) { b.disabled = false; toast((e as Error).message, true); }
+  }));
 }
 
 // ── product (Google Analytics 4: visitors who accepted analytics cookies) ──
@@ -442,7 +451,7 @@ async function ux() {
 const ACT_NAMES: Record<string, string> = { signin: "Signed in", "request.approve": "Approved request", "request.decline": "Declined request",
   "key.revoke": "Revoked key", "key.plan": "Changed key plan", "user.disable": "Disabled account", "user.enable": "Enabled account",
   "user.website-plan": "Changed website plan", "user.tier": "Set subscription", "user.delete": "Deleted account",
-  "contact.status": "Updated message" };
+  "contact.status": "Updated message", "contact.read": "Marked message read / unread", "contact.delete": "Deleted message" };
 async function log() {
   const l = await api("/api/log");
   main().innerHTML = head("Audit log") + `<p class="muted">Every admin sign-in and action, newest first (last 200).</p><div id="tbl"></div>`;

@@ -163,3 +163,5 @@ tr.link:hover td { background: var(--surface-2); }
 .msg-body { white-space: pre-wrap; margin: 12px 0; line-height: 1.55; font-size: 14.5px; overflow-wrap: anywhere; }
 .msg-foot { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .msg-foot a.btn { text-decoration: none; }
+.msg.unread { border-left: 3px solid var(--steel); }
+.msg.unread .msg-head b { color: var(--ink); }

@@ -389,3 +389,27 @@ test("contact messages: mark replied / closed / new, logged; bad ids refused", a
   assert.ok(writes.some(([p, d]) => p.startsWith("adminLog/") && d.what === "contact.status"));
   await assert.rejects(apply(g, "boss@example.com", validate({ type: "contact.status", id: "m9", status: "closed" })), /No such message/);
 });
+
+test("contact messages: read / unread and delete (removed, logged without the text)", async () => {
+  const { validate, apply, ActionError } = await import("../src/actions.ts");
+  assert.throws(() => validate({ type: "contact.read", id: "m1", read: "yes" }), ActionError);
+  assert.throws(() => validate({ type: "contact.zap", id: "m1" }), ActionError);
+  const docs: Record<string, any> = { "contactMessages/m1": { _id: "m1", email: "asha@example.com", message: "secret text", status: "new" } };
+  const writes: [string, any][] = [], removed: string[] = [];
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    patch: async (p: string, d: any) => { docs[p] = { ...docs[p], ...d }; },
+    put: async (p: string, d: any) => { writes.push([p, d]); },
+    remove: async (p: string) => { removed.push(p); delete docs[p]; },
+  };
+  await apply(g, "boss@example.com", validate({ type: "contact.read", id: "m1", read: true }));
+  assert.equal(docs["contactMessages/m1"].read, true);
+  await apply(g, "boss@example.com", validate({ type: "contact.read", id: "m1", read: false }));
+  assert.equal(docs["contactMessages/m1"].read, false);
+  const r = await apply(g, "boss@example.com", validate({ type: "contact.delete", id: "m1" }));
+  assert.deepEqual(removed, ["contactMessages/m1"]);
+  assert.match(r.done, /deleted/);
+  const log = writes.find(([p]) => p.endsWith("-contact.delete"))!;
+  assert.ok(log && !JSON.stringify(log).includes("secret text"));
+  await assert.rejects(apply(g, "boss@example.com", validate({ type: "contact.delete", id: "m1" })), /No such message/);
+});
