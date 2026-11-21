@@ -1,0 +1,435 @@
+{
+ "id": "ban-a-v-afg-a-odi-doha-2026-11-21",
+ "innings": [
+  {
+   "team": "Afghanistan A",
+   "runs": 174,
+   "wickets": 10,
+   "overs": "45",
+   "batting": [
+    {
+     "name": "Imran Mir",
+     "dismissal": "c & b R Mondol",
+     "runs": 19,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Hassan Eisakhil",
+     "dismissal": "lbw b R Mondol",
+     "runs": 16,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Faisal Shinozada",
+     "dismissal": "lbw b R Mondol",
+     "runs": 17,
+     "balls": 32,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Darwish Rasooli",
+     "dismissal": "c YA Chowdhury b IH Emon",
+     "runs": 19,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ikram Alikhil",
+     "dismissal": "b Md Rubel",
+     "runs": 48,
+     "balls": 94,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Bahir Shah",
+     "dismissal": "c M Saifuddin b Rakibul Hasan",
+     "runs": 15,
+     "balls": 22,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Farmanullah Safi",
+     "dismissal": "c I Shukkur b S Hassan",
+     "runs": 0,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Qais Ahmad",
+     "dismissal": "c R Mondol b S Hassan",
+     "runs": 8,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Naseer Khan Maroofkhil",
+     "dismissal": "c I Shukkur b Md Rubel",
+     "runs": 17,
+     "balls": 31,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Allah Mohammad Ghazanfar",
+     "dismissal": "b IH Emon",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Naveed Zadran",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Mohammad Saifuddin",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ripon Mondol",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rakibul Hasan",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Iqbal Hasan Emon",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 32,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Md Rubel",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 21,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Saif Hassan",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hassan Eisakhil",
+     "score": 28,
+     "over": "3.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Imran Mir",
+     "score": 36,
+     "over": "5.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Darwish Rasooli",
+     "score": 66,
+     "over": "11.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Faisal Shinozada",
+     "score": 87,
+     "over": "19.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Bahir Shah",
+     "score": 108,
+     "over": "24.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Farmanullah Safi",
+     "score": 110,
+     "over": "26.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Qais Ahmad",
+     "score": 127,
+     "over": "33.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Naseer Khan Maroofkhil",
+     "score": 171,
+     "over": "42.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Allah Mohammad Ghazanfar",
+     "score": 174,
+     "over": "43.6"
+    },
+    {
+     "wicket": 10,
+     "batter": "Ikram Alikhil",
+     "score": 174,
+     "over": "44.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 11,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 58
+  },
+  {
+   "team": "Bangladesh A",
+   "runs": 176,
+   "wickets": 9,
+   "overs": "45.5",
+   "batting": [
+    {
+     "name": "Saif Hassan",
+     "dismissal": "c Faisal Shinozada b AM Ghazanfar",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Parvez Hossain Emon",
+     "dismissal": "c I Alikhil b N Zadran",
+     "runs": 33,
+     "balls": 27,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Shahadat Hossain Dipu",
+     "dismissal": "c H Eisakhil b NK Maroofkhil",
+     "runs": 24,
+     "balls": 48,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Yasir Ali Chowdhury",
+     "dismissal": "c & b NK Maroofkhil",
+     "runs": 20,
+     "balls": 21,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Irfan Shukkur",
+     "dismissal": "c D Rasooli b F Safi",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sabbir Rahman",
+     "dismissal": "c I Alikhil b N Zadran",
+     "runs": 28,
+     "balls": 43,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Saifuddin",
+     "dismissal": "b N Zadran",
+     "runs": 28,
+     "balls": 80,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Md Rubel",
+     "dismissal": "c B Shah b Q Ahmad",
+     "runs": 10,
+     "balls": 30,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rakibul Hasan",
+     "dismissal": "c I Alikhil b F Safi",
+     "runs": 1,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ripon Mondol",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Iqbal Hasan Emon",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Allah Mohammad Ghazanfar",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 51,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Naveed Zadran",
+     "overs": "10",
+     "maidens": 2,
+     "runs": 27,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Naseer Khan Maroofkhil",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Farmanullah Safi",
+     "overs": "8.5",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Qais Ahmad",
+     "overs": "7",
+     "maidens": 1,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Saif Hassan",
+     "score": 0,
+     "over": "0.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Parvez Hossain Emon",
+     "score": 50,
+     "over": "9.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Yasir Ali Chowdhury",
+     "score": 81,
+     "over": "16.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shahadat Hossain Dipu",
+     "score": 83,
+     "over": "16.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Irfan Shukkur",
+     "score": 83,
+     "over": "17.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sabbir Rahman",
+     "score": 132,
+     "over": "31.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Mohammad Saifuddin",
+     "score": 158,
+     "over": "41.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Md Rubel",
+     "score": 160,
+     "over": "42.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Rakibul Hasan",
+     "score": 162,
+     "over": "43.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 7,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Bangladesh A won by 1 wicket",
+ "winner": "Bangladesh A"
+}
