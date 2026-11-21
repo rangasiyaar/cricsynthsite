@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>API Plus poster (dark)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f2f2f3;--ink:#1d1f20;--s:#5980a6;--s7:#416180;--s8:#2c455d;--s9:#1d2d3d;--s1:#eef6ff;--s2:#d6ebff;--s3:#b5d9fd;--s4:#94bce3;--clay:#b0613a;--clayL:#d9895f;--mut:#a9bccd;
+  --head:"Barlow Condensed",system-ui,sans-serif;--body:"Barlow",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777}
+.poster{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 auto;color:var(--paper);font-family:var(--body);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(60% 40% at 92% 14%,#2b4a68 0%,rgba(43,74,104,0) 70%),linear-gradient(180deg,#1a2a3a 0%,#142231 60%,#101b27 100%);padding:40px 56px}
+.art{position:absolute;left:0;top:0;pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.lock{display:flex;align-items:center;gap:12px;font:600 38px/1 var(--head);letter-spacing:.04em}
+.lock svg{width:48px;height:48px;color:var(--s4)}.lock b{font-weight:600;color:var(--s4)}
+.tagl{font:500 20px/1 var(--body);color:var(--mut);margin:8px 0 0 60px}
+.badge{border:2px solid var(--s4);color:var(--s3);font:700 26px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;padding:13px 20px;border-radius:6px}
+h1{position:relative;margin-top:34px;font:700 90px/.92 var(--head);text-transform:uppercase;letter-spacing:.004em}
+h1 span{display:block;color:var(--s3)}
+.sub{position:relative;margin-top:16px;font:400 23px/1.4 var(--body);color:#c9d5e0;max-width:900px}
+.code{position:relative;margin-top:22px;background:#0f1a25;border:1px solid rgba(148,188,227,.3);border-radius:14px;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.code .bar{display:flex;align-items:center;gap:8px;padding:13px 20px;border-bottom:1px solid rgba(148,188,227,.16);background:#132130}
+.code .bar i{width:11px;height:11px;border-radius:50%;background:#34495d}
+.code .bar span{margin-left:14px;font:500 17px/1 var(--mono);color:#dbe4ec}
+.code .bar em{margin-left:auto;font:500 15px/1 var(--mono);font-style:normal;color:#9fd0b4;border:1px solid rgba(159,208,180,.5);padding:6px 11px;border-radius:14px}
+.code .cols{display:grid;grid-template-columns:1fr 1fr}
+.code pre{padding:12px 20px;font:400 15.5px/1.55 var(--mono);color:#dbe4ec;white-space:pre;counter-reset:l}
+.code pre+pre{border-left:1px solid rgba(148,188,227,.16)}
+.code .ln{color:#4d6478;display:inline-block;width:26px}
+.c{color:#7f97ad}.s{color:#f2c79f}.n{color:var(--s3)}.g{color:#9fd0b4}
+.feats{position:relative;margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:18px;border-bottom:1px solid rgba(148,188,227,.18)}
+.feats > div{display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:center;padding:0 12px;border-left:1px solid rgba(148,188,227,.18)}
+.feats > div:first-child{border-left:0;padding-left:0}
+.feats .ic{width:46px;height:46px;border-radius:10px;background:rgba(65,97,128,.45);border:1px solid rgba(148,188,227,.35);display:grid;place-items:center;color:var(--s3)}
+.feats .ic svg{width:28px;height:28px}
+.feats b{display:block;font:700 19px/1.1 var(--body)}
+.feats span{display:block;font:400 15px/1.3 var(--body);color:var(--mut);margin-top:4px}
+.deal{position:relative;margin-top:20px;display:grid;grid-template-columns:420px 1px 1fr;gap:34px;align-items:center}
+.price{background:linear-gradient(180deg,#22384d,#1a2c3d);border:1px solid rgba(148,188,227,.35);border-radius:14px;padding:20px 28px}
+.price .k{font:600 20px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--s4)}
+.price b{display:block;font:700 96px/.85 var(--head);margin-top:10px;font-variant-numeric:tabular-nums}
+.price small{display:block;font:500 24px/1 var(--body);color:#c9d5e0;margin-top:6px}
+.price p{font:500 18px/1.3 var(--body);color:var(--mut);margin-top:10px}
+.sep{align-self:stretch;background:rgba(148,188,227,.22)}
+.list{list-style:none;display:grid;gap:9px}
+.list li{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start}
+.list svg{width:32px;height:32px;color:var(--s3);margin-top:2px}
+.list b{display:block;font:700 21px/1.1 var(--body)}
+.list span{display:block;font:400 16px/1.3 var(--body);color:var(--mut);margin-top:3px}
+.cta{position:relative;margin:22px auto 0;display:flex;align-items:center;justify-content:center;gap:22px;width:600px;height:80px;background:var(--s3);color:var(--s9);border-radius:12px;font:700 38px/1 var(--head);letter-spacing:.04em;text-transform:uppercase}
+.cta .tag{font:500 26px/1 var(--mono);padding-right:22px;border-right:2px solid rgba(29,45,61,.3);letter-spacing:0}
+.cta svg{width:30px;height:30px}
+.url{position:relative;text-align:center;margin-top:12px;font:600 26px/1 var(--head);letter-spacing:.06em;color:#dbe4ec}
+.free{position:relative;margin:12px auto 0;display:flex;align-items:center;gap:14px;width:max-content;border:1px solid rgba(148,188,227,.4);border-radius:30px;padding:8px 22px 8px 9px;font:500 20px/1 var(--body);color:#dbe4ec}
+.free em{font-style:normal;background:var(--s3);color:var(--s9);font:700 17px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;padding:8px 13px;border-radius:20px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="chk" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="2.5" width="19" height="19" rx="4"/><path d="M7 12.5l3.5 3.5L17 9"/></g></symbol>
+<symbol id="i-pct" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M19 5L5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></g></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></g></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+</defs></svg>
+
+<section class="poster" id="poster">
+  <!-- floodlights and stand, drawn in brand line art -->
+  <svg class="art" width="1080" height="1350" viewBox="0 0 1080 1350"><g transform="translate(20,-40)">
+    <defs><linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".16"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></linearGradient></defs>
+    <path d="M965 200 L700 560 L1080 560 L1080 320 Z" fill="url(#beam)"/>
+    <g stroke="#94bce3" stroke-opacity=".45" stroke-width="2" fill="none">
+      <path d="M965 214 L955 420 M965 214 L975 420 M958 330 L972 360 M972 330 L958 360"/>
+      <path d="M1040 360 L1035 470 M1040 360 L1045 470"/>
+      <path d="M760 520 Q900 440 1080 410 M760 545 Q900 465 1080 435 M760 570 Q900 490 1080 460" stroke-opacity=".22"/>
+    </g>
+    <g fill="#d6ebff" fill-opacity=".75">
+      <rect x="930" y="176" width="12" height="9"/><rect x="946" y="176" width="12" height="9"/><rect x="962" y="176" width="12" height="9"/><rect x="978" y="176" width="12" height="9"/><rect x="994" y="176" width="12" height="9"/>
+      <rect x="930" y="189" width="12" height="9"/><rect x="946" y="189" width="12" height="9"/><rect x="962" y="189" width="12" height="9"/><rect x="978" y="189" width="12" height="9"/><rect x="994" y="189" width="12" height="9"/>
+      <rect x="1020" y="342" width="9" height="7"/><rect x="1032" y="342" width="9" height="7"/><rect x="1044" y="342" width="9" height="7"/><rect x="1020" y="352" width="9" height="7"/><rect x="1032" y="352" width="9" height="7"/><rect x="1044" y="352" width="9" height="7"/>
+    </g></g>
+  </svg>
+
+  <div class="top">
+    <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+    <div class="badge">API Plus</div>
+  </div>
+  <h1>Ship match forecasts,<span>not spreadsheets.</span></h1>
+  <p class="sub">Win chances, projected runs, player ratings and match-ups from one API. Build them into your app, site, newsletter or AI assistant this afternoon.</p>
+
+  <div class="code">
+    <div class="bar"><i></i><i></i><i></i><span>api.cricsynthesis.in</span><em>200 OK · JSON</em></div>
+    <div class="cols">
+<pre><span class="ln">1</span><span class="c"># one call, one match</span>
+<span class="ln">2</span>curl <span class="s">api.cricsynthesis.in</span>\
+<span class="ln">3</span>  <span class="s">/v1/matches/{id}/win-probability</span> \
+<span class="ln">4</span>  -H <span class="s">"X-API-Key: cs_live_…"</span>
+<span class="ln">5</span>
+<span class="ln">6</span><span class="c"># or ask your AI assistant</span>
+<span class="ln">7</span><span class="c"># via mcp.cricsynthesis.in</span>
+<span class="ln">8</span><span class="g">"Who wins tonight, and</span>
+<span class="ln">9</span><span class="g"> by how much?"</span></pre>
+<pre><span class="ln">1</span>{
+<span class="ln">2</span>  <span class="n">"win"</span>: {
+<span class="ln">3</span>    <span class="n">"IND"</span>: <span class="s">0.62</span>, <span class="n">"AUS"</span>: <span class="s">0.38</span>
+<span class="ln">4</span>  },
+<span class="ln">5</span>  <span class="n">"score"</span>: {
+<span class="ln">6</span>    <span class="n">"IND"</span>: { <span class="n">"median"</span>: <span class="s">184</span>,
+<span class="ln">7</span>      <span class="n">"q10"</span>: <span class="s">166</span>, <span class="n">"q90"</span>: <span class="s">201</span> },
+<span class="ln">8</span>    <span class="n">"AUS"</span>: { <span class="n">"median"</span>: <span class="s">172</span> }
+<span class="ln">9</span>  }
+<span class="ln">10</span>}</pre>
+    </div>
+  </div>
+
+  <div class="feats">
+    <div><div class="ic"><svg><use href="#i-pct"/></svg></div><div><b>Win probability</b><span>Before the toss and ball by ball</span></div></div>
+    <div><div class="ic"><svg><use href="#i-bars"/></svg></div><div><b>Projected runs</b><span>Median and likely range</span></div></div>
+    <div><div class="ic"><svg><use href="#i-user"/></svg></div><div><b>Player ratings</b><span>Form, impact and match-ups</span></div></div>
+    <div><div class="ic"><svg><use href="#i-plug"/></svg></div><div><b>API + MCP</b><span>Apps, sites or AI assistants</span></div></div>
+  </div>
+
+  <div class="deal">
+    <div class="price"><div class="k">API Plus</div><b>₹4,999</b><small>a month</small><p>or ₹53,989 a year (save 10%)</p></div>
+    <div class="sep"></div>
+    <ul class="list">
+      <li><svg><use href="#chk"/></svg><div><b>20,000 calls a day</b><span>API and MCP together</span></div></li>
+      <li><svg><use href="#chk"/></svg><div><b>Analytics, simulation, graphics</b><span>All three in one API</span></div></li>
+      <li><svg><use href="#chk"/></svg><div><b>Clean graphics</b><span>No watermark, ready to post</span></div></li>
+      <li><svg><use href="#chk"/></svg><div><b>CricSynthesis Pro included</b><span>The full match centre on the website and app</span></div></li>
+    </ul>
+  </div>
+
+  <div class="cta"><span class="tag">&lt;/&gt;</span>Get your API key<svg><use href="#arrow"/></svg></div>
+  <div class="url">cricsynthesis.in/developers</div>
+  <div class="free"><em>Free tier</em>Start on API Free: 200 calls a day.</div>
+</section>
+</body></html>
