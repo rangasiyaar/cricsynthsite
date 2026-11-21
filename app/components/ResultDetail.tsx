@@ -32,11 +32,11 @@ function FantasyResultView({ f }: { f: FantasyResult }) {
     <div style={{ marginTop: 32 }}>
       <h3>Fantasy picks</h3>
       <p className="small" style={{ margin: "4px 0 10px" }}>Our single team scored <b>{Math.round(f.single.points ?? 0)}</b> points, <b>{pct(f.single.share)}</b> of
-        the best XI anyone could have picked afterwards ({Math.round(f.best.points)}). Best of our five teams: <b>{pct(f.best_of_teams)}</b>.</p>
+        the best XI anyone could have picked afterwards ({Math.round(f.best.points)}). Best of our mega league teams: <b>{pct(f.best_of_teams)}</b>.</p>
       {f.after && <p className="small muted">This match went up before the Fantasy tab existed. These picks were made afterwards by the same
         model trained only on matches played before it, so it never saw this result.</p>}
       <div className="grid g2">
-        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our single team")}
+        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team")}
         {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Best possible XI (in hindsight)")}
       </div>
       <p className="cs-k" style={{ margin: "20px 0 6px" }}>Our five-team combo</p>

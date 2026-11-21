@@ -503,7 +503,7 @@ def test_publish_adds_fantasy_picks(world, tmp_path):
            "teams": [{"name": t.name, "players": list(t.players), "roles": roles} for t in spec.teams]}
     publish_match(world["model"], cov, tmp_path, n=400)
     f = json.loads((tmp_path / "matches" / "fx.json").read_text())["fantasy"]
-    assert len(f["players"]) == 22 and len(f["teams"]) == 5 and f["fielding"]
+    assert len(f["players"]) == 22 and len(f["teams"]) == 6 and f["fielding"]
     one = f["single"]
     assert len(one["players"]) == 11 and one["captain"] in one["players"] and one["vice_captain"] in one["players"]
     assert all(f["players"][p]["name"] for p in one["players"])

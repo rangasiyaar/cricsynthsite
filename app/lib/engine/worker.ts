@@ -25,7 +25,7 @@ self.onmessage = (e: MessageEvent<Req>) => {
       const summary = summarizeFull(pack, sims);
       try {                                                    // picks are pre-match only; the single XI blends in MVP rank
         const mvp = Object.fromEntries(rate(summary).map((r) => [r.p.id, r.mvp]));
-        fantasy = scenario.start ? null : fantasyPicks(pack, sims, 5, mvp);
+        fantasy = scenario.start ? null : fantasyPicks(pack, sims, 6, mvp);
       } catch { fantasy = null; }
       (self as unknown as Worker).postMessage({ id, full: summary, fantasy, ms: performance.now() - t0 });
       return;

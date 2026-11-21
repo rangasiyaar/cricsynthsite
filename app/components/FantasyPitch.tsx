@@ -66,8 +66,10 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
       </div>
       <div className={s.field}>
         <div className={s.oval} /><div className={s.inner} /><div className={s.strip} />
-        {rows.map(([one, many, ps]) => (
-          <div key={one} className={s.sec}>
+        {rows.map(([one, many, ps], i) => (
+          <div key={one}>
+          {i === Math.min(2, rows.length - 1) && <div className={s.wm} aria-hidden="true"><Mark /><span>CricSynthesis</span></div>}
+          <div className={s.sec}>
             <h4>{(ps.length > 1 ? many : one).toUpperCase()}</h4>
             <div className={s.row}>{ps.map((p) => {
               const m = mult(p.id);
@@ -80,6 +82,7 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
                 </div>
               );
             })}</div>
+          </div>
           </div>
         ))}
         <p className={s.note}>{note ?? "Projected fantasy points (C 2×, VC 1.5×). Check the XIs before locking."}</p>

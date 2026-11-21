@@ -28,7 +28,7 @@ test("fantasy picks from the browser simulations", { skip: !packPath }, async ()
   const f = fantasyPicks(pack, simulateMatches(pack, 400, {}, 5))!;
   assert.equal(f.single.players.length, 11);
   assert.ok(f.single.players.includes(f.single.captain) && f.single.players.includes(f.single.vice_captain));
-  assert.equal(f.teams.length, 5);
+  assert.equal(f.teams.length, 6);
   for (const t of f.teams) assert.equal(new Set(t.players).size, 11);
   assert.ok(Object.values(f.players).every((p) => Number.isFinite(p.expected)));
   // teams come from the top 15 on expected points (plus the best of a role missing from them)

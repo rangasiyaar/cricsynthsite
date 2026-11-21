@@ -22,6 +22,8 @@ body{width:1080px;height:1920px;background:var(--s95);font-family:Barlow,sans-se
 .pitch{position:absolute;left:50%;top:640px;width:150px;height:380px;transform:translateX(-50%);background:linear-gradient(#5a7da0,#4d6f91);border-radius:6px;opacity:.75}
 .wm{position:absolute;top:60px;width:150px;height:150px;color:rgba(181,217,253,.16)}
 .wm.l{left:130px}.wm.r{right:130px}
+.cwm{position:absolute;left:50%;top:798px;transform:translate(-50%,-50%);display:flex;align-items:center;gap:18px;color:var(--pale);opacity:.16;mix-blend-mode:screen;white-space:nowrap}
+.cwm svg{width:72px;height:72px}.cwm span{font-family:'Barlow Condensed';font-weight:600;font-size:68px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
 .sec{position:absolute;left:0;right:0;text-align:center}
 .sec h3{font-family:'Barlow Condensed';font-weight:700;font-size:30px;letter-spacing:.14em;color:var(--pale);margin-bottom:22px}
 .row{display:flex;justify-content:center;gap:34px}
@@ -57,6 +59,7 @@ body{width:1080px;height:1920px;background:var(--s95);font-family:Barlow,sans-se
 <div class="field" id="field">
   <div class="oval"></div><div class="inner"></div><div class="pitch"></div>
   <svg class="wm l"><use href="#mark"/></svg><svg class="wm r"><use href="#mark"/></svg>
+  <div class="cwm"><svg><use href="#mark"/></svg><span>CricSynthesis</span></div>
   <div class="note">Projected fantasy points from simulated matches · check the announced XIs before locking</div>
 </div>
 

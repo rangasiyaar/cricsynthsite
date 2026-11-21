@@ -19,6 +19,10 @@
 .oval { position: absolute; left: 4%; right: 4%; top: 22px; bottom: 30px; border: 2px solid rgba(181, 217, 253, .3); border-radius: 50%; }
 .inner { position: absolute; left: 24%; right: 24%; top: 26%; bottom: 26%; border: 1px dashed rgba(181, 217, 253, .22); border-radius: 50%; }
 .strip { position: absolute; left: 50%; top: 36%; width: 13%; height: 26%; transform: translateX(-50%); background: #4f7194; border-radius: 4px; opacity: .7; }
+.wm { position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; margin: -4px 0 10px;
+      color: #b5d9fd; opacity: .16; mix-blend-mode: screen; pointer-events: none; white-space: nowrap; }
+.wm svg { width: 30px; height: 30px; flex: none; }
+.wm span { font-family: "Barlow Condensed", Barlow, sans-serif; font-weight: 600; font-size: 30px; letter-spacing: .04em; text-transform: uppercase; line-height: 1; }
 .sec { position: relative; text-align: center; margin-bottom: 14px; }
 .sec h4 { color: #b5d9fd !important; font-family: "Barlow Condensed", Barlow, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .14em; color: #b5d9fd; margin: 0 0 6px; }
 .row { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 2px; }

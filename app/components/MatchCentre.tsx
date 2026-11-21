@@ -459,7 +459,7 @@ function FantasyCard({ doc, t }: { doc: MatchDoc; t: FantasyTeam }) {
   );
 }
 
-/** Fantasy picks from the published simulations: the single best team, and five teams that cover the likely matches. */
+/** Fantasy picks from the published simulations: the small league team, and the mega league teams that cover the likely matches. */
 function Fantasy({ doc }: { doc: MatchDoc }) {
   const f = doc.fantasy!;
   const name = (p: string) => f.players[p]?.name ?? p;
@@ -467,14 +467,14 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid">
       <div className="card">
-        <div className="card-head"><h3>Best XI</h3><span className="small muted">{split}</span></div>
+        <div className="card-head"><h3>Small league team</h3><span className="small muted">{split}</span></div>
         <FantasyCard doc={doc} t={f.single} />
       </div>
-      <h3 style={{ margin: "12px 0 0" }}>Five different teams</h3>
+      <h3 style={{ margin: "12px 0 0" }}>Mega league teams</h3>
       <div className="grid g2">
         {f.teams.map((t, i) => (
           <div key={i} className="card">
-            <h3>Team {i + 1}</h3>
+            <h3>Mega league team {i + 1}</h3>
             <p className="small" style={{ margin: "0 0 10px" }}>Captain <b>{name(t.captain)}</b> · vice-captain <b>{name(t.vice_captain)}</b></p>
             <FantasyCard doc={doc} t={t} />
           </div>

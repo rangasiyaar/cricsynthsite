@@ -207,8 +207,8 @@ export function blended(exp: Record<string, number>, mvp?: Record<string, number
   return Object.fromEntries(ids.map((p) => [p, -(w * rf.get(p)! + (1 - w) * rm.get(p)!) + 1e-6 * exp[p]]));
 }
 
-/** The Fantasy tab for a set of simulations: one XI, and five teams that cover the likely matches. */
-export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 5, mvp?: Record<string, number> | null): FantasyPicks | null {
+/** The Fantasy tab for a set of simulations: the small league team, and six mega league teams that cover the likely matches. */
+export function fantasyPicks(pack: Pack, sims: MatchSim[], k = 6, mvp?: Record<string, number> | null): FantasyPicks | null {
   if (!sims.length) return null;
   const roles: Record<string, string> = {};
   pack.teams.flatMap((t) => t.players).forEach((p) => { roles[p] = pack.players[p]?.role ?? ""; });

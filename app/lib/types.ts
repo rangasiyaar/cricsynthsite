@@ -66,7 +66,7 @@ export type Summary = {
   matchups: { batter: string; bowler: string; p: number }[];
 };
 
-// Fantasy picks (cricsim/fantasy.py fantasy_picks): one XI and a set of five teams, as player ids.
+// Fantasy picks (cricsim/fantasy.py fantasy_picks): the small league team and a set of mega league teams (six since 21 Nov 2026), as player ids.
 export type FantasyTeam = { players: string[]; captain: string; vice_captain: string; expected: number;
                             points?: number; share?: number | null };
 export type FantasyPicks = {

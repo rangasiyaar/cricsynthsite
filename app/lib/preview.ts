@@ -361,7 +361,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       ["Match", `${A} vs ${B}${no ? `, ${no}` : ""}`], ...(series ? [["Series", series]] : []), ["Date", when],
       ...(m.start_time ? [["Start", `${m.start_time} IST`]] : []), ...(ground ? [["Ground", ground]] : []),
       ["Line-ups", m.xis ? "Confirmed XIs" : "Probable XIs (updates at the toss)"]] } }] },
-    { id: "team", heading: "Best fantasy XI", blocks: [
+    { id: "team", heading: "Small league team", blocks: [
       ...intro.map((t) => ({ p: t }) as Block),
       { pitch: { players: f.single.players.map((pid) => { const r = f.players[pid]; return { id: pid, name: r?.name ?? pid, team: r?.team ?? 0, role: r?.role ?? null, expected: r?.expected ?? 0 }; }),
                  captain: f.single.captain, vice: f.single.vice_captain, short: [short[0], short[1]], total: f.single.expected, xis: !!m.xis,
@@ -406,13 +406,13 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       ...angle.map((t) => ({ p: t }) as Block),
       { links: [{ href: tab(id, "Venue intelligence"), label: "Full ground analysis" }] },
     ] } as Section] : []),
-    ...(f.teams.length > 1 ? [{ id: "combos", heading: `${f.teams.length} teams for multiple entries`, blocks: [
-      { p: "If you enter more than one team, these are built to cover different ways the match can go, rather than repeating the same XI:" },
+    ...(f.teams.length > 1 ? [{ id: "combos", heading: `${f.teams.length} mega league teams`, blocks: [
+      { p: "For mega leagues with several entries: these teams are built to cover different ways the match can go, rather than repeating the same XI:" },
       { table: { head: ["Team", "Captain", "Vice-captain", "Expected"], rows: f.teams.map((t, i) => [String(i + 1), P(t.captain).name, P(t.vice_captain).name, t.expected.toFixed(0)]) } },
       { links: [{ href: `/lab/?id=${encodeURIComponent(id)}`, label: "Rebuild the teams for your own scenario in MatchSynth Lab" }] },
     ] } as Section] : []),
     ...(rec && rec.matches ? [{ id: "record", heading: "How our fantasy picks have done", blocks: [
-      { p: `Across ${rec.matches} matches we have scored, our single team averaged **${pc(rec.single)}** of the best possible XI picked after the match, and the best of our five teams **${pc(rec.best_of_teams)}**.` },
+      { p: `Across ${rec.matches} matches we have scored, our small league team averaged **${pc(rec.single)}** of the best possible XI picked after the match, and the best of our mega league teams **${pc(rec.best_of_teams)}**.` },
       { links: [{ href: "/matches/", label: "Recent results, pick by pick" }] },
     ] } as Section] : []),
     { id: "explore", heading: "Explore this match", blocks: [

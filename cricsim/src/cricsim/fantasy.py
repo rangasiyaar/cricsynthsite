@@ -403,7 +403,7 @@ def blended(exp: dict[str, float], mvp: dict[str, float] | None, w: float = BLEN
     return {p: -(w * rf[p] + (1 - w) * rm[p]) + 1e-6 * exp[p] for p in exp}
 
 
-def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 5, form: dict | None = None,
+def fantasy_picks(model, sims, roles: dict[str, str] | None = None, k: int = 6, form: dict | None = None,
                   mvp: dict[str, float] | None = None) -> dict:
     """What the match centre's Fantasy tab shows: one XI with captain and vice-captain, and a set of k teams that
     together cover the likely matches, all as player ids, with each player's expected points and role.
