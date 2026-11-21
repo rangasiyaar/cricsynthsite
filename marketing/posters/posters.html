@@ -40,47 +40,60 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 .grid{position:absolute;inset:0;pointer-events:none}
 
 /* 1. Pro: fans */
-.pro{background:var(--s9);color:var(--paper)}
-.pro .grid{background-image:linear-gradient(rgba(181,217,253,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(181,217,253,.05) 2px,transparent 2px);background-size:90px 90px;background-position:-2px -2px}
-.pro .brand .syn,.pro .tagline{color:var(--s4)} .pro .tag{color:var(--s3)}
-.pro .cols{display:grid;grid-template-columns:1fr 372px;gap:44px;margin-top:40px;position:relative}
-.pro .lede{color:#cfd8e1}
-.pro .list{list-style:none;margin-top:30px}
-.pro .list li{display:grid;grid-template-columns:132px 1fr;gap:18px;padding:17px 0;border-top:2px solid rgba(181,217,253,.16)}
-.pro .list li:last-child{border-bottom:2px solid rgba(181,217,253,.16)}
-.pro .list b{font:600 22px/1.15 var(--head);letter-spacing:.06em;text-transform:uppercase;color:var(--s4)}
-.pro .list span{font:500 24px/1.3 var(--body)}
-.phone{width:372px;height:640px;border-radius:54px;background:#0e161e;padding:12px;border:2px solid #3a5168}
-.screen{width:100%;height:100%;border-radius:43px;background:var(--paper);overflow:hidden;color:var(--ink);padding:22px 16px 0}
-.scr-top{display:flex;align-items:center;gap:9px;font:600 19px/1 var(--head);letter-spacing:.03em;padding:4px 6px 0}
-.scr-top svg{width:20px;height:20px}
-.scr-h{display:flex;gap:12px;align-items:center;margin:16px 4px 12px}
-.scr-h .ic{width:44px;height:44px;border-radius:11px;background:var(--surface);display:grid;place-items:center}
-.scr-h h3{font:600 28px/1 var(--head);text-transform:uppercase}
-.scr-h p{font:400 15px/1.2 var(--body);color:var(--ink3);margin-top:3px}
-.card{background:#fafafa;border-radius:18px;padding:13px 16px;margin-bottom:10px;box-shadow:0 1px 0 rgba(29,31,32,.08)}
-.card .k{font:500 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:9px;border-bottom:1px solid var(--line)}
-.row{display:flex;align-items:center;justify-content:space-between;padding:9px 0 8px;border-bottom:1px solid var(--line)}
+.pro{background:radial-gradient(120% 70% at 50% 100%,#2a4560 0%,var(--s9) 62%);color:var(--paper);padding:56px 64px 52px}
+.pro .stadium{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pro .brand .syn,.pro .tagline{color:var(--s4)} .pro .tag{color:var(--s3);background:rgba(29,45,61,.6)}
+.pro h1{font-size:88px;margin-top:46px}
+.pro .cols{display:grid;grid-template-columns:1fr 330px;gap:40px;margin-top:22px;align-items:center;position:relative}
+.pro .feats{list-style:none}
+.pro .feats li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:7px 0;border-top:2px solid rgba(181,217,253,.14)}
+.pro .feats li:first-child{border-top:0;padding-top:2px}
+.pro .feats .ic{width:40px;height:40px;border:2px solid rgba(148,188,227,.55);display:grid;place-items:center;color:var(--s3);background:rgba(29,45,61,.7)}
+.pro .feats .ic svg{width:22px;height:22px}
+.pro .feats b{display:block;font:600 24px/1 var(--head);letter-spacing:.04em;text-transform:uppercase;color:var(--paper)}
+.pro .feats span{display:block;font:400 18px/1.25 var(--body);color:#c6d2dd;margin-top:4px}
+.phone{width:330px;height:560px;border-radius:50px;background:#0e161e;padding:11px;border:2px solid #4a6680;box-shadow:0 0 0 10px rgba(29,45,61,.55),0 40px 80px rgba(5,10,16,.55)}
+.screen{width:100%;height:100%;border-radius:40px;background:var(--paper);overflow:hidden;color:var(--ink);padding:20px 14px 0}
+.scr-top{display:flex;align-items:center;gap:8px;font:600 17px/1 var(--head);letter-spacing:.03em;padding:4px 6px 0}
+.scr-top svg{width:18px;height:18px}
+.scr-h{display:flex;gap:10px;align-items:center;margin:14px 4px 10px}
+.scr-h .ic{width:40px;height:40px;border-radius:10px;background:var(--surface);display:grid;place-items:center}
+.scr-h h3{font:600 26px/1 var(--head);text-transform:uppercase}
+.scr-h p{font:400 14px/1.2 var(--body);color:var(--ink3);margin-top:3px}
+.card{background:#fafafa;border-radius:16px;padding:11px 14px;margin-bottom:9px;box-shadow:0 1px 0 rgba(29,31,32,.08)}
+.card .k{font:500 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;justify-content:space-between;padding:8px 0 7px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0;padding-bottom:0}
-.row .t{border-left:4px solid var(--c);padding-left:10px;font:500 17px/1 var(--body)}
-.row .strip{height:6px;border-radius:3px;background:#dfe0e2;position:relative;width:110px;margin:9px 0 0 14px}
+.row .t{border-left:4px solid var(--c);padding-left:9px;font:500 16px/1 var(--body)}
+.row .strip{height:6px;border-radius:3px;background:#dfe0e2;position:relative;width:100px;margin:8px 0 0 13px}
 .row .strip u{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--c);opacity:.75}
 .row .strip s{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid #fafafa}
-.row .v{text-align:right}.row .v b{font:600 36px/1 var(--head)}.row .v small{display:block;font:400 12px/1.2 var(--body);color:var(--ink3)}
-.overs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:54px;margin-top:10px}
+.row .v{text-align:right}.row .v b{font:600 32px/1 var(--head)}.row .v small{display:block;font:400 11px/1.2 var(--body);color:var(--ink3)}
+.overs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:46px;margin-top:9px}
 .overs i{background:#cfd6de;border-radius:2px}.overs i.hot{background:var(--clay)}
-.axis{display:flex;justify-content:space-between;font:500 11px/1 var(--body);color:var(--ink3);margin-top:5px}
-.xi{display:flex;gap:8px;margin-top:12px}
-.xi div{flex:1;height:50px;border-radius:11px;background:var(--surface);display:grid;place-items:center;font:600 15px/1 var(--head);color:var(--ink2);position:relative}
-.xi em{position:absolute;top:-8px;right:-5px;font:700 11px/20px var(--head);font-style:normal;width:22px;height:22px;border-radius:50%;text-align:center;background:var(--s7);color:#fff;border:2px solid #fafafa}
-.xi em.vc{background:var(--clay)}
-.pro .free{margin-top:18px;text-align:center;font:600 24px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--s3)}
-.pro .price{display:flex;gap:30px;align-items:flex-end}
-.pro .price .p{white-space:nowrap}.pro .price .p b{font:600 96px/.82 var(--head)}.pro .price .p small{font:500 25px/1 var(--body);color:#cfd8e1;margin-left:6px}
-.pro .price .alt{font:500 23px/1.35 var(--body);color:#cfd8e1}
-.pro .price .alt b{color:var(--paper);font-weight:600}
-.pro .fine{font:400 19px/1.35 var(--body);color:#93a6b8;margin-top:16px;max-width:520px}
-.pro .cta{background:var(--paper);color:var(--s9)} .pro .url{color:#cfd8e1}
+.axis{display:flex;justify-content:space-between;font:500 10px/1 var(--body);color:var(--ink3);margin-top:5px}
+.mu{padding:8px 0 2px}.mu+.mu{border-top:1px solid var(--line)}
+.mu .l{display:flex;justify-content:space-between;font:500 14px/1 var(--body)}
+.mu .l b{font:600 16px/1 var(--head)}
+.mu .bar{display:flex;height:7px;margin-top:6px;border-radius:4px;overflow:hidden}
+.mu .bar i:first-child{background:var(--s7)}.mu .bar i:last-child{background:var(--clay)}
+/* pricing */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:auto;position:relative}
+.plan{padding:14px 24px 15px;border:2px solid rgba(181,217,253,.35);background:rgba(17,28,39,.72);--fc:var(--s3)}
+.plan .n{display:flex;justify-content:space-between;align-items:center;min-height:36px;font:600 24px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--s4)}
+.plan .amt{display:flex;align-items:flex-end;gap:8px;margin-top:12px}
+.plan .amt b{font:700 96px/.8 var(--head);letter-spacing:-.01em}
+.plan .amt small{font:500 26px/1 var(--body);color:#c6d2dd;padding-bottom:4px}
+.plan p{font:500 20px/1.3 var(--body);color:#c6d2dd;margin-top:7px}
+.plan.best{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.plan.best .n{color:var(--s7)}
+.plan.best .amt small,.plan.best p{color:var(--ink2)}
+.plan.best .save{background:var(--clay);color:#fff;font:600 20px/1 var(--head);letter-spacing:.08em;padding:8px 11px}
+.go{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:16px;position:relative}
+.pro .cta{background:var(--s4);color:var(--s9);height:80px}
+.go .meta{text-align:right;font:500 22px/1.35 var(--body);color:#c6d2dd}
+.go .meta b{display:block;font:600 26px/1.1 var(--head);letter-spacing:.06em;text-transform:uppercase;color:var(--s3)}
+.pro .fine{font:400 17px/1.3 var(--body);color:#8fa3b6;margin-top:12px;position:relative}
 
 /* 2. API Plus: developers and product teams */
 .plus{background:var(--paper)}
@@ -137,51 +150,91 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 
 <!-- ═════════ 1. CricSynthesis Pro ═════════ -->
 <section class="poster pro" id="pro">
-  <div class="grid"></div>
+  <svg class="stadium" viewBox="0 0 1080 1350" preserveAspectRatio="none">
+    <defs>
+      <radialGradient id="glowL" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70 168) scale(520)"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".22"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></radialGradient>
+      <radialGradient id="glowR" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1010 168) scale(520)"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".22"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></radialGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".10"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></linearGradient>
+      <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d2d3d" stop-opacity="0"/><stop offset=".55" stop-color="#1d2d3d" stop-opacity="0"/><stop offset="1" stop-color="#1d2d3d" stop-opacity=".85"/></linearGradient>
+    </defs>
+    <rect width="1080" height="1350" fill="url(#glowL)"/><rect width="1080" height="1350" fill="url(#glowR)"/>
+    <path d="M70 168 L-60 1000 L420 1000 Z" fill="url(#beam)"/><path d="M1010 168 L660 1000 L1140 1000 Z" fill="url(#beam)"/>
+    <g stroke="#94bce3" stroke-opacity=".38" stroke-width="2" fill="none">
+      <path d="M70 172 L56 640 M70 172 L84 640 M60 520 L80 560 M80 520 L60 560 M62 420 L78 460 M78 420 L62 460"/>
+      <path d="M1010 172 L996 640 M1010 172 L1024 640 M1000 520 L1020 560 M1020 520 L1000 560 M1002 420 L1018 460 M1018 420 L1002 460"/>
+    </g>
+    <g fill="#d6ebff" fill-opacity=".55">
+      <rect x="34" y="146" width="12" height="9"/><rect x="50" y="146" width="12" height="9"/><rect x="66" y="146" width="12" height="9"/><rect x="82" y="146" width="12" height="9"/><rect x="98" y="146" width="12" height="9"/>
+      <rect x="34" y="159" width="12" height="9"/><rect x="50" y="159" width="12" height="9"/><rect x="66" y="159" width="12" height="9"/><rect x="82" y="159" width="12" height="9"/><rect x="98" y="159" width="12" height="9"/>
+      <rect x="958" y="146" width="12" height="9"/><rect x="974" y="146" width="12" height="9"/><rect x="990" y="146" width="12" height="9"/><rect x="1006" y="146" width="12" height="9"/><rect x="1022" y="146" width="12" height="9"/>
+      <rect x="958" y="159" width="12" height="9"/><rect x="974" y="159" width="12" height="9"/><rect x="990" y="159" width="12" height="9"/><rect x="1006" y="159" width="12" height="9"/><rect x="1022" y="159" width="12" height="9"/>
+    </g>
+    <g fill="none" stroke="#94bce3">
+      <ellipse cx="540" cy="1010" rx="760" ry="330" stroke-opacity=".16" stroke-width="2"/>
+      <ellipse cx="540" cy="1010" rx="700" ry="298" stroke-opacity=".12" stroke-width="2"/>
+      <ellipse cx="540" cy="1010" rx="640" ry="268" stroke-opacity=".20" stroke-width="2"/>
+      <ellipse cx="540" cy="1010" rx="590" ry="243" stroke-opacity=".10" stroke-width="2"/>
+    </g>
+    <g stroke="#94bce3" stroke-opacity=".10" stroke-width="2"><line x1="-100" y1="1010" x2="-220" y2="1010"/><line x1="-84" y1="950" x2="-201" y2="937"/><line x1="-37" y1="894" x2="-145" y2="867"/><line x1="40" y1="843" x2="-54" y2="804"/><line x1="141" y1="800" x2="66" y2="752"/><line x1="262" y1="769" x2="210" y2="713"/><line x1="398" y1="749" x2="371" y2="688"/><line x1="540" y1="742" x2="540" y2="680"/><line x1="682" y1="749" x2="709" y2="688"/><line x1="818" y1="769" x2="870" y2="713"/><line x1="939" y1="800" x2="1014" y2="752"/><line x1="1040" y1="843" x2="1134" y2="804"/><line x1="1117" y1="894" x2="1225" y2="867"/><line x1="1164" y1="950" x2="1281" y2="937"/><line x1="1180" y1="1010" x2="1300" y2="1010"/></g>
+    <ellipse cx="540" cy="1010" rx="560" ry="228" fill="#22384d" fill-opacity=".55" stroke="#b5d9fd" stroke-opacity=".30" stroke-width="2.5"/>
+    <ellipse cx="540" cy="1010" rx="300" ry="122" fill="none" stroke="#b5d9fd" stroke-opacity=".22" stroke-width="2" stroke-dasharray="10 10"/>
+    <path d="M524 960 L556 960 L566 1060 L514 1060 Z" fill="#94bce3" fill-opacity=".16" stroke="#b5d9fd" stroke-opacity=".35" stroke-width="2"/>
+    <path d="M518 972 H562 M510 1046 H570" stroke="#d6ebff" stroke-opacity=".5" stroke-width="2"/>
+    <rect width="1080" height="1350" fill="url(#fade)"/>
+  </svg>
+
   <div class="top">
     <div><div class="brand"><svg style="color:var(--s4)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
       <div class="tagline">Cricket simulation &amp; analytics</div></div>
     <div class="tag">Now live: Pro</div>
   </div>
-  <h1>Know the match before it's played.</h1>
-  <div class="cols"><div>
-  <p class="lede">Every match we cover, worked out ball by ball before the toss. Scores, wickets, players and your fantasy XI, in one place.</p>
-  <ul class="list">
-    <li><b>Before the first ball</b><span>Likely totals for both sides, and the overs where wickets fall</span></li>
-    <li><b>The players</b><span>All 22 rated, plus the batter v bowler battles that decide it</span></li>
-    <li><b>Fantasy</b><span>A ready XI with captain and vice-captain picks</span></li>
-    <li><b>MatchSynth Lab</b><span>Change the pitch, dew or toss and replay the match</span></li>
-  </ul></div>
-  <div><div class="phone"><div class="screen">
-    <div class="scr-top"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div>
-    <div class="scr-h"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
-      <div><h3>Overview</h3><p>IND 62% to win</p></div></div>
-    <div class="card"><div class="k">Projected score</div>
-      <div class="row" style="--c:var(--s7)"><div><div class="t">IND</div><div class="strip"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely 166–201</small></div></div>
-      <div class="row" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="strip"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely 153–189</small></div></div>
-    </div>
-    <div class="card"><div class="k">Danger overs · wickets most likely</div>
-      <div class="overs">
-        <i style="height:30%"></i><i style="height:26%"></i><i style="height:34%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:48%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:35%"></i><i style="height:38%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:47%"></i><i style="height:52%"></i><i style="height:58%"></i><i class="hot" style="height:74%"></i><i class="hot" style="height:82%"></i><i class="hot" style="height:90%"></i><i class="hot" style="height:100%"></i><i style="height:70%"></i>
-      </div><div class="axis"><span>1</span><span>6</span><span>10</span><span>16–19</span><span>20</span></div></div>
-    <div class="card"><div class="k">Fantasy XI · suggested</div>
-      <div class="xi"><div>WK<em>C</em></div><div>BAT<em class="vc">VC</em></div><div>AR</div><div>BOWL</div></div></div>
-  </div></div>
-  <div class="free">First day free</div></div></div>
+  <h1>Know the match<br>before it's played.</h1>
 
-  <div class="offer">
-    <div>
-      <div class="price">
-        <div class="p"><b>₹349</b><small>a month</small></div>
-        <div class="alt">or <b>₹3,769 a year</b><br>and save ₹419</div>
+  <div class="cols">
+    <ul class="feats">
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><div><b>Projected runs</b><span>Each team's likely total with a realistic range, and how the runs come over by over.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M7 5v16M12 5v16M17 5v16M5 3h6M13 3h6"/></svg></div><div><b>Projected wickets</b><span>The danger overs when wickets fall, and the bowlers most likely to take them.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M4 7h13M13 3l4 4-4 4M20 17H7M11 13l-4 4 4 4"/></svg></div><div><b>Player match-ups</b><span>Which batter has the edge over which bowler in the duels that decide the game.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></div><div><b>Player ratings</b><span>All 22 rated for this match, top batters and bowlers ranked, and the likely MVP.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><ellipse cx="12" cy="12" rx="10" ry="7"/><path d="M11 9h2v6h-2z"/></svg></div><div><b>Ground insights</b><span>Typical scores at the venue, where the runs come, and whether pace or spin works.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M8 4h8v5a4 4 0 0 1-8 0zM12 13v4M8 20h8M4 5h4M16 5h4"/></svg></div><div><b>Fantasy XI</b><span>A ready team with captain and vice-captain picks, plus backup teams.</span></div></li>
+      <li><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M9 3h6M10 3v6l-5 10h14L14 9V3"/></svg></div><div><b>MatchSynth Lab</b><span>Change pitch, weather, dew, toss or form and replay the match from any moment.</span></div></li>
+    </ul>
+    <div><div class="phone"><div class="screen">
+      <div class="scr-top"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div>
+      <div class="scr-h"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+        <div><h3>Overview</h3><p>IND 62% to win</p></div></div>
+      <div class="card"><div class="k">Projected runs</div>
+        <div class="row" style="--c:var(--s7)"><div><div class="t">IND</div><div class="strip"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely 166–201</small></div></div>
+        <div class="row" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="strip"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely 153–189</small></div></div>
       </div>
-      <p class="fine">Cancel any time from your account. Autopay set-up takes a ₹5 check, refunded straight away.</p>
+      <div class="card"><div class="k">Projected wickets by over</div>
+        <div class="overs"><i style="height:30%"></i><i style="height:26%"></i><i style="height:34%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:48%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:35%"></i><i style="height:38%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:47%"></i><i style="height:52%"></i><i style="height:58%"></i><i class="hot" style="height:74%"></i><i class="hot" style="height:82%"></i><i class="hot" style="height:90%"></i><i class="hot" style="height:100%"></i><i style="height:70%"></i></div>
+        <div class="axis"><span>1</span><span>6</span><span>10</span><span>16–19</span><span>20</span></div></div>
+      <div class="card"><div class="k">Player match-ups</div>
+        <div class="mu"><div class="l"><span>Opener v new ball</span><b>58 : 42</b></div><div class="bar"><i style="flex:58"></i><i style="flex:42"></i></div></div>
+        <div class="mu"><div class="l"><span>Finisher v leg-spin</span><b>46 : 54</b></div><div class="bar"><i style="flex:46"></i><i style="flex:54"></i></div></div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <div class="plans">
+    <div class="plan frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+      <div class="n"><span>Monthly</span></div>
+      <div class="amt"><b>₹349</b><small>/ month</small></div>
+      <p>Pay month to month. Cancel any time.</p>
     </div>
-    <div class="right">
-      <div class="cta">Start your free day<svg><use href="#arrow"/></svg></div>
-      <span class="url">cricsynthesis.in/pro</span>
+    <div class="plan best frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+      <div class="n"><span>Yearly</span><span class="save">Save ₹419</span></div>
+      <div class="amt"><b>₹3,769</b><small>/ year</small></div>
+      <p>Works out at ₹314 a month.</p>
     </div>
   </div>
+  <div class="go">
+    <div class="cta">Start your free day<svg><use href="#arrow"/></svg></div>
+    <div class="meta"><b>First day free</b>cricsynthesis.in/pro</div>
+  </div>
+  <p class="fine">Choose monthly or yearly, then cancel any time from your account. Autopay set-up takes a ₹5 check, refunded straight away.</p>
 </section>
 
 <!-- ═════════ 2. API Plus ═════════ -->
