@@ -135,7 +135,7 @@ export function Footer() {
         <div className="footer-main">
           <div className="footer-brand">
             <Brand />
-            <p className="footer-tagline">Cricket simulation and analytics</p>
+            <p className="footer-tagline">AI-Powered Cricket Intelligence</p>
           </div>
           <div className="footer-links">
             <div className="footer-column">

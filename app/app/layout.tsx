@@ -7,11 +7,11 @@ import "./design.css";
 import { SiteFrame } from "@/components/Shell";
 import { SITE, SITE_NAME, seo } from "@/lib/seo";
 
-const HOME_DESC = "Who wins, the likely scores and the players to watch. Free pre-match forecasts for upcoming cricket matches, checked against every result.";
+const HOME_DESC = "AI-Powered Cricket Intelligence: who wins, the likely scores and the players to watch. Free pre-match forecasts for upcoming cricket matches, checked against every result.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  ...seo("/", "CricSynthesis | Cricket match forecasts and simulation", HOME_DESC),
+  ...seo("/", "CricSynthesis | AI-Powered Cricket Intelligence", HOME_DESC),
   applicationName: SITE_NAME,
   keywords: ["cricket predictions", "cricket match forecast", "win probability", "T20 predictions", "cricket simulation",
     "cricket analytics", "cricket API", "projected score", "fantasy cricket", "MatchSynth Lab"],
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Organization", "@id": `${SITE}/#org`, name: SITE_NAME, url: SITE, logo: `${SITE}/logo-mark.svg` },
+    { "@type": "Organization", "@id": `${SITE}/#org`, name: SITE_NAME, url: SITE, logo: `${SITE}/logo-mark.svg`, slogan: "AI-Powered Cricket Intelligence" },
     { "@type": "WebSite", "@id": `${SITE}/#site`, name: SITE_NAME, url: SITE, publisher: { "@id": `${SITE}/#org` },
       description: HOME_DESC, inLanguage: "en-IN" },
     { "@type": "WebApplication", name: "CricSynthesis Match Centre", url: `${SITE}/match/`, applicationCategory: "SportsApplication",

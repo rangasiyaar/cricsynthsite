@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 
 export const SITE = "https://cricsynthesis.in";
 export const SITE_NAME = "CricSynthesis";
-/** Link-preview image for every page: the plain CricSynthesis logo (same as the blog). */
-export const OG_IMAGE = "/og-logo.png?v=1";
+/** Link-preview image for every page: the CricSynthesis lockup with the tagline, "AI-Powered Cricket Intelligence" (same as the blog). */
+export const OG_IMAGE = "/og-logo.png?v=2";
 
 export function seo(path: string, title: string, description: string, opts: { noindex?: boolean; image?: string } = {}): Metadata {
   const url = `${SITE}${path}`;
