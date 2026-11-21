@@ -1,0 +1,112 @@
+{
+  "id": "sl-w-v-pak-w-t20-ajman-2026-11-23",
+  "title": "Sri Lanka Women v Pakistan Women",
+  "date": "2026-11-23",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Super Six",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka Women",
+      "short": "SL-W",
+      "players": [
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Imesha Dulani",
+        "Hasini Perera",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Vishmi Rajapaksha Gunaratne",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Sathya Sandeepani",
+        "Nimasha Madushani Meepage"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Harshitha Samarawickrama",
+      "squad": [
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Imesha Dulani",
+        "Hasini Perera",
+        "Nilakshi de Silva",
+        "Kaushani Nuthyangana",
+        "Vishmi Rajapaksha Gunaratne",
+        "Sugandika Kumari",
+        "Chethana Vimukthi",
+        "Sathya Sandeepani",
+        "Nimasha Madushani Meepage"
+      ]
+    },
+    {
+      "name": "Pakistan Women",
+      "short": "PAK-W",
+      "players": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Tasmia Rubab",
+        "Momina Riasat",
+        "Nashra Sandhu",
+        "Omaima Sohail"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Muneeba Ali",
+      "squad": [
+        "Shawaal Zulfiqar",
+        "Sadaf Shamas",
+        "Muneeba Ali",
+        "Ayesha Zafar",
+        "Eyman Fatima",
+        "Tuba Hassan",
+        "Umm e Hani",
+        "Tasmia Rubab",
+        "Momina Riasat",
+        "Nashra Sandhu",
+        "Omaima Sohail"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41977,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-women-vs-pakistan-women-icc-women's-emerging-nations-trophy-23rd-november-2026-41977",
+    "auto": true,
+    "xis": false
+  }
+}
