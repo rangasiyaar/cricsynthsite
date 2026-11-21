@@ -1,0 +1,112 @@
+{
+  "id": "mal-w-v-chn-w-t20-kuala-lumpur-2026-11-22",
+  "title": "Malaysia Women v China Women",
+  "date": "2026-11-22",
+  "start_time": "07:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Malaysia Women's T20I Tri-Series · 3rd Match",
+  "comp_key": "malaysia-women-s-t20i-tri-series",
+  "venue": "Bayuemas Oval, Kuala Lumpur",
+  "venue_search": "bayuemas oval",
+  "city": "Kuala Lumpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Malaysia Women",
+      "short": "MAL-W",
+      "players": [
+        "Ainna Hamizah Hashim",
+        "Nur Aliya Hairun",
+        "Winifred Duraisingam",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Aina Umaira Binti Amin",
+        "Aina Najwa",
+        "Aisya Eleesa",
+        "Nur Arianna Natsya",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Mas Elysa",
+      "squad": [
+        "Ainna Hamizah Hashim",
+        "Nur Aliya Hairun",
+        "Winifred Duraisingam",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Aina Umaira Binti Amin",
+        "Aina Najwa",
+        "Aisya Eleesa",
+        "Nur Arianna Natsya",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ]
+    },
+    {
+      "name": "China Women",
+      "short": "CHN-W",
+      "players": [
+        "Cai Yuzhi",
+        "Gong Yuting",
+        "Hong Yali",
+        "jiaping LI",
+        "Lyu Yihan",
+        "Wang Huiying",
+        "Wei Haiting",
+        "Zhao Yihan",
+        "Wang Kaizhen",
+        "Mingyue Zhu",
+        "Wang Chunjing"
+      ],
+      "roles": [
+        "BOWL",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Mingyue Zhu",
+      "squad": [
+        "Cai Yuzhi",
+        "Gong Yuting",
+        "Hong Yali",
+        "jiaping LI",
+        "Lyu Yihan",
+        "Wang Huiying",
+        "Wei Haiting",
+        "Zhao Yihan",
+        "Wang Kaizhen",
+        "Mingyue Zhu",
+        "Wang Chunjing"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41983,
+    "url": "https://khelnow.com/live-cricket-score/malaysia-women-vs-china-women-malaysia-women's-t20i-tri-series-22nd-november-2026-41983",
+    "auto": true,
+    "xis": false
+  }
+}
