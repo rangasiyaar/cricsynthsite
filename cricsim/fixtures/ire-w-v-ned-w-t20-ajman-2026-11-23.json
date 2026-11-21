@@ -1,0 +1,112 @@
+{
+  "id": "ire-w-v-ned-w-t20-ajman-2026-11-23",
+  "title": "Ireland Women v Netherlands Women",
+  "date": "2026-11-23",
+  "start_time": "14:45",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Super Six",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Seven Districts Ground, Ajman",
+  "venue_search": "seven districts ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Ireland Women",
+      "short": "IRE-W",
+      "players": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Alana Dalzell",
+        "Abbi Harrison",
+        "Georgina Dempsey",
+        "Cara Murray",
+        "Aimee Maguire",
+        "Kia Mccartney"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Gaby Lewis",
+      "squad": [
+        "Gaby Lewis",
+        "Amy Hunter",
+        "Lara Maritz",
+        "Louise Little",
+        "Laura Delany",
+        "Alana Dalzell",
+        "Abbi Harrison",
+        "Georgina Dempsey",
+        "Cara Murray",
+        "Aimee Maguire",
+        "Kia Mccartney"
+      ]
+    },
+    {
+      "name": "Netherlands Women",
+      "short": "NED-W",
+      "players": [
+        "Sterre Kalis",
+        "Sanya Khurana",
+        "Phebe Molkenboer",
+        "Rosalie Lawrence",
+        "Frederique Overdijk",
+        "Iris Zwilling",
+        "Myrthe van den Raad",
+        "Robine Rijke",
+        "Caroline de Lange",
+        "Silver Siegers",
+        "Hannah Landheer"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sterre Kalis",
+      "squad": [
+        "Sterre Kalis",
+        "Sanya Khurana",
+        "Phebe Molkenboer",
+        "Rosalie Lawrence",
+        "Frederique Overdijk",
+        "Iris Zwilling",
+        "Myrthe van den Raad",
+        "Robine Rijke",
+        "Caroline de Lange",
+        "Silver Siegers",
+        "Hannah Landheer"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41979,
+    "url": "https://khelnow.com/live-cricket-score/ireland-women-vs-netherlands-women-icc-women's-emerging-nations-trophy-23rd-november-2026-41979",
+    "auto": true,
+    "xis": false
+  }
+}
