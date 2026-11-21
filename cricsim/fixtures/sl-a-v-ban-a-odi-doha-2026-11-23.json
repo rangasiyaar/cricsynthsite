@@ -1,0 +1,112 @@
+{
+  "id": "sl-a-v-ban-a-odi-doha-2026-11-23",
+  "title": "Sri Lanka A v Bangladesh A",
+  "date": "2026-11-23",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 10th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka A",
+      "short": "SL-A",
+      "players": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Chamika Heenatigala",
+        "Dulaj Samuditha",
+        "Wanuja Sahan",
+        "Duvindu Ranatunga",
+        "Vijayakanth Viyaskanth"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Pavan Rathnayake",
+      "squad": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Chamika Heenatigala",
+        "Dulaj Samuditha",
+        "Wanuja Sahan",
+        "Duvindu Ranatunga",
+        "Vijayakanth Viyaskanth"
+      ]
+    },
+    {
+      "name": "Bangladesh A",
+      "short": "BAN-A",
+      "players": [
+        "Saif Hassan",
+        "Shahadat Hossain Dipu",
+        "Yasir Ali Chowdhury",
+        "Sabbir Rahman",
+        "Parvez Hossain Emon",
+        "Irfan Shukkur",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rakibul Hasan",
+        "Md Rubel",
+        "Iqbal Hasan Emon"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Saif Hassan",
+      "squad": [
+        "Saif Hassan",
+        "Shahadat Hossain Dipu",
+        "Yasir Ali Chowdhury",
+        "Sabbir Rahman",
+        "Parvez Hossain Emon",
+        "Irfan Shukkur",
+        "Mohammad Saifuddin",
+        "Samiun Basir Ratul",
+        "Rakibul Hasan",
+        "Md Rubel",
+        "Iqbal Hasan Emon"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41831,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-a-vs-bangladesh-a-acc-men's-asia-cup-rising-stars-23rd-november-2026-41831",
+    "auto": true,
+    "xis": false
+  }
+}
