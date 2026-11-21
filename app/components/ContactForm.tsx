@@ -9,7 +9,8 @@ import { auth } from "@/lib/firebase";
 
 export const TOPICS = ["General question", "API and Business plans", "CricSynthesis Pro", "Partnerships", "Press", "Something else"];
 
-export default function ContactForm() {
+/** `inline`: just the form card, for the contact page's legal-page layout (heading left, content right). */
+export default function ContactForm({ inline = false }: { inline?: boolean }) {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -38,18 +39,7 @@ export default function ContactForm() {
     } finally { setBusy(false); }
   };
 
-  return (
-    <section className="cs-section cs-contact cs-ruled" id="message" style={{ scrollMarginTop: 88 }}>
-      <div>
-        <h2 className="cs-h2">Send us a message</h2>
-        <p className="cs-lede">Questions about forecasts, CricSynthesis Pro, the API or a partnership. We reply to every message,
-          usually within one working day.</p>
-        <ul className="cs-contact-direct">
-          <li><span>General</span><a href="mailto:hello@cricsynthesis.in">hello@cricsynthesis.in</a></li>
-          <li><span>Privacy</span><a href="mailto:privacy@cricsynthesis.in">privacy@cricsynthesis.in</a></li>
-          <li><span>Legal</span><a href="mailto:legal@cricsynthesis.in">legal@cricsynthesis.in</a></li>
-        </ul>
-      </div>
+  const card = (
       <div className="cs-frame cs-form-card">
         <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
         {sent ? (
@@ -93,6 +83,21 @@ export default function ContactForm() {
           </form>
         )}
       </div>
+  );
+  if (inline) return <div id="message" style={{ scrollMarginTop: 88 }}>{card}</div>;
+  return (
+    <section className="cs-section cs-contact cs-ruled" id="message" style={{ scrollMarginTop: 88 }}>
+      <div>
+        <h2 className="cs-h2">Send us a message</h2>
+        <p className="cs-lede">Questions about forecasts, CricSynthesis Pro, the API or a partnership. We reply to every message,
+          usually within one working day.</p>
+        <ul className="cs-contact-direct">
+          <li><span>General</span><a href="mailto:hello@cricsynthesis.in">hello@cricsynthesis.in</a></li>
+          <li><span>Privacy</span><a href="mailto:privacy@cricsynthesis.in">privacy@cricsynthesis.in</a></li>
+          <li><span>Legal</span><a href="mailto:legal@cricsynthesis.in">legal@cricsynthesis.in</a></li>
+        </ul>
+      </div>
+      {card}
     </section>
   );
 }
