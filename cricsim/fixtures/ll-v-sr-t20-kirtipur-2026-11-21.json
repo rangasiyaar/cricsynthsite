@@ -12,36 +12,36 @@
   "city": "Kirtipur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sudurpaschim Royals won the toss and bowl first.",
   "teams": [
     {
       "name": "Lumbini Lions",
       "short": "LL",
       "players": [
-        "Rohit Kumar Paudel",
-        "Niroshan Dickwella",
-        "Sundeep Jora",
         "Aasif Sheikh",
-        "Sher Malla",
         "Abhishesh Gautam",
+        "Ali Sheikh",
+        "D'Arcy Short",
         "Dilip Nath",
         "Kishore Mahato",
+        "Niroshan Dickwella",
+        "Rohit Kumar Paudel",
         "Ruben Trumpelmann",
-        "D'Arcy Short",
-        "Ali Sheikh"
+        "Sher Malla",
+        "Sundeep Jora"
       ],
       "roles": [
         "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
         "WK",
         "BAT",
-        "BAT",
-        "AR",
-        "BOWL",
-        "BAT",
-        "BOWL",
         "BOWL",
         "AR",
-        "AR"
+        "BAT"
       ],
       "captain": "Rohit Kumar Paudel",
       "squad": [
@@ -62,30 +62,30 @@
       "name": "Sudurpaschim Royals",
       "short": "SR",
       "players": [
-        "Dipendra Singh Airee",
-        "Binod Bhandari",
         "Aarif Sheikh",
-        "Ishan Pandey",
-        "Hemant Dhami",
         "Anil Kharel",
+        "Binod Bhandari",
         "Dipak Bohara",
+        "Dipendra Singh Airee",
         "George Munsey",
+        "Hemant Dhami",
+        "Ishan Pandey",
+        "Saif Zaib",
         "Scott Kuggeleijn",
-        "Tharindu Ratnayake",
-        "Fabian Allen"
+        "Tharindu Ratnayake"
       ],
       "roles": [
         "AR",
+        "BOWL",
         "WK",
-        "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BAT",
         "BAT",
         "AR",
+        "BAT",
         "BOWL",
-        "AR"
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL"
       ],
       "captain": "Dipendra Singh Airee",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41354,
     "url": "https://khelnow.com/live-cricket-score/lumbini-lions-vs-tba-nepal-premier-league-21st-november-2026-41354",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

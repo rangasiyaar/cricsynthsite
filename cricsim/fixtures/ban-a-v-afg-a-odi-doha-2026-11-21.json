@@ -12,35 +12,35 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bangladesh A won the toss and bowl first.",
   "teams": [
     {
       "name": "Bangladesh A",
       "short": "BAN-A",
       "players": [
-        "Saif Hassan",
-        "Shahadat Hossain Dipu",
-        "Yasir Ali Chowdhury",
         "Sabbir Rahman",
-        "Parvez Hossain Emon",
         "Irfan Shukkur",
-        "Mohammad Saifuddin",
-        "Samiun Basir Ratul",
+        "Saif Hassan",
         "Rakibul Hasan",
+        "Iftakhar Hossain Ifti",
         "Md Rubel",
-        "Iqbal Hasan Emon"
+        "Yasir Ali Chowdhury",
+        "Iqbal Hasan Emon",
+        "Mohammad Saifuddin",
+        "Shahadat Hossain Dipu",
+        "Ripon Mondol"
       ],
       "roles": [
-        "AR",
-        "BAT",
-        "BAT",
-        "BAT",
         "BAT",
         "WK",
         "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
         "AR",
-        "BOWL",
-        "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Saif Hassan",
@@ -62,28 +62,28 @@
       "name": "Afghanistan A",
       "short": "AFG-A",
       "players": [
+        "Ikram Alikhil",
         "Imran Mir",
         "Hassan Eisakhil",
-        "Ijaz Ahmadzai",
         "Darwish Rasooli",
         "Faisal Shinozada",
-        "Ikram Alikhil",
+        "Bahir Shah",
         "Farmanullah Safi",
         "Qais Ahmad",
+        "Naseer Khan Maroofkhil",
         "Allah Mohammad Ghazanfar",
-        "Bilal Sami",
         "Naveed Zadran"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41827,
     "url": "https://khelnow.com/live-cricket-score/bangladesh-a-vs-afghanistan-a-acc-men's-asia-cup-rising-stars-21st-november-2026-41827",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
