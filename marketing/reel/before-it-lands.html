@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Before it lands</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Brand film, 1080×1920, 20 s. Everything drawn from seek(t). */
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
+canvas{display:block}
+</style></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+const W=1080,H=1920,cv=document.getElementById('c'),g=cv.getContext('2d');
+const cl=x=>Math.max(0,Math.min(1,x)), lerp=(a,b,u)=>a+(b-a)*u, sm=u=>{u=cl(u);return u*u*(3-2*u)};
+const ex=u=>u<=0?0:u>=1?1:(1-Math.pow(2,-10*u))/(1-Math.pow(2,-10));
+let seed=11; const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+
+// ── crowd: drawn once, blurred, frozen ──
+const crowd=document.createElement('canvas'); crowd.width=W*1.3; crowd.height=900;
+{const c=crowd.getContext('2d'); c.filter='blur(5px)';
+  for(let row=0;row<9;row++){const y=120+row*88, sc=.6+row*.09, n=Math.floor(crowd.width/(52*sc));
+    for(let i=0;i<n;i++){const x=i*52*sc+(row%2)*26*sc+rnd()*14, l=10+row*1.8+rnd()*5;
+      c.fillStyle=`rgb(${l},${l+6},${l+14})`;
+      c.beginPath();c.arc(x,y-24*sc,12*sc,0,Math.PI*2);c.fill();
+      c.beginPath();c.ellipse(x,y+4*sc,22*sc,20*sc,0,Math.PI,0);c.fill();
+      if(rnd()<.12){c.lineWidth=7*sc;c.strokeStyle=c.fillStyle;c.lineCap='round';c.beginPath();c.moveTo(x+14*sc,y-6*sc);c.lineTo(x+22*sc+rnd()*6,y-62*sc);c.stroke()}}}}
+// dust motes (fixed seeds, drift almost nothing: the world is frozen)
+const motes=[...Array(90)].map(()=>({x:rnd()*W,y:rnd()*H,z:rnd(),p:rnd()*6.28}));
+// bokeh floodlights
+const bokeh=[...Array(14)].map(()=>({x:rnd()*W,y:80+rnd()*420,r:30+rnd()*70,a:.04+rnd()*.07}));
+
+// the mark, for the coin face and the outro
+function mark(c,s,col,lw){c.save();c.scale(s/48,s/48);c.translate(-24,-24);c.strokeStyle=col;c.lineWidth=lw*48/s;c.lineCap='square';
+  c.beginPath();c.moveTo(4,15);c.lineTo(13,24);c.lineTo(4,33);c.stroke();c.lineCap='butt';
+  c.beginPath();[22,30,38].forEach(x=>{c.moveTo(x,15);c.lineTo(x,40)});c.moveTo(20,11);c.lineTo(29,11);c.moveTo(31,11);c.lineTo(40,11);c.stroke();c.restore()}
+
+// ── the hand, mid-reach (silhouette with a cold rim light) ──
+function hand(c){
+  c.save(); c.translate(820,1660); c.rotate(-.42);
+  const fill='#0a1018';
+  c.fillStyle=fill;
+  // forearm
+  c.beginPath();c.moveTo(-70,420);c.quadraticCurveTo(-80,160,-58,40);c.lineTo(58,40);c.quadraticCurveTo(84,170,80,420);c.closePath();c.fill();
+  // palm
+  c.beginPath();c.ellipse(0,-10,74,88,0,0,Math.PI*2);c.fill();
+  // fingers (spread, reaching)
+  const F=[[-52,-70,-.32,118,24],[-18,-92,-.1,150,25],[18,-92,.08,158,25],[52,-74,.26,134,23]];
+  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.roundRect(-w/2,-l,w,l+10,w/2);c.fill();c.restore()});
+  // thumb
+  c.save();c.translate(-66,10);c.rotate(-1.05);c.beginPath();c.roundRect(-13,-104,26,112,13);c.fill();c.restore();
+  // rim light on the left edges
+  c.strokeStyle='rgba(148,188,227,.55)';c.lineWidth=2.4;
+  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(-w/2,0);c.lineTo(-w/2,-l+w/2);c.arc(0,-l+w/2,w/2,Math.PI,Math.PI*1.5);c.stroke();c.restore()});
+  c.beginPath();c.ellipse(0,-10,74,88,0,Math.PI*.62,Math.PI*1.12);c.stroke();
+  c.beginPath();c.moveTo(-70,420);c.quadraticCurveTo(-80,160,-58,60);c.stroke();
+  c.restore();
+}
+
+// ── the coin: turning about a tilted vertical axis, lit from the upper left ──
+function coin(c,t){
+  const R=185,T=20, th=0.9+t*1.35;                 // extreme slow motion: about one turn every 4.6 s
+  const cx=540, cy=820-t*3.2+Math.sin(t*.7)*4;      // hangs; barely rises
+  const co=Math.cos(th), si=Math.sin(th), w=Math.max(.0001,Math.abs(co));
+  c.save(); c.translate(cx,cy); c.rotate(-.16);
+  // light catch: brightest when the face turns toward the light
+  const facing=cl(.5+.5*Math.cos(th-0.55)), glint=Math.pow(cl(Math.cos(th-0.55)),24);
+  // edge (rim): visible as a band offset by the thickness
+  const off=T*si;
+  c.fillStyle='#4b5866';
+  c.beginPath();c.ellipse(off*.5,0,R*w+Math.abs(off)*.5,R,0,0,Math.PI*2);c.fill();
+  // reeded edge lines
+  c.save();c.beginPath();c.ellipse(off*.5,0,R*w+Math.abs(off)*.5,R,0,0,Math.PI*2);c.clip();
+  c.strokeStyle='rgba(20,26,33,.55)';c.lineWidth=2;for(let i=-R;i<R;i+=7){c.beginPath();c.moveTo(-400,i);c.lineTo(400,i);c.stroke()}c.restore();
+  // face
+  const front=co>0;
+  const base=lerp(70,205,facing);
+  const grd=c.createLinearGradient(-R*w,-R,R*w,R);
+  grd.addColorStop(0,`rgb(${base+30},${base+38},${base+48})`);
+  grd.addColorStop(cl(.35+.3*si),`rgb(${base+50|0},${base+56|0},${base+64|0})`);
+  grd.addColorStop(1,`rgb(${base*.55|0},${base*.6|0},${base*.7|0})`);
+  c.fillStyle=grd; c.beginPath();c.ellipse(-off*.5,0,R*w,R,0,0,Math.PI*2);c.fill();
+  // emboss: mark on one face, rings on the other (compressed by the turn)
+  c.save(); c.translate(-off*.5,0); c.scale(w,1);
+  c.strokeStyle=`rgba(255,255,255,${.18+.25*facing})`; c.lineWidth=3;
+  c.beginPath();c.arc(0,0,R-14,0,Math.PI*2);c.stroke();
+  if(front){ mark(c,185,`rgba(30,40,52,${.35+.25*facing})`,7); c.translate(-2,-2); mark(c,185,`rgba(255,255,255,${.12+.3*facing})`,5) }
+  else { for(const r of [96,64,32]){c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.strokeStyle=`rgba(255,255,255,${.1+.22*facing})`;c.lineWidth=2.5;c.stroke()} }
+  c.restore();
+  // specular sweep and glint
+  if(glint>.01){const sg=c.createLinearGradient(-R*w,-R,R*w,R*.4);sg.addColorStop(cl(.3),'rgba(255,255,255,0)');sg.addColorStop(.5,`rgba(255,255,255,${.75*glint})`);sg.addColorStop(cl(.7),'rgba(255,255,255,0)');
+    c.fillStyle=sg;c.beginPath();c.ellipse(-off*.5,0,R*w,R,0,0,Math.PI*2);c.fill();
+    c.globalCompositeOperation='lighter';const sp=c.createRadialGradient(-R*w*.4,-R*.45,0,-R*w*.4,-R*.45,90);sp.addColorStop(0,`rgba(220,235,255,${.55*glint})`);sp.addColorStop(1,'rgba(220,235,255,0)');c.fillStyle=sp;c.fillRect(-200,-260,400,400);c.globalCompositeOperation='source-over'}
+  c.restore();
+  // soft light the coin throws on the air beneath it
+  const sh=g.createRadialGradient(cx,cy+40,10,cx,cy+40,420);sh.addColorStop(0,`rgba(148,188,227,${.05+.05*facing})`);sh.addColorStop(1,'rgba(148,188,227,0)');
+  c.fillStyle=sh;c.fillRect(0,0,W,H);
+}
+
+function scene(t){
+  // camera: a very slow push-in with a little parallax
+  const k=t/15.5, z=1+.07*sm(k), px=-18*sm(k);
+  g.fillStyle='#03050a'; g.fillRect(0,0,W,H);
+  const sky=g.createRadialGradient(540,260,40,540,260,1300);sky.addColorStop(0,'#1a2a3c');sky.addColorStop(.45,'#0b1320');sky.addColorStop(1,'#03050a');g.fillStyle=sky;g.fillRect(0,0,W,H);
+  g.save(); g.translate(540,960); g.scale(z,z); g.translate(-540+px*.4,-960);
+  bokeh.forEach(b=>{const r=g.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);r.addColorStop(0,`rgba(214,235,255,${b.a})`);r.addColorStop(.7,`rgba(214,235,255,${b.a*.6})`);r.addColorStop(1,'rgba(214,235,255,0)');g.fillStyle=r;g.beginPath();g.arc(b.x,b.y,b.r,0,Math.PI*2);g.fill()});
+  g.drawImage(crowd,-150,1020);
+  g.restore();
+  // haze over the crowd
+  const hz=g.createLinearGradient(0,1000,0,1920);hz.addColorStop(0,'rgba(3,5,10,0)');hz.addColorStop(1,'rgba(3,5,10,.75)');g.fillStyle=hz;g.fillRect(0,0,W,H);
+  g.save(); g.translate(540,960); g.scale(z*1.02,z*1.02); g.translate(-540+px,-960);
+  // suspended dust
+  motes.forEach(m=>{const x=m.x+Math.sin(m.p+t*.05)*3, y=m.y-t*.6*m.z, s=.8+m.z*2.6, a=.05+.22*m.z*(.6+.4*Math.sin(m.p+t*.3));
+    g.fillStyle=`rgba(214,235,255,${a})`;g.beginPath();g.arc(x,y,s,0,Math.PI*2);g.fill()});
+  coin(g,t);
+  hand(g);
+  g.restore();
+  // vignette
+  const vg=g.createRadialGradient(540,900,500,540,900,1250);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.7)');g.fillStyle=vg;g.fillRect(0,0,W,H);
+}
+
+function line(t){
+  const a=sm((t-10.6)/1.4), b=sm((t-12.4)/1.4);
+  g.textAlign='center'; g.font='300 58px Barlow';
+  g.fillStyle=`rgba(242,242,243,${.92*a})`; g.fillText('Some things you can know',540,1330);
+  g.fillStyle=`rgba(181,217,253,${.95*b})`; g.fillText('before it lands.',540,1410);
+}
+
+function outro(t){
+  g.fillStyle='#000'; g.fillRect(0,0,W,H);
+  const d=ex((t-16.6)/.8), wm=sm((t-17.2)/.9), u=sm((t-17.9)/.9);
+  // mark draws on
+  g.save(); g.translate(540,880);
+  g.strokeStyle='#94bce3'; g.lineWidth=10; const s=120/48;
+  g.save(); g.scale(s,s); g.translate(-24,-24); g.lineWidth=10/s;
+  const segs=[[[4,15],[13,24],[4,33]],[[22,15],[22,40]],[[30,15],[30,40]],[[38,15],[38,40]],[[20,11],[29,11]],[[31,11],[40,11]]];
+  segs.forEach((sg,i)=>{const p=cl(d*1.6-i*.12); if(p<=0)return; g.lineCap=i===0?'square':'butt'; g.beginPath();
+    if(sg.length===3){const L1=Math.hypot(9,9),tot=L1*2,len=p*tot; g.moveTo(...sg[0]); if(len<=L1){g.lineTo(lerp(4,13,len/L1),lerp(15,24,len/L1))}else{g.lineTo(13,24);g.lineTo(lerp(13,4,(len-L1)/L1),lerp(24,33,(len-L1)/L1))}}
+    else{g.moveTo(...sg[0]);g.lineTo(lerp(sg[0][0],sg[1][0],p),lerp(sg[0][1],sg[1][1],p))} g.stroke()});
+  g.restore(); g.restore();
+  g.textAlign='center';
+  g.font='600 92px "Barlow Condensed"'; g.letterSpacing='4px';
+  const txt='CRICSYNTHESIS'; const tw=g.measureText(txt).width;
+  g.save(); g.beginPath(); g.rect(540-tw/2-10,990,(tw+20)*wm,110); g.clip();
+  g.textAlign='left'; g.fillStyle='#f2f2f3'; g.fillText('CRIC',540-tw/2,1080); const cw=g.measureText('CRIC').width; g.fillStyle='#94bce3'; g.fillText('SYNTHESIS',540-tw/2+cw,1080); g.restore();
+  g.letterSpacing='2px'; g.textAlign='center'; g.font='400 38px Barlow'; g.fillStyle=`rgba(169,188,205,${u})`; g.fillText('cricsynthesis.in',540,1170); g.letterSpacing='0px';
+}
+
+window.seek=function(t){
+  t=Math.max(0,Math.min(19.999,t)); seed=11;
+  if(t<15.5){ scene(t); line(t);
+    const fi=sm(t/1.6); if(fi<1){g.fillStyle=`rgba(0,0,0,${1-fi})`;g.fillRect(0,0,W,H)} }
+  else outro(t);                                  // hard cut to black on the ring
+};
+
+// sound: near silence (air, a low swell), then the coin's metallic ring at the cut, and a soft tone with the logo
+window.makeAudio=async function(){
+  const SR=48000,D=20,N=SR*D,ctx=new OfflineAudioContext(2,N,SR),out=ctx.createGain();out.gain.value=.9;out.connect(ctx.destination);
+  const nb=ctx.createBuffer(1,SR*4,SR),nd=nb.getChannelData(0);let s=3;for(let i=0;i<nd.length;i++){s=(s*16807)%2147483647;nd[i]=s/1073741823.5-1}
+  // room air
+  {const n=ctx.createBufferSource();n.buffer=nb;n.loop=true;const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=500;const gg=ctx.createGain();
+   gg.gain.setValueAtTime(.0001,0);gg.gain.exponentialRampToValueAtTime(.05,2);gg.gain.setValueAtTime(.05,15.45);gg.gain.setValueAtTime(.0001,15.5);n.connect(lp).connect(gg).connect(out);n.start(0);n.stop(15.6)}
+  // a low swell under the line
+  for(const f of [55,82.4]){const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();gg.gain.setValueAtTime(.0001,6);gg.gain.exponentialRampToValueAtTime(.05,15.3);gg.gain.setValueAtTime(.0001,15.5);o.connect(gg).connect(out);o.start(6);o.stop(15.6)}
+  // slow, faint whoosh of the coin each half turn
+  for(let t0=1.5;t0<15.4;t0+=2.33){const n=ctx.createBufferSource();n.buffer=nb;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=900;bp.Q.value=1.2;const gg=ctx.createGain();
+    gg.gain.setValueAtTime(.0001,t0);gg.gain.exponentialRampToValueAtTime(.012,t0+.9);gg.gain.exponentialRampToValueAtTime(.0001,t0+2);n.connect(bp).connect(gg).connect(out);n.start(t0);n.stop(t0+2.1)}
+  // the ring: inharmonic partials of a struck coin
+  const t=15.5;
+  [[2093,1.0,3.2],[3417,.55,2.4],[5125,.35,1.6],[6911,.2,1.1],[8590,.12,.8]].forEach(([f,a,d])=>{const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();
+    gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.12*a,t+.003);gg.gain.exponentialRampToValueAtTime(.0001,t+d);
+    const pan=ctx.createStereoPanner();pan.pan.value=(f%3-1)*.15;o.connect(gg).connect(pan).connect(out);o.start(t);o.stop(t+d+.05)});
+  {const n=ctx.createBufferSource();n.buffer=nb;const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=4000;const gg=ctx.createGain();gg.gain.setValueAtTime(.0001,t);gg.gain.exponentialRampToValueAtTime(.08,t+.002);gg.gain.exponentialRampToValueAtTime(.0001,t+.05);n.connect(hp).connect(gg).connect(out);n.start(t);n.stop(t+.1)}
+  // soft tone with the logo
+  for(const [f,d] of [[440,0],[660,.1]]){const o=ctx.createOscillator();o.frequency.value=f;const gg=ctx.createGain();const t1=16.7+d;gg.gain.setValueAtTime(.0001,t1);gg.gain.exponentialRampToValueAtTime(.06,t1+.4);gg.gain.exponentialRampToValueAtTime(.0001,t1+3);o.connect(gg).connect(out);o.start(t1);o.stop(t1+3.1)}
+  const buf=await ctx.startRendering();const L=buf.getChannelData(0),R=buf.getChannelData(1);let pk=0;for(let i=0;i<N;i++)pk=Math.max(pk,Math.abs(L[i]),Math.abs(R[i]));
+  const sc=.85/pk,dv=new DataView(new ArrayBuffer(44+N*4)),w=(o,x)=>[...x].forEach((ch,i)=>dv.setUint8(o+i,ch.charCodeAt(0)));
+  w(0,'RIFF');dv.setUint32(4,36+N*4,true);w(8,'WAVE');w(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);dv.setUint32(24,SR,true);dv.setUint32(28,SR*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);w(36,'data');dv.setUint32(40,N*4,true);
+  for(let i=0;i<N;i++){dv.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]*sc))*32767,true);dv.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]*sc))*32767,true)}
+  let bin='';const u8=new Uint8Array(dv.buffer);for(let i=0;i<u8.length;i+=8192)bin+=String.fromCharCode.apply(null,u8.subarray(i,i+8192));return btoa(bin);
+};
+document.fonts.ready.then(()=>seek(0));
+</script>
+</body></html>
