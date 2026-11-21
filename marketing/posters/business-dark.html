@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Business API poster (dark)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f2f2f3;--ink:#1d1f20;--s:#5980a6;--s7:#416180;--s9:#1d2d3d;--s2:#d6ebff;--s3:#b5d9fd;--s4:#94bce3;--clay:#b0613a;--clayL:#d9895f;--mut:#a9bccd;
+  --head:"Barlow Condensed",system-ui,sans-serif;--body:"Barlow",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777}
+.poster{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 auto;color:var(--paper);font-family:var(--body);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(55% 35% at 92% 16%,#2b4a68 0%,rgba(43,74,104,0) 70%),linear-gradient(180deg,#1a2a3a 0%,#142231 60%,#101b27 100%);padding:40px 56px}
+.art{position:absolute;left:0;top:0;pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.lock{display:flex;align-items:center;gap:12px;font:600 38px/1 var(--head);letter-spacing:.04em}
+.lock svg{width:48px;height:48px;color:var(--s4)}.lock b{font-weight:600;color:var(--s4)}
+.tagl{font:500 20px/1 var(--body);color:var(--mut);margin:8px 0 0 60px}
+.badge{border:2px solid var(--s4);color:var(--s3);font:700 26px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;padding:13px 20px;border-radius:6px}
+h1{position:relative;margin-top:40px;font:700 84px/.92 var(--head);text-transform:uppercase;letter-spacing:.004em}
+h1 span{display:block;color:var(--s3)}
+.body{position:relative;margin-top:22px;width:440px}
+.sub{font:400 23px/1.4 var(--body);color:#c9d5e0}
+.feats{list-style:none;margin-top:24px;display:grid;gap:18px}
+.feats li{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center}
+.ic{width:64px;height:64px;border-radius:12px;background:rgba(65,97,128,.45);border:1px solid rgba(148,188,227,.35);display:grid;place-items:center;color:var(--s3)}
+.ic svg{width:32px;height:32px}
+.feats b{display:block;font:700 23px/1.1 var(--body)}
+.feats span{display:block;font:400 17px/1.32 var(--body);color:var(--mut);margin-top:4px}
+/* product stack */
+.stack{position:absolute;left:520px;top:318px;width:560px;height:520px;perspective:1400px;transform:scale(.86);transform-origin:top left}
+.layer{position:absolute;background:linear-gradient(180deg,#22384d,#18293a);border:1px solid rgba(148,188,227,.35);border-radius:16px;box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.back{left:110px;top:0;width:420px;height:200px;transform:rotateY(-14deg) rotateZ(-3deg);padding:18px 22px}
+.back .k,.front .k,.under .k{font:600 15px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--s4)}
+.front{left:0;top:110px;width:540px;height:300px;transform:rotateY(-12deg) rotateZ(-3deg);padding:24px 28px}
+.front .m{font:700 50px/1 var(--head);text-transform:uppercase;margin-top:10px;display:flex;align-items:center;gap:14px}
+.chip{display:inline-block;width:16px;height:16px;border-radius:3px}
+.front .wp{margin-top:18px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:rgba(15,26,37,.55);border:1px solid rgba(148,188,227,.18);border-radius:12px;padding:12px 16px}
+.front .wp b{font:700 36px/1 var(--head)}
+.front .wp small{display:block;font:500 14px/1.2 var(--body);color:var(--mut);margin-top:2px}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden}
+.bar i:first-child{background:var(--s4)}.bar i:last-child{background:var(--clayL)}
+.front .row{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-top:12px}
+.front .row div{background:rgba(15,26,37,.55);border:1px solid rgba(148,188,227,.18);border-radius:12px;padding:11px 14px}
+.front .row small{display:block;font:500 13px/1 var(--body);color:var(--mut)}
+.front .row b{display:block;font:700 30px/1 var(--head);margin-top:6px}
+.front .row b em{font:500 14px/1 var(--body);font-style:normal;color:var(--mut);margin-left:6px}
+.front .row p{font:500 15px/1.3 var(--body);color:#dbe4ec;margin-top:6px}
+.under{left:150px;top:390px;width:400px;height:130px;transform:rotateY(-14deg) rotateZ(-3deg);padding:14px 18px;display:grid;grid-template-columns:1fr 150px;gap:14px}
+.under .ln{height:8px;border-radius:4px;background:rgba(148,188,227,.25);margin-top:10px}
+/* audiences */
+.sect{position:relative;margin-top:64px;display:flex;align-items:center;gap:18px;font:600 20px/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:#dbe4ec}
+.sect::before,.sect::after{content:"";flex:1;height:1px;background:rgba(148,188,227,.3)}
+.who{position:relative;margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr)}
+.who > div{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:0 18px;border-left:1px solid rgba(148,188,227,.22)}
+.who > div:first-child{border-left:0;padding-left:0}
+.who svg{width:44px;height:44px;color:var(--s3)}
+.who b{display:block;font:700 22px/1.1 var(--body)}
+.who span{display:block;font:400 17px/1.32 var(--body);color:var(--mut);margin-top:6px}
+.adv{position:relative;margin-top:34px;border:1px solid rgba(148,188,227,.35);border-radius:16px;background:rgba(15,26,37,.5);display:grid;grid-template-columns:330px repeat(4,1fr);align-items:center;padding:22px 26px}
+.adv .l small{display:block;font:600 16px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--s4)}
+.adv .l b{display:block;font:700 40px/.95 var(--head);text-transform:uppercase;margin-top:8px}
+.adv .it{text-align:center;border-left:1px solid rgba(148,188,227,.22);padding:0 8px;font:500 17px/1.25 var(--body);color:#dbe4ec}
+.adv .it svg{width:38px;height:38px;color:var(--s3);display:block;margin:0 auto 8px}
+.cta{position:relative;margin:36px auto 0;display:flex;align-items:center;justify-content:center;gap:18px;width:440px;height:80px;background:var(--paper);color:var(--s9);border-radius:12px;font:700 38px/1 var(--head);letter-spacing:.04em;text-transform:uppercase}
+.cta svg{width:30px;height:30px}
+.url{position:relative;text-align:center;margin-top:14px;font:600 26px/1 var(--head);letter-spacing:.06em;color:#dbe4ec}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M16 14.6c2.6.2 4.4 2 5.3 5.4"/></g></symbol>
+<symbol id="i-ground" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="7"/><path d="M11 9h2v6h-2z"/></g></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 10h14L14 9V3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h5M7 16h10M15 12h2"/></g></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM12 13v4M8 20h8M4 5h4M16 5h4M4 5c0 3 2 4 4 4M20 5c0 3-2 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M4 20V14M10 20V9M16 20V5M22 20H2" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-dash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></g></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+<symbol id="i-head" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1"/><rect x="17" y="14" width="4" height="6" rx="1"/></g></symbol>
+</defs></svg>
+
+<section class="poster" id="poster">
+  <svg class="art" width="1080" height="1350" viewBox="0 0 1080 1350">
+    <defs><linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".16"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></linearGradient></defs>
+    <path d="M990 150 L720 560 L1080 560 L1080 260 Z" fill="url(#beam)"/>
+    <g stroke="#94bce3" stroke-opacity=".45" stroke-width="2" fill="none"><path d="M990 166 L980 330 M990 166 L1000 330 M983 250 L997 280 M997 250 L983 280"/></g>
+    <g fill="#d6ebff" fill-opacity=".75"><rect x="955" y="130" width="12" height="9"/><rect x="971" y="130" width="12" height="9"/><rect x="987" y="130" width="12" height="9"/><rect x="1003" y="130" width="12" height="9"/><rect x="1019" y="130" width="12" height="9"/><rect x="955" y="143" width="12" height="9"/><rect x="971" y="143" width="12" height="9"/><rect x="987" y="143" width="12" height="9"/><rect x="1003" y="143" width="12" height="9"/><rect x="1019" y="143" width="12" height="9"/></g>
+  </svg>
+
+  <div class="top">
+    <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+    <div class="badge">Business API</div>
+  </div>
+  <h1>Turn cricket intelligence<span>into business value.</span></h1>
+
+  <div class="body">
+    <p class="sub">One cricket intelligence API for forecasts, insights and ready-made graphics on your platform, at your scale.</p>
+    <ul class="feats">
+      <li><div class="ic"><svg><use href="#i-bars"/></svg></div><div><b>Match forecasts</b><span>Win chances, projected runs, live updates</span></div></li>
+      <li><div class="ic"><svg><use href="#i-users"/></svg></div><div><b>Player intelligence</b><span>Ratings, form, match-ups and fantasy points</span></div></li>
+      <li><div class="ic"><svg><use href="#i-ground"/></svg></div><div><b>Ground insights</b><span>Typical scores, where runs come, pace or spin</span></div></li>
+      <li><div class="ic"><svg><use href="#i-flask"/></svg></div><div><b>Simulation engine</b><span>What-if scenarios, line-up impact, custom inputs</span></div></li>
+    </ul>
+  </div>
+
+  <div class="stack">
+    <div class="layer back"><div class="k">Projected score through the innings</div>
+      <svg width="376" height="130" viewBox="0 0 376 130" style="margin-top:10px"><g stroke="rgba(148,188,227,.18)" stroke-width="1"><line x1="0" x2="376" y1="30" y2="30"/><line x1="0" x2="376" y1="75" y2="75"/><line x1="0" x2="376" y1="120" y2="120"/></g>
+      <path d="M0 120 C80 108 150 92 220 70 S330 30 376 14" fill="none" stroke="#94bce3" stroke-width="3.5"/><path d="M0 120 C80 110 150 98 220 82 S330 50 376 36" fill="none" stroke="#d9895f" stroke-width="3.5"/><circle cx="376" cy="14" r="5" fill="#94bce3"/></svg></div>
+    <div class="layer front">
+      <div class="k">Match preview</div>
+      <div class="m"><span class="chip" style="background:var(--s4)"></span>IND <span style="font-size:30px;color:var(--mut)">v</span> AUS<span class="chip" style="background:var(--clayL)"></span></div>
+      <div class="wp"><div><b style="color:var(--s3)">62%</b><small>India to win</small></div><div class="bar"><i style="flex:62"></i><i style="flex:38"></i></div><div style="text-align:right"><b style="color:var(--clayL)">38%</b><small>Australia</small></div></div>
+      <div class="row"><div><small>Projected runs, IND</small><b>184<em>likely 166–201</em></b></div><div><small>Key match-up</small><p>India's middle order has the edge against Australia's spin</p></div></div>
+    </div>
+    <div class="layer under"><div><div class="k">Fantasy XI</div><div class="ln" style="width:90%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:80%"></div></div>
+      <svg width="150" height="100" viewBox="0 0 150 100"><ellipse cx="75" cy="50" rx="72" ry="46" fill="#2c455d" stroke="#94bce3" stroke-opacity=".5"/><rect x="70" y="36" width="10" height="28" fill="#94bce3" fill-opacity=".4"/><g fill="#b5d9fd"><circle cx="40" cy="30" r="5"/><circle cx="110" cy="28" r="5"/><circle cx="30" cy="62" r="5"/><circle cx="118" cy="66" r="5"/><circle cx="75" cy="16" r="5"/><circle cx="75" cy="84" r="5"/></g><circle cx="52" cy="50" r="6" fill="#d9895f"/></svg></div>
+  </div>
+
+  <div class="sect">Built for businesses across cricket</div>
+  <div class="who">
+    <div><svg><use href="#i-news"/></svg><div><b>Publishers &amp; broadcasters</b><span>Previews and graphics ready before the toss</span></div></div>
+    <div><svg><use href="#i-trophy"/></svg><div><b>Fantasy &amp; sports apps</b><span>Player projections and team picks in your product</span></div></div>
+    <div><svg><use href="#i-target"/></svg><div><b>Teams &amp; analysts</b><span>Match-ups, bowling plans and what-if analysis</span></div></div>
+  </div>
+
+  <div class="adv">
+    <div class="l"><small>The Business plan</small><b>Built around<br>your product.</b></div>
+    <div class="it"><svg><use href="#i-scale"/></svg>Limits sized<br>to your traffic</div>
+    <div class="it"><svg><use href="#i-dash"/></svg>A live dashboard<br>built for you</div>
+    <div class="it"><svg><use href="#i-link"/></svg>Every integration<br>you need</div>
+    <div class="it"><svg><use href="#i-head"/></svg>Priority<br>support</div>
+  </div>
+
+  <div class="cta">Talk to our team<svg><use href="#arrow"/></svg></div>
+  <div class="url">cricsynthesis.in/contact</div>
+</section>
+</body></html>
