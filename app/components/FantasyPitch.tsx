@@ -71,7 +71,7 @@ export default function FantasyPitch({ players, captain, vice, short, total, not
           {i === Math.min(2, rows.length - 1) && <div className={s.wm} aria-hidden="true"><Mark /><span>CricSynthesis</span></div>}
           <div className={s.sec}>
             <h4>{(ps.length > 1 ? many : one).toUpperCase()}</h4>
-            <div className={s.row}>{ps.map((p) => {
+            <div className={`${s.row} ${ps.length >= 6 ? s.six : ""}`}>{ps.map((p) => {
               const m = mult(p.id);
               return (
                 <div key={p.id} className={`${s.p} ${p.team === 0 ? s.A : s.B}`} title={`${p.name} (${short[p.team]})`}>
