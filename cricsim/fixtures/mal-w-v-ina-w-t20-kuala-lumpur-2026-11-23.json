@@ -1,0 +1,112 @@
+{
+  "id": "mal-w-v-ina-w-t20-kuala-lumpur-2026-11-23",
+  "title": "Malaysia Women v Indonesia Women",
+  "date": "2026-11-23",
+  "start_time": "07:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Malaysia Women's T20I Tri-Series · 4th Match",
+  "comp_key": "malaysia-women-s-t20i-tri-series",
+  "venue": "Bayuemas Oval, Kuala Lumpur",
+  "venue_search": "bayuemas oval",
+  "city": "Kuala Lumpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Malaysia Women",
+      "short": "MAL-W",
+      "players": [
+        "Ainna Hamizah Hashim",
+        "Nur Aliya Hairun",
+        "Winifred Duraisingam",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Aina Umaira Binti Amin",
+        "Aina Najwa",
+        "Aisya Eleesa",
+        "Nur Arianna Natsya",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Mas Elysa",
+      "squad": [
+        "Ainna Hamizah Hashim",
+        "Nur Aliya Hairun",
+        "Winifred Duraisingam",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Aina Umaira Binti Amin",
+        "Aina Najwa",
+        "Aisya Eleesa",
+        "Nur Arianna Natsya",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ]
+    },
+    {
+      "name": "Indonesia Women",
+      "short": "INA-W",
+      "players": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Dara Ahung Laksmi Paramitha",
+        "Maria Corazon",
+        "Ni Kadek Fitria Rada Rani",
+        "Ni Luh Dewi",
+        "Lie Qiao",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ni Putu Ayu Nanda Sakarini",
+      "squad": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Dara Ahung Laksmi Paramitha",
+        "Maria Corazon",
+        "Ni Kadek Fitria Rada Rani",
+        "Ni Luh Dewi",
+        "Lie Qiao",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41984,
+    "url": "https://khelnow.com/live-cricket-score/malaysia-women-vs-indonesia-women-malaysia-women's-t20i-tri-series-23rd-november-2026-41984",
+    "auto": true,
+    "xis": false
+  }
+}
