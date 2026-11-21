@@ -103,52 +103,48 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 .alt .url{margin:0;font:600 24px/1 var(--body);color:var(--s7);white-space:nowrap}
 .pro .fine{position:relative;font:400 17px/1.35 var(--body);color:var(--ink3);margin-top:14px}
 
-/* 2. API Plus: developers and product teams */
-.plus{background:var(--paper)}
-.plus .tag{background:var(--s7);border-color:var(--s7);color:#fff}
-.plus h1{font-size:100px}
-.plus .lede{color:var(--ink2);margin-top:28px;max-width:880px}
-.code{margin-top:40px;background:var(--s9);color:#dbe6f0;font:400 19px/1.55 var(--mono)}
-.code .bar{display:flex;justify-content:space-between;padding:14px 24px;border-bottom:2px solid rgba(181,217,253,.14);font:500 16px/1 var(--mono);color:var(--s4)}
-.code pre{padding:18px 24px;white-space:pre;font:inherit}
-.code .c{color:#7f97ad}.code .s{color:#f2c79f}.code .n{color:var(--s3)}.code .k2{color:#9fd0b4}
-.code .cols{display:grid;grid-template-columns:1.05fr 1fr}
-.code .cols pre+pre{border-left:2px solid rgba(181,217,253,.14)}
-.facts{margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
-.facts div{padding:16px 18px 0 0}
-.facts b{display:block;font:600 48px/1 var(--head)}
-.facts span{display:block;font:500 20px/1.3 var(--body);color:var(--ink2);margin-top:8px}
-.plus .price{white-space:nowrap}.plus .price b{font:600 84px/.82 var(--head)}.plus .price small{font:500 25px/1 var(--body);color:var(--ink2);margin-left:6px}
-.plus .price p{font:500 21px/1.35 var(--body);color:var(--ink3);margin-top:14px;white-space:normal;max-width:470px}
-.plus .cta{background:var(--s7);color:#fff} .plus .url{color:var(--ink2)}
-
-/* 3. Business API: media, platforms, teams */
-.biz{background:var(--paper)}
-.biz .band{position:absolute;left:0;right:0;top:0;height:700px;background:var(--s8)}
-.biz .band .grid{background-image:linear-gradient(90deg,rgba(181,217,253,.07) 2px,transparent 2px);background-size:120px 100%}
-.biz .top{color:var(--paper)} .biz .brand .syn{color:var(--s4)} .biz .tagline{color:#c6d2dd} .biz .tag{color:var(--s3)}
-.biz h1{color:var(--paper);font-size:92px;margin-top:60px}
-.biz .mid{display:grid;grid-template-columns:1fr 420px;gap:44px;margin-top:36px;position:relative;align-items:start}
-.biz .lede{color:#d5e0ea;margin-top:4px}
-.gcard{background:var(--paper);padding:24px 26px;--fc:var(--s3)}
-.gcard .h{display:flex;justify-content:space-between;font:600 17px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-.gcard .m{font:600 40px/1 var(--head);margin-top:14px;text-transform:uppercase}
-.gcard .wp{display:flex;height:16px;margin-top:16px}
-.gcard .wp i:first-child{background:var(--s7)}.gcard .wp i:last-child{background:var(--clay)}
-.gcard .wl{display:flex;justify-content:space-between;margin-top:10px;font:600 30px/1 var(--head)}
-.gcard .wl span:first-child{color:var(--s7)}.gcard .wl span:last-child{color:var(--clay)}
-.gcard svg{display:block;margin-top:12px;width:100%;height:120px}
-.gcard .f{display:flex;justify-content:space-between;font:500 15px/1 var(--body);color:var(--ink3);margin-top:10px}
-.who{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink)}
-.who div{padding:18px 26px 0 0}
-.who b{display:block;font:600 29px/1.05 var(--head);text-transform:uppercase}
-.who span{display:block;font:400 21px/1.35 var(--body);color:var(--ink2);margin-top:10px}
-.gets{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.gets span{border:2px solid var(--line);padding:16px 18px;font:500 23px/1 var(--body);color:var(--ink);display:flex;align-items:center;gap:14px}
-.gets span::before{content:"";width:10px;height:10px;background:var(--s7);flex:none}
-.biz .offer p{font:500 24px/1.35 var(--body);color:var(--ink2);max-width:430px}
-.biz .offer p b{display:block;font:600 44px/1 var(--head);color:var(--ink);text-transform:uppercase;margin-bottom:8px}
-.biz .cta{background:var(--ink);color:var(--paper)} .biz .url{color:var(--ink2)}
+/* 2 + 3. API posters: same family as Pro (class "pro"), each with its own proof visual on the right. */
+.api .checks{gap:13px}
+.api .checks b{font-size:25px}
+.api .checks span{font-size:20px}
+.api .sub{max-width:900px}
+/* API Plus: a real request and response */
+.codecard{position:absolute;right:64px;top:470px;width:404px;background:var(--s9);color:#dbe4ec;border-radius:10px;overflow:hidden;box-shadow:-20px 24px 50px rgba(29,45,61,.22);z-index:1}
+.codecard .bar{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#16232f;font:500 14px/1 var(--mono);color:var(--s4)}
+.codecard .bar b{font-weight:500;color:#9fd0b4}
+.codecard pre{padding:16px 18px;font:400 15px/1.6 var(--mono);white-space:pre}
+.codecard .req{border-bottom:1px solid rgba(181,217,253,.14)}
+.codecard .c{color:#7f97ad}.codecard .s{color:#f2c79f}.codecard .n{color:var(--s3)}
+.codecard .out{display:flex;gap:10px;padding:0 18px 18px}
+.codecard .out div{flex:1;background:#24384b;border-radius:6px;padding:10px 12px}
+.codecard .out small{display:block;font:500 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--s4)}
+.codecard .out b{display:block;font:600 30px/1 var(--head);color:#fff;margin-top:6px}
+.deal .amt .unit{font:500 30px/1 var(--body);color:#c6d2dd}
+/* Business: our widget on the customer's own site */
+.browser{position:absolute;right:64px;top:470px;width:420px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:-20px 24px 50px rgba(29,45,61,.2);z-index:1;border:1px solid rgba(29,31,32,.1)}
+.browser .bar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#e9e9ea}
+.browser .bar span{flex:1;background:#fff;border-radius:6px;padding:7px 12px;font:500 14px/1 var(--body);color:var(--ink3)}
+.browser .page{padding:16px 20px 18px}
+.browser .kick{font:600 13px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
+.browser h4{font:700 26px/1.08 var(--body);margin-top:8px;color:var(--ink)}
+.browser .ln{height:9px;border-radius:4px;background:#e4e5e7;margin-top:9px}
+.widget{margin-top:16px;border:1px solid rgba(29,31,32,.12);border-radius:8px;padding:14px 16px;background:#fafafa}
+.widget .h{display:flex;justify-content:space-between;font:600 13px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.widget .m{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font:600 24px/1 var(--head)}
+.widget .wp{display:flex;height:12px;margin-top:10px;border-radius:6px;overflow:hidden}
+.widget .wp i:first-child{background:var(--s7)}.widget .wp i:last-child{background:var(--clay)}
+.widget .wl{display:flex;justify-content:space-between;margin-top:8px;font:600 22px/1 var(--head)}
+.widget .wl span:first-child{color:var(--s7)}.widget .wl span:last-child{color:var(--clay)}
+.widget .pr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.widget .pr div{background:#fff;border:1px solid rgba(29,31,32,.08);border-radius:6px;padding:8px 10px}
+.widget .pr small{display:block;font:500 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.widget .pr b{display:block;font:600 26px/1 var(--head);margin-top:4px}
+.widget .by{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:12px;font:500 12px/1 var(--body);color:var(--ink3)}
+.widget .by svg{width:14px;height:14px;color:var(--s7)}
+.deal .big{font:700 62px/.9 var(--head);white-space:nowrap;text-transform:uppercase;margin-top:12px}
+.deal .inc{display:grid;grid-template-columns:auto auto;gap:10px 26px;margin-top:16px;list-style:none}
+.deal .inc li{display:flex;gap:10px;align-items:center;white-space:nowrap;font:500 19px/1.2 var(--body);color:#dbe4ec}
+.deal .inc li::before{content:"";width:9px;height:9px;background:var(--s4);flex:none}
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -229,97 +225,103 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 </section>
 
 <!-- ═════════ 2. API Plus ═════════ -->
-<section class="poster plus" id="plus">
+<section class="poster pro api" id="plus">
   <div class="top">
     <div><div class="brand"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
       <div class="tagline">AI-Powered Cricket Intelligence</div></div>
-    <div class="tag">API Plus</div>
+    <div class="pill">API Plus</div>
   </div>
-  <h1>Ship match forecasts, not spreadsheets.</h1>
-  <p class="lede">Win chances, projected scores, player ratings and match-ups from one API. Build them into your app, site, newsletter or AI assistant this afternoon.</p>
+  <div class="eyebrow">For developers and creators</div>
+  <h1>Match forecasts<br>in one API call.</h1>
+  <p class="sub">Win chances, projected runs and wickets, player match-ups and graphics for your app, site or AI assistant.</p>
 
-  <div class="code frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-    <div class="bar"><span>api.cricsynthesis.in</span><span>200 OK · JSON</span></div>
-    <div class="cols">
-<pre><span class="c"># one call, one match</span>
-curl <span class="s">api.cricsynthesis.in</span>\
-  <span class="s">/v1/matches/{id}/win-probability</span> \
-  -H <span class="s">"X-API-Key: cs_live_…"</span>
+  <div class="body">
+    <ul class="checks">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>20,000 calls a day</b><span>API and MCP together, across all your keys</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Analytics, simulation, graphics</b><span>Players, teams, venues and match forecasts</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Ready-to-post graphics</b><span>Clean match and player cards, no watermark</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Works with AI assistants</b><span>Plug the MCP connector into your assistant</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>CricSynthesis Pro included</b><span>The full match centre on the web and app</span></div></li>
+    </ul>
+  </div>
 
-<span class="c"># or ask your AI assistant</span>
-<span class="c"># via mcp.cricsynthesis.in</span>
-<span class="k2">"Who wins tonight, and</span>
-<span class="k2"> by how much?"</span></pre>
+  <div class="codecard">
+    <div class="bar"><span>GET /v1/matches/{id}/win-probability</span><b>200 OK</b></div>
+<pre class="req"><span class="c"># your key in one header</span>
+curl <span class="s">api.cricsynthesis.in/v1/…</span> \
+  -H <span class="s">"X-API-Key: cs_live_…"</span></pre>
 <pre>{
-  <span class="n">"win"</span>: {
-    <span class="n">"IND"</span>: <span class="s">0.62</span>, <span class="n">"AUS"</span>: <span class="s">0.38</span>
-  },
-  <span class="n">"score"</span>: {
-    <span class="n">"IND"</span>: { <span class="n">"median"</span>: <span class="s">184</span>,
-      <span class="n">"q10"</span>: <span class="s">166</span>, <span class="n">"q90"</span>: <span class="s">201</span> },
-    <span class="n">"AUS"</span>: { <span class="n">"median"</span>: <span class="s">172</span> }
-  }
+  <span class="n">"win"</span>: { <span class="n">"IND"</span>: <span class="s">0.62</span>, <span class="n">"AUS"</span>: <span class="s">0.38</span> },
+  <span class="n">"score"</span>: { <span class="n">"IND"</span>: { <span class="n">"median"</span>: <span class="s">184</span> },
+           <span class="n">"AUS"</span>: { <span class="n">"median"</span>: <span class="s">172</span> } }
 }</pre>
+    <div class="out"><div><small>IND win</small><b>62%</b></div><div><small>Projected</small><b>184 v 172</b></div></div>
+  </div>
+
+  <div class="deal">
+    <div>
+      <div class="lab">API Plus <em>Pro included</em></div>
+      <div class="amt"><b>₹4,999</b><span class="unit">a month</span></div>
+      <p>20,000 calls a day. Cancel any time.</p>
     </div>
-  </div>
-
-  <div class="facts">
-    <div><b>20,000</b><span>calls a day, API and MCP together</span></div>
-    <div><b>3 in 1</b><span>analytics, simulation and graphics</span></div>
-    <div><b>Clean</b><span>graphics with no watermark</span></div>
-    <div><b>Pro</b><span>on the website and app, included</span></div>
-  </div>
-
-  <div class="offer">
-    <div class="price"><b>₹4,999</b><small>a month</small>
-      <p>or ₹53,989 a year (save 10%). Start on API Free: 200 calls a day.</p></div>
-    <div class="right">
+    <div>
       <div class="cta">Get your API key<svg><use href="#arrow"/></svg></div>
-      <span class="url">cricsynthesis.in/developers</span>
+      <div class="free">Start free with 200 calls a day.</div>
     </div>
   </div>
+  <div class="alt"><span class="y"><strong>Yearly</strong><b>₹53,989</b>a year <span class="tagsave">Save ₹5,999</span></span><span class="url">cricsynthesis.in/developers</span></div>
+  <p class="fine">Create a free key in your account, then upgrade to API Plus from your dashboard. Prices in Indian rupees.</p>
 </section>
 
 <!-- ═════════ 3. Business API ═════════ -->
-<section class="poster biz" id="biz">
-  <div class="band"><div class="grid"></div></div>
+<section class="poster pro api" id="biz">
   <div class="top">
-    <div><div class="brand"><svg style="color:var(--s4)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
+    <div><div class="brand"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
       <div class="tagline">AI-Powered Cricket Intelligence</div></div>
-    <div class="tag">Business API</div>
+    <div class="pill">Business API</div>
   </div>
-  <h1>Cricket intelligence, built into your platform.</h1>
-  <div class="mid">
-  <p class="lede">A forecast for every fixture, a graphic for every post and the numbers behind every call, delivered at your volume and in your format.</p>
+  <div class="eyebrow">For media and sports platforms</div>
+  <h1>Give your audience<br>the answer first.</h1>
+  <p class="sub">Forecasts, player projections and ready-made graphics for every fixture, inside your site, app or newsroom.</p>
 
-  <div class="gcard frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-    <div class="h"><span>Match preview</span><span>Graphics API</span></div>
-    <div class="m">IND v AUS</div>
-    <div class="wp"><i style="flex:62"></i><i style="flex:38"></i></div>
-    <div class="wl"><span>62%</span><span>38%</span></div>
-    <svg width="364" height="120" viewBox="0 0 364 150" preserveAspectRatio="none">
-      <g stroke="rgba(29,31,32,.08)" stroke-width="2"><line x1="0" x2="364" y1="20" y2="20"/><line x1="0" x2="364" y1="75" y2="75"/><line x1="0" x2="364" y1="130" y2="130"/></g>
-      <path d="M0 130 C60 118 110 100 170 84 S290 46 364 22" fill="none" stroke="#416180" stroke-width="5"/>
-      <path d="M0 130 C60 120 110 106 170 92 S290 62 364 44" fill="none" stroke="#b0613a" stroke-width="5"/>
-      <text x="364" y="16" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="20" fill="#416180">184</text>
-      <text x="364" y="66" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="20" fill="#b0613a">172</text>
-    </svg>
-    <div class="f"><span>Projected score through the innings</span><span>Over 20</span></div>
-  </div></div>
-
-  <div class="who">
-    <div><b>Publishers &amp; broadcasters</b><span>Previews, graphics and talking points ready before the toss.</span></div>
-    <div><b>Fantasy &amp; sports apps</b><span>Player projections and team picks inside your product.</span></div>
-    <div><b>Teams &amp; analysts</b><span>Match-ups, bowling plans and what-if simulations on demand.</span></div>
+  <div class="body">
+    <ul class="checks">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Publishers &amp; broadcasters</b><span>Previews and graphics ready before the toss</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Fantasy &amp; sports apps</b><span>Player projections and team picks in-app</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Teams &amp; analysts</b><span>Match-ups, bowling plans and what-ifs</span></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Every format we model</b><span>T20, The Hundred, one-dayers and more</span></div></li>
+    </ul>
   </div>
-  <div class="gets"><span>Limits sized to your traffic</span><span>A live dashboard built for you</span><span>Every integration you need</span><span>Priority support</span></div>
 
-  <div class="offer">
-    <p><b>Priced around you</b>Tell us what you're building and we'll shape a plan around it.</p>
-    <div class="right">
-      <div class="cta">Talk to our team<svg><use href="#arrow"/></svg></div>
-      <span class="url">cricsynthesis.in/contact</span>
+  <div class="browser">
+    <div class="bar"><span>yoursite.com/cricket</span></div>
+    <div class="page">
+      <div class="kick">Match preview</div>
+      <h4>Who has the edge tonight?</h4>
+      <div class="ln" style="width:88%"></div>
+      <div class="widget">
+        <div class="h"><span>Win chance</span><span>Pre-match</span></div>
+        <div class="m"><span>IND</span><span>AUS</span></div>
+        <div class="wp"><i style="flex:62"></i><i style="flex:38"></i></div>
+        <div class="wl"><span>62%</span><span>38%</span></div>
+        <div class="pr"><div><small>Projected runs</small><b>184</b></div><div><small>Projected runs</small><b>172</b></div></div>
+        <div class="by"><svg><use href="#mark"/></svg>Powered by CricSynthesis</div>
+      </div>
     </div>
   </div>
+
+  <div class="deal">
+    <div>
+      <div class="lab">Business plan</div>
+      <div class="big">Priced to your scale</div>
+      <ul class="inc"><li>Limits sized to your traffic</li><li>A live dashboard built for you</li><li>Every integration you need</li><li>Priority support</li></ul>
+    </div>
+    <div>
+      <div class="cta">Book a call<svg><use href="#arrow"/></svg></div>
+      <div class="free">Tell us what you're building.</div>
+    </div>
+  </div>
+  <div class="alt"><span class="y"><strong>Starting out?</strong>API Plus from<b>₹4,999</b>a month</span><span class="url">cricsynthesis.in/contact</span></div>
+  <p class="fine">Everything in API Plus is included. Plans, limits and support are agreed with you.</p>
 </section>
 </body></html>
