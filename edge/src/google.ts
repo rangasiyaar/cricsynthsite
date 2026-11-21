@@ -97,6 +97,33 @@ export class Firestore {
     return u ? { email: u.email ?? null, name: u.displayName ?? null } : null;
   }
 
+  /** Every document under users/{uid} (each subcollection, then the profile itself), then delete them all.
+   *  Returns how many documents were deleted. A few requests whatever the account's size. */
+  async deleteAccountData(uid: string): Promise<number> {
+    const base = `${this.root}/users/${encodeURIComponent(uid)}`;
+    const ids: string[] = ((await this.call(`/users/${encodeURIComponent(uid)}:listCollectionIds`, { pageSize: 100 })).collectionIds) || [];
+    const names: string[] = [];
+    for (const c of ids) {
+      const rows: any[] = await this.call(`/users/${encodeURIComponent(uid)}:runQuery`,
+        { structuredQuery: { from: [{ collectionId: c }], select: { fields: [{ fieldPath: "__name__" }] } } });
+      names.push(...rows.filter((x) => x.document).map((x) => String(x.document.name)));
+    }
+    names.push(base.replace("https://firestore.googleapis.com/v1/", ""));
+    for (let i = 0; i < names.length; i += 400) {
+      await this.call(":commit", { writes: names.slice(i, i + 400).map((n) => ({ delete: n })) });
+    }
+    return names.length;
+  }
+
+  /** Delete the Firebase sign-in (needs the Firebase Authentication Admin role; false when it isn't granted). */
+  async deleteAuthUser(uid: string): Promise<boolean> {
+    const r = await fetch(`https://identitytoolkit.googleapis.com/v1/projects/${this.project}/accounts:delete`, {
+      method: "POST", body: JSON.stringify({ localId: uid }),
+      headers: { Authorization: `Bearer ${await accessToken(this.sa, "https://www.googleapis.com/auth/cloud-platform")}`, "Content-Type": "application/json" },
+    });
+    return r.ok;
+  }
+
   async isAdult(uid: string): Promise<boolean> {
     const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
                           { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });

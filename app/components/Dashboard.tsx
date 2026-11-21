@@ -1,6 +1,6 @@
 "use client";
 // Account dashboard sections: overview, usage, API keys, subscription (plan, upgrades, billing), profile (app/account).
-import { deleteUser, signOut, type User } from "firebase/auth";
+import { signOut, type User } from "firebase/auth";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChartFrame, type Column } from "@/components/charts";
@@ -12,7 +12,7 @@ import { auth, usePlan } from "@/lib/firebase";
 import { API_TIERS as PLAN_TIERS } from "@/lib/plans";
 import { PRO, rupees } from "@/lib/pro";
 import {
-  API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
+  API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteAccount, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
   renameKey, requestUpgrade, revokeKey, saveNotify, saveProfile, SLOTS, VOLUMES,
   type ApiKey, type Notify, type Upgrade, type UpgradeRequest, type UsageDay,
 } from "@/lib/keys";
@@ -600,8 +600,8 @@ export function ProfileSection({ user, setErr }: { user: User; setErr: (s: strin
     saveProfile(user.uid, { company, useCase }).then(() => setSaved(true)).catch((x) => setErr(friendly(x)));
   };
   const remove = async () => {
-    if (!confirm("Delete your account? Your API keys stop working and this can't be undone.")) return;
-    try { await deleteUser(user); window.location.replace("/"); } catch (x) { setErr(friendly(x)); }
+    if (!confirm("Delete your account and all its data (profile, API keys, usage)? This can't be undone.")) return;
+    try { await deleteAccount(user); window.location.replace("/"); } catch (x) { setErr(friendly(x)); }
   };
   return (
     <div className="grid">
@@ -643,7 +643,7 @@ export function ProfileSection({ user, setErr }: { user: User; setErr: (s: strin
       <div className="card dash-danger">
         <div>
           <h3>Delete account</h3>
-          <p className="small muted" style={{ margin: 0 }}>Removes your account and sign-in. API keys you created stop working.</p>
+          <p className="small muted" style={{ margin: 0 }}>Removes your account, sign-in and data: profile, API keys, usage and requests.</p>
         </div>
         <button type="button" className="btn ghost danger-btn" onClick={remove}>Delete account</button>
       </div>

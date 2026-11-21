@@ -125,6 +125,27 @@ async function keyCreated(req: Request, env: Env): Promise<Response> {
   return json(req, env, { sent });
 }
 
+/** The account page's "Delete account": all of the account's Firestore data (profile, API keys, usage, requests,
+ *  billing records, preferences), the confirmation email, then the sign-in when the service account may delete it
+ *  (otherwise the page deletes it). Needs a sign-in from the last 15 minutes, and no live Pro subscription. */
+export async function deleteAccount(req: Request, env: Env, fs?: Firestore): Promise<Response> {
+  if (!env.GOOGLE_SA) return fail(req, env, 503, "Not available");
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+  if (!user) return fail(req, env, 401, "Sign in first");
+  if (Date.now() / 1000 - user.authTime > 15 * 60) return fail(req, env, 401, "For your safety, sign out and sign in again, then delete your account");
+  fs ||= new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const pro = await fs.getDoc(`users/${user.uid}/billing/pro`);
+  if (pro?.subscriptionId && ["trial", "active", "past_due"].includes(String(pro.status)) && pro.cancelAtEnd !== true) {
+    return fail(req, env, 409, "Cancel your CricSynthesis Pro subscription first (under Subscription), then delete your account");
+  }
+  const who = await fs.authUser(user.uid).catch(() => null);
+  const documents = await fs.deleteAccountData(user.uid);
+  const emailed = await mail(env, user.uid, (name) => E.accountDeleted({ name }), { email: who?.email || user.email, name: who?.name ?? null });
+  const signIn = await fs.deleteAuthUser(user.uid).catch(() => false);
+  return json(req, env, { deleted: true, documents, emailed, signIn });
+}
+
 /** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
 async function billing(req: Request, env: Env, path: string): Promise<Response> {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
@@ -223,6 +244,7 @@ export default {
     if (path === "/health") return json(req, env, { ok: true });
     if (path.startsWith("/billing/")) return billing(req, env, path);
     if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
+    if (path === "/account/delete" && req.method === "POST") return deleteAccount(req, env);
     const o = await oauth(req, env, url, path);
     if (o) return o;
     // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in

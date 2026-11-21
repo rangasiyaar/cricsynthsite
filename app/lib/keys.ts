@@ -5,6 +5,7 @@ import {
   collection, deleteDoc, doc, documentId, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where, type Timestamp,
 } from "firebase/firestore";
 import { API } from "./apiref";
+import { deleteUser, signOut, type User } from "firebase/auth";
 import { auth, db } from "./firebase";
 
 export const SLOTS = ["k1", "k2", "k3", "k4", "k5"] as const;
@@ -119,3 +120,14 @@ export const requestUpgrade = (uid: string, plan: Upgrade, volume: string, note:
 
 export const cancelRequest = (uid: string, plan: Upgrade) =>
   updateDoc(doc(db(), "users", uid, "requests", plan), { status: "cancelled" });
+
+/** Delete the account: the API deletes all of its data (profile, keys, usage, requests, billing records) and sends the
+ *  confirmation email, and the sign-in when it can; otherwise it's deleted here. Throws the API's message on refusal
+ *  (an old sign-in, or a live Pro subscription to cancel first). */
+export async function deleteAccount(user: User): Promise<void> {
+  const r = await fetch(`${API}/account/delete`, { method: "POST", headers: { Authorization: `Bearer ${await user.getIdToken()}` } });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.detail || "Couldn't delete your account. Try again, or write to privacy@cricsynthesis.in.");
+  if (!d.signIn) await deleteUser(user).catch(() => {});          // the data is gone either way
+  await signOut(auth()).catch(() => {});
+}
