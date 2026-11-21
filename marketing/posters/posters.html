@@ -47,52 +47,60 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 .pro .eyebrow{font:600 24px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--s7);margin-top:44px;position:relative}
 .pro h1{font-size:94px;line-height:.92;margin-top:12px}
 .pro .sub{font:400 27px/1.4 var(--body);color:var(--ink2);margin-top:16px;max-width:700px;position:relative}
-.pro .body{display:grid;grid-template-columns:1fr 340px;gap:40px;margin-top:30px;position:relative;align-items:start}
 .pro .checks{list-style:none;display:grid;gap:15px}
 .pro .checks li{display:grid;grid-template-columns:30px 1fr;gap:14px}
 .pro .checks svg{width:26px;height:26px;color:var(--s7);margin-top:2px}
 .pro .checks b{display:block;font:600 27px/1.05 var(--head);letter-spacing:.02em;text-transform:uppercase}
 .pro .checks span{display:block;font:400 21px/1.35 var(--body);color:var(--ink2);margin-top:4px}
-.phone{width:340px;height:418px;border-radius:46px;background:#1d1f20;padding:10px;box-shadow:0 30px 60px rgba(29,45,61,.22)}
-.screen{width:100%;height:100%;border-radius:37px;background:var(--paper);overflow:hidden;color:var(--ink);padding:20px 14px 0}
-.scr-top{display:flex;align-items:center;gap:8px;font:600 17px/1 var(--head);letter-spacing:.03em;padding:4px 6px 0}
-.scr-top svg{width:18px;height:18px}
-.scr-h{display:flex;gap:10px;align-items:center;margin:14px 4px 10px}
-.scr-h .ic{width:40px;height:40px;border-radius:10px;background:var(--surface);display:grid;place-items:center}
-.scr-h h3{font:600 26px/1 var(--head);text-transform:uppercase}
-.scr-h p{font:400 14px/1.2 var(--body);color:var(--ink3);margin-top:3px}
-.card{background:#fff;border-radius:14px;padding:11px 14px;margin-bottom:9px;border:1px solid rgba(29,31,32,.08)}
-.card .k{font:500 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:8px;border-bottom:1px solid var(--line)}
-.row{display:flex;align-items:center;justify-content:space-between;padding:8px 0 7px;border-bottom:1px solid var(--line)}
+.pro .body{position:relative;margin-top:30px;width:560px}
+.phonewrap{position:absolute;left:0;top:0;width:1080px;height:942px;overflow:hidden;z-index:1;pointer-events:none}
+.phone{position:absolute;left:630px;top:452px;width:392px;height:850px;border-radius:66px;background:#16191c;padding:12px;box-shadow:inset 0 0 0 2px #3b4148,-26px 24px 50px rgba(29,45,61,.22);z-index:1}
+.phone::before{content:"";position:absolute;left:-4px;top:190px;width:4px;height:70px;border-radius:2px;background:#2a2f35;box-shadow:0 90px 0 #2a2f35}
+.phone::after{content:"";position:absolute;right:-4px;top:230px;width:4px;height:100px;border-radius:2px;background:#2a2f35}
+.screen{position:relative;width:100%;height:100%;border-radius:54px;background:#f2f2f3;overflow:hidden;color:var(--ink)}
+.island{position:absolute;left:50%;top:12px;transform:translateX(-50%);width:112px;height:32px;border-radius:16px;background:#000}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:20px 30px 0 34px;font:600 16px/1 var(--body)}
+.sbar .ico{display:flex;gap:6px;align-items:center}
+.ahead{display:flex;align-items:center;justify-content:space-between;padding:22px 20px 0}
+.ahead .lg{display:flex;align-items:center;gap:7px;font:600 21px/1 var(--head);letter-spacing:.03em}
+.ahead .lg svg{width:20px;height:20px;color:var(--s7)}
+.scr-h{display:flex;gap:12px;align-items:center;margin:20px 20px 14px}
+.scr-h .ic{width:46px;height:46px;border-radius:12px;background:#e6e7e9;display:grid;place-items:center}
+.scr-h h3{font:600 30px/1 var(--head);text-transform:uppercase}
+.scr-h p{font:400 15px/1.2 var(--body);color:var(--ink3);margin-top:4px}
+.card{background:#fafafa;border-radius:20px;padding:14px 16px;margin:0 14px 10px;box-shadow:0 1px 2px rgba(29,31,32,.08)}
+.card .k{font:500 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0;padding-bottom:0}
-.row .t{border-left:4px solid var(--c);padding-left:9px;font:500 16px/1 var(--body)}
-.row .strip{height:6px;border-radius:3px;background:#e4e5e7;position:relative;width:100px;margin:8px 0 0 13px}
+.row .t{border-left:4px solid var(--c);padding-left:10px;font:500 17px/1 var(--body)}
+.row .strip{height:6px;border-radius:3px;background:#e1e3e6;position:relative;width:118px;margin:10px 0 0 14px}
 .row .strip u{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--c);opacity:.75}
-.row .strip s{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid #fff}
-.row .v{text-align:right}.row .v b{font:600 32px/1 var(--head)}.row .v small{display:block;font:400 11px/1.2 var(--body);color:var(--ink3)}
-.overs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:46px;margin-top:9px}
+.row .strip s{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid #fafafa}
+.row .v{display:flex;align-items:center;gap:8px}.row .v b{font:600 38px/1 var(--head)}.row .v small{font:400 12px/1.25 var(--body);color:var(--ink3);width:46px}
+.overs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:58px;margin-top:12px}
 .overs i{background:#d3d9df;border-radius:2px}.overs i.hot{background:var(--clay)}
-.axis{display:flex;justify-content:space-between;font:500 10px/1 var(--body);color:var(--ink3);margin-top:5px}
-.mu{padding:8px 0 2px}.mu+.mu{border-top:1px solid var(--line)}
-.mu .l{display:flex;justify-content:space-between;font:500 14px/1 var(--body)}
-.mu .l b{font:600 16px/1 var(--head)}
-.mu .bar{display:flex;height:7px;margin-top:6px;border-radius:4px;overflow:hidden}
+.axis{display:flex;justify-content:space-between;font:500 11px/1 var(--body);color:var(--ink3);margin-top:6px}
+.mu{padding:10px 0 2px}.mu+.mu{border-top:1px solid var(--line)}
+.mu .l{display:flex;justify-content:space-between;font:500 15px/1 var(--body)}
+.mu .l b{font:600 17px/1 var(--head)}
+.mu .bar{display:flex;height:7px;margin-top:7px;border-radius:4px;overflow:hidden}
 .mu .bar i:first-child{background:var(--s7)}.mu .bar i:last-child{background:var(--clay)}
-/* the offer: yearly is the deal, monthly is the plain alternative */
-.deal{margin-top:auto;position:relative;background:var(--s9);color:var(--paper);display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px;padding:26px 36px 28px}
+/* the offer: monthly is the main deal, yearly the better-value option */
+.deal{margin-top:auto;position:relative;z-index:2;background:var(--s9);color:var(--paper);display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px;padding:28px 36px 30px}
 .deal .lab{display:flex;align-items:center;gap:14px;font:600 24px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--s4)}
 .deal .lab em{font-style:normal;background:var(--clay);color:#fff;letter-spacing:.06em;padding:7px 10px;border-radius:3px;font-size:21px}
-.deal .amt{display:flex;align-items:baseline;gap:14px;margin-top:12px;white-space:nowrap}
-.deal .amt b{font:700 108px/.8 var(--head)}
-.deal .amt s{font:500 34px/1 var(--head);color:#8fa3b6}
-.deal .amt small{font:500 28px/1 var(--body);color:#c6d2dd}
-.deal p{font:500 25px/1.3 var(--body);color:#dbe4ec;margin-top:10px}
-.deal p b{color:#fff;font-weight:600}
+.deal .amt{display:flex;align-items:baseline;gap:12px;margin-top:12px;white-space:nowrap}
+.deal .amt b{font:700 120px/.8 var(--head)}
+.deal .amt small{font:500 30px/1 var(--body);color:#c6d2dd}
+.deal p{font:500 24px/1.3 var(--body);color:#dbe4ec;margin-top:12px}
 .deal .cta{background:var(--paper);color:var(--s9);border-radius:4px;height:84px;padding:0 34px;font-size:34px}
 .deal .free{text-align:center;font:500 20px/1.3 var(--body);color:#c6d2dd;margin-top:12px}
-.alt{position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:20px;font:400 22px/1.3 var(--body);color:var(--ink2)}
-.alt b{font:600 30px/1 var(--head);color:var(--ink);margin:0 4px}
-.alt .url{margin:0;font:600 24px/1 var(--body);color:var(--s7)}
+.alt{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:0;padding:18px 24px;border:2px solid var(--line);border-top:0;background:#fff;font:400 22px/1.3 var(--body);color:var(--ink2)}
+.alt .y{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.alt .y strong{font:600 24px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;color:var(--s7)}
+.alt b{font:600 32px/1 var(--head);color:var(--ink)}
+.alt .tagsave{border:2px solid var(--clay);color:var(--clay);font:600 19px/1 var(--head);letter-spacing:.06em;text-transform:uppercase;padding:6px 9px;border-radius:3px}
+.alt .url{margin:0;font:600 24px/1 var(--body);color:var(--s7);white-space:nowrap}
 .pro .fine{position:relative;font:400 17px/1.35 var(--body);color:var(--ink3);margin-top:14px}
 
 /* 2. API Plus: developers and product teams */
@@ -185,32 +193,38 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Fantasy XI</b><span>A ready team with captain and vice-captain</span></div></li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>MatchSynth Lab</b><span>Change the pitch, dew or toss and replay it</span></div></li>
     </ul>
-    <div><div class="phone"><div class="screen">
-      <div class="scr-top"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div>
-      <div class="scr-h"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+  </div>
+  <div class="phonewrap"><div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>9:41</span><span class="ico"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" fill="#1d1f20"/><rect x="5" y="5" width="3" height="7" fill="#1d1f20"/><rect x="10" y="2" width="3" height="10" fill="#1d1f20"/><rect x="15" y="0" width="3" height="12" fill="#1d1f20"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#1d1f20" stroke-width="2"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7.2a6.5 6.5 0 0 1 9 0"/><circle cx="8" cy="10" r="1.3" fill="#1d1f20" stroke="none"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".75" y=".75" width="22.5" height="11.5" rx="3.5" fill="none" stroke="#1d1f20" stroke-opacity=".45" stroke-width="1.5"/><rect x="2.5" y="2.5" width="16" height="8" rx="2" fill="#1d1f20"/><rect x="24.5" y="4.5" width="2" height="4" rx="1" fill="#1d1f20" fill-opacity=".45"/></svg></span></div>
+      <div class="ahead"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg><div class="lg"><svg><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+      <div class="scr-h"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
         <div><h3>Overview</h3><p>IND 62% to win</p></div></div>
       <div class="card"><div class="k">Projected runs</div>
-        <div class="row" style="--c:var(--s7)"><div><div class="t">IND</div><div class="strip"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely 166–201</small></div></div>
-        <div class="row" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="strip"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely 153–189</small></div></div>
+        <div class="row" style="--c:var(--s7)"><div><div class="t">IND</div><div class="strip"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely<br>166–201</small></div></div>
+        <div class="row" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="strip"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely<br>153–189</small></div></div>
       </div>
       <div class="card"><div class="k">Projected wickets by over</div>
         <div class="overs"><i style="height:30%"></i><i style="height:26%"></i><i style="height:34%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:48%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:35%"></i><i style="height:38%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:47%"></i><i style="height:52%"></i><i style="height:58%"></i><i class="hot" style="height:74%"></i><i class="hot" style="height:82%"></i><i class="hot" style="height:90%"></i><i class="hot" style="height:100%"></i><i style="height:70%"></i></div>
         <div class="axis"><span>1</span><span>6</span><span>10</span><span>16–19</span><span>20</span></div></div>
-          </div></div></div>
-  </div>
+      <div class="card"><div class="k">Player match-ups</div>
+        <div class="mu"><div class="l"><span>Opener v new ball</span><b>58 : 42</b></div><div class="bar"><i style="flex:58"></i><i style="flex:42"></i></div></div>
+        <div class="mu"><div class="l"><span>Finisher v leg-spin</span><b>46 : 54</b></div><div class="bar"><i style="flex:46"></i><i style="flex:54"></i></div></div>
+      </div>
+    </div></div></div>
 
   <div class="deal">
     <div>
-      <div class="lab">Yearly plan <em>Save ₹419</em></div>
-      <div class="amt"><b>₹3,769</b><small>a year</small></div>
-      <p>Just <b>₹314 a month</b>, every match all year.</p>
+      <div class="lab">Monthly plan <em>1 day free</em></div>
+      <div class="amt"><b>₹349</b><small>a month</small></div>
+      <p>Every match we cover. Cancel any time.</p>
     </div>
     <div>
       <div class="cta">Start your free day<svg><use href="#arrow"/></svg></div>
-      <div class="free">Free today. Cancel any time.</div>
+      <div class="free">Free today, then ₹349 a month.</div>
     </div>
   </div>
-  <div class="alt"><span>Prefer monthly?<b>₹349</b>a month, cancel any time.</span><span class="url">cricsynthesis.in/pro</span></div>
+  <div class="alt"><span class="y"><strong>Yearly</strong><b>₹3,769</b>a year, just ₹314 a month <span class="tagsave">Save ₹419</span></span><span class="url">cricsynthesis.in/pro</span></div>
   <p class="fine">Your plan starts after the free day. Setting up autopay takes a ₹5 check, refunded straight away. For ages 18 and over.</p>
 </section>
 
