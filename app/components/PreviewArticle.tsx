@@ -1,6 +1,7 @@
 // A written match preview (server-rendered): the blog article layout, filled from lib/preview.ts.
 import Link from "next/link";
 import { Byline } from "@/components/Byline";
+import FantasyPitch from "@/components/FantasyPitch";
 import { PREVIEW_AUTHOR, type Article, type Block } from "@/lib/preview";
 import { SITE } from "@/lib/seo";
 
@@ -23,6 +24,12 @@ function BlockView({ b }: { b: Block }) {
       {b.table.head.some(Boolean) && <thead><tr>{b.table.head.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>}
       <tbody>{b.table.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}><Rich text={c} /></td>)}</tr>)}</tbody>
     </table></div>);
+  if ("pitch" in b) return (
+    <div style={{ margin: "18px 0" }}>
+      <FantasyPitch players={b.pitch.players} captain={b.pitch.captain} vice={b.pitch.vice} short={b.pitch.short} total={b.pitch.total}
+                    note={b.pitch.xis ? "Projected points (C 2×, VC 1.5×) with the playing XIs." : "Projected points (C 2×, VC 1.5×) with probable XIs: check them at the toss."} />
+    </div>
+  );
   if ("stats" in b) return <div className="post-stats">{b.stats.map((s) => <div key={s.label}><b>{s.big}</b><span>{s.label}</span></div>)}</div>;
   return <p className="pv-links">{b.links.map((l) => <Link key={l.href + l.label} href={l.href}>{l.label} →</Link>)}</p>;
 }

@@ -15,7 +15,9 @@ export type Block =
   | { list: string[]; ordered?: boolean }
   | { table: { head: string[]; rows: string[][] } }
   | { stats: { big: string; label: string }[] }
-  | { links: { href: string; label: string }[] };
+  | { links: { href: string; label: string }[] }
+  | { pitch: { players: { id: string; name: string; team: number; role?: string | null; expected: number }[];
+               captain: string; vice: string; short: [string, string]; total: number; xis: boolean } };
 export type Section = { id: string; heading: string; blocks: Block[] };
 export type Article = {
   id: string; path: string; title: string; h1: string; description: string; standfirst: string; keypoints: string[];
@@ -360,6 +362,8 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       ["Line-ups", m.xis ? "Confirmed XIs" : "Probable XIs (updates at the toss)"]] } }] },
     { id: "team", heading: "Best fantasy XI", blocks: [
       ...intro.map((t) => ({ p: t }) as Block),
+      { pitch: { players: f.single.players.map((pid) => { const r = f.players[pid]; return { id: pid, name: r?.name ?? pid, team: r?.team ?? 0, role: r?.role ?? null, expected: r?.expected ?? 0 }; }),
+                 captain: f.single.captain, vice: f.single.vice_captain, short: [short[0], short[1]], total: f.single.expected, xis: !!m.xis } } as Block,
       table(xi),
       { links: [{ href: tab(id, "Fantasy"), label: "Open the Fantasy tab" }] },
     ] },

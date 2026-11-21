@@ -12,6 +12,7 @@ import { Histogram, Num, OverBars, P, WicketHeatmap, type Marker } from "@/compo
 import VenueIntel from "@/components/VenueIntel";
 import { KIND, num, pct, range } from "@/lib/format";
 import { rate, type Rated } from "@/lib/ratings";
+import FantasyPitch from "@/components/FantasyPitch";
 import type { FantasyTeam, MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
@@ -441,6 +442,22 @@ function FantasyRatings({ doc }: { doc: MatchDoc }) {
   );
 }
 
+/** One fantasy team on the pitch, with the same team as a list underneath (tap to open). */
+function FantasyCard({ doc, t }: { doc: MatchDoc; t: FantasyTeam }) {
+  const f = doc.fantasy!;
+  const players = t.players.map((id) => ({ id, ...f.players[id], name: f.players[id]?.name ?? id }));
+  return (
+    <>
+      <FantasyPitch players={players} captain={t.captain} vice={t.vice_captain} short={doc.match.teams.map((x) => x.short)} total={t.expected}
+                    note={doc.match.xis ? "Projected points (C 2×, VC 1.5×) with the playing XIs." : "Projected points (C 2×, VC 1.5×) with expected XIs: check them before locking."} />
+      <details className="fz-list" style={{ marginTop: 10 }}>
+        <summary className="small">Show as a list</summary>
+        <FantasyTable doc={doc} t={t} />
+      </details>
+    </>
+  );
+}
+
 /** Fantasy picks from the published simulations: the single best team, and five teams that cover the likely matches. */
 function Fantasy({ doc }: { doc: MatchDoc }) {
   const f = doc.fantasy!;
@@ -450,7 +467,7 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <div className="card-head"><h3>Best XI</h3><span className="small muted">{split}</span></div>
-        <FantasyTable doc={doc} t={f.single} />
+        <FantasyCard doc={doc} t={f.single} />
       </div>
       <h3 style={{ margin: "12px 0 0" }}>Five different teams</h3>
       <div className="grid g2">
@@ -458,7 +475,7 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
           <div key={i} className="card">
             <h3>Team {i + 1}</h3>
             <p className="small" style={{ margin: "0 0 10px" }}>Captain <b>{name(t.captain)}</b> · vice-captain <b>{name(t.vice_captain)}</b></p>
-            <FantasyTable doc={doc} t={t} />
+            <FantasyCard doc={doc} t={t} />
           </div>
         ))}
       </div>
