@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Business API UI film</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* 1920×1080, 60 fps. Every visual is computed from t inside seek(t): no CSS transitions, timers or carried state. */
+:root{--bg:#0e1013;--charcoal:#23272d;--charcoal2:#2c3138;--line:#3a4048;--white:#f2f2f3;--mut:#9aa3ad;--acc:#5980a6;--accL:#94bce3;
+  --head:"Barlow Condensed",system-ui,sans-serif;--body:"Barlow",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+#view{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+#world{position:absolute;left:0;top:0;width:3200px;height:2000px;transform-origin:0 0;
+  background-image:radial-gradient(circle,rgba(242,242,243,.07) 1.6px,transparent 1.8px);background-size:40px 40px}
+.a{position:absolute}
+.lab{font:600 26px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+/* toggle */
+#sw{left:325px;top:565px;width:150px;height:70px;border-radius:35px;background:var(--charcoal2)}
+#swState{left:500px;top:584px;font:700 32px/1 var(--head);letter-spacing:.12em}
+/* slider */
+#track{left:900px;top:593px;width:900px;height:14px;border-radius:7px;background:var(--charcoal2)}
+#fill{left:900px;top:593px;height:14px;border-radius:7px;background:var(--acc)}
+#knob{width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--charcoal);border:3px solid var(--line)}
+#bub{min-width:110px;height:58px;margin-left:-55px;border-radius:12px;background:var(--acc);color:var(--white);font:700 38px/58px var(--head);text-align:center;padding:0 14px}
+#bub::after{content:"";position:absolute;left:50%;bottom:-10px;margin-left:-10px;border:10px solid transparent;border-bottom:0;border-top-color:var(--acc)}
+/* cards */
+.card{left:2150px;width:620px;border-radius:22px;background:var(--charcoal);border:1px solid var(--line);padding:24px 26px 24px 100px}
+.card .ic{position:absolute;left:26px;top:30px;width:52px;height:52px;border-radius:50%;border:2px solid var(--line)}
+.card .app{font:600 20px/1 var(--body);color:var(--mut);display:flex;justify-content:space-between}
+.card b{display:block;font:700 34px/1.1 var(--body);color:var(--white);margin-top:10px}
+.card p{font:500 26px/1.3 var(--body);color:#d4d9de;margin-top:6px}
+#reply{border-radius:24px;background:var(--charcoal2);border:1px solid var(--line);color:var(--white);font:600 24px/1 var(--body);overflow:hidden;display:flex;align-items:center;padding:0 22px;white-space:nowrap}
+#send{width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:var(--charcoal2);display:grid;place-items:center}
+#send svg{width:26px;height:26px}
+/* keyboard */
+#kb{left:2100px;top:1080px;width:720px;height:350px;border-radius:24px;background:#181b1f;border:1px solid var(--line)}
+.key{position:absolute;width:62px;height:76px;border-radius:10px;background:var(--charcoal2);color:var(--white);font:500 30px/76px var(--body);text-align:center}
+/* brand line for the pull-back */
+#brand{left:260px;top:250px;white-space:nowrap}
+#brand .t{font:700 84px/1 var(--head);text-transform:uppercase;color:var(--white)}
+#brand .t span{color:var(--accL)}
+#brand .s{font:500 32px/1 var(--body);color:var(--mut);margin-top:14px}
+#ball{width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:#fff}
+#cursor{width:34px;height:44px;transform-origin:0 0}
+</style></head><body>
+<div id="view"><div id="world">
+  <!-- brand (appears in the pull-back) -->
+  <div class="a" id="brand"><div class="t">CricSynthesis <span>Business API</span></div><div class="s">Answer before the toss · cricsynthesis.in/contact</div></div>
+
+  <!-- toggle -->
+  <div class="a lab" style="left:325px;top:515px">Business API</div>
+  <div class="a" id="sw"></div>
+  <div class="a" id="swState">OFF</div>
+
+  <!-- slider -->
+  <div class="a lab" style="left:900px;top:515px">Projected runs · India</div>
+  <div class="a" id="track"></div><div class="a" id="fill"></div>
+  <div class="a lab" style="left:900px;top:650px;letter-spacing:.06em">0</div>
+  <div class="a lab" style="left:1760px;top:650px;letter-spacing:.06em">200</div>
+  <div class="a" id="knob"></div>
+  <div class="a" id="bub">0</div>
+
+  <!-- notifications -->
+  <div class="a card" id="c0" style="top:380px;height:150px"><div class="ic"></div><div class="app"><span>CricSynthesis</span><span>now</span></div><b>Projected runs</b><p>India 184 · likely 166–201</p></div>
+  <div class="a card" id="c1" style="top:560px;height:150px"><div class="ic"></div><div class="app"><span>CricSynthesis</span><span>now</span></div><b>Danger overs</b><p>Wickets most likely in overs 16–19</p></div>
+  <div class="a card" id="c2" style="top:740px;height:200px"><div class="ic"></div><div class="app"><span>Editor</span><span>now</span></div><b>Can we get this</b><p>for every match?</p></div>
+  <div class="a" id="reply"><span id="rtext">Reply</span></div>
+  <div class="a" id="send"><svg viewBox="0 0 24 24"><path d="M4 12h14M12 5l7 7-7 7" fill="none" stroke="#f2f2f3" stroke-width="2.6"/></svg></div>
+
+  <!-- keyboard -->
+  <div class="a" id="kb"></div>
+
+  <div class="a" id="ball"></div>
+  <svg class="a" id="cursor" viewBox="0 0 34 44"><path d="M2 2 L2 36 L11 28 L17 42 L23 39 L17 26 L29 26 Z" fill="#f2f2f3" stroke="#0e1013" stroke-width="2.4" stroke-linejoin="round"/></svg>
+</div></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=x=>Math.max(0,Math.min(1,x)), lerp=(a,b,u)=>a+(b-a)*u;
+const eIO=u=>{u=cl(u);return u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2}, eOut=u=>1-Math.pow(1-cl(u),3);
+// small spring: overshoot ~6%, settles in ~0.45 s
+const spring=u=>{if(u<=0)return 0;if(u>=1.6)return 1;return 1-Math.exp(-6.5*u)*Math.cos(9*u)};
+
+// ── world geometry ─────────────────────────────
+const SW_OFF=[360,600], SW_ON=[440,600];
+const SX0=900, SX1=1800, SY=600, X184=SX0+(SX1-SX0)*184/200;
+const valueAt=x=>Math.round(200*cl((x-SX0)/(SX1-SX0)));
+const CARD_IC=[[2202,456],[2202,636],[2202,816]];
+const PILL=[2620,872,2740,918], FIELD=[2150,975,2770,1045], BUBBLE=[2540,975,2770,1045];
+// keyboard
+const KB={x:2100,y:1080}, KW=62,KH=76,KG=8;
+const ROWS=["qwertyuiop","asdfghjkl","zxcvbnm"], ROFF=[19,54,124];
+const keys={};
+ROWS.forEach((r,ri)=>[...r].forEach((c,i)=>{keys[c]={x:KB.x+ROFF[ri]+i*(KW+KG),y:KB.y+18+ri*(KH+KG),w:KW,h:KH,label:c}}));
+keys[' ']={x:KB.x+124,y:KB.y+18+3*(KH+KG),w:340,h:KH,label:''};
+keys['\n']={x:KB.x+480,y:KB.y+18+3*(KH+KG),w:220,h:KH,label:'return'};
+const kbEl=$('kb');
+const keyEls={};
+for(const [c,k] of Object.entries(keys)){const d=document.createElement('div');d.className='key';d.style.left=(k.x-KB.x)+'px';d.style.top=(k.y-KB.y)+'px';d.style.width=k.w+'px';d.textContent=k.label;if(c==='\n')d.style.fontSize='24px';kbEl.appendChild(d);keyEls[c]=d}
+const kc=c=>[keys[c].x+keys[c].w/2,keys[c].y+keys[c].h/2];
+
+// ── timeline (120 BPM, beat = 0.5 s) ────────────
+const REPLY="book a call";
+const KT=[...REPLY].map((c,i)=>[c,21.0+0.5*i]);   // one key per beat
+const T_RET=26.5;                                 // Return
+const ARRIVE=[11.0,12.5,14.0];
+
+// ball route: holds and arcs, never a jump
+const seg=[];
+const hold=(t0,t1,p)=>seg.push({t0,t1,k:'h',p});
+const arc=(t0,t1,a,b,h)=>seg.push({t0,t1,k:'a',a,b,h});
+const ride=(t0,t1,a,b)=>seg.push({t0,t1,k:'r',a,b});
+hold(0,2.0,SW_OFF);
+ride(2.0,2.2,SW_OFF,SW_ON);                       // the click throws the switch
+hold(2.2,2.4,SW_ON);
+arc(2.4,4.0,SW_ON,[SX0,SY],300);                  // springs free to the slider
+hold(4.0,4.5,[SX0,SY]);
+ride(4.5,10.0,[SX0,SY],[X184,SY]);                // pushes the knob to 184
+hold(10.0,10.5,[X184,SY]);
+arc(10.5,11.5,[X184,SY],CARD_IC[0],260);
+arc(11.8,13.0,CARD_IC[0],CARD_IC[1],120);
+arc(13.3,14.5,CARD_IC[1],CARD_IC[2],120);
+hold(14.5,16.2,CARD_IC[2]);
+arc(16.2,17.5,CARD_IC[2],[PILL[2]-24,(PILL[1]+PILL[3])/2],160);
+seg.push({t0:17.5,t1:20.5,k:'f'});               // rides the reply as it stretches
+let prev='f';
+KT.forEach(([c,t],i)=>{const from=i===0?null:kc(KT[i-1][0]);const to=kc(c);
+  if(i===0) arc(20.5,t,null,to,140); else { hold(KT[i-1][1],KT[i-1][1]+0.08,from); arc(KT[i-1][1]+0.08,t,from,to,c===KT[i-1][0]?55:70+Math.hypot(to[0]-from[0],to[1]-from[1])*.18); }});
+hold(KT.at(-1)[1],KT.at(-1)[1]+0.08,kc(KT.at(-1)[0]));
+arc(KT.at(-1)[1]+0.08,T_RET,kc(KT.at(-1)[0]),kc('\n'),110);
+hold(T_RET,34.5,kc('\n'));
+arc(34.5,36.5,kc('\n'),[X184,SY],460);           // back across the world
+hold(36.5,36.8,[X184,SY]);
+ride(36.8,39.5,[X184,SY],[SX0,SY]);               // rolls the slider back to 0
+arc(39.5,41.0,[SX0,SY],SW_ON,220);
+hold(41.0,42.0,SW_ON);
+ride(42.0,42.4,SW_ON,SW_OFF);                     // switch resets: matches frame 0
+hold(42.4,45.01,SW_OFF);
+const LANDS=seg.filter(s=>s.k==='a').map(s=>s.t1);
+
+function fieldRect(t){const u=eIO((t-18.0)/1.0);return PILL.map((v,i)=>lerp(v,FIELD[i],u))}
+function ballAt(t){
+  const s=seg.find(s=>t>=s.t0&&t<s.t1)||seg.at(-1);
+  if(s.k==='h')return s.p;
+  if(s.k==='r'){const u=eIO((t-s.t0)/(s.t1-s.t0));return [lerp(s.a[0],s.b[0],u),lerp(s.a[1],s.b[1],u)]}
+  if(s.k==='f'){const r=fieldRect(t);return [r[2]-26,(r[1]+r[3])/2]}
+  const a=s.a||(()=>{const r=fieldRect(s.t0);return [r[2]-26,(r[1]+r[3])/2]})();
+  const u=cl((t-s.t0)/(s.t1-s.t0));
+  return [lerp(a[0],s.b[0],u),lerp(a[1],s.b[1],u)-s.h*4*u*(1-u)];
+}
+function squash(t){let s=0;for(const tl of LANDS){const d=t-tl;if(d>=0&&d<.4)s+=.2*Math.exp(-d*12)*Math.cos(d*28)}return s}
+
+// knob follows the ball while it rides the slider, otherwise holds
+function knobX(t){
+  if(t<4.5)return SX0; if(t<10.0)return ballAt(t)[0]; if(t<36.8)return X184; if(t<39.5)return ballAt(t)[0]; return SX0}
+
+// camera: centre + log-space zoom between keys
+const CAM=[[0,400,600,2.6],[2.35,400,600,2.6],[4.0,1350,600,1.55],[10.3,1350,600,1.55],[11.9,2460,660,1.5],[16.0,2460,660,1.5],
+  [17.6,2450,860,1.7],[18.3,2450,860,1.7],[20.4,2460,1190,1.2],[31.0,2460,1190,1.2],[34.0,1540,900,0.69],[39.4,1540,900,0.69],[42.6,400,600,2.6],[45.01,400,600,2.6]];
+function cam(t){let i=0;while(i<CAM.length-2&&t>=CAM[i+1][0])i++;const a=CAM[i],b=CAM[i+1];const u=eIO((t-a[0])/(b[0]-a[0]));
+  return [lerp(a[1],b[1],u),lerp(a[2],b[2],u),Math.exp(lerp(Math.log(a[3]),Math.log(b[3]),u))]}
+
+const CUR0=[520,770], CUR1=[452,612];
+function cursorAt(t){
+  if(t<0.6)return [CUR0,1];
+  if(t<1.8){const u=eIO((t-0.6)/1.2);return [[lerp(CUR0[0],CUR1[0],u),lerp(CUR0[1],CUR1[1],u)],1]}
+  const press=t>=1.92&&t<2.12?0.86:1;
+  if(t<42.5)return [CUR1,press];
+  const u=eIO((t-42.5)/2.0);return [[lerp(CUR1[0],CUR0[0],u),lerp(CUR1[1],CUR0[1],u)],1]}
+
+window.seek=function(t){
+  t=((t%45)+45)%45;
+  // camera
+  const [cx,cy,z]=cam(t); $('world').style.transform=`translate(${960-cx*z}px,${540-cy*z}px) scale(${z})`;
+  // toggle state
+  const on=cl((t-2.0)/0.2)*(1-cl((t-42.0)/0.4));
+  $('sw').style.background=on>.5?'#5980a6':'#2c3138'; $('sw').style.opacity=1;
+  $('swState').textContent=on>.5?'ON':'OFF'; $('swState').style.color=on>.5?'#94bce3':'#9aa3ad';
+  // slider
+  const kx=knobX(t), v=valueAt(kx);
+  $('knob').style.left=kx+'px'; $('knob').style.top=SY+'px';
+  $('fill').style.width=Math.max(0,kx-SX0)+'px';
+  const pop=t>=10&&t<10.6?1+0.08*Math.exp(-(t-10)*8)*Math.sin((t-10)*24):1;
+  $('bub').textContent=v; $('bub').style.left=kx+'px'; $('bub').style.top=(SY-120)+'px'; $('bub').style.transform=`scale(${pop})`; $('bub').style.transformOrigin='50% 100%';
+  // cards: arrive on their own beats, leave on the return
+  ['c0','c1','c2'].forEach((id,i)=>{const s=spring((t-ARRIVE[i])/0.5), out=eIO((t-37.0-i*0.15)/1.0);
+    const e=$(id); e.style.opacity=cl(s*1.5)*(1-out); e.style.transform=`translateX(${(1-s)*140+out*160}px)`;
+    e.querySelector('.ic').style.borderColor=t>=ARRIVE[i]+0.5&&t<37?'#5980a6':'#3a4048'});
+  // reply pill → field → blue message
+  const c2in=cl(spring((t-ARRIVE[2])/0.5)*1.5), out=eIO((t-37.0)/1.0);
+  let r=fieldRect(t); const contract=eIO((t-27.0)/0.8);
+  if(contract>0) r=FIELD.map((v,i)=>lerp(v,BUBBLE[i],contract));
+  const rp=$('reply'); rp.style.left=r[0]+'px'; rp.style.top=r[1]+'px'; rp.style.width=(r[2]-r[0])+'px'; rp.style.height=(r[3]-r[1])+'px';
+  rp.style.borderRadius=((r[3]-r[1])/2)+'px'; rp.style.opacity=c2in*(1-out);
+  const typed=KT.filter(([c,tt])=>t>=tt).map(([c])=>c).join('');
+  const caret=t>=19&&t<T_RET&&Math.floor(t*2.5)%2===0?'|':'';
+  const isField=t>=18.5&&contract===0;
+  $('rtext').textContent=t<18.5?'Reply':(typed+caret)||(isField?(caret||' '):'');
+  if(t<18.5){rp.style.justifyContent='center';rp.style.fontSize='24px';rp.style.color='#f2f2f3'}
+  else{rp.style.justifyContent=contract>0?'center':'flex-start';rp.style.fontSize=(30-contract*2)+'px';rp.style.color='#f2f2f3'}
+  rp.style.background=contract>.3?'#5980a6':'#2c3138'; rp.style.borderColor=contract>.3?'#5980a6':'#3a4048';
+  if(!typed&&t>=18.5&&contract===0){$('rtext').textContent=caret||' ';rp.style.color='#9aa3ad'}
+  // send button lives at the field's right end until the message contracts
+  const sd=$('send'); const fieldShown=cl((t-18.6)/0.3)*(1-contract);
+  sd.style.left=(FIELD[2]-34)+'px'; sd.style.top=((FIELD[1]+FIELD[3])/2)+'px'; sd.style.opacity=fieldShown*(1-out);
+  sd.style.background=t>=T_RET?'#5980a6':'#2c3138'; sd.style.transform=`scale(${t>=T_RET&&t<T_RET+.4?1+.12*Math.exp(-(t-T_RET)*10):1})`;
+  // keyboard rises with the field, lowers on the return
+  const up=eOut((t-19.0)/1.4), down=eIO((t-37.0)/1.2);
+  kbEl.style.opacity=up*(1-down); kbEl.style.transform=`translateY(${(1-up)*320+down*320}px)`;
+  for(const [c,el] of Object.entries(keyEls)){const tt=c==='\n'?[T_RET]:KT.filter(k=>k[0]===c).map(k=>k[1]);
+    const hit=tt.some(x=>t>=x&&t<x+0.18); el.style.background=hit?'#5980a6':'#2c3138'; el.style.transform=hit?'translateY(4px)':'none'}
+  // brand line in the pull-back
+  const b=cl((t-32.5)/1.2)*(1-cl((t-39.6)/0.9)); $('brand').style.opacity=b;
+  // ball
+  const [bx,by]=ballAt(t), s=squash(t);
+  $('ball').style.left=bx+'px'; $('ball').style.top=by+'px'; $('ball').style.transform=`scale(${1+s},${1-s})`;
+  // cursor
+  const [cp,ps]=cursorAt(t); $('cursor').style.left=cp[0]+'px'; $('cursor').style.top=cp[1]+'px'; $('cursor').style.transform=`scale(${ps})`;
+};
+// contact times for the sound design
+window.CONTACTS={click:[1.95],land:LANDS,keys:KT.map(k=>k[1]),ret:[T_RET],reach:[10.0],cards:ARRIVE,send:[27.0],reset:[42.2]};
+seek(0);
+</script>
+</body></html>
