@@ -1,0 +1,106 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--steel:#5980a6;--s7:#416180;--s9:#1d2d3d;--s95:#142130;--light:#94bce3;--pale:#b5d9fd;--clay:#d9895f;--paper:#f2f2f3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;height:1920px;background:var(--s95);font-family:Barlow,sans-serif;color:#fff;overflow:hidden}
+.top{height:200px;background:#0e1824;display:flex;align-items:center;justify-content:space-between;padding:0 56px;border-bottom:1px solid #22364a}
+.top .lab{font-size:30px;color:#8ea6bd;font-weight:500}
+.top .big{font-family:'Barlow Condensed';font-weight:700;font-size:64px;line-height:1}
+.top .big small{font-size:38px;color:#8ea6bd;font-weight:600}
+.score{display:flex;align-items:center;gap:22px;font-family:'Barlow Condensed';font-weight:700}
+.tm{font-size:34px;padding:6px 14px;border-radius:8px;letter-spacing:.02em}
+.tA{background:#fff;color:var(--s9)}.tB{background:#0b131c;color:#fff;border:2px solid #3a536b}
+.score .n{font-size:66px}
+.r{text-align:right}
+.field{position:relative;height:1560px;overflow:hidden;
+  background:repeating-linear-gradient(180deg,#2c4a66 0 130px,#284460 130px 260px)}
+.field:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(148,188,227,.16),transparent 65%)}
+.oval{position:absolute;left:70px;right:70px;top:150px;bottom:170px;border:3px solid rgba(181,217,253,.32);border-radius:50%}
+.inner{position:absolute;left:250px;right:250px;top:470px;bottom:500px;border:2px dashed rgba(181,217,253,.22);border-radius:50%}
+.pitch{position:absolute;left:50%;top:640px;width:150px;height:380px;transform:translateX(-50%);background:linear-gradient(#5a7da0,#4d6f91);border-radius:6px;opacity:.75}
+.wm{position:absolute;top:60px;width:150px;height:150px;color:rgba(181,217,253,.16)}
+.wm.l{left:130px}.wm.r{right:130px}
+.sec{position:absolute;left:0;right:0;text-align:center}
+.sec h3{font-family:'Barlow Condensed';font-weight:700;font-size:30px;letter-spacing:.14em;color:var(--pale);margin-bottom:22px}
+.row{display:flex;justify-content:center;gap:34px}
+.p{width:210px;display:flex;flex-direction:column;align-items:center;position:relative}
+.av{width:132px;height:132px;position:relative}
+.av svg{width:100%;height:100%}
+.tag{margin-top:-8px;font-family:'Barlow Condensed';font-weight:700;font-size:32px;padding:4px 14px;border-radius:6px;white-space:nowrap;position:relative;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.A .tag{background:#fff;color:var(--s9)}.B .tag{background:#0b131c;color:#fff}
+.pts{margin-top:10px;font-family:'Barlow Condensed';font-weight:600;font-size:32px;color:#e8f1fa}
+.pts b{font-weight:700}
+.cv{position:absolute;top:0;left:22px;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-family:'Barlow Condensed';font-weight:700;font-size:28px;z-index:3;border:3px solid var(--s95)}
+.cv.c{background:var(--clay);color:#fff}.cv.v{background:var(--paper);color:var(--s9)}
+.foot{height:160px;background:#0e1824;border-top:1px solid #22364a;display:flex;align-items:center;justify-content:space-between;padding:0 56px}
+.logo{display:flex;align-items:center;gap:16px}
+.logo svg{width:62px;height:62px;color:var(--light)}
+.logo .w{font-family:'Barlow Condensed';font-weight:700;font-size:44px;line-height:1}
+.logo .w span{color:var(--light)}
+.logo .t{font-size:20px;color:#8ea6bd;margin-top:4px;letter-spacing:.04em}
+.meta{text-align:right;font-size:24px;color:#a9bed2;line-height:1.35}
+.meta b{color:#fff;font-weight:600}
+.note{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:22px;color:rgba(232,241,250,.6)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+</defs></svg>
+
+<div class="top">
+  <div><div class="lab">Players</div><div class="big">11<small>/11</small></div></div>
+  <div class="score"><span class="tm tA" id="ta"></span><span class="n" id="na"></span><span class="n" style="color:#8ea6bd">:</span><span class="n" id="nb"></span><span class="tm tB" id="tb"></span></div>
+  <div class="r"><div class="lab">Projected points</div><div class="big" id="tot"></div></div>
+</div>
+
+<div class="field" id="field">
+  <div class="oval"></div><div class="inner"></div><div class="pitch"></div>
+  <svg class="wm l"><use href="#mark"/></svg><svg class="wm r"><use href="#mark"/></svg>
+  <div class="note">Projected fantasy points from simulated matches · check the announced XIs before locking</div>
+</div>
+
+<div class="foot">
+  <div class="logo"><svg><use href="#mark"/></svg><div><div class="w">CricSynthesis</div><div class="t">AI-Powered Cricket Intelligence</div></div></div>
+  <div class="meta" id="meta"></div>
+</div>
+
+<script>
+const D = {
+  teams: { A: { short: "IND A" }, B: { short: "PAK A" } },
+  meta: "<b>India A v Pakistan A</b><br>Asia Cup Rising Stars · 22 Nov, 3:30 PM IST<br>cricsynthesis.in",
+  total: 898,
+  players: [
+    { n: "D Jurel", t: "A", r: "WK", p: 68 },
+    { n: "Y Jaiswal", t: "A", r: "BAT", p: 75.8 }, { n: "D Padikkal", t: "A", r: "BAT", p: 60.2 },
+    { n: "T Varma", t: "A", r: "BAT", p: 59.8 }, { n: "A Samad", t: "B", r: "BAT", p: 57.2 },
+    { n: "S Masood", t: "B", r: "AR", p: 105, cv: "C" }, { n: "R Jadeja", t: "A", r: "AR", p: 80.6, cv: "VC" },
+    { n: "M Imran", t: "B", r: "AR", p: 67.1 }, { n: "W Sundar", t: "A", r: "AR", p: 60.8 },
+    { n: "P Krishna", t: "A", r: "BOWL", p: 60.1 }, { n: "A Daniyal", t: "B", r: "BOWL", p: 58.5 },
+  ],
+};
+// a generic player figure in the team's shirt (no real player images)
+const fig = (t) => {
+  const shirt = t === "A" ? "#e9eff5" : "#0b131c", trim = t === "A" ? "#5980a6" : "#d9895f", skin = "#c99a78";
+  return `<svg viewBox="0 0 132 132"><circle cx="66" cy="66" r="64" fill="rgba(13,24,36,.35)"/>
+  <path d="M18 132c2-30 20-44 48-44s46 14 48 44z" fill="${shirt}"/><path d="M52 90l14 16 14-16" fill="none" stroke="${trim}" stroke-width="5"/>
+  <rect x="58" y="74" width="16" height="18" rx="6" fill="${skin}"/><circle cx="66" cy="54" r="24" fill="${skin}"/>
+  <path d="M41 52c0-18 11-28 25-28s25 10 25 28c-6-7-15-10-25-10s-19 3-25 10z" fill="${trim}"/></svg>`;
+};
+const pct = (x) => `${x}`;
+const rows = [["WICKET-KEEPER", "WK", 150], ["BATTERS", "BAT", 490], ["ALL-ROUNDERS", "AR", 850], ["BOWLERS", "BOWL", 1195]];
+const f = document.getElementById("field");
+for (const [title, role, y] of rows) {
+  const ps = D.players.filter((p) => p.r === role);
+  if (!ps.length) continue;
+  const s = document.createElement("div"); s.className = "sec"; s.style.top = y + "px";
+  s.innerHTML = `<h3>${ps.length > 1 ? title : title.replace(/S$/, "")}</h3><div class="row">${ps.map((p) => `
+    <div class="p ${p.t}">${p.cv ? `<div class="cv ${p.cv === "C" ? "c" : "v"}">${p.cv}</div>` : ""}
+      <div class="av">${fig(p.t)}</div><div class="tag">${p.n}</div>
+      <div class="pts"><b>${Math.round(p.p)}</b> pts</div></div>`).join("")}</div>`;
+  f.appendChild(s);
+}
+const ca = D.players.filter((p) => p.t === "A").length;
+ta.textContent = D.teams.A.short; tb.textContent = D.teams.B.short;
+na.textContent = ca; nb.textContent = 11 - ca; tot.textContent = D.total; meta.innerHTML = D.meta;
+</script></body></html>
