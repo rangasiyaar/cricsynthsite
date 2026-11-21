@@ -33,65 +33,69 @@ function mark(c,s,col,lw){c.save();c.scale(s/48,s/48);c.translate(-24,-24);c.str
   c.beginPath();c.moveTo(4,15);c.lineTo(13,24);c.lineTo(4,33);c.stroke();c.lineCap='butt';
   c.beginPath();[22,30,38].forEach(x=>{c.moveTo(x,15);c.lineTo(x,40)});c.moveTo(20,11);c.lineTo(29,11);c.moveTo(31,11);c.lineTo(40,11);c.stroke();c.restore()}
 
-// ── the hand, mid-reach (silhouette with a cold rim light) ──
-function hand(c){
-  c.save(); c.translate(820,1660); c.rotate(-.42);
+// ── the toss: thumb flick at 1.4 s, a fast flip that ramps into extreme slow motion ──
+const T0=1.4, REST=[742,1478], HOVER=[540,820];
+function tossPos(t){
+  if(t<T0) return REST;
+  const u=1-Math.exp(-(t-T0)*2.6);                       // fast launch, then the world slows to a near stop
+  const x=lerp(REST[0],HOVER[0],u), y=lerp(REST[1],HOVER[1],u)-(t-T0)*2.4;
+  return [x+Math.sin(t*.7)*3*u, y+Math.sin(t*.9)*4*u];
+}
+function tossPhase(t){
+  const th0=1.42; if(t<T0) return th0;
+  const d=t-T0, w0=26, w1=1.3, k=2.4;                    // spin decays from a real flick to slow motion
+  return th0+w1*d+(w0-w1)/k*(1-Math.exp(-k*d));
+}
+// ── the hand: holds the coin on the thumb, flicks, then freezes open, reaching ──
+function hand(c,t){
+  const flick=ex((t-T0+.08)/.18), open=ex((t-T0-.05)/1.2);
+  c.save(); c.translate(820,1660); c.rotate(lerp(-.42,-.3,flick));
   const fill='#0a1018';
   c.fillStyle=fill;
-  // forearm
   c.beginPath();c.moveTo(-70,420);c.quadraticCurveTo(-80,160,-58,40);c.lineTo(58,40);c.quadraticCurveTo(84,170,80,420);c.closePath();c.fill();
-  // palm
   c.beginPath();c.ellipse(0,-10,74,88,0,0,Math.PI*2);c.fill();
-  // fingers (spread, reaching)
   const F=[[-52,-70,-.32,118,24],[-18,-92,-.1,150,25],[18,-92,.08,158,25],[52,-74,.26,134,23]];
-  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.roundRect(-w/2,-l,w,l+10,w/2);c.fill();c.restore()});
-  // thumb
-  c.save();c.translate(-66,10);c.rotate(-1.05);c.beginPath();c.roundRect(-13,-104,26,112,13);c.fill();c.restore();
-  // rim light on the left edges
+  const curl=lerp(.42,1,open);
+  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a*lerp(.4,1,open));c.beginPath();c.roundRect(-w/2,-l*curl,w,l*curl+10,w/2);c.fill();c.restore()});
+  const thA=lerp(-1.75,-1.05,flick);                     // thumb under the coin, then snaps up
+  c.save();c.translate(-66,10);c.rotate(thA);c.beginPath();c.roundRect(-13,-104,26,112,13);c.fill();c.restore();
   c.strokeStyle='rgba(148,188,227,.55)';c.lineWidth=2.4;
-  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(-w/2,0);c.lineTo(-w/2,-l+w/2);c.arc(0,-l+w/2,w/2,Math.PI,Math.PI*1.5);c.stroke();c.restore()});
+  F.forEach(([x,y,a,l,w])=>{c.save();c.translate(x,y);c.rotate(a*lerp(.4,1,open));const L=l*curl;c.beginPath();c.moveTo(-w/2,0);c.lineTo(-w/2,-L+w/2);c.arc(0,-L+w/2,w/2,Math.PI,Math.PI*1.5);c.stroke();c.restore()});
+  c.save();c.translate(-66,10);c.rotate(thA);c.beginPath();c.moveTo(-13,0);c.lineTo(-13,-91);c.arc(0,-91,13,Math.PI,Math.PI*1.5);c.stroke();c.restore();
   c.beginPath();c.ellipse(0,-10,74,88,0,Math.PI*.62,Math.PI*1.12);c.stroke();
   c.beginPath();c.moveTo(-70,420);c.quadraticCurveTo(-80,160,-58,60);c.stroke();
   c.restore();
 }
 
-// ── the coin: turning about a tilted vertical axis, lit from the upper left ──
+// ── the coin: flips end over end about a horizontal axis, lit from the upper left ──
 function coin(c,t){
-  const R=185,T=20, th=0.9+t*1.35;                 // extreme slow motion: about one turn every 4.6 s
-  const cx=540, cy=820-t*3.2+Math.sin(t*.7)*4;      // hangs; barely rises
+  const R=185,T=20, th=tossPhase(t), [cx,cy]=tossPos(t);
+  const sz=lerp(.55,1,cl((cy-REST[1])/(HOVER[1]-REST[1])));  // nearer the camera as it rises
   const co=Math.cos(th), si=Math.sin(th), w=Math.max(.0001,Math.abs(co));
-  c.save(); c.translate(cx,cy); c.rotate(-.16);
-  // light catch: brightest when the face turns toward the light
+  c.save(); c.translate(cx,cy); c.rotate(-.12); c.scale(sz,sz);
   const facing=cl(.5+.5*Math.cos(th-0.55)), glint=Math.pow(cl(Math.cos(th-0.55)),24);
-  // edge (rim): visible as a band offset by the thickness
   const off=T*si;
   c.fillStyle='#4b5866';
-  c.beginPath();c.ellipse(off*.5,0,R*w+Math.abs(off)*.5,R,0,0,Math.PI*2);c.fill();
-  // reeded edge lines
-  c.save();c.beginPath();c.ellipse(off*.5,0,R*w+Math.abs(off)*.5,R,0,0,Math.PI*2);c.clip();
-  c.strokeStyle='rgba(20,26,33,.55)';c.lineWidth=2;for(let i=-R;i<R;i+=7){c.beginPath();c.moveTo(-400,i);c.lineTo(400,i);c.stroke()}c.restore();
-  // face
-  const front=co>0;
-  const base=lerp(70,205,facing);
-  const grd=c.createLinearGradient(-R*w,-R,R*w,R);
-  grd.addColorStop(0,`rgb(${base+30},${base+38},${base+48})`);
+  c.beginPath();c.ellipse(0,off*.5,R,R*w+Math.abs(off)*.5,0,0,Math.PI*2);c.fill();
+  c.save();c.beginPath();c.ellipse(0,off*.5,R,R*w+Math.abs(off)*.5,0,0,Math.PI*2);c.clip();
+  c.strokeStyle='rgba(20,26,33,.55)';c.lineWidth=2;for(let i=-R;i<R;i+=7){c.beginPath();c.moveTo(i,-400);c.lineTo(i,400);c.stroke()}c.restore();
+  const front=co>0, base=lerp(70,205,facing);
+  const grd=c.createLinearGradient(-R,-R*w,R,R*w);
+  grd.addColorStop(0,`rgb(${base+30|0},${base+38|0},${base+48|0})`);
   grd.addColorStop(cl(.35+.3*si),`rgb(${base+50|0},${base+56|0},${base+64|0})`);
   grd.addColorStop(1,`rgb(${base*.55|0},${base*.6|0},${base*.7|0})`);
-  c.fillStyle=grd; c.beginPath();c.ellipse(-off*.5,0,R*w,R,0,0,Math.PI*2);c.fill();
-  // emboss: mark on one face, rings on the other (compressed by the turn)
-  c.save(); c.translate(-off*.5,0); c.scale(w,1);
+  c.fillStyle=grd; c.beginPath();c.ellipse(0,-off*.5,R,R*w,0,0,Math.PI*2);c.fill();
+  c.save(); c.translate(0,-off*.5); c.scale(1,w);
   c.strokeStyle=`rgba(255,255,255,${.18+.25*facing})`; c.lineWidth=3;
   c.beginPath();c.arc(0,0,R-14,0,Math.PI*2);c.stroke();
   if(front){ mark(c,185,`rgba(30,40,52,${.35+.25*facing})`,7); c.translate(-2,-2); mark(c,185,`rgba(255,255,255,${.12+.3*facing})`,5) }
-  else { for(const r of [96,64,32]){c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.strokeStyle=`rgba(255,255,255,${.1+.22*facing})`;c.lineWidth=2.5;c.stroke()} }
+  else { for(const r of [118,80,42]){c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.strokeStyle=`rgba(255,255,255,${.1+.22*facing})`;c.lineWidth=2.5;c.stroke()} }
   c.restore();
-  // specular sweep and glint
-  if(glint>.01){const sg=c.createLinearGradient(-R*w,-R,R*w,R*.4);sg.addColorStop(cl(.3),'rgba(255,255,255,0)');sg.addColorStop(.5,`rgba(255,255,255,${.75*glint})`);sg.addColorStop(cl(.7),'rgba(255,255,255,0)');
-    c.fillStyle=sg;c.beginPath();c.ellipse(-off*.5,0,R*w,R,0,0,Math.PI*2);c.fill();
-    c.globalCompositeOperation='lighter';const sp=c.createRadialGradient(-R*w*.4,-R*.45,0,-R*w*.4,-R*.45,90);sp.addColorStop(0,`rgba(220,235,255,${.55*glint})`);sp.addColorStop(1,'rgba(220,235,255,0)');c.fillStyle=sp;c.fillRect(-200,-260,400,400);c.globalCompositeOperation='source-over'}
+  if(glint>.01){const sg=c.createLinearGradient(-R,-R*w,R*.4,R*w);sg.addColorStop(.3,'rgba(255,255,255,0)');sg.addColorStop(.5,`rgba(255,255,255,${.75*glint})`);sg.addColorStop(.7,'rgba(255,255,255,0)');
+    c.fillStyle=sg;c.beginPath();c.ellipse(0,-off*.5,R,R*w,0,0,Math.PI*2);c.fill();
+    c.globalCompositeOperation='lighter';const sp=c.createRadialGradient(-R*.4,-R*w*.45,0,-R*.4,-R*w*.45,90);sp.addColorStop(0,`rgba(220,235,255,${.55*glint})`);sp.addColorStop(1,'rgba(220,235,255,0)');c.fillStyle=sp;c.fillRect(-260,-200,400,400);c.globalCompositeOperation='source-over'}
   c.restore();
-  // soft light the coin throws on the air beneath it
-  const sh=g.createRadialGradient(cx,cy+40,10,cx,cy+40,420);sh.addColorStop(0,`rgba(148,188,227,${.05+.05*facing})`);sh.addColorStop(1,'rgba(148,188,227,0)');
+  const sh=g.createRadialGradient(cx,cy+40,10,cx,cy+40,420);sh.addColorStop(0,`rgba(148,188,227,${(.05+.05*facing)*sz})`);sh.addColorStop(1,'rgba(148,188,227,0)');
   c.fillStyle=sh;c.fillRect(0,0,W,H);
 }
 
@@ -110,15 +114,15 @@ function scene(t){
   // suspended dust
   motes.forEach(m=>{const x=m.x+Math.sin(m.p+t*.05)*3, y=m.y-t*.6*m.z, s=.8+m.z*2.6, a=.05+.22*m.z*(.6+.4*Math.sin(m.p+t*.3));
     g.fillStyle=`rgba(214,235,255,${a})`;g.beginPath();g.arc(x,y,s,0,Math.PI*2);g.fill()});
+  hand(g,t);
   coin(g,t);
-  hand(g);
   g.restore();
   // vignette
   const vg=g.createRadialGradient(540,900,500,540,900,1250);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.7)');g.fillStyle=vg;g.fillRect(0,0,W,H);
 }
 
 function line(t){
-  const a=sm((t-10.6)/1.4), b=sm((t-12.4)/1.4);
+  const a=sm((t-10.5)/1.2), b=sm((t-13.1)/1.2);
   g.textAlign='center'; g.font='300 58px Barlow';
   g.fillStyle=`rgba(242,242,243,${.92*a})`; g.fillText('Some things you can know',540,1330);
   g.fillStyle=`rgba(181,217,253,${.95*b})`; g.fillText('before it lands.',540,1410);
@@ -147,7 +151,7 @@ function outro(t){
 window.seek=function(t){
   t=Math.max(0,Math.min(19.999,t)); seed=11;
   if(t<15.5){ scene(t); line(t);
-    const fi=sm(t/1.6); if(fi<1){g.fillStyle=`rgba(0,0,0,${1-fi})`;g.fillRect(0,0,W,H)} }
+    const fi=sm(t/.9); if(fi<1){g.fillStyle=`rgba(0,0,0,${1-fi})`;g.fillRect(0,0,W,H)} }
   else outro(t);                                  // hard cut to black on the ring
 };
 
