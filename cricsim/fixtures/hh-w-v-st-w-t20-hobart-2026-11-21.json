@@ -12,32 +12,32 @@
   "city": "Hobart",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Hobart Hurricanes Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Hobart Hurricanes Women",
       "short": "HH-W",
       "players": [
         "Lizelle Lee",
+        "Kate Pelle",
         "Rachel Trenaman",
         "Nicola Carey",
-        "Maddy Green",
         "Heather Graham",
+        "Maddy Green",
         "Chinelle Henry",
-        "Molly Strano",
         "Hayley Silver holmes",
+        "Molly Strano",
         "Lauren Smith",
-        "Isabella Malgioglio",
         "Linsey Smith"
       ],
       "roles": [
         "WK",
         "BAT",
-        "AR",
         "BAT",
         "AR",
         "AR",
-        "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -69,8 +69,8 @@
         "Nadine de Klerk",
         "Tahlia Wilson",
         "Laura Harris",
-        "Jemma Barsby",
         "Nicola Hancock",
+        "Jemma Barsby",
         "Lauren Bell",
         "Samantha Bates"
       ],
@@ -82,8 +82,8 @@
         "AR",
         "WK",
         "BAT",
-        "BOWL",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 40329,
     "url": "https://khelnow.com/live-cricket-score/hobart-hurricanes-women-vs-sydney-thunder-women-women's-big-bash-league-21st-november-2026-40329",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
