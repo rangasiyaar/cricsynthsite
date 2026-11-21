@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CricSynthesis Pro poster (dark)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f2f2f3;--ink:#1d1f20;--ink2:#45484b;--ink3:#5d5d60;--line:rgba(29,31,32,.12);--s:#5980a6;--s7:#416180;--s9:#1d2d3d;--s2:#d6ebff;--s3:#b5d9fd;--s4:#94bce3;--clay:#b0613a;--clayL:#d9895f;--mut:#a9bccd;
+  --head:"Barlow Condensed",system-ui,sans-serif;--body:"Barlow",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777}
+.poster{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 auto;color:var(--paper);font-family:var(--body);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(55% 35% at 92% 16%,#2b4a68 0%,rgba(43,74,104,0) 70%),linear-gradient(180deg,#1a2a3a 0%,#142231 60%,#101b27 100%);padding:40px 56px;display:flex;flex-direction:column}
+.art{position:absolute;left:0;top:0;pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.lock{display:flex;align-items:center;gap:12px;font:600 38px/1 var(--head);letter-spacing:.04em}
+.lock svg{width:48px;height:48px;color:var(--s4)}.lock b{font-weight:600;color:var(--s4)}
+.tagl{font:500 20px/1 var(--body);color:var(--mut);margin:8px 0 0 60px}
+.badge{background:var(--clay);color:#fff;font:700 26px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;padding:14px 20px;border-radius:6px}
+.eye{position:relative;margin-top:26px;display:inline-flex;align-self:flex-start;align-items:center;gap:10px;background:rgba(65,97,128,.45);border:1px solid rgba(148,188,227,.45);color:var(--s3);font:700 22px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border-radius:6px}
+.eye svg{width:20px;height:20px}
+h1{position:relative;margin-top:14px;font:700 88px/.92 var(--head);text-transform:uppercase;letter-spacing:.004em}
+h1 span{display:block;color:var(--s3)}
+.sub{position:relative;margin-top:16px;font:400 23px/1.4 var(--body);color:#c9d5e0;max-width:560px}
+.cards{position:relative;margin-top:24px;width:610px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:rgba(26,44,61,.8);border:1px solid rgba(148,188,227,.28);border-radius:12px;padding:16px 15px;display:grid;grid-template-columns:48px 1fr;gap:13px;align-items:start;min-height:132px}
+.card .ic{width:48px;height:48px;border-radius:10px;background:rgba(65,97,128,.5);border:1px solid rgba(148,188,227,.35);display:grid;place-items:center;color:var(--s3)}
+.card .ic svg{width:26px;height:26px}
+.card b{display:block;font:700 21px/1.1 var(--body)}
+.card span{display:block;font:400 16px/1.32 var(--body);color:var(--mut);margin-top:5px}
+/* phone */
+.phonewrap{position:absolute;left:0;top:0;width:1080px;height:995px;overflow:hidden;pointer-events:none}
+.phone{position:absolute;left:700px;top:388px;width:340px;height:720px;border-radius:56px;background:#0d1116;padding:11px;transform:rotate(3deg);box-shadow:inset 0 0 0 2px #3b4652,-24px 34px 70px rgba(0,0,0,.45)}
+.scr{position:relative;width:100%;height:100%;border-radius:45px;background:#f2f2f3;overflow:hidden;color:var(--ink)}
+.isl{position:absolute;left:50%;top:11px;transform:translateX(-50%);width:100px;height:28px;border-radius:14px;background:#000}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:18px 26px 0 30px;font:600 14px/1 var(--body)}
+.ahead{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 0}
+.ahead .lg{display:flex;align-items:center;gap:6px;font:600 18px/1 var(--head);letter-spacing:.03em}
+.ahead .lg svg{width:17px;height:17px;color:var(--s7)}
+.scr-h{display:flex;gap:10px;align-items:center;margin:16px 16px 10px}
+.scr-h .ic{width:40px;height:40px;border-radius:10px;background:#e6e7e9;display:grid;place-items:center}
+.scr-h h3{font:600 26px/1 var(--head);text-transform:uppercase}
+.scr-h p{font:400 13px/1.2 var(--body);color:var(--ink3);margin-top:3px}
+.pcard{background:#fafafa;border-radius:16px;padding:11px 13px;margin:0 11px 8px;box-shadow:0 1px 2px rgba(29,31,32,.08)}
+.pcard .k{font:500 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.wpr{display:flex;justify-content:space-between;align-items:flex-end;margin-top:9px}
+.wpr b{font:700 30px/1 var(--head)}.wpr small{display:block;font:600 12px/1 var(--head);letter-spacing:.06em;color:var(--ink3);margin-bottom:3px}
+.wbar{display:flex;height:8px;margin-top:8px;border-radius:4px;overflow:hidden}
+.wbar i:first-child{background:var(--s7)}.wbar i:last-child{background:var(--clay)}
+.prow{display:flex;align-items:center;justify-content:space-between;padding:8px 0 6px;border-bottom:1px solid var(--line)}
+.prow:last-child{border:0;padding-bottom:0}
+.prow .t{border-left:4px solid var(--c);padding-left:8px;font:500 15px/1 var(--body)}
+.prow .st{height:6px;border-radius:3px;background:#e1e3e6;position:relative;width:92px;margin:8px 0 0 12px}
+.prow .st u{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--c);opacity:.75}
+.prow .st s{position:absolute;top:-4px;width:13px;height:13px;border-radius:50%;background:var(--c);border:2px solid #fafafa}
+.prow .v{display:flex;align-items:center;gap:6px}.prow .v b{font:600 30px/1 var(--head)}.prow .v small{font:400 10.5px/1.25 var(--body);color:var(--ink3);width:40px}
+.ovs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:46px;margin-top:9px}
+.ovs i{background:#d3d9df;border-radius:2px}.ovs i.h{background:var(--clay)}
+.axis{display:flex;justify-content:space-between;font:500 10px/1 var(--body);color:var(--ink3);margin-top:5px}
+/* offer */
+.band{margin-top:auto;position:relative;z-index:2;background:linear-gradient(180deg,#22384d,#1a2c3d);border:1px solid rgba(148,188,227,.35);border-radius:16px 16px 0 0;display:grid;grid-template-columns:1fr 1px auto;gap:30px;align-items:center;padding:24px 34px}
+.band .sep{align-self:stretch;background:rgba(148,188,227,.25)}
+.band .lab{display:flex;align-items:center;gap:12px;font:600 22px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:#dbe4ec}
+.band .lab i{width:2px;height:22px;background:rgba(181,217,253,.4)}
+.band .lab em{font-style:normal;background:var(--clay);color:#fff;letter-spacing:.06em;padding:6px 11px;border-radius:5px}
+.band .amt{display:flex;align-items:baseline;gap:10px;margin-top:10px;white-space:nowrap}
+.band .amt b{font:700 100px/.8 var(--head)}
+.band .amt small{font:500 28px/1 var(--body);color:#c9d5e0}
+.band p{font:400 21px/1.3 var(--body);color:#dbe4ec;margin-top:10px}
+.act{text-align:center}
+.cta{display:inline-flex;align-items:center;gap:14px;background:var(--s3);color:var(--s9);font:700 32px/1 var(--head);letter-spacing:.04em;text-transform:uppercase;padding:24px 30px;border-radius:12px;white-space:nowrap}
+.cta svg{width:26px;height:26px}
+.act p{font:400 19px/1.3 var(--body);color:#c9d5e0;margin-top:12px}
+.strip{position:relative;z-index:2;background:#0f1a25;border:1px solid rgba(148,188,227,.35);border-top:0;border-radius:0 0 16px 16px;display:flex;justify-content:space-between;align-items:center;padding:18px 34px;font:400 20px/1.2 var(--body);color:#c9d5e0}
+.strip .y{display:flex;align-items:center;gap:12px}
+.strip strong{font:700 23px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;color:var(--s3)}
+.strip .y > b{font:700 30px/1 var(--head);color:#fff}
+.strip .sv{border:2px solid var(--clayL);color:var(--clayL);font:700 18px/1 var(--head);letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:6px}
+.strip .url{font:700 25px/1 var(--head);color:var(--s3);letter-spacing:.02em}
+.bens{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding-top:22px}
+.bens div{display:flex;align-items:center;gap:10px;font:500 17px/1.25 var(--body);color:#dbe4ec;padding:0 12px;border-left:1px solid rgba(148,188,227,.22)}
+.bens div:first-child{border-left:0;padding-left:2px}
+.bens svg{width:28px;height:28px;color:var(--s3);flex:none}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-stumps" viewBox="0 0 24 24"><path d="M7 6v15M12 6v15M17 6v15M5 4h6M13 4h6" fill="none" stroke="currentColor" stroke-width="2.2"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M16 14.6c2.6.2 4.4 2 5.3 5.4"/></g></symbol>
+<symbol id="i-ground" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="7"/><path d="M11 9h2v6h-2z"/></g></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM12 13v4M8 20h8M4 5h4M16 5h4M4 5c0 3 2 4 4 4M20 5c0 3-2 4-4 4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 10h14L14 9V3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-fan" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r=".8" fill="currentColor"/><circle cx="15" cy="10" r=".8" fill="currentColor"/></g></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></g></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></g></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+</defs></svg>
+
+<section class="poster" id="poster">
+  <svg class="art" width="1080" height="1350" viewBox="0 0 1080 1350">
+    <defs><linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5d9fd" stop-opacity=".16"/><stop offset="1" stop-color="#b5d9fd" stop-opacity="0"/></linearGradient></defs>
+    <path d="M990 150 L700 560 L1080 560 L1080 260 Z" fill="url(#beam)"/>
+    <g stroke="#94bce3" stroke-opacity=".45" stroke-width="2" fill="none"><path d="M990 166 L980 330 M990 166 L1000 330 M983 250 L997 280 M997 250 L983 280"/></g>
+    <g fill="#d6ebff" fill-opacity=".75"><rect x="955" y="130" width="12" height="9"/><rect x="971" y="130" width="12" height="9"/><rect x="987" y="130" width="12" height="9"/><rect x="1003" y="130" width="12" height="9"/><rect x="1019" y="130" width="12" height="9"/><rect x="955" y="143" width="12" height="9"/><rect x="971" y="143" width="12" height="9"/><rect x="987" y="143" width="12" height="9"/><rect x="1003" y="143" width="12" height="9"/><rect x="1019" y="143" width="12" height="9"/></g>
+  </svg>
+
+  <div class="top">
+    <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+    <div class="badge">1 day free</div>
+  </div>
+  <div class="eye"><svg><use href="#i-fan"/></svg>For cricket fans</div>
+  <h1>Know the match<span>before it's played.</span></h1>
+  <p class="sub">Every match we cover, worked out before the toss.</p>
+
+  <div class="cards">
+    <div class="card"><div class="ic"><svg><use href="#i-bars"/></svg></div><div><b>Projected runs</b><span>Each team's likely total, and how the runs will come.</span></div></div>
+    <div class="card"><div class="ic"><svg><use href="#i-stumps"/></svg></div><div><b>Projected wickets</b><span>The danger overs, and who is likely to strike.</span></div></div>
+    <div class="card"><div class="ic"><svg><use href="#i-users"/></svg></div><div><b>Player ratings</b><span>All 22 rated, key match-ups and fantasy points.</span></div></div>
+    <div class="card"><div class="ic"><svg><use href="#i-ground"/></svg></div><div><b>Ground insights</b><span>Typical scores, where runs come, pace or spin.</span></div></div>
+    <div class="card"><div class="ic"><svg><use href="#i-trophy"/></svg></div><div><b>Fantasy XI</b><span>A ready team with captain, vice-captain and backups.</span></div></div>
+    <div class="card"><div class="ic"><svg><use href="#i-flask"/></svg></div><div><b>MatchSynth Lab</b><span>Change conditions or form and see the forecast change.</span></div></div>
+  </div>
+
+  <div class="phonewrap"><div class="phone"><div class="scr">
+    <div class="isl"></div>
+    <div class="sbar"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><svg width="16" height="11" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" fill="#1d1f20"/><rect x="5" y="5" width="3" height="7" fill="#1d1f20"/><rect x="10" y="2" width="3" height="10" fill="#1d1f20"/><rect x="15" y="0" width="3" height="12" fill="#1d1f20"/></svg><svg width="24" height="12" viewBox="0 0 27 13"><rect x=".75" y=".75" width="22.5" height="11.5" rx="3.5" fill="none" stroke="#1d1f20" stroke-opacity=".45" stroke-width="1.5"/><rect x="2.5" y="2.5" width="16" height="8" rx="2" fill="#1d1f20"/></svg></span></div>
+    <div class="ahead"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg><div class="lg"><svg><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+    <div class="scr-h"><div class="ic"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div><div><h3>Overview</h3><p>IND v AUS</p></div></div>
+    <div class="pcard"><div class="k">Win chance</div><div class="wpr"><div><small>IND</small><b style="color:var(--s7)">62%</b></div><div style="text-align:right"><small>AUS</small><b style="color:var(--clay)">38%</b></div></div><div class="wbar"><i style="flex:62"></i><i style="flex:38"></i></div></div>
+    <div class="pcard"><div class="k">Projected runs</div>
+      <div class="prow" style="--c:var(--s7)"><div><div class="t">IND</div><div class="st"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely 166–201</small></div></div>
+      <div class="prow" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="st"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely 153–189</small></div></div></div>
+    <div class="pcard"><div class="k">Projected wickets by over</div><div class="ovs"><i style="height:30%"></i><i style="height:26%"></i><i style="height:34%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:48%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:35%"></i><i style="height:38%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:47%"></i><i style="height:52%"></i><i style="height:58%"></i><i class="h" style="height:74%"></i><i class="h" style="height:82%"></i><i class="h" style="height:90%"></i><i class="h" style="height:100%"></i><i style="height:70%"></i></div><div class="axis"><span>1</span><span>6</span><span>10</span><span>16–19</span><span>20</span></div></div>
+  </div></div></div>
+
+  <div class="band">
+    <div>
+      <div class="lab">Monthly plan <i></i><em>1 day free</em></div>
+      <div class="amt"><b>₹349</b><small>a month</small></div>
+      <p>Every match we cover. Cancel any time.</p>
+    </div>
+    <div class="sep"></div>
+    <div class="act">
+      <div class="cta">Start your free day<svg><use href="#arrow"/></svg></div>
+      <p>Free today, then ₹349 a month.</p>
+    </div>
+  </div>
+  <div class="strip"><span class="y"><strong>Yearly</strong><b>₹3,769</b>a year, just ₹314 a month <span class="sv">Save ₹419</span></span><span class="url">cricsynthesis.in/pro</span></div>
+  <div class="bens">
+    <div><svg><use href="#i-trophy"/></svg>Fantasy picks</div>
+    <div><svg><use href="#i-phone"/></svg>Web and Android</div>
+    <div><svg><use href="#i-flask"/></svg>Your own what-ifs</div>
+    <div><svg><use href="#i-cal"/></svg>Every match we cover</div>
+  </div>
+</section>
+</body></html>
