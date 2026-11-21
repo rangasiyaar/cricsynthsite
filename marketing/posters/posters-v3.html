@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CricSynthesis launch set</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f2f3;--surface:#e9e9ea;--ink:#1d1f20;--ink2:#45484b;--ink3:#5d5d60;--line:rgba(29,31,32,.12);
+  --s:#5980a6;--s7:#416180;--s9:#1d2d3d;--s1:#eef6ff;--s2:#d6ebff;--s3:#b5d9fd;--s4:#94bce3;--clay:#b0613a;--clayL:#d9895f;
+  --head:"Barlow Condensed",system-ui,sans-serif;--body:"Barlow",system-ui,sans-serif;--mono:"JetBrains Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777;font-family:var(--body);color:var(--ink);-webkit-font-smoothing:antialiased}
+.poster{width:1080px;height:1350px;position:relative;overflow:hidden;margin:0 auto 40px}
+.art{position:absolute;left:0;top:0;pointer-events:none}
+.lock{display:flex;align-items:center;gap:12px;font:600 36px/1 var(--head);letter-spacing:.04em}
+.lock svg{width:46px;height:46px}
+.tagl{font:500 19px/1 var(--body);margin:7px 0 0 58px}
+.arrow{width:26px;height:26px}
+
+/* ───────── 1. PRO: fans, match night ───────── */
+.pro{background:radial-gradient(80% 50% at 70% 0%,#2c4964 0%,#1a2938 55%,#131f2b 100%);color:#f2f2f3;padding:56px 60px}
+.pro .lock svg{color:var(--s4)}.pro .lock b{font-weight:600;color:var(--s4)}.pro .tagl{color:#9fb4c7}
+.pro .top{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
+.pro .free{background:var(--clay);color:#fff;font:700 24px/1 var(--head);letter-spacing:.08em;text-transform:uppercase;padding:13px 18px;border-radius:6px}
+.pro h1{position:relative;margin-top:64px;font:700 100px/.92 var(--head);text-transform:uppercase;letter-spacing:.003em}
+.pro h1 span{display:block;color:var(--s3)}
+.pro .sub{position:relative;margin-top:24px;width:470px;font:400 25px/1.42 var(--body);color:#c9d5e0}
+.callouts{position:relative;margin-top:34px;width:440px;display:grid;gap:22px}
+.co{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:18px;padding-top:18px;border-top:1px solid rgba(181,217,253,.18)}
+.co b{font:700 58px/.9 var(--head);color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.co b small{font-size:30px;color:var(--s3)}
+.co span{font:500 20px/1.3 var(--body);color:#c9d5e0}
+.co span strong{display:block;font:600 21px/1.1 var(--head);letter-spacing:.08em;text-transform:uppercase;color:var(--s3);margin-bottom:5px}
+.pro .phonewrap{position:absolute;left:0;top:0;width:1080px;height:1070px;overflow:hidden;pointer-events:none}
+.pro .phone{position:absolute;left:600px;top:420px;width:380px;height:800px;border-radius:62px;background:#0d1116;padding:12px;transform:rotate(4deg);box-shadow:inset 0 0 0 2px #3b4652,-30px 40px 80px rgba(0,0,0,.45)}
+.scr{position:relative;width:100%;height:100%;border-radius:50px;background:#f2f2f3;overflow:hidden;color:var(--ink)}
+.isl{position:absolute;left:50%;top:12px;transform:translateX(-50%);width:110px;height:31px;border-radius:16px;background:#000}
+.sbar{display:flex;justify-content:space-between;padding:20px 30px 0 34px;font:600 15px/1 var(--body)}
+.ahead{display:flex;align-items:center;justify-content:space-between;padding:20px 18px 0}
+.ahead .lg{display:flex;align-items:center;gap:6px;font:600 19px/1 var(--head);letter-spacing:.03em}
+.ahead .lg svg{width:18px;height:18px;color:var(--s7)}
+.scr-h{display:flex;gap:10px;align-items:center;margin:18px 18px 12px}
+.scr-h .ic{width:42px;height:42px;border-radius:11px;background:#e6e7e9;display:grid;place-items:center}
+.scr-h h3{font:600 28px/1 var(--head);text-transform:uppercase}
+.scr-h p{font:400 14px/1.2 var(--body);color:var(--ink3);margin-top:3px}
+.pcard{background:#fafafa;border-radius:18px;padding:12px 14px;margin:0 12px 9px;box-shadow:0 1px 2px rgba(29,31,32,.08)}
+.pcard .k{font:500 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding-bottom:9px;border-bottom:1px solid var(--line)}
+.prow{display:flex;align-items:center;justify-content:space-between;padding:9px 0 7px;border-bottom:1px solid var(--line)}
+.prow:last-child{border:0;padding-bottom:0}
+.prow .t{border-left:4px solid var(--c);padding-left:9px;font:500 16px/1 var(--body)}
+.prow .st{height:6px;border-radius:3px;background:#e1e3e6;position:relative;width:104px;margin:9px 0 0 13px}
+.prow .st u{position:absolute;top:0;bottom:0;border-radius:3px;background:var(--c);opacity:.75}
+.prow .st s{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--c);border:2px solid #fafafa}
+.prow .v{display:flex;align-items:center;gap:7px}.prow .v b{font:600 34px/1 var(--head)}.prow .v small{font:400 11px/1.25 var(--body);color:var(--ink3);width:42px}
+.ovs{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;align-items:end;height:52px;margin-top:10px}
+.ovs i{background:#d3d9df;border-radius:2px}.ovs i.h{background:var(--clay)}
+.axis{display:flex;justify-content:space-between;font:500 10px/1 var(--body);color:var(--ink3);margin-top:5px}
+.xi{display:flex;gap:7px;margin-top:11px}
+.xi div{flex:1;height:46px;border-radius:10px;background:#e6e7e9;display:grid;place-items:center;font:600 14px/1 var(--head);color:var(--ink2);position:relative}
+.xi em{position:absolute;top:-7px;right:-4px;font:700 10px/19px var(--head);font-style:normal;width:21px;height:21px;border-radius:50%;text-align:center;background:var(--s7);color:#fff;border:2px solid #fafafa}
+.xi em.vc{background:var(--clay)}
+.offer{position:absolute;left:60px;right:60px;bottom:96px;background:#f2f2f3;color:var(--ink);border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:30px 34px;box-shadow:0 30px 60px rgba(0,0,0,.35);z-index:2}
+.offer h2{font:700 54px/.95 var(--head);text-transform:uppercase}
+.offer p{font:500 23px/1.3 var(--body);color:var(--ink2);margin-top:10px}
+.offer p b{color:var(--ink);font-weight:700}
+.btn{display:inline-flex;align-items:center;gap:14px;font:700 32px/1 var(--head);letter-spacing:.04em;text-transform:uppercase;padding:26px 32px;border-radius:10px;white-space:nowrap}
+.offer .btn{background:var(--s7);color:#fff}
+.pro .foot{position:absolute;left:60px;right:60px;bottom:38px;display:flex;justify-content:space-between;font:500 21px/1 var(--body);color:#c9d5e0;z-index:2}
+.pro .foot b{color:#fff;font-weight:600}
+.pro .foot .u{color:var(--s3);font-weight:600}
+
+/* ───────── 2. API PLUS: developers ───────── */
+.dev{background:#f4f5f7;padding:56px 60px;display:flex;flex-direction:column}
+.dev .lock svg{color:var(--s7)}.dev .lock b{font-weight:600;color:var(--s7)}.dev .tagl{color:var(--ink3)}
+.dev .top{display:flex;justify-content:space-between;align-items:flex-start}
+.dev .badge{border:2px solid var(--s7);color:var(--s7);font:700 24px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;border-radius:6px}
+.dev h1{margin-top:58px;font:700 98px/.92 var(--head);text-transform:uppercase}
+.dev h1 span{display:block;color:var(--s7)}
+.dev .sub{margin-top:22px;font:400 25px/1.42 var(--body);color:var(--ink2);max-width:860px}
+.dev .sub code{font:500 21px/1 var(--mono);background:var(--s2);color:var(--s9);padding:3px 7px;border-radius:4px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 20px 22px}
+.step .n{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--s7)}
+.step .n i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--s7);color:#fff;display:grid;place-items:center;font-size:17px;letter-spacing:0}
+.step h3{font:700 31px/1.05 var(--head);text-transform:uppercase;margin-top:14px}
+.step .vis{margin-top:16px;height:132px;border-radius:8px;background:var(--s9);color:#dbe4ec;padding:13px 14px;font:400 14px/1.6 var(--mono);overflow:hidden}
+.step .vis .c{color:#7f97ad}.step .vis .s{color:#f2c79f}.step .vis .n2{color:var(--s3)}.step .vis .g{color:#9fd0b4}
+.step .vis.light{background:var(--s1);color:var(--ink);font-family:var(--body)}
+.mini .h{display:flex;justify-content:space-between;font:700 16px/1 var(--head)}
+.mini .wp{display:flex;height:9px;margin-top:8px;border-radius:5px;overflow:hidden}
+.mini .wp i:first-child{background:var(--s7)}.mini .wp i:last-child{background:var(--clay)}
+.mini .wl{display:flex;justify-content:space-between;margin-top:6px;font:700 22px/1 var(--head)}
+.mini .wl span:first-child{color:var(--s7)}.mini .wl span:last-child{color:var(--clay)}
+.mini small{display:block;font:500 12px/1 var(--body);color:var(--ink3);margin-top:8px}
+.cmp{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cmp table{width:100%;border-collapse:collapse}
+.cmp th,.cmp td{padding:16px 22px;text-align:left;font:500 20px/1.2 var(--body);border-top:1px solid var(--line)}
+.cmp thead th{border-top:0;font:700 24px/1 var(--head);letter-spacing:.06em;text-transform:uppercase;padding-top:18px;padding-bottom:16px}
+.cmp td:first-child,.cmp th:first-child{color:var(--ink3);width:40%}
+.cmp .plus{background:var(--s1);color:var(--s9);font-weight:700}
+.cmp thead .plus{background:var(--s7);color:#fff}
+.cmp .price td{font:700 30px/1 var(--head)}
+.cmp .price td small{display:block;font:500 15px/1.2 var(--body);color:var(--ink3);margin-top:5px}
+.cmp .price td.plus small{color:var(--s7)}
+.dev .ctas{margin-top:auto;display:flex;align-items:center;gap:22px}
+.dev .btn.p{background:var(--s7);color:#fff}
+.dev .btn.s{background:transparent;color:var(--s7);border:2px solid var(--s7);font-size:26px;padding:22px 24px}
+.dev .ctas .u{margin-left:auto;text-align:right;font:500 18px/1.3 var(--body);color:var(--ink3)}
+.dev .ctas .u b{display:block;font:700 26px/1 var(--head);color:var(--s7);letter-spacing:.01em}
+
+/* ───────── 3. BUSINESS: decision-makers ───────── */
+.biz{background:#f4f5f7}
+.biz .navy{position:absolute;left:0;right:0;top:0;height:840px;background:var(--s9)}
+.biz .inner{position:relative;padding:56px 60px;display:flex;flex-direction:column;height:100%}
+.biz .lock{color:#f2f2f3}.biz .lock svg{color:var(--s4)}.biz .lock b{font-weight:600;color:var(--s4)}.biz .tagl{color:#9fb4c7}
+.biz .top{display:flex;justify-content:space-between;align-items:flex-start}
+.biz .badge{border:2px solid var(--s3);color:var(--s3);font:700 24px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;border-radius:6px}
+.biz .eyebrow{margin-top:58px;font:600 22px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--s4)}
+.biz h1{margin-top:14px;font:700 98px/.92 var(--head);text-transform:uppercase;color:#f2f2f3}
+.biz h1 span{display:block;color:var(--s3)}
+.biz .sub{margin-top:22px;max-width:640px;font:400 25px/1.42 var(--body);color:#c9d5e0}
+.who{margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.who div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 22px 24px;box-shadow:0 14px 30px rgba(29,45,61,.08)}
+.who .ic{width:52px;height:52px;border-radius:10px;background:var(--s1);display:grid;place-items:center;color:var(--s7)}
+.who .ic svg{width:28px;height:28px}
+.who h3{font:700 27px/1.05 var(--head);text-transform:uppercase;margin-top:16px}
+.who p{font:400 19px/1.38 var(--body);color:var(--ink2);margin-top:8px}
+.how{margin-top:22px;display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:0;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0}
+.how .lbl{font:700 22px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--s7);padding-right:24px}
+.how div{display:flex;align-items:center;gap:12px;font:500 19px/1.25 var(--body);color:var(--ink);padding:0 14px;border-left:1px solid var(--line)}
+.how i{font-style:normal;flex:none;width:30px;height:30px;border-radius:50%;background:var(--s7);color:#fff;display:grid;place-items:center;font:700 16px/1 var(--head)}
+.biz .close{margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.biz .close h2{font:700 46px/.95 var(--head);text-transform:uppercase}
+.biz .close p{font:500 20px/1.3 var(--body);color:var(--ink2);margin-top:8px}
+.biz .btn{background:var(--s9);color:#fff}
+.biz .small{margin-top:16px;display:flex;justify-content:space-between;font:500 19px/1 var(--body);color:var(--ink3)}
+.biz .small b{color:var(--s7);font-weight:700}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M3 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+<symbol id="i-news" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h10"/></g></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></g></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g></symbol>
+</defs></svg>
+
+<!-- ═════════ 1. CricSynthesis Pro ═════════ -->
+<section class="poster pro" id="pro">
+  <svg class="art" width="1080" height="1350" viewBox="0 0 1080 1350"><ellipse cx="760" cy="1060" rx="700" ry="250" fill="none" stroke="#94bce3" stroke-opacity="0.1" stroke-width="2"/><ellipse cx="760" cy="1060" rx="620" ry="215" fill="none" stroke="#94bce3" stroke-opacity="0.08" stroke-width="2"/><ellipse cx="760" cy="1060" rx="540" ry="182" fill="none" stroke="#94bce3" stroke-opacity="0.12" stroke-width="2"/><ellipse cx="760" cy="1060" rx="500" ry="165" fill="#22384d" fill-opacity=".5" stroke="#b5d9fd" stroke-opacity=".18" stroke-width="2"/><ellipse cx="760" cy="1060" rx="250" ry="82" fill="none" stroke="#b5d9fd" stroke-opacity=".14" stroke-width="2" stroke-dasharray="8 10"/></svg>
+  <div class="top">
+    <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+    <div class="free">Free for 1 day</div>
+  </div>
+  <h1>Who wins tonight?<span>Know before the toss.</span></h1>
+  <p class="sub">CricSynthesis Pro plays out every match we cover before it starts, and shows you what matters.</p>
+  <div class="callouts">
+    <div class="co"><b>184 <small>runs</small></b><span><strong>Projected runs</strong>Each team's likely total and range</span></div>
+    <div class="co"><b>16–19</b><span><strong>Danger overs</strong>When wickets are most likely to fall</span></div>
+    <div class="co"><b>58 : 42</b><span><strong>Player match-ups</strong>Who has the edge in the key duels</span></div>
+  </div>
+
+  <div class="phonewrap"><div class="phone"><div class="scr">
+    <div class="isl"></div>
+    <div class="sbar"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><svg width="17" height="11" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" fill="#1d1f20"/><rect x="5" y="5" width="3" height="7" fill="#1d1f20"/><rect x="10" y="2" width="3" height="10" fill="#1d1f20"/><rect x="15" y="0" width="3" height="12" fill="#1d1f20"/></svg><svg width="25" height="12" viewBox="0 0 27 13"><rect x=".75" y=".75" width="22.5" height="11.5" rx="3.5" fill="none" stroke="#1d1f20" stroke-opacity=".45" stroke-width="1.5"/><rect x="2.5" y="2.5" width="16" height="8" rx="2" fill="#1d1f20"/></svg></span></div>
+    <div class="ahead"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg><div class="lg"><svg><use href="#mark"/></svg><span>CRIC<span style="color:var(--s7)">SYNTHESIS</span></span></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d1f20" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+    <div class="scr-h"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#416180" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div><div><h3>Overview</h3><p>IND 62% to win</p></div></div>
+    <div class="pcard"><div class="k">Projected runs</div>
+      <div class="prow" style="--c:var(--s7)"><div><div class="t">IND</div><div class="st"><u style="left:22%;right:30%"></u><s style="left:44%"></s></div></div><div class="v"><b>184</b><small>likely 166–201</small></div></div>
+      <div class="prow" style="--c:var(--clay)"><div><div class="t">AUS</div><div class="st"><u style="left:14%;right:38%"></u><s style="left:36%"></s></div></div><div class="v"><b>172</b><small>likely 153–189</small></div></div></div>
+    <div class="pcard"><div class="k">Projected wickets by over</div><div class="ovs"><i style="height:30%"></i><i style="height:26%"></i><i style="height:34%"></i><i style="height:38%"></i><i style="height:42%"></i><i style="height:48%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:35%"></i><i style="height:38%"></i><i style="height:40%"></i><i style="height:44%"></i><i style="height:47%"></i><i style="height:52%"></i><i style="height:58%"></i><i class="h" style="height:74%"></i><i class="h" style="height:82%"></i><i class="h" style="height:90%"></i><i class="h" style="height:100%"></i><i style="height:70%"></i></div><div class="axis"><span>1</span><span>6</span><span>10</span><span>16–19</span><span>20</span></div></div>
+    <div class="pcard"><div class="k">Fantasy XI · suggested</div><div class="xi"><div>WK<em>C</em></div><div>BAT<em class="vc">VC</em></div><div>AR</div><div>BOWL</div></div></div>
+  </div></div></div>
+
+  <div class="offer">
+    <div><h2>Try Pro free for a day</h2><p>Then <b>₹349 a month</b>. Cancel any time.</p></div>
+    <div class="btn">Start my free day<svg class="arrow"><use href="#arrow"/></svg></div>
+  </div>
+  <div class="foot"><span>Or <b>₹3,769 a year</b>, save ₹419</span><span class="u">cricsynthesis.in/pro</span></div>
+</section>
+
+<!-- ═════════ 2. API Plus ═════════ -->
+<section class="poster dev" id="plus">
+  <div class="top">
+    <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+    <div class="badge">For developers</div>
+  </div>
+  <h1>Ship cricket forecasts<span>by tonight.</span></h1>
+  <p class="sub">One REST API and an MCP connector: win chances, projected runs, match-ups, fantasy picks and graphics, as <code>JSON</code> or ready-made cards.</p>
+
+  <div class="steps">
+    <div class="step"><div class="n"><i>1</i>Step one</div><h3>Create a free key</h3>
+      <div class="vis"><span class="c"># your account → API keys</span><br><span class="g">✓</span> key created<br><span class="s">cs_live_8f2c…a91</span></div></div>
+    <div class="step"><div class="n"><i>2</i>Step two</div><h3>Call any endpoint</h3>
+      <div class="vis">GET <span class="s">/v1/matches</span><br>GET <span class="s">/v1/matches/{id}</span><br><span class="c">  /win-probability</span></div></div>
+    <div class="step"><div class="n"><i>3</i>Step three</div><h3>Ship it</h3>
+      <div class="vis light mini"><div class="h"><span>IND</span><span>AUS</span></div><div class="wp"><i style="flex:62"></i><i style="flex:38"></i></div><div class="wl"><span>62%</span><span>38%</span></div><small>In your app, site or assistant</small></div></div>
+  </div>
+
+  <div class="cmp"><table>
+    <thead><tr><th>Plan</th><th>API Free</th><th class="plus">API Plus</th></tr></thead>
+    <tbody>
+      <tr><td>Calls a day (API + MCP)</td><td>200</td><td class="plus">20,000</td></tr>
+      <tr><td>Every endpoint and MCP tool</td><td>Yes</td><td class="plus">Yes</td></tr>
+      <tr><td>Graphics</td><td>Watermarked</td><td class="plus">Clean, ready to post</td></tr>
+      <tr><td>CricSynthesis Pro</td><td>Not included</td><td class="plus">Included</td></tr>
+      <tr class="price"><td>Price</td><td>₹0<small>No card needed</small></td><td class="plus">₹4,999 / month<small>or ₹53,989 a year, save ₹5,999</small></td></tr>
+    </tbody></table></div>
+
+  <div class="ctas">
+    <div class="btn p">Create a free key<svg class="arrow"><use href="#arrow"/></svg></div>
+    <div class="btn s">Go Plus</div>
+    <div class="u"><b>cricsynthesis.in/developers</b>Docs, playground and keys</div>
+  </div>
+</section>
+
+<!-- ═════════ 3. Business API ═════════ -->
+<section class="poster biz" id="biz">
+  <div class="navy"></div>
+  <svg class="art" width="1080" height="840" viewBox="0 0 1080 840"><rect x="0" y="763" width="38" height="77" fill="#416180" fill-opacity="0.5"/><rect x="45" y="741" width="38" height="99" fill="#416180" fill-opacity="0.5"/><rect x="90" y="774" width="38" height="66" fill="#416180" fill-opacity="0.5"/><rect x="135" y="719" width="38" height="121" fill="#416180" fill-opacity="0.5"/><rect x="180" y="752" width="38" height="88" fill="#416180" fill-opacity="0.5"/><rect x="225" y="730" width="38" height="110" fill="#416180" fill-opacity="0.5"/><rect x="270" y="785" width="38" height="55" fill="#416180" fill-opacity="0.5"/><rect x="315" y="763" width="38" height="77" fill="#416180" fill-opacity="0.5"/><rect x="360" y="752" width="38" height="88" fill="#416180" fill-opacity="0.5"/><rect x="405" y="741" width="38" height="99" fill="#416180" fill-opacity="0.5"/><rect x="450" y="730" width="38" height="110" fill="#416180" fill-opacity="0.5"/><rect x="495" y="763" width="38" height="77" fill="#416180" fill-opacity="0.5"/><rect x="540" y="719" width="38" height="121" fill="#416180" fill-opacity="0.5"/><rect x="585" y="708" width="38" height="132" fill="#416180" fill-opacity="0.5"/><rect x="630" y="741" width="38" height="99" fill="#416180" fill-opacity="0.5"/><rect x="675" y="686" width="38" height="154" fill="#416180" fill-opacity="0.5"/><rect x="720" y="675" width="38" height="165" fill="#5980a6" fill-opacity="0.78"/><rect x="765" y="653" width="38" height="187" fill="#5980a6" fill-opacity="0.78"/><rect x="810" y="697" width="38" height="143" fill="#416180" fill-opacity="0.5"/><rect x="855" y="620" width="38" height="220" fill="#5980a6" fill-opacity="0.78"/><rect x="900" y="664" width="38" height="176" fill="#5980a6" fill-opacity="0.78"/><rect x="945" y="708" width="38" height="132" fill="#416180" fill-opacity="0.5"/><rect x="990" y="642" width="38" height="198" fill="#5980a6" fill-opacity="0.78"/><rect x="1035" y="609" width="38" height="231" fill="#5980a6" fill-opacity="0.78"/><circle cx="199.0" cy="736" r="8" fill="none" stroke="#d9895f" stroke-width="3.5"/><circle cx="424.0" cy="725" r="8" fill="none" stroke="#d9895f" stroke-width="3.5"/><circle cx="694.0" cy="670" r="8" fill="none" stroke="#d9895f" stroke-width="3.5"/><circle cx="829.0" cy="681" r="8" fill="none" stroke="#d9895f" stroke-width="3.5"/><circle cx="1009.0" cy="626" r="8" fill="none" stroke="#d9895f" stroke-width="3.5"/></svg>
+  <div class="inner">
+    <div class="top">
+      <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
+      <div class="badge">Business API</div>
+    </div>
+    <div class="eyebrow">For media and sports platforms</div>
+    <h1>The numbers behind<span>every fixture.</span></h1>
+    <p class="sub">Forecasts, player projections and graphics for every match we cover, delivered to your site, app or newsroom at your scale.</p>
+
+    <div class="who">
+      <div><div class="ic"><svg><use href="#i-news"/></svg></div><h3>Publishers &amp; broadcasters</h3><p>Previews and graphics ready before the toss.</p></div>
+      <div><div class="ic"><svg><use href="#i-phone"/></svg></div><h3>Fantasy &amp; sports apps</h3><p>Player projections and team picks in your product.</p></div>
+      <div><div class="ic"><svg><use href="#i-target"/></svg></div><h3>Teams &amp; analysts</h3><p>Match-ups, bowling plans and what-if simulations.</p></div>
+    </div>
+    <div class="how">
+      <span class="lbl">How it works</span>
+      <div><i>1</i>Tell us what you're building</div>
+      <div><i>2</i>We size limits and integration</div>
+      <div><i>3</i>Go live with your dashboard</div>
+    </div>
+    <div class="close">
+      <div><h2>Priced to your traffic</h2><p>Custom limits, a live dashboard and priority support.</p></div>
+      <div class="btn">Book a call<svg class="arrow"><use href="#arrow"/></svg></div>
+    </div>
+    <div class="small"><span>Starting smaller? API Plus is <b>₹4,999 a month</b>.</span><span><b>cricsynthesis.in/contact</b></span></div>
+  </div>
+</section>
+</body></html>
