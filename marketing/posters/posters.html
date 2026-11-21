@@ -103,48 +103,42 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
 .alt .url{margin:0;font:600 24px/1 var(--body);color:var(--s7);white-space:nowrap}
 .pro .fine{position:relative;font:400 17px/1.35 var(--body);color:var(--ink3);margin-top:14px}
 
-/* 2 + 3. API posters: same family as Pro (class "pro"), each with its own proof visual on the right. */
-.api .checks{gap:13px}
-.api .checks b{font-size:25px}
-.api .checks span{font-size:20px}
-.api .sub{max-width:900px}
-/* API Plus: a real request and response */
-.codecard{position:absolute;right:64px;top:470px;width:404px;background:var(--s9);color:#dbe4ec;border-radius:10px;overflow:hidden;box-shadow:-20px 24px 50px rgba(29,45,61,.22);z-index:1}
-.codecard .bar{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#16232f;font:500 14px/1 var(--mono);color:var(--s4)}
-.codecard .bar b{font-weight:500;color:#9fd0b4}
-.codecard pre{padding:16px 18px;font:400 15px/1.6 var(--mono);white-space:pre}
-.codecard .req{border-bottom:1px solid rgba(181,217,253,.14)}
-.codecard .c{color:#7f97ad}.codecard .s{color:#f2c79f}.codecard .n{color:var(--s3)}
-.codecard .out{display:flex;gap:10px;padding:0 18px 18px}
-.codecard .out div{flex:1;background:#24384b;border-radius:6px;padding:10px 12px}
-.codecard .out small{display:block;font:500 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--s4)}
-.codecard .out b{display:block;font:600 30px/1 var(--head);color:#fff;margin-top:6px}
-.deal .amt .unit{font:500 30px/1 var(--body);color:#c6d2dd}
-/* Business: our widget on the customer's own site */
-.browser{position:absolute;right:64px;top:470px;width:420px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:-20px 24px 50px rgba(29,45,61,.2);z-index:1;border:1px solid rgba(29,31,32,.1)}
-.browser .bar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#e9e9ea}
-.browser .bar span{flex:1;background:#fff;border-radius:6px;padding:7px 12px;font:500 14px/1 var(--body);color:var(--ink3)}
-.browser .page{padding:16px 20px 18px}
-.browser .kick{font:600 13px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--clay)}
-.browser h4{font:700 26px/1.08 var(--body);margin-top:8px;color:var(--ink)}
-.browser .ln{height:9px;border-radius:4px;background:#e4e5e7;margin-top:9px}
-.widget{margin-top:16px;border:1px solid rgba(29,31,32,.12);border-radius:8px;padding:14px 16px;background:#fafafa}
-.widget .h{display:flex;justify-content:space-between;font:600 13px/1 var(--head);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
-.widget .m{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font:600 24px/1 var(--head)}
-.widget .wp{display:flex;height:12px;margin-top:10px;border-radius:6px;overflow:hidden}
-.widget .wp i:first-child{background:var(--s7)}.widget .wp i:last-child{background:var(--clay)}
-.widget .wl{display:flex;justify-content:space-between;margin-top:8px;font:600 22px/1 var(--head)}
-.widget .wl span:first-child{color:var(--s7)}.widget .wl span:last-child{color:var(--clay)}
-.widget .pr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.widget .pr div{background:#fff;border:1px solid rgba(29,31,32,.08);border-radius:6px;padding:8px 10px}
-.widget .pr small{display:block;font:500 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
-.widget .pr b{display:block;font:600 26px/1 var(--head);margin-top:4px}
-.widget .by{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:12px;font:500 12px/1 var(--body);color:var(--ink3)}
-.widget .by svg{width:14px;height:14px;color:var(--s7)}
-.deal .big{font:700 62px/.9 var(--head);white-space:nowrap;text-transform:uppercase;margin-top:12px}
-.deal .inc{display:grid;grid-template-columns:auto auto;gap:10px 26px;margin-top:16px;list-style:none}
-.deal .inc li{display:flex;gap:10px;align-items:center;white-space:nowrap;font:500 19px/1.2 var(--body);color:#dbe4ec}
-.deal .inc li::before{content:"";width:9px;height:9px;background:var(--s4);flex:none}
+/* 2. API Plus: night-match navy, a wagon wheel of everything the API returns */
+.wag{background:radial-gradient(90% 60% at 50% 58%,#25405a 0%,var(--s9) 70%);color:var(--paper);padding:60px 64px 0}
+.art{position:absolute;left:0;top:0;width:1080px;height:1350px;pointer-events:none}
+.wag .brand .syn{color:var(--s4)}
+.tagline{font:500 22px/1 var(--body);letter-spacing:.04em;color:var(--ink3);margin-top:10px}
+.wag .tagline{color:#9fb4c7}
+.plan-name{font:600 30px/1 var(--head);letter-spacing:.08em;text-transform:uppercase;padding-top:6px}
+.wag .plan-name{color:var(--s3)}
+.wag h1{font-size:92px;line-height:.95;margin-top:54px;position:relative}
+.wag h1 span{color:var(--s4)}
+.wag .foot{margin-top:auto;position:relative;display:flex;justify-content:space-between;align-items:flex-end;padding-top:28px;border-top:2px solid rgba(181,217,253,.22)}
+.wag .price{white-space:nowrap}
+.wag .price b{font:700 128px/.8 var(--head)}
+.wag .price small{font:500 30px/1 var(--body);color:#c6d2dd;margin-left:10px}
+.wag .price p{font:500 23px/1.3 var(--body);color:#c6d2dd;margin-top:16px;white-space:normal}
+.act{text-align:center}
+.wag .cta{background:var(--s3);color:var(--s9);border-radius:4px;height:86px;font-size:36px}
+.act p{font:500 20px/1.3 var(--body);margin-top:12px}
+.wag .act p{color:#c6d2dd}
+.base{position:relative;display:flex;justify-content:space-between;margin:26px -64px 0;padding:20px 64px;font:500 22px/1 var(--body)}
+.wag .base{background:#152230;color:#c6d2dd}
+.wag .base span:last-child{color:var(--s3);font-weight:600}
+
+/* 3. Business: paper page, a Manhattan rising out of the navy offer band */
+.man{background:var(--paper);color:var(--ink);padding:60px 64px 0}
+.man .tagline{color:var(--ink3)}
+.man .plan-name{color:var(--s7)}
+.man h1{font-size:92px;line-height:.95;margin-top:54px;position:relative}
+.man .sub{font:400 25px/1.4 var(--body);color:var(--ink2);margin-top:20px;max-width:700px;position:relative}
+.man .band{margin:auto -64px 0;position:relative;background:var(--s9);color:var(--paper);display:flex;justify-content:space-between;align-items:center;gap:30px;padding:58px 64px 34px;height:250px}
+.man .band .k{font:600 22px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--s4)}
+.man .band .big{font:700 70px/.9 var(--head);text-transform:uppercase;margin-top:10px;white-space:nowrap}
+.man .band p{font:400 21px/1.35 var(--body);color:#c6d2dd;margin-top:12px;max-width:560px}
+.man .cta{background:var(--paper);color:var(--s9);border-radius:4px;height:86px;font-size:36px}
+.man .act p{color:var(--s3);font-weight:600;font-size:22px}
+.man .base{background:#152230;color:#c6d2dd;margin-top:0}
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -224,104 +218,125 @@ h1{font:700 104px/.9 var(--head);text-transform:uppercase;margin-top:72px;positi
   <p class="fine">Your plan starts after the free day. Setting up autopay takes a ₹5 check, refunded straight away. For ages 18 and over.</p>
 </section>
 
-<!-- ═════════ 2. API Plus ═════════ -->
-<section class="poster pro api" id="plus">
+<!-- ═════════ 2. API Plus: the wagon wheel ═════════ -->
+<section class="poster wag" id="plus">
+  <svg class="art" viewBox="0 0 1080 1350"><g transform="translate(0,-26)"><circle cx="540" cy="790" r="306" fill="#22384d" fill-opacity=".5" stroke="#94bce3" stroke-opacity=".5" stroke-width="2.5"/>
+<circle cx="540" cy="790" r="160" fill="none" stroke="#94bce3" stroke-opacity=".3" stroke-width="2" stroke-dasharray="6 9"/>
+<rect x="527" y="746" width="26" height="88" fill="#94bce3" fill-opacity=".2" stroke="#b5d9fd" stroke-opacity=".5" stroke-width="1.5"/>
+<path d="M540 772 Q626 631 681 507" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="681" cy="507" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q681 741 792 700" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="792" cy="700" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q663 847 771 895" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="771" cy="895" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q581 895 628 991" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="628" cy="991" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q478 892 440 997" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="440" cy="997" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q390 822 273 880" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="273" cy="880" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q493 631 439 522" fill="none" stroke="#b5d9fd" stroke-width="3" stroke-linecap="round"/>
+<circle cx="439" cy="522" r="6" fill="#b5d9fd"/>
+<path d="M540 772 Q356 660 194 588" fill="none" stroke="#e08657" stroke-width="4.5" stroke-linecap="round"/>
+<circle cx="194" cy="588" r="9" fill="#e08657"/>
+<circle cx="540" cy="772" r="10" fill="#f2f2f3"/>
+<text x="699" y="505" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">WIN PROBABILITY</text>
+<text x="699" y="529" text-anchor="start" font-family="Barlow" font-size="18" fill="#a9bccd">Before the toss and ball by ball</text>
+<text x="810" y="698" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">PROJECTED RUNS</text>
+<text x="810" y="722" text-anchor="start" font-family="Barlow" font-size="18" fill="#a9bccd">Each team's total and range</text>
+<text x="789" y="893" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">PROJECTED WICKETS</text>
+<text x="789" y="917" text-anchor="start" font-family="Barlow" font-size="18" fill="#a9bccd">When they fall, who takes them</text>
+<text x="646" y="1025" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">PLAYER MATCH-UPS</text>
+<text x="646" y="1049" text-anchor="start" font-family="Barlow" font-size="18" fill="#a9bccd">Who has the edge</text>
+<text x="422" y="1031" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">FANTASY PICKS</text>
+<text x="422" y="1055" text-anchor="end" font-family="Barlow" font-size="18" fill="#a9bccd">XI with captain and vice-captain</text>
+<text x="255" y="878" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">PLAYER RATINGS</text>
+<text x="255" y="902" text-anchor="end" font-family="Barlow" font-size="18" fill="#a9bccd">Form, phases and rankings</text>
+<text x="421" y="490" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2f2f3">GRAPHICS</text>
+<text x="421" y="514" text-anchor="end" font-family="Barlow" font-size="18" fill="#a9bccd">Ready-to-post match cards</text>
+<text x="194" y="536" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="27" letter-spacing=".5" fill="#f2b08c">AI ASSISTANTS</text>
+<text x="194" y="560" text-anchor="middle" font-family="Barlow" font-size="18" fill="#a9bccd">Plug in through MCP</text></g></svg>
   <div class="top">
-    <div><div class="brand"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
+    <div><div class="brand"><svg style="color:var(--s4)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
       <div class="tagline">AI-Powered Cricket Intelligence</div></div>
-    <div class="pill">API Plus</div>
+    <div class="plan-name">API Plus</div>
   </div>
-  <div class="eyebrow">For developers and creators</div>
-  <h1>Match forecasts<br>in one API call.</h1>
-  <p class="sub">Win chances, projected runs and wickets, player match-ups and graphics for your app, site or AI assistant.</p>
+  <h1>Every angle of the game.<br><span>One API.</span></h1>
 
-  <div class="body">
-    <ul class="checks">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>20,000 calls a day</b><span>API and MCP together, across all your keys</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Analytics, simulation, graphics</b><span>Players, teams, venues and match forecasts</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Ready-to-post graphics</b><span>Clean match and player cards, no watermark</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Works with AI assistants</b><span>Plug the MCP connector into your assistant</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>CricSynthesis Pro included</b><span>The full match centre on the web and app</span></div></li>
-    </ul>
-  </div>
-
-  <div class="codecard">
-    <div class="bar"><span>GET /v1/matches/{id}/win-probability</span><b>200 OK</b></div>
-<pre class="req"><span class="c"># your key in one header</span>
-curl <span class="s">api.cricsynthesis.in/v1/…</span> \
-  -H <span class="s">"X-API-Key: cs_live_…"</span></pre>
-<pre>{
-  <span class="n">"win"</span>: { <span class="n">"IND"</span>: <span class="s">0.62</span>, <span class="n">"AUS"</span>: <span class="s">0.38</span> },
-  <span class="n">"score"</span>: { <span class="n">"IND"</span>: { <span class="n">"median"</span>: <span class="s">184</span> },
-           <span class="n">"AUS"</span>: { <span class="n">"median"</span>: <span class="s">172</span> } }
-}</pre>
-    <div class="out"><div><small>IND win</small><b>62%</b></div><div><small>Projected</small><b>184 v 172</b></div></div>
-  </div>
-
-  <div class="deal">
-    <div>
-      <div class="lab">API Plus <em>Pro included</em></div>
-      <div class="amt"><b>₹4,999</b><span class="unit">a month</span></div>
-      <p>20,000 calls a day. Cancel any time.</p>
-    </div>
-    <div>
+  <div class="foot">
+    <div class="price"><b>₹4,999</b><small>a month</small>
+      <p>20,000 calls a day, with CricSynthesis Pro included.</p></div>
+    <div class="act">
       <div class="cta">Get your API key<svg><use href="#arrow"/></svg></div>
-      <div class="free">Start free with 200 calls a day.</div>
+      <p>Free to start: 200 calls a day</p>
     </div>
   </div>
-  <div class="alt"><span class="y"><strong>Yearly</strong><b>₹53,989</b>a year <span class="tagsave">Save ₹5,999</span></span><span class="url">cricsynthesis.in/developers</span></div>
-  <p class="fine">Create a free key in your account, then upgrade to API Plus from your dashboard. Prices in Indian rupees.</p>
+  <div class="base"><span>Or ₹53,989 a year, save ₹5,999</span><span>cricsynthesis.in/developers</span></div>
 </section>
 
-<!-- ═════════ 3. Business API ═════════ -->
-<section class="poster pro api" id="biz">
+<!-- ═════════ 3. Business API: the Manhattan ═════════ -->
+<section class="poster man" id="biz">
+  <svg class="art" viewBox="0 0 1080 1350"><rect x="64.0" y="913" width="40.0" height="133" fill="#416180"/>
+<rect x="112.0" y="875" width="40.0" height="171" fill="#416180"/>
+<rect x="160.0" y="932" width="40.0" height="114" fill="#416180"/>
+<rect x="208.0" y="837" width="40.0" height="209" fill="#416180"/>
+<rect x="256.0" y="894" width="40.0" height="152" fill="#416180"/>
+<circle cx="276.0" cy="878" r="8" fill="#f2f2f3" stroke="#b0613a" stroke-width="4"/>
+<rect x="304.0" y="856" width="40.0" height="190" fill="#416180"/>
+<rect x="352.0" y="951" width="40.0" height="95" fill="#416180"/>
+<rect x="400.0" y="913" width="40.0" height="133" fill="#416180"/>
+<rect x="448.0" y="894" width="40.0" height="152" fill="#416180"/>
+<rect x="496.0" y="875" width="40.0" height="171" fill="#416180"/>
+<circle cx="516.0" cy="859" r="8" fill="#f2f2f3" stroke="#b0613a" stroke-width="4"/>
+<rect x="544.0" y="856" width="40.0" height="190" fill="#416180"/>
+<rect x="592.0" y="913" width="40.0" height="133" fill="#416180"/>
+<rect x="640.0" y="837" width="40.0" height="209" fill="#416180"/>
+<rect x="688.0" y="818" width="40.0" height="228" fill="#416180"/>
+<rect x="736.0" y="875" width="40.0" height="171" fill="#416180"/>
+<rect x="784.0" y="780" width="40.0" height="266" fill="#2c455d"/>
+<circle cx="804.0" cy="764" r="8" fill="#f2f2f3" stroke="#b0613a" stroke-width="4"/>
+<rect x="832.0" y="761" width="40.0" height="285" fill="#2c455d"/>
+<rect x="880.0" y="723" width="40.0" height="323" fill="#2c455d"/>
+<rect x="928.0" y="799" width="40.0" height="247" fill="#2c455d"/>
+<circle cx="948.0" cy="783" r="8" fill="#f2f2f3" stroke="#b0613a" stroke-width="4"/>
+<circle cx="948.0" cy="759" r="8" fill="#f2f2f3" stroke="#b0613a" stroke-width="4"/>
+<rect x="976.0" y="666" width="40.0" height="380" fill="#2c455d"/>
+<line x1="180.0" y1="926" x2="180.0" y2="782" stroke="#1d1f20" stroke-width="2"/>
+<circle cx="180.0" cy="782" r="4" fill="#1d1f20"/>
+<text x="194" y="770" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="30" fill="#1d1f20">PREVIEWS BEFORE THE TOSS</text>
+<text x="194" y="796" text-anchor="start" font-family="Barlow" font-size="19" fill="#45484b">Win chances and projected runs</text>
+<line x1="564.0" y1="850" x2="564.0" y2="672" stroke="#1d1f20" stroke-width="2"/>
+<circle cx="564.0" cy="672" r="4" fill="#1d1f20"/>
+<text x="578" y="660" text-anchor="start" font-family="Barlow Condensed" font-weight="600" font-size="30" fill="#1d1f20">LIVE WIN CHANCE</text>
+<text x="578" y="686" text-anchor="start" font-family="Barlow" font-size="19" fill="#45484b">Updated as the match unfolds</text>
+<line x1="948.0" y1="735" x2="948.0" y2="572" stroke="#1d1f20" stroke-width="2"/>
+<circle cx="948.0" cy="572" r="4" fill="#1d1f20"/>
+<text x="934" y="560" text-anchor="end" font-family="Barlow Condensed" font-weight="600" font-size="30" fill="#1d1f20">GRAPHICS FOR EVERY POST</text>
+<text x="934" y="586" text-anchor="end" font-family="Barlow" font-size="19" fill="#45484b">Match and player cards on demand</text>
+<text x="84" y="1076" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="18" fill="#94bce3">1</text>
+<text x="276" y="1076" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="18" fill="#94bce3">5</text>
+<text x="516" y="1076" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="18" fill="#94bce3">10</text>
+<text x="756" y="1076" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="18" fill="#94bce3">15</text>
+<text x="996" y="1076" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="18" fill="#94bce3">20</text></svg>
   <div class="top">
     <div><div class="brand"><svg style="color:var(--s7)"><use href="#mark"/></svg><span>CRIC<span class="syn">SYNTHESIS</span></span></div>
       <div class="tagline">AI-Powered Cricket Intelligence</div></div>
-    <div class="pill">Business API</div>
+    <div class="plan-name">Business API</div>
   </div>
-  <div class="eyebrow">For media and sports platforms</div>
-  <h1>Give your audience<br>the answer first.</h1>
-  <p class="sub">Forecasts, player projections and ready-made graphics for every fixture, inside your site, app or newsroom.</p>
+  <h1>Match coverage<br>that scales with you.</h1>
+  <p class="sub">For publishers, broadcasters and sports apps: forecasts, projections and graphics for every fixture, at your volume.</p>
 
-  <div class="body">
-    <ul class="checks">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Publishers &amp; broadcasters</b><span>Previews and graphics ready before the toss</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Fantasy &amp; sports apps</b><span>Player projections and team picks in-app</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Teams &amp; analysts</b><span>Match-ups, bowling plans and what-ifs</span></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 12.5l5 5L20 6.5"/></svg><div><b>Every format we model</b><span>T20, The Hundred, one-dayers and more</span></div></li>
-    </ul>
-  </div>
-
-  <div class="browser">
-    <div class="bar"><span>yoursite.com/cricket</span></div>
-    <div class="page">
-      <div class="kick">Match preview</div>
-      <h4>Who has the edge tonight?</h4>
-      <div class="ln" style="width:88%"></div>
-      <div class="widget">
-        <div class="h"><span>Win chance</span><span>Pre-match</span></div>
-        <div class="m"><span>IND</span><span>AUS</span></div>
-        <div class="wp"><i style="flex:62"></i><i style="flex:38"></i></div>
-        <div class="wl"><span>62%</span><span>38%</span></div>
-        <div class="pr"><div><small>Projected runs</small><b>184</b></div><div><small>Projected runs</small><b>172</b></div></div>
-        <div class="by"><svg><use href="#mark"/></svg>Powered by CricSynthesis</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="deal">
+  <div class="band">
     <div>
-      <div class="lab">Business plan</div>
-      <div class="big">Priced to your scale</div>
-      <ul class="inc"><li>Limits sized to your traffic</li><li>A live dashboard built for you</li><li>Every integration you need</li><li>Priority support</li></ul>
+      <div class="k">Business plan</div>
+      <div class="big">Priced to your traffic</div>
+      <p>Custom limits, a live dashboard built for you, any integration, priority support.</p>
     </div>
-    <div>
+    <div class="act">
       <div class="cta">Book a call<svg><use href="#arrow"/></svg></div>
-      <div class="free">Tell us what you're building.</div>
+      <p>cricsynthesis.in/contact</p>
     </div>
   </div>
-  <div class="alt"><span class="y"><strong>Starting out?</strong>API Plus from<b>₹4,999</b>a month</span><span class="url">cricsynthesis.in/contact</span></div>
-  <p class="fine">Everything in API Plus is included. Plans, limits and support are agreed with you.</p>
+  <div class="base"><span>Starting smaller? API Plus is ₹4,999 a month.</span></div>
 </section>
 </body></html>
