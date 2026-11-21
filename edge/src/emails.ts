@@ -299,3 +299,23 @@ export async function send(key: string, to: string, mail: Email, opts: { from?: 
   if (!r.ok || !j.id) throw new Error(`Resend ${r.status}: ${j.message || "no id"}`);
   return j.id;
 }
+
+/** The contact form's acknowledgement: what they sent, and when to expect a reply. */
+export function contactReceived(d: { name?: string | null; topic: string; message: string; at: Date }): Email {
+  const excerpt = d.message.trim().length > 600 ? `${d.message.trim().slice(0, 600)}…` : d.message.trim();
+  return {
+    subject: "Thanks for contacting CricSynthesis",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thanks for getting in touch. Your message has reached our team, and we'll get back to you soon, usually within one working day.`) +
+      facts([["Topic", esc(d.topic)], ["Sent", dayTime(d.at)]]) +
+      `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px 0;"><tr>` +
+      `<td style="border-left:3px solid #5980a6;padding:4px 0 4px 14px;color:#3d4146;font-size:15px;line-height:1.6;white-space:pre-line;">` +
+      `<span style="display:block;color:#6b7075;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Your message</span>` +
+      `${esc(excerpt)}</td></tr></table>` +
+      p(`If you need to add anything, just reply to this email.`),
+      { eyebrow: "Contact", heading: "We've got your message.", title: "Thanks for contacting us", reason: "you sent a message through the contact form on cricsynthesis.in",
+        cta: "Visit CricSynthesis", ctaUrl: SITE }),
+    text: `Hi ${firstName(d.name)},\n\nThanks for getting in touch. Your message has reached our team, and we'll get back to you soon, usually within one working day.\n\n` +
+      `Topic: ${d.topic}\nSent: ${dayTime(d.at)}\n\nYour message:\n${excerpt}\n\nIf you need to add anything, just reply to this email.${sign}`,
+  };
+}

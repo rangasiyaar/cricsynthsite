@@ -370,3 +370,22 @@ test("subscription for N days: end date on Pro and the record, then back to Free
   assert.equal(docs["users/u1/billing/admin"].until, "");
   assert.ok(docs["users/u1/billing/pro"].proUntil.getTime() > Date.UTC(2099, 0, 1));
 });
+
+test("contact messages: mark replied / closed / new, logged; bad ids refused", async () => {
+  const { validate, apply, ActionError } = await import("../src/actions.ts");
+  assert.throws(() => validate({ type: "contact.status", id: "../x", status: "replied" }), ActionError);
+  assert.throws(() => validate({ type: "contact.status", id: "m1", status: "spam" }), ActionError);
+  const docs: Record<string, any> = { "contactMessages/m1": { _id: "m1", email: "asha@example.com", status: "new" } };
+  const writes: [string, any][] = [];
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    patch: async (p: string, d: any) => { writes.push([p, d]); docs[p] = { ...docs[p], ...d }; },
+    put: async (p: string, d: any) => { writes.push([p, d]); },
+  };
+  const r = await apply(g, "boss@example.com", validate({ type: "contact.status", id: "m1", status: "replied" }), new Date(2000));
+  assert.match(r.done, /asha@example.com marked replied/);
+  assert.equal(docs["contactMessages/m1"].status, "replied");
+  assert.equal(docs["contactMessages/m1"].statusBy, "boss@example.com");
+  assert.ok(writes.some(([p, d]) => p.startsWith("adminLog/") && d.what === "contact.status"));
+  await assert.rejects(apply(g, "boss@example.com", validate({ type: "contact.status", id: "m9", status: "closed" })), /No such message/);
+});

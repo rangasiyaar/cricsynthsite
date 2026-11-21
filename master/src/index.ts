@@ -163,6 +163,12 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
       return json({ entries: rows.map((r) => ({ id: r._id, at: r.at, email: r.email, what: r.what, uid: r.uid || null, done: r.done || null,
         detail: (() => { try { return JSON.parse(r.detail || "{}"); } catch { return {}; } })(), ip: r.ip || null, country: r.country || null })) });
     }
+    case "/api/messages": {
+      const rows = await google(env).latest("contactMessages", 300);
+      return json({ messages: rows.map((r) => ({ id: r._id, at: r.at, name: r.name, email: r.email, topic: r.topic, company: r.company || null,
+        message: r.message, status: r.status || "new", statusBy: r.statusBy || null, statusAt: r.statusAt || null,
+        country: r.country || null, uid: r.uid || null, page: r.page || null })) });
+    }
     case "/api/meters": return json(await cached("meters", 600, () => meters(env, google(env))));
     case "/api/uptime": return json(await cached("uptime", 240, async () => {
       const g = google(env), now = new Date();

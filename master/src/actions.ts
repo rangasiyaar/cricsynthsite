@@ -21,7 +21,13 @@ export type Action =
   | { type: "user.disable" | "user.enable"; uid: string }
   | { type: "user.website-plan"; uid: string; plan: "pro" | "free" | "beta" }
   | { type: "user.tier"; uid: string; tier: Tier; tag: "assigned" | "paid"; days: number; note?: string }
-  | { type: "user.delete"; uid: string };
+  | { type: "user.delete"; uid: string }
+  | { type: "contact.status"; uid: ""; id: string; status: ContactStatus };
+
+/** Contact form messages (contactMessages/{id}, written by the API Worker's POST /contact). */
+export const CONTACT_STATUS = { new: "New", replied: "Replied", closed: "Closed" } as const;
+export type ContactStatus = keyof typeof CONTACT_STATUS;
+const MSG_ID = /^[A-Za-z0-9]{1,40}$/;
 
 /** Sends an account email to `uid` (looked up in Firebase Auth); returns whether it went. Set by the Worker from
  *  RESEND_API_KEY; without it no email is sent. */
@@ -44,6 +50,10 @@ export const MAX_DAYS = 3650;
 export const MAX_PER_RUN = 4;
 
 export function validate(a: Row | null): Action {
+  if (a?.type === "contact.status") {                     // a message, not an account
+    if (!MSG_ID.test(String(a.id || "")) || !Object.hasOwn(CONTACT_STATUS, a.status)) throw new ActionError("Bad message or status");
+    return { type: a.type, uid: "", id: a.id, status: a.status };
+  }
   if (!a || typeof a.type !== "string" || !UID.test(String(a.uid || ""))) throw new ActionError("Bad action");
   const note = a.note == null ? undefined : String(a.note).slice(0, NOTE_MAX);
   switch (a.type) {
@@ -195,6 +205,13 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       done = `Account data deleted (${removed.length + 1} documents); ${signIn}; ${emailed ? "confirmation emailed" : "no email sent"}`;
       break;
     }
+  }
+  if (a.type === "contact.status") {
+    const m = await g.get(`contactMessages/${a.id}`);
+    if (!m) throw new ActionError("No such message", 404);
+    await g.patch(`contactMessages/${a.id}`, { status: a.status, statusBy: admin, statusAt: now.toISOString() });
+    done = `Message from ${m.email} marked ${CONTACT_STATUS[a.status].toLowerCase()}`;
+    detail = { id: a.id, email: m.email, status: a.status };
   }
   await g.put(`adminLog/${now.getTime()}-${a.type}`, { at: now.toISOString(), email: admin, what: a.type, uid: a.uid,
     done, detail: JSON.stringify(detail) }).catch(() => {});

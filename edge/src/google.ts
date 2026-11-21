@@ -124,6 +124,21 @@ export class Firestore {
     return r.ok;
   }
 
+  /** Add a document to a top-level collection under an automatic id (the contact form's messages); returns the id. */
+  async addDoc(collection: string, fields: Record<string, unknown>): Promise<string> {
+    const d = await this.call(`/${collection}`, { fields: Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, toValue(v)])) });
+    return String(d.name).split("/").pop() || "";
+  }
+
+  /** How many documents of a top-level collection have `field` equal to `value` (up to `limit`; one equality
+   *  filter, so the automatic single-field index serves it). */
+  async countWhere(collection: string, field: string, value: string, limit = 10): Promise<number> {
+    const rows: any[] = await this.call(":runQuery", { structuredQuery: { from: [{ collectionId: collection }],
+      where: { fieldFilter: { field: { fieldPath: field }, op: "EQUAL", value: { stringValue: value } } },
+      select: { fields: [{ fieldPath: "__name__" }] }, limit } });
+    return rows.filter((x) => x.document).length;
+  }
+
   async isAdult(uid: string): Promise<boolean> {
     const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
                           { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });

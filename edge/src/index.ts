@@ -7,6 +7,7 @@ import { handle, toolCategory } from "./mcp.ts";
 import * as B from "./billing.ts";
 import * as E from "./emails.ts";
 import { mail } from "./notify.ts";
+import * as C from "./contact.ts";
 import { Firestore } from "./google.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
@@ -146,6 +147,29 @@ export async function deleteAccount(req: Request, env: Env, fs?: Firestore): Pro
   return json(req, env, { deleted: true, documents, emailed, signIn });
 }
 
+/** The website's contact form (contact.ts): stored for the admin console, acknowledged by email. */
+async function contact(req: Request, env: Env): Promise<Response> {
+  if (!env.GOOGLE_SA) return fail(req, env, 503, "The form isn't available right now. Email hello@cricsynthesis.in.");
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+  try {
+    const body = await req.json().catch(() => null);
+    const r = await C.submit({
+      add: (f) => fs.addDoc("contactMessages", f),
+      count: (field, value) => fs.countWhere("contactMessages", field, value),
+      mail: (to, build) => mail(env, user?.uid || "", build, to),
+      sha256, now: () => new Date(),
+    }, body, { ip: req.headers.get("CF-Connecting-IP"), country: (req as any).cf?.country ?? null, uid: user?.uid ?? null,
+               page: req.headers.get("Referer") });
+    return json(req, env, { sent: r.sent });
+  } catch (e) {
+    if (e instanceof C.ContactError) return fail(req, env, e.status, e.message);
+    console.error("contact", (e as Error).message);
+    return fail(req, env, 500, "Couldn't send your message. Try again, or email hello@cricsynthesis.in.");
+  }
+}
+
 /** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
 async function billing(req: Request, env: Env, path: string): Promise<Response> {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
@@ -245,6 +269,7 @@ export default {
     if (path.startsWith("/billing/")) return billing(req, env, path);
     if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
     if (path === "/account/delete" && req.method === "POST") return deleteAccount(req, env);
+    if (path === "/contact" && req.method === "POST") return contact(req, env);
     const o = await oauth(req, env, url, path);
     if (o) return o;
     // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in
