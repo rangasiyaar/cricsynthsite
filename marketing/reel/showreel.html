@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>One ball, every answer</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Concept: "One ball, every answer." A white ball becomes type, shapes, a 3D ground, the API, the services, the
+   headline and the logo, then returns to the ball. One typeface (Barlow Condensed), three colours + black and white.
+   Every style comes from seek(t). */
+:root{--S:#5980a6;--L:#94bce3;--C:#d9895f;--W:#f2f2f3;--B:#07080a;--F:"Barlow Condensed",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--B)}
+#cam{position:absolute;inset:0;transform-origin:960px 540px}
+.a{position:absolute}
+.slot{position:absolute;overflow:hidden;white-space:nowrap;font-family:var(--F);font-weight:700;text-transform:uppercase;line-height:1}
+.slot .ly{position:absolute;left:0;right:0;top:0}
+.slot i{display:inline-block;font-style:normal}
+#persp{position:absolute;inset:0;perspective:1500px;perspective-origin:960px 420px}
+#plane{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:960px 500px}
+.r{position:absolute}
+.col{position:absolute;transform-origin:50% 100%}
+.tile{position:absolute;overflow:hidden;border-radius:24px;background:#0e1116}
+.tile .tt{position:absolute;left:44px;top:150px;font:700 70px/1 var(--F);text-transform:uppercase;color:var(--W);white-space:nowrap}
+.tile .td{position:absolute;left:46px;top:232px;font:500 38px/1 var(--F);color:var(--L);white-space:nowrap}
+.tile .ti{position:absolute;left:46px;top:46px;width:64px;height:64px}
+#code{position:absolute;left:400px;top:206px;font:600 54px/1 var(--F);color:var(--W);white-space:nowrap}
+#code b{color:var(--L);font-weight:600}
+#dot{position:absolute;background:var(--W)}
+#lock{position:absolute;left:0;top:0}
+#wm{position:absolute;overflow:hidden;white-space:nowrap;font:600 116px/1 var(--F);letter-spacing:.04em;color:var(--W)}
+#wm b{font-weight:600;color:var(--L)}
+#sub{position:absolute;overflow:hidden;font:600 40px/1 var(--F);letter-spacing:.32em;text-transform:uppercase;color:var(--W)}
+</style></head><body>
+<div id="cam">
+  <div id="persp"><div id="plane"></div></div>
+  <div class="slot" id="t1" style="left:200px;top:378px;width:1600px;height:176px;font-size:170px;color:var(--W)"></div>
+  <div class="a" id="line" style="background:var(--W)"></div>
+  <div class="slot" id="t2" style="left:200px;width:1600px;height:176px;font-size:170px;color:var(--L)"></div>
+  <div class="slot" id="t2s" style="left:204px;top:600px;width:1500px;height:76px;font-size:72px;font-weight:600;color:var(--W)"></div>
+  <div class="slot" id="lab" style="left:160px;top:900px;width:1600px;height:96px;font-size:90px;color:var(--W);text-align:center"></div>
+  <div id="code"></div>
+  <div id="tiles"></div>
+  <div id="bands"></div>
+  <div class="slot" id="big" style="left:0;top:390px;width:1920px;height:300px;font-size:300px;color:var(--B);text-align:center"></div>
+  <svg id="lock" width="1920" height="1080" viewBox="0 0 1920 1080"><g id="mk" fill="none" stroke="#94bce3" stroke-width="12">
+    <path id="m1" d="M556 467 L583 494 L556 521" stroke-linecap="square"/>
+    <path id="m2" d="M610 467 V542 M634 467 V542 M658 467 V542 M604 455 H631 M637 455 H664"/></g></svg>
+  <div id="wm" style="left:690px;top:438px;height:120px">CRIC<b>SYNTHESIS</b></div>
+  <div id="sub" style="left:0;width:1920px;top:600px;height:44px;text-align:center">Business API</div>
+  <div id="dot"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=x=>Math.max(0,Math.min(1,x)), lerp=(a,b,u)=>a+(b-a)*u;
+// exponential ease-out and a critically damped spring (no overshoot: bouncy easing is banned)
+const ex=u=>u<=0?0:u>=1?1:(1-Math.pow(2,-10*u))/(1-Math.pow(2,-10));
+const exio=u=>{u=cl(u);return u<.5?ex(u*2)/2:.5+ex(u*2-1)/2};
+const spr=(t,w=16)=>t<=0?0:1-(1+w*t)*Math.exp(-w*t);
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)), mix=(a,b,u)=>{const A=hex(a),B=hex(b);return `rgb(${A.map((v,i)=>Math.round(lerp(v,B[i],u))).join(',')})`};
+const S='#5980a6',L='#94bce3',C='#d9895f',W='#f2f2f3',K='#0e1116';
+
+// ── kinetic slot text: words change letter by letter on the given times ──
+function slot(el,words,times,t,dur=.3,stag=.018){
+  let k=-1; for(let i=0;i<times.length;i++) if(t>=times[i]) k=i;
+  const cur=k<0?'':words[k], prev=k<=0?'':words[k-1], T=k<0?0:times[k];
+  const L1=s=>[...s].map(c=>c===' '?' ':c);
+  const mk=(arr,f)=>arr.map((c,i)=>`<i style="transform:translateY(${f(i)}%)">${c}</i>`).join('');
+  const pA=i=>ex((t-T-i*stag)/dur);
+  el.innerHTML=`<div class="ly">${mk(L1(prev),i=>-112*pA(i))}</div><div class="ly">${mk(L1(cur),i=>112*(1-pA(i)))}</div>`;
+}
+
+// ── shape morph: five rounded rects that interpolate between states ──
+const Z=(x=960,y=500)=>({x,y,w:0,h:0,r:0,c:W});
+const ZERO=[Z(),Z(),Z(),Z(),Z()];
+const BALL=[{x:960,y:500,w:240,h:240,r:120,c:W},Z(),Z(),Z(),Z()];
+const WIN=[{x:732,y:500,w:744,h:76,r:38,c:S},{x:1332,y:500,w:456,h:76,r:38,c:C},Z(1560),Z(1560),Z(1560)];
+const RH=[150,210,180,270,340], RX=[648,804,960,1116,1272];
+const RUNS=RH.map((h,i)=>({x:RX[i],y:640-h/2,w:110,h,r:6,c:i===4?W:S}));
+const STUMPS=[{x:900,y:460,w:34,h:360,r:4,c:W},{x:960,y:460,w:34,h:360,r:4,c:W},{x:1020,y:460,w:34,h:360,r:4,c:W},{x:960,y:272,w:164,h:16,r:4,c:L},{x:1250,y:600,w:76,h:76,r:38,c:C}];
+const GROUND=[{x:960,y:500,w:1100,h:560,r:280,c:S},{x:960,y:500,w:64,h:220,r:6,c:W},Z(),Z(),Z()];
+const CARD=[{x:960,y:520,w:1240,h:700,r:28,c:K},Z(960,520),Z(960,520),Z(960,520),Z(960,520)];
+const TILE1=[{x:640,y:335,w:600,h:330,r:24,c:K},Z(640,335),Z(640,335),Z(640,335),Z(640,335)];
+const KEYS=[[4.0,ZERO],[4.32,BALL],[4.5,BALL],[4.82,WIN],[5.0,WIN],[5.32,RUNS],[5.5,RUNS],[5.82,STUMPS],[6.0,STUMPS],[6.32,GROUND],[8.0,GROUND],[8.4,CARD],[10.0,CARD],[10.3,TILE1]];
+const rects=[0,1,2,3,4].map(i=>{const d=document.createElement('div');d.className='r';$('plane').appendChild(d);return d});
+function shapes(t){
+  const vis=t>=4.0&&t<10.3;
+  let i=0; while(i<KEYS.length-2&&t>=KEYS[i+1][0]) i++;
+  const [ta,A]=KEYS[i],[tb,B]=KEYS[i+1], u=ex((t-ta)/(tb-ta));
+  rects.forEach((d,k)=>{const a=A[k],b=B[k];const w=lerp(a.w,b.w,u),h=lerp(a.h,b.h,u);
+    d.style.display=vis?'block':'none'; d.style.left=(lerp(a.x,b.x,u)-w/2)+'px'; d.style.top=(lerp(a.y,b.y,u)-h/2)+'px';
+    d.style.width=w+'px'; d.style.height=h+'px'; d.style.borderRadius=lerp(a.r,b.r,u)+'px'; d.style.background=mix(a.c,b.c,u);
+    d.style.boxShadow=k===0&&t>8.2?`inset 0 0 0 2px rgba(148,188,227,${.4*cl((t-8.2)/.2)})`:'none'});
+}
+
+// ── 3D columns: player ratings on the ground, flatten into a 2D chart ──
+const H1=[180,240,150,300,210,260,120,280,200,170,230], H2=[210,150,270,190,330,140,250,160,300,220,180];
+const cols=H1.map((_,k)=>{const f=document.createElement('div'),x=document.createElement('div');f.className='col';x.className='col';f.style.background=L;x.style.background=S;$('plane').append(f,x);return [f,x]});
+function columns(t,cz){
+  const show=t>=6.45&&t<10.25;
+  cols.forEach(([f,x],k)=>{
+    const th=2*Math.PI*k/11-Math.PI/2, rx=960+400*Math.cos(th), ry=500+200*Math.sin(th);
+    const flat=ex((t-8.0)/.4), row=ex((t-8.0)/.45);
+    const px=lerp(rx,960+(k-5)*84,row), py=lerp(ry,770,row);
+    const rise=ex((t-6.5-k*.03)/.35), shuf=ex((t-7.5-k*.02)/.32), gone=1-ex((t-10.0)/.25);
+    let h=lerp(H1[k],H2[k],shuf)*rise*gone; if(t>=8)h*=lerp(1,.85,flat);
+    const top=k===4&&t>=7.5&&t<10?C:L;
+    const ang=lerp(-90,0,flat);
+    [f,x].forEach((el,j)=>{el.style.display=show?'block':'none';el.style.width=(j===1?64*(1-flat):64)+'px';el.style.height=h+'px';
+      el.style.left=(px-(j===1?64*(1-flat):64)/2)+'px';el.style.top=(py-h)+'px';
+      el.style.transform=j===0?`rotateX(${ang}deg)`:`rotateX(${ang}deg) rotateY(90deg)`;});
+    f.style.background=top;
+  });
+}
+
+// ── services tiles (bar 6) and bands (bar 7) ──
+const TL=[640,335],TR=[1280,335],BL=[640,705],BR=[1280,705];
+const TD=[["Custom limits","Sized to your traffic",S,'sq'],["Live dashboard","Built for your fixtures",L,'grid'],["Integration","Done with your team",C,'link'],["Priority support","A direct line to us",W,'dot']];
+const ICON={sq:c=>`<rect x="8" y="8" width="48" height="48" rx="6" fill="${c}"/>`,grid:c=>`<g fill="${c}"><rect x="6" y="6" width="22" height="22" rx="4"/><rect x="36" y="6" width="22" height="22" rx="4"/><rect x="6" y="36" width="22" height="22" rx="4"/><rect x="36" y="36" width="22" height="22" rx="4"/></g>`,
+  link:c=>`<g fill="none" stroke="${c}" stroke-width="8"><circle cx="22" cy="32" r="14"/><circle cx="42" cy="32" r="14"/></g>`,dot:c=>`<circle cx="32" cy="32" r="26" fill="${c}"/>`};
+const tiles=TD.map(([a,b,c,ic])=>{const d=document.createElement('div');d.className='tile';d.innerHTML=`<svg class="ti" viewBox="0 0 64 64">${ICON[ic](c)}</svg><div class="tt">${a}</div><div class="td">${b}</div>`;$('tiles').appendChild(d);return d});
+const FROM=[TL,TL,TL,TR], TO=[TL,TR,BL,BR], TIN=[10.3,10.5,11.0,11.5];
+function services(t){
+  tiles.forEach((d,k)=>{
+    const show=t>=TIN[k]&&t<12.0;
+    const u=k===0?1:ex((t-TIN[k])/.32);
+    const x=lerp(FROM[k][0],TO[k][0],u), y=lerp(FROM[k][1],TO[k][1],u);
+    d.style.display=show?'block':'none'; d.style.left=(x-300)+'px'; d.style.top=(y-165)+'px'; d.style.width='600px'; d.style.height='330px';
+    d.style.boxShadow=`inset 0 0 0 2px ${TD[k][2]}`;
+    const tx=ex((t-TIN[k]-.08)/.3); d.querySelector('.tt').style.transform=`translateY(${(1-tx)*120}px)`; d.querySelector('.td').style.transform=`translateY(${(1-ex((t-TIN[k]-.14)/.3))*120}px)`;
+    d.querySelector('.ti').style.transform=`scale(${ex((t-TIN[k]-.04)/.3)})`;
+  });
+}
+const bands=[0,1,2,3].map(k=>{const d=document.createElement('div');d.className='a';$('bands').appendChild(d);return d});
+function bandsAt(t){
+  const show=t>=12.0&&t<14.2;
+  const grow=ex((t-12.0)/.35), coll=ex((t-13.72)/.28), toDot=ex((t-14.0)/.2);
+  bands.forEach((d,k)=>{
+    const g=[TL,TR,BL,BR][k];
+    let x=lerp(g[0]-300,k*480,grow), y=lerp(g[1]-165,0,grow), w=lerp(600,480,grow), h=lerp(330,1080,grow);
+    y=lerp(y,535,coll); h=lerp(h,10,coll);
+    // the line pinches to the centre and becomes the ball
+    x=lerp(x,938+k*0,toDot); w=lerp(w,k===0?44:0,toDot); if(k===0){x=lerp(k*480,938,toDot);w=lerp(1920,44,toDot)}
+    if(t>=13.72&&k===0){y=lerp(y,518,toDot);h=lerp(h,44,toDot)}
+    d.style.display=show&&(k===0||toDot===0)?'block':'none';
+    d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=(k===0&&t>=13.72?lerp(1920,w,0)*0+ (toDot>0?w:1920):w)+'px'; d.style.height=h+'px';
+    d.style.borderRadius=(t>=14.0?22*toDot:lerp(24,0,grow))+'px';
+    d.style.background=mix(lerp(0,1,grow)>0?[S,L,C,W][k]:K, W, coll);
+    if(grow<1&&t<12.35) d.style.background=mix(K,[S,L,C,W][k],grow);
+  });
+}
+
+// ── end title ──
+const m1=$('m1'),m2=$('m2'); const L1=m1.getTotalLength(), L2=m2.getTotalLength();
+function endTitle(t){
+  const draw=ex((t-14.22)/.28)*(1-ex((t-14.72)/.2));
+  m1.style.strokeDasharray=L1; m1.style.strokeDashoffset=L1*(1-draw);
+  m2.style.strokeDasharray=L2; m2.style.strokeDashoffset=L2*(1-draw);
+  $('lock').style.display=t>=14.2?'block':'none';
+  const wm=ex((t-14.34)/.26)*(1-ex((t-14.7)/.16)); $('wm').style.width=(700*wm)+'px';
+  const sb=ex((t-14.44)/.2)*(1-ex((t-14.7)/.14)); $('sub').style.clipPath=`inset(${(1-sb)*100}% 0 0 0)`; $('sub').style.transform=`translateY(${(1-sb)*30}px)`;
+  $('wm').style.display=$('sub').style.display=t>=14.3&&t<15?'block':'none';
+}
+
+// ── the ball: frame 0 and the last frame ──
+function dot(t){
+  let x=960,y=540,s=44,show=false;
+  if(t<0.5){show=true; const p=.28*(1-Math.exp(-t*40))*Math.exp(-t*9); s=44*(1+p)}
+  else if(t>=14.2&&t<14.36){show=true; const u=ex((t-14.2)/.16); x=lerp(960,606,u); y=lerp(540,500,u); s=lerp(44,0,ex((t-14.24)/.12))}
+  else if(t>=14.74){show=true; const g=ex((t-14.74)/.12), m=ex((t-14.84)/.16); s=44*g; x=lerp(606,960,m); y=lerp(500,540,m)}
+  const d=$('dot'); d.style.display=show&&s>0.5?'block':'none'; d.style.left=(x-s/2)+'px'; d.style.top=(y-s/2)+'px'; d.style.width=s+'px'; d.style.height=s+'px'; d.style.borderRadius=s/2+'px';
+}
+
+window.seek=function(t){
+  t=((t%15)+15)%15;
+  // one camera language: a slow push-in and drift that loops on the 15 s cycle
+  const c=(1-Math.cos(2*Math.PI*t/15))/2; $('cam').style.transform=`scale(${1+.035*c}) translateX(${-14*Math.sin(2*Math.PI*t/15)}px)`;
+  dot(t);
+  // bar 1: hook. ball → line → type
+  const ln=$('line'), st=ex((t-.5)/.4), sh=ex((t-2.0)/.3);
+  if(t>=.5&&t<2.4){ln.style.display='block';const w=lerp(44,1520,st)*(1-sh), h=lerp(44,8,st);
+    ln.style.left=lerp(938,200,st)+'px'; ln.style.width=w+'px'; ln.style.height=h+'px'; ln.style.top=(lerp(540,560,st)-h/2)+'px'; ln.style.borderRadius=h/2+'px'}
+  else ln.style.display='none';
+  $('t1').style.display=t<2.4?'block':'none'; slot($('t1'),["Every match,",""],[1.0,2.0],t);
+  // bar 2: kinetic type (one feature per beat)
+  const t2=$('t2'); const up=ex((t-2.0)/.35); t2.style.top=lerp(572,384,up)+'px';
+  slot(t2,["Answered.","Win chance","Projected runs","Danger overs","Match-ups"],[1.5,2.0,2.5,3.0,3.5],t);
+  // into bar 3: the word collapses into the ball
+  const cz=ex((t-4.0)/.3); const w2=t2.querySelector('.ly:last-child')?.scrollWidth||800;
+  t2.style.transformOrigin=`${Math.min(w2,1600)/2}px 88px`;
+  t2.style.transform=`translate(${(960-(200+Math.min(w2,1600)/2))*cz}px,${(500-(384+88))*cz}px) scale(${1-cz})`;
+  t2.style.display=t<4.32?'block':'none';
+  slot($('t2s'),["Pre-match and live","With a likely range","When wickets fall","Batter v bowler",""],[2.06,2.56,3.06,3.56,4.0],t,.2,.008);
+  // bars 3–5: shapes, 3D and UI, labelled from one slot
+  shapes(t);
+  const tilt=ex((t-6.0)/.45)*(1-ex((t-8.0)/.4)), orb=exio((t-6.5)/1.5)*(1-ex((t-8.0)/.4));
+  $('plane').style.transform=`rotateX(${58*tilt}deg) rotateZ(${-28*orb}deg)`;
+  columns(t,cz);
+  slot($('lab'),["62 : 38","184","Overs 16–19","Pace or spin","Player ratings","Fantasy XI · C and VC","What-if simulation","One API call","Graphics API","Works with AI assistants",""],
+    [4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,9.0,9.5,10.0],t,.22,.008);
+  $('lab').style.color=t>=5.5&&t<6?C:W;
+  // bar 5: the code line types on the beat
+  const code=$('code'); const cs=["","GET /v1/matches/{id}","GET /v1/matches/{id}","ASK: WHO WINS TONIGHT?"]; const ct=[0,8.5,9.0,9.5];
+  let ci=0; ct.forEach((x,i)=>{if(t>=x)ci=i});
+  const txt=cs[ci], n=Math.floor(cl((t-ct[ci])/.3)*txt.length);
+  code.style.display=t>=8.5&&t<10.0?'block':'none';
+  code.innerHTML=txt.slice(0,n).replace(/^(GET|ASK:)/,'<b>$1</b>');
+  code.style.transform=`translateY(${-ex((t-9.95)/.1)*60}px)`;
+  // bar 6: services
+  services(t);
+  // bar 7: bands + the line
+  bandsAt(t);
+  const big=$('big'); big.style.display=t>=12.4&&t<14.0?'block':'none';
+  slot(big,["Answer","Before the","Toss."],[12.5,13.0,13.5],t,.22,.008);
+  big.style.transform=`scaleY(${1-ex((t-13.72)/.26)})`;
+  endTitle(t);
+};
+// soundtrack: kick every beat, riser into the last full bar, a hit on every scene change
+window.makeAudio=async function(){
+  const SR=48000, N=SR*15, ctx=new OfflineAudioContext(2,N,SR);
+  const master=ctx.createGain(); master.gain.value=.8; master.connect(ctx.destination);
+  const noise=ctx.createBuffer(1,SR*2,SR); const nd=noise.getChannelData(0); let s=1; for(let i=0;i<nd.length;i++){s=(s*16807)%2147483647;nd[i]=s/1073741823.5-1}
+  for(let b=0;b<30;b++){const t=b*.5; const o=ctx.createOscillator(), g=ctx.createGain();
+    o.frequency.setValueAtTime(130,t); o.frequency.exponentialRampToValueAtTime(42,t+.18);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(b%2?.55:.8,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+.35);
+    o.connect(g).connect(master); o.start(t); o.stop(t+.4);
+    // offbeat tick
+    const n=ctx.createBufferSource(); n.buffer=noise; const hp=ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=8000; const ng=ctx.createGain();
+    ng.gain.setValueAtTime(.0001,t+.25); ng.gain.exponentialRampToValueAtTime(.12,t+.252); ng.gain.exponentialRampToValueAtTime(.0001,t+.3);
+    n.connect(hp).connect(ng).connect(master); n.start(t+.25); n.stop(t+.32);}
+  for(const t of [2,4,6,8,10,12,14]){const o=ctx.createOscillator(), g=ctx.createGain(); o.type='triangle';
+    o.frequency.setValueAtTime(220,t); o.frequency.exponentialRampToValueAtTime(55,t+.5);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.35,t+.005); g.gain.exponentialRampToValueAtTime(.0001,t+.7); o.connect(g).connect(master); o.start(t); o.stop(t+.75);
+    const n=ctx.createBufferSource(); n.buffer=noise; const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2500; bp.Q.value=.7; const ng=ctx.createGain();
+    ng.gain.setValueAtTime(.0001,t); ng.gain.exponentialRampToValueAtTime(.3,t+.004); ng.gain.exponentialRampToValueAtTime(.0001,t+.25); n.connect(bp).connect(ng).connect(master); n.start(t); n.stop(t+.3);}
+  { // riser 11 → 12
+    const n=ctx.createBufferSource(); n.buffer=noise; n.loop=true; const f=ctx.createBiquadFilter(); f.type='bandpass'; f.Q.value=2; f.frequency.setValueAtTime(400,11); f.frequency.exponentialRampToValueAtTime(7000,12);
+    const g=ctx.createGain(); g.gain.setValueAtTime(.0001,11); g.gain.exponentialRampToValueAtTime(.3,11.97); g.gain.setValueAtTime(.0001,12);
+    n.connect(f).connect(g).connect(master); n.start(11); n.stop(12);
+    const o=ctx.createOscillator(); o.type='sawtooth'; const og=ctx.createGain(); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1800;
+    o.frequency.setValueAtTime(110,11); o.frequency.exponentialRampToValueAtTime(440,12); og.gain.setValueAtTime(.0001,11); og.gain.exponentialRampToValueAtTime(.08,11.97); og.gain.setValueAtTime(.0001,12);
+    o.connect(lp).connect(og).connect(master); o.start(11); o.stop(12);}
+  { // logo chime on the end title
+    for(const [f,d] of [[880,0],[1320,.06]]){const o=ctx.createOscillator(), g=ctx.createGain(); o.frequency.value=f; const t=14.22+d;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.16,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.7); o.connect(g).connect(master); o.start(t); o.stop(t+.75);}}
+  const buf=await ctx.startRendering();
+  const L=buf.getChannelData(0),R=buf.getChannelData(1); let pk=0; for(let i=0;i<N;i++)pk=Math.max(pk,Math.abs(L[i]),Math.abs(R[i]));
+  const sc=.89/pk, out=new DataView(new ArrayBuffer(44+N*4));
+  const w=(o,s)=>[...s].forEach((c,i)=>out.setUint8(o+i,c.charCodeAt(0)));
+  w(0,'RIFF');out.setUint32(4,36+N*4,true);w(8,'WAVE');w(12,'fmt ');out.setUint32(16,16,true);out.setUint16(20,1,true);out.setUint16(22,2,true);out.setUint32(24,SR,true);out.setUint32(28,SR*4,true);out.setUint16(32,4,true);out.setUint16(34,16,true);w(36,'data');out.setUint32(40,N*4,true);
+  for(let i=0;i<N;i++){out.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]*sc))*32767,true);out.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]*sc))*32767,true)}
+  let bin='';const u8=new Uint8Array(out.buffer);for(let i=0;i<u8.length;i+=8192)bin+=String.fromCharCode.apply(null,u8.subarray(i,i+8192));return btoa(bin);
+};
+seek(0);
+</script>
+</body></html>
