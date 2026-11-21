@@ -15,7 +15,9 @@ body{background:#777}
 .lock svg{width:48px;height:48px;color:var(--s4)}.lock b{font-weight:600;color:var(--s4)}
 .tagl{font:500 20px/1 var(--body);color:var(--mut);margin:8px 0 0 60px}
 .badge{border:2px solid var(--s4);color:var(--s3);font:700 26px/1 var(--head);letter-spacing:.12em;text-transform:uppercase;padding:13px 20px;border-radius:6px}
-h1{position:relative;margin-top:40px;font:700 84px/.92 var(--head);text-transform:uppercase;letter-spacing:.004em}
+.eye{position:relative;margin-top:26px;display:inline-flex;align-self:flex-start;align-items:center;gap:10px;background:rgba(65,97,128,.45);border:1px solid rgba(148,188,227,.45);color:var(--s3);font:700 22px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border-radius:6px}
+.eye svg{width:20px;height:20px}
+h1{position:relative;margin-top:14px;font:700 84px/.92 var(--head);text-transform:uppercase;letter-spacing:.004em}
 h1 span{display:block;color:var(--s3)}
 .body{position:relative;margin-top:22px;width:440px}
 .sub{font:400 23px/1.4 var(--body);color:#c9d5e0}
@@ -26,7 +28,7 @@ h1 span{display:block;color:var(--s3)}
 .feats b{display:block;font:700 23px/1.1 var(--body)}
 .feats span{display:block;font:400 17px/1.32 var(--body);color:var(--mut);margin-top:4px}
 /* product stack */
-.stack{position:absolute;left:520px;top:318px;width:560px;height:520px;perspective:1400px;transform:scale(.86);transform-origin:top left}
+.stack{position:absolute;left:520px;top:354px;width:560px;height:520px;perspective:1400px;transform:scale(.86);transform-origin:top left}
 .layer{position:absolute;background:linear-gradient(180deg,#22384d,#18293a);border:1px solid rgba(148,188,227,.35);border-radius:16px;box-shadow:0 30px 60px rgba(0,0,0,.4)}
 .back{left:110px;top:0;width:420px;height:200px;transform:rotateY(-14deg) rotateZ(-3deg);padding:18px 22px}
 .back .k,.front .k,.under .k{font:600 15px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--s4)}
@@ -47,7 +49,7 @@ h1 span{display:block;color:var(--s3)}
 .under{left:150px;top:390px;width:400px;height:130px;transform:rotateY(-14deg) rotateZ(-3deg);padding:14px 18px;display:grid;grid-template-columns:1fr 150px;gap:14px}
 .under .ln{height:8px;border-radius:4px;background:rgba(148,188,227,.25);margin-top:10px}
 /* audiences */
-.sect{position:relative;margin-top:64px;display:flex;align-items:center;gap:18px;font:600 20px/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:#dbe4ec}
+.sect{position:relative;margin-top:50px;display:flex;align-items:center;gap:18px;font:600 20px/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:#dbe4ec}
 .sect::before,.sect::after{content:"";flex:1;height:1px;background:rgba(148,188,227,.3)}
 .who{position:relative;margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr)}
 .who > div{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:0 18px;border-left:1px solid rgba(148,188,227,.22)}
@@ -55,12 +57,12 @@ h1 span{display:block;color:var(--s3)}
 .who svg{width:44px;height:44px;color:var(--s3)}
 .who b{display:block;font:700 22px/1.1 var(--body)}
 .who span{display:block;font:400 17px/1.32 var(--body);color:var(--mut);margin-top:6px}
-.adv{position:relative;margin-top:34px;border:1px solid rgba(148,188,227,.35);border-radius:16px;background:rgba(15,26,37,.5);display:grid;grid-template-columns:330px repeat(4,1fr);align-items:center;padding:22px 26px}
+.adv{position:relative;margin-top:24px;border:1px solid rgba(148,188,227,.35);border-radius:16px;background:rgba(15,26,37,.5);display:grid;grid-template-columns:330px repeat(4,1fr);align-items:center;padding:22px 26px}
 .adv .l small{display:block;font:600 16px/1 var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--s4)}
 .adv .l b{display:block;font:700 40px/.95 var(--head);text-transform:uppercase;margin-top:8px}
 .adv .it{text-align:center;border-left:1px solid rgba(148,188,227,.22);padding:0 8px;font:500 17px/1.25 var(--body);color:#dbe4ec}
 .adv .it svg{width:38px;height:38px;color:var(--s3);display:block;margin:0 auto 8px}
-.cta{position:relative;margin:36px auto 0;display:flex;align-items:center;justify-content:center;gap:18px;width:440px;height:80px;background:var(--paper);color:var(--s9);border-radius:12px;font:700 38px/1 var(--head);letter-spacing:.04em;text-transform:uppercase}
+.cta{position:relative;margin:24px auto 0;display:flex;align-items:center;justify-content:center;gap:18px;width:440px;height:80px;background:var(--paper);color:var(--s9);border-radius:12px;font:700 38px/1 var(--head);letter-spacing:.04em;text-transform:uppercase}
 .cta svg{width:30px;height:30px}
 .url{position:relative;text-align:center;margin-top:14px;font:600 26px/1 var(--head);letter-spacing:.06em;color:#dbe4ec}
 </style></head><body>
@@ -92,6 +94,7 @@ h1 span{display:block;color:var(--s3)}
     <div><div class="lock"><svg><use href="#mark"/></svg><span>CRIC<b>SYNTHESIS</b></span></div><div class="tagl">AI-Powered Cricket Intelligence</div></div>
     <div class="badge">Business API</div>
   </div>
+  <div class="eye"><svg><use href="#i-scale"/></svg>For business</div>
   <h1>Turn cricket intelligence<span>into business value.</span></h1>
 
   <div class="body">
