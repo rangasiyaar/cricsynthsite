@@ -37,15 +37,6 @@ const google = (env: Env) => {
   return new Google(env.GOOGLE_SA, project(env));
 };
 
-async function pool<T, R>(items: T[], n: number, f: (x: T) => Promise<R>): Promise<R[]> {
-  const out: R[] = new Array(items.length);
-  let i = 0;
-  await Promise.all(Array.from({ length: Math.min(n, items.length) }, async () => {
-    while (i < items.length) { const k = i++; out[k] = await f(items[k]); }
-  }));
-  return out;
-}
-
 /** Read everything and build the snapshot (about one read per document, plus one query per account for usage). */
 export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   const g = google(env), errors: string[] = [];
@@ -62,11 +53,14 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   await notices(g, billing, mailer(g, env.RESEND_API_KEY), now).catch((e) => errors.push(`emails: ${(e as Error).message}`));
   const uids = new Set<string>([...(auth || []).map((a) => a.uid), ...profiles.map((p) => p._id),
                                 ...keys.map((k) => k._path.split("/")[1]), ...requests.map((r) => r._path.split("/")[1])]);
+  // every account's usage in one request (Cloudflare's free plan allows 50 subrequests per call, so never one per user)
   const from = daysAgo(29, now), usage: Record<string, any[]> = {};
-  await pool([...uids], 8, async (uid) => {
-    try { const u = await g.usage(uid, from); if (u.length) usage[uid] = u; }
-    catch (e) { if (errors.length < 20) errors.push(`usage ${uid}: ${(e as Error).message}`); }
-  });
+  try {
+    for (const d of await g.group("usage")) {
+      const uid = d._path.split("/")[1];
+      if (d._path.startsWith("users/") && uid && d._id >= from) (usage[uid] ||= []).push(d);
+    }
+  } catch (e) { errors.push(`usage: ${(e as Error).message}`); }
   return { ...snapshot({ now, auth, profiles, keys, requests, usage, billing }), errors };
 }
 

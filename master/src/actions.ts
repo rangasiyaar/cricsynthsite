@@ -40,6 +40,8 @@ export function mailer(g: Google, key: string | undefined): Mailer {
 }
 
 export const MAX_DAYS = 3650;
+/** Subscriptions moved back to Free per snapshot run (Workers on the free plan may make 50 subrequests per call). */
+export const MAX_PER_RUN = 4;
 
 export function validate(a: Row | null): Action {
   if (!a || typeof a.type !== "string" || !UID.test(String(a.uid || ""))) throw new ActionError("Bad action");
@@ -202,7 +204,9 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
 /** Console assignments whose end date has passed go back to CricSynthesis Free (website Pro has already stopped at
  *  proUntil; this moves the API keys back and records it). Run by the 6-hourly cron; returns the accounts moved. */
 export async function expire(g: Google, billing: Row[], now = new Date()): Promise<string[]> {
-  const due = billing.filter((b) => b._id === "admin" && b.tier && b.tier !== "free" && b.until && Date.parse(b.until) <= now.getTime());
+  // a few per run (each takes several requests and a run may make 50); the rest follow 6 hours later
+  const due = billing.filter((b) => b._id === "admin" && b.tier && b.tier !== "free" && b.until && Date.parse(b.until) <= now.getTime())
+    .slice(0, MAX_PER_RUN);
   const moved: string[] = [];
   for (const b of due) {
     const uid = String(b._path).split("/")[1];
@@ -220,13 +224,16 @@ export async function expire(g: Google, billing: Row[], now = new Date()): Promi
  *  a Razorpay subscription's access has stopped (cancelled, halted or expired). Each is recorded so it goes once. */
 export async function notices(g: Google, billing: Row[], mail: Mailer, now = new Date()): Promise<string[]> {
   const t = now.getTime(), sent: string[] = [];
+  let done = 0;
   for (const b of billing) {
+    if (done >= MAX_PER_RUN * 2) break;                // 3 requests per email; the rest go next run
     const uid = String(b._path).split("/")[1];
     if (!UID.test(uid)) continue;
     try {
       if (b._id === "admin" && b.tier && b.tier !== "free" && b.until && b.endingMailed !== b.until) {
         const until = Date.parse(b.until);
         if (until > t && until - t <= 3 * 86400_000) {
+          done++;
           if (await mail(uid, (name) => E.subscriptionEnding({ name, tier: b.tier, until: new Date(until) }))) sent.push(`${uid}: ending`);
           await g.patch(b._path.replace(/^.*?users\//, "users/"), { endingMailed: b.until });
         }
@@ -234,6 +241,7 @@ export async function notices(g: Google, billing: Row[], mail: Mailer, now = new
       if (b._id === "pro" && b.subscriptionId && b.status !== "comp" && b.mailEnded !== b.subscriptionId && b.mailStarted) {
         const until = Date.parse(b.proUntil);
         if (until <= t && t - until < 7 * 86400_000) {
+          done++;
           if (await mail(uid, (name) => E.proEnded({ name }))) sent.push(`${uid}: ended`);
           await g.patch(b._path.replace(/^.*?users\//, "users/"), { mailEnded: b.subscriptionId });
         }
