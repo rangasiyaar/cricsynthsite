@@ -12,33 +12,33 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Abu Dhabi Knight Riders won the toss and bat first.",
   "teams": [
     {
       "name": "Dubai Capitals",
       "short": "DC",
       "players": [
-        "Sam Billings",
         "Faf du Plessis",
         "Masood Gurbaz",
-        "Tom Moores",
-        "Phil Salt",
         "Marcus Stoinis",
-        "Karim Janat",
-        "Dasun Shanaka",
+        "Sam Billings",
+        "Tom Moores",
         "Hassan Khan",
+        "Karim Janat",
         "Noor Ahmad",
-        "Mustafizur Rahman"
+        "Mustafizur Rahman",
+        "Dushmantha Chameera",
+        "Haider Ali"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
+        "BOWL",
         "AR",
-        "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -132,6 +132,7 @@
     "kn": 41721,
     "url": "https://khelnow.com/live-cricket-score/dubai-capitals-vs-abu-dhabi-knight-riders-international-league-t20-22nd-november-2026-41721",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
