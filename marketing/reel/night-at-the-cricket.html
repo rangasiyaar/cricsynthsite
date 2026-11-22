@@ -35,10 +35,10 @@ body{font-family:Barlow,sans-serif;color:#f2f2f3;position:relative}
 .lk .w{font:600 104px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase;color:#f2f2f3}
 .lk .w b{font-weight:600;color:#94bce3}
 .tg{font:500 30px Barlow;letter-spacing:.14em;color:#8ea6bd;text-transform:uppercase}
-.url{font:italic 900 56px 'Barlow Condensed';letter-spacing:.06em;color:#ffb347;text-transform:uppercase;margin-top:40px}
+.url{font:600 46px Barlow;letter-spacing:.02em;color:#94bce3;margin-top:36px}
 .fonts{position:absolute;left:-9999px}
 </style></head><body>
-<div class="fonts"><span style="font:italic 900 20px 'Barlow Condensed'">A</span><span style="font:600 20px 'Barlow Condensed'">A</span><span style="font:800 20px Barlow">A</span><span style="font:500 20px Barlow">A</span></div>
+<div class="fonts"><span style="font:italic 900 20px 'Barlow Condensed'">A</span><span style="font:600 20px 'Barlow Condensed'">A</span><span style="font:800 20px Barlow">A</span><span style="font:500 20px Barlow">A</span><span style="font:600 20px Barlow">A</span></div>
 
 <svg width="0" height="0" style="position:absolute"><defs>
   <symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
@@ -71,7 +71,7 @@ body{font-family:Barlow,sans-serif;color:#f2f2f3;position:relative}
   <g fill="#110a20"><path d="M0 560h26v-70h30v40h18v-90h34v90h16v-50h28v80h20v-40h24v60h22v-110h30v110h18v-60h26v40h22v-80h34v70h28v-30h24v190H0z"/></g>
   <g id="s1win" fill="#ffd9a6"><rect x="64" y="480" width="5" height="5"/><rect x="80" y="500" width="5" height="5"/><rect x="186" y="470" width="5" height="5"/><rect x="196" y="500" width="5" height="5"/><rect x="300" y="490" width="5" height="5"/><rect x="316" y="520" width="5" height="5"/><rect x="36" y="530" width="5" height="5"/><rect x="250" y="540" width="5" height="5"/><rect x="356" y="545" width="5" height="5"/><rect x="140" y="530" width="5" height="5"/></g>
   <rect y="600" width="400" height="111" fill="#0a0716"/>
-</svg></div><div class="kicker" id="k1">A NIGHT AT THE CRICKET</div></div>
+</svg></div></div>
 
 <!-- 2: THE CHASE -->
 <div class="scene" id="s2"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
@@ -339,7 +339,6 @@ window.seek = (t) => {
   if (cur === 's1') {
     document.querySelectorAll('#s1lamps > g').forEach((g, i) => { g.style.opacity = seg(t, 0.5 + i * 0.32, 0.58 + i * 0.32) > 0.5 ? 1 : 0; });
     $('#s1halo').style.opacity = (0.9 * seg(t, 1.2, 2.2)).toFixed(3);
-    $('#k1').style.opacity = (ease(seg(t, 0.6, 1.1)) * (1 - seg(t, 2.0, 2.45))).toFixed(3);
     cam('s1', t, 0, 2.5, 1.0, 1.08, 0, 0);
     $('#s1 .cam').style.opacity = ease(seg(t, 0, 0.6)).toFixed(3);
   }
