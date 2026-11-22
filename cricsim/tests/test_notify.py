@@ -70,18 +70,47 @@ def test_new_result_is_announced_with_what_we_had():
 
 
 def test_timed_alerts_go_once():
-    from cricsim.notify import timed
+    from cricsim.notify import record, timed
     soon = card("s", date="2026-10-23", time="12:00")                # 12:00 IST, 30 min after NOW (11:30 IST)
     later = card("l", date="2026-10-23", time="19:30")
     sent: dict = {}
     first = timed({"matches": [soon, later]}, sent, NOW)
     assert [(a["topic"], a["match"]) for a in first] == [("soon", "s")]   # no "today's matches" any more
     assert first[0]["title"] == "INDW v ZIMW starts in 30 minutes" and "fantasy team" in first[0]["body"]
+    assert timed({"matches": [soon, later]}, sent, NOW) == first      # not delivered yet: still due
+    record(sent, first, NOW)
     assert timed({"matches": [soon, later]}, sent, NOW) == []          # nothing twice
 
 
+def test_busy_window_sends_the_seventh_match_next_pass():
+    from cricsim.notify import record, timed
+    cards = [card(f"m{i}", date="2026-10-23", time="12:00") for i in range(7)]
+    sent: dict = {}
+    first = timed({"matches": cards}, sent, NOW)
+    assert len(first) == MAX_ALERTS
+    record(sent, first, NOW)
+    second = timed({"matches": cards}, sent, NOW)
+    assert [a["match"] for a in second] == ["m6"]
+
+
+def test_failed_sends_are_retried_and_not_recorded():
+    from cricsim.notify import record, send, timed
+    sent: dict = {}
+    alerts = timed({"matches": [card("a", date="2026-10-23", time="12:00"), card("b", date="2026-10-23", time="12:00")]}, sent, NOW)
+    calls: list[str] = []
+    def post(a, project, token):                   # "a" fails for good (400); "b" fails once (503), then goes
+        calls.append(a["match"])
+        if a["match"] == "a":
+            return False, False
+        return calls.count("b") > 1, True
+    delivered = send(alerts, "p", "t", post=post, pause=lambda s: None)
+    assert [a["match"] for a in delivered] == ["b"] and calls == ["a", "b", "b"]
+    record(sent, delivered, NOW)
+    assert [a["match"] for a in timed({"matches": [card("a", date="2026-10-23", time="12:00")]}, sent, NOW)] == ["a"]
+
+
 def test_update_reminders_three_times_a_day_to_older_builds_only():
-    from cricsim.notify import fcm_message, update_reminders
+    from cricsim.notify import fcm_message, record, update_reminders
     rel = [{"version": "0.3.21", "build": 140, "prerelease": False, "published": "2026-10-22T10:00:00Z"}] + [
         {"version": f"0.3.{i}", "build": 100 + 2 * i, "prerelease": False, "published": "2026-10-01T10:00:00Z"} for i in range(1, 8)]
     sent: dict = {}
@@ -92,10 +121,13 @@ def test_update_reminders_three_times_a_day_to_older_builds_only():
     assert r[0]["condition"] == "'build-114' in topics || 'build-112' in topics || 'build-110' in topics || 'build-108' in topics || 'build-106' in topics"
     assert "'build-140'" not in r[0]["condition"] + r[1]["condition"]
     assert "condition" in fcm_message(r[0])["message"] and "topic" not in fcm_message(r[0])["message"]
+    record(sent, r[:1], at10)                                           # the second message failed: only it is due again
+    assert [x["condition"] for x in update_reminders(rel, sent, at10)] == [r[1]["condition"]]
+    record(sent, r[1:], at10)
     assert update_reminders(rel, sent, at10) == []                      # once per slot
     assert update_reminders(rel, sent, datetime(2026, 10, 23, 6, 0, tzinfo=timezone.utc)) == []      # 11:30 IST: between slots
     assert len(update_reminders(rel, sent, datetime(2026, 10, 23, 8, 35, tzinfo=timezone.utc))) == 2  # 14:05 IST
-    assert len(update_reminders(rel, sent, datetime(2026, 10, 23, 13, 31, tzinfo=timezone.utc))) == 2  # 19:01 IST
+    assert len(update_reminders(rel, {}, datetime(2026, 10, 23, 13, 31, tzinfo=timezone.utc))) == 2   # 19:01 IST
     fresh = [{**rel[0], "published": "2026-10-23T04:30:00Z"}] + rel[1:]   # released 10 minutes ago: wait
     assert update_reminders(fresh, {}, at10) == []
 

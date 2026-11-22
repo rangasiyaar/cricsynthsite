@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -115,18 +116,39 @@ def fcm_message(alert: dict) -> dict:
     }}
 
 
-def send(alerts: list[dict], project: str, token: str) -> int:
-    sent = 0
+def _post(alert: dict, project: str, token: str) -> tuple[bool, bool]:
+    """(delivered, worth retrying): a 429 / 5xx / network error may pass on a second try; a 4xx won't."""
+    req = urllib.request.Request(f"https://fcm.googleapis.com/v1/projects/{project}/messages:send",
+                                 data=json.dumps(fcm_message(alert)).encode(), method="POST",
+                                 headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=30):
+            return True, False
+    except urllib.error.HTTPError as e:
+        click.echo(f"FCM refused {alert['topic']} {alert['match']}: {e.code} {e.read()[:300]!r}", err=True)
+        return False, e.code == 429 or e.code >= 500
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        click.echo(f"FCM unreachable for {alert['topic']} {alert['match']}: {e}", err=True)
+        return False, True
+
+
+def send(alerts: list[dict], project: str, token: str, post=_post, pause=time.sleep) -> list[dict]:
+    """Sends each alert (one retry after a short pause when the failure looks temporary); returns those delivered."""
+    done = []
     for a in alerts:
-        req = urllib.request.Request(f"https://fcm.googleapis.com/v1/projects/{project}/messages:send",
-                                     data=json.dumps(fcm_message(a)).encode(), method="POST",
-                                     headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"})
-        try:
-            with urllib.request.urlopen(req, timeout=30):
-                sent += 1
-        except urllib.error.HTTPError as e:
-            click.echo(f"FCM refused {a['topic']} {a['match']}: {e.code} {e.read()[:300]!r}", err=True)
-    return sent
+        ok, again = post(a, project, token)
+        if not ok and again:
+            pause(3)
+            ok, _ = post(a, project, token)
+        if ok:
+            done.append(a)
+    return done
+
+
+def report(planned: list[dict], delivered: list[dict]) -> str:
+    missed = [a for a in planned if a not in delivered]
+    line = f"Sent {len(delivered)} of {len(planned)} alert(s)"
+    return line + "".join(f"\n::warning::Alert not delivered: [{a['topic']}] {a['title']}" for a in missed)
 
 
 @click.group()
@@ -164,7 +186,7 @@ def send_cmd(plan_file: Path, project: str) -> None:
         click.echo("No alerts to send"); return
     if not token:
         raise click.ClickException("FCM_ACCESS_TOKEN is not set")
-    click.echo(f"Sent {send(alerts, project, token)} of {len(alerts)} alert(s)")
+    click.echo(report(alerts, send(alerts, project, token)))   # a miss is flagged on the run, not fatal to the publish
 
 
 SOON_MIN = 30          # "about to start" goes out this many minutes before the start (± one loop pass)
@@ -173,8 +195,8 @@ UPDATE_TOPICS = 25     # the most recent older builds reminded (5 topics per mes
 
 
 def timed(index: dict, sent: dict, now: datetime | None = None) -> list[dict]:
-    """The time-based alerts due now that haven't been sent: "soon" per match.
-    `sent` (alert key -> ISO time) is updated in place with what this returns."""
+    """The "about to start" alerts due now that haven't been delivered (at most MAX_ALERTS; the rest come next pass).
+    Each carries its `key`; the caller records in `sent` (alert key -> ISO time) only the ones delivered."""
     now = now or datetime.now(timezone.utc)
     out: list[dict] = []
     cards = [c for c in index.get("matches", []) if c.get("published")]
@@ -186,10 +208,9 @@ def timed(index: dict, sent: dict, now: datetime | None = None) -> list[dict]:
         key = f"soon:{c['id']}"
         if 0 < mins <= SOON_MIN + 5 and key not in sent:
             short = " v ".join(t["short"] for t in c["teams"])
-            out.append({"match": c["id"], "path": f"/m/match/?id={c['id']}", "topic": "soon",
+            out.append({"key": key, "match": c["id"], "path": f"/m/match/?id={c['id']}", "topic": "soon",
                         "title": f"{short} starts in {max(1, round(mins))} minutes",
                         "body": "Still building your fantasy team? See our top picks, captain choice and team suggestions before the start."})
-            sent[key] = now.isoformat(timespec="minutes")
     cutoff = (now - timedelta(days=3)).isoformat()
     for k2 in [k2 for k2, v in sent.items() if v < cutoff]:
         del sent[k2]
@@ -216,9 +237,19 @@ def timed_cmd(project: str, state: Path, dry_run: bool) -> None:
     token = os.environ.get("FCM_ACCESS_TOKEN", "")
     if not token:
         raise click.ClickException("FCM_ACCESS_TOKEN is not set")
-    click.echo(f"Sent {send(alerts, project, token)} of {len(alerts)} alert(s)")
+    delivered = send(alerts, project, token)
+    record(sent, delivered)                       # only what went out: a refused alert is tried again next pass
     state.parent.mkdir(parents=True, exist_ok=True)
     state.write_text(json.dumps(sent, indent=1, sort_keys=True) + "\n")
+    click.echo(report(alerts, delivered))
+    if len(delivered) < len(alerts):
+        raise click.ClickException(f"{len(alerts) - len(delivered)} alert(s) not delivered; they'll be retried next pass")
+
+
+def record(sent: dict, delivered: list[dict], now: datetime | None = None) -> None:
+    stamp = (now or datetime.now(timezone.utc)).isoformat(timespec="minutes")
+    for a in delivered:
+        sent[a["key"]] = stamp
 
 
 def _update_copy(version: str) -> dict:
@@ -251,7 +282,8 @@ def _releases() -> list[dict]:
 
 def update_reminders(releases: list[dict], sent: dict, now: datetime | None = None) -> list[dict]:
     """At 10:00, 14:00 and 19:00 IST: "Update CricSynthesis" to phones on any older build (topics build-<n>), until they
-    update. Waits 30 minutes after a release so the site offers it first. `sent` is updated in place."""
+    update. Waits 30 minutes after a release so the site offers it first. Returns the messages not yet delivered in
+    this slot (the caller records the delivered ones in `sent`)."""
     now = now or datetime.now(timezone.utc)
     full = [r for r in releases if not r["prerelease"]]
     if not full:
@@ -269,12 +301,17 @@ def update_reminders(releases: list[dict], sent: dict, now: datetime | None = No
         at = local.replace(hour=h, minute=m, second=0, microsecond=0)
         if at <= local < at + timedelta(hours=2):
             due = f"update:{local.date().isoformat()}:{h:02d}"
-    if not due or due in sent:
+    if not due:
         return []
-    sent[due] = now.isoformat(timespec="minutes")
     older = sorted({r["build"] for r in releases if r["build"] < latest["build"]}, reverse=True)[:UPDATE_TOPICS]
-    return [{"topic": "updates", "match": f"app-{latest['build']}", "path": "/m/matches/", **_update_copy(latest["version"]),
-             "condition": " || ".join(f"'build-{b}' in topics" for b in older[i:i + 5])} for i in range(0, len(older), 5)]
+    out = []
+    for i in range(0, len(older), 5):                 # one message per 5 builds (FCM's limit per condition), each tracked
+        chunk = older[i:i + 5]
+        key = f"{due}:{chunk[0]}"
+        if key not in sent:
+            out.append({"key": key, "topic": "updates", "match": f"app-{latest['build']}", "path": "/m/matches/",
+                        **_update_copy(latest["version"]), "condition": " || ".join(f"'build-{b}' in topics" for b in chunk)})
+    return out
 
 
 @main.command("release")

@@ -5,11 +5,14 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { simulateMatches, type Pack } from "../lib/engine/sim.ts";
 import { summarizeLab } from "../lib/engine/summary.ts";
 
+// a published pack when the site data is there (CI publish), else the synthetic one in tests/fixtures (made-up players,
+// written from the Python test world) so a clean checkout still runs both tests
 const dir = "public/data/matches/";
-const packPath = existsSync(dir) ? readdirSync(dir).find((f) => f.endsWith(".pack.json")) : undefined;
+const published = existsSync(dir) ? readdirSync(dir).find((f) => f.endsWith(".pack.json")) : undefined;
+const packFile = published ? `${dir}${published}` : "tests/fixtures/sample.pack.json";
 
-test("simulations are deterministic and summaries add up", { skip: !packPath }, () => {
-  const pack = JSON.parse(readFileSync(`${dir}${packPath}`, "utf8")) as Pack;
+test("simulations are deterministic and summaries add up", () => {
+  const pack = JSON.parse(readFileSync(packFile, "utf8")) as Pack;
   const a = summarizeLab(pack, simulateMatches(pack, 600, {}, 5));
   const b = summarizeLab(pack, simulateMatches(pack, 600, {}, 5));
   assert.deepEqual(a.win, b.win);
@@ -22,9 +25,9 @@ test("simulations are deterministic and summaries add up", { skip: !packPath }, 
   assert.ok(flat.teams[0].score.mean > a.teams[0].score.mean);
 });
 
-test("fantasy picks from the browser simulations", { skip: !packPath }, async () => {
+test("fantasy picks from the browser simulations", async () => {
   const { fantasyPicks } = await import("../lib/engine/fantasy.ts");
-  const pack = JSON.parse(readFileSync(`${dir}${packPath}`, "utf8")) as Pack;
+  const pack = JSON.parse(readFileSync(packFile, "utf8")) as Pack;
   const f = fantasyPicks(pack, simulateMatches(pack, 400, {}, 5))!;
   assert.equal(f.single.players.length, 11);
   assert.ok(f.single.players.includes(f.single.captain) && f.single.players.includes(f.single.vice_captain));
