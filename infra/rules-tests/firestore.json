@@ -1073,6 +1073,101 @@
           }
         }
       }
+    },
+    {
+      "expectation": "ALLOW",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": true,
+            "ageConfirmed": "2026-10-01T00:00:00Z",
+            "welcomedAt": "2026-10-01T00:05:00Z",
+            "signupSource": "web",
+            "notifyBilling": false,
+            "updated": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "adult": true,
+          "ageConfirmed": "2026-10-01T00:00:00Z",
+          "welcomedAt": "2026-10-01T00:05:00Z",
+          "signupSource": "web"
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "adult": true,
+            "ageConfirmed": "2026-10-01T00:00:00Z",
+            "welcomedAt": "2030-01-01T00:00:00Z",
+            "signupSource": "web"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "adult": true,
+          "ageConfirmed": "2026-10-01T00:00:00Z",
+          "welcomedAt": "2026-10-01T00:05:00Z",
+          "signupSource": "web"
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "update",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "welcomedAt": "2026-10-10T12:00:00Z"
+          }
+        }
+      },
+      "resource": {
+        "data": {
+          "company": "Acme"
+        }
+      }
+    },
+    {
+      "expectation": "DENY",
+      "request": {
+        "auth": {
+          "uid": "u1"
+        },
+        "path": "/databases/(default)/documents/users/u1",
+        "method": "create",
+        "time": "2026-10-10T12:00:00Z",
+        "resource": {
+          "data": {
+            "company": "Acme",
+            "signupSource": "app"
+          }
+        }
+      }
     }
   ]
 }

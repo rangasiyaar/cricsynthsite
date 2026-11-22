@@ -4,6 +4,7 @@ import { Byline } from "@/components/Byline";
 import FantasyPitch from "@/components/FantasyPitch";
 import { PREVIEW_AUTHOR, type Article, type Block } from "@/lib/preview";
 import { SITE } from "@/lib/seo";
+import { ldJson } from "@/lib/ld";
 
 /** **bold** and [text](href) inside a paragraph. */
 function Rich({ text }: { text: string }) {
@@ -38,7 +39,7 @@ export default function PreviewArticle({ a, ld, home = ["Match previews", "/prev
   const updated = new Date(a.updated);
   return (
     <article className="page-head blog post wide">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(ld) }} />
       <div style={{ maxWidth: 820 }}>
         <p className="cs-eyebrow"><Link href={home[1]}>{home[0]}</Link>{a.series ? ` · ${a.series}` : ""}</p>
         <h1 className="post-title">{a.h1}</h1>

@@ -5,6 +5,7 @@ import ResultDetail from "@/components/ResultDetail";
 import { readResult, resultParams } from "@/lib/build";
 import { resultDescription, resultLd, resultPath, resultTitle } from "@/lib/matchText";
 import { seo } from "@/lib/seo";
+import { ldJson } from "@/lib/ld";
 
 type P = { params: Promise<{ id: string }> };
 export const dynamicParams = false;
@@ -22,7 +23,7 @@ export default async function Page({ params }: P) {
     <div className="page-head" style={{ paddingBottom: 80 }}>
       <nav className="small muted" aria-label="Breadcrumb"><Link href="/matches/">Matches</Link> / {r ? r.teams.map((t) => t.name).join(" vs ") : "Match"}</nav>
       {r ? <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(resultLd(r)) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(resultLd(r)) }} />
         <div style={{ marginTop: 16 }}><ResultDetail doc={r} heading="h1" /></div>
       </> : <p className="notice" style={{ marginTop: 16 }}>No result for this match yet. <Link href="/matches/">All matches</Link></p>}
     </div>

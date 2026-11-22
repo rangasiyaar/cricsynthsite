@@ -113,12 +113,13 @@ jobs:
             data/models/latest
           key: ${{ steps.day.outputs.key }}
       - name: Upcoming fixtures
+        env: { RESIMULATE: "${{ inputs.resimulate }}" }
         run: |
           mkdir -p data/coverage/matches
           started=$(uv run python -m cricsim.results --started)      # forecasts freeze at the start time
           for f in cricsim/fixtures/*.json; do
             [ -e "$f" ] || continue
-            case ",${{ inputs.resimulate }}," in
+            case ",$RESIMULATE," in
               *",all,"*|*",$(basename "$f"),"*) ;;
               *) echo "$started" | grep -qx "$(basename "$f")" && { echo "skip $f (started: forecast frozen)"; continue; } ;;
             esac

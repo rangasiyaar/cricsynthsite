@@ -12,4 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 infra/site_check.py "${{ inputs.base }}"
+      - env: { BASE: "${{ inputs.base }}" }          # inputs go through env, never pasted into the script
+        run: python3 infra/site_check.py "$BASE"

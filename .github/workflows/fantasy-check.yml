@@ -48,8 +48,9 @@ jobs:
         run: uv run python -m cricsim.engine fit --parquet data/parquet --out data/models/latest --memory 3GB > /dev/null
       - name: Fit before the match
         if: inputs.cutoff != ''
+        env: { CUTOFF: "${{ inputs.cutoff }}" }
         run: |
-          uv run python -m cricsim.engine fit --parquet data/parquet --cutoff "${{ inputs.cutoff }}" \
+          uv run python -m cricsim.engine fit --parquet data/parquet --cutoff "$CUTOFF" \
             --out data/models/before --memory 3GB > /dev/null
       - name: Check
         env: { MATCH: "${{ inputs.match }}", MODEL: "${{ inputs.cutoff != '' && 'data/models/before' || 'data/models/latest' }}" }

@@ -6,6 +6,7 @@ import LiveMatch from "@/components/LiveMatch";
 import { readMatch } from "@/lib/build";
 import { description, facts, faq, jsonLd, matchPath, type Kind } from "@/lib/matchText";
 import { seo } from "@/lib/seo";
+import { ldJson } from "@/lib/ld";
 
 const TAB: Record<Kind, string | undefined> = { prediction: undefined, fantasy: "fantasy", xi: "players" };
 
@@ -26,7 +27,7 @@ export default function MatchSeoPage({ id, kind }: { id: string; kind: Kind }) {
   const qa = faq(x, kind);
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(x, kind, id, qa)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(jsonLd(x, kind, id, qa)) }} />
       <LiveMatch id={id} tab={TAB[kind]} />
 
     </>

@@ -4,6 +4,7 @@ import { SITE, SITE_NAME, seo } from "@/lib/seo";
 import { AUTHOR, BLOG_IMAGE, POSTS, postPath } from "@/lib/blog";
 import { Byline } from "@/components/Byline";
 import { Calibration, Drift, ErrorRemoved, GroundLevel, InningsShape, Persistence } from "@/components/BlogCharts";
+import { ldJson } from "@/lib/ld";
 
 const post = POSTS.find((p) => p.slug === "does-the-ground-matter-t20-venue-analysis")!;
 const path = postPath(post.slug);
@@ -57,7 +58,7 @@ const jsonLd = {
 export default function Post() {
   return (
     <article className="page-head blog post wide">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(jsonLd) }} />
       <div style={{ maxWidth: 820 }}>
         <p className="cs-eyebrow"><Link href="/blog/">Blog</Link> · Venue analysis · Data</p>
         <h1 className="post-title">{post.title}</h1>
