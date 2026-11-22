@@ -98,3 +98,10 @@ test("Firestore encoding keeps nested maps (the application's resume details)", 
   assert.ok("mapValue" in v);
   assert.deepEqual(fromValue(v), { name: "cv.pdf", type: "application/pdf", bytes: 1234, chunks: 2, tags: ["a", 1] });
 });
+
+test("upgrade request: no acknowledgement when Plan reminders is off (the team is still told)", async () => {
+  const fresh = new Date(NOW.getTime() - 60_000).toISOString();
+  const w = world({ "users/u1": { notifyBilling: false }, "users/u1/requests/api-pro": { status: "pending", created: fresh } });
+  assert.deepEqual(await F.upgradeRequested(w.deps, { uid: "u1", email: "a@example.com" }, "Asha", "api-pro"), { sent: false });
+  assert.deepEqual(w.mails.map((m) => m.to), ["team@example.com"]);
+});

@@ -309,7 +309,7 @@ export async function notices(g: Google, billing: Row[], mail: Mailer, now = new
   const t = now.getTime(), sent: string[] = [];
   let done = 0;
   for (const b of billing) {
-    if (done >= MAX_PER_RUN * 2) break;                // 3 requests per email; the rest go next run
+    if (done >= MAX_PER_RUN * 2) break;                // 3-4 requests per email; the rest go next run
     const uid = String(b._path).split("/")[1];
     if (!UID.test(uid)) continue;
     try {
@@ -317,7 +317,10 @@ export async function notices(g: Google, billing: Row[], mail: Mailer, now = new
         const until = Date.parse(b.until);
         if (until > t && until - t <= 3 * 86400_000) {
           done++;
-          if (await mail(uid, (name) => E.subscriptionEnding({ name, tier: b.tier, until: new Date(until) }))) sent.push(`${uid}: ending`);
+          // a reminder, so it follows the account's "Plan reminders" switch (users/{uid}.notifyBilling, default on)
+          const prof = await g.get(`users/${uid}`).catch(() => null);
+          if (prof?.notifyBilling === false) sent.push(`${uid}: ending (reminders off)`);
+          else if (await mail(uid, (name) => E.subscriptionEnding({ name, tier: b.tier, until: new Date(until) }))) sent.push(`${uid}: ending`);
           await g.patch(b._path.replace(/^.*?users\//, "users/"), { endingMailed: b.until });
         }
       }

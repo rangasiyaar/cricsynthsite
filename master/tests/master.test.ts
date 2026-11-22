@@ -440,3 +440,17 @@ test("job applications: shortlist / decline email the applicant once, delete rem
   await apply(g, "boss@example.com", validate({ type: "application.delete", id: "a1" }), new Date(), mail);
   assert.deepEqual(removed, ["applications/a1/resume/0", "applications/a1/resume/1", "applications/a1"]);
 });
+
+test("plan-ending reminder follows the account's Plan reminders switch", async () => {
+  const { notices } = await import("../src/actions.ts");
+  const now = new Date("2026-11-22T00:00:00Z"), until = "2026-11-24T00:00:00Z";
+  const docs: Record<string, any> = { "users/on": {}, "users/off": { notifyBilling: false } };
+  const g: any = { get: async (p: string) => docs[p] ?? null, patch: async (p: string, d: any) => { docs[p] = { ...docs[p], ...d }; } };
+  const mails: string[] = [];
+  const mail = async (uid: string) => { mails.push(uid); return true; };
+  const row = (uid: string) => ({ _id: "admin", _path: `users/${uid}/billing/admin`, tier: "pro", until });
+  const sent = await notices(g, [row("on"), row("off")], mail as any, now);
+  assert.deepEqual(mails, ["on"]);
+  assert.deepEqual(sent, ["on: ending", "off: ending (reminders off)"]);
+  assert.equal(docs["users/off/billing/admin"].endingMailed, until);           // not asked again
+});

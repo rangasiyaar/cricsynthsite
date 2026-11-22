@@ -570,8 +570,8 @@ export function Keys({ uid, keys, usage, refresh, setErr }: {
 
 const NOTIFY: [keyof Notify, string, string][] = [
   ["notifyUsage", "Usage alerts", "When your account reaches its daily limit."],
-  ["notifyBilling", "Plan and billing", "Upgrade requests, pricing and invoices."],
-  ["notifyProduct", "Product updates", "New endpoints, competitions and features. A few times a year."],
+  ["notifyBilling", "Plan reminders", "A reminder 3 days before a plan ends, and a confirmation when you ask for an upgrade."],
+  ["notifyProduct", "Product updates", "New features and competitions. A few times a year at most."],
 ];
 
 export function ProfileSection({ user, setErr }: { user: User; setErr: (s: string | null) => void }) {
@@ -632,6 +632,7 @@ export function ProfileSection({ user, setErr }: { user: User; setErr: (s: strin
               </label>
             ))}
           </div>
+          <p className="small muted">Emails about payments, your subscription, new API keys and account changes are always sent.</p>
           <h3 style={{ marginTop: 24 }}>Session</h3>
           <p className="small muted">Signed in on this device.</p>
           <div className="card-foot"><button type="button" className="btn ghost" onClick={() => signOut(auth()).then(() => window.location.replace("/"))}>Sign out</button></div>

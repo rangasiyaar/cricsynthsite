@@ -93,8 +93,9 @@ export async function upgradeRequested(deps: FormDeps, user: { uid: string; emai
   if (!r || r.status !== "pending" || r.mailed === true || !(deps.now().getTime() - created < 15 * 60_000)) return { sent: false };
   await deps.set(path, { mailed: true });
   const volume = clean(r.volume, 60), note = clean(r.note, 500);
+  const prof = await deps.get(`users/${user.uid}`);              // the acknowledgement follows "Plan reminders"
   const [sent] = await Promise.all([
-    deps.send(user.email, E.upgradeRequested({ name, plan, volume })),
+    prof?.notifyBilling === false ? Promise.resolve(false) : deps.send(user.email, E.upgradeRequested({ name, plan, volume })),
     deps.send(deps.team, E.teamNotice({ subject: `Upgrade request: ${E.planName(plan)} from ${name || user.email}`,
       heading: `New ${E.planName(plan)} request`, rows: [["Name", name || ""], ["Email", user.email], ["Plan", E.planName(plan)],
         ["Expected volume", volume], ["Account", user.uid]], body: note || undefined,
