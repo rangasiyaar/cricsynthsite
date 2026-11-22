@@ -1,0 +1,355 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- "A Night at the Cricket": 30 s trailer, 1080x1920. Every frame is computed by window.seek(t) (seconds), so a renderer
+     can step through it frame by frame. Scenes follow marketing/night-at-the-cricket-script.md. No real players, team
+     marks, numbers or game trademarks. -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;800&family=Barlow+Condensed:ital,wght@0,600;1,900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0a1018}
+body{font-family:Barlow,sans-serif;color:#f2f2f3;position:relative}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.scene svg.bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cam{position:absolute;inset:0;transform-origin:50% 50%}
+.frame{position:absolute;inset:34px;border:14px solid #f4f1ea;opacity:0;pointer-events:none;box-shadow:0 0 0 2000px rgba(10,16,24,0)}
+.card{position:absolute;left:84px;bottom:300px;font:italic 900 118px/.92 'Barlow Condensed';text-transform:uppercase;opacity:0;
+  text-shadow:0 6px 0 rgba(0,0,0,.55),0 0 40px rgba(0,0,0,.45);white-space:nowrap}
+.card.long{font-size:96px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.kicker{position:absolute;left:0;right:0;top:820px;text-align:center;font:800 30px Barlow;letter-spacing:.42em;color:#f2f2f3;opacity:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+/* collage */
+#collage{background:#0a1018}
+.grid{position:absolute;left:-30px;right:-70px;top:-40px;height:1240px;transform:rotate(-4deg);display:grid;
+  grid-template-columns:1.2fr 1fr;grid-template-rows:1.25fr 1fr 1fr;gap:22px;padding:22px;transform-origin:50% 50%}
+.pn{position:relative;overflow:hidden;border:10px solid #f4f1ea;box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0}
+.pn svg{position:absolute;inset:0;width:100%;height:100%}
+.pn .cap{position:absolute;left:18px;bottom:14px;font:italic 900 44px/.92 'Barlow Condensed';text-transform:uppercase;text-shadow:0 4px 0 rgba(0,0,0,.6)}
+.pn.p1{grid-row:1 / span 2}
+.head{position:absolute;left:64px;right:30px;top:1300px;font:italic 900 84px/.98 'Barlow Condensed';text-transform:uppercase;white-space:nowrap}
+.head .l2{background:linear-gradient(92deg,#ff4f8b 0%,#ffb347 60%,#ffd27a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* end card */
+#end{background:radial-gradient(900px 700px at 50% 45%,#16263a 0%,#0a1018 70%)}
+.lock{position:absolute;left:0;right:0;top:760px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.lk{display:flex;align-items:center;gap:30px}
+.lk svg{width:128px;height:128px;color:#94bce3;overflow:visible}
+.lk .w{font:600 104px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase;color:#f2f2f3}
+.lk .w b{font-weight:600;color:#94bce3}
+.tg{font:500 30px Barlow;letter-spacing:.14em;color:#8ea6bd;text-transform:uppercase}
+.url{font:italic 900 56px 'Barlow Condensed';letter-spacing:.06em;color:#ffb347;text-transform:uppercase;margin-top:40px}
+.fonts{position:absolute;left:-9999px}
+</style></head><body>
+<div class="fonts"><span style="font:italic 900 20px 'Barlow Condensed'">A</span><span style="font:600 20px 'Barlow Condensed'">A</span><span style="font:800 20px Barlow">A</span><span style="font:500 20px Barlow">A</span></div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241443"/><stop offset=".45" stop-color="#c8396f"/><stop offset=".72" stop-color="#ff8a4c"/><stop offset="1" stop-color="#ffcf73"/></linearGradient>
+  <linearGradient id="dusk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140c2c"/><stop offset=".5" stop-color="#5a1f57"/><stop offset=".8" stop-color="#d0496c"/><stop offset="1" stop-color="#ff9a55"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#081422"/><stop offset=".7" stop-color="#1d3a5a"/><stop offset="1" stop-color="#3f6d96"/></linearGradient>
+  <linearGradient id="hot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4f8b"/><stop offset="1" stop-color="#ffb347"/></linearGradient>
+  <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b2f40"/><stop offset="1" stop-color="#1f8a8a"/></linearGradient>
+  <linearGradient id="tunnel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c8"/><stop offset=".6" stop-color="#ffc77a"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient>
+  <linearGradient id="city" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#150c2c"/><stop offset=".6" stop-color="#4a1d4f"/><stop offset="1" stop-color="#b8456a"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8"/><stop offset=".35" stop-color="#ffe2a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+  <radialGradient id="phone" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#cfe9ff" stop-opacity=".95"/><stop offset="1" stop-color="#94bce3" stop-opacity="0"/></radialGradient>
+  <radialGradient id="stad" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff0c4" stop-opacity=".95"/><stop offset=".5" stop-color="#ffd27a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9" stop-opacity=".55"/><stop offset="1" stop-color="#fff3c9" stop-opacity="0"/></linearGradient>
+</defs></svg>
+
+<!-- 1: the city at dusk, the ground's lights coming on -->
+<div class="scene" id="s1"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#dusk2)"/>
+  <circle cx="200" cy="520" r="60" fill="#ffd27a" opacity=".7"/>
+  <!-- distant stadium -->
+  <path d="M110 520 Q200 470 290 520Z" fill="#2a1338"/>
+  <g id="s1towers" fill="#1b0f2b"><rect x="122" y="440" width="4" height="70"/><rect x="164" y="425" width="4" height="80"/><rect x="232" y="425" width="4" height="80"/><rect x="274" y="440" width="4" height="70"/></g>
+  <g id="s1lamps"><g><circle cx="124" cy="440" r="22" fill="url(#glow)"/><rect x="117" y="436" width="14" height="6" fill="#fff8de"/></g>
+    <g><circle cx="166" cy="425" r="22" fill="url(#glow)"/><rect x="159" y="421" width="14" height="6" fill="#fff8de"/></g>
+    <g><circle cx="234" cy="425" r="22" fill="url(#glow)"/><rect x="227" y="421" width="14" height="6" fill="#fff8de"/></g>
+    <g><circle cx="276" cy="440" r="22" fill="url(#glow)"/><rect x="269" y="436" width="14" height="6" fill="#fff8de"/></g></g>
+  <ellipse id="s1halo" cx="200" cy="500" rx="140" ry="60" fill="url(#stad)" opacity="0"/>
+  <!-- skyline -->
+  <g fill="#110a20"><path d="M0 560h26v-70h30v40h18v-90h34v90h16v-50h28v80h20v-40h24v60h22v-110h30v110h18v-60h26v40h22v-80h34v70h28v-30h24v190H0z"/></g>
+  <g id="s1win" fill="#ffd9a6"><rect x="64" y="480" width="5" height="5"/><rect x="80" y="500" width="5" height="5"/><rect x="186" y="470" width="5" height="5"/><rect x="196" y="500" width="5" height="5"/><rect x="300" y="490" width="5" height="5"/><rect x="316" y="520" width="5" height="5"/><rect x="36" y="530" width="5" height="5"/><rect x="250" y="540" width="5" height="5"/><rect x="356" y="545" width="5" height="5"/><rect x="140" y="530" width="5" height="5"/></g>
+  <rect y="600" width="400" height="111" fill="#0a0716"/>
+</svg></div><div class="kicker" id="k1">A NIGHT AT THE CRICKET</div></div>
+
+<!-- 2: THE CHASE -->
+<div class="scene" id="s2"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#dusk)"/>
+  <circle cx="200" cy="360" r="74" fill="#ffd27a" opacity=".85"/><circle cx="200" cy="360" r="120" fill="#ffd27a" opacity=".16"/>
+  <g fill="#140c22"><path d="M48 160h48v28H48z"/><path d="M68 188h8l11 330H57z"/><path d="M304 140h48v28h-48z"/><path d="M324 168h8l11 350h-30z"/></g>
+  <g fill="#fff8de"><rect x="51" y="163" width="42" height="22" rx="2"/><rect x="307" y="143" width="42" height="22" rx="2"/></g>
+  <circle cx="72" cy="174" r="64" fill="url(#glow)"/><circle cx="328" cy="154" r="64" fill="url(#glow)"/>
+  <g id="s2beams"><path d="M52 185 L-60 580 L160 580 L92 185Z" fill="url(#beam)" opacity=".7"/><path d="M308 165 L240 580 L460 580 L348 165Z" fill="url(#beam)" opacity=".7"/></g>
+  <path d="M0 470 Q200 395 400 470 V711 H0Z" fill="#1a1030"/>
+  <path d="M0 497 Q200 428 400 497" stroke="#ff7aa8" stroke-opacity=".5" stroke-width="2" fill="none"/>
+  <g fill="#ffd9a6" opacity=".6"><circle cx="40" cy="492" r="1.7"/><circle cx="72" cy="483" r="1.7"/><circle cx="110" cy="472" r="1.7"/><circle cx="150" cy="463" r="1.7"/><circle cx="190" cy="459" r="1.7"/><circle cx="230" cy="460" r="1.7"/><circle cx="270" cy="465" r="1.7"/><circle cx="310" cy="474" r="1.7"/><circle cx="350" cy="486" r="1.7"/><circle cx="382" cy="495" r="1.7"/></g>
+  <ellipse cx="200" cy="690" rx="330" ry="160" fill="#1f5a4a"/>
+  <ellipse cx="200" cy="690" rx="330" ry="160" fill="none" stroke="#9fe0c6" stroke-opacity=".35" stroke-width="2"/>
+  <path d="M180 580 L220 580 L238 711 L162 711Z" fill="#c9a86b"/>
+  <g stroke="#f4f1ea" stroke-width="3"><path d="M193 571v20M200 571v20M207 571v20"/><path d="M191 569h8M201 569h8" stroke-width="2"/></g>
+  <path id="s2trail" d="M196 560 Q262 300 336 252" stroke="#fff3c9" stroke-width="3.4" stroke-dasharray="2 7" stroke-linecap="round" fill="none" opacity=".85"/>
+  <g id="s2ball"><circle r="28" fill="#fff3c9" opacity=".22"/><circle r="15" fill="#fff3c9" opacity=".35"/><circle r="9" fill="#fff8e6"/></g>
+</svg></div><div class="frame"></div><div class="card">The Chase</div><div class="flash"></div></div>
+
+<!-- 3: THE WALK OUT -->
+<div class="scene" id="s3"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="#120a1c"/>
+  <path d="M70 711V240a130 130 0 0 1 260 0v471Z" fill="url(#tunnel)"/>
+  <path d="M70 711V240a130 130 0 0 1 260 0v471" fill="none" stroke="#2a1530" stroke-width="16"/>
+  <path d="M100 711 L170 470 L230 470 L300 711Z" fill="#ffb15e" opacity=".45"/>
+  <g id="s3dust" fill="#fff0c8" opacity=".6"></g>
+  <g id="s3bat" fill="#120a1c">
+    <circle cx="200" cy="400" r="22"/><path d="M178 398h44v9h-44z"/>
+    <path d="M176 424h48l8 80h-64z"/>
+    <path id="s3legL" d="M172 504h22l-3 92h-19z"/><path id="s3legR" d="M206 504h22l3 92h-19z"/>
+    <path d="M226 434l13 -3 22 126-13 3z"/><path d="M222 428l11 14-7 5-10-14z"/>
+  </g>
+  <ellipse id="s3shadow" cx="200" cy="600" rx="62" ry="9" fill="#120a1c" opacity=".55"/>
+</svg></div><div class="frame"></div><div class="card">The Walk Out</div><div class="flash"></div></div>
+
+<!-- 4: THE CALL -->
+<div class="scene" id="s4"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#night)"/>
+  <g fill="#cfe2f5" opacity=".7"><circle cx="40" cy="80" r="1.3"/><circle cx="120" cy="140" r="1"/><circle cx="300" cy="60" r="1.4"/><circle cx="350" cy="190" r="1"/><circle cx="210" cy="40" r="1"/><circle cx="80" cy="250" r="1.2"/><circle cx="330" cy="320" r="1"/></g>
+  <circle cx="200" cy="330" r="150" fill="#94bce3" opacity=".08"/>
+  <g stroke="#94bce3" stroke-opacity=".4" stroke-width="2" fill="none"><path d="M60 620 Q200 560 340 620"/><path d="M100 660 Q200 615 300 660"/></g>
+  <g id="s4coin">
+    <ellipse id="s4rim" rx="80" ry="36" fill="#9a5a2c" transform="translate(0 10)"/>
+    <ellipse id="s4face" rx="80" ry="36" fill="url(#hot)"/>
+    <ellipse id="s4ring" rx="65" ry="28" fill="none" stroke="#fff3d6" stroke-opacity=".75" stroke-width="3"/>
+    <g id="s4mark" color="#7a2e1a"><use href="#mark" x="-22" y="-22" width="44" height="44"/></g>
+  </g>
+</svg></div><div class="frame"></div><div class="card">The Call</div><div class="flash"></div></div>
+
+<!-- 5: THE YORKER -->
+<div class="scene" id="s5"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#teal)"/>
+  <circle cx="200" cy="420" r="190" fill="#ffb347" opacity=".12"/>
+  <rect y="560" width="400" height="151" fill="#0d4a4a"/><path d="M120 560 L280 560 L330 711 L70 711Z" fill="#c9a86b" opacity=".85"/>
+  <g id="s5st" fill="#f4f1ea">
+    <rect id="st1" x="-8" y="-210" width="16" height="210" rx="4"/>
+    <rect id="st2" x="-8" y="-220" width="16" height="220" rx="4"/>
+    <rect id="st3" x="-8" y="-210" width="16" height="210" rx="4"/>
+    <rect id="bl1" x="-24" y="-6" width="48" height="12" rx="6"/>
+    <rect id="bl2" x="-24" y="-6" width="48" height="12" rx="6"/>
+  </g>
+  <g id="s5spark" stroke="#ffd27a" stroke-width="4" stroke-linecap="round" opacity="0"><path d="M200 330v-40M156 344l-22-26M244 344l22-26M140 390h-36M260 390h36"/></g>
+  <g id="s5ball"><circle r="13" fill="#8d1b22"/><path d="M-9 -9 L9 9" stroke="#f4e9d0" stroke-width="2.4"/></g>
+</svg></div><div class="frame"></div><div class="card">The Yorker</div><div class="flash"></div></div>
+
+<!-- 6: THE FAN WHO SAW IT COMING -->
+<div class="scene" id="s6"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#city)"/>
+  <ellipse id="s6stad" cx="300" cy="330" rx="110" ry="46" fill="url(#stad)"/>
+  <g fill="#140b24">
+    <path d="M0 380h40v-60h30v80h24v-110h34v110h18v-40h30v70H0z"/>
+    <path d="M190 420h26v-80h36v50h22v-30h30v60h30v-44h66v44H190z"/>
+  </g>
+  <g fill="#ffd9a6" opacity=".55"><rect x="104" y="320" width="5" height="5"/><rect x="116" y="340" width="5" height="5"/><rect x="50" y="350" width="5" height="5"/><rect x="230" y="372" width="5" height="5"/><rect x="320" y="390" width="5" height="5"/><rect x="290" y="404" width="5" height="5"/></g>
+  <rect y="520" width="400" height="191" fill="#0d0718"/>
+  <g id="s6fan" fill="#0d0718">
+    <g id="s6head"><circle cx="160" cy="430" r="20"/></g>
+    <path d="M138 452h46l10 50h-66z"/>
+    <path d="M132 498h34v22h-34zM162 498h36l20 50h-20l-13-26h-23z"/>
+    <path d="M182 470l20 18-6 6-20-16z"/>
+  </g>
+  <circle id="s6glow" cx="204" cy="480" r="48" fill="url(#phone)"/>
+  <rect x="196" y="468" width="15" height="24" rx="3" fill="#e3f2ff" transform="rotate(-20 203 480)"/>
+</svg></div><div class="frame"></div><div class="card long">The Fan Who<br>Saw It Coming</div><div class="flash"></div></div>
+
+<!-- 8: the collage and the line -->
+<div class="scene" id="collage">
+  <div class="grid" id="grid">
+    <div class="pn p1" data-src="s2"><div class="cap">The Chase</div></div>
+    <div class="pn" data-src="s3"><div class="cap">The Walk Out</div></div>
+    <div class="pn" data-src="s4"><div class="cap">The Call</div></div>
+    <div class="pn" data-src="s5"><div class="cap">The Yorker</div></div>
+    <div class="pn" data-src="s6"><div class="cap" style="font-size:34px">The Fan Who<br>Saw It Coming</div></div>
+  </div>
+  <div class="head"><div id="h1"></div><div class="l2" id="h2"></div></div>
+  <div class="flash" id="cflash"></div>
+</div>
+
+<!-- 9: the logo -->
+<div class="scene" id="end">
+  <div class="lock">
+    <div class="lk"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4">
+      <path id="m1" d="M4 15L13 24L4 33" stroke-linecap="square" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="m2" d="M22 15V40M30 15V40M38 15V40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="m3" d="M20 11H29M31 11H40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g></svg>
+      <div class="w" id="word">Cric<b>Synthesis</b></div></div>
+    <div class="tg" id="tag">AI-Powered Cricket Intelligence</div>
+    <div class="url" id="url">cricsynthesis.in</div>
+  </div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const easeIO = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+// scene windows [start, end, freeze time]
+const S = { s1: [0, 2.5], s2: [2.5, 6.0, 4.55], s3: [6.0, 9.5, 8.35], s4: [9.5, 13.0, 11.75], s5: [13.0, 16.5, 14.85], s6: [16.5, 21.0, 19.6] };
+const H1 = "NOBODY KNOWS HOW IT ENDS.", H2 = "WE JUST GET THERE FIRST.";
+
+function show(id, on) { $('#' + id).style.visibility = on ? 'visible' : 'hidden'; }
+function setFreeze(id, t, f) {
+  const sc = $('#' + id), dt = t - f;
+  const fr = sc.querySelector('.frame'), cd = sc.querySelector('.card'), fl = sc.querySelector('.flash');
+  if (dt < 0) { fr.style.opacity = 0; cd.style.opacity = 0; fl.style.opacity = 0; sc.querySelector('.cam').style.filter = ''; return; }
+  fl.style.opacity = (0.55 * (1 - seg(dt, 0, 0.16))).toFixed(3);
+  fr.style.opacity = seg(dt, 0, 0.08).toFixed(3);
+  const k = ease(seg(dt, 0.04, 0.34));
+  cd.style.opacity = k.toFixed(3);
+  cd.style.transform = `translateX(${(-80 * (1 - k)).toFixed(1)}px) skewX(-4deg)`;
+  sc.querySelector('.cam').style.filter = 'saturate(1.22) contrast(1.06)';
+}
+function cam(id, t, a, b, from = 1, to = 1.1, dx = 0, dy = 0, frozenAt = null) {
+  const tt = frozenAt != null ? Math.min(t, frozenAt) : t;
+  const p = easeIO(seg(tt, a, b));
+  const s = from + (to - from) * p;
+  $('#' + id + ' .cam').style.transform = `translate(${dx * p}px, ${dy * p}px) scale(${s})`;
+}
+
+// scene 2: ball flight along the quadratic, trail drawn behind
+function quad(p, a, c, b) { const u = 1 - p; return [u * u * a[0] + 2 * u * p * c[0] + p * p * b[0], u * u * a[1] + 2 * u * p * c[1] + p * p * b[1]]; }
+const trail = $('#s2trail'); const TL = trail.getTotalLength();
+trail.style.strokeDasharray = `2 7`;
+function s2(t) {
+  const f = S.s2[2], tt = Math.min(t, f);
+  const p = ease(seg(tt, 2.75, f));
+  const [x, y] = quad(p, [196, 560], [262, 300], [336, 252]);
+  $('#s2ball').setAttribute('transform', `translate(${x} ${y}) scale(${1 - 0.25 * p})`);
+  trail.style.opacity = p > 0.02 ? .85 : 0;
+  trail.setAttribute('d', `M196 560 Q${196 + (262 - 196) * p} ${560 + (300 - 560) * p} ${x} ${y}`);
+  $('#s2beams').style.opacity = (0.75 + 0.25 * Math.sin(tt * 2.2)).toFixed(3);
+  cam('s2', t, 2.5, 6.0, 1.0, 1.12, 0, 40, f);
+  setFreeze('s2', t, f);
+}
+// scene 3: walking towards the light
+function s3(t) {
+  const f = S.s3[2], tt = Math.min(t, f), w = (tt - 6.0);
+  const sw = Math.sin(w * 5.2) * 0.16;
+  $('#s3legL').setAttribute('transform', `rotate(${(sw * 57).toFixed(2)} 183 504)`);
+  $('#s3legR').setAttribute('transform', `rotate(${(-sw * 57).toFixed(2)} 217 504)`);
+  const sc = 1 + 0.22 * ease(seg(tt, 6.0, f)), bob = Math.abs(Math.sin(w * 5.2)) * -4;
+  $('#s3bat').setAttribute('transform', `translate(200 600) scale(${sc}) translate(-200 ${-600 + bob})`);
+  $('#s3shadow').setAttribute('transform', `translate(200 600) scale(${sc}) translate(-200 -600)`);
+  let d = '';
+  for (let i = 0; i < 14; i++) {
+    const ph = ((w * 0.6 + i * 0.137) % 1), x = 150 + ((i * 53) % 100) + Math.sin(i + w) * 6, y = 600 - ph * 160;
+    d += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1 + (i % 3) * 0.6).toFixed(1)}" opacity="${(0.7 * (1 - ph)).toFixed(2)}"/>`;
+  }
+  $('#s3dust').innerHTML = d;
+  cam('s3', t, 6.0, 9.5, 1.04, 1.14, 0, -30, f);
+  setFreeze('s3', t, f);
+}
+// scene 4: the coin rises and spins about a horizontal axis, face up at the freeze
+function s4(t) {
+  const f = S.s4[2], tt = Math.min(t, f), u = tt - 9.6;
+  const rise = ease(seg(tt, 9.6, f));
+  const y = 600 - rise * 300, sz = 0.7 + 0.45 * rise;
+  const w0 = 22, k = 1.6, total = (w0 / k) * (1 - Math.exp(-k * Math.max(0, f - 9.6)));
+  let phase = (w0 / k) * (1 - Math.exp(-k * Math.max(0, u)));
+  phase += (Math.round(total / Math.PI) * Math.PI - total) * clamp(u / (f - 9.6));  // land face-on at the freeze
+  const c = Math.cos(phase), ry = Math.max(3, Math.abs(c) * 36);
+  $('#s4coin').setAttribute('transform', `translate(200 ${y.toFixed(1)}) scale(${sz.toFixed(3)}) rotate(-12)`);
+  $('#s4face').setAttribute('ry', ry.toFixed(2)); $('#s4rim').setAttribute('ry', ry.toFixed(2));
+  $('#s4ring').setAttribute('ry', (ry * 0.78).toFixed(2));
+  $('#s4mark').setAttribute('transform', `scale(1 ${(Math.max(0.05, Math.abs(c)) * 0.82).toFixed(3)})`);
+  $('#s4mark').style.opacity = c > 0 ? 1 : 0.0;
+  $('#s4face').setAttribute('fill', c > 0 ? 'url(#hot)' : '#e7774f');
+  cam('s4', t, 9.5, 13.0, 1.0, 1.08, 0, 0, f);
+  setFreeze('s4', t, f);
+}
+// scene 5: the ball skids in, the stumps burst
+const STB = [[170, 560], [200, 560], [230, 560]];
+function s5(t) {
+  const f = S.s5[2], tt = Math.min(t, f), hit = 14.25;
+  const bp = ease(seg(tt, 13.4, hit));
+  if (tt < hit) $('#s5ball').setAttribute('transform', `translate(${-20 + bp * 222} ${520 + bp * 20}) rotate(${bp * 540})`);
+  else { const a = tt - hit; $('#s5ball').setAttribute('transform', `translate(${202 + a * 90} ${540 + a * 30}) rotate(${540 + a * 400})`); }
+  const a = Math.max(0, tt - hit);
+  const rot = [-1, 0.25, 1].map((d, i) => d * (28 + i * 4) * ease(a / 0.35) + (i === 1 ? -8 * ease(a / 0.35) : 0));
+  ['#st1', '#st2', '#st3'].forEach((id, i) => {
+    const [x, y] = STB[i]; const lift = i === 1 ? -20 * ease(a / 0.3) : 0;
+    $(id).setAttribute('transform', `translate(${x} ${y + lift}) rotate(${rot[i].toFixed(2)})`);
+  });
+  const bail = (dx, vx, vy, spin) => `translate(${dx + vx * a} ${348 - vy * a + 260 * a * a}) rotate(${spin * a * 360})`;
+  $('#bl1').setAttribute('transform', a ? bail(184, -120, 260, -1.4) : `translate(184 348)`);
+  $('#bl2').setAttribute('transform', a ? bail(216, 140, 300, 1.7) : `translate(216 348)`);
+  $('#s5spark').style.opacity = a > 0 ? (1 - seg(a, 0.05, 0.5)).toFixed(3) : 0;
+  const shake = a > 0 && a < 0.25 && t < f ? Math.sin(a * 90) * 6 * (1 - a / 0.25) : 0;
+  cam('s5', t, 13.0, 16.5, 1.02, 1.1, shake, 0, f);
+  setFreeze('s5', t, f);
+}
+// scene 6: the rooftop fan looks up at the ground
+function s6(t) {
+  const f = S.s6[2], tt = Math.min(t, f);
+  $('#s6glow').style.opacity = (0.8 + 0.2 * Math.sin(tt * 3)).toFixed(3);
+  $('#s6stad').style.opacity = (0.75 + 0.25 * Math.sin(tt * 1.7 + 1)).toFixed(3);
+  const look = ease(seg(tt, 18.2, 19.2));
+  $('#s6head').setAttribute('transform', `rotate(${(-14 * look).toFixed(2)} 160 448) translate(${(4 * look).toFixed(1)} ${(-3 * look).toFixed(1)})`);
+  cam('s6', t, 16.5, 21.0, 1.08, 1.0, -30, 0, f);
+  setFreeze('s6', t, f);
+}
+// scene 7 quick cuts are handled in seek; scene 8 collage
+let cloned = false;
+function cloneScenes() {
+  if (cloned) return; cloned = true;
+  document.querySelectorAll('.pn').forEach((pn) => {
+    const src = $('#' + pn.dataset.src + ' svg.bg').cloneNode(true);
+    src.removeAttribute('class'); src.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    pn.insertBefore(src, pn.firstChild);
+  });
+}
+function collage(t) {
+  cloneScenes();
+  const pns = document.querySelectorAll('.pn');
+  pns.forEach((pn, i) => {
+    const a = ease(seg(t, 21.55 + i * 0.05, 21.85 + i * 0.05));
+    pn.style.opacity = a.toFixed(3);
+    pn.style.transform = `scale(${(1.25 - 0.25 * a).toFixed(3)})`;
+  });
+  $('#grid').style.transform = `rotate(-4deg) scale(${(1 + 0.03 * seg(t, 22, 27)).toFixed(4)})`;
+  const n1 = Math.floor(H1.length * seg(t, 22.3, 23.3)), n2 = Math.floor(H2.length * seg(t, 23.8, 24.6));
+  $('#h1').textContent = H1.slice(0, n1); $('#h2').textContent = H2.slice(0, n2);
+  $('#cflash').style.opacity = (0.4 * (1 - seg(t, 21.85, 22.05)) * (t > 21.85 ? 1 : 0)).toFixed(3);
+}
+function endCard(t) {
+  const d = (x, a, b) => (1 - ease(seg(t, a, b))).toFixed(3);
+  $('#m1').setAttribute('stroke-dashoffset', d(t, 26.8, 27.3));
+  $('#m2').setAttribute('stroke-dashoffset', d(t, 27.1, 27.7));
+  $('#m3').setAttribute('stroke-dashoffset', d(t, 27.6, 28.0));
+  const w = ease(seg(t, 27.4, 28.0));
+  $('#word').style.opacity = w; $('#word').style.transform = `translateX(${(20 * (1 - w)).toFixed(1)}px)`;
+  $('#tag').style.opacity = ease(seg(t, 27.9, 28.5)); $('#url').style.opacity = ease(seg(t, 28.3, 28.9));
+}
+
+window.seek = (t) => {
+  // which scene is on screen (21.0–21.55: quick cuts through the freezes)
+  let cur = null;
+  if (t < 2.5) cur = 's1'; else if (t < 6) cur = 's2'; else if (t < 9.5) cur = 's3'; else if (t < 13) cur = 's4';
+  else if (t < 16.5) cur = 's5'; else if (t < 21) cur = 's6'; else if (t < 21.55) cur = ['s2', 's3', 's4', 's5', 's6'][Math.min(4, Math.floor((t - 21) / 0.11))];
+  else if (t < 26.5) cur = 'collage'; else cur = 'end';
+  ['s1', 's2', 's3', 's4', 's5', 's6', 'collage', 'end'].forEach((id) => show(id, id === cur));
+  // scene 1
+  if (cur === 's1') {
+    document.querySelectorAll('#s1lamps > g').forEach((g, i) => { g.style.opacity = seg(t, 0.5 + i * 0.32, 0.58 + i * 0.32) > 0.5 ? 1 : 0; });
+    $('#s1halo').style.opacity = (0.9 * seg(t, 1.2, 2.2)).toFixed(3);
+    $('#k1').style.opacity = (ease(seg(t, 0.6, 1.1)) * (1 - seg(t, 2.0, 2.45))).toFixed(3);
+    cam('s1', t, 0, 2.5, 1.0, 1.08, 0, 0);
+    $('#s1 .cam').style.opacity = ease(seg(t, 0, 0.6)).toFixed(3);
+  }
+  // keep every scene at its own clock (the quick cuts and the collage reuse their frozen state)
+  const at = (id, tt) => Math.max(S[id][0], tt);
+  s2(cur === 's2' ? t : S.s2[2] + 1); s3(cur === 's3' ? t : S.s3[2] + 1); s4(cur === 's4' ? t : S.s4[2] + 1);
+  s5(cur === 's5' ? t : S.s5[2] + 1); s6(cur === 's6' ? t : S.s6[2] + 1);
+  if (cur === 'collage') collage(t);
+  if (cur === 'end') { endCard(t); $('#end').style.opacity = ease(seg(t, 26.5, 26.9)); }
+};
+window.ready = document.fonts.ready;
+</script>
+</body></html>
