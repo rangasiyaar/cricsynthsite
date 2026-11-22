@@ -1,0 +1,112 @@
+{
+  "id": "chn-w-v-ina-w-t20-kuala-lumpur-2026-11-24",
+  "title": "China Women v Indonesia Women",
+  "date": "2026-11-24",
+  "start_time": "07:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Malaysia Women's T20I Tri-Series · 5th Match",
+  "comp_key": "malaysia-women-s-t20i-tri-series",
+  "venue": "Bayuemas Oval, Kuala Lumpur",
+  "venue_search": "bayuemas oval",
+  "city": "Kuala Lumpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "China Women",
+      "short": "CHN-W",
+      "players": [
+        "Wei Haiting",
+        "Hong Yali",
+        "Mingyue Zhu",
+        "jiaping LI",
+        "Cai Yuzhi",
+        "Gong Yuting",
+        "Wang Huiying",
+        "Wang Chunjing",
+        "Lyu Yihan",
+        "Zhao Yihan",
+        "Wang Kaizhen"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mingyue Zhu",
+      "squad": [
+        "Wei Haiting",
+        "Hong Yali",
+        "Mingyue Zhu",
+        "jiaping LI",
+        "Cai Yuzhi",
+        "Gong Yuting",
+        "Wang Huiying",
+        "Wang Chunjing",
+        "Lyu Yihan",
+        "Zhao Yihan",
+        "Wang Kaizhen"
+      ]
+    },
+    {
+      "name": "Indonesia Women",
+      "short": "INA-W",
+      "players": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Dara Ahung Laksmi Paramitha",
+        "Maria Corazon",
+        "Ni Kadek Fitria Rada Rani",
+        "Ni Luh Dewi",
+        "Lie Qiao",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ni Putu Ayu Nanda Sakarini",
+      "squad": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Dara Ahung Laksmi Paramitha",
+        "Maria Corazon",
+        "Ni Kadek Fitria Rada Rani",
+        "Ni Luh Dewi",
+        "Lie Qiao",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41985,
+    "url": "https://khelnow.com/live-cricket-score/china-women-vs-indonesia-women-malaysia-women's-t20i-tri-series-24th-november-2026-41985",
+    "auto": true,
+    "xis": false
+  }
+}

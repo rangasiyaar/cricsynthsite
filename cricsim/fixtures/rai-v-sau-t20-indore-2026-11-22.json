@@ -12,36 +12,36 @@
   "city": "Indore",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Saurashtra won the toss and bowl first.",
   "teams": [
     {
       "name": "Railways",
       "short": "RAI",
       "players": [
-        "Jayant Lakhan",
         "Mohammad Saif",
+        "Jayant Lakhan",
         "Ravi Singh",
-        "Garv Sangwan",
         "Upendra Yadav",
-        "Toufik Uddin Mondal",
+        "Jamshed Alam",
+        "Shivam Chaudhary",
+        "Eshaan Goyal",
         "Mohit Raut",
-        "Pradhyumn Parikh",
+        "Raj Choudhary",
         "Zubair Ali",
-        "Atal Bihari Rai",
-        "Kritagya Singh"
+        "Rahul Sharma"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
-        "BOWL",
         "WK",
         "BAT",
         "AR",
         "BAT",
-        "BAT",
+        "AR",
         "BOWL",
-        "AR"
+        "BAT",
+        "BOWL"
       ],
       "captain": "Mohammad Saif",
       "squad": [
@@ -66,26 +66,26 @@
         "Vishvaraj Jadeja",
         "Harvik Desai",
         "Prerak Mankad",
+        "Samar Gajjar",
         "Ruchit Ahir",
-        "Siddhant Rana",
         "Chetan Sakariya",
-        "Harvansh Singh Pangalia",
+        "Siddhant Rana",
         "Krains Fuletra",
-        "Parth Bhut",
-        "Samar Gajjar"
+        "Harvansh Singh Pangalia",
+        "Mohit Ulva"
       ],
       "roles": [
         "BOWL",
         "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BOWL",
-        "BAT",
-        "BOWL",
         "AR",
-        "AR"
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT"
       ],
       "captain": "Jaydev Unadkat",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41918,
     "url": "https://khelnow.com/live-cricket-score/railways-vs-saurashtra-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41918",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

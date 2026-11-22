@@ -1,0 +1,112 @@
+{
+  "id": "cha-v-ga-t20-kolkata-2026-11-24",
+  "title": "Chhattisgarh v Goa",
+  "date": "2026-11-24",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 82nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chhattisgarh",
+      "short": "CHA",
+      "players": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Dharmendrasinh Jadeja",
+        "Amandeep Khare",
+        "Shashank Chandrakar",
+        "Prateek Yadav",
+        "Ajay Mandal",
+        "Dev Aditya Singh",
+        "Vijay Yadav",
+        "Jayant Yadav",
+        "Sourabh Majumdar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Vikalp Tiwari",
+      "squad": [
+        "Vikalp Tiwari",
+        "Aayush Pandey",
+        "Dharmendrasinh Jadeja",
+        "Amandeep Khare",
+        "Shashank Chandrakar",
+        "Prateek Yadav",
+        "Ajay Mandal",
+        "Dev Aditya Singh",
+        "Vijay Yadav",
+        "Jayant Yadav",
+        "Sourabh Majumdar"
+      ]
+    },
+    {
+      "name": "Goa",
+      "short": "GA",
+      "players": [
+        "Abhinav Tejrana",
+        "Azaan Thota",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Deepraj Gaonkar",
+        "Darshan Misal",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Abhinav Tejrana",
+      "squad": [
+        "Abhinav Tejrana",
+        "Azaan Thota",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Deepraj Gaonkar",
+        "Darshan Misal",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41934,
+    "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-goa-syed-mushtaq-ali-trophy-elite-24th-november-2026-41934",
+    "auto": true,
+    "xis": false
+  }
+}

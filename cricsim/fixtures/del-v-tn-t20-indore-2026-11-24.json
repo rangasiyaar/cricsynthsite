@@ -1,0 +1,112 @@
+{
+  "id": "del-v-tn-t20-indore-2026-11-24",
+  "title": "Delhi v Tamil Nadu",
+  "date": "2026-11-24",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 83rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Daly College Ground, Indore",
+  "venue_search": "daly college ground",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Mayank Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Mayank Yadav",
+        "Ishant Sharma",
+        "Digvesh Singh Rathi",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Priyansh Arya",
+      "squad": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Mayank Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Mayank Yadav",
+        "Ishant Sharma",
+        "Digvesh Singh Rathi",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ]
+    },
+    {
+      "name": "Tamil Nadu",
+      "short": "TN",
+      "players": [
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Balasubramaniam Sachin",
+        "Shahrukh Khan",
+        "Andre Siddarth",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "M. Siddharth",
+        "Ragupathy Silambarasan",
+        "Rithik Easwaran"
+      ],
+      "roles": [
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Sai Kishore",
+      "squad": [
+        "Sai Kishore",
+        "Narayan Jagadeesan",
+        "Amith Sathvik",
+        "Balasubramaniam Sachin",
+        "Shahrukh Khan",
+        "Andre Siddarth",
+        "Ravi Rajkumar",
+        "Gurjapneet Singh",
+        "M. Siddharth",
+        "Ragupathy Silambarasan",
+        "Rithik Easwaran"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41935,
+    "url": "https://khelnow.com/live-cricket-score/delhi-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-24th-november-2026-41935",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-asm-t20-chandigarh-2026-11-24",
+  "title": "Kerala v Assam",
+  "date": "2026-11-24",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 84th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Abdul Basith",
+        "Sharafuddeen",
+        "MD Nidheesh",
+        "KM Asif"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Rohan  Kunnummal",
+        "Sanju Samson",
+        "Govind  Pai",
+        "Vishnu Vinod",
+        "Salman Nizar",
+        "Karthik B Nair",
+        "Biju Narayanan",
+        "Abdul Basith",
+        "Sharafuddeen",
+        "MD Nidheesh",
+        "KM Asif"
+      ]
+    },
+    {
+      "name": "Assam",
+      "short": "ASM",
+      "players": [
+        "Ayush Agarwal",
+        "Bishal Saha",
+        "Denish Das",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Mukhtar Hussain",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Denish Das",
+      "squad": [
+        "Ayush Agarwal",
+        "Bishal Saha",
+        "Denish Das",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Sibsankar Roy",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Mukhtar Hussain",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41936,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-assam-syed-mushtaq-ali-trophy-elite-24th-november-2026-41936",
+    "auto": true,
+    "xis": false
+  }
+}
