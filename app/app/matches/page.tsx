@@ -6,16 +6,16 @@ import { FixtureCard, ResultCard, StatusTag, kickoff, useNow, type Status } from
 import { loadIndex, loadResults } from "@/lib/data";
 import type { MatchCard, ResultSummary } from "@/lib/types";
 
-const FILTERS = ["all", "live", "upcoming", "result"] as const;
+const FILTERS = ["live", "upcoming", "result"] as const;
 type Filter = (typeof FILTERS)[number];
-const NAMES: Record<Filter, string> = { all: "All", live: "Live", upcoming: "Upcoming", result: "Results" };
+const NAMES: Record<Filter, string> = { live: "Live", upcoming: "Upcoming", result: "Results" };
 const PAGE = 6;                         // each group shows 6 (live: latest start first, upcoming: soonest, results: newest), then "Show more"
 
 export default function MatchesPage() {
   const [index, setIndex] = useState<MatchCard[] | null>(null);
   const [results, setResults] = useState<ResultSummary[] | null>(null);
   const [error, setError] = useState(false);
-  const [filter, setFilter] = useState<Filter>("all");
+  const [picked, setFilter] = useState<Filter | null>(null);   // until a tab is chosen: Live when a match is on, else Upcoming
   const [shown, setShown] = useState<Record<Status, number>>({ live: PAGE, upcoming: PAGE, result: PAGE });
   const now = useNow();
 
@@ -29,8 +29,8 @@ export default function MatchesPage() {
   const upcoming = fixtures.filter((m) => kickoff(m) > now).sort((a, b) => kickoff(a) - kickoff(b));
   const live = fixtures.filter((m) => kickoff(m) <= now).sort((a, b) => kickoff(b) - kickoff(a));
   const past = [...(results ?? [])].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
-  const count: Record<Filter, number> = { all: upcoming.length + live.length + past.length, live: live.length, upcoming: upcoming.length, result: past.length };
-  const show = (s: Status) => filter === "all" || filter === s;
+  const filter: Filter = picked ?? (live.length ? "live" : "upcoming");
+  const show = (s: Status) => filter === s;
 
   const MORE: Record<Status, string> = { live: "Show more live matches", upcoming: "Show more upcoming matches", result: "Show more results" };
   const group = (s: Status, title: string, cards: React.ReactNode[], empty: string) => show(s) && (
@@ -50,7 +50,7 @@ export default function MatchesPage() {
       <div className="tabs" role="tablist" aria-label="Filter matches">
         {FILTERS.map((f) => (
           <button key={f} role="tab" aria-selected={filter === f} onClick={() => setFilter(f)}>
-            {NAMES[f]} <span className="tab-count">{index ? count[f] : ""}</span>
+            {NAMES[f]}
           </button>
         ))}
       </div>
