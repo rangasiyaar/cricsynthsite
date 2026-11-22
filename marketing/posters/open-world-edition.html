@@ -1,0 +1,165 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- CricSynthesis "open-world game cover" style poster (homage to the genre's look: tilted panel grid, sunset palette,
+     heavy italic condensed type). No game names, logos or typefaces; no real players or team marks. 1080x1350 (4:5). -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,800&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1621;--steel:#5980a6;--sl:#94bce3;--clay:#d9895f;--clay2:#b0613a;--paper:#f2f2f3;--pink:#ff4f8b;--sun:#ffb347}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;height:1350px;background:#0a1018;overflow:hidden;font-family:Barlow,sans-serif;color:var(--paper);position:relative}
+/* panel collage */
+.grid{position:absolute;left:-14px;right:-50px;top:-36px;height:880px;transform:rotate(-4deg);display:grid;
+  grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:1.15fr 1fr;gap:16px;padding:16px;background:#0a1018}
+.pn{position:relative;overflow:hidden;border:7px solid #f4f1ea;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.pn svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.p1{grid-row:1 / span 2}
+.cap{position:absolute;left:14px;bottom:12px;font:italic 900 32px/0.95 'Barlow Condensed';text-transform:uppercase;letter-spacing:.01em;
+  text-shadow:0 3px 0 rgba(0,0,0,.55),0 0 18px rgba(0,0,0,.4)}
+.cap small{display:block;font:700 13px Barlow;letter-spacing:.16em;margin-bottom:4px;opacity:.9;text-shadow:none}
+.cap.r{left:auto;right:14px;text-align:right}
+.cap.t{bottom:auto;top:14px}
+/* title block */
+.title{position:absolute;left:0;right:0;bottom:0;height:520px;padding:0 64px;
+  background:linear-gradient(180deg,rgba(10,16,24,0) 0%,#0a1018 22%,#0a1018 100%)}
+.edition{position:absolute;top:92px;left:64px;display:flex;align-items:center;gap:14px;font:800 16px Barlow;letter-spacing:.28em;color:var(--sun)}
+.edition i{width:46px;height:3px;background:linear-gradient(90deg,var(--pink),var(--sun))}
+.h{position:absolute;top:124px;left:60px;right:40px;font:italic 900 98px/.9 'Barlow Condensed';white-space:nowrap;text-transform:uppercase;letter-spacing:-.005em}
+.h span{background:linear-gradient(92deg,var(--pink) 0%,var(--sun) 55%,#ffd27a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{position:absolute;top:318px;left:64px;font:600 22px Barlow;color:#c6d3df;letter-spacing:.01em}
+.sub b{color:var(--paper);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:44px;display:flex;align-items:center;justify-content:space-between}
+.lockup{display:flex;align-items:center;gap:12px;color:var(--paper)}
+.lockup svg{width:40px;height:40px;color:var(--sl)}
+.lockup .w{font:600 34px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase}
+.lockup .w b{font-weight:600;color:var(--sl)}
+.lockup .t{font:500 12.5px Barlow;letter-spacing:.12em;color:#8ea6bd;margin-top:5px;text-transform:uppercase}
+.cta{display:flex;align-items:center;gap:18px}
+.btn{font:italic 900 26px 'Barlow Condensed';letter-spacing:.06em;text-transform:uppercase;padding:14px 26px 12px;border-radius:6px;
+  background:linear-gradient(92deg,var(--pink),var(--sun));color:#160b10;box-shadow:0 8px 24px rgba(255,79,139,.35)}
+.url{font:700 20px Barlow;color:var(--paper);letter-spacing:.02em}
+.rating{position:absolute;right:64px;top:118px;border:2px solid #f4f1ea;padding:6px 9px 5px;font:800 12px Barlow;letter-spacing:.14em;line-height:1.25;text-align:center;color:#f4f1ea}
+.rating b{display:block;font:italic 900 24px/1 'Barlow Condensed';letter-spacing:.04em}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1747"/><stop offset=".42" stop-color="#c8396f"/><stop offset=".7" stop-color="#ff8a4c"/><stop offset="1" stop-color="#ffcf73"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1a2c"/><stop offset=".65" stop-color="#1d3a5a"/><stop offset="1" stop-color="#3f6d96"/></linearGradient>
+  <linearGradient id="hot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4f8b"/><stop offset="1" stop-color="#ffb347"/></linearGradient>
+  <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e3b4f"/><stop offset="1" stop-color="#1f8a8a"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8"/><stop offset=".35" stop-color="#ffe2a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9" stop-opacity=".55"/><stop offset="1" stop-color="#fff3c9" stop-opacity="0"/></linearGradient>
+</defs></svg>
+
+<div class="grid">
+  <!-- 1: the stadium at dusk, floodlights on -->
+  <div class="pn p1">
+    <svg viewBox="0 0 400 640" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="640" fill="url(#dusk)"/>
+      <circle cx="200" cy="330" r="70" fill="#ffd27a" opacity=".85"/>
+      <circle cx="200" cy="330" r="110" fill="#ffd27a" opacity=".18"/>
+      <!-- floodlight towers -->
+      <g fill="#140c22">
+        <path d="M58 140h44v26H58z"/><path d="M76 166h8l10 300H66z"/>
+        <path d="M298 120h44v26h-44z"/><path d="M316 146h8l10 320h-28z"/>
+      </g>
+      <g fill="#fff8de">
+        <rect x="61" y="143" width="38" height="20" rx="2"/><rect x="301" y="123" width="38" height="20" rx="2"/>
+      </g>
+      <circle cx="80" cy="153" r="60" fill="url(#glow)"/><circle cx="320" cy="133" r="60" fill="url(#glow)"/>
+      <path d="M62 163 L-40 520 L160 520 L98 163Z" fill="url(#beam)" opacity=".7"/>
+      <path d="M302 143 L240 520 L440 520 L338 143Z" fill="url(#beam)" opacity=".7"/>
+      <!-- stands -->
+      <path d="M0 430 Q200 360 400 430 V640 H0Z" fill="#1a1030"/>
+      <path d="M0 455 Q200 392 400 455" stroke="#ff7aa8" stroke-opacity=".5" stroke-width="2" fill="none"/>
+      <g fill="#ffd9a6" opacity=".55">
+        <circle cx="40" cy="452" r="1.6"/><circle cx="70" cy="444" r="1.6"/><circle cx="110" cy="433" r="1.6"/><circle cx="150" cy="425" r="1.6"/><circle cx="190" cy="421" r="1.6"/>
+        <circle cx="230" cy="422" r="1.6"/><circle cx="270" cy="427" r="1.6"/><circle cx="310" cy="436" r="1.6"/><circle cx="350" cy="447" r="1.6"/><circle cx="380" cy="456" r="1.6"/>
+      </g>
+      <!-- the field and pitch -->
+      <ellipse cx="200" cy="610" rx="320" ry="140" fill="#1f5a4a"/>
+      <ellipse cx="200" cy="610" rx="320" ry="140" fill="none" stroke="#9fe0c6" stroke-opacity=".35" stroke-width="2"/>
+      <path d="M182 520 L218 520 L234 640 L166 640Z" fill="#c9a86b"/>
+      <g stroke="#f4f1ea" stroke-width="3"><path d="M194 512v18M200 512v18M206 512v18"/><path d="M192 510h7M201 510h7" stroke-width="2"/></g>
+    </svg>
+    <div class="cap t" style="left:40px;top:48px;font-size:44px"><small>BEFORE THE TOSS</small>WIN CHANCE<br><span style="font-size:76px;color:#ffd27a">64%</span></div>
+  </div>
+
+  <!-- 2: the ball, seam up, with speed streaks -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#hot)"/>
+      <g stroke="#fff" stroke-linecap="round" opacity=".55">
+        <path d="M10 120H150" stroke-width="6"/><path d="M30 150H140" stroke-width="10"/><path d="M0 182H150" stroke-width="5"/><path d="M40 210H130" stroke-width="3"/>
+      </g>
+      <circle cx="196" cy="160" r="66" fill="#8d1b22"/>
+      <circle cx="182" cy="142" r="40" fill="#c43a3f" opacity=".55"/>
+      <path d="M150 112 Q196 160 242 208" stroke="#f4e9d0" stroke-width="5" fill="none"/>
+      <path d="M144 120 Q190 168 236 216" stroke="#f4e9d0" stroke-width="2.5" stroke-dasharray="5 6" fill="none"/>
+      <path d="M156 104 Q202 152 248 200" stroke="#f4e9d0" stroke-width="2.5" stroke-dasharray="5 6" fill="none"/>
+    </svg>
+    <div class="cap r"><small>PROJECTED</small>184</div>
+  </div>
+
+  <!-- 3: the coin, mid-air -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#night)"/>
+      <circle cx="150" cy="130" r="90" fill="#94bce3" opacity=".12"/>
+      <g transform="translate(150 132) rotate(-18)">
+        <ellipse rx="66" ry="30" fill="#9a5a2c" transform="translate(0 9)"/>
+        <rect x="-66" y="0" width="132" height="9" fill="#9a5a2c"/>
+        <ellipse rx="66" ry="30" fill="url(#hot)"/>
+        <ellipse rx="54" ry="23" fill="none" stroke="#fff3d6" stroke-opacity=".75" stroke-width="2.5"/>
+        <g transform="scale(1 .45) translate(-17 -18)" color="#7a2e1a"><use href="#mark" width="36" height="36"/></g>
+      </g>
+      <g stroke="#94bce3" stroke-opacity=".5" stroke-width="2" fill="none"><path d="M70 230 Q150 190 230 230"/><path d="M95 255 Q150 225 205 255"/></g>
+    </svg>
+    <div class="cap"><small>THE TOSS CALL</small>BAT FIRST</div>
+  </div>
+
+  <!-- 4: stumps flying -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#teal)"/>
+      <circle cx="150" cy="150" r="120" fill="#ffb347" opacity=".14"/>
+      <g fill="#f4f1ea" transform="translate(0 22)">
+        <rect x="112" y="120" width="12" height="150" rx="3" transform="rotate(-14 118 270)"/>
+        <rect x="144" y="112" width="12" height="160" rx="3"/>
+        <rect x="176" y="120" width="12" height="150" rx="3" transform="rotate(16 182 270)"/>
+        <rect x="96" y="70" width="34" height="9" rx="4" transform="rotate(-38 113 74)"/>
+        <rect x="172" y="58" width="34" height="9" rx="4" transform="rotate(28 189 62)"/>
+      </g>
+      <g stroke="#ffd27a" stroke-width="3" stroke-linecap="round" transform="translate(0 22)"><path d="M150 82v-26M118 92l-14-18M182 92l14-18"/></g>
+    </svg>
+    <div class="cap r t"><small>DANGER OVERS</small>16–19</div>
+  </div>
+
+  <!-- 5: fantasy picks on a pitch -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="#2c4a66"/>
+      <g opacity=".5"><rect y="0" width="300" height="38" fill="#284460"/><rect y="76" width="300" height="38" fill="#284460"/><rect y="152" width="300" height="38" fill="#284460"/><rect y="228" width="300" height="38" fill="#284460"/></g>
+      <ellipse cx="150" cy="150" rx="132" ry="128" fill="none" stroke="#b5d9fd" stroke-opacity=".4" stroke-width="2"/>
+      <rect x="138" y="105" width="24" height="70" rx="3" fill="#4f7194"/>
+      <g>
+        <circle cx="90" cy="96" r="20" fill="#e9eff5"/><circle cx="210" cy="96" r="20" fill="#0b131c" stroke="#d9895f" stroke-width="3"/>
+        <circle cx="70" cy="196" r="20" fill="#0b131c" stroke="#d9895f" stroke-width="3"/><circle cx="150" cy="210" r="20" fill="#e9eff5"/><circle cx="230" cy="196" r="20" fill="#e9eff5"/>
+        <circle cx="74" cy="80" r="11" fill="#d9895f"/><text x="74" y="84.5" text-anchor="middle" font-family="Barlow Condensed" font-weight="800" font-size="13" fill="#fff">C</text>
+        <circle cx="194" cy="80" r="11" fill="#f2f2f3"/><text x="194" y="84.5" text-anchor="middle" font-family="Barlow Condensed" font-weight="800" font-size="11" fill="#1d2d3d">VC</text>
+      </g>
+    </svg>
+    <div class="cap"><small>FANTASY PICKS</small>C · VC</div>
+  </div>
+</div>
+
+<div class="title">
+  <div class="edition"><i></i>NIGHT MATCH EDITION</div>
+  <div class="h">Every match.<br><span>Played before the toss.</span></div>
+  <div class="sub"><b>Win chances</b> · <b>projected scores</b> · <b>danger overs</b> · <b>player match-ups</b> · <b>fantasy picks</b></div>
+  <div class="foot">
+    <div class="lockup"><svg><use href="#mark"/></svg><div><div class="w">Cric<b>Synthesis</b></div><div class="t">AI-Powered Cricket Intelligence</div></div></div>
+    <div class="cta"><span class="url">cricsynthesis.in</span><span class="btn">Get the app</span></div>
+  </div>
+</div>
+</body></html>
