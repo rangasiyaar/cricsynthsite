@@ -1,0 +1,112 @@
+{
+  "id": "sw-v-dv-t20-sharjah-2026-11-23",
+  "title": "Sharjah Warriorz v Desert Vipers",
+  "date": "2026-11-23",
+  "start_time": "20:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 4th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Sharjah Cricket Stadium, Sharjah",
+  "venue_search": "sharjah cricket stadium",
+  "city": "Sharjah",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sharjah Warriorz",
+      "short": "SW",
+      "players": [
+        "Tim Seifert",
+        "James Vince",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Richard Gleeson",
+        "Waqar Salamkheil",
+        "Junaid Siddique"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sikandar Raza",
+      "squad": [
+        "Tim Seifert",
+        "James Vince",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Richard Gleeson",
+        "Waqar Salamkheil",
+        "Junaid Siddique"
+      ]
+    },
+    {
+      "name": "Desert Vipers",
+      "short": "DV",
+      "players": [
+        "Joe Clarke",
+        "Andries Gous",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Vritiya Aravind",
+        "Khuzaima Bin Tanvir",
+        "Nangeyalia kharote",
+        "Naseem Shah",
+        "Mujeeb Ur Rahman",
+        "David Payne"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shadab Khan",
+      "squad": [
+        "Joe Clarke",
+        "Andries Gous",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Vritiya Aravind",
+        "Khuzaima Bin Tanvir",
+        "Nangeyalia kharote",
+        "Naseem Shah",
+        "Mujeeb Ur Rahman",
+        "David Payne"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41722,
+    "url": "https://khelnow.com/live-cricket-score/sharjah-warriorz-vs-desert-vipers-international-league-t20-23rd-november-2026-41722",
+    "auto": true,
+    "xis": false
+  }
+}
