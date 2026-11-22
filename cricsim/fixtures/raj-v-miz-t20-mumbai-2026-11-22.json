@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Mizoram won the toss and bowl first.",
   "teams": [
     {
       "name": "Rajasthan",
@@ -26,9 +26,9 @@
         "Mukul Choudhary",
         "Deepak Chahar",
         "Manav Suthar",
+        "Himanshu Nehra",
         "Rahul Chahar",
-        "Himanshu Rana",
-        "Himanshu Nehra"
+        "Himanshu Rana"
       ],
       "roles": [
         "BAT",
@@ -39,9 +39,9 @@
         "BAT",
         "BOWL",
         "AR",
+        "BAT",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Deepak Chahar",
       "squad": [
@@ -62,7 +62,7 @@
       "name": "Mizoram",
       "short": "MIZ",
       "players": [
-        "Lalhruaizela-M",
+        "Sahil Sharma",
         "Jehu Anderson",
         "Chinmay Sutar",
         "Joseph Lalthankhuma",
@@ -71,7 +71,7 @@
         "Kuldip Yadav",
         "B Lalnunfela",
         "Sumit Lama",
-        "F Lalmuanzuala",
+        "Marema",
         "Lalthianawma"
       ],
       "roles": [
@@ -80,11 +80,11 @@
         "BAT",
         "BAT",
         "BAT",
-        "BOWL",
+        "BAT",
         "BOWL",
         "BAT",
         "BOWL",
-        "AR",
+        "BAT",
         "AR"
       ],
       "captain": "Joseph Lalthankhuma",
@@ -107,6 +107,7 @@
     "kn": 41919,
     "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-mizoram-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41919",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
