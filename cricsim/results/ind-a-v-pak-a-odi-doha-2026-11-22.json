@@ -1,0 +1,457 @@
+{
+ "id": "ind-a-v-pak-a-odi-doha-2026-11-22",
+ "innings": [
+  {
+   "team": "Pakistan A",
+   "runs": 313,
+   "wickets": 10,
+   "overs": "49.2",
+   "batting": [
+    {
+     "name": "Shamyl Hussain",
+     "dismissal": "c H Rana b A Badoni",
+     "runs": 33,
+     "balls": 23,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Maaz Sadaqat",
+     "dismissal": "c S Ahamad b S Shedge",
+     "runs": 59,
+     "balls": 63,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Rohail Nazir",
+     "dismissal": "lbw b H Rana",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hasan Nawaz",
+     "dismissal": "c A Badoni b S Shedge",
+     "runs": 79,
+     "balls": 82,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Abdul Samad",
+     "dismissal": "runout (K Kushagra / R Singh)",
+     "runs": 28,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Farhan Yousaf",
+     "dismissal": "c K Kushagra b P Yadav",
+     "runs": 56,
+     "balls": 48,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Mohammad Imran Randhawa",
+     "dismissal": "c A Badoni b V Nigam",
+     "runs": 23,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Saad Masood",
+     "dismissal": "c K Kushagra b V Nigam",
+     "runs": 9,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ahmed Daniyal",
+     "dismissal": "c S Shedge b H Rana",
+     "runs": 8,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sufyan Moqim",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ali Raza",
+     "dismissal": "b P Yadav",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Harshit Rana",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 77,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 3
+    },
+    {
+     "name": "Prince Yadav",
+     "overs": "9.2",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Ayush Badoni",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Suryansh Shedge",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 55,
+     "wickets": 2,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Vipraj Nigam",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Abhishek Sharma",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Shamyl Hussain",
+     "score": 66,
+     "over": "7.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rohail Nazir",
+     "score": 67,
+     "over": "8.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Maaz Sadaqat",
+     "score": 121,
+     "over": "19.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Abdul Samad",
+     "score": 186,
+     "over": "30.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Hasan Nawaz",
+     "score": 230,
+     "over": "38.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Mohammad Imran Randhawa",
+     "score": 264,
+     "over": "41.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Saad Masood",
+     "score": 284,
+     "over": "45.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Farhan Yousaf",
+     "score": 304,
+     "over": "47.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Ahmed Daniyal",
+     "score": 310,
+     "over": "48.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Ali Raza",
+     "score": 313,
+     "over": "49.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 7,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 73
+  },
+  {
+   "team": "India A",
+   "runs": 265,
+   "wickets": 10,
+   "overs": "49.1",
+   "batting": [
+    {
+     "name": "Vaibhav Sooryavanshi",
+     "dismissal": "c A Samad b Mohammad Imran",
+     "runs": 11,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Abhishek Sharma",
+     "dismissal": "c A Samad b H Nawaz",
+     "runs": 70,
+     "balls": 42,
+     "fours": 6,
+     "sixes": 6
+    },
+    {
+     "name": "Ayush Badoni",
+     "dismissal": "b A Raza",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "N. Tilak Varma",
+     "dismissal": "c R Nazir b A Daniyal",
+     "runs": 100,
+     "balls": 149,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Kumar Kushagra",
+     "dismissal": "b Sufyan Moqim",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rinku Singh",
+     "dismissal": "b H Nawaz",
+     "runs": 6,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Suryansh Shedge",
+     "dismissal": "c A Samad b H Nawaz",
+     "runs": 3,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "dismissal": "c H Nawaz b A Raza",
+     "runs": 56,
+     "balls": 49,
+     "fours": 1,
+     "sixes": 4
+    },
+    {
+     "name": "Vipraj Nigam",
+     "dismissal": "b A Raza",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Harshit Rana",
+     "dismissal": "c F Yousaf b Mohammad Imran",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Prince Yadav",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ali Raza",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 3,
+     "no_balls": 1,
+     "wides": 4
+    },
+    {
+     "name": "Mohammad Imran Randhawa",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 69,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Hasan Nawaz",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ahmed Daniyal",
+     "overs": "9.1",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sufyan Moqim",
+     "overs": "8",
+     "maidens": 1,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Saad Masood",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Vaibhav Sooryavanshi",
+     "score": 25,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ayush Badoni",
+     "score": 26,
+     "over": "4.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Abhishek Sharma",
+     "score": 93,
+     "over": "15.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kumar Kushagra",
+     "score": 102,
+     "over": "18.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rinku Singh",
+     "score": 115,
+     "over": "21.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Suryansh Shedge",
+     "score": 129,
+     "over": "25.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Shahbaz Ahamad",
+     "score": 241,
+     "over": "43.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Vipraj Nigam",
+     "score": 241,
+     "over": "43.4"
+    },
+    {
+     "wicket": 9,
+     "batter": "Harshit Rana",
+     "score": 244,
+     "over": "44.2"
+    },
+    {
+     "wicket": 10,
+     "batter": "N. Tilak Varma",
+     "score": 265,
+     "over": "49.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 13,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ]
+}
