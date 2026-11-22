@@ -1,0 +1,446 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- "A Night at the Cricket" v3 (The Call, The Target, The Collapse, The Racing Heartbeat, The Chase, The Celebration, and a fan who knew it all): 33 s trailer, 1080x1920. Every frame is computed by window.seek(t) (seconds), so a renderer
+     can step through it frame by frame. Scenes follow marketing/night-at-the-cricket-script.md. No real players, team
+     marks, numbers or game trademarks. -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;800&family=Barlow+Condensed:ital,wght@0,600;1,900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0a1018}
+body{font-family:Barlow,sans-serif;color:#f2f2f3;position:relative}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.scene svg.bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cam{position:absolute;inset:0;transform-origin:50% 50%}
+.frame{position:absolute;inset:34px;border:14px solid #f4f1ea;opacity:0;pointer-events:none;box-shadow:0 0 0 2000px rgba(10,16,24,0)}
+.card{position:absolute;left:84px;bottom:300px;font:italic 900 118px/.92 'Barlow Condensed';text-transform:uppercase;opacity:0;
+  text-shadow:0 6px 0 rgba(0,0,0,.55),0 0 40px rgba(0,0,0,.45);white-space:nowrap}
+.card.long{font-size:96px}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.kicker{position:absolute;left:0;right:0;top:820px;text-align:center;font:800 30px Barlow;letter-spacing:.42em;color:#f2f2f3;opacity:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+/* collage */
+#collage{background:#0a1018}
+.grid{position:absolute;left:-10px;right:-50px;top:30px;height:1290px;transform:rotate(-4deg);display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:1.9fr 1fr 1fr 1fr;gap:22px;padding:22px;transform-origin:50% 50%}
+.pn{position:relative;overflow:hidden;border:10px solid #f4f1ea;box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0}
+.pn svg{position:absolute;inset:0;width:100%;height:100%}
+.pn.big{grid-column:1 / span 2}
+.pn.big .cap{font-size:60px}
+.pn .cap{position:absolute;left:18px;bottom:14px;font:italic 900 44px/.92 'Barlow Condensed';text-transform:uppercase;text-shadow:0 4px 0 rgba(0,0,0,.6)}
+.head{position:absolute;left:64px;right:30px;top:1380px;font:italic 900 84px/.98 'Barlow Condensed';text-transform:uppercase;white-space:nowrap}
+.head .l2{background:linear-gradient(92deg,#ff4f8b 0%,#ffb347 60%,#ffd27a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* end card */
+#end{background:radial-gradient(900px 700px at 50% 45%,#16263a 0%,#0a1018 70%)}
+.lock{position:absolute;left:0;right:0;top:760px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.lk{display:flex;align-items:center;gap:30px}
+.lk svg{width:128px;height:128px;color:#94bce3;overflow:visible}
+.lk .w{font:600 104px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase;color:#f2f2f3}
+.lk .w b{font-weight:600;color:#94bce3}
+.tg{font:500 30px Barlow;letter-spacing:.14em;color:#8ea6bd;text-transform:uppercase}
+.url{font:600 46px Barlow;letter-spacing:.02em;color:#94bce3;margin-top:36px}
+.fonts{position:absolute;left:-9999px}
+</style></head><body>
+<div class="fonts"><span style="font:italic 900 20px 'Barlow Condensed'">A</span><span style="font:600 20px 'Barlow Condensed'">A</span><span style="font:800 20px Barlow">A</span><span style="font:500 20px Barlow">A</span><span style="font:600 20px Barlow">A</span></div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241443"/><stop offset=".45" stop-color="#c8396f"/><stop offset=".72" stop-color="#ff8a4c"/><stop offset="1" stop-color="#ffcf73"/></linearGradient>
+  <linearGradient id="dusk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140c2c"/><stop offset=".5" stop-color="#5a1f57"/><stop offset=".8" stop-color="#d0496c"/><stop offset="1" stop-color="#ff9a55"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#081422"/><stop offset=".7" stop-color="#1d3a5a"/><stop offset="1" stop-color="#3f6d96"/></linearGradient>
+  <linearGradient id="hot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4f8b"/><stop offset="1" stop-color="#ffb347"/></linearGradient>
+  <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b2f40"/><stop offset="1" stop-color="#1f8a8a"/></linearGradient>
+  <linearGradient id="tunnel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c8"/><stop offset=".6" stop-color="#ffc77a"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient>
+  <linearGradient id="city" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#150c2c"/><stop offset=".6" stop-color="#4a1d4f"/><stop offset="1" stop-color="#b8456a"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8"/><stop offset=".35" stop-color="#ffe2a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+  <radialGradient id="phone" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#cfe9ff" stop-opacity=".95"/><stop offset="1" stop-color="#94bce3" stop-opacity="0"/></radialGradient>
+  <radialGradient id="stad" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff0c4" stop-opacity=".95"/><stop offset=".5" stop-color="#ffd27a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9" stop-opacity=".55"/><stop offset="1" stop-color="#fff3c9" stop-opacity="0"/></linearGradient>
+  <linearGradient id="scan" x1="0" y1="0" x2="0" y2="6" spreadMethod="repeat" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#000" stop-opacity="1"/><stop offset="1" stop-color="#000" stop-opacity="1"/></linearGradient>
+  <radialGradient id="pulse" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff4f8b" stop-opacity=".55"/><stop offset=".6" stop-color="#c8396f" stop-opacity=".18"/><stop offset="1" stop-color="#c8396f" stop-opacity="0"/></radialGradient>
+  <linearGradient id="winsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a22"/><stop offset=".6" stop-color="#2b1446"/><stop offset="1" stop-color="#6a2456"/></linearGradient>
+  <linearGradient id="seasky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b1d"/><stop offset=".55" stop-color="#1c1a44"/><stop offset="1" stop-color="#4a2a5c"/></linearGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2140"/><stop offset="1" stop-color="#070a16"/></linearGradient>
+  <radialGradient id="screen" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#cfe9ff" stop-opacity=".9"/><stop offset=".45" stop-color="#94bce3" stop-opacity=".35"/><stop offset="1" stop-color="#94bce3" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<!-- 1: THE CALL -->
+<div class="scene" id="s1"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#night)"/>
+  <g fill="#cfe2f5" opacity=".7"><circle cx="40" cy="80" r="1.3"/><circle cx="120" cy="140" r="1"/><circle cx="300" cy="60" r="1.4"/><circle cx="350" cy="190" r="1"/><circle cx="210" cy="40" r="1"/><circle cx="80" cy="250" r="1.2"/><circle cx="330" cy="320" r="1"/></g>
+  <circle cx="200" cy="330" r="150" fill="#94bce3" opacity=".08"/>
+  <g stroke="#94bce3" stroke-opacity=".4" stroke-width="2" fill="none"><path d="M60 620 Q200 560 340 620"/><path d="M100 660 Q200 615 300 660"/></g>
+  <g id="c_coin">
+    <ellipse id="c_rim" rx="80" ry="36" fill="#9a5a2c" transform="translate(0 10)"/>
+    <ellipse id="c_face" rx="80" ry="36" fill="url(#hot)"/>
+    <ellipse id="c_ring" rx="65" ry="28" fill="none" stroke="#fff3d6" stroke-opacity=".75" stroke-width="3"/>
+    <g id="c_mark" color="#7a2e1a"><use href="#mark" x="-22" y="-22" width="44" height="44"/></g>
+  </g>
+</svg></div><div class="frame"></div><div class="card">The Call</div><div class="flash"></div></div>
+
+<!-- 2: THE TARGET: the scoreboard lights up under the floodlights -->
+<div class="scene" id="s2"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="#0b0f1c"/>
+  <circle cx="200" cy="300" r="230" fill="#ffb347" opacity=".07"/>
+  <g fill="#161c2c"><rect x="186" y="440" width="10" height="271"/><rect x="204" y="440" width="10" height="271"/></g>
+  <rect x="40" y="170" width="320" height="280" rx="10" fill="#05070d" stroke="#2a3346" stroke-width="6"/>
+  <g id="t_dots" fill="#ffb347"></g>
+  <text x="200" y="232" text-anchor="middle" font-family="Barlow Condensed" font-weight="600" font-size="34" letter-spacing="8" fill="#ffb347" id="t_lab">TARGET</text>
+  <text x="200" y="392" text-anchor="middle" font-family="Barlow Condensed" font-style="italic" font-weight="900" font-size="150" fill="#ffd27a" id="t_num">0</text>
+  <rect x="40" y="170" width="320" height="280" rx="10" fill="url(#scan)" opacity=".35"/>
+  <path d="M0 600 Q200 540 400 600 V711 H0Z" fill="#0f1424"/>
+  <g fill="#1a2236" id="t_heads"></g>
+</svg></div><div class="frame"></div><div class="card">The Target</div><div class="flash"></div></div>
+
+<!-- 3: THE COLLAPSE: the openers gone in the powerplay, a yorker through the stumps -->
+<div class="scene" id="s7"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#teal)"/>
+  <circle cx="200" cy="420" r="190" fill="#ffb347" opacity=".12"/>
+  <rect y="560" width="400" height="151" fill="#0d4a4a"/><path d="M120 560 L280 560 L330 711 L70 711Z" fill="#c9a86b" opacity=".85"/>
+  <path d="M110 590 H290" stroke="#f4f1ea" stroke-width="3" opacity=".7"/>
+  <g fill="#f4f1ea">
+    <rect id="y_st1" x="-8" y="-210" width="16" height="210" rx="4"/>
+    <rect id="y_st2" x="-8" y="-220" width="16" height="220" rx="4"/>
+    <rect id="y_st3" x="-8" y="-210" width="16" height="210" rx="4"/>
+    <rect id="y_bl1" x="-24" y="-6" width="48" height="12" rx="6"/>
+    <rect id="y_bl2" x="-24" y="-6" width="48" height="12" rx="6"/>
+  </g>
+  <g id="y_spark" stroke="#ffd27a" stroke-width="4" stroke-linecap="round" opacity="0"><path d="M200 330v-40M156 344l-22-26M244 344l22-26M140 390h-36M260 390h36"/></g>
+  <g id="y_ball"><circle r="13" fill="#8d1b22"/><path d="M-9 -9 L9 9" stroke="#f4e9d0" stroke-width="2.4"/></g>
+</svg></div><div class="frame"></div><div class="card">The Collapse</div><div class="flash"></div></div>
+
+<!-- 4: THE RACING HEARTBEAT: a pulse line over the crowd -->
+<div class="scene" id="s3"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="#16061a"/>
+  <circle id="h_glow" cx="200" cy="330" r="180" fill="url(#pulse)"/>
+  <path id="h_line" d="" fill="none" stroke="#ff4f8b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path id="h_line2" d="" fill="none" stroke="#ffd2e2" stroke-width="1.6" stroke-linejoin="round" opacity=".8"/>
+  <circle id="h_dot" r="6" fill="#fff1f6"/>
+  <g fill="#0c0310" id="h_crowd"></g>
+</svg></div><div class="frame"></div><div class="card long">The Racing<br>Heartbeat</div><div class="flash"></div></div>
+
+<!-- 5: THE CHASE -->
+<div class="scene" id="s4"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#dusk)"/>
+  <circle cx="200" cy="360" r="74" fill="#ffd27a" opacity=".85"/><circle cx="200" cy="360" r="120" fill="#ffd27a" opacity=".16"/>
+  <g fill="#140c22"><path d="M48 160h48v28H48z"/><path d="M68 188h8l11 330H57z"/><path d="M304 140h48v28h-48z"/><path d="M324 168h8l11 350h-30z"/></g>
+  <g fill="#fff8de"><rect x="51" y="163" width="42" height="22" rx="2"/><rect x="307" y="143" width="42" height="22" rx="2"/></g>
+  <circle cx="72" cy="174" r="64" fill="url(#glow)"/><circle cx="328" cy="154" r="64" fill="url(#glow)"/>
+  <g id="ch_beams"><path d="M52 185 L-60 580 L160 580 L92 185Z" fill="url(#beam)" opacity=".7"/><path d="M308 165 L240 580 L460 580 L348 165Z" fill="url(#beam)" opacity=".7"/></g>
+  <path d="M0 470 Q200 395 400 470 V711 H0Z" fill="#1a1030"/>
+  <path d="M0 497 Q200 428 400 497" stroke="#ff7aa8" stroke-opacity=".5" stroke-width="2" fill="none"/>
+  <g fill="#ffd9a6" opacity=".6"><circle cx="40" cy="492" r="1.7"/><circle cx="72" cy="483" r="1.7"/><circle cx="110" cy="472" r="1.7"/><circle cx="150" cy="463" r="1.7"/><circle cx="190" cy="459" r="1.7"/><circle cx="230" cy="460" r="1.7"/><circle cx="270" cy="465" r="1.7"/><circle cx="310" cy="474" r="1.7"/><circle cx="350" cy="486" r="1.7"/><circle cx="382" cy="495" r="1.7"/></g>
+  <ellipse cx="200" cy="690" rx="330" ry="160" fill="#1f5a4a"/>
+  <ellipse cx="200" cy="690" rx="330" ry="160" fill="none" stroke="#9fe0c6" stroke-opacity=".35" stroke-width="2"/>
+  <path d="M180 580 L220 580 L238 711 L162 711Z" fill="#c9a86b"/>
+  <g stroke="#f4f1ea" stroke-width="3"><path d="M193 571v20M200 571v20M207 571v20"/><path d="M191 569h8M201 569h8" stroke-width="2"/></g>
+  <path id="ch_trail" d="" stroke="#fff3c9" stroke-width="3.4" stroke-dasharray="2 7" stroke-linecap="round" fill="none" opacity=".85"/>
+  <g id="ch_ball"><circle r="28" fill="#fff3c9" opacity=".22"/><circle r="15" fill="#fff3c9" opacity=".35"/><circle r="9" fill="#fff8e6"/></g>
+</svg></div><div class="frame"></div><div class="card">The Chase</div><div class="flash"></div></div>
+
+<!-- 6: THE CELEBRATION: fireworks over the ground, arms raised under the lights -->
+<div class="scene" id="s5"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#winsky)"/>
+  <g id="w_fw"></g>
+  <g fill="#120a24"><path d="M30 300h40v24H30z"/><path d="M46 324h8l9 230H37z"/><path d="M330 290h40v24h-40z"/><path d="M346 314h8l9 240h-26z"/></g>
+  <circle cx="50" cy="312" r="54" fill="url(#glow)"/><circle cx="350" cy="302" r="54" fill="url(#glow)"/>
+  <path d="M0 520 Q200 460 400 520 V711 H0Z" fill="#1a1030"/>
+  <ellipse cx="200" cy="700" rx="330" ry="150" fill="#1f5a4a"/>
+  <!-- a player, both arms up (generic silhouette, no bat) -->
+  <g fill="#0b0716" id="w_bat">
+    <circle cx="200" cy="470" r="17"/>
+    <path d="M184 488h32l6 64h-44z"/>
+    <path d="M182 552h17l-3 70h-14zM203 552h17l3 70h-14z"/>
+    <path d="M188 494l-26 -58 8 -4 26 58z"/><circle cx="164" cy="432" r="8"/>
+    <path d="M212 494l26 -58 -8 -4 -26 58z"/><circle cx="236" cy="432" r="8"/>
+  </g>
+  <g id="w_conf"></g>
+</svg></div><div class="frame"></div><div class="card">The Celebration</div><div class="flash"></div></div>
+
+<!-- 7: AND A FAN WHO KNEW IT ALL: the sea wall at night, the ground lit up across the bay, the mark on the phone -->
+<div class="scene" id="s6"><div class="cam"><svg class="bg" viewBox="0 0 400 711" preserveAspectRatio="xMidYMid slice">
+  <rect width="400" height="711" fill="url(#seasky)"/>
+  <g fill="#cfe2f5" opacity=".6"><circle cx="40" cy="70" r="1.2"/><circle cx="130" cy="120" r="1"/><circle cx="260" cy="50" r="1.3"/><circle cx="350" cy="150" r="1"/><circle cx="80" cy="200" r="1"/></g>
+  <g id="f_fw"></g>
+  <!-- the far shore: the ground lit up, the city -->
+  <ellipse id="f_stad" cx="270" cy="372" rx="120" ry="40" fill="url(#stad)"/>
+  <path d="M215 384 Q270 352 325 384Z" fill="#2a1338"/>
+  <g fill="#1a1030"><rect x="226" y="330" width="3" height="50"/><rect x="312" y="330" width="3" height="50"/></g>
+  <circle cx="227" cy="330" r="10" fill="url(#glow)"/><circle cx="313" cy="330" r="10" fill="url(#glow)"/>
+  <path d="M0 384h30v-14h20v-10h18v24h40v-18h24v18h70v0h145v-8h20v-12h16v20H400v6H0z" fill="#12091f"/>
+  <g fill="#ffd9a6" opacity=".6"><rect x="34" y="374" width="3" height="3"/><rect x="58" y="368" width="3" height="3"/><rect x="118" y="372" width="3" height="3"/><rect x="368" y="374" width="3" height="3"/></g>
+  <!-- the sea, its reflections and moving light -->
+  <rect y="390" width="400" height="321" fill="url(#sea)"/>
+  <g id="f_refl" fill="#ffd27a" opacity=".55"></g>
+  <g id="f_waves" stroke="#94bce3" stroke-linecap="round" fill="none" opacity=".35"></g>
+  <!-- the sea wall and the fan sitting on it -->
+  <path d="M0 590 H400 V711 H0Z" fill="#0b0716"/>
+  <path d="M0 590 H400" stroke="#2a2440" stroke-width="3"/>
+  <g id="f_fan" fill="#0b0716">
+    <g id="f_head"><circle cx="150" cy="500" r="20"/></g>
+    <path d="M128 522h46l10 56h-66z"/>
+    <path d="M124 574h54v18h-54z"/><path d="M150 590h22l10 60h-16l-6-44h-10z"/>
+    <path d="M172 540l26 14 -5 7 -24 -12z"/>
+  </g>
+  <circle id="f_glow" cx="208" cy="548" r="58" fill="url(#screen)"/>
+  <g transform="rotate(-14 208 548)">
+    <rect x="195" y="528" width="27" height="42" rx="4" fill="#0e1b2a" stroke="#cfe9ff" stroke-width="1.4"/>
+    <rect id="f_scr" x="197.5" y="531" width="22" height="36" rx="2.5" fill="#132a42"/>
+    <g id="f_mark" color="#bfe0ff"><use href="#mark" x="199.5" y="540" width="18" height="18"/></g>
+  </g>
+</svg></div><div class="frame"></div><div class="card long">And a fan who<br>knew it all.</div><div class="flash"></div></div>
+
+<!-- the collage: the fan large, the six moments in a grid, then the line -->
+<div class="scene" id="collage">
+  <div class="grid" id="grid">
+    <div class="pn big" data-src="s6"><div class="cap">A fan who knew it all</div></div>
+    <div class="pn" data-src="s1"><div class="cap">The Call</div></div>
+    <div class="pn" data-src="s2"><div class="cap">The Target</div></div>
+    <div class="pn" data-src="s7"><div class="cap">The Collapse</div></div>
+    <div class="pn" data-src="s3"><div class="cap" style="font-size:38px">The Racing<br>Heartbeat</div></div>
+    <div class="pn" data-src="s4"><div class="cap">The Chase</div></div>
+    <div class="pn" data-src="s5"><div class="cap">The Celebration</div></div>
+  </div>
+  <div class="head"><div id="h1"></div><div class="l2" id="h2"></div></div>
+  <div class="flash" id="cflash"></div>
+</div>
+
+<!-- 9: the logo -->
+<div class="scene" id="end">
+  <div class="lock">
+    <div class="lk"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4">
+      <path id="m1" d="M4 15L13 24L4 33" stroke-linecap="square" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="m2" d="M22 15V40M30 15V40M38 15V40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="m3" d="M20 11H29M31 11H40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g></svg>
+      <div class="w" id="word">Cric<b>Synthesis</b></div></div>
+    <div class="tg" id="tag">AI-Powered Cricket Intelligence</div>
+    <div class="url" id="url">cricsynthesis.in</div>
+  </div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const easeIO = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const R = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+// 33 s: [start, end, freeze] per scene, in story order
+const S = { s1: [0, 3.4, 2.45], s2: [3.4, 6.8, 5.75], s7: [6.8, 10.2, 9.0], s3: [10.2, 13.6, 12.5], s4: [13.6, 17.0, 15.9], s5: [17.0, 20.4, 19.25], s6: [20.4, 24.4, 23.15] };
+const ORDER = ['s1', 's2', 's7', 's3', 's4', 's5', 's6'];
+const CUT = 24.4, COL = 25.15, END = 29.6;
+const H1 = "NOBODY KNOWS HOW IT ENDS.", H2 = "WE JUST GET THERE FIRST.";
+
+function show(id, on) { $('#' + id).style.visibility = on ? 'visible' : 'hidden'; }
+function setFreeze(id, t, f) {
+  const sc = $('#' + id), dt = t - f;
+  const fr = sc.querySelector('.frame'), cd = sc.querySelector('.card'), fl = sc.querySelector('.flash');
+  if (dt < 0) { fr.style.opacity = 0; cd.style.opacity = 0; fl.style.opacity = 0; sc.querySelector('.cam').style.filter = ''; return; }
+  fl.style.opacity = (0.55 * (1 - seg(dt, 0, 0.16))).toFixed(3);
+  fr.style.opacity = seg(dt, 0, 0.08).toFixed(3);
+  const k = ease(seg(dt, 0.04, 0.34));
+  cd.style.opacity = k.toFixed(3);
+  cd.style.transform = `translateX(${(-80 * (1 - k)).toFixed(1)}px) skewX(-4deg)`;
+  sc.querySelector('.cam').style.filter = 'saturate(1.22) contrast(1.06)';
+}
+function cam(id, t, from, to, dx, dy) {
+  const [a, b, f] = S[id], p = easeIO(seg(Math.min(t, f), a, b)), s = from + (to - from) * p;
+  $('#' + id + ' .cam').style.transform = `translate(${dx * p}px, ${dy * p}px) scale(${s})`;
+}
+
+// THE CALL: the coin rises and spins, face-up at the freeze
+function s1(t) {
+  const [a, , f] = S.s1, tt = Math.min(t, f), t0 = a + 0.1, u = tt - t0;
+  const rise = ease(seg(tt, t0, f)), y = 600 - rise * 300, sz = 0.7 + 0.45 * rise;
+  const w0 = 22, k = 1.6, total = (w0 / k) * (1 - Math.exp(-k * (f - t0)));
+  let ph = (w0 / k) * (1 - Math.exp(-k * Math.max(0, u)));
+  ph += (Math.round(total / Math.PI) * Math.PI - total) * clamp(u / (f - t0));
+  const c = Math.cos(ph), ry = Math.max(3, Math.abs(c) * 36);
+  $('#c_coin').setAttribute('transform', `translate(200 ${y.toFixed(1)}) scale(${sz.toFixed(3)}) rotate(-12)`);
+  $('#c_face').setAttribute('ry', ry.toFixed(2)); $('#c_rim').setAttribute('ry', ry.toFixed(2)); $('#c_ring').setAttribute('ry', (ry * 0.78).toFixed(2));
+  $('#c_mark').setAttribute('transform', `scale(1 ${(Math.max(0.05, Math.abs(c)) * 0.82).toFixed(3)})`);
+  $('#c_mark').style.opacity = c > 0 ? 1 : 0;
+  $('#c_face').setAttribute('fill', c > 0 ? 'url(#hot)' : '#e7774f');
+  $('#s1 .cam').style.opacity = ease(seg(t, 0, 0.5)).toFixed(3);
+  cam('s1', t, 1.0, 1.08, 0, 0); setFreeze('s1', t, f);
+}
+// THE TARGET: the scoreboard counts up and locks
+let dotsDone = false;
+function s2(t) {
+  const [a, , f] = S.s2, tt = Math.min(t, f);
+  if (!dotsDone) {
+    dotsDone = true; let d = '', h = '';
+    for (let x = 52; x < 350; x += 12) d += `<circle cx="${x}" cy="186" r="2"/><circle cx="${x}" cy="434" r="2"/>`;
+    for (let i = 0; i < 30; i++) { const x = i * 14 + R(i) * 6, r = 8 + R(i + 9) * 3, y = 612 + R(i + 3) * 10; h += `<circle cx="${x}" cy="${y}" r="${r}"/><rect x="${x - r}" y="${y}" width="${2 * r}" height="100"/>`; }
+    $('#t_dots').innerHTML = d; $('#t_heads').innerHTML = h;
+  }
+  const on = seg(tt, a + 0.15, a + 0.5);
+  $('#t_dots').style.opacity = (on > 0 ? 0.35 + 0.35 * Math.abs(Math.sin(tt * 9)) : 0).toFixed(3);
+  $('#t_lab').style.opacity = on > 0.3 ? (0.85 + 0.15 * Math.sin(tt * 30)).toFixed(3) : 0;
+  $('#t_num').textContent = String(Math.round(185 * ease(seg(tt, a + 0.5, f - 0.25))));
+  $('#t_num').style.opacity = on;
+  cam('s2', t, 1.12, 1.0, 0, 20); setFreeze('s2', t, f);
+}
+// THE COLLAPSE: a yorker skids in, the stumps burst
+const STB = [[170, 560], [200, 560], [230, 560]];
+function s7(t) {
+  const [a, , f] = S.s7, tt = Math.min(t, f), hit = a + 1.35;
+  const bp = ease(seg(tt, a + 0.45, hit));
+  if (tt < hit) $('#y_ball').setAttribute('transform', `translate(${-20 + bp * 222} ${520 + bp * 20}) rotate(${bp * 540})`);
+  else { const q = tt - hit; $('#y_ball').setAttribute('transform', `translate(${202 + q * 90} ${540 + q * 30}) rotate(${540 + q * 400})`); }
+  const q = Math.max(0, tt - hit);
+  const rot = [-1, 0.25, 1].map((d, i) => d * (28 + i * 4) * ease(q / 0.35) + (i === 1 ? -8 * ease(q / 0.35) : 0));
+  ['#y_st1', '#y_st2', '#y_st3'].forEach((id, i) => {
+    const [x, y] = STB[i], lift = i === 1 ? -20 * ease(q / 0.3) : 0;
+    $(id).setAttribute('transform', `translate(${x} ${y + lift}) rotate(${rot[i].toFixed(2)})`);
+  });
+  const bail = (dx, vx, vy, spin) => `translate(${dx + vx * q} ${348 - vy * q + 260 * q * q}) rotate(${spin * q * 360})`;
+  $('#y_bl1').setAttribute('transform', q ? bail(184, -120, 260, -1.4) : 'translate(184 348)');
+  $('#y_bl2').setAttribute('transform', q ? bail(216, 140, 300, 1.7) : 'translate(216 348)');
+  $('#y_spark').style.opacity = q > 0 ? (1 - seg(q, 0.05, 0.5)).toFixed(3) : 0;
+  const shake = q > 0 && q < 0.25 && t < f ? Math.sin(q * 90) * 6 * (1 - q / 0.25) : 0;
+  cam('s7', t, 1.02, 1.1, shake, 0); setFreeze('s7', t, f);
+}
+// THE RACING HEARTBEAT: an ECG line drawn across, beats getting faster
+let crowdDone = false;
+function beatY(x) {
+  const p = ((x - 0.15) % 1 + 1) % 1;
+  if (p < 0.08) return -10 * Math.sin(p / 0.08 * Math.PI);
+  if (p < 0.14) return 0;
+  if (p < 0.17) return 14 * ((p - 0.14) / 0.03);
+  if (p < 0.21) return 14 - 104 * ((p - 0.17) / 0.04);
+  if (p < 0.25) return -90 + 120 * ((p - 0.21) / 0.04);
+  if (p < 0.29) return 30 - 30 * ((p - 0.25) / 0.04);
+  if (p < 0.45) return -16 * Math.sin((p - 0.29) / 0.16 * Math.PI);
+  return 0;
+}
+function s3(t) {
+  const [a, , f] = S.s3, tt = Math.min(t, f), u = tt - a;
+  if (!crowdDone) {
+    crowdDone = true; let h = '';
+    for (let i = 0; i < 26; i++) { const x = i * 16 + R(i + 40) * 8, r = 10 + R(i + 60) * 4, y = 600 + R(i + 70) * 18; h += `<circle cx="${x}" cy="${y}" r="${r}"/><rect x="${x - r - 2}" y="${y}" width="${2 * r + 4}" height="120"/>`; }
+    for (let i = 0; i < 6; i++) { const x = 30 + i * 68 + R(i) * 20; h += `<path d="M${x} 600 l-6 -60 h8 z" transform="rotate(${-12 + R(i + 5) * 24} ${x} 600)"/>`; }
+    $('#h_crowd').innerHTML = h;
+  }
+  const beats = 2 + 1.4 * seg(tt, a, f), headX = 20 + 360 * clamp(u / (f - a));
+  let d = '';
+  for (let x = 20; x <= headX; x += 2) d += (x === 20 ? 'M' : 'L') + x + ' ' + (330 + beatY((x - 20) / 360 * beats)).toFixed(1);
+  $('#h_line').setAttribute('d', d); $('#h_line2').setAttribute('d', d);
+  $('#h_dot').setAttribute('cx', headX); $('#h_dot').setAttribute('cy', (330 + beatY((headX - 20) / 360 * beats)).toFixed(1));
+  const ph = (tt - a) * Math.PI * (1.4 + 0.9 * seg(tt, a, f)), pulse = Math.pow(Math.max(0, Math.cos(ph)), 8);
+  $('#h_glow').style.opacity = (0.45 + 0.55 * pulse).toFixed(3);
+  $('#h_glow').setAttribute('r', (170 + 30 * pulse).toFixed(1));
+  cam('s3', t, 1.0, 1.1, 0, 0); setFreeze('s3', t, f);
+}
+// THE CHASE: the ball arcs towards the stands
+function quad(p, a, c, b) { const u = 1 - p; return [u * u * a[0] + 2 * u * p * c[0] + p * p * b[0], u * u * a[1] + 2 * u * p * c[1] + p * p * b[1]]; }
+function s4(t) {
+  const [a, , f] = S.s4, tt = Math.min(t, f), p = ease(seg(tt, a + 0.25, f));
+  const [x, y] = quad(p, [196, 560], [262, 300], [336, 252]);
+  $('#ch_ball').setAttribute('transform', `translate(${x} ${y}) scale(${1 - 0.25 * p})`);
+  $('#ch_trail').setAttribute('d', `M196 560 Q${196 + 66 * p} ${560 - 260 * p} ${x} ${y}`);
+  $('#ch_trail').style.opacity = p > 0.02 ? .85 : 0;
+  $('#ch_beams').style.opacity = (0.75 + 0.25 * Math.sin(tt * 2.2)).toFixed(3);
+  cam('s4', t, 1.0, 1.12, 0, 40); setFreeze('s4', t, f);
+}
+// fireworks: bursts of rays that expand and fade (times relative to the scene)
+function bursts(t, list, w = 3) {
+  let g = '';
+  list.forEach(([t0, cx, cy, col, n], k) => {
+    const a = t - t0;
+    if (a < 0 || a > 1.6) return;
+    const r = 18 + 70 * ease(a / 0.9), op = 1 - seg(a, 0.6, 1.6);
+    for (let i = 0; i < n; i++) {
+      const ang = (i / n) * Math.PI * 2 + k, r0 = r * 0.55;
+      g += `<line x1="${(cx + Math.cos(ang) * r0).toFixed(1)}" y1="${(cy + Math.sin(ang) * r0).toFixed(1)}" x2="${(cx + Math.cos(ang) * r).toFixed(1)}" y2="${(cy + Math.sin(ang) * r + a * 12).toFixed(1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op.toFixed(2)}"/>`;
+    }
+    g += `<circle cx="${cx}" cy="${cy}" r="${(r * 0.35).toFixed(1)}" fill="${col}" opacity="${(0.25 * op).toFixed(2)}"/>`;
+  });
+  return g;
+}
+const FW = [[0.2, 120, 170, '#ffd27a', 18], [0.6, 290, 130, '#ff4f8b', 16], [1.0, 200, 90, '#94bce3', 20], [1.4, 90, 250, '#ffb347', 14], [1.7, 310, 230, '#ffd27a', 18], [2.05, 210, 190, '#ff7aa8', 20]];
+// THE CELEBRATION: fireworks, confetti, both arms up
+function s5(t) {
+  const [a, , f] = S.s5, tt = Math.min(t, f);
+  $('#w_fw').innerHTML = bursts(tt, FW.map(([d, ...r]) => [a + d, ...r]));
+  let c = '';
+  for (let i = 0; i < 46; i++) {
+    const t0 = a + R(i) * 1.6, age = tt - t0;
+    if (age < 0) continue;
+    const x = (R(i + 100) * 420 - 10) + Math.sin(age * 3 + i) * 12, y = -20 + age * (90 + R(i + 200) * 60);
+    if (y > 720) continue;
+    const col = ['#ffd27a', '#ff4f8b', '#94bce3', '#f4f1ea'][i % 4];
+    c += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="6" height="3" fill="${col}" transform="rotate(${(age * 300 + i * 40) % 360} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;
+  }
+  $('#w_conf').innerHTML = c;
+  const jump = Math.max(0, Math.sin((tt - a) * 6)) * 10 * (1 - seg(tt, f - 0.6, f));
+  $('#w_bat').setAttribute('transform', `translate(0 ${(-jump).toFixed(1)})`);
+  cam('s5', t, 1.08, 1.0, 0, -20); setFreeze('s5', t, f);
+}
+// AND A FAN WHO KNEW IT ALL: the sea wall, fireworks across the bay, the mark on the phone
+const FW2 = [[0.3, 270, 300, '#ffd27a', 14], [0.95, 310, 280, '#ff4f8b', 12], [1.6, 240, 290, '#94bce3', 14], [2.2, 295, 310, '#ffb347', 12]];
+function s6(t) {
+  const [a, , f] = S.s6, tt = Math.min(t, f), u = tt - a;
+  $('#f_fw').innerHTML = bursts(tt, FW2.map(([d, ...r]) => [a + d, ...r]), 1.6);
+  let rf = '', wv = '';
+  for (let i = 0; i < 18; i++) {             // the ground's light rippling on the water
+    const y = 398 + i * 9, w = 30 - i * 1.2 + Math.sin(u * 2 + i) * 6, x = 270 + Math.sin(u * 1.3 + i * 1.7) * (4 + i * 0.6);
+    rf += `<rect x="${(x - w / 2).toFixed(1)}" y="${y}" width="${Math.max(4, w).toFixed(1)}" height="2.2" rx="1" opacity="${(0.9 - i * 0.045).toFixed(2)}"/>`;
+  }
+  for (let i = 0; i < 9; i++) {              // gentle swell lines rolling in
+    const ph = ((u * 0.18 + i / 9) % 1), y = 410 + ph * 175, x0 = (R(i) * 300 - 40), len = 40 + ph * 90;
+    wv += `<path d="M${x0.toFixed(1)} ${y.toFixed(1)} q${(len / 2).toFixed(1)} -4 ${len.toFixed(1)} 0" stroke-width="${(1 + ph * 1.6).toFixed(2)}" opacity="${(0.25 + 0.6 * ph * (1 - ph) * 2).toFixed(2)}"/>`;
+  }
+  $('#f_refl').innerHTML = rf; $('#f_waves').innerHTML = wv;
+  const glow = 0.85 + 0.15 * Math.sin(tt * 3);
+  $('#f_glow').style.opacity = glow.toFixed(3);
+  $('#f_mark').style.opacity = (0.75 + 0.25 * Math.sin(tt * 3)).toFixed(3);
+  $('#f_stad').style.opacity = (0.8 + 0.2 * Math.sin(tt * 1.7 + 1)).toFixed(3);
+  const look = ease(seg(tt, a + 1.3, a + 2.2));
+  $('#f_head').setAttribute('transform', `rotate(${(14 * look).toFixed(2)} 150 518) translate(${(5 * look).toFixed(1)} ${(-3 * look).toFixed(1)})`);
+  cam('s6', t, 1.1, 1.0, -30, 0); setFreeze('s6', t, f);
+}
+const FN = { s1, s2, s7, s3, s4, s5, s6 };
+
+let cloned = false;
+function cloneScenes() {
+  if (cloned) return; cloned = true;
+  document.querySelectorAll('.pn').forEach((pn) => {
+    const src = $('#' + pn.dataset.src + ' svg.bg').cloneNode(true);
+    src.removeAttribute('class'); src.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    if (pn.classList.contains('big')) src.setAttribute('viewBox', '20 452 360 150');   // the fan, the phone and the bay
+    pn.insertBefore(src, pn.firstChild);
+  });
+}
+function collage(t) {
+  cloneScenes();
+  document.querySelectorAll('.pn').forEach((pn, i) => {
+    const a = ease(seg(t, COL - 0.05 + i * 0.05, COL + 0.25 + i * 0.05));
+    pn.style.opacity = a.toFixed(3); pn.style.transform = `scale(${(1.25 - 0.25 * a).toFixed(3)})`;
+  });
+  $('#grid').style.transform = `rotate(-4deg) scale(${(1 + 0.03 * seg(t, COL, END)).toFixed(4)})`;
+  const n1 = Math.floor(H1.length * seg(t, COL + 0.45, COL + 1.35)), n2 = Math.floor(H2.length * seg(t, COL + 1.75, COL + 2.55));
+  $('#h1').textContent = H1.slice(0, n1); $('#h2').textContent = H2.slice(0, n2);
+  $('#cflash').style.opacity = (t > COL ? 0.4 * (1 - seg(t, COL + 0.25, COL + 0.45)) : 0).toFixed(3);
+}
+function endCard(t) {
+  const e = END, d = (a, b) => (1 - ease(seg(t, e + a, e + b))).toFixed(3);
+  $('#m1').setAttribute('stroke-dashoffset', d(0.3, 0.8));
+  $('#m2').setAttribute('stroke-dashoffset', d(0.6, 1.2));
+  $('#m3').setAttribute('stroke-dashoffset', d(1.1, 1.5));
+  const w = ease(seg(t, e + 0.9, e + 1.5));
+  $('#word').style.opacity = w; $('#word').style.transform = `translateX(${(20 * (1 - w)).toFixed(1)}px)`;
+  $('#tag').style.opacity = ease(seg(t, e + 1.4, e + 2.0)); $('#url').style.opacity = ease(seg(t, e + 1.8, e + 2.4));
+}
+window.seek = (t) => {
+  let cur;
+  if (t < CUT) cur = ORDER.find((id) => t < S[id][1]);
+  else if (t < COL) cur = ORDER[Math.min(6, Math.floor((t - CUT) / ((COL - CUT) / 7)))];
+  else if (t < END) cur = 'collage'; else cur = 'end';
+  [...ORDER, 'collage', 'end'].forEach((id) => show(id, id === cur));
+  ORDER.forEach((id) => FN[id](cur === id && t < CUT ? t : S[id][2] + 1));
+  if (cur === 'collage') collage(t);
+  if (cur === 'end') { endCard(t); $('#end').style.opacity = ease(seg(t, END, END + 0.4)); }
+};
+window.DURATION = 33;
+window.ready = document.fonts.ready;
+</script>
+</body></html>
