@@ -320,15 +320,16 @@ function s3(t) {
     for (let i = 0; i < 6; i++) { const x = 30 + i * 68 + R(i) * 20; h += `<path d="M${x} 600 l-6 -60 h8 z" transform="rotate(${-12 + R(i + 5) * 24} ${x} 600)"/>`; }
     $('#h_crowd').innerHTML = h;
   }
-  const beats = 2 + 1.4 * seg(tt, a, f), headX = 20 + 360 * clamp(u / (f - a));
+  const X0 = 70, XW = 260, beats = 1.6 + 1.0 * seg(tt, a, f), headX = X0 + XW * clamp(u / (f - a));
   let d = '';
-  for (let x = 20; x <= headX; x += 2) d += (x === 20 ? 'M' : 'L') + x + ' ' + (330 + beatY((x - 20) / 360 * beats)).toFixed(1);
+  for (let x = X0; x <= headX; x += 2) d += (x === X0 ? 'M' : 'L') + x + ' ' + (330 + 0.8 * beatY((x - X0) / XW * beats)).toFixed(1);
   $('#h_line').setAttribute('d', d); $('#h_line2').setAttribute('d', d);
-  $('#h_dot').setAttribute('cx', headX); $('#h_dot').setAttribute('cy', (330 + beatY((headX - 20) / 360 * beats)).toFixed(1));
-  const ph = (tt - a) * Math.PI * (1.4 + 0.9 * seg(tt, a, f)), pulse = Math.pow(Math.max(0, Math.cos(ph)), 8);
+  $('#h_dot').setAttribute('cx', headX); $('#h_dot').setAttribute('cy', (330 + 0.8 * beatY((headX - X0) / XW * beats)).toFixed(1));
+  // heart rate climbs from 1.6 to 2.6 beats a second (about 96 to 156 bpm); the soundtrack thumps on the same beats
+  const ph = 2 * Math.PI * (1.6 * u + 0.5 * u * u / (f - a)), pulse = Math.pow(Math.max(0, Math.cos(ph)), 6);
   $('#h_glow').style.opacity = (0.45 + 0.55 * pulse).toFixed(3);
   $('#h_glow').setAttribute('r', (170 + 30 * pulse).toFixed(1));
-  cam('s3', t, 1.0, 1.1, 0, 0); setFreeze('s3', t, f);
+  cam('s3', t, 1.0, 1.04, 0, 0); setFreeze('s3', t, f);
 }
 // THE CHASE: the ball arcs towards the stands
 function quad(p, a, c, b) { const u = 1 - p; return [u * u * a[0] + 2 * u * p * c[0] + p * p * b[0], u * u * a[1] + 2 * u * p * c[1] + p * p * b[1]]; }
