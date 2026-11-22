@@ -1,0 +1,112 @@
+{
+  "id": "ut-v-vid-t20-kolkata-2026-11-24",
+  "title": "Uttarakhand v Vidarbha",
+  "date": "2026-11-24",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 92nd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Uttarakhand",
+      "short": "UT",
+      "players": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Sanskar Rawat",
+        "Mayank Mishra",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi",
+        "Jagmohan Nagarkoti",
+        "Surya Chauhan"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Kunal Chandela",
+      "squad": [
+        "Kunal Chandela",
+        "Yuvraj Chaudhary",
+        "Avneesh Sudha",
+        "Tejasvi Jaiswal",
+        "Aarav Mahajan",
+        "Sanskar Rawat",
+        "Mayank Mishra",
+        "Agnivesh Ayachi",
+        "Janmejay Joshi",
+        "Jagmohan Nagarkoti",
+        "Surya Chauhan"
+      ]
+    },
+    {
+      "name": "Vidarbha",
+      "short": "VID",
+      "players": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Varun Bisht",
+        "Shubham Dubey",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Nachiket Bhute",
+        "Saurabh Dubey",
+        "Yash Thakur",
+        "Ravikumar Samarth"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT"
+      ],
+      "captain": "Atharva Taide",
+      "squad": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Varun Bisht",
+        "Shubham Dubey",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Parth Rekhade",
+        "Nachiket Bhute",
+        "Saurabh Dubey",
+        "Yash Thakur",
+        "Ravikumar Samarth"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41944,
+    "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-vidarbha-syed-mushtaq-ali-trophy-elite-24th-november-2026-41944",
+    "auto": true,
+    "xis": false
+  }
+}
