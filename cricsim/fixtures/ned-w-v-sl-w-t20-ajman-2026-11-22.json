@@ -12,36 +12,36 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Sri Lanka Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Netherlands Women",
       "short": "NED-W",
       "players": [
-        "Sterre Kalis",
-        "Sanya Khurana",
-        "Phebe Molkenboer",
-        "Rosalie Lawrence",
         "Frederique Overdijk",
         "Iris Zwilling",
-        "Myrthe van den Raad",
-        "Robine Rijke",
         "Caroline de Lange",
+        "Sterre Kalis",
+        "Myrthe van den Raad",
+        "Phebe Molkenboer",
+        "Robine Rijke",
         "Silver Siegers",
-        "Hannah Landheer"
+        "Carlijn van Koolwijk",
+        "Rosalie Lawrence",
+        "Sanya Khurana"
       ],
       "roles": [
+        "AR",
+        "AR",
+        "BOWL",
         "BAT",
+        "AR",
         "BAT",
+        "AR",
+        "BOWL",
         "BAT",
         "WK",
-        "AR",
-        "AR",
-        "AR",
-        "AR",
-        "BOWL",
-        "BOWL",
-        "BOWL"
+        "BAT"
       ],
       "captain": "Sterre Kalis",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41974,
     "url": "https://khelnow.com/live-cricket-score/netherlands-women-vs-sri-lanka-women-icc-women's-emerging-nations-trophy-22nd-november-2026-41974",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

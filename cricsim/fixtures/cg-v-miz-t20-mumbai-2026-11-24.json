@@ -1,0 +1,112 @@
+{
+  "id": "cg-v-miz-t20-mumbai-2026-11-24",
+  "title": "Chandigarh v Mizoram",
+  "date": "2026-11-24",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 85th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Wankhede Stadium, Mumbai",
+  "venue_search": "wankhede stadium",
+  "city": "Mumbai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Chandigarh",
+      "short": "CG",
+      "players": [
+        "Manan Vohra",
+        "Aarush Bhandari",
+        "Shivam Bhambri",
+        "Arjun Azad",
+        "Nehal Pajni",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Nikhil Kumar",
+        "Hardik Choudhary",
+        "Sandeep Sharma",
+        "Jagjit Singh Sandhu"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Aarush Bhandari",
+      "squad": [
+        "Manan Vohra",
+        "Aarush Bhandari",
+        "Shivam Bhambri",
+        "Arjun Azad",
+        "Nehal Pajni",
+        "Bhagmender Lather",
+        "Chiragvir Dhindsa",
+        "Nikhil Kumar",
+        "Hardik Choudhary",
+        "Sandeep Sharma",
+        "Jagjit Singh Sandhu"
+      ]
+    },
+    {
+      "name": "Mizoram",
+      "short": "MIZ",
+      "players": [
+        "Sahil Sharma",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "Marema",
+        "Lalthianawma"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Joseph Lalthankhuma",
+      "squad": [
+        "Sahil Sharma",
+        "Jehu Anderson",
+        "Chinmay Sutar",
+        "Joseph Lalthankhuma",
+        "Manender Singh",
+        "Khiangte Vanrotlinga",
+        "Kuldip Yadav",
+        "B Lalnunfela",
+        "Sumit Lama",
+        "Marema",
+        "Lalthianawma"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41937,
+    "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-mizoram-syed-mushtaq-ali-trophy-elite-24th-november-2026-41937",
+    "auto": true,
+    "xis": false
+  }
+}

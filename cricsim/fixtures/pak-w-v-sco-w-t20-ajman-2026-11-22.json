@@ -12,17 +12,17 @@
   "city": "Ajman",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pakistan Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Pakistan Women",
       "short": "PAK-W",
       "players": [
         "Shawaal Zulfiqar",
-        "Sadaf Shamas",
+        "Gull Feroza",
         "Muneeba Ali",
         "Ayesha Zafar",
-        "Gull Feroza",
+        "Omaima Sohail",
         "Eyman Fatima",
         "Tuba Hassan",
         "Umm e Hani",
@@ -35,7 +35,7 @@
         "BAT",
         "WK",
         "BAT",
-        "BAT",
+        "AR",
         "BAT",
         "BOWL",
         "AR",
@@ -62,30 +62,30 @@
       "name": "Scotland Women",
       "short": "SCO-W",
       "players": [
-        "Katherine Fraser",
-        "Darcey Carter",
         "Kathryn Bryce",
         "Sarah Bryce",
+        "Darcey Carter",
+        "Katherine Fraser",
         "Pippa Sproul",
         "Priyanaz Chatterji",
-        "Isabella Watson",
         "Kirstie Gordon",
-        "Chloe Abel",
+        "Abtaha Maqsood",
         "Hannah Rainey",
-        "Abtaha Maqsood"
+        "Chloe Abel",
+        "Isabella Watson"
       ],
       "roles": [
         "AR",
-        "AR",
-        "AR",
         "WK",
+        "AR",
+        "AR",
         "BAT",
         "AR",
-        "AR",
         "BOWL",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "AR"
       ],
       "captain": "Kathryn Bryce",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41975,
     "url": "https://khelnow.com/live-cricket-score/pakistan-women-vs-scotland-women-icc-women's-emerging-nations-trophy-22nd-november-2026-41975",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

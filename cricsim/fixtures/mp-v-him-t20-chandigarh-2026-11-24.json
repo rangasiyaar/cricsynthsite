@@ -1,0 +1,112 @@
+{
+  "id": "mp-v-him-t20-chandigarh-2026-11-24",
+  "title": "Madhya Pradesh v Himachal Pradesh",
+  "date": "2026-11-24",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 91st Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Madhya Pradesh",
+      "short": "MP",
+      "players": [
+        "Harsh Gawli",
+        "Rajat Patidar",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Ritik Tada",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Kumar Kartikeya"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Rajat Patidar",
+      "squad": [
+        "Harsh Gawli",
+        "Rajat Patidar",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Ritik Tada",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Kumar Kartikeya"
+      ]
+    },
+    {
+      "name": "Himachal Pradesh",
+      "short": "HIM",
+      "players": [
+        "Vaibhav Sharma",
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Hritik Kalia",
+        "Ekant Sen"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Pukhraj Mann",
+      "squad": [
+        "Vaibhav Sharma",
+        "Pukhraj Mann",
+        "Ayush Jamwal",
+        "Vaibhav Kalta",
+        "Nehal Wadhera",
+        "Aryaman Singh-I",
+        "Rohit Kumar",
+        "Mridul Surroch",
+        "Arpit Guleria",
+        "Hritik Kalia",
+        "Ekant Sen"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41943,
+    "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-himachal-pradesh-syed-mushtaq-ali-trophy-elite-24th-november-2026-41943",
+    "auto": true,
+    "xis": false
+  }
+}

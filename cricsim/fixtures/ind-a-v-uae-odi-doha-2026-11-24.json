@@ -1,0 +1,112 @@
+{
+  "id": "ind-a-v-uae-odi-doha-2026-11-24",
+  "title": "India A v United Arab Emirates",
+  "date": "2026-11-24",
+  "start_time": "11:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 11th Match",
+  "comp_key": "intl-international-OD",
+  "venue": "University of Doha for Science and Technology, Doha",
+  "venue_search": "university of doha for science and technology",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "India A",
+      "short": "IND-A",
+      "players": [
+        "Vaibhav Sooryavanshi",
+        "N. Tilak Varma",
+        "Abhishek Sharma",
+        "Kumar Kushagra",
+        "Rinku Singh",
+        "Ayush Badoni",
+        "Suryansh Shedge",
+        "Shahbaz Ahamad",
+        "Vipraj Nigam",
+        "Harshit Rana",
+        "Prince Yadav"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "N. Tilak Varma",
+      "squad": [
+        "Vaibhav Sooryavanshi",
+        "N. Tilak Varma",
+        "Abhishek Sharma",
+        "Kumar Kushagra",
+        "Rinku Singh",
+        "Ayush Badoni",
+        "Suryansh Shedge",
+        "Shahbaz Ahamad",
+        "Vipraj Nigam",
+        "Harshit Rana",
+        "Prince Yadav"
+      ]
+    },
+    {
+      "name": "United Arab Emirates",
+      "short": "UAE",
+      "players": [
+        "Aryansh Sharma",
+        "Muhammad Shahdad",
+        "Ansh Tandon",
+        "Ethan Dsouza",
+        "Noorullah Ayobi",
+        "Basil Hameed",
+        "Awais Ali Shah",
+        "Omid Rahman",
+        "Ibrar Ahmad",
+        "Harpreet Singh Bhatia",
+        "Aftab Alam Shah"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "WK"
+      ],
+      "captain": "Basil Hameed",
+      "squad": [
+        "Aryansh Sharma",
+        "Muhammad Shahdad",
+        "Ansh Tandon",
+        "Ethan Dsouza",
+        "Noorullah Ayobi",
+        "Basil Hameed",
+        "Awais Ali Shah",
+        "Omid Rahman",
+        "Ibrar Ahmad",
+        "Harpreet Singh Bhatia",
+        "Aftab Alam Shah"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41832,
+    "url": "https://khelnow.com/live-cricket-score/india-a-vs-united-arab-emirates-acc-men's-asia-cup-rising-stars-24th-november-2026-41832",
+    "auto": true,
+    "xis": false
+  }
+}

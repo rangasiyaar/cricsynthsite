@@ -12,34 +12,34 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Mumbai won the toss and bowl first.",
   "teams": [
     {
       "name": "Chhattisgarh",
       "short": "CHA",
       "players": [
-        "Vikalp Tiwari",
-        "Aayush Pandey",
-        "Dharmendrasinh Jadeja",
+        "Rahul Pradhan",
         "Amandeep Khare",
-        "Shashank Chandrakar",
-        "Prateek Yadav",
+        "Vikalp Tiwari",
         "Ajay Mandal",
-        "Dev Aditya Singh",
+        "Shashank Chandrakar",
         "Vijay Yadav",
+        "Prateek Yadav",
+        "Dharmendrasinh Jadeja",
+        "Dev Aditya Singh",
         "Jayant Yadav",
         "Sourabh Majumdar"
       ],
       "roles": [
+        "BAT",
+        "BAT",
         "AR",
-        "BAT",
-        "BOWL",
-        "BAT",
+        "AR",
         "WK",
+        "AR",
         "BAT",
-        "AR",
         "BOWL",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL"
       ],
@@ -65,8 +65,8 @@
         "Surya Kumar Yadav",
         "Shardul Thakur",
         "Sarfaraz Khan",
-        "Shivam Dube",
         "Tushar Deshpande",
+        "Shivam Dube",
         "Maxwell Swaminathan",
         "Atharva Ankolekar",
         "Angkrish Raghuvanshi",
@@ -76,11 +76,11 @@
       ],
       "roles": [
         "BAT",
-        "BOWL",
-        "BAT",
         "AR",
+        "BAT",
         "BOWL",
-        "BOWL",
+        "AR",
+        "AR",
         "AR",
         "BAT",
         "AR",
@@ -107,6 +107,7 @@
     "kn": 41922,
     "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-mumbai-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41922",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

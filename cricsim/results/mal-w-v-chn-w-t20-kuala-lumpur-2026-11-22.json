@@ -1,0 +1,341 @@
+{
+ "id": "mal-w-v-chn-w-t20-kuala-lumpur-2026-11-22",
+ "innings": [
+  {
+   "team": "China Women",
+   "runs": 115,
+   "wickets": 7,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Wang Huiying",
+     "dismissal": "c MI Ismail b N D Syuhada",
+     "runs": 29,
+     "balls": 44,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Wei Haiting",
+     "dismissal": "c M Elysa b N D Syuhada",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mingyue Zhu",
+     "dismissal": "c MI Ismail b NA Natsya",
+     "runs": 43,
+     "balls": 40,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Gong Yuting",
+     "dismissal": "c NA Natsya b M Elysa",
+     "runs": 11,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cai Yuzhi",
+     "dismissal": "not out",
+     "runs": 12,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lyu Yihan",
+     "dismissal": "runout (M Elysa / N D Syuhada)",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "jiaping LI",
+     "dismissal": "c N D Syuhada b MI Ismail",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hong Yali",
+     "dismissal": "runout (A Najwa /  (sub N Hidayah Husna ))",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Aisya Eleesa",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nur Dania Syuhada",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ainna Hamizah Hashim",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Winifred Duraisingam",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mahirah Izzati Ismail",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Nur Arianna Natsya",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Mas Elysa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Wei Haiting",
+     "score": 4,
+     "over": "1.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mingyue Zhu",
+     "score": 78,
+     "over": "13.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Wang Huiying",
+     "score": 95,
+     "over": "16.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Gong Yuting",
+     "score": 95,
+     "over": "17.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lyu Yihan",
+     "score": 97,
+     "over": "17.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "jiaping LI",
+     "score": 103,
+     "over": "18.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Hong Yali",
+     "score": 115,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 7,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 34
+  },
+  {
+   "team": "Malaysia Women",
+   "runs": 116,
+   "wickets": 4,
+   "overs": "18.2",
+   "batting": [
+    {
+     "name": "Ainna Hamizah Hashim",
+     "dismissal": "c M Zhu b W Huiying",
+     "runs": 11,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Nur Aliya Hairun",
+     "dismissal": "c C Yuzhi b W Huiying",
+     "runs": 5,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mahirah Izzati Ismail",
+     "dismissal": "b jiaping LI",
+     "runs": 24,
+     "balls": 35,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mas Elysa",
+     "dismissal": "not out",
+     "runs": 61,
+     "balls": 52,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Nurin Imanina",
+     "dismissal": "runout (Hong Yali / G Yuting)",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aina Najwa",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Wang Chunjing",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Wang Huiying",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "jiaping LI",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Mingyue Zhu",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Gong Yuting",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Zhao Yihan",
+     "overs": "2.2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ainna Hamizah Hashim",
+     "score": 11,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nur Aliya Hairun",
+     "score": 20,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Mahirah Izzati Ismail",
+     "score": 89,
+     "over": "14.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nurin Imanina",
+     "score": 115,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 1,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Malaysia Women won",
+ "winner": "Malaysia Women"
+}

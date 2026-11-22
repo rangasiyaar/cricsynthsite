@@ -1,0 +1,112 @@
+{
+  "id": "maha-v-tri-t20-chandigarh-2026-11-24",
+  "title": "Maharashtra v Tripura",
+  "date": "2026-11-24",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 87th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Chandigarh",
+  "venue_search": "maharaja yadavindra singh international cricket stadium",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Maharashtra",
+      "short": "MAHA",
+      "players": [
+        "Prithvi Shaw",
+        "Sahil Parakh",
+        "Ruturaj Gaikwad",
+        "Arshin Kulkarni",
+        "Rushikesh Sonavne",
+        "Siddhesh Veer",
+        "Ramakrishna Ghosh",
+        "Hitesh Walunj",
+        "Prashant Solanki",
+        "Mukesh Choudhary",
+        "Vivek Shelar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ruturaj Gaikwad",
+      "squad": [
+        "Prithvi Shaw",
+        "Sahil Parakh",
+        "Ruturaj Gaikwad",
+        "Arshin Kulkarni",
+        "Rushikesh Sonavne",
+        "Siddhesh Veer",
+        "Ramakrishna Ghosh",
+        "Hitesh Walunj",
+        "Prashant Solanki",
+        "Mukesh Choudhary",
+        "Vivek Shelar"
+      ]
+    },
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Mandeep Singh",
+        "Arkaprabha Sinha",
+        "Sridam Paul",
+        "Lakshay Thareja",
+        "Anandh Bhowmik",
+        "Manisankar  Murasingh",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Chiranjit Paul",
+        "Sandip Sarkar",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Manisankar  Murasingh",
+      "squad": [
+        "Mandeep Singh",
+        "Arkaprabha Sinha",
+        "Sridam Paul",
+        "Lakshay Thareja",
+        "Anandh Bhowmik",
+        "Manisankar  Murasingh",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Chiranjit Paul",
+        "Sandip Sarkar",
+        "Abhijit Sarkar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41939,
+    "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-tripura-syed-mushtaq-ali-trophy-elite-24th-november-2026-41939",
+    "auto": true,
+    "xis": false
+  }
+}

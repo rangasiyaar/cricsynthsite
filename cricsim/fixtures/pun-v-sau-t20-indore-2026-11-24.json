@@ -1,0 +1,112 @@
+{
+  "id": "pun-v-sau-t20-indore-2026-11-24",
+  "title": "Punjab v Saurashtra",
+  "date": "2026-11-24",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 88th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar cricket stadium",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Sanvir Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Krish Bhagat",
+        "Harpreet Brar",
+        "Kartik Chadha",
+        "Sukhdeep Singh Bajwa",
+        "Umesh Yadav"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Sanvir Singh",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Krish Bhagat",
+        "Harpreet Brar",
+        "Kartik Chadha",
+        "Sukhdeep Singh Bajwa",
+        "Umesh Yadav"
+      ]
+    },
+    {
+      "name": "Saurashtra",
+      "short": "SAU",
+      "players": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Samar Gajjar",
+        "Ruchit Ahir",
+        "Chetan Sakariya",
+        "Siddhant Rana",
+        "Krains Fuletra",
+        "Harvansh Singh Pangalia",
+        "Mohit Ulva"
+      ],
+      "roles": [
+        "BOWL",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Jaydev Unadkat",
+      "squad": [
+        "Jaydev Unadkat",
+        "Vishvaraj Jadeja",
+        "Harvik Desai",
+        "Prerak Mankad",
+        "Samar Gajjar",
+        "Ruchit Ahir",
+        "Chetan Sakariya",
+        "Siddhant Rana",
+        "Krains Fuletra",
+        "Harvansh Singh Pangalia",
+        "Mohit Ulva"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41940,
+    "url": "https://khelnow.com/live-cricket-score/punjab-vs-saurashtra-syed-mushtaq-ali-trophy-elite-24th-november-2026-41940",
+    "auto": true,
+    "xis": false
+  }
+}

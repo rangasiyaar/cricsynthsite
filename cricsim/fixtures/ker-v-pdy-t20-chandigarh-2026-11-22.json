@@ -12,36 +12,36 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Kerala won the toss and bat first.",
   "teams": [
     {
       "name": "Kerala",
       "short": "KER",
       "players": [
         "Rohan  Kunnummal",
-        "Sanju Samson",
-        "Govind  Pai",
+        "Mohammed Azharuddeen",
         "Vishnu Vinod",
-        "Karthik B Nair",
-        "Biju Narayanan",
-        "Sharafuddeen",
+        "Sanju Samson",
         "Abdul Basith",
+        "Salman Nizar",
+        "Karthik B Nair",
+        "Vignesh Puthur",
+        "Sharafuddeen",
         "MD Nidheesh",
-        "KM Asif",
-        "Salman Nizar"
+        "KM Asif"
       ],
       "roles": [
         "BAT",
+        "WK",
+        "BAT",
         "BAT",
         "AR",
-        "WK",
-        "AR",
+        "BAT",
+        "BAT",
         "BOWL",
         "AR",
-        "AR",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Sanju Samson",
       "squad": [
@@ -62,21 +62,22 @@
       "name": "Puducherry",
       "short": "PDY",
       "players": [
-        "Pranay Singh",
+        "Ankit Sharma",
         "Sagar Trivedi",
+        "Prasad Pawar",
         "Shashank Singh",
         "Aman Hakim Khan",
         "Bhanu Anand",
         "Adil Ayub Tunda",
         "S Parameeswaran",
         "Badal Rawat",
-        "Ramamoorthy Ragavan",
-        "Pougajendy Akash",
-        "Ankit Sharma"
+        "Sagar Udeshi",
+        "Pougajendy Akash"
       ],
       "roles": [
         "BOWL",
         "AR",
+        "BAT",
         "AR",
         "AR",
         "WK",
@@ -84,8 +85,7 @@
         "BAT",
         "AR",
         "BAT",
-        "BAT",
-        "BOWL"
+        "BAT"
       ],
       "captain": "Aman Hakim Khan",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41924,
     "url": "https://khelnow.com/live-cricket-score/kerala-vs-puducherry-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41924",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

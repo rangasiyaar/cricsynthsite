@@ -1,0 +1,111 @@
+{
+  "id": "hyd-v-guj-t20-kolkata-2026-11-24",
+  "title": "Hyderabad (India) v Gujarat",
+  "date": "2026-11-24",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 86th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "squad": [
+        "Bhavesh Seth",
+        "Tanmay Agarwal",
+        "Abhirath Reddy",
+        "Aman Rao Perala",
+        "Kodimela Himateja",
+        "Chama Milind",
+        "Tanay Thyagarajan",
+        "Pranav Varma",
+        "Ajay Dev Goud",
+        "Harshith Sai",
+        "Ved Reddy Amisthapuram"
+      ]
+    },
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Aarya Desai",
+        "Urvil Patel",
+        "Umang Kumar",
+        "Hemang Patel",
+        "Khilan Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Vishal Jayswal",
+        "Tejas Patel",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Urvil Patel",
+      "squad": [
+        "Aarya Desai",
+        "Urvil Patel",
+        "Umang Kumar",
+        "Hemang Patel",
+        "Khilan Patel",
+        "Ashutosh Sharma",
+        "Harshal Patel",
+        "Vishal Jayswal",
+        "Tejas Patel",
+        "Ravi Bishnoi",
+        "Arzan Nagwaswalla"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41938,
+    "url": "https://khelnow.com/live-cricket-score/hyderabad-(india)-vs-gujarat-syed-mushtaq-ali-trophy-elite-24th-november-2026-41938",
+    "auto": true,
+    "xis": false
+  }
+}

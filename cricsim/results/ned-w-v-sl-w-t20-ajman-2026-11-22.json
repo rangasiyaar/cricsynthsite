@@ -1,0 +1,323 @@
+{
+ "id": "ned-w-v-sl-w-t20-ajman-2026-11-22",
+ "innings": [
+  {
+   "team": "Netherlands Women",
+   "runs": 57,
+   "wickets": 10,
+   "overs": "17.4",
+   "batting": [
+    {
+     "name": "Phebe Molkenboer",
+     "dismissal": "c H Samarawickrama b NM Meepage",
+     "runs": 7,
+     "balls": 18,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sanya Khurana",
+     "dismissal": "c K Dilhari b SP Sandeepani",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sterre Kalis",
+     "dismissal": "c K Nuthyangana b C Vimukthi",
+     "runs": 26,
+     "balls": 40,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Frederique Overdijk",
+     "dismissal": "lbw b NM Meepage",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Carlijn van Koolwijk",
+     "dismissal": "c & b K Dilhari",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Robine Rijke",
+     "dismissal": "lbw b K Dilhari",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Iris Zwilling",
+     "dismissal": "runout (K Nuthyangana / SP Sandeepani)",
+     "runs": 14,
+     "balls": 22,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rosalie Lawrence",
+     "dismissal": "runout (K Nuthyangana / SMS Kumari)",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Myrthe van den Raad",
+     "dismissal": "runout (K Nuthyangana / K Dilhari)",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Silver Siegers",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Caroline de Lange",
+     "dismissal": "runout (K Nuthyangana / H Samarawickrama)",
+     "runs": 0,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sathya Sandeepani",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chethana Vimukthi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Nimasha Madushani Meepage",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kavisha Dilhari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 8,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sugandika Kumari",
+     "overs": "2.4",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sanya Khurana",
+     "score": 1,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Phebe Molkenboer",
+     "score": 21,
+     "over": "5.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Frederique Overdijk",
+     "score": 21,
+     "over": "5.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Carlijn van Koolwijk",
+     "score": 24,
+     "over": "6.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Robine Rijke",
+     "score": 30,
+     "over": "8.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sterre Kalis",
+     "score": 49,
+     "over": "13.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Rosalie Lawrence",
+     "score": 49,
+     "over": "13.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Iris Zwilling",
+     "score": 55,
+     "over": "15.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Myrthe van den Raad",
+     "score": 55,
+     "over": "15.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Caroline de Lange",
+     "score": 57,
+     "over": "17.4"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 0,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 22
+  },
+  {
+   "team": "Sri Lanka Women",
+   "runs": 58,
+   "wickets": 1,
+   "overs": "7.2",
+   "batting": [
+    {
+     "name": "Vishmi Rajapaksha Gunaratne",
+     "dismissal": "not out",
+     "runs": 29,
+     "balls": 23,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Imesha Dulani",
+     "dismissal": "c R Lawrence b I Zwilling",
+     "runs": 6,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harshitha Samarawickrama",
+     "dismissal": "not out",
+     "runs": 21,
+     "balls": 14,
+     "fours": 3,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Iris Zwilling",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sanya Khurana",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Frederique Overdijk",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Robine Rijke",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Caroline de Lange",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Silver Siegers",
+     "overs": "0.2",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Imesha Dulani",
+     "score": 13,
+     "over": "2.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Sri Lanka Women won",
+ "winner": "Sri Lanka Women"
+}

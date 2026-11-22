@@ -12,32 +12,32 @@
   "city": "Indore",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Haryana won the toss and bowl first.",
   "teams": [
     {
       "name": "Delhi",
       "short": "DEL",
       "players": [
         "Priyansh Arya",
-        "Sarthak Ranjan",
-        "Tejasvi Dahiya",
-        "Himmat Singh",
         "Yash Dhull",
         "Nitish Rana",
-        "Keshav Dabas",
+        "Anuj Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Mayank Yadav",
+        "Ishant Sharma",
         "Digvesh Singh Rathi",
-        "Simarjeet Singh",
         "Suyash Sharma",
         "Rajneesh Dadar"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "AR",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -63,21 +63,21 @@
       "short": "HAR",
       "players": [
         "Ankit Kumar",
+        "Yuvraj Singh",
         "Yashvardhan Dalal",
-        "Arsh Ranga",
         "Nishant Sindhu",
         "Dinesh Bana",
         "Rahul Tewatia",
         "Sumit Kumar",
         "Samant Jakhar",
         "Kanishk Chouhan",
-        "Himanshu Kumar",
+        "Anuj Thakral",
         "Yuzvendra Chahal"
       ],
       "roles": [
         "BAT",
-        "WK",
         "BAT",
+        "WK",
         "AR",
         "BAT",
         "AR",
@@ -107,6 +107,7 @@
     "kn": 41923,
     "url": "https://khelnow.com/live-cricket-score/delhi-vs-haryana-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41923",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
