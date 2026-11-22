@@ -12,26 +12,25 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Andhra won the toss and bowl first.",
   "teams": [
     {
       "name": "Assam",
       "short": "ASM",
       "players": [
-        "Ayush Agarwal",
-        "Bishal Saha",
         "Denish Das",
-        "Rohit Mihir Sen",
+        "Bishal Saha",
+        "Nihar Deka",
         "Roshan Alam",
         "Sibsankar Roy",
         "Saahil Jain",
         "Akash Sengupta",
         "Mukhtar Hussain",
         "Jitumoni Kalita",
-        "Mrinmoy Dutta"
+        "Mrinmoy Dutta",
+        "Ayush Agarwal"
       ],
       "roles": [
-        "WK",
         "BAT",
         "BAT",
         "BAT",
@@ -41,7 +40,8 @@
         "AR",
         "AR",
         "AR",
-        "BOWL"
+        "BOWL",
+        "WK"
       ],
       "captain": "Denish Das",
       "squad": [
@@ -64,14 +64,14 @@
       "players": [
         "Maramreddy Hemanth Reddy",
         "Shaik Rasheed",
-        "Seeram Rahul",
+        "KP Sai Rahul",
         "Ricky Bhui",
         "Ashwin Hebbar",
         "SDNV Prasad",
         "KV Sasikanth",
-        "Satyanarayana Raju",
         "KS Narasimha Raju",
         "Bailapudi Yeswanth",
+        "Satyanarayana Raju",
         "Saurabh Kumar"
       ],
       "roles": [
@@ -82,8 +82,8 @@
         "BAT",
         "WK",
         "BOWL",
-        "BOWL",
         "BAT",
+        "BOWL",
         "BOWL",
         "AR"
       ],
@@ -107,6 +107,7 @@
     "kn": 41929,
     "url": "https://khelnow.com/live-cricket-score/assam-vs-andhra-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41929",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

@@ -12,7 +12,7 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Goa won the toss and bowl first.",
   "teams": [
     {
       "name": "Goa",
@@ -31,13 +31,13 @@
         "Shubham Tari"
       ],
       "roles": [
-        "BAT",
+        "AR",
         "AR",
         "WK",
+        "AR",
+        "AR",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -69,9 +69,9 @@
         "Kartik Biswal",
         "Ninad Rathva",
         "Soumya Lenka",
-        "Aasirwad Swain",
+        "Sourav Gouda",
         "Vageesh Sharma",
-        "Debabrata Pradhan",
+        "Lalit Yadav",
         "Badal Biswal"
       ],
       "roles": [
@@ -84,7 +84,7 @@
         "BOWL",
         "WK",
         "BAT",
-        "AR",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Swastik Samal",
@@ -107,6 +107,7 @@
     "kn": 41930,
     "url": "https://khelnow.com/live-cricket-score/goa-vs-odisha-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41930",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

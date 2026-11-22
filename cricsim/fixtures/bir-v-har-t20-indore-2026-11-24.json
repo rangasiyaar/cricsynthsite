@@ -1,0 +1,112 @@
+{
+  "id": "bir-v-har-t20-indore-2026-11-24",
+  "title": "Bihar v Haryana",
+  "date": "2026-11-24",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 94th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar cricket stadium",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Bihar",
+      "short": "BIR",
+      "players": [
+        "Bipin Saurav",
+        "Ayush Loharuka",
+        "Nawaz Khan",
+        "Prashant Singh",
+        "Tarun Kumar",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Suraj Kashyap",
+        "Amod Yadav",
+        "Mayank Kumar",
+        "Ashish Kumar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Suraj Kashyap",
+      "squad": [
+        "Bipin Saurav",
+        "Ayush Loharuka",
+        "Nawaz Khan",
+        "Prashant Singh",
+        "Tarun Kumar",
+        "Altamish Ashraf",
+        "Prithvi Raj",
+        "Suraj Kashyap",
+        "Amod Yadav",
+        "Mayank Kumar",
+        "Ashish Kumar"
+      ]
+    },
+    {
+      "name": "Haryana",
+      "short": "HAR",
+      "players": [
+        "Ankit Kumar",
+        "Yuvraj Singh",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Anuj Thakral",
+        "Yuzvendra Chahal"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Ankit Kumar",
+      "squad": [
+        "Ankit Kumar",
+        "Yuvraj Singh",
+        "Yashvardhan Dalal",
+        "Nishant Sindhu",
+        "Dinesh Bana",
+        "Rahul Tewatia",
+        "Sumit Kumar",
+        "Samant Jakhar",
+        "Kanishk Chouhan",
+        "Anuj Thakral",
+        "Yuzvendra Chahal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41946,
+    "url": "https://khelnow.com/live-cricket-score/bihar-vs-haryana-syed-mushtaq-ali-trophy-elite-24th-november-2026-41946",
+    "auto": true,
+    "xis": false
+  }
+}

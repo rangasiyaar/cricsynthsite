@@ -1,0 +1,112 @@
+{
+  "id": "odi-v-mum-t20-kolkata-2026-11-24",
+  "title": "Odisha v Mumbai",
+  "date": "2026-11-24",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 96th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Odisha",
+      "short": "ODI",
+      "players": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Sourav Gouda",
+        "Vageesh Sharma",
+        "Lalit Yadav",
+        "Badal Biswal"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Swastik Samal",
+      "squad": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Sourav Gouda",
+        "Vageesh Sharma",
+        "Lalit Yadav",
+        "Badal Biswal"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Tushar Deshpande",
+        "Shivam Dube",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Tushar Deshpande",
+        "Shivam Dube",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41948,
+    "url": "https://khelnow.com/live-cricket-score/odisha-vs-mumbai-syed-mushtaq-ali-trophy-elite-24th-november-2026-41948",
+    "auto": true,
+    "xis": false
+  }
+}
