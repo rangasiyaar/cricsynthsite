@@ -12,35 +12,35 @@
   "city": "Kuala Lumpur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Malaysia Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Malaysia Women",
       "short": "MAL-W",
       "players": [
-        "Ainna Hamizah Hashim",
+        "Aina Najwa",
         "Nur Aliya Hairun",
         "Winifred Duraisingam",
-        "Mahirah Izzati Ismail",
         "Mas Elysa",
-        "Aina Umaira Binti Amin",
-        "Aina Najwa",
+        "Mahirah Izzati Ismail",
+        "Ainna Hamizah Hashim",
+        "Nurin Imanina",
         "Aisya Eleesa",
         "Nur Arianna Natsya",
-        "Nurin Imanina",
-        "Suabika Manivannan"
+        "Aina Umaira Binti Amin",
+        "Nur Dania Syuhada"
       ],
       "roles": [
-        "AR",
-        "BAT",
-        "BAT",
-        "AR",
-        "BAT",
-        "BOWL",
         "WK",
-        "BOWL",
-        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Mas Elysa",
@@ -62,30 +62,30 @@
       "name": "China Women",
       "short": "CHN-W",
       "players": [
+        "Wei Haiting",
+        "Hong Yali",
+        "Mingyue Zhu",
+        "jiaping LI",
         "Cai Yuzhi",
         "Gong Yuting",
-        "Hong Yali",
-        "jiaping LI",
-        "Lyu Yihan",
         "Wang Huiying",
-        "Wei Haiting",
+        "Wang Chunjing",
+        "Lyu Yihan",
         "Zhao Yihan",
-        "Wang Kaizhen",
-        "Mingyue Zhu",
-        "Wang Chunjing"
+        "Wang Kaizhen"
       ],
       "roles": [
-        "BOWL",
         "BAT",
         "WK",
-        "AR",
-        "AR",
-        "AR",
+        "BAT",
         "BAT",
         "AR",
-        "BOWL",
         "AR",
-        "AR"
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
       ],
       "captain": "Mingyue Zhu",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41983,
     "url": "https://khelnow.com/live-cricket-score/malaysia-women-vs-china-women-malaysia-women's-t20i-tri-series-22nd-november-2026-41983",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
