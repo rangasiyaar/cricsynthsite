@@ -1,0 +1,145 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- CricSynthesis brand poster in the style of an open-world game cover: a tilted collage of cinematic scenes (the
+     "cast" of a match night), a sunset/neon palette and heavy italic type. No features, no numbers; no game names,
+     logos or typefaces; no real players or team marks. 1080x1350 (4:5). -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700;800&family=Barlow+Condensed:ital,wght@0,600;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{--sl:#94bce3;--paper:#f2f2f3;--pink:#ff4f8b;--sun:#ffb347}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;height:1350px;background:#0a1018;overflow:hidden;font-family:Barlow,sans-serif;color:var(--paper);position:relative}
+.grid{position:absolute;left:-14px;right:-50px;top:-36px;height:900px;transform:rotate(-4deg);display:grid;
+  grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:1.1fr 1fr;gap:16px;padding:16px;background:#0a1018}
+.pn{position:relative;overflow:hidden;border:7px solid #f4f1ea;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.pn svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.p1{grid-row:1 / span 2}
+.cap{position:absolute;left:16px;bottom:14px;font:italic 900 34px/.95 'Barlow Condensed';text-transform:uppercase;
+  text-shadow:0 3px 0 rgba(0,0,0,.6),0 0 22px rgba(0,0,0,.45)}
+.cap.r{left:auto;right:16px;text-align:right}
+.cap.t{bottom:auto;top:16px}
+.title{position:absolute;left:0;right:0;bottom:0;height:500px;background:linear-gradient(180deg,rgba(10,16,24,0) 0%,#0a1018 20%)}
+.h{position:absolute;top:118px;left:60px;right:40px;font:italic 900 90px/.92 'Barlow Condensed';text-transform:uppercase;white-space:nowrap}
+.h span{background:linear-gradient(92deg,var(--pink) 0%,var(--sun) 60%,#ffd27a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.foot{position:absolute;left:64px;right:64px;bottom:50px;display:flex;align-items:flex-end;justify-content:space-between}
+.lockup{display:flex;align-items:center;gap:12px}
+.lockup svg{width:40px;height:40px;color:var(--sl)}
+.lockup .w{font:600 34px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase}
+.lockup .w b{font-weight:600;color:var(--sl)}
+.lockup .t{font:500 12.5px Barlow;letter-spacing:.12em;color:#8ea6bd;margin-top:5px;text-transform:uppercase}
+.url{font:italic 900 30px 'Barlow Condensed';letter-spacing:.05em;text-transform:uppercase;color:var(--sun)}
+.season{position:absolute;top:84px;left:64px;font:800 15px Barlow;letter-spacing:.3em;color:#8ea6bd}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="mark" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M4 15L13 24L4 33" stroke-linecap="square"/><path d="M22 15V40M30 15V40M38 15V40M20 11H29M31 11H40"/></g></symbol>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1747"/><stop offset=".42" stop-color="#c8396f"/><stop offset=".7" stop-color="#ff8a4c"/><stop offset="1" stop-color="#ffcf73"/></linearGradient>
+  <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1a2c"/><stop offset=".7" stop-color="#1d3a5a"/><stop offset="1" stop-color="#3f6d96"/></linearGradient>
+  <linearGradient id="hot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4f8b"/><stop offset="1" stop-color="#ffb347"/></linearGradient>
+  <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e3b4f"/><stop offset="1" stop-color="#1f8a8a"/></linearGradient>
+  <linearGradient id="tunnel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c8"/><stop offset=".6" stop-color="#ffc77a"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient>
+  <linearGradient id="city" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0f33"/><stop offset=".6" stop-color="#4a1d4f"/><stop offset="1" stop-color="#b8456a"/></linearGradient>
+  <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6d8"/><stop offset=".35" stop-color="#ffe2a0" stop-opacity=".7"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+  <radialGradient id="phone" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#bfe3ff" stop-opacity=".9"/><stop offset="1" stop-color="#94bce3" stop-opacity="0"/></radialGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9" stop-opacity=".55"/><stop offset="1" stop-color="#fff3c9" stop-opacity="0"/></linearGradient>
+</defs></svg>
+
+<div class="grid">
+  <!-- THE CHASE: the ground at dusk, floodlights on, a ball heading for the stands -->
+  <div class="pn p1">
+    <svg viewBox="0 0 400 640" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="640" fill="url(#dusk)"/>
+      <circle cx="200" cy="330" r="70" fill="#ffd27a" opacity=".85"/><circle cx="200" cy="330" r="112" fill="#ffd27a" opacity=".16"/>
+      <g fill="#140c22"><path d="M58 140h44v26H58z"/><path d="M76 166h8l10 300H66z"/><path d="M298 120h44v26h-44z"/><path d="M316 146h8l10 320h-28z"/></g>
+      <g fill="#fff8de"><rect x="61" y="143" width="38" height="20" rx="2"/><rect x="301" y="123" width="38" height="20" rx="2"/></g>
+      <circle cx="80" cy="153" r="60" fill="url(#glow)"/><circle cx="320" cy="133" r="60" fill="url(#glow)"/>
+      <path d="M62 163 L-40 520 L160 520 L98 163Z" fill="url(#beam)" opacity=".7"/><path d="M302 143 L240 520 L440 520 L338 143Z" fill="url(#beam)" opacity=".7"/>
+      <path d="M0 430 Q200 360 400 430 V640 H0Z" fill="#1a1030"/>
+      <path d="M0 455 Q200 392 400 455" stroke="#ff7aa8" stroke-opacity=".5" stroke-width="2" fill="none"/>
+      <g fill="#ffd9a6" opacity=".6"><circle cx="40" cy="452" r="1.6"/><circle cx="70" cy="444" r="1.6"/><circle cx="110" cy="433" r="1.6"/><circle cx="150" cy="425" r="1.6"/><circle cx="190" cy="421" r="1.6"/><circle cx="230" cy="422" r="1.6"/><circle cx="270" cy="427" r="1.6"/><circle cx="310" cy="436" r="1.6"/><circle cx="350" cy="447" r="1.6"/><circle cx="380" cy="456" r="1.6"/></g>
+      <ellipse cx="200" cy="610" rx="320" ry="140" fill="#1f5a4a"/>
+      <ellipse cx="200" cy="610" rx="320" ry="140" fill="none" stroke="#9fe0c6" stroke-opacity=".35" stroke-width="2"/>
+      <path d="M182 520 L218 520 L234 640 L166 640Z" fill="#c9a86b"/>
+      <g stroke="#f4f1ea" stroke-width="3"><path d="M194 512v18M200 512v18M206 512v18"/><path d="M192 510h7M201 510h7" stroke-width="2"/></g>
+      <path d="M140 500 Q240 300 330 230" stroke="#fff3c9" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" fill="none" opacity=".8"/>
+      <circle cx="330" cy="230" r="6" fill="#fff3c9"/><circle cx="330" cy="230" r="14" fill="#fff3c9" opacity=".25"/>
+    </svg>
+    <div class="cap t" style="left:40px;top:46px;font-size:58px">The<br>Chase</div>
+  </div>
+
+  <!-- THE WALK OUT: a lone batter in the tunnel light -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="#120a1c"/>
+      <path d="M70 300V120a80 80 0 0 1 160 0v180Z" fill="url(#tunnel)"/>
+      <path d="M70 300V120a80 80 0 0 1 160 0v180" fill="none" stroke="#2a1530" stroke-width="10"/>
+      <path d="M90 300 L130 210 L170 210 L210 300Z" fill="#ffb15e" opacity=".5"/>
+      <g fill="#120a1c">
+        <circle cx="150" cy="186" r="11"/><path d="M139 184h22v5h-22z"/>
+        <path d="M138 198h24l4 40h-32z"/>
+        <path d="M136 238h12l-2 44h-10zM152 238h12l2 44h-10z"/>
+        <path d="M163 206l7 -2 12 66-7 2z"/><path d="M160 200l6 8-4 3-5-8z"/>
+      </g>
+      <ellipse cx="150" cy="286" rx="34" ry="5" fill="#120a1c" opacity=".5"/>
+    </svg>
+    <div class="cap r">The Walk Out</div>
+  </div>
+
+  <!-- THE CALL: a coin in the night air -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#night)"/>
+      <circle cx="150" cy="130" r="92" fill="#94bce3" opacity=".12"/>
+      <g transform="translate(150 132) rotate(-18)">
+        <ellipse rx="66" ry="30" fill="#9a5a2c" transform="translate(0 9)"/><rect x="-66" y="0" width="132" height="9" fill="#9a5a2c"/>
+        <ellipse rx="66" ry="30" fill="url(#hot)"/>
+        <ellipse rx="54" ry="23" fill="none" stroke="#fff3d6" stroke-opacity=".75" stroke-width="2.5"/>
+        <g transform="scale(1 .45) translate(-17 -18)" color="#7a2e1a"><use href="#mark" width="36" height="36"/></g>
+      </g>
+      <g stroke="#94bce3" stroke-opacity=".45" stroke-width="2" fill="none"><path d="M70 230 Q150 190 230 230"/><path d="M95 255 Q150 225 205 255"/></g>
+    </svg>
+    <div class="cap">The Call</div>
+  </div>
+
+  <!-- THE YORKER: stumps flying -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#teal)"/>
+      <circle cx="150" cy="160" r="120" fill="#ffb347" opacity=".14"/>
+      <g fill="#f4f1ea" transform="translate(0 22)">
+        <rect x="112" y="120" width="12" height="150" rx="3" transform="rotate(-14 118 270)"/><rect x="144" y="112" width="12" height="160" rx="3"/>
+        <rect x="176" y="120" width="12" height="150" rx="3" transform="rotate(16 182 270)"/>
+        <rect x="96" y="70" width="34" height="9" rx="4" transform="rotate(-38 113 74)"/><rect x="172" y="58" width="34" height="9" rx="4" transform="rotate(28 189 62)"/>
+      </g>
+      <g stroke="#ffd27a" stroke-width="3" stroke-linecap="round" transform="translate(0 22)"><path d="M150 82v-26M118 92l-14-18M182 92l14-18"/></g>
+      <circle cx="146" cy="290" r="9" fill="#8d1b22"/>
+    </svg>
+    <div class="cap r t">The Yorker</div>
+  </div>
+
+  <!-- THE FAN WHO SAW IT COMING: a rooftop, the city, the stadium glow, a phone -->
+  <div class="pn">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="300" height="300" fill="url(#city)"/>
+      <ellipse cx="225" cy="150" rx="70" ry="30" fill="#ffd27a" opacity=".35"/><ellipse cx="225" cy="150" rx="34" ry="12" fill="#fff0c4" opacity=".7"/>
+      <g fill="#140b24">
+        <path d="M0 170h30v-30h22v40h18v-60h26v60h14v-22h24v40H0z"/>
+        <path d="M150 198h20v-46h28v30h16v-18h24v34h22v-26h40v26H150z"/>
+      </g>
+      <g fill="#ffd9a6" opacity=".55"><rect x="78" y="128" width="4" height="4"/><rect x="86" y="140" width="4" height="4"/><rect x="36" y="150" width="4" height="4"/><rect x="180" y="164" width="4" height="4"/><rect x="250" y="176" width="4" height="4"/></g>
+      <rect y="232" width="300" height="68" fill="#0d0718"/>
+      <g fill="#0d0718" transform="translate(-50 -96) scale(1.4)"><circle cx="118" cy="190" r="12"/><path d="M104 204h28l6 30h-40z"/><path d="M100 230h20v14h-20zM118 230h22l12 30h-12l-8-16h-14z"/></g>
+      <circle cx="138" cy="192" r="34" fill="url(#phone)"/>
+      <rect x="132" y="184" width="12" height="19" rx="2.5" fill="#e3f2ff"/>
+    </svg>
+    <div class="cap" style="font-size:28px">The Fan Who<br>Saw It Coming</div>
+  </div>
+</div>
+
+<div class="title">
+  <div class="season">A NIGHT AT THE CRICKET</div>
+  <div class="h">Nobody knows how it ends.<br><span>We just get there first.</span></div>
+  <div class="foot">
+    <div class="lockup"><svg><use href="#mark"/></svg><div><div class="w">Cric<b>Synthesis</b></div><div class="t">AI-Powered Cricket Intelligence</div></div></div>
+    <div class="url">cricsynthesis.in</div>
+  </div>
+</div>
+</body></html>
