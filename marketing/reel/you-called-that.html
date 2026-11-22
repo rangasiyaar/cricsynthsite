@@ -1,0 +1,193 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- "You called that?" (15 s, 1080x1920): the picture under you-called-that-overlay.html. Silhouette style, as in
+     "A Night at the Cricket". 0-3 s the phone on the coffee table, 3-7.4 s the friends and the unseen match on the TV,
+     7.4-10.4 s a hand picks up the phone, 10.4-12.5 s the phone in hand, then the end card (drawn by the overlay).
+     window.seek(t) draws time t. -->
+<style>
+html,body{margin:0;width:1080px;height:1920px;background:#05070c;overflow:hidden}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.cam{position:absolute;inset:0;transform-origin:50% 50%}
+svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.grain{position:absolute;inset:-50%;pointer-events:none;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.9'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 50% 45%,transparent 45%,rgba(0,0,0,.65) 100%)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1a12"/><stop offset="1" stop-color="#120a07"/></linearGradient>
+  <pattern id="grainw" width="400" height="60" patternUnits="userSpaceOnUse">
+    <path d="M0 12 C100 6 200 18 400 10 M0 34 C120 40 260 26 400 36 M0 52 C150 48 250 58 400 50" stroke="#3b261a" stroke-width="2" fill="none" opacity=".55"/></pattern>
+  <radialGradient id="scrglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#d9ecff" stop-opacity=".55"/><stop offset="1" stop-color="#94bce3" stop-opacity="0"/></radialGradient>
+  <radialGradient id="tvglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7fb4ff" stop-opacity=".75"/><stop offset=".5" stop-color="#3d6db8" stop-opacity=".25"/><stop offset="1" stop-color="#1c2f55" stop-opacity="0"/></radialGradient>
+  <linearGradient id="field" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1a33"/><stop offset=".42" stop-color="#1b3a66"/><stop offset=".43" stop-color="#1f6a3a"/><stop offset="1" stop-color="#0f3d22"/></linearGradient>
+  <radialGradient id="lamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe7b8"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+  <linearGradient id="mugg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1c1714"/><stop offset=".6" stop-color="#3a2f28"/><stop offset="1" stop-color="#151110"/></linearGradient>
+</defs></svg>
+
+<!-- 1: the phone on the coffee table -->
+<div class="scene" id="s1"><div class="cam" id="c1"><svg class="bg" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="url(#wood)"/><rect width="1080" height="1920" fill="url(#grainw)"/>
+  <rect id="s1tv" width="1080" height="1920" fill="#4f7fd6" opacity=".10"/>
+  <g transform="translate(250 360)" opacity=".55"><ellipse cx="0" cy="210" rx="150" ry="40" fill="#000" opacity=".45"/>
+    <rect x="-120" y="0" width="240" height="210" rx="26" fill="url(#mugg)"/><path d="M120 50 q80 0 80 70 q0 70 -80 70" stroke="#2c241f" stroke-width="26" fill="none"/>
+    <ellipse cx="0" cy="0" rx="120" ry="30" fill="#0e0b09"/></g>
+  <g id="phone1" transform="translate(540 1060) rotate(-8)">
+    <ellipse cx="18" cy="30" rx="300" ry="560" fill="#000" opacity=".5" filter="blur(6px)"/>
+    <rect x="-250" y="-520" width="500" height="1040" rx="70" fill="#0b0d10" stroke="#2b3036" stroke-width="6"/>
+    <rect id="scr1" x="-226" y="-496" width="452" height="992" rx="50" fill="#0d1a2a"/>
+    <rect x="-60" y="-482" width="120" height="26" rx="13" fill="#05070a"/>
+  </g>
+  <ellipse id="glow1" cx="540" cy="1060" rx="520" ry="760" fill="url(#scrglow)" opacity="0"/>
+</svg></div><div class="grain"></div><div class="vig"></div></div>
+
+<!-- 2: the friends and the match on the TV -->
+<div class="scene" id="s2"><div class="cam" id="c2"><svg class="bg" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#070b14"/>
+  <ellipse id="tvwash" cx="540" cy="760" rx="900" ry="900" fill="url(#tvglow)" opacity=".6"/>
+  <!-- the TV: a stadium under lights, far away (no teams, no logos) -->
+  <g transform="translate(540 760)">
+    <rect x="-330" y="-200" width="660" height="390" rx="14" fill="#020305" stroke="#1a1f2a" stroke-width="10"/>
+    <svg x="-318" y="-188" width="636" height="366" viewBox="0 0 636 366">
+      <rect width="636" height="366" fill="url(#field)"/>
+      <ellipse cx="318" cy="250" rx="300" ry="110" fill="#1c7a42" opacity=".6"/>
+      <rect x="300" y="180" width="36" height="140" fill="#c9b07a" opacity=".85"/>
+      <g fill="url(#lamp)"><circle cx="70" cy="60" r="46"/><circle cx="566" cy="60" r="46"/></g>
+      <g id="crowdtv" fill="#0a1426"></g>
+      <rect id="tvflash" width="636" height="366" fill="#fff" opacity="0"/>
+    </svg>
+    <rect x="-40" y="190" width="80" height="60" fill="#05070b"/><rect x="-140" y="246" width="280" height="14" rx="7" fill="#05070b"/>
+  </g>
+  <!-- the sofa and three friends, from behind -->
+  <g id="friends" fill="#020306">
+    <g id="p1" transform="translate(300 1330)"><g transform="scale(0.95)"><circle cx="0" cy="-175" r="62"/><rect x="-26" y="-125" width="52" height="40"/><path d="M-130 170 L-130 -20 Q-128 -92 -50 -98 L50 -98 Q128 -92 130 -20 L130 170Z"/><path id="a1" d="M-110 -50 L-150 90 L-112 104 L-74 -30Z"/><circle id="h1" cx="-131" cy="97" r="0"/></g></g><g id="p2" transform="translate(560 1310)"><g transform="scale(1.0)"><circle cx="0" cy="-175" r="62"/><rect x="-26" y="-125" width="52" height="40"/><path d="M-130 170 L-130 -20 Q-128 -92 -50 -98 L50 -98 Q128 -92 130 -20 L130 170Z"/><path id="a2" d="M110 -50 L150 90 L112 104 L74 -30Z"/><circle id="h2" cx="131" cy="97" r="0"/></g></g><g id="p3" transform="translate(810 1340)"><g transform="scale(0.9)"><circle cx="0" cy="-175" r="62"/><rect x="-26" y="-125" width="52" height="40"/><path d="M-130 170 L-130 -20 Q-128 -92 -50 -98 L50 -98 Q128 -92 130 -20 L130 170Z"/></g></g>
+    <path d="M60 1420 Q60 1340 160 1340 L920 1340 Q1020 1340 1020 1420 L1020 1920 L60 1920Z" fill="#05070b"/>
+    <path d="M100 1460 L980 1460" stroke="#111722" stroke-width="6"/>
+  </g>
+  <g id="sparks" stroke="#ffd27a" stroke-width="5" stroke-linecap="round" opacity="0"></g>
+</svg></div><div class="grain"></div><div class="vig"></div><div class="flash" id="f2"></div></div>
+
+<!-- 3: a hand picks up the phone -->
+<div class="scene" id="s3"><div class="cam" id="c3"><svg class="bg" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="url(#wood)"/><rect width="1080" height="1920" fill="url(#grainw)"/>
+  <rect id="s3tv" width="1080" height="1920" fill="#4f7fd6" opacity=".12"/>
+  <g id="phone3" transform="translate(540 1150) rotate(-8)">
+    <ellipse id="sh3" cx="18" cy="30" rx="300" ry="560" fill="#000" opacity=".5" filter="blur(6px)"/>
+    <rect x="-250" y="-520" width="500" height="1040" rx="70" fill="#0b0d10" stroke="#2b3036" stroke-width="6"/>
+    <rect x="-226" y="-496" width="452" height="992" rx="50" fill="#16324f"/>
+    <rect x="-60" y="-482" width="120" height="26" rx="13" fill="#05070a"/>
+  </g>
+  <ellipse id="glow3" cx="540" cy="1150" rx="560" ry="800" fill="url(#scrglow)" opacity=".7"/>
+  <!-- the hand (simple silhouette) -->
+  <g id="hand" fill="#0a0706">
+    <path d="M1330 2060 L990 1580 Q965 1530 1010 1500 L1100 1450 Q1150 1430 1175 1485 L1440 1920Z"/>
+    <g transform="translate(930 1450) rotate(-38) scale(1.3)">
+      <rect x="-120" y="-80" width="240" height="190" rx="85"/>
+      <rect x="-118" y="-250" width="56" height="210" rx="28"/><rect x="-58" y="-275" width="56" height="230" rx="28"/>
+      <rect x="2" y="-265" width="56" height="220" rx="28"/><rect x="62" y="-225" width="52" height="180" rx="26"/>
+      <rect x="-210" y="-40" width="150" height="58" rx="29" transform="rotate(-32 -135 -11)"/>
+    </g>
+  </g>
+</svg></div><div class="grain"></div><div class="vig"></div></div>
+
+<!-- 4: the phone in hand, typing -->
+<div class="scene" id="s4"><div class="cam" id="c4"><svg class="bg" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#06080d"/>
+  <g opacity=".5"><circle cx="160" cy="300" r="90" fill="#3d6db8" opacity=".25"/><circle cx="900" cy="420" r="140" fill="#ffb347" opacity=".12"/>
+    <circle cx="820" cy="210" r="60" fill="#7fb4ff" opacity=".2"/><circle cx="260" cy="620" r="70" fill="#ffb347" opacity=".1"/></g>
+  <rect id="s4tv" width="1080" height="1920" fill="#4f7fd6" opacity=".08"/>
+  <ellipse cx="540" cy="1180" rx="620" ry="760" fill="url(#scrglow)" opacity=".8"/>
+  <g transform="translate(540 1250)">
+    <rect x="-300" y="-620" width="600" height="1240" rx="80" fill="#0b0d10" stroke="#2b3036" stroke-width="6"/>
+    <rect x="-276" y="-596" width="552" height="1192" rx="60" fill="#0f2238"/>
+    <rect x="-276" y="230" width="552" height="366" rx="0" fill="#0a1828"/>
+    <g id="keys" fill="#173350"></g>
+  </g>
+  <g fill="#0a0706">
+    <path d="M-60 1980 L160 1560 Q190 1500 240 1520 L330 1600 Q350 1640 320 1680 L120 2050Z"/>
+    <path d="M1140 1980 L920 1560 Q890 1500 840 1520 L750 1600 Q730 1640 760 1680 L960 2050Z"/>
+    <g id="thumbL"><path d="M300 1640 Q360 1560 430 1560 Q470 1562 468 1592 Q460 1620 420 1630 L330 1700Z"/></g>
+    <g id="thumbR"><path d="M780 1640 Q720 1560 650 1560 Q610 1562 612 1592 Q620 1620 660 1630 L750 1700Z"/></g>
+  </g>
+</svg></div><div class="grain"></div><div class="vig"></div></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => 1 - Math.pow(1 - x, 3);
+const ns = "http://www.w3.org/2000/svg";
+// a pseudo-random but repeatable flicker for the TV light
+const flick = (t) => 0.5 + 0.22 * Math.sin(t * 7.1) + 0.16 * Math.sin(t * 13.7 + 1) + 0.12 * Math.sin(t * 2.3 + 2);
+// the crowd on the TV: rows of tiny heads
+(() => { const g = $('#crowdtv'); for (let r = 0; r < 4; r++) for (let i = 0; i < 40; i++) {
+  const c = document.createElementNS(ns, 'circle'); c.setAttribute('cx', 8 + i * 16 + (r % 2) * 8); c.setAttribute('cy', 108 + r * 14);
+  c.setAttribute('r', 6); c.setAttribute('fill', ['#0a1426', '#14203a', '#1c2a48'][(i * 7 + r) % 3]); g.append(c); } })();
+(() => { const g = $('#keys'); for (let r = 0; r < 4; r++) for (let i = 0; i < 10; i++) {
+  const k = document.createElementNS(ns, 'rect'); k.setAttribute('x', -262 + i * 53); k.setAttribute('y', 252 + r * 82);
+  k.setAttribute('width', 44); k.setAttribute('height', 66); k.setAttribute('rx', 10); g.append(k); } })();
+(() => { const g = $('#sparks'); for (let i = 0; i < 26; i++) {
+  const a = (i / 26) * Math.PI * 2, r1 = 380 + (i % 3) * 30, r2 = r1 + 60 + (i % 4) * 25;
+  const l = document.createElementNS(ns, 'path');
+  l.setAttribute('d', `M${540 + Math.cos(a) * r1} ${760 + Math.sin(a) * r1 * .6} L${540 + Math.cos(a) * r2} ${760 + Math.sin(a) * r2 * .6}`);
+  g.append(l); } })();
+
+const S = { s1: [0, 3.0], s2: [3.0, 7.4], s3: [7.4, 10.4], s4: [10.4, 12.5] };
+const shake = (t, at, amp, dur) => { const k = seg(t, at, at + dur); return k > 0 && k < 1 ? amp * (1 - k) * Math.sin(t * 90) : 0; };
+
+window.seek = (t) => {
+  for (const [id, [a, b]] of Object.entries(S)) {
+    const fadeIn = a === 0 ? 1 : ease(seg(t, a - 0.05, a + 0.05));
+    $('#' + id).style.opacity = (t >= a - 0.05 && t < b + 0.05 ? fadeIn * (1 - ease(seg(t, b - 0.05, b + 0.05))) : 0).toFixed(3);
+  }
+  const tv = flick(t);
+  // 1: push in; the screen lights at 0.25 and again at 1.15, each with a buzz on the wood
+  const k1 = seg(t, 0, 3);
+  $('#c1').style.transform = `scale(${(1 + 0.08 * ease(k1)).toFixed(4)}) translateY(${(-20 * k1).toFixed(1)}px)`;
+  const lit = Math.max(ease(seg(t, 0.25, 0.4)), 0) * (1 - 0.3 * seg(t, 0.9, 1.1)) + 0.3 * ease(seg(t, 1.15, 1.3));
+  $('#glow1').setAttribute('opacity', (0.95 * clamp(lit)).toFixed(3));
+  $('#scr1').setAttribute('fill', lit > 0.1 ? '#1c3b5c' : '#0d1a2a');
+  const bz = shake(t, 0.25, 7, 0.35) + shake(t, 1.15, 7, 0.35);
+  $('#phone1').setAttribute('transform', `translate(${(540 + bz).toFixed(1)} 1060) rotate(-8)`);
+  $('#s1tv').setAttribute('opacity', (0.06 + 0.08 * tv).toFixed(3));
+  // 2: the run-up (slow push toward the TV), the crack (TV flash), the room erupts at 6.95
+  const k2 = seg(t, 3, 7.4);
+  const hit = seg(t, 6.95, 7.25);
+  $('#c2').style.transform = `scale(${(1 + 0.10 * ease(seg(t, 3, 6.5)) + 0.03 * hit).toFixed(4)}) translate(${shake(t, 6.95, 10, 0.5).toFixed(1)}px, ${shake(t, 6.95, 6, 0.5).toFixed(1)}px)`;
+  $('#tvwash').setAttribute('opacity', (0.45 + 0.25 * tv + 0.5 * (1 - seg(t, 6.5, 7.6)) * seg(t, 6.45, 6.55)).toFixed(3));
+  $('#tvflash').setAttribute('opacity', (0.85 * seg(t, 6.48, 6.52) * (1 - seg(t, 6.52, 6.8))).toFixed(3));
+  const jump = ease(hit);
+  const lean = 12 * ease(seg(t, 4.5, 6.4)) * (1 - jump);              // leaning forward during the run-up
+  [['#p1', 300, 1330, -1], ['#p2', 560, 1310, 1], ['#p3', 810, 1340, 1]].forEach(([id, x, y, d], i) => {
+    const bob = jump * (Math.sin((t - 6.95) * 9 + i * 1.7) * 18);
+    $(id).setAttribute('transform', `translate(${x} ${(y + lean - jump * (140 + i * 20) + bob).toFixed(1)}) rotate(${(d * jump * 4).toFixed(2)})`);
+  });
+  // arms: down by the side during the run-up, thrown up with fists when it goes
+  const up = ease(seg(t, 6.95, 7.15));
+  const armL = (u) => `M-110 -50 L${(-150 - 40 * u).toFixed(1)} ${(90 - 380 * u).toFixed(1)} L${(-112 - 30 * u).toFixed(1)} ${(104 - 380 * u).toFixed(1)} L-74 -30Z`;
+  const armR = (u) => `M110 -50 L${(150 + 40 * u).toFixed(1)} ${(90 - 380 * u).toFixed(1)} L${(112 + 30 * u).toFixed(1)} ${(104 - 380 * u).toFixed(1)} L74 -30Z`;
+  $('#a1').setAttribute('d', armL(up)); $('#a2').setAttribute('d', armR(up));
+  $('#h1').setAttribute('r', (30 * up).toFixed(1)); $('#h1').setAttribute('cy', (97 - 380 * up).toFixed(1)); $('#h1').setAttribute('cx', (-131 - 35 * up).toFixed(1));
+  $('#h2').setAttribute('r', (30 * up).toFixed(1)); $('#h2').setAttribute('cy', (97 - 380 * up).toFixed(1)); $('#h2').setAttribute('cx', (131 + 35 * up).toFixed(1));
+  $('#sparks').setAttribute('opacity', (ease(seg(t, 6.95, 7.1)) * (1 - seg(t, 7.1, 7.4))).toFixed(3));
+  $('#sparks').setAttribute('transform', `translate(540 760) scale(${(1 + 0.3 * seg(t, 6.95, 7.4)).toFixed(3)}) translate(-540 -760)`);
+  $('#f2').style.opacity = (0.35 * seg(t, 6.93, 6.97) * (1 - seg(t, 6.97, 7.2))).toFixed(3);
+  // 3: the phone buzzes (7.55), the hand comes in and lifts it toward the camera
+  const reach = ease(seg(t, 7.7, 8.7)), lift = ease(seg(t, 8.6, 10.2));
+  const bz3 = shake(t, 7.55, 8, 0.4);
+  $('#hand').setAttribute('transform', `translate(${(420 * (1 - reach) - 120 * lift).toFixed(1)} ${(380 * (1 - reach) - 260 * lift).toFixed(1)})`);
+  $('#phone3').setAttribute('transform', `translate(${(540 + bz3 - 60 * lift).toFixed(1)} ${(1150 - 220 * lift).toFixed(1)}) rotate(${(-8 + 8 * lift).toFixed(2)}) scale(${(1 + 0.18 * lift).toFixed(3)})`);
+  $('#sh3').setAttribute('opacity', (0.5 * (1 - lift)).toFixed(3));
+  $('#c3').style.transform = `scale(${(1.04 - 0.04 * seg(t, 7.4, 10.4)).toFixed(4)})`;
+  $('#s3tv').setAttribute('opacity', (0.06 + 0.08 * tv).toFixed(3));
+  // 4: thumbs tap while the reply is typed (10.75-12.0)
+  const typing = t > 10.75 && t < 12.0;
+  const tapL = typing && Math.floor(t * 9) % 2 === 0, tapR = typing && Math.floor(t * 9 + 1) % 2 === 0;
+  $('#thumbL').setAttribute('transform', tapL ? 'translate(6 -14)' : '');
+  $('#thumbR').setAttribute('transform', tapR ? 'translate(-6 -14)' : '');
+  $('#c4').style.transform = `scale(${(1 + 0.04 * seg(t, 10.4, 12.5)).toFixed(4)})`;
+  $('#s4tv').setAttribute('opacity', (0.05 + 0.06 * tv).toFixed(3));
+};
+window.seek(0);
+</script>
+</body></html>
