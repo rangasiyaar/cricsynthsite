@@ -1,0 +1,402 @@
+{
+ "id": "ire-w-v-zim-w-t20-ajman-2026-11-22",
+ "innings": [
+  {
+   "team": "Zimbabwe Women",
+   "runs": 120,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Modester Mupachikwa",
+     "dismissal": "c GH Lewis b A Maguire",
+     "runs": 17,
+     "balls": 23,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nyasha Gwanzura",
+     "dismissal": "b K Mccartney",
+     "runs": 38,
+     "balls": 30,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Chipo Mugeri Tiripano",
+     "dismissal": "c & b K Mccartney",
+     "runs": 12,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Beloved Biza",
+     "dismissal": "c & b C Murray",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Josephine Nkomo",
+     "dismissal": "lbw b G Dempsey",
+     "runs": 7,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Chiedza Dhururu",
+     "dismissal": "st A Hunter b C Murray",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Christine Mutasa",
+     "dismissal": "c GH Lewis b K Mccartney",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Michelle Mavunga",
+     "dismissal": "runout (L Little / A Hunter)",
+     "runs": 22,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Nomvelo Sibanda",
+     "dismissal": "runout (A Hunter / GH Lewis)",
+     "runs": 10,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tendai Makusha",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Georgina Dempsey",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Aimee Maguire",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kia Mccartney",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Louise Little",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Cara Murray",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Modester Mupachikwa",
+     "score": 56,
+     "over": "7.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nyasha Gwanzura",
+     "score": 61,
+     "over": "9.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Beloved Biza",
+     "score": 64,
+     "over": "10.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Josephine Nkomo",
+     "score": 79,
+     "over": "13.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Chipo Mugeri Tiripano",
+     "score": 83,
+     "over": "14.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Christine Mutasa",
+     "score": 85,
+     "over": "14.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Chiedza Dhururu",
+     "score": 86,
+     "over": "15.3"
+    },
+    {
+     "wicket": 8,
+     "batter": "Michelle Mavunga",
+     "score": 119,
+     "over": "19.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Nomvelo Sibanda",
+     "score": 120,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 2,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "Ireland Women",
+   "runs": 121,
+   "wickets": 7,
+   "overs": "19.4",
+   "batting": [
+    {
+     "name": "Amy Hunter",
+     "dismissal": "b N Gwanzura",
+     "runs": 52,
+     "balls": 47,
+     "fours": 6,
+     "sixes": 0
+    },
+    {
+     "name": "Gaby Lewis",
+     "dismissal": "c N Gwanzura b C Mutasa",
+     "runs": 1,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lara Maritz",
+     "dismissal": "c B Biza b T Makusha",
+     "runs": 5,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Louise Little",
+     "dismissal": "c N Gwanzura b M Mavunga",
+     "runs": 33,
+     "balls": 30,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Abbi Harrison",
+     "dismissal": "c O Chare b B Biza",
+     "runs": 4,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Delany",
+     "dismissal": "lbw b N Gwanzura",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alana Dalzell",
+     "dismissal": "not out",
+     "runs": 11,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Georgina Dempsey",
+     "dismissal": "b N Gwanzura",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cara Murray",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Nomvelo Sibanda",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Christine Mutasa",
+     "overs": "3.4",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Michelle Mavunga",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tendai Makusha",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Olinder Chare",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 7,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Beloved Biza",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nyasha Gwanzura",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Gaby Lewis",
+     "score": 8,
+     "over": "1.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lara Maritz",
+     "score": 22,
+     "over": "5.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Louise Little",
+     "score": 80,
+     "over": "14.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Abbi Harrison",
+     "score": 95,
+     "over": "15.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Laura Delany",
+     "score": 96,
+     "over": "16.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Amy Hunter",
+     "score": 102,
+     "over": "16.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Georgina Dempsey",
+     "score": 108,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Ireland Women won by 3 wickets",
+ "winner": "Ireland Women"
+}

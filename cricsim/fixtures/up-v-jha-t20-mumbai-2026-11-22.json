@@ -12,7 +12,7 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Jharkhand won the toss and bowl first.",
   "teams": [
     {
       "name": "Uttar Pradesh",
@@ -20,20 +20,19 @@
       "players": [
         "Karan Sharma",
         "Divyansh Joshi",
-        "Adarsh Singh",
         "Sameer Rizvi",
         "Aryan Juyal",
-        "Swastik Chhikara",
+        "Abhishek Goswami",
         "Prashant Veer",
-        "Zeeshan Ansari",
         "Bhuvneshwar Kumar",
-        "Mohsin Khan",
-        "Yash Dayal"
+        "Shivam Mavi",
+        "Yash Dayal",
+        "Adarsh Singh",
+        "Kuldeep Yadav"
       ],
       "roles": [
         "AR",
         "AR",
-        "BAT",
         "BAT",
         "WK",
         "BAT",
@@ -41,6 +40,7 @@
         "BOWL",
         "BOWL",
         "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Karan Sharma",
@@ -107,6 +107,7 @@
     "kn": 41932,
     "url": "https://khelnow.com/live-cricket-score/uttar-pradesh-vs-jharkhand-syed-mushtaq-ali-trophy-elite-22nd-november-2026-41932",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
