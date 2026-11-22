@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { API } from "@/lib/apiref";
+import Turnstile, { resetTurnstile, turnstileToken } from "@/components/Turnstile";
 import { jobPath, type Job } from "@/lib/jobs";
 
 const MAX_MB = 5;
@@ -68,14 +69,14 @@ export default function JobApplication({ job }: { job: Job }) {
       name: v("name"), email: v("email"), phone: `+91 ${formatPhone(phoneDigits(phone))}`, city: v("city"), gender: v("gender"),
       experience: v("experience"), employer: v("employer"), designation: v("designation"), notice: v("notice"),
       qualification: v("qualification"), portfolio, linkedin, tools: fd.getAll("tools").join(", "),
-      heard: v("heard"), notes: v("notes"), website: v("website"),
+      heard: v("heard"), notes: v("notes"), website: v("website"), "cf-turnstile-response": turnstileToken(fd),
       resume: { name: file.name, type: file.type, data: await toBase64(file) },
     };
     try {
       const res = await fetch(`${API}/apply`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       if (!res.ok) {
         const out = await res.json().catch(() => null);
-        setState("idle"); setErr(out?.detail || "Something went wrong. Please check your details and try again."); return;
+        resetTurnstile(); setState("idle"); setErr(out?.detail || "Something went wrong. Please check your details and try again."); return;
       }
       setState("sent");
     } catch {
@@ -174,6 +175,7 @@ export default function JobApplication({ job }: { job: Job }) {
       <label className="apply-consent"><input type="checkbox" name="consent" id="ap-consent" />
         <span>I agree that CricSynthesis may store and review my application for this and future openings, as described in the <Link href="/privacy/">privacy policy</Link>. *</span></label>
 
+      <Turnstile action="apply" />
       {err && <p className="apply-error" role="alert">{err}</p>}
       <div className="apply-foot">
         <button type="submit" className="cs-btn cs-btn--primary" disabled={state === "sending"}><span>{state === "sending" ? "Submitting…" : "Submit application"}</span></button>

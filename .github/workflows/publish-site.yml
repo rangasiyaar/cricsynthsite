@@ -206,6 +206,7 @@ jobs:
           [ -f data/publish/patterns.json ] && gcloud storage cp data/publish/patterns.json "$B/patterns/report.json" || true
 
       - name: Build site
+        env: { NEXT_PUBLIC_TURNSTILE_SITE_KEY: "${{ vars.TURNSTILE_SITE_KEY }}" }   # the forms' bot check (public key)
         run: |
           rm -rf app/public/data && cp -r data/publish app/public/data
           cd app && npm ci && npm test && npx next build

@@ -9,6 +9,7 @@ import * as E from "./emails.ts";
 import { mail } from "./notify.ts";
 import * as C from "./contact.ts";
 import * as F from "./forms.ts";
+import { human, NOT_HUMAN, tokenOf } from "./turnstile.ts";
 import { Firestore } from "./google.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
@@ -17,7 +18,7 @@ export { Usage };
 
 const MAX_BODY = 256 * 1024;
 
-const DEFAULT_CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app,http://localhost:3000";
+const DEFAULT_CORS = "https://cricsynthesis.in,https://cricsynthesis.web.app";
 const ABOUT = {
   name: "CricSynthesis API", version: "1",
   about: "Analytics and projections from ball-by-ball simulation. We don't sell live scores or raw data.",
@@ -156,6 +157,7 @@ async function contact(req: Request, env: Env): Promise<Response> {
   const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
   try {
     const body = await req.json().catch(() => null);
+    if (!(await human(env.TURNSTILE_SECRET, tokenOf(body), req.headers.get("CF-Connecting-IP")))) return fail(req, env, 403, NOT_HUMAN);
     const r = await C.submit({
       add: (f) => fs.addDoc("contactMessages", f),
       count: (field, value) => fs.countWhere("contactMessages", field, value),
@@ -192,6 +194,8 @@ async function form(req: Request, env: Env, path: string): Promise<Response> {
   const meta = { ip: req.headers.get("CF-Connecting-IP"), country: (req as any).cf?.country ?? null, page: req.headers.get("Referer") };
   try {
     const body: any = await req.json().catch(() => null);
+    if ((path === "/api-access" || path === "/apply")
+        && !(await human(env.TURNSTILE_SECRET, tokenOf(body), meta.ip))) return fail(req, env, 403, NOT_HUMAN);
     if (path === "/api-access") return json(req, env, { sent: (await F.apiAccess(deps, body, meta)).sent });
     if (path === "/apply") { const r = await F.apply(deps, body, meta); return json(req, env, { success: r.sent, sent: r.sent }); }
     // signed-in forms

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { API } from "@/lib/apiref";
 import { auth } from "@/lib/firebase";
+import Turnstile, { resetTurnstile } from "@/components/Turnstile";
 
 export const TOPICS = ["General question", "API and Business plans", "CricSynthesis Pro", "Partnerships", "Press", "Something else"];
 
@@ -35,6 +36,7 @@ export default function ContactForm({ inline = false }: { inline?: boolean }) {
       track("contact_sent", { topic: d.topic || "General question" });
       setSent(true);
     } catch (x) {
+      resetTurnstile();
       setErr((x as Error).message || "Couldn't send your message. Try again, or email hello@cricsynthesis.in.");
     } finally { setBusy(false); }
   };
@@ -75,6 +77,7 @@ export default function ContactForm({ inline = false }: { inline?: boolean }) {
               <label htmlFor="cf-website">Website</label>
               <input id="cf-website" name="website" tabIndex={-1} autoComplete="off" />
             </div>
+            <Turnstile action="contact" />
             {err && <p className="form-error" role="alert">{err}</p>}
             <div className="cs-form-foot">
               <p className="form-disclaimer">We use your details only to reply, as described in our <a href="/privacy/">privacy policy</a>.</p>

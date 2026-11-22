@@ -29,7 +29,8 @@ export interface Env {
   RAZORPAY_KEY_SECRET?: string;
   RAZORPAY_WEBHOOK_SECRET?: string;
   RESEND_API_KEY?: string;
-  TEAM_EMAIL?: string;                  // optional: where form notices go (default hello@cricsynthesis.in)              // account emails (emails.ts, notify.ts); without it nothing is sent
+  TEAM_EMAIL?: string;
+  TURNSTILE_SECRET?: string;            // secret: the public forms' bot check (turnstile.ts); off without it                  // optional: where form notices go (default hello@cricsynthesis.in)              // account emails (emails.ts, notify.ts); without it nothing is sent
 }
 
 export type Account = { hash: string; plan: string; owner: string | null; slot: string | null; limits: typeof PLANS[string] };

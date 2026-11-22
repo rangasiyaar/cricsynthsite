@@ -30,7 +30,7 @@ export default function Privacy() {
         <li><b>CricSynthesis Pro payments.</b> When you subscribe, Razorpay collects your payment details; we never see your card,
           UPI or bank details. We keep your plan, its status, the subscription reference Razorpay gives us and the dates your free
           day, paid period or renewal start and end, to turn Pro on and show your plan. Razorpay sends receipts to your email.</li>
-        <li><b>Contact and access requests.</b> Name, email, organisation, topic, interest and the message you enter in our forms. Messages sent through the contact form are kept for up to 24 months so we can follow up, then deleted; we store only a one-way code of your network address, to limit spam.</li>
+        <li><b>Contact and access requests.</b> Name, email, organisation, topic, interest and the message you enter in our forms. Messages sent through the contact form are kept for up to 24 months so we can follow up, then deleted; we store only a one-way code of your network address, to limit spam. The contact, API access and job application forms also run Cloudflare Turnstile, a privacy-friendly check that you're a person: it looks at basic browser signals, sets no tracking cookies and isn't used for advertising.</li>
         <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such
           as gender. We use them only to assess your application and contact you about it, and delete them within 12 months
           unless you ask us to keep them longer.</li>

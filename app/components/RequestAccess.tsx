@@ -3,6 +3,7 @@
 // edge/src/forms.ts), which stores it for the admin console's Messages page, acknowledges it by email and tells the team.
 import { useState } from "react";
 import { API } from "@/lib/apiref";
+import Turnstile, { resetTurnstile } from "@/components/Turnstile";
 
 export default function RequestAccess() {
   const [sent, setSent] = useState(false);
@@ -22,6 +23,7 @@ export default function RequestAccess() {
                                                   body: JSON.stringify(data) });
       if (!r.ok) {
         const d = await r.json().catch(() => ({}));
+        resetTurnstile();
         setErr(d.detail || "Couldn't send your request. Try again, or email hello@cricsynthesis.in.");
         setBusy(false); return;
       }
@@ -71,6 +73,7 @@ export default function RequestAccess() {
               </select>
             </div>
             <div className="apply-hp" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
+            <Turnstile action="api_access" />
             {err && <p className="small" role="alert" style={{ color: "var(--cs-danger, #c0392b)" }}>{err}</p>}
             <div className="cs-form-foot">
               <button type="submit" className="cs-btn cs-btn--primary form-submit" disabled={busy}><span>{busy ? "Sending…" : "Request API access"}</span></button>
