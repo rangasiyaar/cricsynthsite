@@ -13,7 +13,7 @@
 }
 :root[data-theme="dark"] .app-wrap { --a-press: rgba(230, 231, 232, .08); }
 .app-wrap *:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; border-radius: 8px; }
-.app-wrap button:not(.a-btn) { font: inherit; color: inherit; }   /* .a-btn sets its own font and colour */
+.app-wrap button:not(.a-btn):not(.a-alert) { font: inherit; color: inherit; }   /* .a-btn and .a-alert set their own colour */
 .app-wrap a { text-decoration: none !important; }
 
 /* ── top bar ── */

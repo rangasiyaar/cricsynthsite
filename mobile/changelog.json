@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.22",
+  "date": "2026-11-22",
+  "notes": [
+   "Alerts that arrive while the app is open show their text again (they appeared as a blank strip)",
+   "Your sign-in stays on this phone: it is no longer copied into phone backups"
+  ]
+ },
+ {
   "version": "0.3.21",
   "date": "2026-11-22",
   "notes": [
