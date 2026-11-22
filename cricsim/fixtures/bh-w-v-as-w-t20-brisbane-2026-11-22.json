@@ -12,7 +12,7 @@
   "city": "Brisbane",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Brisbane Heat Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Brisbane Heat Women",
@@ -22,21 +22,21 @@
         "Charli Knott",
         "Georgia Redmayne",
         "Yastika Bhatia",
-        "Lucy Hamilton",
         "Orla Prendergast",
+        "Lucy Hamilton",
         "Annie O'Neil",
         "Sianna Ginger",
         "Lucinda Bourke",
         "Sarah Glenn",
-        "Catherine White"
+        "Lily Bassingthwaighte"
       ],
       "roles": [
         "AR",
         "AR",
         "WK",
         "BAT",
-        "BOWL",
         "AR",
+        "BOWL",
         "BAT",
         "AR",
         "BAT",
@@ -64,12 +64,12 @@
       "players": [
         "Emma de Broughe",
         "Maia Bouchier",
-        "Laura Wolvaardt",
         "Tahlia McGrath",
-        "Ellie Johnston",
+        "Laura Wolvaardt",
         "Madeline Penna",
-        "Amanda Wellington",
+        "Bridget Patterson",
         "Eleanor Larosa",
+        "Amanda Wellington",
         "Ella Wilson",
         "Megan Schutt",
         "Anesu Mushangwe"
@@ -77,12 +77,12 @@
       "roles": [
         "BAT",
         "BAT",
+        "AR",
         "BAT",
-        "AR",
-        "AR",
+        "BAT",
         "WK",
-        "BOWL",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 40331,
     "url": "https://khelnow.com/live-cricket-score/brisbane-heat-women-vs-adelaide-strikers-women-women's-big-bash-league-22nd-november-2026-40331",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
