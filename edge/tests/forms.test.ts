@@ -91,3 +91,10 @@ test("application: checks the fields and the file", async () => {
   assert.deepEqual(await F.apply(w.deps, { ...app, website: "x" }, {}), { sent: true });
   assert.equal(Object.keys(w.docs).length, 0);
 });
+
+test("Firestore encoding keeps nested maps (the application's resume details)", async () => {
+  const { toValue, fromValue } = await import("../src/google.ts");
+  const v = toValue({ name: "cv.pdf", type: "application/pdf", bytes: 1234, chunks: 2, tags: ["a", 1] });
+  assert.ok("mapValue" in v);
+  assert.deepEqual(fromValue(v), { name: "cv.pdf", type: "application/pdf", bytes: 1234, chunks: 2, tags: ["a", 1] });
+});

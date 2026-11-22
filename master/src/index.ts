@@ -176,18 +176,28 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
         designation: r.designation || null, qualification: r.qualification, portfolio: r.portfolio, linkedin: r.linkedin || null,
         tools: r.tools || null, heard: r.heard || null, notes: r.notes || null, status: r.status || "new", read: r.read === true,
         statusBy: r.statusBy || null, statusAt: r.statusAt || null, note: r.note || null, country: r.country || null,
-        resume: r.resume ? { name: r.resume.name, type: r.resume.type, bytes: r.resume.bytes } : null, stored: r.stored !== false })) });
+        // applications sent before the API stored maps keep the resume details as a string: the chunks are still there
+        resume: r.resume ? (typeof r.resume === "object" ? { name: r.resume.name, type: r.resume.type, bytes: r.resume.bytes } : { name: null, type: null, bytes: null })
+          : null, stored: r.stored !== false })) });
     }
     case "/api/application-resume": {
       const id = url.searchParams.get("id") || "";
       if (!/^[A-Za-z0-9]{1,40}$/.test(id)) return fail(422, "Bad application");
       const g = google(env);
       const ap = await g.get(`applications/${id}`);
-      const meta = ap?.resume as Record<string, any> | undefined;
-      if (!meta?.chunks) return fail(404, "No resume");
-      const parts = await Promise.all(Array.from({ length: Math.min(Number(meta.chunks), 12) }, (_, n) => g.get(`applications/${id}/resume/${n}`)));
+      if (!ap) return fail(404, "No such application");
+      const meta = (typeof ap.resume === "object" && ap.resume ? ap.resume : {}) as Record<string, any>;
+      const parts = meta.chunks
+        ? await Promise.all(Array.from({ length: Math.min(Number(meta.chunks), 12) }, (_, n) => g.get(`applications/${id}/resume/${n}`)))
+        : (await g.list(`applications/${id}/resume`)).sort((a, b) => Number(a.n) - Number(b.n));   // older applications: find the chunks
+      if (!parts.length) return fail(404, "No resume stored for this application");
       if (parts.some((p) => !p)) return fail(404, "The resume is incomplete");
-      const bin = atob(parts.map((p) => String(p!.data)).join(""));
+      const data = parts.map((p) => String(p!.data)).join("");
+      const sniffed = data.startsWith("JVBER") ? ["application/pdf", "pdf"] : data.startsWith("0M8R4") ? ["application/msword", "doc"]
+        : data.startsWith("UEsDB") ? ["application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"] : ["application/octet-stream", "bin"];
+      meta.type ||= sniffed[0];
+      meta.name ||= `${String(ap.name || "resume").trim().replace(/\s+/g, "-")}-resume.${sniffed[1]}`;
+      const bin = atob(data);
       const bytes = new Uint8Array(bin.length);
       for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       const type = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(meta.type)

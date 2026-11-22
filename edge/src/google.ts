@@ -176,6 +176,8 @@ export function toValue(v: unknown): any {
   if (v instanceof Date) return { timestampValue: v.toISOString() };
   if (typeof v === "boolean") return { booleanValue: v };
   if (typeof v === "number") return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(toValue) } };
+  if (typeof v === "object") return { mapValue: { fields: Object.fromEntries(Object.entries(v as Record<string, unknown>).map(([k, x]) => [k, toValue(x)])) } };
   return { stringValue: String(v) };
 }
 
@@ -186,5 +188,7 @@ export function fromValue(v: any): unknown {
   if ("doubleValue" in v) return v.doubleValue;
   if ("booleanValue" in v) return v.booleanValue;
   if ("timestampValue" in v) return v.timestampValue;
+  if ("mapValue" in v) return Object.fromEntries(Object.entries(v.mapValue.fields || {}).map(([k, x]) => [k, fromValue(x)]));
+  if ("arrayValue" in v) return (v.arrayValue.values || []).map(fromValue);
   return null;
 }

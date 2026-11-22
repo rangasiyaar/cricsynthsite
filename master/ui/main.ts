@@ -463,11 +463,11 @@ async function applications(filter = "") {
   const show = f === "all" ? all : f === "open" ? all.filter((a) => ["new", "reviewing"].includes(a.status)) : all.filter((a) => a.status === f);
   const count = (st: string) => all.filter((a) => a.status === st).length;
   const tab = (k: string, label: string) => `<a class="btn ${k === f ? "" : "ghost"} sm" href="#/applications/${k}">${label}</a>`;
-  const kb = (b: number) => b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1024))} KB`;
+  const kb = (b: number) => !b ? "" : b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1024))} KB`;
   const link = (u: string) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.replace(/^https?:\/\//, "").slice(0, 48))}</a>`;
   const row = (k: string, v: string | null) => v ? `<div><dt>${k}</dt><dd>${v}</dd></div>` : "";
   const acts = (a: Row) => [
-    a.resume && a.stored ? `<a class="btn xs" href="/api/application-resume?id=${encodeURIComponent(a.id)}">Download resume (${kb(a.resume.bytes)})</a>` : "",
+    a.resume && a.stored ? `<a class="btn xs" href="/api/application-resume?id=${encodeURIComponent(a.id)}">Download resume${a.resume.bytes ? ` (${kb(a.resume.bytes)})` : ""}</a>` : "",
     `<a class="btn ghost xs" href="mailto:${esc(encodeURIComponent(a.email))}?subject=${esc(encodeURIComponent(`Your application: ${a.jobTitle}`))}">Email</a>`,
     a.status === "new" ? actBtn("Reviewing", { type: "application.status", id: a.id, status: "reviewing" }, `Mark ${a.name}'s application as being reviewed?`) : "",
     a.status !== "shortlisted" ? actBtn("Shortlist", { type: "application.status", id: a.id, status: "shortlisted" },
