@@ -1,0 +1,112 @@
+{
+  "id": "and-v-pdy-t20-chandigarh-2026-11-24",
+  "title": "Andhra v Puducherry",
+  "date": "2026-11-24",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 93rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Chandigarh",
+  "venue_search": "maharaja yadavindra singh international cricket stadium",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Seeram Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Satyanarayana Raju",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Seeram Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "Satyanarayana Raju",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar"
+      ]
+    },
+    {
+      "name": "Puducherry",
+      "short": "PDY",
+      "players": [
+        "Ankit Sharma",
+        "Sagar Trivedi",
+        "Prasad Pawar",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Sagar Udeshi",
+        "Pougajendy Akash"
+      ],
+      "roles": [
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Aman Hakim Khan",
+      "squad": [
+        "Ankit Sharma",
+        "Sagar Trivedi",
+        "Prasad Pawar",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Sagar Udeshi",
+        "Pougajendy Akash"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41945,
+    "url": "https://khelnow.com/live-cricket-score/andhra-vs-puducherry-syed-mushtaq-ali-trophy-elite-24th-november-2026-41945",
+    "auto": true,
+    "xis": false
+  }
+}
