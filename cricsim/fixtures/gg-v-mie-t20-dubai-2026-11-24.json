@@ -1,0 +1,112 @@
+{
+  "id": "gg-v-mie-t20-dubai-2026-11-24",
+  "title": "Gulf Giants v MI Emirates",
+  "date": "2026-11-24",
+  "start_time": "18:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 5th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Dubai International Cricket Stadium, Dubai",
+  "venue_search": "dubai international cricket stadium",
+  "city": "Dubai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Gulf Giants",
+      "short": "GG",
+      "players": [
+        "Rahmanullah Gurbaz",
+        "Ibrahim Zadran",
+        "Liam Livingstone",
+        "Heinrich Klaasen",
+        "Sagar Kalyan",
+        "David Miller",
+        "David Wiese",
+        "Azmatullah Omarzai",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Haider Razzaq"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Heinrich Klaasen",
+      "squad": [
+        "Rahmanullah Gurbaz",
+        "Ibrahim Zadran",
+        "Liam Livingstone",
+        "Heinrich Klaasen",
+        "Sagar Kalyan",
+        "David Miller",
+        "David Wiese",
+        "Azmatullah Omarzai",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Haider Razzaq"
+      ]
+    },
+    {
+      "name": "MI Emirates",
+      "short": "MIE",
+      "players": [
+        "Muhammad Waseem",
+        "Kusal Perera",
+        "Nicholas Pooran",
+        "Romario Shepherd",
+        "Sherfane Rutherford",
+        "Kieron Pollard",
+        "Sanjay Krishnamurthy",
+        "Rashid Khan",
+        "Chris Jordan",
+        "Zahoor Khan",
+        "Fazalhaq Farooqi"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Muhammad Waseem",
+        "Kusal Perera",
+        "Nicholas Pooran",
+        "Romario Shepherd",
+        "Sherfane Rutherford",
+        "Kieron Pollard",
+        "Sanjay Krishnamurthy",
+        "Rashid Khan",
+        "Chris Jordan",
+        "Zahoor Khan",
+        "Fazalhaq Farooqi"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41723,
+    "url": "https://khelnow.com/live-cricket-score/gulf-giants-vs-mi-emirates-international-league-t20-24th-november-2026-41723",
+    "auto": true,
+    "xis": false
+  }
+}
