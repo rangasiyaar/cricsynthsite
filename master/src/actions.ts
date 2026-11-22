@@ -24,7 +24,15 @@ export type Action =
   | { type: "user.delete"; uid: string }
   | { type: "contact.status"; uid: ""; id: string; status: ContactStatus }
   | { type: "contact.read"; uid: ""; id: string; read: boolean }
-  | { type: "contact.delete"; uid: ""; id: string };
+  | { type: "contact.delete"; uid: ""; id: string }
+  | { type: "application.status"; uid: ""; id: string; status: AppStatus; note?: string }
+  | { type: "application.delete"; uid: ""; id: string };
+
+/** Job applications (applications/{id} + resume/{n} chunks, written by the API Worker's POST /apply). Moving one to
+ *  Shortlisted or Declined emails the applicant (once per outcome), with the optional note. */
+export const APP_STATUS = { new: "New", reviewing: "Reviewing", shortlisted: "Shortlisted", declined: "Declined", hired: "Hired" } as const;
+export type AppStatus = keyof typeof APP_STATUS;
+export const CAREERS_FROM = "CricSynthesis Careers <careers@cricsynthesis.in>";
 
 /** Contact form messages (contactMessages/{id}, written by the API Worker's POST /contact). */
 export const CONTACT_STATUS = { new: "New", replied: "Replied", closed: "Closed" } as const;
@@ -33,15 +41,16 @@ const MSG_ID = /^[A-Za-z0-9]{1,40}$/;
 
 /** Sends an account email to `uid` (looked up in Firebase Auth); returns whether it went. Set by the Worker from
  *  RESEND_API_KEY; without it no email is sent. */
-export type Mailer = (uid: string, build: (name: string | null) => E.Email, to?: { email: string; name: string | null }) => Promise<boolean>;
+export type Mailer = (uid: string, build: (name: string | null) => E.Email, to?: { email: string; name: string | null },
+                     opts?: { from?: string }) => Promise<boolean>;
 
 export function mailer(g: Google, key: string | undefined): Mailer {
-  return async (uid, build, to) => {
+  return async (uid, build, to, opts) => {
     if (!key) return false;
     try {
       const u = to || await g.user(uid).then((x) => (x?.email ? { email: x.email, name: x.name } : null));
       if (!u) return false;
-      await E.send(key, u.email, build(u.name));
+      await E.send(key, u.email, build(u.name), opts || {});
       return true;
     } catch (e) { console.error("email", (e as Error).message); return false; }
   };
@@ -52,6 +61,16 @@ export const MAX_DAYS = 3650;
 export const MAX_PER_RUN = 4;
 
 export function validate(a: Row | null): Action {
+  if (typeof a?.type === "string" && a.type.startsWith("application.")) {  // a job application, not an account
+    if (!MSG_ID.test(String(a.id || ""))) throw new ActionError("Bad application");
+    if (a.type === "application.status") {
+      if (!Object.hasOwn(APP_STATUS, a.status)) throw new ActionError("Bad status");
+      const note = a.note == null || a.note === "" ? undefined : String(a.note).slice(0, NOTE_MAX);
+      return { type: a.type, uid: "", id: a.id, status: a.status, ...(note ? { note } : {}) };
+    }
+    if (a.type === "application.delete") return { type: a.type, uid: "", id: a.id };
+    throw new ActionError("Unknown action");
+  }
   if (typeof a?.type === "string" && a.type.startsWith("contact.")) {     // a message, not an account
     if (!MSG_ID.test(String(a.id || ""))) throw new ActionError("Bad message");
     if (a.type === "contact.status") {
@@ -232,6 +251,32 @@ export async function apply(g: Google, admin: string, a: Action, now = new Date(
       await g.remove(`contactMessages/${a.id}`);
       done = `Message from ${m.email} deleted`;
       detail = { id: a.id, email: m.email, topic: m.topic ?? null, at: m.at ?? null };   // the message text itself isn't kept
+    }
+  }
+  if (a.type === "application.status" || a.type === "application.delete") {
+    const ap = await g.get(`applications/${a.id}`);
+    if (!ap) throw new ActionError("No such application", 404);
+    const who = `${ap.name} (${ap.jobTitle})`;
+    if (a.type === "application.status") {
+      const outcome = a.status === "shortlisted" || a.status === "declined";
+      const already = outcome && ap[`mailed_${a.status}`] === true;
+      let emailed = false;
+      if (outcome && !already && mail && ap.email) {
+        const build = (name: string | null) => (a.status === "shortlisted" ? E.applicationShortlisted : E.applicationDeclined)(
+          { name: name || ap.name, jobTitle: String(ap.jobTitle), note: a.note ?? null });
+        emailed = await mail("", build, { email: String(ap.email), name: String(ap.name || "") || null }, { from: CAREERS_FROM });
+      }
+      await g.patch(`applications/${a.id}`, { status: a.status, statusBy: admin, statusAt: now.toISOString(), read: true,
+        ...(emailed ? { [`mailed_${a.status}`]: true } : {}), ...(a.note ? { note: a.note } : {}) });
+      done = `Application from ${who} marked ${APP_STATUS[a.status].toLowerCase()}` +
+        (outcome ? (emailed ? "; applicant emailed" : already ? "; applicant was already emailed" : "; no email sent") : "");
+      detail = { id: a.id, email: ap.email, status: a.status, emailed };
+    } else {
+      const chunks = Number((ap.resume as Row | undefined)?.chunks || 0);
+      for (let n = 0; n < Math.min(chunks, 12); n++) await g.remove(`applications/${a.id}/resume/${n}`).catch(() => {});
+      await g.remove(`applications/${a.id}`);
+      done = `Application from ${who} deleted, with the resume`;
+      detail = { id: a.id, email: ap.email, job: ap.job ?? null, at: ap.at ?? null };
     }
   }
   await g.put(`adminLog/${now.getTime()}-${a.type}`, { at: now.toISOString(), email: admin, what: a.type, uid: a.uid,

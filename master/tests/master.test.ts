@@ -413,3 +413,30 @@ test("contact messages: read / unread and delete (removed, logged without the te
   assert.ok(log && !JSON.stringify(log).includes("secret text"));
   await assert.rejects(apply(g, "boss@example.com", validate({ type: "contact.delete", id: "m1" })), /No such message/);
 });
+
+test("job applications: shortlist / decline email the applicant once, delete removes the resume", async () => {
+  const { validate, apply, ActionError } = await import("../src/actions.ts");
+  assert.throws(() => validate({ type: "application.status", id: "a1", status: "maybe" }), ActionError);
+  assert.throws(() => validate({ type: "application.status", id: "../x", status: "declined" }), ActionError);
+  const docs: Record<string, any> = { "applications/a1": { _id: "a1", name: "Ravi K", email: "ravi@example.com", jobTitle: "Graphics Designer",
+    status: "new", resume: { name: "cv.pdf", chunks: 2 } } };
+  const removed: string[] = [], mails: [string, string, string | undefined][] = [];
+  const g: any = {
+    get: async (p: string) => docs[p] ?? null,
+    patch: async (p: string, d: any) => { docs[p] = { ...docs[p], ...d }; },
+    put: async () => {},
+    remove: async (p: string) => { removed.push(p); delete docs[p]; },
+  };
+  const mail = async (_uid: string, build: any, to: any, opts: any) => { const m = build(to.name); mails.push([to.email, m.text, opts?.from]); return true; };
+  let r = await apply(g, "boss@example.com", validate({ type: "application.status", id: "a1", status: "shortlisted", note: "Portfolio task next week" }), new Date(), mail);
+  assert.match(r.done, /shortlisted; applicant emailed/);
+  assert.equal(mails.length, 1);
+  assert.match(mails[0][1], /Hi Ravi[\s\S]*Portfolio task next week/);
+  assert.match(String(mails[0][2]), /careers@/);
+  r = await apply(g, "boss@example.com", validate({ type: "application.status", id: "a1", status: "shortlisted" }), new Date(), mail);
+  assert.match(r.done, /already emailed/);
+  await apply(g, "boss@example.com", validate({ type: "application.status", id: "a1", status: "reviewing" }), new Date(), mail);
+  assert.equal(mails.length, 1);
+  await apply(g, "boss@example.com", validate({ type: "application.delete", id: "a1" }), new Date(), mail);
+  assert.deepEqual(removed, ["applications/a1/resume/0", "applications/a1/resume/1", "applications/a1"]);
+});

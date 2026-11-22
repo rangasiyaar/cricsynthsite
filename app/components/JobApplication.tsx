@@ -1,9 +1,9 @@
 "use client";
-// Job application form. Posts to the sign-ups Apps Script (type "application"), which saves the resume to Drive,
-// adds a row to the Applications sheet and emails the applicant a confirmation.
+// Job application form. Posts to the API (POST /apply, edge/src/forms.ts), which stores the application and resume for
+// the admin console's Applications page, emails the applicant a confirmation and sends the team the resume.
 import Link from "next/link";
 import { useState } from "react";
-import { SHEET } from "@/components/RequestAccess";
+import { API } from "@/lib/apiref";
 import { jobPath, type Job } from "@/lib/jobs";
 
 const MAX_MB = 5;
@@ -64,7 +64,7 @@ export default function JobApplication({ job }: { job: Job }) {
     if (!fd.get("consent")) { setErr("Please confirm that we may store your application."); focus("consent"); return; }
     setErr(null); setState("sending");
     const body = {
-      type: "application", job: job.slug, jobTitle: job.title, source: window.location.href,
+      job: job.slug, jobTitle: job.title,
       name: v("name"), email: v("email"), phone: `+91 ${formatPhone(phoneDigits(phone))}`, city: v("city"), gender: v("gender"),
       experience: v("experience"), employer: v("employer"), designation: v("designation"), notice: v("notice"),
       qualification: v("qualification"), portfolio, linkedin, tools: fd.getAll("tools").join(", "),
@@ -72,9 +72,11 @@ export default function JobApplication({ job }: { job: Job }) {
       resume: { name: file.name, type: file.type, data: await toBase64(file) },
     };
     try {
-      const res = await fetch(SHEET, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) });
-      const out = await res.json().catch(() => null);
-      if (out && out.success === false) { setState("idle"); setErr(out.error === "resume" ? "We could not read your resume. Please try another file." : "Something went wrong. Please check your details and try again."); return; }
+      const res = await fetch(`${API}/apply`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (!res.ok) {
+        const out = await res.json().catch(() => null);
+        setState("idle"); setErr(out?.detail || "Something went wrong. Please check your details and try again."); return;
+      }
       setState("sent");
     } catch {
       setState("unconfirmed");                                   // sent, but the browser could not read the reply

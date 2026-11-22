@@ -1,5 +1,5 @@
 // Open roles on the careers page. Each job has its own page (/careers/<slug>/) and application form
-// (/careers/<slug>/apply/); applications go to the sign-ups Apps Script (kept outside the repo).
+// (/careers/<slug>/apply/); applications go to the API (POST /apply) and the admin console.
 export type Job = {
   slug: string; title: string; team: string; type: string; location: string; experience: string; posted: string;
   summary: string; intro: string[];

@@ -1,9 +1,8 @@
 "use client";
-// API access: the developer pitch beside the request form. The form posts to the same Google Sheet endpoint the
-// original website used (Apps Script web app, free).
+// API access: the developer pitch beside the request form. The form posts to the API (POST /api-access,
+// edge/src/forms.ts), which stores it for the admin console's Messages page, acknowledges it by email and tells the team.
 import { useState } from "react";
-
-export const SHEET = "https://script.google.com/macros/s/AKfycbyNR77MweYXr5xv4cNJt5j4uLC5JA2q-RqTHPSs7X2OPG1L9AXKYDlOh4WupLYMk8So/exec";
+import { API } from "@/lib/apiref";
 
 export default function RequestAccess() {
   const [sent, setSent] = useState(false);
@@ -19,9 +18,17 @@ export default function RequestAccess() {
     }
     setBusy(true); setErr(null);
     try {
-      await fetch(SHEET, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ ...data, source: window.location.href }) });
-    } catch { /* no-cors hides the response; the sheet still records it */ }
+      const r = await fetch(`${API}/api-access`, { method: "POST", headers: { "Content-Type": "application/json" },
+                                                  body: JSON.stringify(data) });
+      if (!r.ok) {
+        const d = await r.json().catch(() => ({}));
+        setErr(d.detail || "Couldn't send your request. Try again, or email hello@cricsynthesis.in.");
+        setBusy(false); return;
+      }
+    } catch {
+      setErr("Couldn't send your request. Check your connection, or email hello@cricsynthesis.in.");
+      setBusy(false); return;
+    }
     setBusy(false); setSent(true);
   };
 
@@ -63,6 +70,7 @@ export default function RequestAccess() {
                 <option value="all">The full catalog</option>
               </select>
             </div>
+            <div className="apply-hp" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
             {err && <p className="small" role="alert" style={{ color: "var(--cs-danger, #c0392b)" }}>{err}</p>}
             <div className="cs-form-foot">
               <button type="submit" className="cs-btn cs-btn--primary form-submit" disabled={busy}><span>{busy ? "Sending…" : "Request API access"}</span></button>

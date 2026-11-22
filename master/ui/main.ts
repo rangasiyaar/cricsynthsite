@@ -24,6 +24,7 @@ const ICON: Record<string, string> = {
   usage: ic('<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
   requests: ic('<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>'),
   messages: ic('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9.5h8M8 12.5h5"/>'),
+  applications: ic('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'),
   product: ic('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
   ux: ic('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
   search: ic('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
@@ -113,7 +114,7 @@ function renderLogin(msg = "") {
 // ── shell ──
 const NAV: [string, [string, string][]][] = [
   ["", [["", "Overview"]]],
-  ["Customers", [["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"], ["messages", "Messages"]]],
+  ["Customers", [["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"], ["messages", "Messages"], ["applications", "Applications"]]],
   ["Growth", [["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"]]],
   ["Operations", [["health", "Pipeline health"], ["accuracy", "Model accuracy"], ["log", "Audit log"]]],
 ];
@@ -146,7 +147,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, messages, product, ux, search, traffic, health, accuracy, log };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, messages, applications, product, ux, search, traffic, health, accuracy, log };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -451,6 +452,46 @@ async function messages(filter = "") {
     try { await api("/api/action", { method: "POST", body: JSON.stringify(JSON.parse(b.dataset.read!)) }); route(); }
     catch (e) { b.disabled = false; toast((e as Error).message, true); }
   }));
+}
+
+// ── applications (the careers page's form, applications/{id}; resume chunks in resume/{n}) ──
+const APP_ST: Record<string, [string, "warn" | "good" | "bad" | "info" | "plain"]> = { new: ["New", "warn"], reviewing: ["Reviewing", "info"],
+  shortlisted: ["Shortlisted", "good"], declined: ["Declined", "plain"], hired: ["Hired", "good"] };
+async function applications(filter = "") {
+  const all = ((await api("/api/applications")).applications || []) as Row[];
+  const f = filter || "open";
+  const show = f === "all" ? all : f === "open" ? all.filter((a) => ["new", "reviewing"].includes(a.status)) : all.filter((a) => a.status === f);
+  const count = (st: string) => all.filter((a) => a.status === st).length;
+  const tab = (k: string, label: string) => `<a class="btn ${k === f ? "" : "ghost"} sm" href="#/applications/${k}">${label}</a>`;
+  const kb = (b: number) => b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1024))} KB`;
+  const link = (u: string) => `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.replace(/^https?:\/\//, "").slice(0, 48))}</a>`;
+  const row = (k: string, v: string | null) => v ? `<div><dt>${k}</dt><dd>${v}</dd></div>` : "";
+  const acts = (a: Row) => [
+    a.resume && a.stored ? `<a class="btn xs" href="/api/application-resume?id=${encodeURIComponent(a.id)}">Download resume (${kb(a.resume.bytes)})</a>` : "",
+    `<a class="btn ghost xs" href="mailto:${esc(encodeURIComponent(a.email))}?subject=${esc(encodeURIComponent(`Your application: ${a.jobTitle}`))}">Email</a>`,
+    a.status === "new" ? actBtn("Reviewing", { type: "application.status", id: a.id, status: "reviewing" }, `Mark ${a.name}'s application as being reviewed?`) : "",
+    a.status !== "shortlisted" ? actBtn("Shortlist", { type: "application.status", id: a.id, status: "shortlisted" },
+      `Shortlist ${a.name}? They get a "next steps" email; add an optional note for them.`, "", true) : "",
+    a.status !== "declined" ? actBtn("Decline", { type: "application.status", id: a.id, status: "declined" },
+      `Decline ${a.name}? They get a polite "not this time" email; add an optional note for them.`, "", true) : "",
+    a.status === "shortlisted" ? actBtn("Hired", { type: "application.status", id: a.id, status: "hired" }, `Mark ${a.name} as hired (no email)?`) : "",
+    actBtn("Delete", { type: "application.delete", id: a.id }, `Delete ${a.name}'s application and resume for good? It can't be recovered.`, "danger"),
+  ].join(" ");
+  main().innerHTML = head("Applications") + `<p class="muted">Sent through the careers page. Each applicant got a confirmation email, and the team inbox got the details with the resume attached. Shortlist or decline here to send the outcome email.</p>
+    <p class="msg-tabs">${tab("open", `Open (${count("new") + count("reviewing")})`)} ${tab("shortlisted", `Shortlisted (${count("shortlisted")})`)} ${tab("declined", `Declined (${count("declined")})`)} ${tab("hired", `Hired (${count("hired")})`)} ${tab("all", `All (${all.length})`)}</p>
+    ${show.length ? show.map((a) => `<article class="card msg${a.status === "new" ? " unread" : ""}">
+      <div class="msg-head"><div><b>${esc(a.name)}</b> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a> · ${esc(a.phone || "")}</div>
+        <div class="muted">${badge(APP_ST[a.status]?.[0] || a.status, APP_ST[a.status]?.[1] || "plain")} ${esc(a.jobTitle)} · <span title="${esc(a.at)}">${when(a.at)}</span>${a.country ? ` · ${esc(a.country)}` : ""}</div></div>
+      <dl class="dl app-dl">${row("City", esc(a.city || ""))}${row("Experience", esc(a.experience || ""))}${row("Notice", esc(a.notice || ""))}
+        ${row("Employer", a.employer ? esc(a.employer) : null)}${row("Designation", a.designation ? esc(a.designation) : null)}${row("Qualification", esc(a.qualification || ""))}
+        ${row("Portfolio", a.portfolio ? link(a.portfolio) : null)}${row("LinkedIn", a.linkedin ? link(a.linkedin) : null)}${row("Tools", a.tools ? esc(a.tools) : null)}
+        ${row("Heard via", a.heard ? esc(a.heard) : null)}${row("Gender", a.gender ? esc(a.gender) : null)}</dl>
+      ${a.notes ? `<p class="msg-body">${esc(a.notes)}</p>` : ""}
+      ${a.note ? `<p class="muted small">Note sent: ${esc(a.note)}</p>` : ""}
+      ${!a.stored ? `<p class="err">The resume didn't finish saving: ask them to email it.</p>` : ""}
+      <div class="msg-foot">${acts(a)}${a.statusBy ? `<span class="muted">${esc(APP_ST[a.status]?.[0] || a.status)} by ${esc(a.statusBy)} ${when(a.statusAt)}</span>` : ""}</div>
+    </article>`).join("") : `<p class="empty">${f === "all" ? "No applications yet." : "Nothing here."}</p>`}`;
+  wireActions(main(), () => route());
 }
 
 // ── product (Google Analytics 4: visitors who accepted analytics cookies) ──

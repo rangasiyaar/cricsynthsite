@@ -4,7 +4,6 @@ import { signOut, type User } from "firebase/auth";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ChartFrame, type Column } from "@/components/charts";
-import { SHEET } from "@/components/RequestAccess";
 import { proLine } from "@/components/ProOffer";
 import { track } from "@/lib/analytics";
 import { cancelPro, hasPaidPro, useProBilling } from "@/lib/billing";
@@ -13,7 +12,7 @@ import { API_TIERS as PLAN_TIERS } from "@/lib/plans";
 import { PRO, rupees } from "@/lib/pro";
 import {
   API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteAccount, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
-  renameKey, requestUpgrade, revokeKey, saveNotify, saveProfile, SLOTS, VOLUMES,
+  renameKey, requestUpgrade, revokeKey, upgradeRequested, saveNotify, saveProfile, SLOTS, VOLUMES,
   type ApiKey, type Notify, type Upgrade, type UpgradeRequest, type UsageDay,
 } from "@/lib/keys";
 
@@ -380,10 +379,8 @@ export function Subscription({ uid, plan, source, apiPlan, requests, refresh, se
     try {
       await requestUpgrade(uid, asking, volume, note);
       track("upgrade_request", { plan: asking, volume });
-      // let the team know straight away (same inbox as the contact form)
-      fetch(SHEET, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        name: user.displayName ?? "", email: user.email ?? "", interest: `Upgrade: ${asking}`, volume, message: note,
-        source: "dashboard" }) }).catch(() => {});
+      // the API acknowledges it by email and tells the team (edge/src/forms.ts)
+      upgradeRequested(user, asking).catch(() => {});
       setAsking(null); setNote(""); refresh();
     } catch (x) { setErr(friendly(x)); } finally { setBusy(false); }
   };

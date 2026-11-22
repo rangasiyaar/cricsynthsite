@@ -292,3 +292,8 @@ main > [id] > .tw { background: var(--surface); border: 1px solid var(--line); b
 main > [id] > .tw th:first-child { border-top-left-radius: var(--r); } main > [id] > .tw th:last-child { border-top-right-radius: var(--r); }
 main > [id] > .empty { background: var(--surface); border: 1px dashed var(--line-2); border-radius: var(--r); padding: 28px; text-align: center; }
 @media (max-width: 520px) { td { white-space: nowrap; } }
+
+/* applications */
+.app-dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 18px;margin:12px 0}
+.app-dl div{min-width:0}.app-dl dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.app-dl dd{margin:2px 0 0;overflow-wrap:anywhere}

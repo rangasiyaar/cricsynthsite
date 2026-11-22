@@ -8,6 +8,7 @@ import * as B from "./billing.ts";
 import * as E from "./emails.ts";
 import { mail } from "./notify.ts";
 import * as C from "./contact.ts";
+import * as F from "./forms.ts";
 import { Firestore } from "./google.ts";
 import * as OA from "./oauth.ts";
 import { AssetSource, EdgeSource } from "./source.ts";
@@ -170,6 +171,43 @@ async function contact(req: Request, env: Env): Promise<Response> {
   }
 }
 
+/** The forms the sign-ups Apps Script used to handle (forms.ts): welcome, API access, upgrade requests, job applications. */
+function formDeps(env: Env, fs: Firestore): F.FormDeps {
+  return {
+    add: (c, f) => fs.addDoc(c, f), set: (p, f) => fs.setFields(p, f).then(() => {}), get: (p) => fs.getDoc(p),
+    count: (c, field, value) => fs.countWhere(c, field, value),
+    send: async (to, m, opts) => {
+      if (!env.RESEND_API_KEY) return false;
+      try { await E.send(env.RESEND_API_KEY, to, m, opts || {}); return true; }
+      catch (e) { console.error("email", (e as Error).message); return false; }
+    },
+    sha256, now: () => new Date(), team: env.TEAM_EMAIL || F.TEAM_EMAIL,
+  };
+}
+
+async function form(req: Request, env: Env, path: string): Promise<Response> {
+  if (!env.GOOGLE_SA) return fail(req, env, 503, "This form isn't available right now. Email hello@cricsynthesis.in.");
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const deps = formDeps(env, fs);
+  const meta = { ip: req.headers.get("CF-Connecting-IP"), country: (req as any).cf?.country ?? null, page: req.headers.get("Referer") };
+  try {
+    const body: any = await req.json().catch(() => null);
+    if (path === "/api-access") return json(req, env, { sent: (await F.apiAccess(deps, body, meta)).sent });
+    if (path === "/apply") { const r = await F.apply(deps, body, meta); return json(req, env, { success: r.sent, sent: r.sent }); }
+    // signed-in forms
+    const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+    const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+    if (!user) return fail(req, env, 401, "Sign in first");
+    const name = (await fs.authUser(user.uid).catch(() => null))?.name ?? null;
+    if (path === "/welcome") return json(req, env, await F.welcome(deps, user, name, String(body?.source || "web")));
+    return json(req, env, await F.upgradeRequested(deps, user, name, String(body?.plan || "")));
+  } catch (e) {
+    if (e instanceof F.FormError) return fail(req, env, e.status, e.message);
+    console.error("form", path, (e as Error).message);
+    return fail(req, env, 500, "Couldn't send that. Try again, or email hello@cricsynthesis.in.");
+  }
+}
+
 /** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
 async function billing(req: Request, env: Env, path: string): Promise<Response> {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
@@ -270,6 +308,7 @@ export default {
     if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
     if (path === "/account/delete" && req.method === "POST") return deleteAccount(req, env);
     if (path === "/contact" && req.method === "POST") return contact(req, env);
+    if (["/welcome", "/api-access", "/apply", "/account/upgrade-requested"].includes(path) && req.method === "POST") return form(req, env, path);
     const o = await oauth(req, env, url, path);
     if (o) return o;
     // the MCP server at /mcp, and also at the root of mcp.cricsynthesis.in

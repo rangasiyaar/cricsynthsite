@@ -118,6 +118,12 @@ export const requestUpgrade = (uid: string, plan: Upgrade, volume: string, note:
     plan, volume, note: note.trim().slice(0, 500), status: "pending", created: serverTimestamp(),
   });
 
+/** Right after filing a request: the API emails the account holder an acknowledgement and tells our team, once. */
+export async function upgradeRequested(user: User, plan: Upgrade): Promise<void> {
+  await fetch(`${API}/account/upgrade-requested`, { method: "POST",
+    headers: { Authorization: `Bearer ${await user.getIdToken()}`, "Content-Type": "application/json" }, body: JSON.stringify({ plan }) });
+}
+
 export const cancelRequest = (uid: string, plan: Upgrade) =>
   updateDoc(doc(db(), "users", uid, "requests", plan), { status: "cancelled" });
 

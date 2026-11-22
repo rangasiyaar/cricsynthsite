@@ -289,11 +289,13 @@ export function accountDeleted(d: { name?: string | null }): Email {
 }
 
 /** Send through Resend; returns the email id, or throws with Resend's message. */
-export async function send(key: string, to: string, mail: Email, opts: { from?: string; replyTo?: string } = {},
+export async function send(key: string, to: string, mail: Email,
+                           opts: { from?: string; replyTo?: string; attachments?: { filename: string; content: string }[] } = {},
                            fetcher: typeof fetch = (i, init) => fetch(i, init)): Promise<string> {
   const r = await fetcher("https://api.resend.com/emails", {
     method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: opts.from || FROM, to: [to], reply_to: opts.replyTo || REPLY_TO, subject: mail.subject, html: mail.html, text: mail.text }),
+    body: JSON.stringify({ from: opts.from || FROM, to: [to], reply_to: opts.replyTo || REPLY_TO, subject: mail.subject, html: mail.html, text: mail.text,
+                           ...(opts.attachments?.length ? { attachments: opts.attachments } : {}) }),
   });
   const j = await r.json().catch(() => ({})) as { id?: string; message?: string };
   if (!r.ok || !j.id) throw new Error(`Resend ${r.status}: ${j.message || "no id"}`);
@@ -317,5 +319,118 @@ export function contactReceived(d: { name?: string | null; topic: string; messag
         cta: "Visit CricSynthesis", ctaUrl: SITE }),
     text: `Hi ${firstName(d.name)},\n\nThanks for getting in touch. Your message has reached our team, and we'll get back to you soon, usually within one working day.\n\n` +
       `Topic: ${d.topic}\nSent: ${dayTime(d.at)}\n\nYour message:\n${excerpt}\n\nIf you need to add anything, just reply to this email.${sign}`,
+  };
+}
+
+// ── emails that used to come from the sign-ups Apps Script: welcome, API access, upgrade requests, job applications ──
+
+/** Welcome, sent once after a new account confirms it is 18 or over. */
+export function welcomeEmail(d: { name?: string | null }): Email {
+  return {
+    subject: "Welcome to CricSynthesis",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Welcome to CricSynthesis. Before every match we cover, you can see who's likely to win, the likely scores and the players to watch, and the Overview is free for every match.`) +
+      links("Where to start", [
+        ["Today's matches", `${SITE}/matches/`, "Open any match for its forecast"],
+        ["MatchSynth Lab", `${SITE}/lab/`, "Change the toss, the conditions or a line-up and replay the match"],
+        ["CricSynthesis Pro", `${SITE}/pro/`, "Every match-centre tab: scores, wickets, players, match-ups, the ground and fantasy picks"],
+        ["The Android app", `${SITE}/app/`, "The same match centre in your pocket"],
+      ]) +
+      p(`You can choose which emails you get under Email preferences in your account.`),
+      { eyebrow: "Welcome", heading: "You're in.", title: "Welcome to CricSynthesis", reason: "you created a CricSynthesis account",
+        cta: "See today's matches", ctaUrl: `${SITE}/matches/` }),
+    text: `Hi ${firstName(d.name)},\n\nWelcome to CricSynthesis. Before every match we cover, you can see who's likely to win, the likely scores and the players to watch, and the Overview is free for every match.\n\n` +
+      `Today's matches: ${SITE}/matches/\nMatchSynth Lab: ${SITE}/lab/\nCricSynthesis Pro: ${SITE}/pro/\nThe Android app: ${SITE}/app/${sign}`,
+  };
+}
+
+const INTEREST: Record<string, string> = { analytics: "Analytics: ratings, projections, match-ups", simulation: "Simulation: match forecasts and what-ifs",
+  graphics: "Graphics: share-ready cards", all: "The full catalog" };
+export const interestName = (k?: string | null) => INTEREST[String(k || "")] || "Not specified";
+
+/** The API access form's acknowledgement. */
+export function apiAccessReceived(d: { name?: string | null; interest?: string | null; organization?: string | null }): Email {
+  return {
+    subject: "We've got your API access request",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thanks for your interest in the CricSynthesis API. We'll be in touch with your key and next steps, usually within one working day.`) +
+      facts([["Interested in", esc(interestName(d.interest))], ...(d.organization ? [["Organisation", esc(d.organization)] as [string, string]] : [])]) +
+      p(`Want to start now? Sign in and create a free key from your account: it gives you ${b("200 requests a day")} on every endpoint.`),
+      { eyebrow: "API access", heading: "Request received.", title: "API access request", reason: "you asked for API access on cricsynthesis.in",
+        links: API_LINKS, cta: "Create a free key", ctaUrl: `${SITE}/account/#api-keys` }),
+    text: `Hi ${firstName(d.name)},\n\nThanks for your interest in the CricSynthesis API. We'll be in touch with your key and next steps, usually within one working day.\n\n` +
+      `Interested in: ${interestName(d.interest)}\n\nWant to start now? Create a free key (200 requests a day): ${SITE}/account/#api-keys${sign}`,
+  };
+}
+
+const PLAN_NAME: Record<string, string> = { "api-pro": "API Plus", "api-business": "Business API" };
+export const planName = (k?: string | null) => PLAN_NAME[String(k || "")] || String(k || "");
+
+/** An upgrade request from the account dashboard: the account holder's acknowledgement. */
+export function upgradeRequested(d: { name?: string | null; plan: string; volume?: string | null }): Email {
+  return {
+    subject: `We've got your ${planName(d.plan)} request`,
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thanks for asking to move to ${b(esc(planName(d.plan)))}. We'll look at your request and reply, usually within one working day. Your keys keep working on their current plan until then.`) +
+      facts([["Plan", esc(planName(d.plan))], ...(d.volume ? [["Expected volume", esc(d.volume)] as [string, string]] : [])]),
+      { eyebrow: "Upgrade request", heading: "Request received.", title: "Upgrade request", reason: "you asked for an upgrade in your CricSynthesis account",
+        links: API_LINKS, cta: "Open your account", ctaUrl: `${SITE}/account/#subscription` }),
+    text: `Hi ${firstName(d.name)},\n\nThanks for asking to move to ${planName(d.plan)}. We'll reply, usually within one working day. Your keys keep working on their current plan until then.${sign}`,
+  };
+}
+
+/** A job application's acknowledgement. */
+export function applicationReceived(d: { name?: string | null; jobTitle: string }): Email {
+  return {
+    subject: `We've received your application: ${d.jobTitle}`,
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thank you for applying for ${b(esc(d.jobTitle))} at CricSynthesis. We've received your application and resume.`) +
+      p(`We review every application and will contact you if you are shortlisted. If you need to update anything, just reply to this email.`),
+      { eyebrow: "Careers", heading: "Application received.", title: "Application received", reason: "you applied for a role at CricSynthesis",
+        cta: "See our open roles", ctaUrl: `${SITE}/careers/` }),
+    text: `Hi ${firstName(d.name)},\n\nThank you for applying for ${d.jobTitle} at CricSynthesis. We've received your application and resume.\n\nWe review every application and will contact you if you are shortlisted.${sign}`,
+  };
+}
+
+/** Outcomes, sent from the admin console. */
+export function applicationShortlisted(d: { name?: string | null; jobTitle: string; note?: string | null }): Email {
+  return {
+    subject: `Next steps for your application: ${d.jobTitle}`,
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thank you for applying for ${b(esc(d.jobTitle))}. We enjoyed your application and would like to take it further.`) + note(d.note) +
+      p(`We'll be in touch shortly to arrange the next step. If you have any questions in the meantime, reply to this email.`),
+      { eyebrow: "Careers", heading: "You're shortlisted.", title: "Application update", reason: "you applied for a role at CricSynthesis",
+        cta: "About CricSynthesis", ctaUrl: `${SITE}/about/` }),
+    text: `Hi ${firstName(d.name)},\n\nThank you for applying for ${d.jobTitle}. We'd like to take your application further and will be in touch shortly to arrange the next step.` +
+      `${d.note ? `\n\nNote from our team: ${d.note}` : ""}${sign}`,
+  };
+}
+export function applicationDeclined(d: { name?: string | null; jobTitle: string; note?: string | null }): Email {
+  return {
+    subject: `Your application: ${d.jobTitle}`,
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) +
+      p(`Thank you for applying for ${b(esc(d.jobTitle))} and for the time you put into your application.`) +
+      p(`After careful review, we won't be taking your application further this time.`) + note(d.note) +
+      p(`We'd be glad to hear from you again when a role fits, and we wish you the very best.`),
+      { eyebrow: "Careers", heading: "Thank you for applying.", title: "Application update", reason: "you applied for a role at CricSynthesis",
+        cta: "See our open roles", ctaUrl: `${SITE}/careers/` }),
+    text: `Hi ${firstName(d.name)},\n\nThank you for applying for ${d.jobTitle}. After careful review, we won't be taking your application further this time.` +
+      `${d.note ? `\n\nNote from our team: ${d.note}` : ""}\n\nWe wish you the very best.${sign}`,
+  };
+}
+
+/** A plain notice to our own inbox (new API access request, upgrade request, application). */
+export function teamNotice(d: { subject: string; heading: string; rows: [string, string][]; body?: string; link?: [string, string] }): Email {
+  const rows = d.rows.filter(([, v]) => v);
+  return {
+    subject: d.subject,
+    html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1d1f20;max-width:620px">` +
+      `<p style="margin:0 0 12px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#416180;font-weight:700">CricSynthesis · team notice</p>` +
+      `<h2 style="margin:0 0 14px;font-size:20px">${esc(d.heading)}</h2>` +
+      `<table cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%">${rows.map(([k, v]) =>
+        `<tr><td style="border-top:1px solid #e4e5e7;color:#6b7075;width:34%;vertical-align:top">${esc(k)}</td><td style="border-top:1px solid #e4e5e7;vertical-align:top">${esc(v).replace(/\n/g, "<br>")}</td></tr>`).join("")}</table>` +
+      (d.body ? `<p style="margin:14px 0 0;white-space:pre-line">${esc(d.body)}</p>` : "") +
+      (d.link ? `<p style="margin:16px 0 0"><a href="${d.link[1]}" style="color:#416180;font-weight:700">${esc(d.link[0])} &rarr;</a></p>` : "") + `</div>`,
+    text: `${d.heading}\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}${d.body ? `\n\n${d.body}` : ""}${d.link ? `\n\n${d.link[0]}: ${d.link[1]}` : ""}`,
   };
 }

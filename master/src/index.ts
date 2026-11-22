@@ -169,6 +169,33 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
         message: r.message, status: r.status || "new", read: r.read === true, statusBy: r.statusBy || null, statusAt: r.statusAt || null,
         country: r.country || null, uid: r.uid || null, page: r.page || null })) });
     }
+    case "/api/applications": {
+      const rows = await google(env).latest("applications", 300);
+      return json({ applications: rows.map((r) => ({ id: r._id, at: r.at, job: r.job, jobTitle: r.jobTitle, name: r.name, email: r.email,
+        phone: r.phone, city: r.city, gender: r.gender || null, experience: r.experience, notice: r.notice, employer: r.employer || null,
+        designation: r.designation || null, qualification: r.qualification, portfolio: r.portfolio, linkedin: r.linkedin || null,
+        tools: r.tools || null, heard: r.heard || null, notes: r.notes || null, status: r.status || "new", read: r.read === true,
+        statusBy: r.statusBy || null, statusAt: r.statusAt || null, note: r.note || null, country: r.country || null,
+        resume: r.resume ? { name: r.resume.name, type: r.resume.type, bytes: r.resume.bytes } : null, stored: r.stored !== false })) });
+    }
+    case "/api/application-resume": {
+      const id = url.searchParams.get("id") || "";
+      if (!/^[A-Za-z0-9]{1,40}$/.test(id)) return fail(422, "Bad application");
+      const g = google(env);
+      const ap = await g.get(`applications/${id}`);
+      const meta = ap?.resume as Record<string, any> | undefined;
+      if (!meta?.chunks) return fail(404, "No resume");
+      const parts = await Promise.all(Array.from({ length: Math.min(Number(meta.chunks), 12) }, (_, n) => g.get(`applications/${id}/resume/${n}`)));
+      if (parts.some((p) => !p)) return fail(404, "The resume is incomplete");
+      const bin = atob(parts.map((p) => String(p!.data)).join(""));
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const type = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(meta.type)
+        ? meta.type : "application/octet-stream";
+      const name = String(meta.name || "resume").replace(/[^\w .()-]+/g, "_");
+      return new Response(bytes, { headers: { ...SECURITY, "Content-Type": type, "Cache-Control": "no-store",
+        "Content-Disposition": `attachment; filename="${name}"` } });
+    }
     case "/api/meters": return json(await cached("meters", 600, () => meters(env, google(env))));
     case "/api/uptime": return json(await cached("uptime", 240, async () => {
       const g = google(env), now = new Date();
