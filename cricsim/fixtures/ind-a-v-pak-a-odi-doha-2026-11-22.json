@@ -12,25 +12,26 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pakistan A won the toss and bat first.",
   "teams": [
     {
       "name": "India A",
       "short": "IND-A",
       "players": [
-        "Yashasvi Jaiswal",
-        "Sai Sudharsan",
-        "Devdutt Padikkal",
-        "Dhruv Jurel",
+        "Vaibhav Sooryavanshi",
+        "Abhishek Sharma",
+        "Ayush Badoni",
         "N. Tilak Varma",
-        "Ravindra Jadeja",
-        "Washington Sundar",
-        "Prasidh Krishna",
-        "Jasprit Bumrah",
-        "Mukesh Kumar",
-        "Mukesh Choudhary"
+        "Kumar Kushagra",
+        "Rinku Singh",
+        "Suryansh Shedge",
+        "Shahbaz Ahamad",
+        "Vipraj Nigam",
+        "Harshit Rana",
+        "Prince Yadav"
       ],
       "roles": [
+        "BAT",
         "BAT",
         "BAT",
         "BAT",
@@ -38,12 +39,11 @@
         "BAT",
         "AR",
         "AR",
-        "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
-      "captain": "Dhruv Jurel",
+      "captain": "N. Tilak Varma",
       "squad": [
         "Yashasvi Jaiswal",
         "Sai Sudharsan",
@@ -62,16 +62,16 @@
       "name": "Pakistan A",
       "short": "PAK-A",
       "players": [
-        "Abdul Samad",
-        "Saad Masood",
-        "Rohail Nazir",
-        "Maaz Sadaqat",
-        "Hasan Nawaz",
         "Shamyl Hussain",
-        "Mohammad Imran Randhawa",
+        "Maaz Sadaqat",
+        "Rohail Nazir",
+        "Hasan Nawaz",
+        "Abdul Samad",
         "Farhan Yousaf",
-        "Sufyan Moqim",
+        "Saad Masood",
+        "Mohammad Imran Randhawa",
         "Ahmed Daniyal",
+        "Sufyan Moqim",
         "Ali Raza"
       ],
       "roles": [
@@ -82,7 +82,7 @@
         "BAT",
         "BAT",
         "AR",
-        "BAT",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41829,
     "url": "https://khelnow.com/live-cricket-score/india-a-vs-pakistan-a-acc-men's-asia-cup-rising-stars-22nd-november-2026-41829",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
