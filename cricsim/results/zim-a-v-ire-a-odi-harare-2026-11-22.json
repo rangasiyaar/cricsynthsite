@@ -1,0 +1,411 @@
+{
+ "id": "zim-a-v-ire-a-odi-harare-2026-11-22",
+ "innings": [
+  {
+   "team": "Ireland A",
+   "runs": 312,
+   "wickets": 7,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Tim Tector",
+     "dismissal": "c & b BI Senzere",
+     "runs": 57,
+     "balls": 61,
+     "fours": 3,
+     "sixes": 3
+    },
+    {
+     "name": "Stephen Doheny",
+     "dismissal": "c T Maposa b F Akram",
+     "runs": 116,
+     "balls": 125,
+     "fours": 10,
+     "sixes": 3
+    },
+    {
+     "name": "Cade Carmichael",
+     "dismissal": "c Victor Chirwa b BI Senzere",
+     "runs": 45,
+     "balls": 52,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Benjamin Calitz",
+     "dismissal": "c F Akram b BI Senzere",
+     "runs": 14,
+     "balls": 12,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Gareth Delany",
+     "dismissal": "c C Madande b T Maposa",
+     "runs": 33,
+     "balls": 35,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Christopher De Freitas",
+     "dismissal": "c M Shumba b T Maposa",
+     "runs": 19,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Jordan Neill",
+     "dismissal": "c F Akram b Shelton Mazvitorera",
+     "runs": 17,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Gavin Hoey",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 0,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Victor Chirwa",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Faraz Akram",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shelton Mazvitorera",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 71,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Tinotenda Maposa",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 57,
+     "wickets": 2,
+     "no_balls": 2,
+     "wides": 3
+    },
+    {
+     "name": "Brandon Senzere",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Milton Shumba",
+     "overs": "9",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Roy Kaia",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tim Tector",
+     "score": 94,
+     "over": "18.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Cade Carmichael",
+     "score": 195,
+     "over": "34.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Benjamin Calitz",
+     "score": 213,
+     "over": "36.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Stephen Doheny",
+     "score": 269,
+     "over": "46.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Gareth Delany",
+     "score": 294,
+     "over": "48.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Christopher De Freitas",
+     "score": 296,
+     "over": "48.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jordan Neill",
+     "score": 312,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 0,
+    "w": 5,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  },
+  {
+   "team": "Zimbabwe A",
+   "runs": 277,
+   "wickets": 9,
+   "overs": "47.5",
+   "batting": [
+    {
+     "name": "Brandon Senzere",
+     "dismissal": "c B Calitz b JE Neill",
+     "runs": 14,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Kudzai Maunze",
+     "dismissal": "c B Calitz b JE Neill",
+     "runs": 14,
+     "balls": 20,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Panashe Taruvinga",
+     "dismissal": "c JE Neill b G Hoey",
+     "runs": 15,
+     "balls": 18,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Takudzwanashe Kaitano",
+     "dismissal": "lbw b L McCarthy",
+     "runs": 29,
+     "balls": 47,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Roy Kaia",
+     "dismissal": "st B Calitz b G Delany",
+     "runs": 41,
+     "balls": 61,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Milton Shumba",
+     "dismissal": "not out",
+     "runs": 100,
+     "balls": 80,
+     "fours": 10,
+     "sixes": 1
+    },
+    {
+     "name": "Clive Madande",
+     "dismissal": "c L McCarthy b JE Neill",
+     "runs": 16,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Faraz Akram",
+     "dismissal": "lbw b M Humphreys",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Victor Chirwa",
+     "dismissal": "b L McCarthy",
+     "runs": 29,
+     "balls": 22,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Tinotenda Maposa",
+     "dismissal": "c T Tector b M Humphreys",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shelton Mazvitorera",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jai Moondra",
+     "overs": "8.5",
+     "maidens": 1,
+     "runs": 37,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Jordan Neill",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 68,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Liam McCarthy",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Gavin Hoey",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Matthew Humphreys",
+     "overs": "8.5",
+     "maidens": 1,
+     "runs": 55,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Gareth Delany",
+     "overs": "2.1",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Brandon Senzere",
+     "score": 23,
+     "over": "3.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Kudzai Maunze",
+     "score": 40,
+     "over": "7.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Panashe Taruvinga",
+     "score": 58,
+     "over": "12.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Takudzwanashe Kaitano",
+     "score": 80,
+     "over": "19.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Roy Kaia",
+     "score": 167,
+     "over": "33.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Clive Madande",
+     "score": 195,
+     "over": "37.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Faraz Akram",
+     "score": 198,
+     "over": "38.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Victor Chirwa",
+     "score": 248,
+     "over": "44.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Tinotenda Maposa",
+     "score": 261,
+     "over": "45.4"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 2,
+    "w": 9,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Ireland A won",
+ "winner": "Ireland A"
+}
