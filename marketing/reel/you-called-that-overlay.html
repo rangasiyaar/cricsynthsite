@@ -1,0 +1,100 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- "You called that?" (15 s, 1080x1920): the layer over the live-action shots. Transparent except the end card.
+     Message cards (the fan's call before the toss, the friend's questions), the typed reply, the end card.
+     window.seek(t) draws time t; rendered frame by frame and laid over the shots with ffmpeg. -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hidden;font-family:Barlow,sans-serif}
+.layer{position:absolute;inset:0}
+.chat{position:absolute;left:70px;right:70px;display:flex;flex-direction:column;gap:22px}
+.msg{max-width:780px;border-radius:44px;padding:30px 40px 32px;box-shadow:0 24px 70px rgba(0,0,0,.45);opacity:0;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.msg .who{display:flex;align-items:center;gap:16px;font:600 30px Barlow;letter-spacing:.01em;margin-bottom:12px;opacity:.85}
+.msg .who i{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font:700 24px Barlow;font-style:normal}
+.msg .who span{font-weight:500;opacity:.75}
+.msg p{margin:0;font:500 48px/1.22 Barlow}
+.in{align-self:flex-start;background:rgba(242,242,243,.93);color:#16181a}
+.in .who i{background:#b0613a;color:#fff}
+.out{align-self:flex-end;background:rgba(65,97,128,.94);color:#f2f2f3}
+.out .who i{background:#94bce3;color:#0e1b2a}
+.caret{display:inline-block;width:4px;height:52px;background:#f2f2f3;vertical-align:-8px;margin-left:4px}
+.tick{font:600 26px Barlow;opacity:0;margin-top:10px;text-align:right;color:#cfe2f5}
+.tag{position:absolute;left:70px;top:150px;font:600 28px Barlow;letter-spacing:.16em;text-transform:uppercase;color:#f2f2f3;
+  padding:14px 22px;border-radius:999px;background:rgba(10,16,24,.55);backdrop-filter:blur(10px);opacity:0}
+#end{background:radial-gradient(900px 700px at 50% 45%,#16263a 0%,#0a1018 70%);opacity:0}
+.lock{position:absolute;left:0;right:0;top:720px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.lk{display:flex;align-items:center;gap:30px}
+.lk svg{width:128px;height:128px;color:#94bce3;overflow:visible}
+.lk .w{font:600 104px/1 'Barlow Condensed';letter-spacing:.04em;text-transform:uppercase;color:#f2f2f3}
+.lk .w b{font-weight:600;color:#94bce3}
+.tg{font:500 30px Barlow;letter-spacing:.14em;color:#8ea6bd;text-transform:uppercase}
+.url{font:600 46px Barlow;letter-spacing:.02em;color:#94bce3;margin-top:36px}
+.note{position:absolute;left:90px;right:90px;bottom:170px;text-align:center;font:500 28px/1.4 Barlow;color:#6f8396}
+</style></head><body>
+
+<div class="layer" id="c1"><div class="chat" style="top:300px">
+  <div class="msg out" id="m1"><div class="who"><i>Y</i>You <span>· 1:12 PM, before the toss</span></div>
+    <p>Aussies by a whisker today. Marsh is the one to watch.</p></div>
+  <div class="msg in" id="m2"><div class="who"><i>R</i>Rohan <span>· 5:04 PM</span></div><p>Still backing Australia?</p></div>
+</div></div>
+
+<div class="tag" id="tag">Australia v England · 2nd T20I</div>
+
+<div class="layer" id="c2"><div class="chat" style="top:300px">
+  <div class="msg in" id="m3"><div class="who"><i>R</i>Rohan <span>· now</span></div><p>NO WAY</p></div>
+  <div class="msg in" id="m4"><div class="who"><i>R</i>Rohan <span>· now</span></div><p>Okay. How did you call that?</p></div>
+</div></div>
+
+<div class="layer" id="c3"><div class="chat" style="top:1180px">
+  <div class="msg out" id="m5"><div class="who"><i>Y</i>You</div><p><span id="typed"></span><span class="caret" id="caret"></span></p>
+    <div class="tick" id="tick">Delivered</div></div>
+</div></div>
+
+<div class="layer" id="end">
+  <div class="lock">
+    <div class="lk"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4">
+      <path id="k1" d="M4 15L13 24L4 33" stroke-linecap="square" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="k2" d="M22 15V40M30 15V40M38 15V40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <path id="k3" d="M20 11H29M31 11H40" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></g></svg>
+      <div class="w" id="word">Cric<b>Synthesis</b></div></div>
+    <div class="tg" id="tg">AI-Powered Cricket Intelligence</div>
+    <div class="url" id="url">cricsynthesis.in</div>
+  </div>
+  <div class="note" id="note">Australia v England, 24 Nov 2026: Australia 54% to win in our forecast before the toss.</div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => 1 - Math.pow(1 - x, 3);
+const spring = (x) => x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.cos(x * Math.PI * 2.2) * Math.exp(-x * 6);  // a little overshoot
+function pop(el, t, at, out) {        // slides up and settles; fades away at `out`
+  const k = spring(seg(t, at, at + 0.55)), o = ease(seg(t, at, at + 0.2)) * (1 - ease(seg(t, out, out + 0.25)));
+  el.style.opacity = o.toFixed(3);
+  el.style.transform = `translateY(${(60 * (1 - k)).toFixed(1)}px) scale(${(0.94 + 0.06 * k).toFixed(3)})`;
+}
+const REPLY = "Saw it before the toss → cricsynthesis.in";
+const END = 12.5;
+window.seek = (t) => {
+  pop($('#m1'), t, 0.25, 2.85); pop($('#m2'), t, 1.15, 2.85);
+  $('#tag').style.opacity = (ease(seg(t, 3.3, 3.7)) * (1 - ease(seg(t, 6.9, 7.2)))).toFixed(3);
+  pop($('#m3'), t, 7.55, 10.25); pop($('#m4'), t, 8.25, 10.25);
+  pop($('#m5'), t, 10.45, 12.35);
+  const n = Math.round(REPLY.length * clamp((t - 10.75) / 1.25));
+  $('#typed').textContent = REPLY.slice(0, n);
+  $('#caret').style.opacity = n >= REPLY.length ? 0 : (Math.floor(t * 4) % 2 ? 1 : 0.25);
+  $('#tick').style.opacity = ease(seg(t, 12.05, 12.25)).toFixed(3);
+  $('#end').style.opacity = ease(seg(t, END, END + 0.3)).toFixed(3);
+  const d = (a, b) => (1 - ease(seg(t, END + a, END + b))).toFixed(3);
+  $('#k1').setAttribute('stroke-dashoffset', d(0.2, 0.6)); $('#k2').setAttribute('stroke-dashoffset', d(0.45, 0.95));
+  $('#k3').setAttribute('stroke-dashoffset', d(0.85, 1.15));
+  const w = ease(seg(t, END + 0.7, END + 1.2));
+  $('#word').style.opacity = w; $('#word').style.transform = `translateX(${(20 * (1 - w)).toFixed(1)}px)`;
+  $('#tg').style.opacity = ease(seg(t, END + 1.0, END + 1.5)); $('#url').style.opacity = ease(seg(t, END + 1.2, END + 1.7));
+  $('#note').style.opacity = ease(seg(t, END + 1.5, END + 2.0));
+};
+window.seek(0);
+</script>
+</body></html>
