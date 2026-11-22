@@ -1,0 +1,365 @@
+{
+ "id": "del-v-har-t20-indore-2026-11-22",
+ "innings": [
+  {
+   "team": "Delhi",
+   "runs": 232,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Priyansh Arya",
+     "dismissal": "c Y Chahal b Anuj Thakral",
+     "runs": 62,
+     "balls": 40,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Yash Dhull",
+     "dismissal": "c Y Dalal b Sumit Kumar",
+     "runs": 26,
+     "balls": 12,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Nitish Rana",
+     "dismissal": "c Y Chahal b Anuj Thakral",
+     "runs": 37,
+     "balls": 20,
+     "fours": 5,
+     "sixes": 2
+    },
+    {
+     "name": "Tejasvi Dahiya",
+     "dismissal": "c K Chouhan b Sumit Kumar",
+     "runs": 95,
+     "balls": 36,
+     "fours": 6,
+     "sixes": 9
+    },
+    {
+     "name": "Anuj Rawat",
+     "dismissal": "c Y Dalal b Anuj Thakral",
+     "runs": 6,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Himmat Singh",
+     "dismissal": "c Anuj Thakral b Sumit Kumar",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Digvesh Singh Rathi",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Kanishk Chouhan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sumit Kumar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anuj Thakral",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Yuzvendra Chahal",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Samant Jakhar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 58,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Rahul Tewatia",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Yash Dhull",
+     "score": 32,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Nitish Rana",
+     "score": 90,
+     "over": "8.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Priyansh Arya",
+     "score": 186,
+     "over": "15.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Anuj Rawat",
+     "score": 204,
+     "over": "17.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Himmat Singh",
+     "score": 225,
+     "over": "19.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Tejasvi Dahiya",
+     "score": 232,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 60
+  },
+  {
+   "team": "Haryana",
+   "runs": 189,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Yuvraj Singh",
+     "dismissal": "c Y Dhull b I Sharma",
+     "runs": 7,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Yashvardhan Dalal",
+     "dismissal": "c Priyansh Arya b S Sharma",
+     "runs": 28,
+     "balls": 18,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Ankit Kumar",
+     "dismissal": "c Priyansh Arya b M Yadav",
+     "runs": 32,
+     "balls": 17,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Nishant Sindhu",
+     "dismissal": "c Priyansh Arya b M Yadav",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Samant Jakhar",
+     "dismissal": "c Priyansh Arya b S Sharma",
+     "runs": 33,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Dinesh Bana",
+     "dismissal": "c Y Dhull b DS Rathi",
+     "runs": 6,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rahul Tewatia",
+     "dismissal": "c Priyansh Arya b S Sharma",
+     "runs": 14,
+     "balls": 16,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Sumit Kumar",
+     "dismissal": "not out",
+     "runs": 33,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Kanishk Chouhan",
+     "dismissal": "c Y Dhull b R Dadar",
+     "runs": 22,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Anuj Thakral",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Rajneesh Dadar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ishant Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mayank Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Suyash Sharma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Digvesh Singh Rathi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Yuvraj Singh",
+     "score": 13,
+     "over": "1.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ankit Kumar",
+     "score": 66,
+     "over": "6.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Yashvardhan Dalal",
+     "score": 71,
+     "over": "7.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nishant Sindhu",
+     "score": 71,
+     "over": "8.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Dinesh Bana",
+     "score": 78,
+     "over": "9.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Rahul Tewatia",
+     "score": 132,
+     "over": "14.2"
+    },
+    {
+     "wicket": 7,
+     "batter": "Samant Jakhar",
+     "score": 133,
+     "over": "14.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kanishk Chouhan",
+     "score": 176,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 7,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Delhi won by 43 runs",
+ "winner": "Delhi"
+}
