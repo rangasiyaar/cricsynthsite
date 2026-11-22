@@ -4,12 +4,13 @@
     python -m cricsim.notify send --plan data/notify.json --project <gcp project> # after deploying (FCM_ACCESS_TOKEN set)
 
 Topics, matching the app's switches (app/lib/native.ts). From the site update (`plan`, comparing with the live site):
-- "forecasts": a match is published for the first time;
-- "xis": a published match's playing XIs changed (the forecast was re-run with the named teams), with our captain;
+- "forecasts" (Fixture added): a match is published for the first time;
+- "xis" (Playing XI announced): a published match's playing XIs changed (the forecast was re-run with the named teams);
 - "results": a finished match was scored ("Renegades won by 4 wickets · we had them 57%").
 From the auto loop every few minutes (`timed`, remembering what it sent in cricsim/alerts/sent.json):
-- "soon": a published match starts in about 30 minutes;
-- "today": once a day around 9:00 IST, the day's published matches.
+- "soon" (Match about to start): a published match starts in about 30 minutes, with a nudge to make a fantasy team;
+- update reminders at 10:00, 14:00 and 19:00 IST to phones on an older app build (each phone with "App updates" on
+  subscribes to the topic build-<its build>), until they update.
 A nightly refit re-runs every forecast but changes none of these, so it sends nothing. At most MAX_ALERTS per run.
 
     python -m cricsim.notify timed --project <gcp project> --state cricsim/alerts/sent.json
@@ -46,17 +47,12 @@ def _xis(doc: dict | None) -> list[list[str]] | None:
     return [list(t.get("players") or []) for t in doc.get("match", {}).get("teams", [])]
 
 
-def _line(card: dict) -> str:
-    """'India Women 78% to win · 23 Oct, 2:00 PM IST'"""
-    win = card.get("win") or {}
-    fav = max(win, key=win.get) if win else None
-    parts = [f"{fav} {round(100 * win[fav])}% to win"] if fav else []
+def _when(card: dict) -> str:
+    """'23 Nov, 7:30 PM' (or just '23 Nov' without a start time)."""
     k = kickoff(card)
-    if k and card.get("start_time"):
-        parts.append(k.strftime("%-d %b, %-I:%M %p IST"))
-    elif k:
-        parts.append(k.strftime("%-d %b"))
-    return " · ".join(parts)
+    if not k:
+        return ""
+    return k.strftime("%-d %b, %-I:%M %p") if card.get("start_time") else k.strftime("%-d %b")
 
 
 def _captain(doc: dict | None) -> str | None:
@@ -81,14 +77,17 @@ def plan(new_index: dict, old_index: dict | None, new_doc, old_doc, now: datetim
         if c["id"] not in old:
             if old_index is None:
                 continue                      # no live index to compare with: don't announce everything
-            alerts.append({**msg, "topic": "forecasts", "title": f"New forecast: {short}", "body": _line(c)})
+            names = " v ".join(t["name"] for t in c["teams"])
+            when = _when(c)
+            alerts.append({**msg, "topic": "forecasts", "title": f"New match added: {short}",
+                           "body": f"{names}{f', {when}' if when else ''}. See who's favourite and the likely scores."})
         elif c.get("generated_at") != old[c["id"]].get("generated_at"):
             nd = new_doc(c["id"])
             before, after = _xis(old_doc(c["id"])), _xis(nd)
             if before is not None and after is not None and before != after:
                 cap = _captain(nd)
-                alerts.append({**msg, "topic": "xis", "title": f"Playing XIs named: {short}",
-                               "body": " · ".join(x for x in (f"Captain: {cap}" if cap else "", _line(c)) if x)})
+                alerts.append({**msg, "topic": "xis", "title": f"Playing XIs are out: {short}",
+                               "body": "See both line-ups and our updated forecast." + (f" Our captain pick: {cap}." if cap else "")})
     if new_results is not None and old_results is not None:
         seen = {r["id"] for r in old_results.get("matches", [])}
         for r in new_results.get("matches", []):
@@ -106,8 +105,10 @@ def plan(new_index: dict, old_index: dict | None, new_doc, old_doc, now: datetim
 
 
 def fcm_message(alert: dict) -> dict:
+    """To a topic, or (update reminders) to a condition over build topics."""
+    target = {"condition": alert["condition"]} if alert.get("condition") else {"topic": alert["topic"]}
     return {"message": {
-        "topic": alert["topic"],
+        **target,
         "notification": {"title": alert["title"], "body": alert["body"]},
         "data": {"path": alert["path"], "match": alert["match"]},
         "android": {"priority": "high", "collapse_key": f"{alert['topic']}-{alert['match']}"},
@@ -166,12 +167,13 @@ def send_cmd(plan_file: Path, project: str) -> None:
     click.echo(f"Sent {send(alerts, project, token)} of {len(alerts)} alert(s)")
 
 
-SOON_MIN = 30          # "starting soon" goes out this many minutes before the start (± one loop pass)
-TODAY_AT = (9, 0)      # "today's matches" from this IST time, once a day
+SOON_MIN = 30          # "about to start" goes out this many minutes before the start (± one loop pass)
+UPDATE_AT = [(10, 0), (14, 0), (19, 0)]   # update reminders, IST, each within 2 hours of its time
+UPDATE_TOPICS = 25     # the most recent older builds reminded (5 topics per message: at most 5 messages)
 
 
 def timed(index: dict, sent: dict, now: datetime | None = None) -> list[dict]:
-    """The time-based alerts due now that haven't been sent: "soon" per match and one "today" per day.
+    """The time-based alerts due now that haven't been sent: "soon" per match.
     `sent` (alert key -> ISO time) is updated in place with what this returns."""
     now = now or datetime.now(timezone.utc)
     out: list[dict] = []
@@ -184,25 +186,10 @@ def timed(index: dict, sent: dict, now: datetime | None = None) -> list[dict]:
         key = f"soon:{c['id']}"
         if 0 < mins <= SOON_MIN + 5 and key not in sent:
             short = " v ".join(t["short"] for t in c["teams"])
-            win = c.get("win") or {}
-            fav = max(win, key=win.get) if win else None
-            body = " · ".join(x for x in (f"Starts {k.strftime('%-I:%M %p')} IST", f"{fav} {round(100 * win[fav])}% to win" if fav else "",
-                                          "XIs in" if c.get("xis") else "") if x)
             out.append({"match": c["id"], "path": f"/m/match/?id={c['id']}", "topic": "soon",
-                        "title": f"{short} starts in {max(1, round(mins))} min", "body": body})
+                        "title": f"{short} starts in {max(1, round(mins))} minutes",
+                        "body": "Still building your fantasy team? See our top picks, captain choice and team suggestions before the start."})
             sent[key] = now.isoformat(timespec="minutes")
-    local = now.astimezone(IST)
-    key = f"today:{local.date().isoformat()}"
-    if (local.hour, local.minute) >= TODAY_AT and local.hour < 21 and key not in sent:
-        todays = [c for c in cards if c.get("date") == local.date().isoformat() and (kickoff(c) or now) > now]
-        if todays:
-            comps = list(dict.fromkeys((c.get("competition") or "").split(" · ")[0] for c in todays if c.get("competition")))
-            first = min(todays, key=lambda c: kickoff(c) or now)
-            out.append({"match": f"today-{local.date().isoformat()}", "path": "/m/matches/", "topic": "today",
-                        "title": f"{len(todays)} match{'es' if len(todays) > 1 else ''} today",
-                        "body": " · ".join(x for x in (", ".join(comps[:3]),
-                                                       f"first at {kickoff(first).strftime('%-I:%M %p')} IST" if first.get("start_time") else "") if x)})
-        sent[key] = now.isoformat(timespec="minutes")
     cutoff = (now - timedelta(days=3)).isoformat()
     for k2 in [k2 for k2, v in sent.items() if v < cutoff]:
         del sent[k2]
@@ -214,12 +201,12 @@ def timed(index: dict, sent: dict, now: datetime | None = None) -> list[dict]:
 @click.option("--state", type=click.Path(path_type=Path), required=True, help="what was sent (kept in the repo)")
 @click.option("--dry-run", is_flag=True)
 def timed_cmd(project: str, state: Path, dry_run: bool) -> None:
-    """Send the time-based alerts that are due (match starting soon, today's matches)."""
+    """Send the time-based alerts that are due (match about to start, update reminders)."""
     index = _fetch("index.json")
     if not index:
         click.echo("No live index"); return
     sent = json.loads(state.read_text()) if state.exists() else {}
-    alerts = timed(index, sent)
+    alerts = timed(index, sent) + update_reminders(_releases(), sent)
     if not alerts:
         click.echo("No timed alerts due"); return
     for a in alerts:
@@ -234,10 +221,60 @@ def timed_cmd(project: str, state: Path, dry_run: bool) -> None:
     state.write_text(json.dumps(sent, indent=1, sort_keys=True) + "\n")
 
 
+def _update_copy(version: str) -> dict:
+    return {"title": "Update CricSynthesis", "body": f"Version {version} is ready, with fixes and improvements. Tap to update."}
+
+
 def release_alert(version: str, build: int) -> dict:
-    """The "new version" alert for one release: short, the same every time (what's new is in the app's prompt)."""
-    return {"topic": "updates", "match": f"app-{build}", "path": "/m/matches/",
-            "title": "New update available", "body": f"CricSynthesis {version} is ready. Tap to install."}
+    """The "new version" alert for one release, to every phone with app-update alerts on (what's new is in the app's prompt)."""
+    return {"topic": "updates", "match": f"app-{build}", "path": "/m/matches/", **_update_copy(version)}
+
+
+def _releases() -> list[dict]:
+    """The app's releases ({version, build, prerelease, published}) from GitHub (the auto loop has GH_TOKEN); [] if unavailable."""
+    import re
+    import subprocess
+    try:
+        out = subprocess.run(["gh", "release", "list", "--limit", "60", "--json", "tagName,isPrerelease,publishedAt"],
+                             capture_output=True, text=True, timeout=60, check=True).stdout
+    except Exception as e:  # noqa: BLE001 - reminders are best effort
+        click.echo(f"no release list: {e}", err=True)
+        return []
+    rows = []
+    for r in json.loads(out or "[]"):
+        m = re.match(r"android-v(.+)-build(\d+)$", r.get("tagName") or "")
+        if m:
+            rows.append({"version": m.group(1), "build": int(m.group(2)), "prerelease": bool(r.get("isPrerelease")),
+                         "published": r.get("publishedAt") or ""})
+    return rows
+
+
+def update_reminders(releases: list[dict], sent: dict, now: datetime | None = None) -> list[dict]:
+    """At 10:00, 14:00 and 19:00 IST: "Update CricSynthesis" to phones on any older build (topics build-<n>), until they
+    update. Waits 30 minutes after a release so the site offers it first. `sent` is updated in place."""
+    now = now or datetime.now(timezone.utc)
+    full = [r for r in releases if not r["prerelease"]]
+    if not full:
+        return []
+    latest = max(full, key=lambda r: r["build"])
+    try:
+        published = datetime.fromisoformat(latest["published"].replace("Z", "+00:00"))
+    except ValueError:
+        return []
+    if now - published < timedelta(minutes=30):
+        return []
+    local = now.astimezone(IST)
+    due = None
+    for h, m in UPDATE_AT:
+        at = local.replace(hour=h, minute=m, second=0, microsecond=0)
+        if at <= local < at + timedelta(hours=2):
+            due = f"update:{local.date().isoformat()}:{h:02d}"
+    if not due or due in sent:
+        return []
+    sent[due] = now.isoformat(timespec="minutes")
+    older = sorted({r["build"] for r in releases if r["build"] < latest["build"]}, reverse=True)[:UPDATE_TOPICS]
+    return [{"topic": "updates", "match": f"app-{latest['build']}", "path": "/m/matches/", **_update_copy(latest["version"]),
+             "condition": " || ".join(f"'build-{b}' in topics" for b in older[i:i + 5])} for i in range(0, len(older), 5)]
 
 
 @main.command("release")
@@ -259,7 +296,7 @@ def release_cmd(version: str, build: int, project: str, dry_run: bool) -> None:
 
 
 @main.command("test")
-@click.option("--topic", type=click.Choice(["forecasts", "xis", "soon", "results", "today", "updates"]), default="forecasts")
+@click.option("--topic", type=click.Choice(["forecasts", "xis", "soon", "results", "updates"]), default="forecasts")
 @click.option("--project", required=True)
 def test_cmd(topic: str, project: str) -> None:
     """Send one test alert to a topic: every phone with that switch on should get it."""

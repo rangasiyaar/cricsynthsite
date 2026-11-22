@@ -115,18 +115,18 @@ export function openExternal(url: string) {
 }
 
 // ── match alerts (Firebase Cloud Messaging topics; sent by the nightly publish, cricsim/notify.py) ─────────────────
-export type AlertTopic = "forecasts" | "xis" | "soon" | "results" | "today" | "updates";
+export type AlertTopic = "forecasts" | "xis" | "soon" | "results" | "updates";
 export const ALERTS: { topic: AlertTopic; title: string }[] = [
-  { topic: "soon", title: "Match starting soon" },
-  { topic: "xis", title: "Playing XIs named" },
+  { topic: "forecasts", title: "Fixture added" },
+  { topic: "soon", title: "Match about to start, make your fantasy team" },
+  { topic: "xis", title: "Playing XI announced" },
   { topic: "results", title: "Results" },
-  { topic: "today", title: "Today's matches" },
-  { topic: "forecasts", title: "New forecasts" },
   { topic: "updates", title: "App updates" },
 ];
 export const ALL_ALERTS = ALERTS.map((a) => a.topic);
 const ALERT_KEY = "cs-alerts";
-const ALERT_V = "cs-alerts-v"; // 2: the kinds added in 0.3.0; 3: app updates (0.3.2); each added for everyone who had alerts on
+const ALERT_V = "cs-alerts-v"; // 2: the kinds added in 0.3.0; 3: app updates (0.3.2); 4: "today's matches" removed (0.3.21)
+const BUILD_KEY = "cs-alerts-build";  // the build-<n> topic this phone is on (update reminders reach older builds only)
 
 /** Alerts need the native messaging plugin, which the app carries once its Firebase config is set up. */
 export const hasAlerts = () => isNative() && !!cap()?.isPluginAvailable?.("FirebaseMessaging");
@@ -149,7 +149,23 @@ export async function setAlerts(topics: AlertTopic[]): Promise<AlertTopic[]> {
     await (on ? FirebaseMessaging.subscribeToTopic({ topic: a.topic }) : FirebaseMessaging.unsubscribeFromTopic({ topic: a.topic })).catch(() => {});
   }
   try { localStorage.setItem(ALERT_KEY, JSON.stringify(topics)); } catch {}
+  await syncBuildTopic(topics.includes("updates")).catch(() => {});
   return topics;
+}
+
+/** With "App updates" on, the phone is subscribed to build-<its build> (and off the topic of the build it had before),
+ *  so update reminders (cricsim/notify.py) go only to phones that haven't installed the latest version. */
+export async function syncBuildTopic(updatesOn = (alertChoice() ?? []).includes("updates")) {
+  if (!hasAlerts()) return;
+  const me = await appInfo();
+  if (!me?.build) return;
+  const { FirebaseMessaging } = await import("@capacitor-firebase/messaging");
+  let had = "";
+  try { had = localStorage.getItem(BUILD_KEY) ?? ""; } catch {}
+  const want = updatesOn ? `build-${me.build}` : "";
+  if (had && had !== want) await FirebaseMessaging.unsubscribeFromTopic({ topic: had }).catch(() => {});
+  if (want && had !== want) await FirebaseMessaging.subscribeToTopic({ topic: want });
+  try { want ? localStorage.setItem(BUILD_KEY, want) : localStorage.removeItem(BUILD_KEY); } catch {}
 }
 
 /** Once per new kind of alert: someone who had alerts on gets it too (they can switch it off). */
@@ -157,11 +173,16 @@ export async function upgradeAlerts() {
   if (!hasAlerts()) return;
   try {
     const v = Number(localStorage.getItem(ALERT_V) || "1");
-    if (v >= 3) return;
-    const had = alertChoice();
-    localStorage.setItem(ALERT_V, "3");
-    const add: AlertTopic[] = [...(v < 2 ? ["soon", "results", "today"] as AlertTopic[] : []), "updates"];
-    if (had && had.length) await setAlerts([...new Set<AlertTopic>([...had, ...add])]);
+    if (v < 4) {
+      const had = (alertChoice() as string[] | null)?.filter((t) => t !== "today") as AlertTopic[] | undefined;
+      localStorage.setItem(ALERT_V, "4");
+      const { FirebaseMessaging } = await import("@capacitor-firebase/messaging");
+      await FirebaseMessaging.unsubscribeFromTopic({ topic: "today" }).catch(() => {});
+      const add: AlertTopic[] = v < 3 ? [...(v < 2 ? ["soon", "results"] as AlertTopic[] : []), "updates"] : [];
+      if (had && had.length) await setAlerts([...new Set<AlertTopic>([...had, ...add])]);
+      else if (had) localStorage.setItem(ALERT_KEY, "[]");
+    }
+    await syncBuildTopic();   // every start: a phone that just updated moves to its new build's topic
   } catch {}
 }
 

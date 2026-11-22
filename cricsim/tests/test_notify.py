@@ -19,8 +19,8 @@ def doc(xi):
 def test_new_match_is_announced_with_its_favourite_and_start():
     alerts = plan({"matches": [card("a")]}, {"matches": []}, lambda i: None, lambda i: None, NOW)
     assert [a["topic"] for a in alerts] == ["forecasts"]
-    assert alerts[0]["title"] == "New forecast: INDW v ZIMW"
-    assert alerts[0]["body"] == "India Women 78% to win · 24 Oct, 2:00 PM IST"
+    assert alerts[0]["title"] == "New match added: INDW v ZIMW"
+    assert alerts[0]["body"] == "India Women v Zimbabwe Women, 24 Oct, 2:00 PM. See who's favourite and the likely scores."
     assert alerts[0]["path"] == "/m/match/?id=a"
 
 
@@ -52,7 +52,8 @@ def test_named_xis_carry_the_captain():
     new = {"matches": [card("b", gen="g2")]}
     d = {**doc(["p1", "p3"]), "fantasy": {"single": {"captain": "p3"}, "players": {"p3": {"name": "Smriti Mandhana"}}}}
     alerts = plan(new, old, {"b": d}.get, {"b": doc(["p1", "p2"])}.get, NOW)
-    assert alerts[0]["body"].startswith("Captain: Smriti Mandhana · India Women 78% to win")
+    assert alerts[0]["title"] == "Playing XIs are out: INDW v ZIMW"
+    assert alerts[0]["body"] == "See both line-ups and our updated forecast. Our captain pick: Smriti Mandhana."
 
 
 def test_new_result_is_announced_with_what_we_had():
@@ -74,17 +75,34 @@ def test_timed_alerts_go_once():
     later = card("l", date="2026-10-23", time="19:30")
     sent: dict = {}
     first = timed({"matches": [soon, later]}, sent, NOW)
-    assert [(a["topic"], a["match"]) for a in first] == [("soon", "s"), ("today", "today-2026-10-23")]
-    assert first[0]["title"] == "INDW v ZIMW starts in 30 min" and "India Women 78% to win" in first[0]["body"]
-    assert first[1]["title"] == "2 matches today"
+    assert [(a["topic"], a["match"]) for a in first] == [("soon", "s")]   # no "today's matches" any more
+    assert first[0]["title"] == "INDW v ZIMW starts in 30 minutes" and "fantasy team" in first[0]["body"]
     assert timed({"matches": [soon, later]}, sent, NOW) == []          # nothing twice
-    early = datetime(2026, 10, 23, 2, 0, tzinfo=timezone.utc)          # 7:30 IST: too early for today's list
-    assert timed({"matches": [later]}, {}, early) == []
+
+
+def test_update_reminders_three_times_a_day_to_older_builds_only():
+    from cricsim.notify import fcm_message, update_reminders
+    rel = [{"version": "0.3.21", "build": 140, "prerelease": False, "published": "2026-10-22T10:00:00Z"}] + [
+        {"version": f"0.3.{i}", "build": 100 + 2 * i, "prerelease": False, "published": "2026-10-01T10:00:00Z"} for i in range(1, 8)]
+    sent: dict = {}
+    at10 = datetime(2026, 10, 23, 4, 40, tzinfo=timezone.utc)          # 10:10 IST
+    r = update_reminders(rel, sent, at10)
+    assert len(r) == 2 and r[0]["title"] == "Update CricSynthesis"
+    assert r[0]["body"] == "Version 0.3.21 is ready, with fixes and improvements. Tap to update."
+    assert r[0]["condition"] == "'build-114' in topics || 'build-112' in topics || 'build-110' in topics || 'build-108' in topics || 'build-106' in topics"
+    assert "'build-140'" not in r[0]["condition"] + r[1]["condition"]
+    assert "condition" in fcm_message(r[0])["message"] and "topic" not in fcm_message(r[0])["message"]
+    assert update_reminders(rel, sent, at10) == []                      # once per slot
+    assert update_reminders(rel, sent, datetime(2026, 10, 23, 6, 0, tzinfo=timezone.utc)) == []      # 11:30 IST: between slots
+    assert len(update_reminders(rel, sent, datetime(2026, 10, 23, 8, 35, tzinfo=timezone.utc))) == 2  # 14:05 IST
+    assert len(update_reminders(rel, sent, datetime(2026, 10, 23, 13, 31, tzinfo=timezone.utc))) == 2  # 19:01 IST
+    fresh = [{**rel[0], "published": "2026-10-23T04:30:00Z"}] + rel[1:]   # released 10 minutes ago: wait
+    assert update_reminders(fresh, {}, at10) == []
 
 
 
 def test_release_alert_is_short_and_names_the_version():
     from cricsim.notify import release_alert
     a = release_alert("0.3.4", 82)
-    assert a["topic"] == "updates" and a["title"] == "New update available"
-    assert a["body"] == "CricSynthesis 0.3.4 is ready. Tap to install." and a["match"] == "app-82"
+    assert a["topic"] == "updates" and a["title"] == "Update CricSynthesis"
+    assert a["body"] == "Version 0.3.4 is ready, with fixes and improvements. Tap to update." and a["match"] == "app-82"

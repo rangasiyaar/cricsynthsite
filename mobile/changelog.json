@@ -1,5 +1,14 @@
 [
  {
+  "version": "0.3.21",
+  "date": "2026-11-22",
+  "notes": [
+   "Clearer alerts: Fixture added, Match about to start (with a nudge to make your fantasy team), Playing XI announced, Results and App updates",
+   "Today's matches alert removed",
+   "Update reminders now reach only phones that haven't installed the latest version"
+  ]
+ },
+ {
   "version": "0.3.20",
   "date": "2026-11-21",
   "notes": [
