@@ -92,8 +92,8 @@ export default function Info({ k, label }: { k: GlossaryKey; label?: string }) {
     <span className="info">
       <button ref={btn} type="button" className="info-btn" aria-expanded={open} aria-controls={open ? id : undefined}
               aria-label={`What does ${label ?? g.title} mean?`} onClick={toggle}>
-        <svg viewBox="0 0 20 20" aria-hidden="true"><circle className="info-ring" cx="10" cy="10" r="8.4" />
-          <path className="info-glyph" d="M10 9v5" /><circle className="info-dot" cx="10" cy="6.2" r="1.05" /></svg>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 7.1v4.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="8" cy="4.7" r="0.95" fill="currentColor" /></svg>
       </button>
       {open && createPortal(panel, document.body)}
     </span>

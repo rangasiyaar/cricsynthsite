@@ -19,7 +19,8 @@
 .app-wrap .seg button:not([aria-pressed="true"]) { color: var(--cs-ink-2); }
 .app-wrap .seg button[aria-pressed="true"] { color: var(--cs-bg); }
 /* the ⓘ button (design.css) keeps its own look (its panel is outside .app-wrap, drawn at the page's top level) */
-.app-wrap .info button.info-btn { color: var(--cs-steel-600); font: inherit; }
+.app-wrap .info button.info-btn { color: var(--cs-ink-3); font: inherit; }
+.app-wrap .info button.info-btn[aria-expanded="true"] { color: var(--cs-ink); }
 .app-wrap a { text-decoration: none !important; }
 
 /* ── top bar ── */

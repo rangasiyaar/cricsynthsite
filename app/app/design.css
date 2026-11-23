@@ -365,22 +365,22 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── ⓘ explanations (components/Info.tsx, lib/glossary.ts) ──
-   The icon: a thin steel ring that fills steel when open. The panel: one of the site's cards (12px radius, 1px hairline,
+   The icon: a hairline circle like the panel's close button, in the text colours. The panel: one of the site's cards (12px radius, 1px hairline,
    no corner ticks) with a menu's shadow, a section-style heading and the site's small uppercase label; drawn at the
    page's top level (portal) so nothing around the icon can cover it or show through. */
-.info { display: inline-flex; vertical-align: middle; margin-left: 8px; line-height: 0; }
-.info-btn { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; padding: 0; border: 0;
-  border-radius: 50%; background: none; color: var(--cs-steel-600); cursor: pointer; }
+.info { display: inline-flex; vertical-align: middle; margin-left: 8px; line-height: 0; position: relative; top: -2px; }
+/* the button: the same hairline circle as the panel's close button, in the text colours; no fill, no accent */
+.info-btn { position: relative; display: inline-grid; place-items: center; box-sizing: border-box; width: 20px; height: 20px; padding: 0;
+  border: 1px solid var(--cs-line); border-radius: 50%; background: transparent; color: var(--cs-ink-3); cursor: pointer;
+  transition: color .15s, border-color .15s, background-color .15s; }
 .info-btn::before { content: ""; position: absolute; inset: -12px; }   /* a 44 px tap target, the icon stays small */
-.info-btn svg { width: 18px; height: 18px; overflow: visible; }
-.info-ring { fill: transparent; stroke: currentColor; stroke-width: 1.4; opacity: .75; transition: fill .15s, opacity .15s; }
-.info-glyph { stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; transition: stroke .15s; }
-.info-dot { fill: currentColor; transition: fill .15s; }
-.info-btn:hover .info-ring { opacity: 1; }
-.info-btn[aria-expanded="true"] .info-ring { fill: var(--cs-steel-700); stroke: var(--cs-steel-700); opacity: 1; }
-.info-btn[aria-expanded="true"] .info-glyph { stroke: var(--cs-paper); }
-.info-btn[aria-expanded="true"] .info-dot { fill: var(--cs-paper); }
-.info-btn:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 3px; }
+.info-btn svg { width: 14px; height: 14px; }
+.info-btn:hover { color: var(--cs-ink); border-color: var(--cs-ink-3); }
+.info-btn[aria-expanded="true"] { color: var(--cs-ink); border-color: var(--cs-ink-3); background: var(--cs-surface); }
+.info-btn:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; }
+.cs-k .info, .snap-sub .info, .small .info { top: -1px; margin-left: 6px; }
+.cs-k .info-btn, .small .info-btn { width: 18px; height: 18px; }
+.cs-k .info-btn svg, .small .info-btn svg { width: 12px; height: 12px; }
 
 .info-pop { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 18px 20px 20px;
   background: var(--cs-bg); border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px); opacity: 1;

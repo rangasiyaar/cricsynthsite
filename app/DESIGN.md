@@ -35,7 +35,8 @@ grids are 4×2 tiles, 2×2 charts, full-width panels. Left-aligned text inside c
   animations or faded labels around it can't cover it or show through. On phones (≤640px) it becomes a bottom sheet
   (20px top corners, dimmed page behind).
 - Explanations: every section with numbers or a chart gets the ⓘ (`components/Info.tsx`) after its title, with plain
-  words in `lib/glossary.ts` (what it shows, how to read it, an example). Accent colour for the icon: `--cs-steel-600`.
+  words in `lib/glossary.ts` (what it shows, how to read it, an example). The button is a 20px hairline circle in the
+  text colours (`--cs-line` border, `--cs-ink-3` glyph), the same as the panel's close button: no fill, no accent colour.
 - The Android app (`app/m/mobile.css`) uses the same tokens with app shapes: filled surfaces, corners in three sizes
   (8px small, 12px medium, 20px large).
 - Section headings say what the reader learns ("How the innings unfold"), with one plain sentence under them.
