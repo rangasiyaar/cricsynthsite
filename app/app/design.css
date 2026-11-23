@@ -471,3 +471,24 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .guide-pager { grid-template-columns: 1fr; }
   .guide-pager a.next { text-align: left; }
 }
+
+/* ── About (app/about) ── */
+.about-section { margin-top: 56px; }
+.about-section > h2 { margin: 0 0 16px; }
+.about-prose { max-width: 66ch; }
+.about-prose p { margin: 0 0 14px; line-height: 1.65; }
+.about-card { display: flex; flex-direction: column; gap: 8px; }
+.about-card h3, .about-values h3 { margin: 0; font-size: 20px; }
+.about-card p, .about-values p { margin: 0; }
+.about-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto !important; padding-top: 6px; font-weight: 600; }
+.about-values { gap: 24px 48px; }
+.about-values > div { padding-top: 14px; border-top: 1px solid var(--cs-line); }
+.about-nums .card { display: grid; gap: 4px; padding: 18px 20px; }
+.about-nums b { font: 600 34px/1 var(--cs-head); color: var(--cs-ink); }
+.about-person { display: flex; gap: 20px; align-items: center; max-width: 640px; }
+.about-person h3 { margin: 0; font-size: 22px; }
+.about-person p { margin: 4px 0 0; }
+.about-initials { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--cs-line);
+  background: var(--cs-surface); font: 600 24px var(--cs-head); color: var(--cs-steel-700); }
+.about-nums { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 860px) { .about-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

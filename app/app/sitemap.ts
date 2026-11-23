@@ -13,7 +13,7 @@ export const dynamic = "force-static";
 const PAGES: [string, number, MetadataRoute.Sitemap[number]["changeFrequency"]][] = [
   ["/", 1, "daily"], ["/matches/", 0.9, "daily"], ["/previews/", 0.9, "hourly"], ["/fantasy/", 0.9, "hourly"], ["/lab/", 0.7, "weekly"], ["/app/", 0.7, "monthly"],
   ["/pricing/", 0.6, "monthly"], ["/developers/", 0.7, "monthly"], ["/docs/", 0.6, "weekly"], ["/docs/api/", 0.6, "weekly"], ["/docs/guide/", 0.7, "weekly"], ["/playground/", 0.5, "monthly"],
-  ["/mcp/", 0.5, "monthly"], ["/blog/", 0.7, "weekly"], ["/contact/", 0.4, "yearly"], ["/careers/", 0.3, "monthly"], ["/credits/", 0.2, "yearly"],
+  ["/mcp/", 0.5, "monthly"], ["/blog/", 0.7, "weekly"], ["/about/", 0.5, "monthly"], ["/contact/", 0.4, "yearly"], ["/careers/", 0.3, "monthly"], ["/credits/", 0.2, "yearly"],
   ["/privacy/", 0.2, "yearly"], ["/terms/", 0.2, "yearly"], ["/refunds/", 0.2, "yearly"], ["/delivery/", 0.2, "yearly"],
 ];
 

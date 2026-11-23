@@ -38,6 +38,7 @@ export default function Help() {
       <MenuGroup label="Still stuck">
         <div className="a-panel" style={{ display: "grid", gap: 12 }}>
           <a className="a-btn" href={`${SITE}/contact/`}>Contact us</a>
+          <a className="a-pill" href={`${SITE}/about/`}>About CricSynthesis</a>
         </div>
       </MenuGroup>
     </>
