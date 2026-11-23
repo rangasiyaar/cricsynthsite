@@ -125,7 +125,6 @@
 .a-section-head p { margin: 4px 0 0; font-size: 13px; color: var(--cs-ink-3); }
 .a-content { animation: a-in .3s cubic-bezier(.2, .7, .2, 1) both; }
 html body .a-content .card, html body .a-content .tile { background: var(--a-surface); border: 0; border-radius: var(--a-r); padding: 16px; box-shadow: none; }
-html body .a-content .card::before, html body .a-content .card::after { display: none !important; }
 html body .a-content .grid, html body .a-content .tiles, html body .a-content .g2, html body .a-content .g3 { grid-template-columns: minmax(0, 1fr) !important; gap: 12px; }
 .a-content h2 { font-size: 24px; }
 .a-content h3 { font-size: 19px; letter-spacing: .02em; margin-bottom: 10px; }

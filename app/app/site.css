@@ -28,7 +28,6 @@
   --cs-btn-hover: #416180;          /* hover fill for steel buttons — same in both themes */
   --cs-nav-bg: rgba(242, 242, 243, .92);
   --cs-nav-bg-solid: rgba(242, 242, 243, .97);
-  --cs-corner: rgba(29, 31, 32, .55);
   --cs-tick: rgba(29, 31, 32, .08);
   --cs-chart-fill: #d6ebff;
   --cs-chart-line: #416180;
@@ -86,7 +85,6 @@
 
   --cs-nav-bg: rgba(17, 19, 21, .9);
   --cs-nav-bg-solid: rgba(17, 19, 21, .97);
-  --cs-corner: rgba(230, 231, 232, .5);
   --cs-tick: rgba(230, 231, 232, .08);
   --cs-chart-fill: #1f3347;
   --cs-chart-line: #8fb3d9;
@@ -215,12 +213,6 @@ body .footer .social-link svg { width: 14px; height: 14px; }
 .cs-btn--secondary:hover { background: var(--cs-surface); color: var(--cs-ink); }
 
 .cs-frame { position: relative; border: 1px solid var(--cs-line); }
-.cs-frame > i { position: absolute; width: 11px; height: 11px; color: var(--cs-corner); pointer-events: none; }
-.cs-frame > i::before, .cs-frame > i::after { content: ""; position: absolute; background: currentColor; }
-.cs-frame > i::before { left: 5px; top: 0; width: 1px; height: 100%; }
-.cs-frame > i::after { top: 5px; left: 0; width: 100%; height: 1px; }
-.cs-frame > i.tl { top: -6px; left: -6px; } .cs-frame > i.tr { top: -6px; right: -6px; }
-.cs-frame > i.bl { bottom: -6px; left: -6px; } .cs-frame > i.br { bottom: -6px; right: -6px; }
 
 .cs-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; padding: 4px 12px; border: 1px solid var(--cs-line); color: var(--cs-ink); line-height: 1.3; }
 .cs-tag--live { background: var(--cs-steel); color: var(--cs-paper); border-color: var(--cs-steel); }

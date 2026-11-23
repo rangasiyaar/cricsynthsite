@@ -3,11 +3,10 @@
 
 :root { --r-card: 12px; --r-btn: 8px; }
 
-/* Surfaces: rounded cards with a hairline, no corner ticks */
+/* Surfaces: rounded cards with a hairline. No corner ticks anywhere (removed from the theme, Nov 2026; app/DESIGN.md) */
 html body .card, html body .cs-frame, html body .endpoint-card, html body .pg-block, html body .code-panel {
   border: 1px solid var(--cs-line); border-radius: var(--r-card);
 }
-html body .card::before, html body .card::after, html body .cs-frame > i { display: none !important; }
 html body .card { padding: 22px 24px; }
 html body .plate-bar { margin: -22px -24px 18px; border-radius: var(--r-card) var(--r-card) 0 0; }
 html body .notice { border-radius: var(--r-card); }
@@ -366,53 +365,46 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── ⓘ explanations (components/Info.tsx, lib/glossary.ts) ──
-   The icon: a thin steel ring like the site's frames; fills steel when open. The panel: a framed card with the site's
-   corner marks, a condensed uppercase title and small uppercase labels, drawn at the page's top level (portal). */
+   The icon: a thin steel ring that fills steel when open. The panel: one of the site's cards (12px radius, 1px hairline,
+   no corner ticks) with a menu's shadow, a section-style heading and the site's small uppercase label; drawn at the
+   page's top level (portal) so nothing around the icon can cover it or show through. */
 .info { display: inline-flex; vertical-align: middle; margin-left: 8px; line-height: 0; }
 .info-btn { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; padding: 0; border: 0;
-  border-radius: 50%; background: none; color: var(--cs-steel-600); cursor: pointer; transition: transform .15s ease; }
+  border-radius: 50%; background: none; color: var(--cs-steel-600); cursor: pointer; }
 .info-btn::before { content: ""; position: absolute; inset: -12px; }   /* a 44 px tap target, the icon stays small */
 .info-btn svg { width: 18px; height: 18px; overflow: visible; }
 .info-ring { fill: transparent; stroke: currentColor; stroke-width: 1.4; opacity: .75; transition: fill .15s, opacity .15s; }
 .info-glyph { stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; transition: stroke .15s; }
 .info-dot { fill: currentColor; transition: fill .15s; }
 .info-btn:hover .info-ring { opacity: 1; }
-.info-btn:hover { transform: scale(1.08); }
 .info-btn[aria-expanded="true"] .info-ring { fill: var(--cs-steel-700); stroke: var(--cs-steel-700); opacity: 1; }
 .info-btn[aria-expanded="true"] .info-glyph { stroke: var(--cs-paper); }
 .info-btn[aria-expanded="true"] .info-dot { fill: var(--cs-paper); }
 .info-btn:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 3px; }
 
-.info-pop { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 16px 18px 18px;
-  background: var(--cs-bg); border: 1px solid var(--cs-line); border-top: 2px solid var(--cs-steel-600); opacity: 1;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .22); color: var(--cs-ink-2); font: 400 14px/1.55 var(--cs-body); text-align: left;
+.info-pop { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 18px 20px 20px;
+  background: var(--cs-bg); border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px); opacity: 1;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .14); color: var(--cs-ink-2); font: 400 14px/1.55 var(--cs-body); text-align: left;
   letter-spacing: normal; text-transform: none; white-space: normal; animation: info-in .16s ease-out both; }
-.info-pop::before { content: ""; position: absolute; inset: -6px; pointer-events: none; color: var(--cs-corner);
-  --c: linear-gradient(currentColor, currentColor);
-  background:
-    var(--c) 5px 0 / 1px 11px no-repeat, var(--c) 0 5px / 11px 1px no-repeat,
-    var(--c) calc(100% - 5px) 0 / 1px 11px no-repeat, var(--c) 100% 5px / 11px 1px no-repeat,
-    var(--c) 5px 100% / 1px 11px no-repeat, var(--c) 0 calc(100% - 5px) / 11px 1px no-repeat,
-    var(--c) calc(100% - 5px) 100% / 1px 11px no-repeat, var(--c) 100% calc(100% - 5px) / 11px 1px no-repeat; }
 .info-up { animation-name: info-in-up; }
-.info-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
-.info-eyebrow { display: block; font: 600 11px/1.3 var(--cs-body); letter-spacing: .08em; text-transform: uppercase; color: var(--cs-steel-600); }
-.info-title { margin: 3px 0 0; font: 600 21px/1.1 var(--cs-head); letter-spacing: .02em; text-transform: uppercase; color: var(--cs-ink); }
+.info-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.info-title { margin: 2px 0 0; font: 600 22px/1.1 var(--cs-head); letter-spacing: .02em; text-transform: uppercase; color: var(--cs-ink); }
+.info-label { display: block; margin-top: 2px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cs-ink-3); }
 .info-p { margin: 0 0 12px; }
 .info-p:last-child { margin-bottom: 0; }
-.info-pop .info-eyebrow + .info-p { margin-top: 3px; }
-.info-eg { margin: 2px 0 0; padding: 8px 12px; border-left: 2px solid var(--cs-steel-400); background: var(--cs-surface); color: var(--cs-ink-2); font-size: 13.5px; }
+.info-label + .info-p { margin-top: 4px; }
+.info-eg { margin: 0; color: var(--cs-ink-3); font-size: 13.5px; }
+.info-eg b { color: var(--cs-ink-2); font-weight: 600; }
 .info-x { flex: none; display: grid; place-items: center; width: 30px; height: 30px; margin: -4px -6px 0 0; padding: 0; border: 1px solid var(--cs-line);
-  border-radius: 50%; background: none; color: var(--cs-ink-3); cursor: pointer; }
+  border-radius: var(--r-btn, 8px); background: none; color: var(--cs-ink-3); cursor: pointer; }
 .info-x svg { width: 14px; height: 14px; }
 .info-x:hover { color: var(--cs-ink); border-color: var(--cs-ink-3); }
 @keyframes info-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 @keyframes info-in-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 /* phones (website and app): a sheet from the bottom, easier to read than a bubble */
 .info-sheet { top: auto; left: 0; right: 0; bottom: 0; width: 100%; max-height: 78vh; overflow-y: auto; border: 0;
-  border-top: 2px solid var(--cs-steel-600); border-radius: 20px 20px 0 0; padding: 22px 20px calc(26px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--cs-line); border-radius: 20px 20px 0 0; padding: 22px 20px calc(26px + env(safe-area-inset-bottom));
   font-size: 15.5px; animation: info-up .22s ease-out both; }
-.info-sheet::before { display: none; }
 .info-sheet .info-title { font-size: 24px; }
 .info-scrim { position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, .45); animation: info-fade .15s both; }
 @keyframes info-up { from { transform: translateY(100%); } to { transform: none; } }

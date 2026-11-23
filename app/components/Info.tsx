@@ -1,7 +1,7 @@
 "use client";
 // The ⓘ next to a section title: tap (or click, or Enter) to read what the section shows and how to read it, in plain
 // words from lib/glossary.ts. Always drawn at the page's top level (a portal), so no card, animation or faded label
-// around the icon can cover it or make it see-through: a framed panel under the icon on wide screens, a sheet from the
+// around the icon can cover it or make it see-through: a card-style panel under the icon on wide screens, a sheet from the
 // bottom on phones (website and app). One open at a time; closes on the ×, a tap outside or Esc. Opening one is
 // counted (no personal data) so we learn which sections need clearer labels.
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
@@ -76,14 +76,14 @@ export default function Info({ k, label }: { k: GlossaryKey; label?: string }) {
            style={sheet ? undefined : { top: pos?.top ?? -9999, left: pos?.left ?? -9999, visibility: pos ? "visible" : "hidden" }}
            onClick={(e) => e.stopPropagation()}>
         <div className="info-head">
-          <div><span className="info-eyebrow">What this shows</span><h4 className="info-title">{g.title}</h4></div>
+          <h4 className="info-title">{g.title}</h4>
           <button type="button" className="info-x" aria-label="Close" onClick={(e) => { e.stopPropagation(); setOpen(false); }}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
         </div>
         <p className="info-p">{g.what}</p>
-        {"read" in g && g.read && <><span className="info-eyebrow">How to read it</span><p className="info-p">{g.read}</p></>}
-        {"example" in g && g.example && <p className="info-eg">{g.example}</p>}
+        {"read" in g && g.read && <><span className="info-label">How to read it</span><p className="info-p">{g.read}</p></>}
+        {"example" in g && g.example && <p className="info-eg"><b>Example: </b>{g.example}</p>}
       </div>
     </>
   );

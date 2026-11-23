@@ -6,6 +6,16 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
+## This project first: CricSynthesis
+
+Work on this repository's website or app follows `app/DESIGN.md`, which wins over the general guidance below. In short:
+the site's own tokens and type (`app/app/site.css`), rounded hairline cards (12px, 1px `--cs-line`), **no corner ticks or
+corner crosses on anything**, condensed uppercase section titles with `.cs-k` small labels, floating panels as solid
+cards with the menu shadow drawn in a portal, the ⓘ explanation on every section with numbers or a chart
+(`components/Info.tsx`, `lib/glossary.ts`), and every colour from a token so dark mode works. Match the sections that
+already exist before inventing anything new, and check a screenshot in light and dark mode.
+
+
 Approach this as the design lead at a design studio known for giving every client a distinct visual identity that is not mistaken for anyone else's. This client has already rejected proposals that felt cliché or templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take aesthetic risk if justified.
 
 ## Ground your designs in the subject matter

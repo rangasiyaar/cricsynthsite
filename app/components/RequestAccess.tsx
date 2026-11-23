@@ -42,7 +42,6 @@ export default function RequestAccess() {
           decision models, and broadcast-ready graphics. Tell us what you're building and we'll set up your key.</p>
       </div>
       <div className="cs-frame cs-form-card">
-        <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
         {sent ? (
           <div className="register-success active" role="status">
             <h3>Thank you</h3>

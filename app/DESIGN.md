@@ -21,6 +21,21 @@ grids are 4×2 tiles, 2×2 charts, full-width panels. Left-aligned text inside c
 
 ## Rules
 
-- No corner-tick frames; keep the site's colour tokens and type.
-- Cards: 12px radius, 1px line, a hairline shadow; buttons 8px radius, sentence case.
+- **No corner ticks or corner crosses, anywhere.** They were the old frame style and are gone from the theme (no
+  `::before` corner marks, no `.cs-frame > i`, no `--cs-corner`). Don't bring them back on cards, panels, popovers,
+  graphics or marketing pages.
+- Keep the site's colour tokens and type (`site.css`): `--cs-bg`, `--cs-ink`/`-2`/`-3`, `--cs-line`, `--cs-surface`,
+  `--cs-steel-*`, `--cs-paper`, team colours `--team-a`/`--team-b`; Barlow Condensed uppercase headings, Barlow body.
+  Every colour must come from a token so dark mode (`[data-theme="dark"]`) works without extra rules.
+- Cards: 12px radius (`--r-card`), 1px `--cs-line` border, page background; buttons 8px radius (`--r-btn`), sentence case.
+- Section cards: an `h3` title (condensed, uppercase) and the content; small labels inside use `.cs-k` (11px, uppercase,
+  `.08em`, `--cs-ink-3`). No eyebrow above a card title.
+- Anything that floats (popovers, menus, tooltips, the ⓘ panel): a card (12px radius, 1px line, solid `--cs-bg`, never
+  transparent) with the menu shadow `0 10px 28px rgba(0,0,0,.14)`, drawn at the page's top level (React portal) so cards,
+  animations or faded labels around it can't cover it or show through. On phones (≤640px) it becomes a bottom sheet
+  (20px top corners, dimmed page behind).
+- Explanations: every section with numbers or a chart gets the ⓘ (`components/Info.tsx`) after its title, with plain
+  words in `lib/glossary.ts` (what it shows, how to read it, an example). Accent colour for the icon: `--cs-steel-600`.
+- The Android app (`app/m/mobile.css`) uses the same tokens with app shapes: filled surfaces, corners in three sizes
+  (8px small, 12px medium, 20px large).
 - Section headings say what the reader learns ("How the innings unfold"), with one plain sentence under them.

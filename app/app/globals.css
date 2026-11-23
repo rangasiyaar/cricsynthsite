@@ -31,17 +31,8 @@ h3 { font-size: 22px; letter-spacing: .02em; }
 .page-head h1 span { display: block; }
 .page-head h1 span + span { color: var(--cs-steel-700); }
 
-/* ── Panels: the site's corner-ticked frame, drawn with one pseudo-element so any .card gets it ── */
+/* ── Panels: a hairline card (rounded in design.css); no corner ticks ── */
 .card { position: relative; border: 1px solid var(--cs-line); padding: 24px; background: transparent; }
-.card::before {
-  content: ""; position: absolute; inset: -6px; pointer-events: none; color: var(--cs-corner);
-  --c: linear-gradient(currentColor, currentColor);
-  background:
-    var(--c) 5px 0 / 1px 11px no-repeat, var(--c) 0 5px / 11px 1px no-repeat,
-    var(--c) calc(100% - 5px) 0 / 1px 11px no-repeat, var(--c) 100% 5px / 11px 1px no-repeat,
-    var(--c) 5px 100% / 1px 11px no-repeat, var(--c) 0 calc(100% - 5px) / 11px 1px no-repeat,
-    var(--c) calc(100% - 5px) 100% / 1px 11px no-repeat, var(--c) 100% calc(100% - 5px) / 11px 1px no-repeat;
-}
 .plate-bar { display: flex; flex-wrap: wrap; margin: -24px -24px 20px; border-bottom: 1px solid var(--cs-line); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
 .plate-bar > span { padding: 10px 18px; }
 .plate-bar > span:first-child { flex: 1; min-width: 14ch; }

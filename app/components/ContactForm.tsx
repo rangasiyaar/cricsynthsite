@@ -43,7 +43,6 @@ export default function ContactForm({ inline = false }: { inline?: boolean }) {
 
   const card = (
       <div className="cs-frame cs-form-card">
-        <i className="tl" /><i className="tr" /><i className="bl" /><i className="br" />
         {sent ? (
           <div className="register-success active" role="status">
             <h3>Thanks for getting in touch</h3>
