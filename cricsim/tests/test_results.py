@@ -154,6 +154,7 @@ def test_fantasy_picks_are_scored_on_the_scorecard(tmp_path):
     now = datetime(2026, 10, 11, 14, 0, tzinfo=timezone.utc)
     run(fx_dir, sc_dir, out, now=now, fetch=lambda path, sites=None: live.get(path), picks=pk)
     rep = json.loads((out / "results" / "m.json").read_text())["fantasy"]
+    assert set(rep["team_of"]) == set(rep["names"]) == set(rep["roles"]) and set(rep["team_of"].values()) <= {0, 1}
     assert rep["real"]["p_maaz"] > 4 and rep["best"]["points"] >= rep["single"]["points"] > 0
     assert 0 < rep["single"]["share"] <= 1 and rep["best_of_teams"] >= rep["single"]["share"]
     assert len(rep["teams"]) == 2 and "after" not in rep

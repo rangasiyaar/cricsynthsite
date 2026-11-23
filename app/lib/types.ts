@@ -98,6 +98,7 @@ export type FantasyResult = {
   real: Record<string, number>; names: Record<string, string>;
   best: { players: string[]; captain: string; vice_captain: string; points: number };
   single: FantasyTeam; teams: FantasyTeam[]; best_of_teams: number | null; after?: boolean;
+  team_of?: Record<string, number>; roles?: Record<string, string | null>;   // for the pitch cards (newer result files)
 };
 export type ResultDoc = ResultSummary & { forecast: { win: Record<string, number>; projected: (number | null)[]; generated_at?: string };
                                          items: ResultItem[]; venue?: string; fantasy?: FantasyResult };

@@ -3,6 +3,7 @@
 // and the fantasy picks against real points. Shown on /results/{id}/ and in the app at /m/result/?id={id}.
 import Link from "next/link";
 import { useState } from "react";
+import FantasyPitch from "@/components/FantasyPitch";
 import { matchPath } from "@/lib/matchText";
 import type { FantasyResult, ResultDoc } from "@/lib/types";
 
@@ -10,24 +11,42 @@ export const RESULT_TABS = ["Overview", "Scores", "Wickets", "Players", "Matchup
 export const pct = (x: number | null | undefined) => (x === null || x === undefined ? "—" : `${Math.round(100 * x)}%`);
 export const fmtDate = (d?: string) => (d ? new Date(`${d}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "");
 
-/** Fantasy picks against the scorecard: real points, the best XI in hindsight, and our teams as a share of it. */
-function FantasyResultView({ f }: { f: FantasyResult }) {
+/** Fantasy picks against the scorecard: real points, the best XI in hindsight, and our teams as a share of it. Each team
+ * is a pitch card (FantasyPitch, as on the match centre's Fantasy tab) with the same team as a list underneath. Result
+ * files made before the cards (no `team_of`) show the lists only. */
+function FantasyResultView({ f, doc }: { f: FantasyResult; doc: ResultDoc }) {
+  const [pick, setPick] = useState(0);
   const name = (p: string) => f.names[p] ?? p;
-  const team = (players: string[], c: string, vc: string, total: number, title: string) => (
+  const cards = !!f.team_of;
+  const short = doc.teams.map((t) => t.short ?? t.name.slice(0, 3).toUpperCase());
+  const match = { title: doc.title ?? doc.teams.map((t) => t.name).join(" v "), competition: doc.competition, date: doc.date };
+  const list = (players: string[], c: string, vc: string, total: number) => (
+    <div className="table-wrap"><table className="res-table">
+      <thead><tr><th>Player</th><th className="num">Points</th></tr></thead>
+      <tbody>{players.map((p) => {
+        const mult = p === c ? 2 : p === vc ? 1.5 : 1;
+        return <tr key={p}><td>{name(p)}{mult === 2 && <span className="tag pro" style={{ marginLeft: 6 }}>C</span>}
+          {mult === 1.5 && <span className="tag" style={{ marginLeft: 6 }}>VC</span>}</td>
+          <td className="num">{Math.round(f.real[p] * mult)}{mult > 1 && <span className="small muted"> ({Math.round(f.real[p])} × {mult})</span>}</td></tr>;
+      })}</tbody>
+      <tfoot><tr><td><b>Total</b></td><td className="num"><b>{Math.round(total)}</b></td></tr></tfoot>
+    </table></div>
+  );
+  const team = (players: string[], c: string, vc: string, total: number, title: string, label: string) => (
     <div>
       <p className="cs-k" style={{ margin: "0 0 6px" }}>{title}</p>
-      <div className="table-wrap"><table className="res-table">
-        <thead><tr><th>Player</th><th className="num">Points</th></tr></thead>
-        <tbody>{players.map((p) => {
-          const mult = p === c ? 2 : p === vc ? 1.5 : 1;
-          return <tr key={p}><td>{name(p)}{mult === 2 && <span className="tag pro" style={{ marginLeft: 6 }}>C</span>}
-            {mult === 1.5 && <span className="tag" style={{ marginLeft: 6 }}>VC</span>}</td>
-            <td className="num">{Math.round(f.real[p] * mult)}{mult > 1 && <span className="small muted"> ({Math.round(f.real[p])} × {mult})</span>}</td></tr>;
-        })}</tbody>
-        <tfoot><tr><td><b>Total</b></td><td className="num"><b>{Math.round(total)}</b></td></tr></tfoot>
-      </table></div>
+      {cards ? <>
+        <FantasyPitch players={players.map((id) => ({ id, name: name(id), team: f.team_of![id] ?? 0, role: f.roles?.[id], expected: f.real[id] ?? 0 }))}
+                      captain={c} vice={vc} short={short} total={total} label={label} match={match}
+                      note="Points from the scorecard (C 2×, VC 1.5×)." />
+        <details className="fz-list" style={{ marginTop: 10 }}>
+          <summary className="small">Show as a list</summary>
+          {list(players, c, vc, total)}
+        </details>
+      </> : list(players, c, vc, total)}
     </div>
   );
+  const t = f.teams[Math.min(pick, f.teams.length - 1)];
   return (
     <div style={{ marginTop: 32 }}>
       <h3>Fantasy picks</h3>
@@ -36,17 +55,26 @@ function FantasyResultView({ f }: { f: FantasyResult }) {
       {f.after && <p className="small muted">This match went up before the Fantasy tab existed. These picks were made afterwards by the same
         model trained only on matches played before it, so it never saw this result.</p>}
       <div className="grid g2">
-        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team")}
-        {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Best possible XI (in hindsight)")}
+        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team", `Points · ${pct(f.single.share)} of best`)}
+        {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Best possible XI (in hindsight)", "Points")}
       </div>
-      <p className="cs-k" style={{ margin: "20px 0 6px" }}>Our five-team combo</p>
-      <div className="table-wrap"><table className="res-table">
-        <thead><tr><th>Team</th><th>Captain</th><th>Vice-captain</th><th className="num">Points</th><th className="num">Share of best</th></tr></thead>
-        <tbody>{f.teams.map((t, i) => (
-          <tr key={i}><td>{i + 1}</td><td>{name(t.captain)}</td><td>{name(t.vice_captain)}</td>
-            <td className="num">{Math.round(t.points ?? 0)}</td><td className="num">{pct(t.share)}</td></tr>
-        ))}</tbody>
-      </table></div>
+      <p className="cs-k" style={{ margin: "24px 0 6px" }}>Our {f.teams.length}-team combo</p>
+      {cards && t ? <>
+        <div className="seg res-seg" role="group" aria-label="Team" style={{ marginBottom: 12 }}>
+          {f.teams.map((x, i) => (
+            <button key={i} type="button" aria-pressed={pick === i} onClick={() => setPick(i)} title={`${pct(x.share)} of the best XI`}>Team {i + 1}</button>
+          ))}
+        </div>
+        <div className="res-fz-one">{team(t.players, t.captain, t.vice_captain, t.points ?? 0, `Team ${pick + 1}: ${name(t.captain)} (C), ${name(t.vice_captain)} (VC)`, `Points · ${pct(t.share)} of best`)}</div>
+      </> : (
+        <div className="table-wrap"><table className="res-table">
+          <thead><tr><th>Team</th><th>Captain</th><th>Vice-captain</th><th className="num">Points</th><th className="num">Share of best</th></tr></thead>
+          <tbody>{f.teams.map((x, i) => (
+            <tr key={i}><td>{i + 1}</td><td>{name(x.captain)}</td><td>{name(x.vice_captain)}</td>
+              <td className="num">{Math.round(x.points ?? 0)}</td><td className="num">{pct(x.share)}</td></tr>
+          ))}</tbody>
+        </table></div>
+      )}
     </div>
   );
 }
@@ -83,7 +111,7 @@ export default function ResultDetail({ doc, heading = "h3", forecastHref }: { do
                 <td className="num"><span className={`res-mark ${c.hit ? "hit" : "miss"}`} aria-label={c.hit ? "came true" : "missed"}>{c.hit ? "✓" : "✕"}</span></td></tr>
             ))}</tbody>
           </table></div>
-          {doc.fantasy && <FantasyResultView f={doc.fantasy} />}
+          {doc.fantasy && <FantasyResultView f={doc.fantasy} doc={doc} />}
         </div>
   );
 }

@@ -515,7 +515,10 @@ def run(fixtures: Path, scorecards: Path, out: Path, sites=SITES, now: datetime 
         fantasy = doc.get("fantasy")
         if fantasy and rep["checks"]:                     # rain-shortened / abandoned: not scored, fantasy included
             rep["fantasy"] = {**score_fantasy(fantasy, card, Roster(doc, fx.get(mid))),
-                              "names": {p: r.get("name", p) for p, r in fantasy["players"].items()}}
+                              "names": {p: r.get("name", p) for p, r in fantasy["players"].items()},
+                              # for the team cards on the result page (FantasyPitch): which side and role each player is
+                              "team_of": {p: r["team"] for p, r in fantasy["players"].items()},
+                              "roles": {p: r.get("role") for p, r in fantasy["players"].items()}}
         (out / "results" / f"{mid}.json").write_text(json.dumps(rep, separators=(",", ":")))
         index.append({k: rep[k] for k in ("id", "title", "date", "competition", "teams", "result", "winner", "scores",
                                           "hits", "checks", "accuracy", "brier", "tabs")} | ({"note": rep["note"]} if rep.get("note") else {})
