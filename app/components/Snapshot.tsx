@@ -6,18 +6,20 @@ import Link from "next/link";
 import { Num, Pct } from "@/components/charts";
 import { loadVenue } from "@/lib/data";
 import type { MatchDoc, Summary, TeamSummary, VenueIntel } from "@/lib/types";
+import Info from "@/components/Info";
+import type { GlossaryKey } from "@/lib/glossary";
 
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 type Open = { onOpen?: (section: string) => void; hrefFor?: (section: string) => string; scoreboard?: boolean };
 
 /** A block: title, its figures and chart, and "More ›" into the tab it summarises. */
-function Block({ title, tab, open, children, wide = false, className = "" }: { title: string; tab?: string; open: Open; children: React.ReactNode; wide?: boolean; className?: string }) {
+function Block({ title, info, tab, open, children, wide = false, className = "" }: { title: string; info?: GlossaryKey; tab?: string; open: Open; children: React.ReactNode; wide?: boolean; className?: string }) {
   const more = tab && (open.hrefFor
     ? <Link className="snap-more" href={open.hrefFor(tab)}>{label(tab)} ›</Link>
     : open.onOpen ? <button type="button" className="snap-more" onClick={() => open.onOpen!(tab)}>{label(tab)} ›</button> : null);
   return (
     <section className={`card snap${wide ? " snap-wide" : ""}${className ? ` ${className}` : ""} anim-rise`}>
-      <div className="snap-head"><h3>{title}</h3>{more}</div>
+      <div className="snap-head"><h3>{title}{info && <Info k={info} />}</h3>{more}</div>
       {children}
     </section>
   );
@@ -260,7 +262,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
 
   return (
     <div className="snapshot">
-      <Block title="Projected Scores" tab="Scores" open={open} wide>
+      <Block title="Projected Scores" info="projected-scores" tab="Scores" open={open} wide>
         <div className="snap-split">
           <div>
             <div className="snap-rows">
@@ -279,20 +281,20 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
             </p>
           </div>
           <div>
-            <div className="cs-k">Runs per over · wickets</div>
+            <div className="cs-k">Runs per over · wickets<Info k="runs-wickets-bars" /></div>
             <Manhattan s={s} short={short} />
           </div>
         </div>
       </Block>
 
       {duel && (
-        <Block title="Key duel" tab="Matchups" open={open} wide>
+        <Block title="Key duel" info="key-duel" tab="Matchups" open={open} wide>
           <p className="snap-duel"><b>{names.get(duel.bowler) ?? duel.bowler}</b> <span className="snap-sub">dismisses</span> <b>{names.get(duel.batter) ?? duel.batter}</b>
             {" "}<b className="snap-mid" style={{ marginLeft: 8 }}><Pct p={duel.p} /></b> <span className="snap-sub">chance</span></p>
         </Block>
       )}
 
-      <Block title="Projected Fall of Wickets" tab="Wickets" open={open}>
+      <Block title="Projected Fall of Wickets" info="fall-of-wickets" tab="Wickets" open={open}>
         {s.teams.map((t, k) => (
           <p key={t.name} className="snap-line" style={{ marginTop: k ? 4 : 0 }}>
             <b style={{ color: COLORS[k] }}>{short[k]}</b> lose the first wicket around over <b><Num value={t.batting.fall_of_wickets[0]?.over?.q["50"]} /></b>
@@ -309,7 +311,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
         </table>
       </Block>
 
-      <Block title="Players to watch" tab="Top players" open={open} className="snap-players">
+      <Block title="Players to watch" info="players-to-watch" tab="Top players" open={open} className="snap-players">
         <div className="snap-two">
           {s.teams.map((t, k) => {
             const bats = t.players.filter((p) => p.batting && named(p.name)).sort((a, b) => (b.batting!.runs.mean ?? 0) - (a.batting!.runs.mean ?? 0)).slice(0, 5);
@@ -333,7 +335,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
 
 
       {h && h.matches > 0 && (
-        <Block title="The ground" tab="Venue intelligence" open={open}>
+        <Block title="The ground" info="ground-overview" tab="Venue intelligence" open={open}>
           <div className="snap-facts">
             <div><span className="cs-k">First innings</span><b className="snap-mid"><Num value={h.first_innings.median ?? h.first_innings.mean} /></b></div>
             {h.bat_first_won != null && <div><span className="cs-k">Chasing wins</span><b className="snap-mid"><Pct p={1 - h.bat_first_won} /></b></div>}
@@ -345,7 +347,7 @@ export default function Snapshot({ doc, scoreboard: _scoreboard, ...open }: { do
       )}
 
       {f && (
-        <Block title="Fantasy picks" tab="Fantasy" open={open}>
+        <Block title="Fantasy picks" info="fantasy-overview" tab="Fantasy" open={open}>
           <div className="snap-rows">
             <div className="snap-row"><span><span className="tag pro">C</span> {pick(f.single.captain)}</span><span className="snap-sub">{short[f.players[f.single.captain]?.team ?? 0]}</span></div>
             <div className="snap-row"><span><span className="tag pro">VC</span> {pick(f.single.vice_captain)}</span><span className="snap-sub">{short[f.players[f.single.vice_captain]?.team ?? 0]}</span></div>

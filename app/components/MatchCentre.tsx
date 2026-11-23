@@ -14,6 +14,7 @@ import { KIND, num, pct, range } from "@/lib/format";
 import { rate, type Rated } from "@/lib/ratings";
 import FantasyPitch from "@/components/FantasyPitch";
 import type { FantasyTeam, MatchDoc, PlayerRow, TeamSummary } from "@/lib/types";
+import Info from "@/components/Info";
 
 const TABS = ["Overview", "Scores", "Wickets", "Players", "Top players", "MVP", "Matchups"] as const;
 const SHORT: Record<string, string> = { "Top players": "Top", "Venue intelligence": "Venue", Matchups: "Batter v bowler" };
@@ -193,10 +194,10 @@ function Scores({ doc }: { doc: MatchDoc }) {
     <div className="grid">
       <div className="card">
         <div className="card-head">
-          <h3>Final totals</h3>
+          <h3>Final totals<Info k="final-totals" /></h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <Seg label="Innings" value={split} onChange={setSplit} options={[["all", "All"], ["first", "Batting first"], ["second", "Chasing"]]} />
-            <Seg label="View" value={mode} onChange={setMode} options={[["dist", "Distribution"], ["cdf", "Chance of reaching"]]} />
+            <Seg label="View" value={mode} onChange={setMode} options={[["dist", "How often"], ["cdf", "Chance of reaching"]]} />
           </div>
         </div>
         {legend}
@@ -204,7 +205,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
       </div>
       <div className="grid g2"><RunFan s={s} /><Checkpoints s={s} /></div>
       <div className="card">
-        <h3>Runs per over</h3>
+        <h3>Runs per over<Info k="runs-per-over" /></h3>
         {legend}
         <OverBars W={1100} height={220} format={(v) => v.toFixed(1)} unit="runs" phases={s.meta.rules} rolling
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.runs) }))} />
@@ -213,7 +214,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
       <div className="grid g2">
         {s.teams.map((t, k) => (
           <div key={t.name} className="card">
-            <h3 style={{ color: COLORS[k] }}>{t.name} by phase</h3>
+            <h3 style={{ color: COLORS[k] }}>{t.name} by phase<Info k="phase-table" /></h3>
             <div className="table-wrap"><table>
               <thead><tr><th>Phase</th><th>Overs</th><th className="num">Runs</th><th className="num">Likely</th><th className="num">Wickets</th><th className="num">No wicket</th></tr></thead>
               <tbody>{t.batting.phases.map((ph) => (
@@ -222,7 +223,7 @@ function Scores({ doc }: { doc: MatchDoc }) {
                   <td className="num">{num(ph.wickets.mean, 1)}</td><td className="num">{pct(ph.p_no_wicket)}</td></tr>
               ))}</tbody>
             </table></div>
-            <h3 style={{ marginTop: 20 }}>Chance of reaching…</h3>
+            <h3 style={{ marginTop: 20 }}>Chance of reaching…<Info k="chance-of-reaching" /></h3>
             <div className="table-wrap"><table><tbody>
               {Object.entries(t.batting.score.p_at_least).filter((_, i, arr) => i % Math.ceil(arr.length / 6) === 0).map(([m, p]) => (
                 <tr key={m}><td>{m}+</td><td className="num"><P p={p} /></td></tr>
@@ -242,7 +243,7 @@ function Wickets({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid">
       <div className="card">
-        <h3>Chance of a wicket in each over</h3>
+        <h3>Chance of a wicket in each over<Info k="wicket-each-over" /></h3>
         <div className="legend">{s.teams.map((t, k) => <span key={t.name}><i style={{ background: COLORS[k] }} />{t.name} batting</span>)}</div>
         <OverBars W={1100} height={220} phases={s.meta.rules} average
                   series={s.teams.map((t, k) => ({ name: t.name, color: COLORS[k], values: t.batting.per_over.map((o) => o.p_wicket) }))} />
@@ -256,7 +257,7 @@ function TeamWickets({ t, color, overs, rules }: { t: TeamSummary; color: string
   const fow = t.batting.fall_of_wickets.filter((f) => f.by_over && f.p > 0.02);
   return (
     <div className="card">
-      <h3 style={{ color }}>When {t.name} lose wickets</h3>
+      <h3 style={{ color }}>When {t.name} lose wickets<Info k="when-wickets" /></h3>
       <ExpectedWickets t={t} rules={rules} />
       <WicketHeatmap color={color} overs={overs} rows={fow.map((f) => ({ label: `Wkt ${f.wicket}`, values: f.by_over! }))} />
       <div className="table-wrap" style={{ marginTop: 16 }}><table>
@@ -292,7 +293,7 @@ function TopPlayers({ doc }: { doc: MatchDoc }) {
     <div className="grid g2">
       {(["bat", "bowl"] as const).map((key) => (
         <div key={key} className="card">
-          <h3>{key === "bat" ? "Top batters" : "Top bowlers"}</h3>
+          <h3>{key === "bat" ? "Top batters" : "Top bowlers"}<Info k="top-players" /></h3>
           <div className="table-wrap"><table className="rank-table">
             <thead><tr><th>#</th><th>Player</th><th className="num">{key === "bat" ? "Runs · SR" : "Wkts · Econ"}</th><th className="num">Rating</th></tr></thead>
             <tbody>{list(key).map((r, i) => (
@@ -316,7 +317,7 @@ function Mvp({ doc }: { doc: MatchDoc }) {
   const short = doc.match.teams.map((t) => t.short);
   return (
     <div className="card">
-      <h3>Most valuable players</h3>
+      <h3>Most valuable players<Info k="mvp" /></h3>
       <div className="table-wrap"><table className="rank-table">
         <thead><tr><th>#</th><th>Player</th><th className="num">Bat</th><th className="num">Bowl</th><th className="num">MVP</th></tr></thead>
         <tbody>{rows.map((r, i) => (
@@ -339,7 +340,7 @@ function Players({ doc }: { doc: MatchDoc }) {
       <PlayerLadder s={s} />
       {s.teams.map((t, k) => (
         <div key={t.name} className="card">
-          <h3 style={{ color: COLORS[k] }}>{t.name}</h3>
+          <h3 style={{ color: COLORS[k] }}>{t.name}<Info k="player-tables" label="batting and bowling" /></h3>
           <div className="table-wrap"><table>
             <thead><tr><th>#</th><th>Batting</th><th className="num">Runs (avg)</th><th className="num">Likely</th><th className="num">{m1}+</th><th className="num">{m2}+</th><th className="num">Duck</th><th className="num">Top scorer</th><th>Most likely out to</th></tr></thead>
             <tbody>{t.players.filter((p) => p.batting).sort((x, y) => x.batting!.slot - y.batting!.slot).map((p) => (
@@ -378,7 +379,7 @@ function Matchups({ doc }: { doc: MatchDoc }) {
   s.teams.forEach((t) => t.players.forEach((p) => names.set(p.id, p.name)));
   return (
     <div className="card">
-      <h3>Batter v bowler</h3>
+      <h3>Batter v bowler<Info k="matchups" /></h3>
       <div className="table-wrap"><table>
         <thead><tr><th>Bowler</th><th>Batter</th><th className="num">Dismissal share</th></tr></thead>
         <tbody>{s.matchups.slice(0, 25).map((m) => (
@@ -426,7 +427,7 @@ function FantasyRatings({ doc }: { doc: MatchDoc }) {
   const rating = (e: number) => Math.min(10, Math.max(1, (10 * e) / top));
   return (
     <div className="card">
-      <div className="card-head"><h3>All players</h3><span className="small muted">{doc.match.xis ? "Playing XIs" : "Expected XIs"}</span></div>
+      <div className="card-head"><h3>All players<Info k="fantasy-ratings" label="the fantasy ratings" /></h3><span className="small muted">{doc.match.xis ? "Playing XIs" : "Expected XIs"}</span></div>
       <div className="table-wrap"><table className="rank-table">
         <thead><tr><th>Player</th><th>Team</th><th>Category</th><th className="num">Rating</th></tr></thead>
         <tbody>{rows.map(([id, r]) => (
@@ -467,14 +468,14 @@ function Fantasy({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid">
       <div className="card">
-        <div className="card-head"><h3>Small league team</h3><span className="small muted">{split}</span></div>
+        <div className="card-head"><h3>Small league team<Info k="fantasy-small" /></h3><span className="small muted">{split}</span></div>
         <FantasyCard doc={doc} t={f.single} />
       </div>
-      <h3 style={{ margin: "12px 0 0" }}>Mega league teams</h3>
+      <h3 style={{ margin: "12px 0 0" }}>Mega League teams<Info k="fantasy-mega" /></h3>
       <div className="grid g2">
         {f.teams.map((t, i) => (
           <div key={i} className="card">
-            <h3>Mega league team {i + 1}</h3>
+            <h3>Mega League team {i + 1}</h3>
             <p className="small" style={{ margin: "0 0 10px" }}>Captain <b>{name(t.captain)}</b> · vice-captain <b>{name(t.vice_captain)}</b></p>
             <FantasyCard doc={doc} t={t} />
           </div>

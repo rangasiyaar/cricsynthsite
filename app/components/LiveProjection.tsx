@@ -12,6 +12,7 @@ import { db } from "@/lib/firebase";
 import { pct } from "@/lib/format";
 import { kickoffMs, status } from "@/lib/schedule";
 import type { MatchDoc } from "@/lib/types";
+import Info from "@/components/Info";
 
 const N = 3000;
 const EARLY = 20 * 60_000;               // the live job starts 20 minutes before the start (toss)
@@ -89,7 +90,7 @@ export default function LiveProjection({ doc }: { doc: MatchDoc }) {
 
   return (
     <div className="card" aria-live="polite">
-      <h3>Projected finish <span className="tag">{finished ? "Final" : "Live"}</span></h3>
+      <h3>Projected finish<Info k="live-finish" /> <span className="tag">{finished ? "Final" : "Live"}</span></h3>
       <p className="small" style={{ margin: "0 0 10px" }}>
         <b>{head}</b>{need && <> · {need}</>}{when && <span className="muted"> · updated {when}</span>}
       </p>

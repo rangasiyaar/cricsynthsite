@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Pct, WinBar } from "@/components/charts";
 import { FORMAT } from "@/lib/format";
 import type { MatchDoc } from "@/lib/types";
+import Info from "@/components/Info";
 
 export function kickoff(date?: string | null, time?: string | null) {
   if (!date) return null;
@@ -38,7 +39,7 @@ export default function Scoreboard({ doc, mid, foot }: { doc: MatchDoc; mid?: Re
         <div className="sb-mid">
           <span className="sb-v">{when ?? "Upcoming"}</span>
           {mid}
-          <span>Win probability</span>
+          <span>Win chance<Info k="win-chance" /></span>
         </div>
         {team(1)}
       </div>

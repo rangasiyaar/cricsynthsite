@@ -8,6 +8,8 @@ import { loadVenue } from "@/lib/data";
 import { isNative } from "@/lib/native";
 import { num, pct } from "@/lib/format";
 import type { MatchDoc, VenueIntel as V, VenueStat } from "@/lib/types";
+import Info from "@/components/Info";
+import type { GlossaryKey } from "@/lib/glossary";
 
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 const PHASE: Record<string, string> = { powerplay: "Powerplay", middle: "Middle overs", death: "Death overs" };
@@ -23,8 +25,8 @@ function Delta({ here, all, invert = false }: { here?: number | null; all?: numb
   return <span className={`vi-d ${up ? "bat" : "bowl"}`}>{d > 0 ? "+" : "−"}{Math.round(Math.abs(100 * d))}%</span>;
 }
 
-function Tile({ label, children, i }: { label: string; children: React.ReactNode; i: number }) {
-  return <div className="card tile anim-rise" style={{ animationDelay: `${i * 60}ms` }}><div className="cs-k">{label}</div>{children}</div>;
+function Tile({ label, info, children, i }: { label: string; info?: GlossaryKey; children: React.ReactNode; i: number }) {
+  return <div className="card tile anim-rise" style={{ animationDelay: `${i * 60}ms` }}><div className="cs-k">{label}{info && <Info k={info} />}</div>{children}</div>;
 }
 const Row = ({ left, right, color }: { left: React.ReactNode; right: React.ReactNode; color?: string }) => (
   <div className="tile-row"><span className="tile-left" style={color ? { borderColor: color } : undefined}>{left}</span><span className="tile-right">{right}</span></div>
@@ -62,23 +64,23 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
   return (
     <div className="grid vi">
       <div className="tiles">
-        <Tile i={0} label="The ground">
+        <Tile i={0} label="The ground" info="venue-ground">
           <p className="vi-name">{name}</p>
           {v.model && <p className="vi-char">Plays {v.model.character}</p>}
           <Row left={`Matches since ${since}`} right={<b className="tile-big">{h?.matches ?? 0}</b>} />
         </Tile>
-        <Tile i={1} label="First-innings score here">
-          <Row left="Median" right={<><b className="tile-big">{num(h?.first_innings.median)}</b>
+        <Tile i={1} label="First-innings score here" info="venue-first-innings">
+          <Row left="Usual score" right={<><b className="tile-big">{num(h?.first_innings.median)}</b>
             <span className="tile-sub">likely<br />{num(h?.first_innings.q25)}–{num(h?.first_innings.q75)}</span></>} />
           {proj.map((p, k) => <Row key={k} color={COLORS[k]} left={<>{short[k]} <span className="tile-sub">projected batting first</span></>}
             right={<b className="tile-big">{num(p)}</b>} />)}
         </Tile>
-        <Tile i={2} label="Batting first v chasing">
+        <Tile i={2} label="Batting first v chasing" info="venue-bat-chase">
           <Row left="Batting first won" right={<><b className="tile-big">{pct(h?.bat_first_won)}</b><span className="tile-sub">of {h?.decided ?? 0}</span></>} />
           <Row left="Chasing won" right={<b className="tile-big">{h?.bat_first_won == null ? "—" : pct(1 - h.bat_first_won)}</b>} />
           {h?.bat_first_won != null && <SplitBar left="bat first" right="chase" p={h.bat_first_won} />}
         </Tile>
-        <Tile i={3} label="Toss">
+        <Tile i={3} label="Toss" info="venue-toss">
           <Row left="Winners chose to bat" right={<b className="tile-big">{pct(h?.toss.chose_bat)}</b>} />
           <Row left="Toss winner won the match" right={<b className="tile-big">{pct(h?.toss.toss_winner_won)}</b>} />
           {h?.toss.chose_bat != null && <SplitBar left="bat" right="bowl" p={h.toss.chose_bat} />}
@@ -87,14 +89,14 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
 
       {hist.length > 0 && (
         <div className="card">
-          <h3>First-innings scores at this ground</h3>
+          <h3>First-innings scores at this ground<Info k="venue-scores" /></h3>
           <Histogram W={chartW} height={chartW < 1000 ? 200 : 240} series={[{ name: "First innings here", color: "var(--cs-steel)", points: hist }]} width={10} markers={markers} xLabel="first-innings totals" />
         </div>
       )}
 
       <div className="grid">
         <div className="card">
-          <h3>Scoring by phase</h3>
+          <h3>Scoring by phase<Info k="venue-phases" /></h3>
           <PhaseChart unit="runs per over" rows={["powerplay", "middle", "death"].filter((p) => ph.here[p])
             .map((p) => ({ label: PHASE[p], here: ph.here[p].runs_per_over, all: ph.all[p]?.runs_per_over }))} />
           <div className="chart-caption"><span><i style={{ background: "var(--cs-steel)" }} />This ground</span>
@@ -113,7 +115,7 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
         </div>
 
         <div className="card">
-          <h3>Pace v spin</h3>
+          <h3>Pace v spin<Info k="venue-pace-spin" /></h3>
           {pace?.share_of_balls != null && <SplitBar left="pace" right="spin" p={pace.share_of_balls} />}
           {pace?.share_of_wickets != null && <SplitBar left="of wickets to pace" right="to spin" p={pace.share_of_wickets} />}
           {pace?.economy && spin?.economy && <>
@@ -138,7 +140,7 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
 
       {h && h.recent.length > 0 && (
         <div className="card">
-          <h3>Recent matches here</h3>
+          <h3>Recent matches here<Info k="venue-recent" /></h3>
           <RecentChart rows={recent} median={h.first_innings.median} />
           <div className="table-wrap" style={{ marginTop: 16 }}><table>
             <thead><tr><th>Date</th><th>Batting first</th><th>Chasing</th><th>Result</th></tr></thead>
@@ -155,7 +157,7 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
       {(v.players.batting.length > 0 || v.players.bowling.length > 0) && (
         <div className="grid g2">
           <div className="card">
-            <h3>This XI batting here</h3>
+            <h3>This XI batting here<Info k="venue-xi-batting" /></h3>
             {v.players.batting.length ? <div className="table-wrap"><table>
               <thead><tr><th>Batter</th><th className="num">Inns</th><th className="num">Runs</th><th className="num">Avg</th><th className="num">SR</th></tr></thead>
               <tbody>{v.players.batting.map((p) => <tr key={p.id}><td><Dot doc={doc} team={p.team} />{p.name}</td><td className="num">{p.innings}</td>
@@ -163,7 +165,7 @@ export default function VenueIntel({ doc }: { doc: MatchDoc }) {
             </table></div> : <p className="small muted">No one in these XIs has batted here since {since}.</p>}
           </div>
           <div className="card">
-            <h3>This XI bowling here</h3>
+            <h3>This XI bowling here<Info k="venue-xi-bowling" /></h3>
             {v.players.bowling.length ? <div className="table-wrap"><table>
               <thead><tr><th>Bowler</th><th className="num">Overs</th><th className="num">Wkts</th><th className="num">Econ</th></tr></thead>
               <tbody>{v.players.bowling.map((p) => <tr key={p.id}><td><Dot doc={doc} team={p.team} />{p.name}</td>

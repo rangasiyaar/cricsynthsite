@@ -6,6 +6,7 @@ import { useState } from "react";
 import FantasyPitch from "@/components/FantasyPitch";
 import { matchPath } from "@/lib/matchText";
 import type { FantasyResult, ResultDoc } from "@/lib/types";
+import Info from "@/components/Info";
 
 export const RESULT_TABS = ["Overview", "Scores", "Wickets", "Players", "Matchups"] as const;
 export const pct = (x: number | null | undefined) => (x === null || x === undefined ? "—" : `${Math.round(100 * x)}%`);
@@ -49,7 +50,7 @@ function FantasyResultView({ f, doc }: { f: FantasyResult; doc: ResultDoc }) {
   const t = f.teams[Math.min(pick, f.teams.length - 1)];
   return (
     <div style={{ marginTop: 32 }}>
-      <h3>Fantasy picks</h3>
+      <h3>Fantasy picks<Info k="result-fantasy" /></h3>
       <p className="small" style={{ margin: "4px 0 10px" }}>Our single team scored <b>{Math.round(f.single.points ?? 0)}</b> points, <b>{pct(f.single.share)}</b> of
         the ultimate team of the match ({Math.round(f.best.points)}), the best XI anyone could have picked afterwards. Best of our Mega League teams: <b>{pct(f.best_of_teams)}</b>.</p>
       {f.after && <p className="small muted">This match went up before the Fantasy tab existed. These picks were made afterwards by the same
@@ -58,7 +59,7 @@ function FantasyResultView({ f, doc }: { f: FantasyResult; doc: ResultDoc }) {
         {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team", `Points · ${pct(f.single.share)} of ultimate`)}
         {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Ultimate team of the match", "Points")}
       </div>
-      <p className="cs-k" style={{ margin: "24px 0 6px" }}>Our {f.teams.length} Mega League teams</p>
+      <p className="cs-k" style={{ margin: "24px 0 6px" }}>Our {f.teams.length} Mega League teams<Info k="fantasy-mega" /></p>
       {cards && t ? <>
         <div className="seg res-seg" role="group" aria-label="Mega League team" style={{ marginBottom: 12 }}>
           {f.teams.map((x, i) => (
@@ -91,7 +92,7 @@ export default function ResultDetail({ doc, heading = "h3", forecastHref }: { do
               <H style={{ margin: "4px 0" }}>{doc.title ?? doc.teams.map((t) => t.name).join(" v ")}</H>
               <p className="small" style={{ margin: 0 }}><b>{doc.result}</b>{doc.scores.length ? ` · ${doc.scores.map((s) => `${s.team} ${s.runs}/${s.wickets}`).join(", ")}` : ""}</p>
             </div>
-            {doc.checks ? <div className="res-big"><div className="stat dash-stat">{pct(doc.accuracy)}</div><span className="small muted">{doc.hits} of {doc.checks} came true</span></div>
+            {doc.checks ? <div className="res-big"><div className="stat dash-stat">{pct(doc.accuracy)}</div><span className="small muted">{doc.hits} of {doc.checks} came true<Info k="result-accuracy" /></span></div>
               : <div className="res-big"><span className="small muted">Not scored</span></div>}
           </div>
           {doc.note && <p className="small"><b>{doc.note}</b></p>}
