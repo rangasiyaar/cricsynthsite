@@ -1,0 +1,420 @@
+{
+ "id": "lmp-v-kzni-odi-polokwane-2026-11-22",
+ "innings": [
+  {
+   "team": "KwaZulu-Natal Inland",
+   "runs": 314,
+   "wickets": 6,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Malcolm Nofal",
+     "dismissal": "c S Ngobeni b EH Kemm",
+     "runs": 39,
+     "balls": 51,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Kagiso Rapulana",
+     "dismissal": "lbw b EH Kemm",
+     "runs": 36,
+     "balls": 49,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Ludwig Kaestner",
+     "dismissal": "not out",
+     "runs": 127,
+     "balls": 114,
+     "fours": 10,
+     "sixes": 2
+    },
+    {
+     "name": "Jack Lees",
+     "dismissal": "b D Radebe",
+     "runs": 70,
+     "balls": 67,
+     "fours": 2,
+     "sixes": 3
+    },
+    {
+     "name": "Chad Laycock",
+     "dismissal": "b A Bayoumy",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Cameron Dean Shekleton",
+     "dismissal": "b A Bayoumy",
+     "runs": 16,
+     "balls": 15,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Daelen Fynn",
+     "dismissal": "runout (Christoffel Klijnhans)",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Irvin Hlompo Modimokoane",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 0,
+     "no_balls": 2,
+     "wides": 3
+    },
+    {
+     "name": "Atwell Mokgoloboto",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Don Radebe",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 59,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ernest Kemm",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abdullah Bayoumy",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 72,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 6
+    },
+    {
+     "name": "Kyle Landsberg",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ximus du Plooy",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Kagiso Rapulana",
+     "score": 62,
+     "over": "12.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Malcolm Nofal",
+     "score": 97,
+     "over": "20.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Jack Lees",
+     "score": 245,
+     "over": "42.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Chad Laycock",
+     "score": 248,
+     "over": "43.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Cameron Dean Shekleton",
+     "score": 307,
+     "over": "49.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Daelen Fynn",
+     "score": 314,
+     "over": "49.6"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 15,
+    "nb": 3,
+    "p": 0
+   }
+  },
+  {
+   "team": "Limpopo",
+   "runs": 215,
+   "wickets": 10,
+   "overs": "43.2",
+   "batting": [
+    {
+     "name": "Tylor Trenoweth",
+     "dismissal": "c T Ndlela b Z Abrahams",
+     "runs": 5,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Ernest Kemm",
+     "dismissal": "c T Ndlela b L Waqu",
+     "runs": 18,
+     "balls": 15,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Liam Peters",
+     "dismissal": "lbw b L Waqu",
+     "runs": 31,
+     "balls": 38,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Abdullah Bayoumy",
+     "dismissal": "lbw b Z Abrahams",
+     "runs": 30,
+     "balls": 51,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Christoffel Klijnhans",
+     "dismissal": "c CD Shekleton b Z Abrahams",
+     "runs": 99,
+     "balls": 90,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Ximus du Plooy",
+     "dismissal": "c L Waqu b L Kaestner",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Atwell Mokgoloboto",
+     "dismissal": "lbw b DM Fynn",
+     "runs": 0,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shelton Ngobeni",
+     "dismissal": "c Jack Lees b DM Fynn",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kyle Landsberg",
+     "dismissal": "b T Ndlela",
+     "runs": 9,
+     "balls": 30,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Irvin Hlompo Modimokoane",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 14,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Don Radebe",
+     "dismissal": "b Z Abrahams",
+     "runs": 4,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ziyaad Abrahams",
+     "overs": "6.2",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ludwig Kaestner",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rowan Rajah",
+     "overs": "3",
+     "maidens": 1,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Liyema Waqu",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Malcolm Nofal",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Daelen Fynn",
+     "overs": "10",
+     "maidens": 1,
+     "runs": 46,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chad Laycock",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Thabiso Ndlela",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tylor Trenoweth",
+     "score": 6,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ernest Kemm",
+     "score": 44,
+     "over": "7.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Liam Peters",
+     "score": 63,
+     "over": "11.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Abdullah Bayoumy",
+     "score": 134,
+     "over": "26.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Ximus du Plooy",
+     "score": 143,
+     "over": "27.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Atwell Mokgoloboto",
+     "score": 146,
+     "over": "28.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Shelton Ngobeni",
+     "score": 154,
+     "over": "30.1"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kyle Landsberg",
+     "score": 185,
+     "over": "37.5"
+    },
+    {
+     "wicket": 9,
+     "batter": "Christoffel Klijnhans",
+     "score": 209,
+     "over": "41.4"
+    },
+    {
+     "wicket": 10,
+     "batter": "Don Radebe",
+     "score": 215,
+     "over": "43.2"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 2,
+    "w": 1,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "KwaZulu-Natal Inland won",
+ "winner": "KwaZulu-Natal Inland"
+}
