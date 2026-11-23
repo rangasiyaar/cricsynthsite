@@ -365,30 +365,55 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rank-table .team-dot { margin-right: 6px; }
 }
 
-/* ── ⓘ explanations (components/Info.tsx, lib/glossary.ts) ── */
-.info { position: relative; display: inline-flex; vertical-align: middle; margin-left: 6px; font-family: var(--cs-body); text-transform: none; letter-spacing: 0; }
-.info-btn { display: inline-grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: none;
-  color: var(--cs-ink-3); cursor: pointer; opacity: .75; transition: opacity .15s, color .15s; }
-.info-btn::before { content: ""; position: absolute; inset: -11px; }   /* a 44 px tap target without a bigger icon */
-.info-btn svg { width: 17px; height: 17px; }
-.info-btn:hover, .info-btn[aria-expanded="true"] { opacity: 1; color: var(--cs-steel); }
-.info-btn:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; }
-.info-pop { position: absolute; z-index: 60; top: calc(100% + 8px); left: -12px; width: min(340px, calc(100vw - 32px)); box-sizing: border-box;
-  display: grid; gap: 8px; padding: 14px 16px 16px; border: 1px solid var(--cs-line); border-radius: 12px; background: var(--cs-bg);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, .18); color: var(--cs-ink-2); font: 400 14px/1.5 var(--cs-body); text-align: left; white-space: normal;
-  animation: info-in .14s ease-out both; }
-.info-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.info-head b { font: 600 15px/1.3 var(--cs-body); color: var(--cs-ink); }
-.info-p { display: block; }
-.info-p b { color: var(--cs-ink); font-weight: 600; }
-.info-eg { color: var(--cs-ink-3); }
-.info-x { border: 0; background: none; padding: 0 2px; font: 400 22px/1 var(--cs-body); color: var(--cs-ink-3); cursor: pointer; }
+/* ── ⓘ explanations (components/Info.tsx, lib/glossary.ts) ──
+   The icon: a thin steel ring like the site's frames; fills steel when open. The panel: a framed card with the site's
+   corner marks, a condensed uppercase title and small uppercase labels, drawn at the page's top level (portal). */
+.info { display: inline-flex; vertical-align: middle; margin-left: 8px; line-height: 0; }
+.info-btn { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; padding: 0; border: 0;
+  border-radius: 50%; background: none; color: var(--cs-steel-600); cursor: pointer; transition: transform .15s ease; }
+.info-btn::before { content: ""; position: absolute; inset: -12px; }   /* a 44 px tap target, the icon stays small */
+.info-btn svg { width: 18px; height: 18px; overflow: visible; }
+.info-ring { fill: transparent; stroke: currentColor; stroke-width: 1.4; opacity: .75; transition: fill .15s, opacity .15s; }
+.info-glyph { stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; transition: stroke .15s; }
+.info-dot { fill: currentColor; transition: fill .15s; }
+.info-btn:hover .info-ring { opacity: 1; }
+.info-btn:hover { transform: scale(1.08); }
+.info-btn[aria-expanded="true"] .info-ring { fill: var(--cs-steel-700); stroke: var(--cs-steel-700); opacity: 1; }
+.info-btn[aria-expanded="true"] .info-glyph { stroke: var(--cs-paper); }
+.info-btn[aria-expanded="true"] .info-dot { fill: var(--cs-paper); }
+.info-btn:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 3px; }
+
+.info-pop { position: fixed; z-index: 1000; width: min(340px, calc(100vw - 32px)); box-sizing: border-box; padding: 16px 18px 18px;
+  background: var(--cs-bg); border: 1px solid var(--cs-line); border-top: 2px solid var(--cs-steel-600); opacity: 1;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .22); color: var(--cs-ink-2); font: 400 14px/1.55 var(--cs-body); text-align: left;
+  letter-spacing: normal; text-transform: none; white-space: normal; animation: info-in .16s ease-out both; }
+.info-pop::before { content: ""; position: absolute; inset: -6px; pointer-events: none; color: var(--cs-corner);
+  --c: linear-gradient(currentColor, currentColor);
+  background:
+    var(--c) 5px 0 / 1px 11px no-repeat, var(--c) 0 5px / 11px 1px no-repeat,
+    var(--c) calc(100% - 5px) 0 / 1px 11px no-repeat, var(--c) 100% 5px / 11px 1px no-repeat,
+    var(--c) 5px 100% / 1px 11px no-repeat, var(--c) 0 calc(100% - 5px) / 11px 1px no-repeat,
+    var(--c) calc(100% - 5px) 100% / 1px 11px no-repeat, var(--c) 100% calc(100% - 5px) / 11px 1px no-repeat; }
+.info-up { animation-name: info-in-up; }
+.info-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.info-eyebrow { display: block; font: 600 11px/1.3 var(--cs-body); letter-spacing: .08em; text-transform: uppercase; color: var(--cs-steel-600); }
+.info-title { margin: 3px 0 0; font: 600 21px/1.1 var(--cs-head); letter-spacing: .02em; text-transform: uppercase; color: var(--cs-ink); }
+.info-p { margin: 0 0 12px; }
+.info-p:last-child { margin-bottom: 0; }
+.info-pop .info-eyebrow + .info-p { margin-top: 3px; }
+.info-eg { margin: 2px 0 0; padding: 8px 12px; border-left: 2px solid var(--cs-steel-400); background: var(--cs-surface); color: var(--cs-ink-2); font-size: 13.5px; }
+.info-x { flex: none; display: grid; place-items: center; width: 30px; height: 30px; margin: -4px -6px 0 0; padding: 0; border: 1px solid var(--cs-line);
+  border-radius: 50%; background: none; color: var(--cs-ink-3); cursor: pointer; }
+.info-x svg { width: 14px; height: 14px; }
+.info-x:hover { color: var(--cs-ink); border-color: var(--cs-ink-3); }
 @keyframes info-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-/* phones (website and app): a sheet from the bottom, easier to read than a bubble. Rendered at the page's top level. */
-.info-sheet { position: fixed; z-index: 96; top: auto; left: 0; right: 0; bottom: 0; width: 100%; max-height: 75vh; overflow-y: auto;
-  border-radius: 20px 20px 0 0; border: 0; padding: 20px 20px calc(24px + env(safe-area-inset-bottom)); font-size: 15.5px;
-  animation: info-up .2s ease-out both; }
-.info-sheet .info-head b { font-size: 17px; }
-.info-scrim { display: block; position: fixed; inset: 0; z-index: 95; background: rgba(0, 0, 0, .4); animation: info-fade .15s both; }
+@keyframes info-in-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+/* phones (website and app): a sheet from the bottom, easier to read than a bubble */
+.info-sheet { top: auto; left: 0; right: 0; bottom: 0; width: 100%; max-height: 78vh; overflow-y: auto; border: 0;
+  border-top: 2px solid var(--cs-steel-600); border-radius: 20px 20px 0 0; padding: 22px 20px calc(26px + env(safe-area-inset-bottom));
+  font-size: 15.5px; animation: info-up .22s ease-out both; }
+.info-sheet::before { display: none; }
+.info-sheet .info-title { font-size: 24px; }
+.info-scrim { position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, .45); animation: info-fade .15s both; }
 @keyframes info-up { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes info-fade { from { opacity: 0; } to { opacity: 1; } }
