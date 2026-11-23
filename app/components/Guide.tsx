@@ -79,42 +79,39 @@ export function GuideArticle({ page, app = false }: { page: GuidePage; app?: boo
     <article className="guide-article">
       {!app && <p className="small muted guide-crumbs"><Link href="/docs/">Docs</Link> / <Link href={guidePath()}>Guide</Link> / {page.group}</p>}
       <div className="guide-title"><h1>{page.title}</h1><AccessTag access={page.access} /></div>
-      <p className="guide-lede">{page.short}</p>
+      <p className="guide-lede">{page.kind === "analysis" ? page.what : page.intro}
+        {page.kind === "howto" && <span className="muted"> About {page.minutes} minutes.</span>}</p>
       {page.access === "pro" && (
-        <p className="guide-pro small">This is part of CricSynthesis Pro. Here's everything it shows, so you know what you get.{" "}
-          <Link href={app ? "/m/pro/" : "/pro/"}>See Pro</Link></p>
+        <p className="guide-pro small">Part of CricSynthesis Pro. <Link href={app ? "/m/pro/" : "/pro/"}>Get Pro</Link></p>
       )}
 
       {page.kind === "analysis" && <>
-        <section><h2>What it is</h2><p>{page.what}</p></section>
         <section>
-          <h2>What you&apos;ll see</h2>
+          <h2>On the page</h2>
           <List items={page.see} ordered />
           {example && <GuideExample section={example} app={app} />}
         </section>
-        <section><h2>How to read it</h2>{page.read.map((t) => <p key={t}>{t}</p>)}
-          {page.example && <p className="guide-eg"><b>Example: </b>{page.example}</p>}</section>
-        <section><h2>How it helps you decide</h2><List items={page.decide} /></section>
-        <section><h2>Easy mistakes to avoid</h2><List items={page.mistakes} /></section>
+        <section><h2>Reading it</h2>{page.read.map((t) => <p key={t}>{t}</p>)}
+          {page.example && <p className="guide-eg"><b>Example.</b> {page.example}</p>}</section>
+        <section><h2>Using it</h2><List items={page.decide} /></section>
+        <section><h2>Watch out for</h2><List items={page.mistakes} /></section>
         <Faq items={page.faq} />
       </>}
 
       {page.kind === "howto" && <>
-        <p>{page.intro} <span className="muted">About {page.minutes} minutes.</span></p>
         <ol className="guide-steps">
           {page.steps.map((s, n) => (
             <li key={s.title}>
               <span className="guide-step-n" aria-hidden="true">{n + 1}</span>
               <div><h3>{s.title}</h3><p>{s.text}</p>
-                {s.page && <Link className="small" href={href(s.page)}>Read: {GUIDE.find((p) => p.slug === s.page)?.title}</Link>}</div>
+                {s.page && <Link className="small" href={href(s.page)}>More on {GUIDE.find((p) => p.slug === s.page)?.title.toLowerCase()}</Link>}</div>
             </li>
           ))}
         </ol>
-        {page.tip && <p className="guide-eg"><b>Tip: </b>{page.tip}</p>}
+        {page.tip && <p className="guide-eg"><b>Tip.</b> {page.tip}</p>}
       </>}
 
       {page.kind === "article" && <>
-        <p>{page.intro}</p>
         {page.blocks.map((b) => (
           <section key={b.heading}><h2>{b.heading}</h2>{b.text.map((t) => <p key={t}>{t}</p>)}</section>
         ))}

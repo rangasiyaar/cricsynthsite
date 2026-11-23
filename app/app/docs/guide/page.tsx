@@ -4,7 +4,7 @@ import { GuideCards, GuideNav } from "@/components/Guide";
 import { seo } from "@/lib/seo";
 
 export const metadata: Metadata = seo("/docs/guide/", "Guide: how to read cricket forecasts | CricSynthesis",
-  "A plain-words guide to every CricSynthesis forecast: win chance, scores, wickets, players, grounds, fantasy teams and MatchSynth Lab, and how to use them.");
+  "How to read every CricSynthesis forecast, from win chance and projected scores to players, grounds, fantasy teams and MatchSynth Lab.");
 
 export default function GuideHome() {
   return (
@@ -12,9 +12,8 @@ export default function GuideHome() {
       <GuideNav />
       <div className="guide-main">
         <p className="small muted guide-crumbs"><a href="/docs/">Docs</a> / Guide</p>
-        <h1>The guide</h1>
-        <p className="guide-lede">What every number on a match page means, how to read it, and how it helps you make better calls:
-          before the toss, during a chase and when you pick your fantasy team.</p>
+        <h1>Guide</h1>
+        <p className="guide-lede">What every number on a match page means, and how to use it.</p>
         <GuideCards />
       </div>
     </div></div>

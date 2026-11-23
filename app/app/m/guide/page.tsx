@@ -16,7 +16,7 @@ function Guide() {
       <div className="a-guide">
         {page ? <GuideArticle page={page} app /> : <>
           <div className="a-title"><h1>Guide</h1></div>
-          <p className="guide-lede">What every number means, how to read it and how it helps you decide.</p>
+          <p className="guide-lede">What every number on a match page means, and how to use it.</p>
           <GuideCards app />
         </>}
       </div>

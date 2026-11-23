@@ -21,7 +21,7 @@ export default function Help() {
       <div className="a-title"><h1>Help</h1></div>
       <MenuGroup label="Guide">
         <div className="a-panel" style={{ display: "grid", gap: 12 }}>
-          <p style={{ margin: 0 }}>What every number on a match means, how to read it and how it helps you decide.</p>
+          <p style={{ margin: 0 }}>What every number on a match page means, and how to use it.</p>
           <Link className="a-btn" href="/m/guide/">Open the guide</Link>
         </div>
       </MenuGroup>
