@@ -151,7 +151,7 @@ export function Overview({ plan, source, keys, usage, apiPlan, go }: {
   const month = (usage ?? []).reduce((t, d) => t + d.total, 0);
   const steps: [string, boolean, React.ReactNode][] = [
     ["Create an API key", (keys ?? []).length > 0, <button key="k" type="button" className="linkbtn" onClick={() => go("API keys")}>Create a key</button>],
-    ["Make your first request", month > 0, <Link key="d" href="/docs/">Read the API reference</Link>],
+    ["Make your first request", month > 0, <Link key="d" href="/docs/api/">Read the API reference</Link>],
     ["Try MatchSynth Lab", false, <Link key="l" href="/lab/">Open the Lab</Link>],
     ["Connect the MCP server", false, <Link key="m" href="/mcp/">Set it up</Link>],
   ];

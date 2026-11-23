@@ -141,7 +141,7 @@
         },
         {
           "source": "/docs.html",
-          "destination": "/docs/",
+          "destination": "/docs/api/",
           "type": 301
         },
         {

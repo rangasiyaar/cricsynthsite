@@ -118,7 +118,7 @@ export default function Playground() {
             <span className="small muted">Press</span>
             <kbd style={{ fontFamily: "var(--cs-mono)", fontSize: "0.7rem", padding: "2px 7px", border: "1px solid var(--color-border)" }}>⌘ Enter</kbd>
             <span className="small muted">to run</span>
-            <a href={`/docs/#${ep.id}`} className="btn ghost" style={{ fontSize: 13, padding: "6px 14px" }}>View docs →</a>
+            <a href={`/docs/api/#${ep.id}`} className="btn ghost" style={{ fontSize: 13, padding: "6px 14px" }}>View docs →</a>
           </div>
         </div>
       </div>

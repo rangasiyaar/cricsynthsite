@@ -40,3 +40,7 @@ grids are 4×2 tiles, 2×2 charts, full-width panels. Left-aligned text inside c
 - The Android app (`app/m/mobile.css`) uses the same tokens with app shapes: filled surfaces, corners in three sizes
   (8px small, 12px medium, 20px large).
 - Section headings say what the reader learns ("How the innings unfold"), with one plain sentence under them.
+- The Guide (`/docs/guide/`, app `/m/guide/`; content in `lib/guide.ts`) explains every analysis for fans. Its IP checklist
+  (top of `lib/guide.ts`) applies to all explanatory copy, the ⓘ text included: say what a number means and how to use it,
+  never how we make it (no counts, model names, weights, formulas, factor lists, research findings, team-building rules
+  or MatchSynth Lab effect sizes). `/docs/` is the Docs home (Guide and API); the API reference is `/docs/api/`.

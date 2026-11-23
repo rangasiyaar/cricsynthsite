@@ -577,3 +577,12 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .ap-sum span { color: var(--cs-ink-2); }
 .ap-sum b { text-align: right; overflow-wrap: anywhere; }
 .a-link { border: 0; background: none; padding: 0; color: var(--cs-steel-700); font-weight: 600; cursor: pointer; }
+
+/* ── guide (app/m/guide, components/Guide.tsx): the website's guide styles in app spacing ── */
+.a-guide { padding: 4px 16px 120px; }
+.a-guide .guide-article h1 { font-size: 30px; line-height: 1.1; }
+.a-guide .guide-article h2 { font-size: 22px; }
+.a-guide .guide-lede { font-size: 16px; }
+.a-guide .guide-groups { margin-top: 20px; }
+.a-guide .guide-cards { grid-template-columns: 1fr; }
+.a-guide .guide-example-body .card { padding: 14px; }

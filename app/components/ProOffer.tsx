@@ -116,7 +116,7 @@ export default function ProOffer({ api = false }: { api?: boolean }) {
           <h2>For developers and businesses</h2>
           <p className="pro-lede">One API and MCP server for cricket analytics, forecasts and graphics. API Plus includes CricSynthesis Pro.</p>
           <ApiPlans cta={{ free: ["/account/#api-keys", "Get a free key"], pro: ["/account/#subscription", "Get API Plus"], business: ["/contact/", "Contact sales"] }} />
-          <p className="pro-fine" style={{ textAlign: "left", margin: "16px 0 0" }}><Link href="/developers/">About the API</Link> · <Link href="/docs/">API reference</Link></p>
+          <p className="pro-fine" style={{ textAlign: "left", margin: "16px 0 0" }}><Link href="/developers/">About the API</Link> · <Link href="/docs/api/">API reference</Link></p>
         </section>
       )}
 

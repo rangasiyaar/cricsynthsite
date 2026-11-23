@@ -1,0 +1,29 @@
+"use client";
+// App guide: the same pages as the website's /docs/guide/ (content in lib/guide.ts), on app screens.
+// /m/guide/ lists them; /m/guide/?p=<slug> opens one.
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { Loading, TopBar } from "@/components/App";
+import { GuideArticle, GuideCards } from "@/components/Guide";
+import { guidePage } from "@/lib/guide";
+
+function Guide() {
+  const slug = useSearchParams().get("p");
+  const page = slug ? guidePage(slug) : undefined;
+  return (
+    <>
+      <TopBar back={page ? "/m/guide/" : "/m/help/"} />
+      <div className="a-guide">
+        {page ? <GuideArticle page={page} app /> : <>
+          <div className="a-title"><h1>Guide</h1></div>
+          <p className="guide-lede">What every number means, how to read it and how it helps you decide.</p>
+          <GuideCards app />
+        </>}
+      </div>
+    </>
+  );
+}
+
+export default function GuidePage() {
+  return <Suspense fallback={<Loading rows={3} />}><Guide /></Suspense>;
+}

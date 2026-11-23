@@ -38,7 +38,7 @@ export default function Developers() {
         (answers ready from 3 days before the start). The other {ENDPOINTS.length - HOSTED}, simulations with your own XIs
         and conditions, aren&apos;t on the hosted API: try those what-ifs in <Link href="/lab/">MatchSynth Lab</Link>.</p>
       <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
-        <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>
+        <Link className="cs-btn cs-btn--primary" href="/docs/api/">Read the docs</Link>
         <Link className="cs-btn cs-btn--secondary" href="/playground/">Open the playground</Link>
       </div>
       <div className="grid g3" style={{ marginTop: 20 }}>
@@ -48,12 +48,12 @@ export default function Developers() {
             <div key={c} className="card">
               <h3>{c} <span className="muted small">{eps.length}</span></h3>
               {eps.slice(0, PER_CARD).map((e) => (
-                <a key={e.id} href={`/docs/#${e.id}`} style={{ display: "block", padding: "7px 0", borderTop: "1px solid var(--tick)", color: "inherit" }}>
+                <a key={e.id} href={`/docs/api/#${e.id}`} style={{ display: "block", padding: "7px 0", borderTop: "1px solid var(--tick)", color: "inherit" }}>
                   <div className="small">{e.summary}</div>
                   <div className="mono muted" style={{ fontSize: 11.5, wordBreak: "break-all" }}>{e.method} {e.path}</div>
                 </a>
               ))}
-              <Link className="card-foot small" href="/docs/" style={{ paddingTop: 12, borderTop: "1px solid var(--tick)" }}>
+              <Link className="card-foot small" href="/docs/api/" style={{ paddingTop: 12, borderTop: "1px solid var(--tick)" }}>
                 All {eps.length} {c.toLowerCase()} endpoints</Link>
             </div>
           );
@@ -65,7 +65,7 @@ export default function Developers() {
       <h2 id="plans" style={{ marginTop: 56, scrollMarginTop: 88 }}>Plans</h2>
       <ApiPlans cta={CTA} />
       <p className="small muted" style={{ marginTop: 20 }}>
-        <Link href="/docs/">API reference</Link> · <Link href="/playground/">Playground</Link>
+        <Link href="/docs/api/">API reference</Link> · <Link href="/playground/">Playground</Link>
       </p>
       <RequestAccess />
       <div style={{ paddingBottom: 40 }} />

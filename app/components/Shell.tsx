@@ -146,6 +146,7 @@ export function Footer() {
               <Link href="/lab/" className="footer-link">MatchSynth Lab</Link>
               <Link href="/app/" className="footer-link">Android app</Link>
               <Link href="/pricing/" className="footer-link">Pricing</Link>
+              <Link href="/docs/guide/" className="footer-link">Guide</Link>
               <Link href="/blog/" className="footer-link">Blog</Link>
             </div>
             <div className="footer-column">
