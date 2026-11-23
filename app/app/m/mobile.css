@@ -14,6 +14,10 @@
 :root[data-theme="dark"] .app-wrap { --a-press: rgba(230, 231, 232, .08); }
 .app-wrap *:focus-visible { outline: 2px solid var(--cs-steel); outline-offset: 2px; border-radius: 8px; }
 .app-wrap button:not(.a-btn):not(.a-alert) { font: inherit; color: inherit; }   /* .a-btn and .a-alert set their own colour */
+/* segmented controls (.seg, design.css) keep their own colours: the rule above outranks them, which left the selected
+   button dark on dark */
+.app-wrap .seg button:not([aria-pressed="true"]) { color: var(--cs-ink-2); }
+.app-wrap .seg button[aria-pressed="true"] { color: var(--cs-bg); }
 .app-wrap a { text-decoration: none !important; }
 
 /* ── top bar ── */
@@ -490,7 +494,10 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .a-result .table-wrap { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
 .a-result .res-table { font-size: 13px; }
 .a-result .res-table th, .a-result .res-table td { padding: 8px 6px; }
-.a-result .res-table th:first-child, .a-result .res-table td:first-child { display: none; }   /* the tab buttons already say it */
+.a-result .res-table td:nth-last-child(2), .a-result .res-table td:nth-last-child(3) { min-width: 0; }   /* the website's 110 px pushed "True?" off a phone screen */
+/* the forecast checks' Tab column (shown under "All"): the tab buttons already say it. Only that table: the fantasy
+   tables' first column is the player. */
+.a-result .res-with-tab th:first-child, .a-result .res-with-tab td:first-child { display: none; }
 
 /* ── privacy policy prompt (components/PolicyPrompt.tsx) ── */
 .a-sheet-wrap { position: fixed; inset: 0; z-index: 90; display: flex; align-items: flex-end; background: rgba(0, 0, 0, .45); animation: a-in .2s both; }

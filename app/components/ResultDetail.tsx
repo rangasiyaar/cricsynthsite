@@ -76,7 +76,7 @@ export default function ResultDetail({ doc, heading = "h3", forecastHref }: { do
               </button>
             ))}
           </div>
-          <div className="table-wrap" style={{ marginTop: 14 }}><table className="res-table">
+          <div className="table-wrap" style={{ marginTop: 14 }}><table className={`res-table${tab === "All" ? " res-with-tab" : ""}`}>
             <thead><tr>{tab === "All" && <th>Tab</th>}<th>Projection</th><th>We said</th><th>What happened</th><th className="num">True?</th></tr></thead>
             <tbody>{items.map((c, i) => (
               <tr key={i}>{tab === "All" && <td className="small muted">{c.tab}</td>}<td>{c.check}</td><td>{c.projected}</td><td>{c.actual}</td>

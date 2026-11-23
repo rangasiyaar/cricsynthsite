@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.23",
+  "date": "2026-11-23",
+  "notes": [
+   "Result pages: the fantasy tables show player names again (only the points were showing)",
+   "Result pages: the selected filter button is readable again, and the forecast table fits the screen"
+  ]
+ },
+ {
   "version": "0.3.22",
   "date": "2026-11-22",
   "notes": [
