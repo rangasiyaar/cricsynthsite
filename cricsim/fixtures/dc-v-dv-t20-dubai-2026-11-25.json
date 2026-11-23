@@ -1,0 +1,112 @@
+{
+  "id": "dc-v-dv-t20-dubai-2026-11-25",
+  "title": "Dubai Capitals v Desert Vipers",
+  "date": "2026-11-25",
+  "start_time": "18:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 6th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Dubai International Cricket Stadium, Dubai",
+  "venue_search": "dubai international cricket stadium",
+  "city": "Dubai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Dubai Capitals",
+      "short": "DC",
+      "players": [
+        "Faf du Plessis",
+        "Masood Gurbaz",
+        "Marcus Stoinis",
+        "Sam Billings",
+        "Tom Moores",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Mustafizur Rahman",
+        "Dushmantha Chameera",
+        "Haider Ali"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sam Billings",
+      "squad": [
+        "Faf du Plessis",
+        "Masood Gurbaz",
+        "Marcus Stoinis",
+        "Sam Billings",
+        "Tom Moores",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Mustafizur Rahman",
+        "Dushmantha Chameera",
+        "Haider Ali"
+      ]
+    },
+    {
+      "name": "Desert Vipers",
+      "short": "DV",
+      "players": [
+        "Joe Clarke",
+        "Andries Gous",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Vritiya Aravind",
+        "Khuzaima Bin Tanvir",
+        "Nangeyalia kharote",
+        "Naseem Shah",
+        "Mujeeb Ur Rahman",
+        "David Payne"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Shadab Khan",
+      "squad": [
+        "Joe Clarke",
+        "Andries Gous",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Vritiya Aravind",
+        "Khuzaima Bin Tanvir",
+        "Nangeyalia kharote",
+        "Naseem Shah",
+        "Mujeeb Ur Rahman",
+        "David Payne"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41724,
+    "url": "https://khelnow.com/live-cricket-score/dubai-capitals-vs-desert-vipers-international-league-t20-25th-november-2026-41724",
+    "auto": true,
+    "xis": false
+  }
+}
