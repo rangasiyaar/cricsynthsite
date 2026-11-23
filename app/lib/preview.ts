@@ -412,7 +412,7 @@ export function buildFantasy(doc: MatchDoc, venue: VenueIntel | null, results: R
       { links: [{ href: `/lab/?id=${encodeURIComponent(id)}`, label: "Rebuild the teams for your own scenario in MatchSynth Lab" }] },
     ] } as Section] : []),
     ...(rec && rec.matches ? [{ id: "record", heading: "How our fantasy picks have done", blocks: [
-      { p: `Across ${rec.matches} matches we have scored, our small league team averaged **${pc(rec.single)}** of the best possible XI picked after the match, and the best of our mega league teams **${pc(rec.best_of_teams)}**.` },
+      { p: `Across ${rec.matches} matches we have scored, our small league team averaged **${pc(rec.single)}** of the ultimate team of the match (the best XI picked after it), and the best of our Mega League teams **${pc(rec.best_of_teams)}**.` },
       { links: [{ href: "/matches/", label: "Recent results, pick by pick" }] },
     ] } as Section] : []),
     { id: "explore", heading: "Explore this match", blocks: [

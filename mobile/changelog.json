@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.25",
+  "date": "2026-11-23",
+  "notes": [
+   "Result pages: our Mega League teams (all of them, not five) and the Ultimate team of the match, the best XI in hindsight"
+  ]
+ },
+ {
   "version": "0.3.24",
   "date": "2026-11-23",
   "notes": [

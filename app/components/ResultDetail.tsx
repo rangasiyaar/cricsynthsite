@@ -11,7 +11,7 @@ export const RESULT_TABS = ["Overview", "Scores", "Wickets", "Players", "Matchup
 export const pct = (x: number | null | undefined) => (x === null || x === undefined ? "—" : `${Math.round(100 * x)}%`);
 export const fmtDate = (d?: string) => (d ? new Date(`${d}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "");
 
-/** Fantasy picks against the scorecard: real points, the best XI in hindsight, and our teams as a share of it. Each team
+/** Fantasy picks against the scorecard: real points, the ultimate team of the match (the best XI in hindsight), and our teams as a share of it. Each team
  * is a pitch card (FantasyPitch, as on the match centre's Fantasy tab) with the same team as a list underneath. Result
  * files made before the cards (no `team_of`) show the lists only. */
 function FantasyResultView({ f, doc }: { f: FantasyResult; doc: ResultDoc }) {
@@ -51,24 +51,24 @@ function FantasyResultView({ f, doc }: { f: FantasyResult; doc: ResultDoc }) {
     <div style={{ marginTop: 32 }}>
       <h3>Fantasy picks</h3>
       <p className="small" style={{ margin: "4px 0 10px" }}>Our single team scored <b>{Math.round(f.single.points ?? 0)}</b> points, <b>{pct(f.single.share)}</b> of
-        the best XI anyone could have picked afterwards ({Math.round(f.best.points)}). Best of our mega league teams: <b>{pct(f.best_of_teams)}</b>.</p>
+        the ultimate team of the match ({Math.round(f.best.points)}), the best XI anyone could have picked afterwards. Best of our Mega League teams: <b>{pct(f.best_of_teams)}</b>.</p>
       {f.after && <p className="small muted">This match went up before the Fantasy tab existed. These picks were made afterwards by the same
         model trained only on matches played before it, so it never saw this result.</p>}
       <div className="grid g2">
-        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team", `Points · ${pct(f.single.share)} of best`)}
-        {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Best possible XI (in hindsight)", "Points")}
+        {team(f.single.players, f.single.captain, f.single.vice_captain, f.single.points ?? 0, "Our small league team", `Points · ${pct(f.single.share)} of ultimate`)}
+        {team(f.best.players, f.best.captain, f.best.vice_captain, f.best.points, "Ultimate team of the match", "Points")}
       </div>
-      <p className="cs-k" style={{ margin: "24px 0 6px" }}>Our {f.teams.length}-team combo</p>
+      <p className="cs-k" style={{ margin: "24px 0 6px" }}>Our {f.teams.length} Mega League teams</p>
       {cards && t ? <>
-        <div className="seg res-seg" role="group" aria-label="Team" style={{ marginBottom: 12 }}>
+        <div className="seg res-seg" role="group" aria-label="Mega League team" style={{ marginBottom: 12 }}>
           {f.teams.map((x, i) => (
-            <button key={i} type="button" aria-pressed={pick === i} onClick={() => setPick(i)} title={`${pct(x.share)} of the best XI`}>Team {i + 1}</button>
+            <button key={i} type="button" aria-pressed={pick === i} onClick={() => setPick(i)} title={`${pct(x.share)} of the ultimate team`}>Team {i + 1}</button>
           ))}
         </div>
-        <div className="res-fz-one">{team(t.players, t.captain, t.vice_captain, t.points ?? 0, `Team ${pick + 1}: ${name(t.captain)} (C), ${name(t.vice_captain)} (VC)`, `Points · ${pct(t.share)} of best`)}</div>
+        <div className="res-fz-one">{team(t.players, t.captain, t.vice_captain, t.points ?? 0, `Team ${pick + 1}: ${name(t.captain)} (C), ${name(t.vice_captain)} (VC)`, `Points · ${pct(t.share)} of ultimate`)}</div>
       </> : (
         <div className="table-wrap"><table className="res-table">
-          <thead><tr><th>Team</th><th>Captain</th><th>Vice-captain</th><th className="num">Points</th><th className="num">Share of best</th></tr></thead>
+          <thead><tr><th>Team</th><th>Captain</th><th>Vice-captain</th><th className="num">Points</th><th className="num">Share of ultimate</th></tr></thead>
           <tbody>{f.teams.map((x, i) => (
             <tr key={i}><td>{i + 1}</td><td>{name(x.captain)}</td><td>{name(x.vice_captain)}</td>
               <td className="num">{Math.round(x.points ?? 0)}</td><td className="num">{pct(x.share)}</td></tr>

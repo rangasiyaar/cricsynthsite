@@ -73,7 +73,7 @@ export function description(x: Facts, kind: Kind) {
   if (kind === "fantasy") {
     const f = x.fantasy;
     return f ? `${vs(x)} fantasy team: ${x.name(f.single.captain)} captain, `
-      + `${x.name(f.single.vice_captain)} vice-captain, plus the top picks and five-team combinations.`
+      + `${x.name(f.single.vice_captain)} vice-captain, plus the top picks and our Mega League teams.`
       : `${vs(x)} fantasy picks: expected points for every player, captain and vice-captain, published once the squads are in.`;
   }
   if (kind === "xi") {

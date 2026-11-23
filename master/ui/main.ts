@@ -743,7 +743,7 @@ async function accuracy() {
       ${tile("Projections that came true", pct(o.accuracy), `${n(o.hits)} of ${n(o.checks)} checks · ${n(o.matches)} matches`)}
       ${tile("Favourite won", pct(o.favourite), `${n(o.favouriteOf)} matches`)}
       ${tile("Result Brier score", o.brier == null ? "–" : o.brier.toFixed(3), "lower is better; 0.25 = coin flip")}
-      ${tile("Fantasy XI", pct(o.fantasy), "of the best possible XI's points")}
+      ${tile("Fantasy XI", pct(o.fantasy), "of the ultimate team's points")}
     </div>
     <section class="card">${bars(a.months.map((m: Row) => ({ month: m.key, acc: m.accuracy == null ? 0 : Math.round(m.accuracy * 1000) / 10 })),
       [{ key: "acc", label: "Projections that came true (%)", color: S1 }], { x: "month", xLabel: (v) => v, fmt: (v) => `${v}%`, title: "By month" })}</section>
