@@ -12,7 +12,7 @@
   "city": "Sharjah",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Desert Vipers won the toss and bowl first.",
   "teams": [
     {
       "name": "Sharjah Warriorz",
@@ -20,15 +20,15 @@
       "players": [
         "Tim Seifert",
         "James Vince",
+        "Paul Walter",
         "Brandon McMullen",
         "Sikandar Raza",
         "Mohammad Nabi",
         "Craig Overton",
         "Ali Naseer",
         "Adam Milne",
-        "Richard Gleeson",
-        "Waqar Salamkheil",
-        "Junaid Siddique"
+        "Junaid Siddique",
+        "Waqar Salamkheil"
       ],
       "roles": [
         "WK",
@@ -38,7 +38,7 @@
         "AR",
         "AR",
         "AR",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -64,25 +64,25 @@
       "players": [
         "Joe Clarke",
         "Andries Gous",
+        "Babar Azam",
         "Shimron Hetmyer",
-        "Shadab Khan",
         "Tom Curran",
+        "Shadab Khan",
         "Vritiya Aravind",
-        "Khuzaima Bin Tanvir",
-        "Nangeyalia kharote",
         "Naseem Shah",
         "Mujeeb Ur Rahman",
-        "David Payne"
+        "Mohammad Saleem Safi",
+        "Khuzaima Bin Tanvir"
       ],
       "roles": [
         "BAT",
         "WK",
         "BAT",
+        "BAT",
         "AR",
         "AR",
         "BAT",
         "BOWL",
-        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41722,
     "url": "https://khelnow.com/live-cricket-score/sharjah-warriorz-vs-desert-vipers-international-league-t20-23rd-november-2026-41722",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
