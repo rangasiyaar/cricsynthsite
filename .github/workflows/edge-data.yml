@@ -66,6 +66,11 @@ jobs:
           path: edge/assets/edge
           key: edge-assets-${{ github.run_id }}
           restore-keys: edge-assets-
+      - uses: actions/cache/restore@v4               # the analytics kit the publish run built (private to the Worker)
+        with:
+          path: edge/assets/analytics
+          key: edge-kit-${{ inputs.publish_run || github.run_id }}
+          restore-keys: edge-kit-
       - name: Prepare
         run: |
           uv run python -m cricsim.edge --model data/models/latest --coverage data/coverage \
@@ -82,4 +87,6 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npm ci --no-audit --no-fund && npx wrangler deploy
+        run: |
+          [ -f assets/analytics/context.json ] || { echo "::error::No analytics kit in the cache: run Publish site first (the Worker would lose its analytics)"; exit 1; }
+          npm ci --no-audit --no-fund && npx wrangler deploy

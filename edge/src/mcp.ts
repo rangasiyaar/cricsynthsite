@@ -1,6 +1,6 @@
 // Remote MCP server at /mcp (Streamable HTTP, stateless JSON responses): the CricSynthesis MCP tools that need no
 // simulation, answered from the published files with the same arithmetic as the local package (cricmcp/server.py).
-// Fully custom what-ifs stay in the local package (uvx) and MatchSynth Lab.
+// Fully custom what-ifs are in MatchSynth Lab on the website.
 import { Analytics, NotFound, BadRequest } from "./analytics.ts";
 import * as G from "./graphics.ts";
 import { Kit, type Player } from "./insight.ts";
@@ -21,7 +21,7 @@ export const INSTRUCTIONS = `CricSynthesis: cricket analytics and forecasts from
 - Graphics: shareable SVG cards for matches, players, match-ups, venues and trends.
 Numbers are model expectations or shares of simulated matches, not certainties; quote ranges where given. Ratings are
 relative to an average player in the same format (1.00 = average). Data is rebuilt nightly. Custom what-if
-simulations need the local CricSynthesis MCP server (uvx cricsynthesis-mcp) or MatchSynth Lab on the website.`;
+simulations are in MatchSynth Lab on the website.`;
 
 export class ToolError extends Error {}
 

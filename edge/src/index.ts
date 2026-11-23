@@ -28,8 +28,11 @@ const ABOUT = {
 };
 
 let analytics: Analytics | null = null;
-const getAnalytics = (env: Env) => (analytics ??= new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data"),
-                                                                  env.ASSETS ? new AssetSource(env.ASSETS) : null));
+const getAnalytics = (env: Env) => {
+  if (analytics) return analytics;
+  const assets = env.ASSETS ? new AssetSource(env.ASSETS) : null;   // prepared answers and the analytics kit, both private
+  return (analytics = new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data"), assets, assets));
+};
 
 function headers(req: Request, env: Env, extra: Record<string, string> = {}): Headers {
   const h = new Headers({ "X-Content-Type-Options": "nosniff", "X-Frame-Options": "DENY", "Referrer-Policy": "no-referrer",
@@ -324,7 +327,7 @@ export default {
     if ("notHosted" in m) {
       const n = m.notHosted;
       return fail(req, env, 501, n.local_only
-        ? "Simulating with your own inputs isn't available on the hosted API. Use the CricSynthesis MCP server (uvx) or MatchSynth Lab on the website."
+        ? "Simulating with your own inputs isn't available on the hosted API. Use MatchSynth Lab on the website."
         : "This endpoint isn't on the hosted API yet.");
     }
 

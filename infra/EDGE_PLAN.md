@@ -16,7 +16,7 @@ Free-plan limits to design for (check Cloudflare's pricing page before building)
 - **C — precomputed scenarios:** needs simulation, so Actions computes it for every covered match (default inputs
   and a small grid of variants) and the Worker serves the nearest one. Custom inputs outside the grid → see D.
 - **D — not on the edge:** needs a fresh simulation with the caller's own inputs (custom XIs, any state, any
-  lineup change). Served by the local MCP (`uvx`) and MatchSynth Lab in the browser; the API returns a clear
+  lineup change). Served by MatchSynth Lab in the browser (the local MCP package is no longer published); the API returns a clear
   "not available on the hosted API" (or, later, a paid always-on host).
 
 ## API (56 endpoints)

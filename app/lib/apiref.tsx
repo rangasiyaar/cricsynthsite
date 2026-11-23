@@ -40,7 +40,7 @@ export function hostedNote(ep: Endpoint): { tag: string; text: string } | null {
     return { tag: "Covered matches", text: "Answers for a covered match (from /v1/matches), ready from 3 days before the start; give its match_id." };
   }
   if (ep.hosted === "local") {
-    return { tag: "Local engine", text: "Needs a fresh simulation with your own inputs, so it isn't on the hosted API: use the CricSynthesis MCP server (it runs the engine on your machine) or MatchSynth Lab." };
+    return { tag: "Local engine", text: "Needs a fresh simulation with your own inputs, so it isn't on the hosted API: try the what-if in MatchSynth Lab on the website." };
   }
   return null;
 }

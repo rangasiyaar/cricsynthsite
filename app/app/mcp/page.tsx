@@ -2,9 +2,8 @@ import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = seo("/mcp/", "MCP server | CricSynthesis", "Bring CricSynthesis cricket analytics, match forecasts and fantasy picks into Claude and other AI assistants: add our hosted MCP connector by URL, or run the server on your own machine.");
+export const metadata: Metadata = seo("/mcp/", "MCP server | CricSynthesis", "Bring CricSynthesis cricket analytics, match forecasts and fantasy picks into Claude and other AI assistants: add our hosted MCP connector by URL, nothing to install.");
 
-const INDEX = "https://cricsynthesis.in/pypi/simple/";
 const HOSTED_URL = "https://mcp.cricsynthesis.in";
 
 const REMOTE = `{
@@ -13,16 +12,6 @@ const REMOTE = `{
   }
 }`;
 
-const CONFIG = `{
-  "mcpServers": {
-    "cricsynthesis": {
-      "command": "uvx",
-      "args": ["--index", "${INDEX}", "cricsynthesis-mcp"]
-    }
-  }
-}`;
-
-const CLAUDE_CODE = `claude mcp add cricsynthesis -- uvx --index ${INDEX} cricsynthesis-mcp`;
 const CLAUDE_CODE_REMOTE = `claude mcp add --transport http cricsynthesis ${HOSTED_URL}`;
 
 const GROUPS: { title: string; text: string; tools: string[] }[] = [
@@ -34,19 +23,17 @@ const GROUPS: { title: string; text: string; tools: string[] }[] = [
     tools: ["venues", "venue_profile", "competitions", "competition_profile", "scoring_trend", "teams", "team_profile"] },
   { title: "Match forecasts", text: "Win chances, projected scores, phases, wicket timing, key duels and player outlooks for upcoming matches.",
     tools: ["list_matches", "match_forecast", "innings_shape", "key_matchups", "player_outlook", "fantasy_picks", "about_the_model"] },
-  { title: "Decisions", text: "What-ifs, win probability and projections from any score, par score, chase curve, toss call, batting order, bowling plan and player impact.",
-    tools: ["simulate_scenario", "live_win_probability", "innings_projection", "par_score", "chase_curve", "toss_decision", "batting_order", "bowling_plan", "player_impact"] },
+  { title: "Decisions", text: "Win probability and projections from any score, par score, chase curve, toss call, batting order, bowling plan and player impact.",
+    tools: ["live_win_probability", "innings_projection", "par_score", "chase_curve", "toss_decision", "batting_order", "bowling_plan", "player_impact"] },
   { title: "Fantasy and graphics", text: "Fantasy projections, a best XI with captain and vice-captain, multi-entry portfolios, and shareable SVG cards.",
     tools: ["fantasy_projections", "fantasy_team", "fantasy_portfolio", "match_graphic", "analytics_graphic"] },
 ];
-const LOCAL_ONLY = new Set(["simulate_scenario"]);
 const COUNT = GROUPS.reduce((n, g) => n + g.tools.length, 0);
-const HOSTED = COUNT - LOCAL_ONLY.size;
 
 const ASK = [
   "Who's favourite for India v West Indies, and does the toss matter?",
   "India are 120/4 after 15.2 overs chasing 165. Who wins?",
-  "Heavy dew and a turning pitch: how does that change the forecast?",
+  "What par score should the side batting first aim for?",
   "Pick my fantasy XI and captain for the next match.",
   "How does Suryakumar Yadav fare against left-arm spin?",
   "Who are the best death bowlers in T20 right now?",
@@ -58,7 +45,7 @@ export default function Mcp() {
       <p className="cs-eyebrow">Model Context Protocol</p>
       <h1><span>CricSynthesis for AI assistants</span></h1>
       <p className="cs-lede">Ask Claude, ChatGPT, Cursor or any MCP client about a player, ground, league or upcoming match.
-        Free to use: add the hosted connector by URL, or run the server on your own machine.</p>
+        Free to use: add the hosted connector by URL. Nothing to install.</p>
 
       <h2 style={{ marginTop: 48 }}>Hosted connector</h2>
       <p className="muted" style={{ maxWidth: "64ch" }}>Nothing to install. In claude.ai or the Claude apps open Settings,
@@ -73,18 +60,8 @@ export default function Mcp() {
       <p className="small muted" style={{ maxWidth: "64ch", marginTop: 14 }}>When you add it, your assistant asks you to sign in
         with your CricSynthesis account (free) and allow it: 200 tool calls a day. Or put an API key from your{" "}
         <Link href="/account/">account</Link> in the URL (<span className="mono">{HOSTED_URL}/?key=cs_live_…</span>) and calls
-        count against its plan. {HOSTED} of the {COUNT} tools; decision and fantasy tools answer for the matches we cover,
-        from 3 days before the start. Custom what-ifs need the local server.</p>
-
-      <h2 style={{ marginTop: 56 }}>On your machine</h2>
-      <p className="muted" style={{ maxWidth: "62ch" }}>All {COUNT} tools, including what-if simulations with your own
-        conditions. Needs <a href="https://docs.astral.sh/uv/">uv</a>. In Claude Desktop open
-        Settings, Developer, Edit config, and add:</p>
-      <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>claude_desktop_config.json</span><span>JSON</span></div>
-        <pre className="req">{CONFIG}</pre></div></div>
-      <p className="muted" style={{ marginTop: 20 }}>Claude Code:</p>
-      <div className="cs-api" style={{ padding: 0 }}><div className="cs-api-panel"><div className="cs-api-panel-head"><span>Terminal</span><span>shell</span></div>
-        <pre className="req">{CLAUDE_CODE}</pre></div></div>
+        count against its plan. Decision and fantasy tools answer for the matches we cover, from 3 days before the start.
+        For your own what-ifs (pitch, weather, a changed XI), use <Link href="/lab/">MatchSynth Lab</Link>.</p>
 
       <h2 style={{ marginTop: 56 }}>{COUNT} tools</h2>
       <div className="grid g3">
@@ -93,7 +70,7 @@ export default function Mcp() {
             <h3>{g.title}</h3>
             <p className="small muted" style={{ margin: "6px 0 12px" }}>{g.text}</p>
             <div className="card-foot mono small" style={{ lineHeight: 1.7, color: "var(--cs-ink-2)" }}>
-              {g.tools.map((t, i) => <span key={t}>{i ? " · " : ""}{t}{LOCAL_ONLY.has(t) ? " (local)" : ""}</span>)}</div>
+              {g.tools.map((t, i) => <span key={t}>{i ? " · " : ""}{t}</span>)}</div>
           </div>
         ))}
       </div>
@@ -104,9 +81,8 @@ export default function Mcp() {
       </div>
 
       <h2 style={{ marginTop: 56 }}>Full API</h2>
-      <p className="muted" style={{ maxWidth: "62ch" }}>Set <span className="mono">CRICSYNTHESIS_API_KEY</span> in the server&apos;s
-        environment and an <span className="mono">api_request</span> tool reaches all {""}
-        <Link href="/developers/">56 API endpoints</Link>: player and venue analytics, decision models and graphics.</p>
+      <p className="muted" style={{ maxWidth: "62ch" }}>The same analytics, decision models and graphics as plain HTTP:{" "}
+        <Link href="/developers/">56 API endpoints</Link> with the same account and keys.</p>
       <div style={{ paddingBottom: 72 }} />
     </div>
   );

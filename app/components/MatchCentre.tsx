@@ -366,11 +366,11 @@ function Players({ doc }: { doc: MatchDoc }) {
   );
 }
 
+/** A player's name; a newcomer with no past matches gets a "new" tag and a plain-words hover note. */
 function PlayerName({ p }: { p: PlayerRow }) {
-  const pr = p.profile;
-  const tip = !p.known ? "No history: simulated as an average newcomer"
-    : `T20-type balls: ${pr.balls_faced?.short ?? 0} faced, ${pr.balls_bowled?.short ?? 0} bowled · one-day: ${pr.balls_faced?.od ?? 0} faced, ${pr.balls_bowled?.od ?? 0} bowled (recency-weighted)`;
-  return <span title={tip}>{p.name}{!p.known && <span className="tag" style={{ marginLeft: 6 }}>new</span>}</span>;
+  if (p.known) return <span>{p.name}</span>;
+  return <span title="New player: no past matches to go on, so we expect an average performance">{p.name}
+    <span className="tag" style={{ marginLeft: 6 }}>new</span></span>;
 }
 
 function Matchups({ doc }: { doc: MatchDoc }) {

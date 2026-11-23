@@ -7,7 +7,7 @@ import { round } from "./py.ts";
 type Row = Record<string, any>;
 export class Unavailable extends Error {}
 export const LATER = "Prepared answers are ready from 3 days before a covered match (the live-state ones from 36 hours " +
-  "before). For other matches or your own inputs, use the local CricSynthesis MCP server or MatchSynth Lab.";
+  "before). For other matches or your own inputs, use MatchSynth Lab on the website.";
 
 export async function prepared(edge: Source | null, mid: string): Promise<Row> {
   if (!edge) throw new Unavailable(LATER);
@@ -129,7 +129,7 @@ export function liveState(p: Row, batting: number, runs: number, wickets: number
            final_wickets_mean: round(v.wk_mean, 1), p_all_out: round(v.all_out, 3),
            ...(inn === 2 ? { required: { runs: target! - runs, balls: g.balls_total - ballsDone,
                                          rate: round(6 * (target! - runs) / Math.max(1, g.balls_total - ballsDone), 2) } } : {}),
-           note: "Interpolated from prepared match states; for an exact re-simulation use the local MCP server or MatchSynth Lab." };
+           note: "Interpolated from prepared match states; for an exact re-simulation use MatchSynth Lab on the website." };
 }
 
 /** Chance the innings reaches each total, read off the final-total quantiles (linear between them). */

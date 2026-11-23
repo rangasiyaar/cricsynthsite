@@ -36,7 +36,7 @@ export default function Developers() {
       <p className="muted" style={{ maxWidth: "68ch", marginTop: 12 }}>
         {HOSTED} are on the hosted API at <span className="mono">{API}</span>, {COVERED} of them for the matches we cover
         (answers ready from 3 days before the start). The other {ENDPOINTS.length - HOSTED}, simulations with your own XIs
-        and conditions, run in the <Link href="/mcp/">MCP server</Link>&apos;s engine on your machine.</p>
+        and conditions, aren&apos;t on the hosted API: try those what-ifs in <Link href="/lab/">MatchSynth Lab</Link>.</p>
       <div className="cs-hero-ctas" style={{ marginTop: 24 }}>
         <Link className="cs-btn cs-btn--primary" href="/docs/">Read the docs</Link>
         <Link className="cs-btn cs-btn--secondary" href="/playground/">Open the playground</Link>

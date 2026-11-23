@@ -10,8 +10,10 @@ const DATA = new URL("../../cricmcp/tests/fixtures/", import.meta.url);
 const KEY = "cs_live_" + "d".repeat(32);
 const bucket = { async get(p: string) { try { const t = await readFile(new URL(p, DATA), "utf8"); return { json: async () => JSON.parse(t) }; } catch { return null; } } };
 const EDGE = new URL("./fixtures/", import.meta.url);
+// the Worker's private files, as deployed: the analytics kit under analytics/, the prepared answers under edge/
 const assets = { fetch: async (r: Request) => {
-  try { return new Response(await readFile(new URL(new URL(r.url).pathname.slice(1), EDGE), "utf8")); }
+  const path = new URL(r.url).pathname.slice(1);
+  try { return new Response(await readFile(new URL(path, path.startsWith("analytics/") ? DATA : EDGE), "utf8")); }
   catch { return new Response("not found", { status: 404 }); } } };
 const counts = new Map<string, number>();
 const usage = { idFromName: (n: string) => n, get: (id: string) => ({ fetch: async () => {

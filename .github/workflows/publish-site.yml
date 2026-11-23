@@ -21,7 +21,7 @@ on:
         default: false
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/venue_intel.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "cricmcp/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
+    paths: ["app/**", "cricsim/fixtures/**", "cricsim/src/cricsim/kit.py", "cricsim/src/cricsim/venue_intel.py", "cricsim/src/cricsim/resolve.py", "cricsim/src/cricsim/results.py", "cricsim/src/cricsim/publish.py", "cricsim/src/cricsim/fantasy.py", "cricsim/src/cricsim/fantasy_weights.json", "cricsim/src/cricsim/stack.py", "cricsim/src/cricsim/stack_weights.json", "cricsim/results/**", "cricsim/fantasy/**", "firebase.json", "infra/firestore.*", ".github/workflows/publish-site.yml"]
 
 permissions:
   contents: write                  # the forecast-archive branch (a durable copy of every frozen forecast)
@@ -154,6 +154,14 @@ jobs:
           git commit -q -m "Frozen forecasts $(date -u +%FT%TZ)"
           for i in 1 2 3; do git push -q origin forecast-archive && break; git fetch -q --depth=1 origin forecast-archive && git rebase -q FETCH_HEAD || true; sleep 5; done
           echo "archive: $(ls matches | grep -vc pack) frozen forecasts saved"
+      - name: Analytics kit (the hosted API and MCP compute analytics from it; shipped privately with the Worker, never on the site)
+        run: |
+          uv run python -m cricsim.kit --model data/models/latest --out data/publish --parquet data/parquet | tee -a "$GITHUB_STEP_SUMMARY"
+          rm -rf edge/assets/analytics && mkdir -p edge/assets && cp -r data/publish/analytics edge/assets/analytics
+      - uses: actions/cache/save@v4          # for the Worker deploys (edge-data.yml, deploy-worker.yml)
+        with:
+          path: edge/assets/analytics
+          key: edge-kit-${{ github.run_id }}
       - uses: actions/upload-artifact@v4          # inputs for the hosted API's prepared answers (edge-data.yml)
         with:
           name: edge-inputs
@@ -166,8 +174,6 @@ jobs:
         continue-on-error: true
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh workflow run edge-data.yml -R "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f publish_run=${{ github.run_id }}
-      - name: Analytics kit (static files the MCP server computes analytics from)
-        run: uv run python -m cricsim.kit --model data/models/latest --out data/publish --parquet data/parquet | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Venue intelligence (the match centre's Venue tab; a failure leaves the tab empty, never blocks publishing)
         continue-on-error: true
         run: |
@@ -209,6 +215,7 @@ jobs:
         env: { NEXT_PUBLIC_TURNSTILE_SITE_KEY: "${{ vars.TURNSTILE_SITE_KEY }}" }   # the forms' bot check (public key)
         run: |
           rm -rf app/public/data && cp -r data/publish app/public/data
+          rm -rf app/public/data/analytics      # the analytics kit stays private (the Worker ships its own copy)
           cd app && npm ci && npm test && npx next build
       - name: Android app version (the latest signed release; /download/cricsynthesis.apk redirects to its file)
         env:
@@ -230,8 +237,6 @@ jobs:
           else:
               print("::warning::The latest release has no CricSynthesis.apk yet")
           PY
-      - name: MCP package and its install index (served with the site under /pypi/)
-        run: uv run python cricmcp/build_index.py --out app/out/pypi
       - name: Firestore rules (test against the Rules API, then release; unchanged rules are skipped)
         if: env.GCP == 'true'
         continue-on-error: true          # a rules problem must not hold back the site deploy; it shows as a warning

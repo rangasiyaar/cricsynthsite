@@ -244,7 +244,7 @@ const unav = async <T>(f: () => Promise<T>): Promise<T> => {
 const noCustom = (b: Row, ...keys: string[]) => {
   for (const k of keys) {
     if (b[k] != null && !(Array.isArray(b[k]) && !b[k].length) && !(typeof b[k] === "object" && !Array.isArray(b[k]) && !Object.keys(b[k]).length)) {
-      throw new HttpError(501, `'${k}' needs a fresh simulation, which the hosted API doesn't run. Use the local MCP server or MatchSynth Lab.`);
+      throw new HttpError(501, `'${k}' needs a fresh simulation, which the hosted API doesn't run. Use MatchSynth Lab on the website.`);
     }
   }
 };
@@ -360,7 +360,7 @@ export function catalog(): Row {
   const eps: Record<string, Row[]> = { [A]: [], [SM]: [], [GR]: [] };
   for (const r of routes) eps[r.tag].push({ method: r.method, path: r.path, summary: r.summary });
   return { endpoints: eps, not_hosted: NOT_HOSTED.map(({ method, path, summary, local_only }) =>
-    ({ method, path, summary, where: local_only ? "local MCP server or MatchSynth Lab" : "coming to the hosted API" })) };
+    ({ method, path, summary, where: local_only ? "MatchSynth Lab on the website" : "coming to the hosted API" })) };
 }
 
 export { BadRequest, Kit, NotFound, routes };

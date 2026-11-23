@@ -23,10 +23,11 @@ export const safeId = (pid: string): string => pid.replace(/[^A-Za-z0-9_.-]/g, "
 export class Analytics {
   src: Source;
   edge: Source | null;              // prepared per-match answers (cricsim/edge.py), private to the Worker
+  kitSrc: Source;                   // the analytics kit (cricsim/kit.py): shipped privately with the Worker, not on the site
   private kitP: Promise<Kit> | null = null;
-  constructor(src: Source, edge: Source | null = null) { this.src = src; this.edge = edge; }
+  constructor(src: Source, edge: Source | null = null, kit: Source | null = null) { this.src = src; this.edge = edge; this.kitSrc = kit ?? src; }
 
-  file(path: string): Promise<any> { return this.src.get(`analytics/${path}`); }
+  file(path: string): Promise<any> { return this.kitSrc.get(`analytics/${path}`); }
   kit(): Promise<Kit> { return (this.kitP ??= this.file("context.json").then((c) => new Kit(c))); }
   player(pid: string): Promise<Player> { return this.file(`players/${safeId(pid)}.json`); }
 

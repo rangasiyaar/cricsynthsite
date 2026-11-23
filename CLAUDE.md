@@ -18,7 +18,7 @@ cricsynthsite/
 ├── cricsim/                   ← Pattern Lab, simulation engine (fit / simulate / summary / backtest), publish
 │                                 (cricsim/social = Instagram carousels emailed for the 2-hours-before post: WBBL / NPL / Test-nation internationals)
 ├── cricapi/                   ← FastAPI: 56 endpoints in Analytics / Simulation & modelling / Graphics (extra.py) + admin
-├── cricmcp/                   ← MCP server (42 tools, runs on the user's machine via uvx; installed from <site>/pypi/simple/)
+├── cricmcp/                   ← Python reference for the MCP tools (parity tests only; no longer published: the hosted MCP on edge/ is the product)
 ├── edge/                      ← Hosted API + remote MCP on Cloudflare Workers (api. / mcp.cricsynthesis.in; infra/EDGE_PLAN.md)
 ├── app/                       ← Next.js static export: match centre, Scenario Lab (browser engine), Pattern Lab
 │                                 (app/app/m/ = the Android app's screens: splash, sign-in, matches, match, Lab, account)
@@ -38,7 +38,7 @@ cricsynthsite/
 | Payments | Razorpay Subscriptions via the API Worker (`edge/src/billing.ts`: /billing/checkout, verify, cancel, status, webhook) | CricSynthesis Pro ₹349/month or ₹3,769/year, one free day per account (first charge 24 h later; Razorpay takes and refunds a fixed ₹5 to set up autopay, `AUTOPAY_CHECK` in `app/lib/pro.ts`); no promo codes or offers for now; copy and prices in `app/lib/pro.ts`; offer on `/pricing/` and `/pro/` (`components/ProOffer.tsx`) and in the app (`components/ProOfferApp.tsx`, the paywall for locked sections and the Lab), whose buttons go to our checkout page (`/checkout/?plan=`, `components/Checkout.tsx`; app `/m/checkout/`) that opens Razorpay's window, plan card on `/account/` and the app's Account; plans for every page in `app/lib/plans.ts` (API Free 200/day, API Plus ₹4,999/month 20,000/day incl. CricSynthesis Pro, Business by contact); keys are GitHub secrets `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` / `RAZORPAY_WEBHOOK_SECRET` copied to the Worker by `deploy-worker.yml` (live keys since 20 Nov 2026; `billing-live-check.yml` checks them read-only); the billing doc is written only by the Worker |
 | Account dashboard | `/account/` (`components/Dashboard.tsx`) | Overview, usage (`users/{uid}/usage/{day}`, written by the API in batches), API keys (read by the API when `CRICAPI_FIRESTORE_PROJECT` is set), subscription + upgrade requests (`users/{uid}/requests/{plan}`, approved server-side), profile + email preferences |
 | App data | Firestore | One doc per match tab; public docs carry `published: true` |
-| API + remote MCP | Cloudflare Worker `edge/` (free plan) at api.cricsynthesis.in and mcp.cricsynthesis.in | Reads the site's `/data` and its own prepared per-match files (`cricsim/edge.py`, built by `edge-data.yml`); never simulates. Same paths and shapes as `cricapi` (kept as the reference implementation and docs generator); dashboard keys checked in Firestore; the daily limit is per account (all keys + the MCP sign-in share one Usage counter, `counterId` in `edge/src/keys.ts`; plan = the higher of the key's and the account's `billing/admin` tier); parity with the MCP server's Python is tested |
+| API + remote MCP | Cloudflare Worker `edge/` (free plan) at api.cricsynthesis.in and mcp.cricsynthesis.in | Reads the site's `/data`, plus privately shipped assets: the analytics kit (`assets/analytics`) and its prepared per-match files (`cricsim/edge.py`, built by `edge-data.yml`); never simulates. Same paths and shapes as `cricapi` (kept as the reference implementation and docs generator); dashboard keys checked in Firestore; the daily limit is per account (all keys + the MCP sign-in share one Usage counter, `counterId` in `edge/src/keys.ts`; plan = the higher of the key's and the account's `billing/admin` tier); parity with the MCP server's Python is tested |
 | Batch | GitHub Actions (nightly `publish-site.yml`, weekly Pattern Lab) | data → fit → simulate → build → deploy; syncs model + forecasts to the models bucket for the API |
 | Ball-by-ball + analytics | BigQuery dataset `cricket` | Partitioned by month, clustered; always set `maximum_bytes_billed` |
 | Files / models | Cloud Storage `<project>-data`, `<project>-models` | Lifecycle cleanup, soft-delete off |
@@ -107,7 +107,9 @@ only run once the repo variable `GCP_ENABLED=true` is set.
 
 - `cricmcp/src/cricmcp/insight.py` ports `insight.py` to pure Python over the analytics kit (`cricsim/kit.py`);
   `test_insight_parity.py` checks them against each other. `cricmcp/.../graphics.py` is a verbatim copy of
-  `cricapi/graphics.py` (tested). The MCP package is served from the site, not GitHub (`cricmcp/build_index.py`).
+  `cricapi/graphics.py` (tested). The MCP package is not published (Nov 2026): no /pypi on the site; the analytics kit
+  (`cricsim/kit.py`) is never on the site either, it ships privately inside the API Worker (`edge/assets/analytics`, cached by
+  publish-site.yml as `edge-kit-*`, restored by edge-data.yml and deploy-worker.yml, which refuse to deploy without it).
 - `cricmcp/src/cricmcp/sim.py` is a third copy of the browser engine (pure Python, same RNG); `cricmcp/tests/test_parity.py`
   requires it to reproduce `sim.ts` exactly, so change both together.
 - `cricsim/engine/states.py` is the single definition of outcome classes and situation buckets; the
