@@ -12,7 +12,7 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Uttarakhand won the toss and bowl first.",
   "teams": [
     {
       "name": "Uttarakhand",
@@ -23,25 +23,25 @@
         "Avneesh Sudha",
         "Tejasvi Jaiswal",
         "Aarav Mahajan",
-        "Sanskar Rawat",
-        "Mayank Mishra",
-        "Agnivesh Ayachi",
+        "Vaibhav Kandpal",
+        "Jagadeesha Suchith",
+        "Surya Chauhan",
+        "Ravinder Negi",
         "Janmejay Joshi",
-        "Jagmohan Nagarkoti",
-        "Surya Chauhan"
+        "Tushar Kumar"
       ],
       "roles": [
-        "BAT",
-        "AR",
-        "AR",
-        "BOWL",
-        "BAT",
         "WK",
         "AR",
         "AR",
         "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
-        "BAT"
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR"
       ],
       "captain": "Kunal Chandela",
       "squad": [
@@ -64,27 +64,27 @@
       "players": [
         "Atharva Taide",
         "Danish Malewar",
-        "Varun Bisht",
         "Shubham Dubey",
-        "Yash Kadam",
+        "Ravikumar Samarth",
+        "Varun Bisht",
         "Vedant Jajoo",
+        "Yash Kadam",
         "Parth Rekhade",
         "Nachiket Bhute",
         "Saurabh Dubey",
-        "Yash Thakur",
-        "Ravikumar Samarth"
+        "Yash Rathod"
       ],
       "roles": [
         "BAT",
         "BAT",
-        "AR",
+        "BAT",
         "BAT",
         "AR",
         "WK",
-        "BOWL",
         "AR",
         "BOWL",
         "AR",
+        "BOWL",
         "BAT"
       ],
       "captain": "Atharva Taide",
@@ -107,6 +107,7 @@
     "kn": 41944,
     "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-vidarbha-syed-mushtaq-ali-trophy-elite-24th-november-2026-41944",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
