@@ -1,0 +1,112 @@
+{
+  "id": "mp-v-pdy-t20-chandigarh-2026-11-26",
+  "title": "Madhya Pradesh v Puducherry",
+  "date": "2026-11-26",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 99th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Madhya Pradesh",
+      "short": "MP",
+      "players": [
+        "Harsh Gawli",
+        "Rajat Patidar",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Ritik Tada",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Kumar Kartikeya"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Rajat Patidar",
+      "squad": [
+        "Harsh Gawli",
+        "Rajat Patidar",
+        "Akshat Raghuwanshi",
+        "Aniket Verma",
+        "Ritik Tada",
+        "Shivam Shukla",
+        "Shivang Kumar",
+        "Rahul Batham",
+        "Tripuresh Singh",
+        "Avesh Khan",
+        "Kumar Kartikeya"
+      ]
+    },
+    {
+      "name": "Puducherry",
+      "short": "PDY",
+      "players": [
+        "Ankit Sharma",
+        "Sagar Trivedi",
+        "Prasad Pawar",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Sagar Udeshi",
+        "Pougajendy Akash"
+      ],
+      "roles": [
+        "BOWL",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT"
+      ],
+      "captain": "Aman Hakim Khan",
+      "squad": [
+        "Ankit Sharma",
+        "Sagar Trivedi",
+        "Prasad Pawar",
+        "Shashank Singh",
+        "Aman Hakim Khan",
+        "Bhanu Anand",
+        "Adil Ayub Tunda",
+        "S Parameeswaran",
+        "Badal Rawat",
+        "Sagar Udeshi",
+        "Pougajendy Akash"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41951,
+    "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-puducherry-syed-mushtaq-ali-trophy-elite-26th-november-2026-41951",
+    "auto": true,
+    "xis": false
+  }
+}
