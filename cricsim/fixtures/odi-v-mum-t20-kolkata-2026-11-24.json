@@ -12,34 +12,34 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Odisha won the toss and bowl first.",
   "teams": [
     {
       "name": "Odisha",
       "short": "ODI",
       "players": [
+        "Sourav Gouda",
+        "Sarbeswar Mohanty",
         "Swastik Samal",
         "Gourav Choudhury",
-        "Aditya Rout",
         "Subhranshu Senapati",
         "Kartik Biswal",
-        "Ninad Rathva",
         "Soumya Lenka",
-        "Sourav Gouda",
-        "Vageesh Sharma",
+        "Ninad Rathva",
         "Lalit Yadav",
+        "Vimal Kumar",
         "Badal Biswal"
       ],
       "roles": [
+        "WK",
+        "BOWL",
         "AR",
         "AR",
         "BAT",
         "BAT",
-        "BAT",
+        "BOWL",
         "AR",
         "BOWL",
-        "WK",
-        "BAT",
         "BOWL",
         "BOWL"
       ],
@@ -62,30 +62,30 @@
       "name": "Mumbai",
       "short": "MUM",
       "players": [
+        "Hardik Tamore",
         "Surya Kumar Yadav",
-        "Shardul Thakur",
         "Sarfaraz Khan",
-        "Tushar Deshpande",
+        "Angkrish Raghuvanshi",
+        "Shardul Thakur",
         "Shivam Dube",
         "Maxwell Swaminathan",
-        "Atharva Ankolekar",
-        "Angkrish Raghuvanshi",
-        "Sairaj Patil",
         "Musheer Khan",
-        "Hardik Tamore"
+        "Sairaj Patil",
+        "Atharva Ankolekar",
+        "Tushar Deshpande"
       ],
       "roles": [
+        "WK",
         "BAT",
-        "AR",
         "BAT",
-        "BOWL",
-        "AR",
-        "AR",
-        "AR",
         "BAT",
         "AR",
         "AR",
-        "WK"
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
       ],
       "captain": "Surya Kumar Yadav",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41948,
     "url": "https://khelnow.com/live-cricket-score/odisha-vs-mumbai-syed-mushtaq-ali-trophy-elite-24th-november-2026-41948",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

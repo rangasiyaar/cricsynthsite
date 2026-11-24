@@ -1,0 +1,324 @@
+{
+ "id": "aus-v-eng-t20i-queensland-2026-11-24",
+ "innings": [
+  {
+   "team": "Australia",
+   "runs": 184,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Mitchell Marsh",
+     "dismissal": "c & b H T Crocombe",
+     "runs": 15,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Jake Fraser-McGurk",
+     "dismissal": "c H Brook b S Curran",
+     "runs": 27,
+     "balls": 13,
+     "fours": 1,
+     "sixes": 3
+    },
+    {
+     "name": "Sam Harper",
+     "dismissal": "runout (J Coles)",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nikhil Chaudhary",
+     "dismissal": "c J Coles b S Curran",
+     "runs": 45,
+     "balls": 35,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Tim David",
+     "dismissal": "c J Coles b J Overton",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Lachlan Shaw",
+     "dismissal": "c P Salt b A Rashid",
+     "runs": 10,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Joel Davies",
+     "dismissal": "runout (J Cox / S Curran)",
+     "runs": 39,
+     "balls": 25,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Jack Edwards",
+     "dismissal": "c H Brook b H T Crocombe",
+     "runs": 18,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Ben Dwarshuis",
+     "dismissal": "not out",
+     "runs": 18,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 3
+    },
+    {
+     "name": "Adam Zampa",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "James Coles",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Henry Thomas Crocombe",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Sam Curran",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jamie Overton",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Adil Rashid",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Liam Dawson",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Mitchell Marsh",
+     "score": 17,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Jake Fraser-McGurk",
+     "score": 45,
+     "over": "4.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Sam Harper",
+     "score": 45,
+     "over": "4.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Tim David",
+     "score": 58,
+     "over": "5.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lachlan Shaw",
+     "score": 84,
+     "over": "10.6"
+    },
+    {
+     "wicket": 6,
+     "batter": "Nikhil Chaudhary",
+     "score": 133,
+     "over": "16.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Jack Edwards",
+     "score": 164,
+     "over": "18.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Joel Davies",
+     "score": 165,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 58
+  },
+  {
+   "team": "England",
+   "runs": 188,
+   "wickets": 2,
+   "overs": "13.1",
+   "batting": [
+    {
+     "name": "Phil Salt",
+     "dismissal": "c & b BJ Dwarshuis",
+     "runs": 58,
+     "balls": 30,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Aneurin Donald",
+     "dismissal": "c J Edwards b RP Meredith",
+     "runs": 85,
+     "balls": 32,
+     "fours": 4,
+     "sixes": 9
+    },
+    {
+     "name": "Harry Brook",
+     "dismissal": "not out",
+     "runs": 10,
+     "balls": 9,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Tom Banton",
+     "dismissal": "not out",
+     "runs": 26,
+     "balls": 8,
+     "fours": 1,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Joel Davies",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Riley Meredith",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Jack Edwards",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nikhil Chaudhary",
+     "overs": "1.1",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ben Dwarshuis",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Adam Zampa",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aneurin Donald",
+     "score": 151,
+     "over": "10.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Phil Salt",
+     "score": 158,
+     "over": "11.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
