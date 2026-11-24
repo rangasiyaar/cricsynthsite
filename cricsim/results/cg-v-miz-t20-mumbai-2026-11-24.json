@@ -1,0 +1,374 @@
+{
+ "id": "cg-v-miz-t20-mumbai-2026-11-24",
+ "innings": [
+  {
+   "team": "Chandigarh",
+   "runs": 187,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Manan Vohra",
+     "dismissal": "c J Anderson b K Yadav",
+     "runs": 13,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Arjun Azad",
+     "dismissal": "c F Lalmuanzuala b S Lama",
+     "runs": 23,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Shivam Bhambri",
+     "dismissal": "c K Yadav b B Lalnunfela",
+     "runs": 61,
+     "balls": 29,
+     "fours": 4,
+     "sixes": 5
+    },
+    {
+     "name": "Devang Kaushik",
+     "dismissal": "c Lalhruaizela b B Lalnunfela",
+     "runs": 13,
+     "balls": 14,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Sanyam Saini",
+     "dismissal": "c J Anderson b K Yadav",
+     "runs": 32,
+     "balls": 23,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Jagjit Singh Sandhu",
+     "dismissal": "c S Lama b B Lalnunfela",
+     "runs": 10,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Nikhil Thakur",
+     "dismissal": "c KL Vanrotlinga b C Sutar",
+     "runs": 9,
+     "balls": 5,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Bhagmender Lather",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Chiragvir Dhindsa",
+     "dismissal": "c KL Vanrotlinga b K Yadav",
+     "runs": 12,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Hardik Choudhary",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Khiangte Vanrotlinga",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 29,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Kuldip Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Lalthianawma",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 18,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "B Lalnunfela",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sumit Lama",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Chinmay Sutar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Manan Vohra",
+     "score": 24,
+     "over": "3.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Arjun Azad",
+     "score": 94,
+     "over": "8.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Shivam Bhambri",
+     "score": 112,
+     "over": "11.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Devang Kaushik",
+     "score": 121,
+     "over": "13.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Jagjit Singh Sandhu",
+     "score": 148,
+     "over": "15.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Sanyam Saini",
+     "score": 170,
+     "over": "17.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Nikhil Thakur",
+     "score": 172,
+     "over": "18.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Chiragvir Dhindsa",
+     "score": 185,
+     "over": "19.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 8,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 74
+  },
+  {
+   "team": "Mizoram",
+   "runs": 129,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Joseph Lalthankhuma",
+     "dismissal": "b H Choudhary",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Manender Singh",
+     "dismissal": "c S Saini b B Lather",
+     "runs": 39,
+     "balls": 31,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Chinmay Sutar",
+     "dismissal": "b H Choudhary",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Jehu Anderson",
+     "dismissal": "not out",
+     "runs": 50,
+     "balls": 46,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Kuldip Yadav",
+     "dismissal": "c B Lather b S Bhambri",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalhruaizela-M",
+     "dismissal": "c Devang Kaushik b H Choudhary",
+     "runs": 13,
+     "balls": 11,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Khiangte Vanrotlinga",
+     "dismissal": "c M Vohra b J Singh Sandhu",
+     "runs": 15,
+     "balls": 17,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Jagjit Singh Sandhu",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rohit Dhanda",
+     "overs": "3",
+     "maidens": 1,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Hardik Choudhary",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bhagmender Lather",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chiragvir Dhindsa",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shivam Bhambri",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Joseph Lalthankhuma",
+     "score": 30,
+     "over": "4.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Chinmay Sutar",
+     "score": 30,
+     "over": "4.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Manender Singh",
+     "score": 52,
+     "over": "7.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kuldip Yadav",
+     "score": 70,
+     "over": "11.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Lalhruaizela-M",
+     "score": 92,
+     "over": "14.5"
+    },
+    {
+     "wicket": 6,
+     "batter": "Khiangte Vanrotlinga",
+     "score": 129,
+     "over": "19.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 4,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Chandigarh won",
+ "winner": "Chandigarh"
+}
