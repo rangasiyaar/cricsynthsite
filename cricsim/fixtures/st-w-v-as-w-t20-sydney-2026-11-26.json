@@ -1,0 +1,112 @@
+{
+  "id": "st-w-v-as-w-t20-sydney-2026-11-26",
+  "title": "Sydney Thunder Women v Adelaide Strikers Women",
+  "date": "2026-11-26",
+  "start_time": "10:10",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 34th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "North Sydney Oval, Sydney",
+  "venue_search": "north sydney oval",
+  "city": "Sydney",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sydney Thunder Women",
+      "short": "ST-W",
+      "players": [
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Anika Learoyd",
+        "Heather Knight",
+        "Nadine de Klerk",
+        "Tahlia Wilson",
+        "Laura Harris",
+        "Nicola Hancock",
+        "Jemma Barsby",
+        "Lauren Bell",
+        "Samantha Bates"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Phoebe Litchfield",
+      "squad": [
+        "Phoebe Litchfield",
+        "Georgia Voll",
+        "Anika Learoyd",
+        "Heather Knight",
+        "Nadine de Klerk",
+        "Tahlia Wilson",
+        "Laura Harris",
+        "Nicola Hancock",
+        "Jemma Barsby",
+        "Lauren Bell",
+        "Samantha Bates"
+      ]
+    },
+    {
+      "name": "Adelaide Strikers Women",
+      "short": "AS-W",
+      "players": [
+        "Emma de Broughe",
+        "Maia Bouchier",
+        "Tahlia McGrath",
+        "Laura Wolvaardt",
+        "Madeline Penna",
+        "Bridget Patterson",
+        "Eleanor Larosa",
+        "Amanda Wellington",
+        "Ella Wilson",
+        "Megan Schutt",
+        "Anesu Mushangwe"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Tahlia McGrath",
+      "squad": [
+        "Emma de Broughe",
+        "Maia Bouchier",
+        "Tahlia McGrath",
+        "Laura Wolvaardt",
+        "Madeline Penna",
+        "Bridget Patterson",
+        "Eleanor Larosa",
+        "Amanda Wellington",
+        "Ella Wilson",
+        "Megan Schutt",
+        "Anesu Mushangwe"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40334,
+    "url": "https://khelnow.com/live-cricket-score/sydney-thunder-women-vs-adelaide-strikers-women-women's-big-bash-league-26th-november-2026-40334",
+    "auto": true,
+    "xis": false
+  }
+}
