@@ -12,38 +12,38 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chandigarh won the toss and bat first.",
   "teams": [
     {
       "name": "Chandigarh",
       "short": "CG",
       "players": [
         "Manan Vohra",
-        "Aarush Bhandari",
-        "Shivam Bhambri",
         "Arjun Azad",
-        "Nehal Pajni",
+        "Shivam Bhambri",
+        "Sanyam Saini",
+        "Nikhil Thakur",
         "Bhagmender Lather",
         "Chiragvir Dhindsa",
-        "Nikhil Kumar",
         "Hardik Choudhary",
-        "Sandeep Sharma",
-        "Jagjit Singh Sandhu"
+        "Rohit Dhanda",
+        "Jagjit Singh Sandhu",
+        "Devinder Singh"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "BAT",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
         "AR",
         "AR",
-        "BOWL",
         "AR",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BAT"
       ],
-      "captain": "Aarush Bhandari",
+      "captain": "Shivam Bhambri",
       "squad": [
         "Manan Vohra",
         "Aarush Bhandari",
@@ -62,7 +62,7 @@
       "name": "Mizoram",
       "short": "MIZ",
       "players": [
-        "Sahil Sharma",
+        "Lalhruaizela-M",
         "Jehu Anderson",
         "Chinmay Sutar",
         "Joseph Lalthankhuma",
@@ -71,7 +71,7 @@
         "Kuldip Yadav",
         "B Lalnunfela",
         "Sumit Lama",
-        "Marema",
+        "F Lalmuanzuala",
         "Lalthianawma"
       ],
       "roles": [
@@ -107,6 +107,7 @@
     "kn": 41937,
     "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-mizoram-syed-mushtaq-ali-trophy-elite-24th-november-2026-41937",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
