@@ -12,7 +12,7 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Andhra won the toss and bowl first.",
   "teams": [
     {
       "name": "Andhra",
@@ -22,26 +22,26 @@
         "Shaik Rasheed",
         "Seeram Rahul",
         "Ricky Bhui",
-        "Ashwin Hebbar",
         "SDNV Prasad",
+        "Ashwin Hebbar",
+        "Saurabh Kumar",
         "KV Sasikanth",
-        "Satyanarayana Raju",
         "KS Narasimha Raju",
-        "Bailapudi Yeswanth",
-        "Saurabh Kumar"
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth"
       ],
       "roles": [
         "AR",
         "BAT",
         "AR",
         "BAT",
-        "BAT",
         "WK",
-        "BOWL",
+        "BAT",
+        "AR",
         "BOWL",
         "BAT",
         "BOWL",
-        "AR"
+        "BOWL"
       ],
       "captain": "Ricky Bhui",
       "squad": [
@@ -62,30 +62,30 @@
       "name": "Puducherry",
       "short": "PDY",
       "players": [
-        "Ankit Sharma",
-        "Sagar Trivedi",
-        "Prasad Pawar",
-        "Shashank Singh",
-        "Aman Hakim Khan",
         "Bhanu Anand",
-        "Adil Ayub Tunda",
-        "S Parameeswaran",
-        "Badal Rawat",
         "Sagar Udeshi",
-        "Pougajendy Akash"
+        "Prasad Pawar",
+        "Gautam Dileep Shastry",
+        "Pougajendy Akash",
+        "S Parameeswaran",
+        "Aman Hakim Khan",
+        "Shashank Singh",
+        "Badal Rawat",
+        "Sagar Trivedi",
+        "Adil Ayub Tunda"
       ],
       "roles": [
-        "BOWL",
-        "AR",
-        "BAT",
-        "AR",
-        "AR",
         "WK",
-        "BOWL",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "BAT",
         "AR",
-        "BAT",
-        "BAT"
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
       ],
       "captain": "Aman Hakim Khan",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41945,
     "url": "https://khelnow.com/live-cricket-score/andhra-vs-puducherry-syed-mushtaq-ali-trophy-elite-24th-november-2026-41945",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
