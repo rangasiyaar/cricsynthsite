@@ -12,34 +12,34 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. MI Emirates won the toss and bat first.",
   "teams": [
     {
       "name": "Gulf Giants",
       "short": "GG",
       "players": [
         "Rahmanullah Gurbaz",
-        "Ibrahim Zadran",
         "Liam Livingstone",
+        "Azmatullah Omarzai",
         "Heinrich Klaasen",
-        "Sagar Kalyan",
         "David Miller",
         "David Wiese",
-        "Azmatullah Omarzai",
         "Akeal Hosein",
         "Alzarri Joseph",
-        "Haider Razzaq"
+        "Dhruv Parashar",
+        "Haider Razzaq",
+        "Shamar Joseph"
       ],
       "roles": [
         "WK",
-        "BAT",
+        "AR",
         "AR",
         "BAT",
         "BAT",
-        "BAT",
-        "AR",
         "AR",
         "BOWL",
+        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -62,23 +62,23 @@
       "name": "MI Emirates",
       "short": "MIE",
       "players": [
-        "Muhammad Waseem",
         "Kusal Perera",
+        "Muhammad Waseem",
+        "Sanjay Krishnamurthy",
         "Nicholas Pooran",
-        "Romario Shepherd",
         "Sherfane Rutherford",
         "Kieron Pollard",
-        "Sanjay Krishnamurthy",
+        "Romario Shepherd",
         "Rashid Khan",
         "Chris Jordan",
-        "Zahoor Khan",
-        "Fazalhaq Farooqi"
+        "Fazalhaq Farooqi",
+        "Zahoor Khan"
       ],
       "roles": [
-        "BAT",
         "WK",
         "BAT",
         "AR",
+        "BAT",
         "BAT",
         "AR",
         "AR",
@@ -107,6 +107,7 @@
     "kn": 41723,
     "url": "https://khelnow.com/live-cricket-score/gulf-giants-vs-mi-emirates-international-league-t20-24th-november-2026-41723",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
