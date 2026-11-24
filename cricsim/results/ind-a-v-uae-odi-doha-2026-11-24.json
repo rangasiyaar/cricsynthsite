@@ -1,0 +1,338 @@
+{
+ "id": "ind-a-v-uae-odi-doha-2026-11-24",
+ "innings": [
+  {
+   "team": "United Arab Emirates",
+   "runs": 249,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Aryansh Sharma",
+     "dismissal": "c K Kushagra b H Rana",
+     "runs": 2,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ansh Tandon",
+     "dismissal": "c A Sharma b A Khan",
+     "runs": 8,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Harpreet Singh Bhatia",
+     "dismissal": "b A Khan",
+     "runs": 130,
+     "balls": 144,
+     "fours": 12,
+     "sixes": 4
+    },
+    {
+     "name": "Muhammad Shahdad",
+     "dismissal": "lbw b H Dubey",
+     "runs": 28,
+     "balls": 46,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Ethan Dsouza",
+     "dismissal": "c H Rana b S Ahamad",
+     "runs": 25,
+     "balls": 37,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Aftab Alam Shah",
+     "dismissal": "c S Shedge b A Khan",
+     "runs": 2,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Basil Hameed",
+     "dismissal": "not out",
+     "runs": 36,
+     "balls": 36,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Ibrar Ahmad",
+     "dismissal": "c TL Varma b A Khan",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Zahid Ali",
+     "dismissal": "c TL Varma b S Shedge",
+     "runs": 7,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Uddish Suri",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Harshit Rana",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 63,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Arshad Khan",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 43,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Suryansh Shedge",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Harsh Dubey",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "N. Tilak Varma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 1
+    },
+    {
+     "name": "Rinku Singh",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aryansh Sharma",
+     "score": 2,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ansh Tandon",
+     "score": 20,
+     "over": "5.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Muhammad Shahdad",
+     "score": 91,
+     "over": "21.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Ethan Dsouza",
+     "score": 151,
+     "over": "34.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Aftab Alam Shah",
+     "score": 154,
+     "over": "35.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Harpreet Singh Bhatia",
+     "score": 220,
+     "over": "46.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ibrar Ahmad",
+     "score": 220,
+     "over": "46.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Zahid Ali",
+     "score": 243,
+     "over": "49.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 8,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 45
+  },
+  {
+   "team": "India A",
+   "runs": 254,
+   "wickets": 3,
+   "overs": "14.2",
+   "batting": [
+    {
+     "name": "Vaibhav Sooryavanshi",
+     "dismissal": "c A Sharma b B Hameed",
+     "runs": 204,
+     "balls": 53,
+     "fours": 7,
+     "sixes": 28
+    },
+    {
+     "name": "Abhishek Sharma",
+     "dismissal": "lbw b I Ahmad",
+     "runs": 12,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Prabhsimran Singh",
+     "dismissal": "c A Alam Shah b Z Ali",
+     "runs": 3,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Rinku Singh",
+     "dismissal": "not out",
+     "runs": 27,
+     "balls": 19,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Kumar Kushagra",
+     "dismissal": "not out",
+     "runs": 1,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Zahid Ali",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ibrar Ahmad",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 71,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Basil Hameed",
+     "overs": "3.2",
+     "maidens": 0,
+     "runs": 59,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Simranjeet Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Uddish Suri",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Abhishek Sharma",
+     "score": 68,
+     "over": "3.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Prabhsimran Singh",
+     "score": 108,
+     "over": "5.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Vaibhav Sooryavanshi",
+     "score": 245,
+     "over": "12.5"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 0,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
