@@ -1,0 +1,112 @@
+{
+  "id": "del-v-rai-t20-indore-2026-11-26",
+  "title": "Delhi v Railways",
+  "date": "2026-11-26",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 103rd Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Holkar Cricket Stadium, Indore",
+  "venue_search": "holkar cricket stadium",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Anuj Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Mayank Yadav",
+        "Ishant Sharma",
+        "Mayank Rawat",
+        "Suyash Sharma",
+        "Digvesh Singh Rathi"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Priyansh Arya",
+      "squad": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Anuj Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Mayank Yadav",
+        "Ishant Sharma",
+        "Mayank Rawat",
+        "Suyash Sharma",
+        "Digvesh Singh Rathi"
+      ]
+    },
+    {
+      "name": "Railways",
+      "short": "RAI",
+      "players": [
+        "Mohammad Saif",
+        "Jayant Lakhan",
+        "Ravi Singh",
+        "Upendra Yadav",
+        "Jamshed Alam",
+        "Shivam Chaudhary",
+        "Eshaan Goyal",
+        "Mohit Raut",
+        "Raj Choudhary",
+        "Zubair Ali",
+        "Rahul Sharma"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Mohammad Saif",
+      "squad": [
+        "Mohammad Saif",
+        "Jayant Lakhan",
+        "Ravi Singh",
+        "Upendra Yadav",
+        "Jamshed Alam",
+        "Shivam Chaudhary",
+        "Eshaan Goyal",
+        "Mohit Raut",
+        "Raj Choudhary",
+        "Zubair Ali",
+        "Rahul Sharma"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41955,
+    "url": "https://khelnow.com/live-cricket-score/delhi-vs-railways-syed-mushtaq-ali-trophy-elite-26th-november-2026-41955",
+    "auto": true,
+    "xis": false
+  }
+}
