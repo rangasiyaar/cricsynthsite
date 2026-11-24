@@ -12,7 +12,7 @@
   "city": "Indore",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Tamil Nadu won the toss and bowl first.",
   "teams": [
     {
       "name": "Delhi",
@@ -21,25 +21,25 @@
         "Priyansh Arya",
         "Yash Dhull",
         "Nitish Rana",
-        "Mayank Rawat",
+        "Anuj Rawat",
         "Himmat Singh",
         "Tejasvi Dahiya",
         "Mayank Yadav",
         "Ishant Sharma",
-        "Digvesh Singh Rathi",
+        "Mayank Rawat",
         "Suyash Sharma",
-        "Rajneesh Dadar"
+        "Digvesh Singh Rathi"
       ],
       "roles": [
         "BAT",
         "BAT",
         "AR",
-        "AR",
+        "BAT",
         "BAT",
         "WK",
         "BOWL",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -63,16 +63,16 @@
       "short": "TN",
       "players": [
         "Sai Kishore",
-        "Narayan Jagadeesan",
+        "Tushar Raheja",
         "Amith Sathvik",
         "Balasubramaniam Sachin",
-        "Shahrukh Khan",
         "Andre Siddarth",
+        "Rithik Easwaran",
+        "Shahrukh Khan",
         "Ravi Rajkumar",
-        "Gurjapneet Singh",
-        "M. Siddharth",
         "Ragupathy Silambarasan",
-        "Rithik Easwaran"
+        "Gurjapneet Singh",
+        "M. Siddharth"
       ],
       "roles": [
         "BOWL",
@@ -81,11 +81,11 @@
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL",
-        "BAT"
+        "BOWL"
       ],
       "captain": "Sai Kishore",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41935,
     "url": "https://khelnow.com/live-cricket-score/delhi-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-24th-november-2026-41935",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
