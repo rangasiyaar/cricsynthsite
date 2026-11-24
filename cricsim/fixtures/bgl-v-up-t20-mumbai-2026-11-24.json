@@ -12,32 +12,32 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Uttar Pradesh won the toss and bowl first.",
   "teams": [
     {
       "name": "Bengal",
       "short": "BGL",
       "players": [
         "Abishek Porel",
-        "Karan Lal",
+        "Sudip Kumar Gharami",
         "Abhimanyu Easwaran",
-        "Sudip Chatterjee",
-        "Yuvraj Keswani",
+        "Karan Lal",
         "Shakir Habib Gandhi",
         "Rishabh Chaudhary",
         "Pradipta Pramanik",
         "Mohammad Shami",
         "Mukesh Kumar",
-        "Sayan Ghosh"
+        "Sayan Ghosh",
+        "Akhilesh Yadav"
       ],
       "roles": [
         "WK",
         "BAT",
         "BAT",
         "BAT",
-        "AR",
         "BAT",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -67,11 +67,11 @@
         "Adarsh Singh",
         "Sameer Rizvi",
         "Aryan Juyal",
-        "Swastik Chhikara",
+        "Abhishek Goswami",
         "Prashant Veer",
-        "Zeeshan Ansari",
+        "Kuldeep Yadav",
         "Bhuvneshwar Kumar",
-        "Mohsin Khan",
+        "Shivam Mavi",
         "Yash Dayal"
       ],
       "roles": [
@@ -107,6 +107,7 @@
     "kn": 41933,
     "url": "https://khelnow.com/live-cricket-score/bengal-vs-uttar-pradesh-syed-mushtaq-ali-trophy-elite-24th-november-2026-41933",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
