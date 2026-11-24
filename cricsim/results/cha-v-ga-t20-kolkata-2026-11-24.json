@@ -1,0 +1,363 @@
+{
+ "id": "cha-v-ga-t20-kolkata-2026-11-24",
+ "innings": [
+  {
+   "team": "Goa",
+   "runs": 196,
+   "wickets": 6,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Azaan Thota",
+     "dismissal": "c S Majumdar b J Yadav",
+     "runs": 5,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Abhinav Tejrana",
+     "dismissal": "c AJ Mandal b DA Jadeja",
+     "runs": 62,
+     "balls": 33,
+     "fours": 5,
+     "sixes": 4
+    },
+    {
+     "name": "Lalit Yadav",
+     "dismissal": "b AJ Mandal",
+     "runs": 57,
+     "balls": 36,
+     "fours": 6,
+     "sixes": 2
+    },
+    {
+     "name": "Suyash Prabhudessai",
+     "dismissal": "lbw b V Yadav",
+     "runs": 14,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Deepraj Gaonkar",
+     "dismissal": "not out",
+     "runs": 23,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Vikash Singh",
+     "dismissal": "c R Pradhan b S Majumdar",
+     "runs": 14,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Shivendra Bhujbal",
+     "dismissal": "c AJ Mandal b J Yadav",
+     "runs": 4,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Darshan Misal",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Dev Aditya Singh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Jayant Yadav",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sourabh Majumdar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 40,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dharmendrasinh Jadeja",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ajay Mandal",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Vijay Yadav",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Azaan Thota",
+     "score": 13,
+     "over": "1.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abhinav Tejrana",
+     "score": 115,
+     "over": "10.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Lalit Yadav",
+     "score": 138,
+     "over": "13.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Suyash Prabhudessai",
+     "score": 144,
+     "over": "14.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Vikash Singh",
+     "score": 164,
+     "over": "17.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Shivendra Bhujbal",
+     "score": 173,
+     "over": "18.3"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 1,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 62
+  },
+  {
+   "team": "Chhattisgarh",
+   "runs": 197,
+   "wickets": 6,
+   "overs": "19.5",
+   "batting": [
+    {
+     "name": "Aayush Pandey",
+     "dismissal": "c V Koushik b L Yadav",
+     "runs": 18,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Amandeep Khare",
+     "dismissal": "c D Gaonkar b V Koushik",
+     "runs": 116,
+     "balls": 62,
+     "fours": 9,
+     "sixes": 7
+    },
+    {
+     "name": "Vikalp Tiwari",
+     "dismissal": "c SS Prabhudessai b S Tari",
+     "runs": 14,
+     "balls": 18,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shashank Chandrakar",
+     "dismissal": "c SS Prabhudessai b S Tari",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ajay Mandal",
+     "dismissal": "c Az Thota b V Koushik",
+     "runs": 6,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Dharmendrasinh Jadeja",
+     "dismissal": "c Az Thota b S Tari",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Dev Aditya Singh",
+     "dismissal": "not out",
+     "runs": 24,
+     "balls": 7,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Vijay Yadav",
+     "dismissal": "not out",
+     "runs": 12,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Felix Alemao",
+     "overs": "2.5",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "V Koushik",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Shubham Tari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Lalit Yadav",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Darshan Misal",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Vikash Singh",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Deepraj Gaonkar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aayush Pandey",
+     "score": 86,
+     "over": "8.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Vikalp Tiwari",
+     "score": 148,
+     "over": "15.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Amandeep Khare",
+     "score": 153,
+     "over": "16.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shashank Chandrakar",
+     "score": 160,
+     "over": "17.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Dharmendrasinh Jadeja",
+     "score": 161,
+     "over": "17.3"
+    },
+    {
+     "wicket": 6,
+     "batter": "Ajay Mandal",
+     "score": 175,
+     "over": "18.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 0,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Chhattisgarh won",
+ "winner": "Chhattisgarh"
+}
