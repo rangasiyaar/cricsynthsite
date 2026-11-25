@@ -179,3 +179,85 @@ def test_reconcile_names_the_cause():
         w = next(b for b in c if b["event"] == "wicket")
         w["event"] = "ball"
     assert first(lost_wicket)["cause"] == "wicket not in commentary"
+
+
+# ── Phase 1: exact feed fixes (only used when the published balls don't add up) ──
+
+def _finished():
+    return kn.data_of(page(status=2, inns=_inns(), result="IND won by 9 wickets", winner=IND_ID, margin="9 wickets",
+                           toss=(IND_ID, "field")))
+
+
+def _comm(d, n=0):
+    return d["matchInsights"][n]["commentary"]
+
+
+def _scoring_ball(c):
+    return next(k for k, b in enumerate(c) if b["event"] == "ball" and not b["wideball"] and not b["noball"] and int(b["bat_run"]) > 0)
+
+
+def test_exact_match_is_untouched():
+    cs = kn.to_cricsheet(_finished(), fixes=True)
+    assert cs["meta"]["quality"] == "exact" and "fixes" not in cs["meta"]
+    parse_match(cs, "kn1")                                      # still reads as a Cricsheet match
+
+
+def test_fix_repeated_ball():
+    d = _finished()
+    c = _comm(d)
+    k = _scoring_ball(c)
+    c.insert(k + 1, dict(c[k]))                                  # the feed published one scoring ball twice
+    cs = kn.to_cricsheet(d, fixes=True)
+    assert cs and cs["meta"]["quality"] == "fixed" and cs["meta"]["fixes"] == ["repeated ball"]
+    assert cs == {**kn.to_cricsheet(_finished(), fixes=True), "meta": cs["meta"]}   # identical to the clean match
+    parse_match(cs, "kn1")
+
+
+def test_fix_republished_correction():
+    d = _finished()
+    c = _comm(d)
+    k = _scoring_ball(c)
+    wrong = dict(c[k], run=int(c[k]["run"]) + 1, bat_run=str(int(c[k]["bat_run"]) + 1))
+    c.insert(k, wrong)                                           # first version, then the corrected one
+    cs = kn.to_cricsheet(d, fixes=True)
+    assert cs and cs["meta"]["fixes"] == ["republished ball"]
+    assert cs["innings"] == kn.to_cricsheet(_finished(), fixes=True)["innings"]
+
+
+def test_fix_wide_without_its_run():
+    d = _finished()
+    c = _comm(d)
+    k = next(k for k, b in enumerate(c) if b["wideball"])
+    c[k] = dict(c[k], wide_run="0", run=int(c[k]["run"]) - 1)    # a wide recorded as 0 runs
+    cs = kn.to_cricsheet(d, fixes=True)
+    assert cs and cs["meta"]["fixes"] == ["wide without its run"]
+    assert cs["innings"] == kn.to_cricsheet(_finished(), fixes=True)["innings"]
+
+
+def test_fix_ball_total():
+    d = _finished()
+    c = _comm(d)
+    k = _scoring_ball(c)
+    c[k] = dict(c[k], run=int(c[k]["run"]) + 2)                  # total disagrees with runs off the bat + extras
+    cs = kn.to_cricsheet(d, fixes=True)
+    assert cs and cs["meta"]["fixes"] == ["ball total"]
+    assert cs["innings"] == kn.to_cricsheet(_finished(), fixes=True)["innings"]
+
+
+def test_fixes_refuse_what_they_cannot_explain():
+    d = _finished()
+    d["matchInsights"][-1]["score_card"]["innings"][0]["equations"]["runs"] += 3     # a scorecard correction
+    assert kn.to_cricsheet(d, fixes=True) is None
+    d = _finished()
+    c = _comm(d)
+    k = _scoring_ball(c)
+    c.insert(k + 1, dict(c[k], batsman_id="999999"))             # a second, different ball: not a repeat
+    assert kn.to_cricsheet(d, fixes=True) is None
+
+
+def test_fixes_are_off_unless_switched_on():
+    d = _finished()
+    c = _comm(d)
+    k = _scoring_ball(c)
+    c.insert(k + 1, dict(c[k]))
+    assert kn.to_cricsheet(d, fixes=False) is None and kn.to_cricsheet(d, fixes=True)

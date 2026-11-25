@@ -15,6 +15,7 @@ from __future__ import annotations
 import html
 import json
 import logging
+import os
 import re
 import time
 import unicodedata
@@ -360,7 +361,110 @@ KINDS = {"caught": "caught", "bowled": "bowled", "lbw": "lbw", "runout": "run ou
          "timedout": "timed out"}
 
 
-def to_cricsheet(d: dict, register: dict[str, str] | None = None) -> dict | None:
+def _build_overs(balls: list[dict], c: dict, names: dict[str, str]) -> dict[int, list]:
+    """One innings' balls as Cricsheet overs → deliveries."""
+    rows = {str(b.get("batsman_id")): b for b in c.get("batsmen") or []}
+    overs: dict[int, list] = {}
+    for b in balls:
+        pair = [str(p.get("batsman_id")) for p in b.get("batsmen") or []]
+        bat = str(b.get("batsman_id"))
+        non = next((p for p in pair if p != bat), None)
+        wd, nb, by, lb = (_int(b.get(k)) for k in ("wide_run", "noball_run", "bye_run", "legbye_run"))
+        extras = {k: v for k, v in (("wides", wd), ("noballs", nb), ("byes", by), ("legbyes", lb)) if v}
+        dv = {"batter": names.get(bat, bat), "bowler": names.get(str(b.get("bowler_id")), str(b.get("bowler_id"))),
+              "non_striker": names.get(non, non) if non else None,
+              "runs": {"batter": _int(b.get("bat_run")), "extras": wd + nb + by + lb, "total": _int(b.get("run"))}}
+        if extras:
+            dv["extras"] = extras
+        if b.get("event") == "wicket":
+            out_id = str(b.get("wicket_batsman_id") or bat)
+            row = rows.get(out_id, {})
+            kind = KINDS.get((row.get("dismissal") or "").lower().replace(" ", ""), "caught")
+            if kind == "caught" and str(row.get("first_fielder_id") or "") == str(b.get("bowler_id")):
+                kind = "caught and bowled"
+            w = {"player_out": names.get(out_id, out_id), "kind": kind}
+            fielders = [names.get(str(row.get(k)), "") for k in ("first_fielder_id", "second_fielder_id",
+                                                                  "third_fielder_id") if str(row.get(k) or "") not in ("", "0")]
+            if fielders and kind in ("caught", "run out", "stumped"):
+                w["fielders"] = [{"name": f} for f in fielders if f]
+            dv["wickets"] = [w]
+        if dv["non_striker"] is None:
+            del dv["non_striker"]
+        overs.setdefault(_int(b.get("over")), []).append(dv)
+    return overs
+
+
+def _totals(overs: dict[int, list]) -> tuple[int, int]:
+    runs = sum(dv["runs"]["total"] for ov in overs.values() for dv in ov)
+    wkts = sum(1 for ov in overs.values() for dv in ov for w in dv.get("wickets", []) if w["kind"] not in ("retired hurt", "retired not out"))
+    return runs, wkts
+
+
+def _batters_match(balls: list[dict], c: dict) -> bool:
+    """Every batter's runs and balls faced in the balls equal the scorecard's (used to accept a fixed innings)."""
+    faced: dict[str, list[int]] = {}
+    for b in balls:
+        f = faced.setdefault(str(b.get("batsman_id")), [0, 0])
+        f[0] += _int(b.get("bat_run"))
+        f[1] += 0 if b.get("wideball") else 1
+    rows = c.get("batsmen") or []
+    return bool(rows) and all(faced.get(str(r.get("batsman_id")), [0, 0]) == [_int(r.get("runs")), _int(r.get("balls_faced"))] for r in rows)
+
+
+def _adds_up(overs: dict[int, list], c: dict) -> bool:
+    """The innings' balls give exactly the scorecard's runs (with penalty runs) and wickets."""
+    eq = c.get("equations") or {}
+    runs, wkts = _totals(overs)
+    return runs + _int((c.get("extra_runs") or {}).get("penalty")) == _int(eq.get("runs")) and wkts == _int(eq.get("wickets"))
+
+
+_PARTS = ("bat_run", "wide_run", "noball_run", "bye_run", "legbye_run")
+# The feed fixes are switched on with CRICSIM_BRIDGE_FIXES=1 (the read-only bridge check) until they're approved for
+# the nightly data.
+FIXES = os.environ.get("CRICSIM_BRIDGE_FIXES", "0") == "1"
+
+
+def clean_balls(balls: list[dict]) -> tuple[list[dict], list[str]]:
+    """Exact fixes for known feed faults, used only when an innings' balls don't add up as published:
+    a ball repeated straight after itself is dropped; when two legal balls share an over, ball number, batter and
+    bowler, the later (the correction) is kept; a wide always carries at least its 1 run; a ball's total is the sum of
+    its parts. A fixed innings is accepted only if it then matches the scorecard's total, wickets and every batter's
+    runs and balls.
+    Returns the fixed balls and the names of the fixes that changed something."""
+    fixes: list[str] = []
+    key = lambda b: (b.get("over"), b.get("ball"), str(b.get("batsman_id")), str(b.get("bowler_id")), b.get("event"),
+                     bool(b.get("wideball")), bool(b.get("noball")), *(_int(b.get(k)) for k in _PARTS), _int(b.get("run")))
+    out: list[dict] = []
+    for b in balls:                                                     # 1. the same ball published twice in a row
+        if out and str(b.get("ball") or "") != "" and key(b) == key(out[-1]):
+            fixes.append("repeated ball")
+            continue
+        out.append(dict(b))
+    legal = lambda b: not b.get("wideball") and not b.get("noball")
+    seen: dict[tuple, int] = {}
+    drop: set[int] = set()
+    for k, b in enumerate(out):                                         # 2. a corrected ball republished: keep the later
+        if not legal(b) or str(b.get("ball") or "") == "":
+            continue
+        slot = (_int(b.get("over")), _int(b.get("ball")), str(b.get("batsman_id")), str(b.get("bowler_id")))   # same people
+        if slot in seen:
+            drop.add(seen[slot])
+            fixes.append("republished ball")
+        seen[slot] = k
+    out = [b for k, b in enumerate(out) if k not in drop]
+    for b in out:
+        parts = sum(_int(b.get(k)) for k in _PARTS)
+        if b.get("wideball") and _int(b.get("wide_run")) == 0:           # 3. a wide is at least 1 run
+            b["wide_run"] = str(max(1, _int(b.get("run")) - parts))
+            b["run"] = sum(_int(b.get(k)) for k in _PARTS)
+            fixes.append("wide without its run")
+        elif _int(b.get("run")) != parts:                               # 4. the total is the sum of its parts
+            b["run"] = parts
+            fixes.append("ball total")
+    return out, sorted(set(fixes))
+
+
+def to_cricsheet(d: dict, register: dict[str, str] | None = None, fixes: bool | None = None) -> dict | None:
     """A finished limited-overs match in Cricsheet's JSON format, or None when it can't be rebuilt exactly (every
     innings' balls must add up to its scorecard). `register` maps Khel Now player ids to Cricsheet register ids;
     other players get "kn:<id>"."""
@@ -381,46 +485,22 @@ def to_cricsheet(d: dict, register: dict[str, str] | None = None) -> dict | None
     players = {team_name[tid]: [names.get(p["pid"], p["name"]) for p in s["xi"]] for tid, s in sq.items() if tid in team_name}
     registry = {names[pid]: register.get(pid, f"kn:{pid}") for pid in names
                 if any(names[pid] in v for v in players.values())}
-    inns_out = []
+    inns_out, quality, fixes_used = [], "exact", []
     for x in innings(d):
         c = x["card"]
-        rows = {str(b.get("batsman_id")): b for b in c.get("batsmen") or []}
-        overs: dict[int, list] = {}
-        for b in x["balls"]:
-            pair = [str(p.get("batsman_id")) for p in b.get("batsmen") or []]
-            bat = str(b.get("batsman_id"))
-            non = next((p for p in pair if p != bat), None)
-            wd, nb, by, lb = (_int(b.get(k)) for k in ("wide_run", "noball_run", "bye_run", "legbye_run"))
-            extras = {k: v for k, v in (("wides", wd), ("noballs", nb), ("byes", by), ("legbyes", lb)) if v}
-            dv = {"batter": names.get(bat, bat), "bowler": names.get(str(b.get("bowler_id")), str(b.get("bowler_id"))),
-                  "non_striker": names.get(non, non) if non else None,
-                  "runs": {"batter": _int(b.get("bat_run")), "extras": wd + nb + by + lb, "total": _int(b.get("run"))}}
-            if extras:
-                dv["extras"] = extras
-            if b.get("event") == "wicket":
-                out_id = str(b.get("wicket_batsman_id") or bat)
-                row = rows.get(out_id, {})
-                kind = KINDS.get((row.get("dismissal") or "").lower().replace(" ", ""), "caught")
-                if kind == "caught" and str(row.get("first_fielder_id") or "") == str(b.get("bowler_id")):
-                    kind = "caught and bowled"
-                w = {"player_out": names.get(out_id, out_id), "kind": kind}
-                fielders = [names.get(str(row.get(k)), "") for k in ("first_fielder_id", "second_fielder_id",
-                                                                      "third_fielder_id") if str(row.get(k) or "") not in ("", "0")]
-                if fielders and kind in ("caught", "run out", "stumped"):
-                    w["fielders"] = [{"name": f} for f in fielders if f]
-                dv["wickets"] = [w]
-            if dv["non_striker"] is None:
-                del dv["non_striker"]
-            overs.setdefault(_int(b.get("over")), []).append(dv)
-        eq = c.get("equations") or {}
-        total = sum(dv["runs"]["total"] for ov in overs.values() for dv in ov)
-        wkts = sum(1 for ov in overs.values() for dv in ov for w in dv.get("wickets", [])
-                   if w["kind"] not in ("retired hurt", "retired not out"))
+        built = _build_overs(x["balls"], c, names)
+        if not _adds_up(built, c):
+            cleaned, used = clean_balls(x["balls"]) if (FIXES if fixes is None else fixes) else (x["balls"], [])
+            fixed = _build_overs(cleaned, c, names) if used else None
+            if fixed is None or not _adds_up(fixed, c) or not _batters_match(cleaned, c):
+                eq = c.get("equations") or {}
+                log.info("match %s innings %s: balls don't add up (%s/%s v %s/%s); skipped", i["id"], x["number"],
+                         *_totals(built), eq.get("runs"), eq.get("wickets"))
+                return None
+            built, quality = fixed, "fixed"
+            fixes_used += used
+        overs = built
         pen = _int((c.get("extra_runs") or {}).get("penalty"))
-        if total + pen != _int(eq.get("runs")) or wkts != _int(eq.get("wickets")):
-            log.info("match %s innings %s: balls don't add up (%s/%s v %s/%s); skipped", i["id"], x["number"],
-                     total, wkts, eq.get("runs"), eq.get("wickets"))
-            return None
         inn = {"team": _side_name(i, c.get("batting_team_id")),
                "overs": [{"over": k, "deliveries": v} for k, v in sorted(overs.items())]}
         if x["super_over"]:
@@ -458,8 +538,10 @@ def to_cricsheet(d: dict, register: dict[str, str] | None = None) -> dict | None
     elif "no result" in res or "abandon" in res:
         out_info["outcome"] = {"result": "no result"}
     out_info = {k: v for k, v in out_info.items() if v is not None}
-    return {"meta": {"data_version": "1.1.0", "created": date.today().isoformat(), "revision": 1,
-                     "source": "kn"}, "info": out_info, "innings": inns_out}
+    meta = {"data_version": "1.1.0", "created": date.today().isoformat(), "revision": 1, "source": "kn", "quality": quality}
+    if fixes_used:
+        meta["fixes"] = sorted(set(fixes_used))           # which exact feed fixes were needed (see clean_balls)
+    return {"meta": meta, "info": out_info, "innings": inns_out}
 
 
 # ── the bridge: recent finished matches Cricsheet hasn't added yet ────────────────────────────────────────────────
@@ -565,7 +647,7 @@ def reconcile(x: dict, bpo: int = 6) -> dict:
     last = max(per_over) if per_over else -1
     short = [o for o, n in per_over.items() if n < bpo and o != last]
     long_ = [o for o, n in per_over.items() if n > bpo]
-    gaps = [o for o in range(0, last) if o not in per_over]
+    gaps = [o for o in range(last) if o not in per_over]
     keys = [(b.get("over"), b.get("ball"), str(b.get("batsman_id")), str(b.get("bowler_id")), b.get("run"), b.get("event"), b.get("wideball"), b.get("noball")) for b in balls]
     dupes = sum(1 for i in range(1, len(keys)) if keys[i] == keys[i - 1] and keys[i][1] not in (None, ""))
     run_field = sum(1 for b in balls if _int(b.get("run")) != comp(b))
@@ -656,8 +738,10 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
             written[f"kn{i['id']}.json"] = cs
         else:
             stats["skipped"] += 1
-            for x in innings(d):                                  # why: one line per innings that doesn't add up
+            for x in innings(d):                                  # why: one line per innings still not adding up after the fixes
                 r = reconcile(x)
+                if r["cause"] != "ok":
+                    r = reconcile({**x, "balls": clean_balls(x["balls"])[0]})
                 if r["cause"] != "ok":
                     causes[r["cause"]] = causes.get(r["cause"], 0) + 1
                     skips.append({"match": i["id"], "competition": i["competition"], "innings": x["number"], **r})
@@ -670,6 +754,9 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
         for name, cs in written.items():
             zf.writestr(name, json.dumps(cs))
     stats["written"] = len(written)
+    stats["quality"] = {q: sum(1 for cs in written.values() if cs["meta"].get("quality") == q) for q in ("exact", "fixed")}
+    stats["fixes"] = {f: sum(1 for cs in written.values() if f in cs["meta"].get("fixes", [])) for f in
+                      ("repeated ball", "republished ball", "wide without its run", "ball total")}
     linked = sum(1 for cs in written.values() for rid in cs["info"]["registry"]["people"].values() if not rid.startswith("kn:"))
     total = sum(len(cs["info"]["registry"]["people"]) for cs in written.values())
     stats["players_linked_pct"] = round(100 * linked / max(1, total))

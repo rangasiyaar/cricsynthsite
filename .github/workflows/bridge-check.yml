@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras
-      - env: { DAYS: "${{ inputs.days }}" }
+      - env: { DAYS: "${{ inputs.days }}", CRICSIM_BRIDGE_FIXES: "1" }
         run: |
           uv run cricdata download --kind all --dest data/raw
           uv run python -m cricsim.khelnow bridge --cricsheet data/raw/all_json.zip --cache data/khelnow \
@@ -31,6 +31,7 @@ jobs:
           print(len(ms), "matches:", Counter(m["info"]["event"]["name"] for m in ms).most_common(30))
           ids = [r for m in ms for r in m["info"]["registry"]["people"].values()]
           print(f"players linked to the register: {sum(not r.startswith('kn:') for r in ids)}/{len(ids)}")
+          print("quality:", Counter(m["meta"].get("quality") for m in ms), " fixes:", Counter(f for m in ms for f in m["meta"].get("fixes", [])))
           # why innings were skipped: one row each, and the pattern behind each cause
           sk = json.load(open("data/khelnow/skips.json"))
           print(f"\n{len(sk)} innings didn't add up:")
