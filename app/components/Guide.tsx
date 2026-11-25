@@ -6,6 +6,8 @@
 import Link from "next/link";
 import GuideExample from "@/components/GuideExample";
 import GuideShell, { type Outline } from "@/components/GuideShell";
+import DocsSearch from "@/components/DocsSearch";
+import { docsSearchItems } from "@/lib/docsSearch";
 import { GROUPS, GUIDE, appGuidePath, guidePath, type GuidePage } from "@/lib/guide";
 
 const linkFor = (app: boolean) => (slug?: string) => (app ? appGuidePath(slug) : guidePath(slug));
@@ -86,7 +88,7 @@ function TopicBody({ page, app, doc }: { page: GuidePage; app: boolean; doc: boo
 /** The whole guide as one document. */
 export function GuideDoc({ app = false }: { app?: boolean }) {
   return (
-    <GuideShell outline={outline()} app={app}>
+    <GuideShell outline={outline()} app={app} search={app ? undefined : docsSearchItems()}>
       <header className="guide-doc-head">
         {!app && <p className="small muted guide-crumbs"><Link href="/docs/">Docs</Link> / Guide</p>}
         <h1>Guide</h1>
@@ -112,6 +114,7 @@ export function GuideDoc({ app = false }: { app?: boolean }) {
 export function GuideNav({ current }: { current?: string }) {
   return (
     <nav className="guide-nav" aria-label="Guide">
+      <DocsSearch items={docsSearchItems()} />
       <Link href="/docs/" className="guide-nav-docs">Docs</Link>
       <Link href={guidePath()} className="guide-nav-home">Full guide</Link>
       {GROUPS.map((g) => (

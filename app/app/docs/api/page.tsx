@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import DocsSearch from "@/components/DocsSearch";
+import { docsSearchItems } from "@/lib/docsSearch";
 import { API, CATEGORIES, ENDPOINTS, EXAMPLES, Json, Svg, curl, describe, hostedNote, urlFor, type Endpoint, type Field } from "@/lib/apiref";
 
 const PLANS = [
@@ -76,6 +78,8 @@ function EndpointSection({ ep }: { ep: Endpoint }) {
   );
 }
 
+const SEARCH = docsSearchItems();
+
 export default function Docs() {
   const [open, setOpen] = useState(false);
   return (
@@ -86,6 +90,7 @@ export default function Docs() {
           API Reference
         </button>
         <aside className={`docs-sidebar${open ? " open" : ""}`} onClick={() => setOpen(false)}>
+          <div className="docs-sidebar-search"><DocsSearch items={SEARCH} placeholder="Search the docs" /></div>
           <details className="sidebar-product-group" open>
             <summary className="sidebar-product-summary">
               <span className="sidebar-product-name">Getting started</span>

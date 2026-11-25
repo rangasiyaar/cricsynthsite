@@ -1,8 +1,8 @@
-// Docs home: how to use CricSynthesis. A search, then two lists side by side (stacked on phones): using the site and
+// Docs home: how to use CricSynthesis. Two lists side by side (stacked on phones): using the site and
 // app (each Guide topic), and building with the API (reference, playground, MCP, plans). Plain link rows, no cards.
 import type { Metadata } from "next";
 import Link from "next/link";
-import DocsSearch, { type SearchItem } from "@/components/DocsSearch";
+import DocsHash from "@/components/DocsHash";
 import { GUIDE, guidePath } from "@/lib/guide";
 import { CATEGORIES, ENDPOINTS } from "@/lib/apiref";
 import { seo } from "@/lib/seo";
@@ -28,10 +28,10 @@ const USING: [string, Row[]][] = [
   ["Quick guides", guide(["Quick guides"])],
   ["Products", [
     { href: "/matches/", title: "Matches", text: "Today's games, upcoming fixtures and results. The Overview is free for every match." },
-    { href: "/pro/", title: PRO.name, text: `Every section of every match page, plus the full MatchSynth Lab. ${rupees(PRO.monthly)} a month, first day free.` },
+    { href: "/pro/", title: PRO.name, text: `The full match forecast and MatchSynth Lab. ${rupees(PRO.monthly)} a month, first day free.` },
     { href: "/lab/", title: "MatchSynth Lab", text: "Change the toss, the pitch or a player's form, and replay the match." },
     { href: "/app/", title: "Android app", text: "Every match page on your phone." },
-    { href: "/pricing/", title: "Pricing", text: "Free and Pro side by side, monthly or yearly." }]],
+    { href: "/pricing/", title: "Pricing", text: "What you get free, and what Pro adds." }]],
 ];
 
 const BUILDING: [string, Row[]][] = [
@@ -54,13 +54,6 @@ const BUILDING: [string, Row[]][] = [
     { href: "/developers/#plans", title: "API Free", text: "200 calls a day to get started." },
     { href: "/developers/#plans", title: "API Plus", text: `20,000 calls a day and clean graphics, with ${PRO.name} included. ${rupees(API_PLUS.monthly)} a month.` },
     { href: "/contact/", title: "Business", text: "Higher limits and priority support. Talk to us." }]],
-];
-
-const SEARCH: SearchItem[] = [
-  ...GUIDE.map((p) => ({ href: guidePath(p.slug), title: p.title, where: `Guide · ${p.group}`, hay: `${p.title} ${p.short} ${p.group}`.toLowerCase() })),
-  ...ENDPOINTS.map((e) => ({ href: `/docs/api/#${e.id}`, title: e.summary, where: `API · ${e.method} ${e.path}`, hay: `${e.summary} ${e.path} ${e.category}`.toLowerCase() })),
-  ...BUILDING.flatMap(([, rows]) => rows.filter((r) => !r.n).map((r) => ({ href: r.href, title: r.title, where: "Developers", hay: `${r.title} ${r.text}`.toLowerCase() }))),
-  { href: "/lab/", title: "MatchSynth Lab", where: "Tools", hay: "matchsynth lab what if scenario" },
 ];
 
 function List({ id, label, title, text, start, more, groups }: { id: string; label: string; title: string; text: string; start: [string, string]; more: [string, string][]; groups: [string, Row[]][] }) {
@@ -104,25 +97,29 @@ export default function Docs() {
       <p className="cs-eyebrow">Documentation</p>
       <h1><span>How to use CricSynthesis</span></h1>
       <p className="cs-lede">Guides for following a match, and the reference for building with our data.</p>
-      <DocsSearch items={SEARCH} />
+      <DocsHash />
       <p className="dh-jump"><a href="#using">Using CricSynthesis ↓</a><a href="#developers">For developers ↓</a></p>
       <div className="dh-split">
         <List id="using" label="For fans" title="Using CricSynthesis" text="What every number on a match page means, and how to use it before and during a game."
-              start={["/docs/guide/", "Start with the guide"]} more={[["/matches/", "See matches"], ["/pro/", "Get Pro"]]} groups={USING} />
+              start={["/docs/guide/", "Start with the guide"]} more={[["/matches/", "See matches"], ["/pro/", "Try Pro free"]]} groups={USING} />
         <List id="developers" label="For developers" title="Building with CricSynthesis" text="Put our forecasts, analytics and graphics in your own site, app, broadcast or AI assistant."
               start={["/docs/api/#overview", "Start with the quickstart"]} more={[["/account/", "Get an API key"], ["/playground/", "Playground"]]} groups={BUILDING} />
       </div>
       <div className="dh-band">
         <div>
-          <h2>Every section of every match</h2>
-          <p>{PRO.name} opens scores over by over, every player, batter v bowler, the ground, our fantasy teams and the full MatchSynth Lab.
-            {" "}{rupees(PRO.monthly)} a month or {rupees(PRO.yearly)} a year. Your first day is free.</p>
-          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/pro/">Get Pro</Link><Link className="cs-btn cs-btn--secondary" href="/pricing/">See pricing</Link></div>
+          <h2>Unlock the full match forecast</h2>
+          <p>The Overview tells you who&apos;s favourite. Pro shows you why, and how it plays out: scores over by over, every
+            player&apos;s runs and wickets, batter v bowler, how the ground plays and our fantasy teams. Then replay the match your
+            way in MatchSynth Lab.</p>
+          <p className="dh-price"><b>{rupees(PRO.monthly)} a month.</b> Try it free for a day, cancel anytime.</p>
+          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/pro/">Try Pro free for a day</Link><Link className="cs-btn cs-btn--secondary" href="/pricing/">Compare Free and Pro</Link></div>
         </div>
         <div>
-          <h2>Build with our data</h2>
-          <p>Start free with 200 calls a day. Move to API Plus for 20,000 calls a day and clean graphics, or talk to us about Business.</p>
-          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/account/">Get a free key</Link><Link className="cs-btn cs-btn--secondary" href="/developers/#plans">See API plans</Link></div>
+          <h2>Start building free</h2>
+          <p>Get a key in a minute and make 200 calls a day at no cost: player ratings, match forecasts, win chance from any
+            score, fantasy picks and ready-made graphics. Scale up when your users do.</p>
+          <p className="dh-price"><b>API Plus: {rupees(API_PLUS.monthly)} a month</b> for 20,000 calls a day and clean graphics.</p>
+          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/account/">Get your free API key</Link><Link className="cs-btn cs-btn--secondary" href="/developers/#plans">See API plans</Link></div>
         </div>
       </div>
       <p className="dh-foot">Can&apos;t find it? <Link href="/contact/">Ask us</Link>. On your phone? Get the <Link href="/app/">Android app</Link>.

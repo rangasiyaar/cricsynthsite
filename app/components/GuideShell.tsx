@@ -4,12 +4,14 @@
 // phones (website and app). Clicks scroll smoothly and update the address (#topic), so links can point anywhere.
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import DocsSearch from "@/components/DocsSearch";
+import type { SearchItem } from "@/lib/docsSearch";
 
 export type Outline = { slug: string; title: string; group: string; access?: "free" | "pro"; subs: { id: string; title: string }[] }[];
 
 const OFFSET = 110;     // fallback reading line (px from the top) when an element has no scroll-margin
 
-export default function GuideShell({ outline, app = false, children }: { outline: Outline; app?: boolean; children: React.ReactNode }) {
+export default function GuideShell({ outline, app = false, search, children }: { outline: Outline; app?: boolean; search?: SearchItem[]; children: React.ReactNode }) {
   const [topic, setTopic] = useState(outline[0]?.slug ?? "");
   const [part, setPart] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -91,6 +93,7 @@ export default function GuideShell({ outline, app = false, children }: { outline
     <div className={`guide-doc${app ? " guide-doc-app" : ""}`}>
       {!app && (
         <nav className="guide-nav guide-doc-side" ref={side} aria-label="Guide contents">
+          {search && <DocsSearch items={search} />}
           <Link href="/docs/" className="guide-nav-docs">Docs</Link>
           {list}
           <Link href="/docs/api/" className="guide-nav-api">API reference</Link>
@@ -103,7 +106,7 @@ export default function GuideShell({ outline, app = false, children }: { outline
             <span className="cs-k">Contents</span><span className="guide-contents-cur">{current?.title}</span>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
           </button>
-          {open && <nav className="guide-contents-list" aria-label="Guide contents">{list}</nav>}
+          {open && <nav className="guide-contents-list" aria-label="Guide contents">{search && <DocsSearch items={search} />}{list}</nav>}
         </div>
         {children}
       </div>
