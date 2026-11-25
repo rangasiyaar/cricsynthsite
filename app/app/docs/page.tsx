@@ -6,6 +6,8 @@ import DocsSearch, { type SearchItem } from "@/components/DocsSearch";
 import { GUIDE, guidePath } from "@/lib/guide";
 import { CATEGORIES, ENDPOINTS } from "@/lib/apiref";
 import { seo } from "@/lib/seo";
+import { PRO, rupees } from "@/lib/pro";
+import { API_PLUS } from "@/lib/plans";
 
 export const metadata: Metadata = seo("/docs/", "How to use CricSynthesis | Docs",
   "How to use CricSynthesis: what every number on a match page means, and how to build with the CricSynthesis API.");
@@ -24,6 +26,12 @@ const USING: [string, Row[]][] = [
   ["The match page", guide(["The match", "The players", "The ground", "Fantasy"])],
   ["Tools", guide(["Tools"])],
   ["Quick guides", guide(["Quick guides"])],
+  ["Products", [
+    { href: "/matches/", title: "Matches", text: "Today's games, upcoming fixtures and results. The Overview is free for every match." },
+    { href: "/pro/", title: PRO.name, text: `Every section of every match page, plus the full MatchSynth Lab. ${rupees(PRO.monthly)} a month, first day free.` },
+    { href: "/lab/", title: "MatchSynth Lab", text: "Change the toss, the pitch or a player's form, and replay the match." },
+    { href: "/app/", title: "Android app", text: "Every match page on your phone." },
+    { href: "/pricing/", title: "Pricing", text: "Free and Pro side by side, monthly or yearly." }]],
 ];
 
 const BUILDING: [string, Row[]][] = [
@@ -42,8 +50,10 @@ const BUILDING: [string, Row[]][] = [
     { href: "/mcp/", title: "MCP connector", text: "Use CricSynthesis inside Claude and other AI assistants." },
     { href: "/account/", title: "API keys", text: "Create and revoke keys from your account." }]],
   ["Plans and help", [
-    { href: "/developers/#plans", title: "Plans", text: "Free, Plus and Business, side by side." },
-    { href: "/contact/", title: "Talk to us", text: "Bigger projects and Business plans." }]],
+    { href: "/developers/", title: "CricSynthesis API", text: "What you can build with our data, with examples." },
+    { href: "/developers/#plans", title: "API Free", text: "200 calls a day to get started." },
+    { href: "/developers/#plans", title: "API Plus", text: `20,000 calls a day and clean graphics, with ${PRO.name} included. ${rupees(API_PLUS.monthly)} a month.` },
+    { href: "/contact/", title: "Business", text: "Higher limits and priority support. Talk to us." }]],
 ];
 
 const SEARCH: SearchItem[] = [
@@ -53,19 +63,22 @@ const SEARCH: SearchItem[] = [
   { href: "/lab/", title: "MatchSynth Lab", where: "Tools", hay: "matchsynth lab what if scenario" },
 ];
 
-function List({ id, label, title, text, start, groups }: { id: string; label: string; title: string; text: string; start: [string, string]; groups: [string, Row[]][] }) {
+function List({ id, label, title, text, start, more, groups }: { id: string; label: string; title: string; text: string; start: [string, string]; more: [string, string][]; groups: [string, Row[]][] }) {
   return (
     <section id={id} className="dh-col" aria-labelledby={`${id}-h`}>
       <p className="cs-k">{label}</p>
       <h2 id={`${id}-h`}>{title}</h2>
       <p className="dh-intro">{text}</p>
-      <Link className="dh-start" href={start[0]}>{start[1]} →</Link>
+      <div className="dh-ctas">
+        <Link className="cs-btn cs-btn--primary" href={start[0]}>{start[1]}</Link>
+        {more.map(([h, t]) => <Link key={h} className="cs-btn cs-btn--secondary" href={h}>{t}</Link>)}
+      </div>
       {groups.map(([h, rows]) => (
         <div key={h} className="dh-group">
           <h3 className="cs-k">{h}</h3>
           <ul>
             {rows.map((r) => (
-              <li key={r.href}>
+              <li key={r.href + r.title}>
                 <Link href={r.href} className="dh-row">
                   <span className="dh-t">{r.title}{r.n !== undefined && <span className="dh-n">{r.n}</span>}</span>
                   <span className="dh-d">{r.text}</span>
@@ -94,11 +107,25 @@ export default function Docs() {
       <p className="dh-jump"><a href="#using">Using CricSynthesis ↓</a><a href="#developers">For developers ↓</a></p>
       <div className="dh-split">
         <List id="using" label="For fans" title="Using CricSynthesis" text="What every number on a match page means, and how to use it before and during a game."
-              start={["/docs/guide/", "Start with the guide"]} groups={USING} />
+              start={["/docs/guide/", "Start with the guide"]} more={[["/matches/", "See matches"], ["/pro/", "Get Pro"]]} groups={USING} />
         <List id="developers" label="For developers" title="Building with CricSynthesis" text="Put our forecasts, analytics and graphics in your own site, app, broadcast or AI assistant."
-              start={["/docs/api/#overview", "Start with the quickstart"]} groups={BUILDING} />
+              start={["/docs/api/#overview", "Start with the quickstart"]} more={[["/account/", "Get an API key"], ["/playground/", "Playground"]]} groups={BUILDING} />
       </div>
-      <p className="dh-foot">Can&apos;t find it? <Link href="/contact/">Ask us</Link>. On your phone? Get the <Link href="/app/">Android app</Link>.</p>
+      <div className="dh-band">
+        <div>
+          <h2>Every section of every match</h2>
+          <p>{PRO.name} opens scores over by over, every player, batter v bowler, the ground, our fantasy teams and the full MatchSynth Lab.
+            {" "}{rupees(PRO.monthly)} a month or {rupees(PRO.yearly)} a year. Your first day is free.</p>
+          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/pro/">Get Pro</Link><Link className="cs-btn cs-btn--secondary" href="/pricing/">See pricing</Link></div>
+        </div>
+        <div>
+          <h2>Build with our data</h2>
+          <p>Start free with 200 calls a day. Move to API Plus for 20,000 calls a day and clean graphics, or talk to us about Business.</p>
+          <div className="dh-ctas"><Link className="cs-btn cs-btn--primary" href="/account/">Get a free key</Link><Link className="cs-btn cs-btn--secondary" href="/developers/#plans">See API plans</Link></div>
+        </div>
+      </div>
+      <p className="dh-foot">Can&apos;t find it? <Link href="/contact/">Ask us</Link>. On your phone? Get the <Link href="/app/">Android app</Link>.
+        {" "}Want to know who we are? <Link href="/about/">About us</Link>.</p>
     </div>
   );
 }
