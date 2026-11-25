@@ -12,7 +12,7 @@
   "city": "Harare",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Ireland A won the toss and bowl first.",
   "teams": [
     {
       "name": "Zimbabwe A",
@@ -20,30 +20,30 @@
       "players": [
         "Kudzai Maunze",
         "Brandon Senzere",
-        "Panashe Taruvinga",
         "Takudzwanashe Kaitano",
         "Roy Kaia",
         "Milton Shumba",
+        "Tony Munyonga",
         "Clive Madande",
-        "Faraz Akram",
+        "Alex Falao",
+        "Michael Frost",
         "Tinotenda Maposa",
-        "Victor Chirwa",
         "Shelton Mazvitorera"
       ],
       "roles": [
         "BAT",
         "AR",
-        "BOWL",
         "AR",
+        "AR",
+        "BAT",
         "WK",
         "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "BOWL",
+        "AR",
+        "AR",
         "AR"
       ],
-      "captain": "Panashe Taruvinga",
+      "captain": "Roy Kaia",
       "squad": [
         "Kudzai Maunze",
         "Brandon Senzere",
@@ -70,16 +70,16 @@
         "Gareth Delany",
         "Jordan Neill",
         "Gavin Hoey",
-        "Liam McCarthy",
-        "Matthew Humphreys",
-        "Jai Moondra"
+        "Jai Moondra",
+        "Matt Hollard",
+        "Byron Mcdonough"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "AR",
         "BOWL",
@@ -87,7 +87,7 @@
         "BOWL",
         "BOWL"
       ],
-      "captain": "Matthew Humphreys",
+      "captain": "Gavin Hoey",
       "squad": [
         "Stephen Doheny",
         "Tim Tector",
@@ -107,6 +107,7 @@
     "kn": 41799,
     "url": "https://khelnow.com/live-cricket-score/zimbabwe-a-vs-ireland-a-ireland-a-tour-of-zimbabwe-25th-november-2026-41799",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

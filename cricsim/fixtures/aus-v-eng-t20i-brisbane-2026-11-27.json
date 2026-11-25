@@ -1,0 +1,112 @@
+{
+  "id": "aus-v-eng-t20i-brisbane-2026-11-27",
+  "title": "Australia v England",
+  "date": "2026-11-27",
+  "start_time": "13:45",
+  "format": "T20",
+  "gender": "male",
+  "competition": "England tour of Australia · 3rd T20I",
+  "comp_key": "intl-international-T20",
+  "venue": "The Gabba, Brisbane",
+  "venue_search": "the gabba",
+  "city": "Brisbane",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Australia",
+      "short": "AUS",
+      "players": [
+        "Mitchell Marsh",
+        "Jake Fraser-McGurk",
+        "Sam Harper",
+        "Nikhil Chaudhary",
+        "Tim David",
+        "Jack Edwards",
+        "Lachlan Shaw",
+        "Joel Davies",
+        "Adam Zampa",
+        "Riley Meredith",
+        "Ben Dwarshuis"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Mitchell Marsh",
+      "squad": [
+        "Mitchell Marsh",
+        "Jake Fraser-McGurk",
+        "Sam Harper",
+        "Nikhil Chaudhary",
+        "Tim David",
+        "Jack Edwards",
+        "Lachlan Shaw",
+        "Joel Davies",
+        "Adam Zampa",
+        "Riley Meredith",
+        "Ben Dwarshuis"
+      ]
+    },
+    {
+      "name": "England",
+      "short": "ENG",
+      "players": [
+        "Phil Salt",
+        "Aneurin Donald",
+        "Harry Brook",
+        "Tom Banton",
+        "Jordan Cox",
+        "Sam Curran",
+        "James Coles",
+        "Liam Dawson",
+        "Jamie Overton",
+        "Henry Thomas Crocombe",
+        "Adil Rashid"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Harry Brook",
+      "squad": [
+        "Phil Salt",
+        "Aneurin Donald",
+        "Harry Brook",
+        "Tom Banton",
+        "Jordan Cox",
+        "Sam Curran",
+        "James Coles",
+        "Liam Dawson",
+        "Jamie Overton",
+        "Henry Thomas Crocombe",
+        "Adil Rashid"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 38650,
+    "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-27th-november-2026-38650",
+    "auto": true,
+    "xis": false
+  }
+}
