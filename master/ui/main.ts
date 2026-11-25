@@ -4,6 +4,8 @@ import { browserPopupRedirectResolver, GoogleAuthProvider, inMemoryPersistence, 
 import { bars, donut, ranked, spark, wireTips } from "./charts.ts";
 import { type Col, table } from "./table.ts";
 import { $, $$, ago, badge, csv, day, delta, download, esc, kpi, n, pct, provider, tile, when } from "./util.ts";
+import { PRO } from "../../app/lib/pro.ts";
+import { API_PLUS } from "../../app/lib/plans.ts";
 
 type Row = Record<string, any>;
 const CONFIG = {   // the site's public Firebase web config (app/lib/firebase.ts)
@@ -41,6 +43,27 @@ const ICON: Record<string, string> = {
   refresh: ic('<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>'),
 };
 const main = () => $("#main")!;
+
+// a short line under a section heading: what it shows, and what to do about it
+const note = (t: string) => `<p class="note">${t}</p>`;
+const ch = (title: string, text: string, link = "") => `<div class="card-h"><h2>${title}</h2>${link}</div>${note(text)}`;
+const ratio = (a: number, b: number) => (b ? a / b : null);
+const DAY = 86400_000;
+const weekOf = (iso: string) => { const d = new Date(iso.slice(0, 10) + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+/** How many of `dates` fall in each of the last `count` weeks (Monday to Sunday). */
+function perWeek(dates: (string | null | undefined)[], count = 8): Row[] {
+  const start = Date.parse(weekOf(new Date().toISOString()) + "T00:00:00Z");
+  const out = Array.from({ length: count }, (_, i) => ({ week: new Date(start - (count - 1 - i) * 7 * DAY).toISOString().slice(0, 10), v: 0 }));
+  for (const x of dates) { const w = x && out.find((o) => o.week === weekOf(x)); if (w) w.v++; }
+  return out;
+}
+const wkLabel = (v: string) => new Date(v + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+const weekBars = (rows: Row[], title: string, sub: string, label: string) =>
+  bars(rows, [{ key: "v", label, color: "var(--s1)" }], { x: "week", xLabel: wkLabel, kind: "bars", title, sub, height: 180 });
+const DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const waitedDays = (iso: string | null | undefined) => (iso ? Math.max(0, Math.floor((Date.now() - Date.parse(iso)) / DAY)) : null);
+const daysText = (d: number | null) => (d == null ? "–" : d === 0 ? "today" : `${d} day${d === 1 ? "" : "s"}`);
+const rupee = (v: number) => `₹${n(v)}`;
 let me: { email: string; exp: number } | null = null;
 let snap: Row | null = null;
 
@@ -188,13 +211,43 @@ const planBadge = (p: string) => badge(p === "free" ? "Free" : p[0].toUpperCase(
 // ── overview ──
 const sumKey = (rows: Row[], k: string) => rows.reduce((t, r) => t + Number(r[k] || 0), 0);
 async function overview() {
-  const s = await snapshot(), t = s.totals, ser = (s.series || []) as Row[];
+  const [s, msgs, apps, hl] = await Promise.all([snapshot(), api("/api/messages").catch(() => null), api("/api/applications").catch(() => null),
+    api("/api/health").catch(() => null)]);
+  const t = s.totals, ser = (s.series || []) as Row[], U = s.users as Row[];
   const last7 = ser.slice(-7), prev7 = ser.slice(-14, -7);
   const calls7 = sumKey(last7, "calls"), callsPrev = sumKey(prev7, "calls");
   const sign7 = sumKey(last7, "signups"), signPrev = sumKey(prev7, "signups");
   const act7 = sumKey(last7, "active") / 7, actPrev = sumKey(prev7, "active") / 7;
   const tiers = t.plans.tiers || {};
   const paidNote = t.plans.tiers ? `${n(t.plans.tags?.trial || 0)} on trial · ${n(t.plans.tags?.assigned || 0)} assigned` : "";
+  // what needs a person today
+  const newMsgs = msgs ? ((msgs.messages || []) as Row[]).filter((m) => m.status === "new").length : null;
+  const openApps = apps ? ((apps.applications || []) as Row[]).filter((a) => ["new", "reviewing"].includes(a.status)).length : null;
+  const failing = hl ? ((hl.runs || []) as Row[]).filter((r) => r.last?.status === "completed" && r.last?.conclusion === "failure") : null;
+  const stale = Date.now() - Date.parse(s.built) > 7 * 3600_000;
+  const todo: [string, number | null, string, string][] = [
+    ["Upgrade requests waiting", t.requestsOpen, "#/requests", "Approve once they've paid or agreed terms."],
+    ["New messages", newMsgs, "#/messages/new", "From the contact form, not yet answered."],
+    ["Job applications to review", openApps, "#/applications/open", "New or in review."],
+    ["Failing workflows", failing?.length ?? null, "#/health", failing?.length ? failing.map((r) => esc(r.label)).join(", ") : "Last run of each passed."],
+    ["Accounts near today's limit", t.nearLimit, "#/usage", "At 80% or more of their daily calls."],
+  ];
+  const todoHtml = `<ul class="todo">${todo.map(([label, v, href, sub]) => `<li class="${v ? "on" : ""}"><a href="${href}"><b>${v == null ? "–" : n(v)}</b>
+      <span>${label}<small>${sub}</small></span></a></li>`).join("")}
+    ${stale ? `<li class="on"><a href="#/health"><b>!</b><span>Data is more than 7 hours old<small>The 6-hourly refresh may have failed. Press Refresh.</small></span></a></li>` : ""}</ul>`;
+  // revenue at list price, monthly
+  const paidOf = (tier: string) => U.filter((u) => u.tier === tier && u.tag === "paid").length;
+  const pPro = paidOf("pro"), pPlus = paidOf("api-plus"), pBiz = paidOf("business");
+  const mrr = pPro * PRO.monthly + pPlus * API_PLUS.monthly;
+  // from sign-up to use
+  const steps: [string, number][] = [["Signed up", U.length], ["Created an API key", U.filter((u) => u.keys > 0).length],
+    ["Made calls in the last 30 days", U.filter((u) => u.calls30 > 0).length], ["Used the AI connector (30 days)", U.filter((u) => u.mcpDays > 0).length],
+    ["Paying", t.plans.paid]];
+  const top = Math.max(1, U.length);
+  // this week against last week
+  const wk = (k: string, from: number, to: number) => sumKey(ser.slice(from, to), k);
+  const wow: [string, number, number][] = [["Sign-ups", sign7, signPrev], ["Accounts active (daily average)", Math.round(act7), Math.round(actPrev)],
+    ["API calls", wk("api", -7, ser.length), wk("api", -14, -7)], ["AI connector calls", wk("mcp", -7, ser.length), wk("mcp", -14, -7)]];
   const stat = (k: string, label: string, v: number, sub: string, href: string, alert = false) =>
     `<a class="stat${alert && v ? " alert" : ""}" href="${href}"><span class="k-ico">${ICON[k]}</span><span><b>${n(v)}</b><span>${label}${sub ? ` · ${sub}` : ""}</span></span></a>`;
   main().innerHTML = head("Overview", s) + `
@@ -210,26 +263,45 @@ async function overview() {
     ${stat("mcp", "MCP connector accounts", t.mcpUsers30, `${n(t.calls.mcp30)} tool calls`, "#/usage")}
     ${stat("requests", "open upgrade requests", t.requestsOpen, `${n(t.nearLimit)} near today's limit`, "#/requests", true)}
   </div>
+  <div class="grid2">
+    <section class="card">${ch("Needs attention", "Anything here is waiting on one of us.")}${todoHtml}</section>
+    <section class="card">${ch("Monthly revenue (estimate)", "Paid subscriptions at list price. Trials, assigned plans and Business contracts aren't counted.")}
+      <div class="big">${rupee(mrr)}<span>a month</span></div>
+      <dl class="dl rev"><dt>CricSynthesis Pro</dt><dd>${n(pPro)} × ${rupee(PRO.monthly)} = ${rupee(pPro * PRO.monthly)}</dd>
+        <dt>API Plus</dt><dd>${n(pPlus)} × ${rupee(API_PLUS.monthly)} = ${rupee(pPlus * API_PLUS.monthly)}</dd>
+        <dt>Business API</dt><dd>${n(pBiz)} paid · priced per contract</dd>
+        <dt>On the free day</dt><dd>${n(t.plans.tags?.trial || 0)} · turn paid when the day ends unless they cancel</dd>
+        <dt>Assigned by us</dt><dd>${n(t.plans.tags?.assigned || 0)} · no charge</dd></dl></section>
+  </div>
+  <div class="grid2">
+    <section class="card">${ch("From sign-up to use", "How far accounts get. The biggest drop is where to help people next.")}
+      <ol class="funnel">${steps.map(([label, v], i) => `<li><span class="fl">${label}</span><span class="rb"><i style="width:${(100 * v / top).toFixed(1)}%"></i></span>
+        <span class="rv">${n(v)}</span><span class="muted">${i ? pct(v / top) : ""}</span></li>`).join("")}</ol></section>
+    <section class="card">${ch("This week against last week", "Last 7 days compared with the 7 days before.")}<div id="wow"></div></section>
+  </div>
   <div class="grid-main">
     <section class="card">${bars(ser, [{ key: "api", label: "API keys", color: S1 }, { key: "mcp", label: "MCP connector", color: S2 }],
-      { x: "day", title: "API and MCP calls", sub: "Last 30 days, all accounts", height: 260 })}</section>
-    <section class="card"><div class="card-h"><h2>Plans</h2><a href="#/users">All users →</a></div>
+      { x: "day", title: "API and MCP calls", sub: "Every call from API keys and the AI connector, last 30 days.", height: 260 })}</section>
+    <section class="card">${ch("Plans", "Every account by its current subscription, paid or not.", `<a href="#/users">All users →</a>`)}
       ${donut([{ label: "CricSynthesis Free", value: tiers.free != null ? Number(tiers.free) : Math.max(0, t.users - Number(tiers.pro || 0) - Number(tiers["api-plus"] || 0) - Number(tiers.business || 0)), color: S3 },
                { label: "CricSynthesis Pro", value: Number(tiers.pro || 0), color: S1 },
                { label: "API Plus", value: Number(tiers["api-plus"] || 0), color: S2 },
                { label: "Business API", value: Number(tiers.business || 0), color: S4 }], "accounts")}</section>
   </div>
   <div class="grid2">
-    <section class="card">${bars(ser, [{ key: "signups", label: "Sign-ups", color: S1 }], { x: "day", title: "Sign-ups", sub: "New accounts per day, last 30 days", kind: "bars", height: 200 })}</section>
-    <section class="card"><div class="card-h"><h2>Top endpoints and tools</h2><a href="#/usage">Usage →</a></div>
+    <section class="card">${bars(ser, [{ key: "signups", label: "Sign-ups", color: S1 }], { x: "day", title: "Sign-ups", sub: "New accounts per day, last 30 days.", kind: "bars", height: 200 })}</section>
+    <section class="card">${ch("Top endpoints and tools", "What people call most, API and AI connector together, last 30 days.", `<a href="#/usage">Usage →</a>`)}
       ${ranked(((s.endpoints || []) as Row[]).slice(0, 7).map((e) => ({ name: epName(e.ep), value: e.calls })))}</section>
   </div>
-  <div class="grid2"><section class="card"><div class="card-h"><h2>Newest accounts</h2><a href="#/users">All users →</a></div><div id="new"></div></section>
-    <section class="card"><div class="card-h"><h2>Most active · 30 days</h2><a href="#/usage">Usage →</a></div><div id="top"></div></section></div>`;
+  <div class="grid2"><section class="card">${ch("Newest accounts", "The latest sign-ups. A quick hello helps them get started.", `<a href="#/users">All users →</a>`)}<div id="new"></div></section>
+    <section class="card">${ch("Most active · 30 days", "The accounts that call the most. Good people to ask for feedback.", `<a href="#/usage">Usage →</a>`)}<div id="top"></div></section></div>`;
   const who = (r: Row) => `<span class="who-cell">${r.photo ? `<img src="${esc(r.photo)}" alt="" width="30" height="30" referrerpolicy="no-referrer">` : `<span class="av">${esc((r.email || r.uid)[0].toUpperCase())}</span>`}
     <span>${userLink(r.uid, r.email)}${r.name ? `<small>${esc(r.name)}</small>` : ""}</span></span>`;
   const cols: Col<Row>[] = [{ key: "email", label: "Account", render: who },
                             { key: "created", label: "Joined", render: (r) => ago(r.created) }, { key: "calls30", label: "Calls 30d", num: true, render: (r) => n(r.calls30) }];
+  table($("#wow")!, [{ key: "m", label: "" }, { key: "a", label: "This week", num: true, render: (r) => n(r.a) },
+    { key: "b", label: "Last week", num: true, render: (r) => n(r.b) }, { key: "d", label: "Change", num: true, sort: () => null, render: (r) => delta(r.a, r.b) }],
+    wow.map(([m, a, b]) => ({ m, a, b })));
   table($("#new")!, cols, s.users.slice(0, 6), { rowHref: (r) => `/user/${r.uid}` });
   table($("#top")!, cols, s.users.filter((u: Row) => u.calls30).sort((a: Row, b: Row) => b.calls30 - a.calls30).slice(0, 6),
         { rowHref: (r) => `/user/${r.uid}`, empty: "No API or MCP calls in the last 30 days." });
@@ -238,8 +310,25 @@ async function overview() {
 
 // ── users ──
 async function users() {
-  const s = await snapshot();
-  main().innerHTML = head("Users", s) + `<div class="filters">
+  const s = await snapshot(), t = s.totals, U = s.users as Row[];
+  const by = (f: (u: Row) => boolean) => U.filter(f).length;
+  const subs: Record<string, number> = {};
+  for (const u of U) { const k = `${TIER_NAMES[u.tier || "free"]}${u.tag ? ` · ${TAGS[u.tag]?.[0] || u.tag}` : ""}`; subs[k] = (subs[k] || 0) + 1; }
+  main().innerHTML = head("Users", s) + `
+  <div class="tiles">
+    ${tile("Accounts", n(U.length), `${n(t.verified)} with a verified email (${pct(ratio(t.verified, U.length))})`)}
+    ${tile("Sign-in method", `${n(by((u) => u.providers.includes("google.com")))} Google`, `${n(by((u) => u.providers.includes("password")))} email and password`)}
+    ${tile("Seen in 7 days", n(t.active.d7), `${n(t.active.d30)} in 30 days · ${n(t.active.d1)} today`)}
+    ${tile("With API keys", n(by((u) => u.activeKeys > 0)), `${n(by((u) => u.calls30 > 0))} made calls in 30 days`)}
+    ${tile("Paying", n(t.plans.paid), `${n(t.plans.tags?.trial || 0)} on the free day · ${n(t.plans.tags?.assigned || 0)} assigned`)}
+    ${tile("Disabled", n(t.disabled), t.disabled ? "can't sign in" : "none")}
+  </div>
+  <div class="grid2">
+    <section class="card">${ch("Subscriptions", "Every account by plan and how they got it.")}${ranked(Object.entries(subs).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value))}</section>
+    <section class="card">${weekBars(perWeek(U.map((u) => u.created)), "Sign-ups per week", "New accounts each week, Monday to Sunday, last 8 weeks.", "Sign-ups")}</section>
+  </div>
+  <h2 class="sec">All accounts</h2>${note("Search, filter and sort. Click a row to open the profile. Export gives what's on screen.")}
+  <div class="filters">
     <input id="q" type="search" placeholder="Search email, name, company or account ID" aria-label="Search">
     <select id="f-plan" aria-label="Subscription"><option value="">All subscriptions</option>${Object.entries(TIER_NAMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}<option value="tag:paid">Paid</option><option value="tag:trial">Trial</option><option value="tag:assigned">Assigned</option></select>
     <select id="f-use" aria-label="Activity"><option value="">Any activity</option><option value="keys">Has API keys</option><option value="calls">Made calls (30d)</option><option value="mcp">Used MCP (30d)</option><option value="active7">Seen in 7 days</option><option value="req">Open request</option><option value="noauth">Not in Firebase Auth</option></select>
@@ -282,6 +371,17 @@ async function user(uid: string) {
   const p = await api(`/api/user?uid=${encodeURIComponent(uid)}`), u = p.user, id = p.identity, sv = p.services;
   const series = (p.usage.series as Row[]).map((d) => ({ day: d.day, api: d.total - Number(d.keys?.mcp || 0), mcp: Number(d.keys?.mcp || 0) }));
   const paidTag = (paid: boolean) => badge(paid ? "Paid" : "Free", paid ? "good" : "plain");
+  const days90 = p.usage.series as Row[];
+  const total90 = days90.reduce((t, d) => t + Number(d.total || 0), 0), activeDays = days90.filter((d) => d.total > 0).length;
+  const busiest = days90.reduce<Row | null>((b, d) => (d.total > (b?.total || 0) ? d : b), null);
+  const lastCallDay = [...days90].reverse().find((d) => d.total > 0)?.day as string | undefined;
+  const topEp = (p.usage.endpoints as Row[])[0];
+  const status: [string, string] = u.disabled ? ["Disabled", "Can't sign in"]
+    : sv.subscription.tag === "paid" ? ["Paying customer", sv.subscription.name]
+    : sv.subscription.tag === "trial" ? ["On the free day", "Pro trial, charged when it ends"]
+    : p.usage.calls30 ? ["Active", `${n(p.usage.calls30)} calls in 30 days`]
+    : (p.keys as Row[]).some((k) => !k.revoked) ? ["Has a key, not calling", "No calls in 30 days"]
+    : ["Signed up only", "No API key or calls yet"];
   main().innerHTML = `<p><a href="#/users" class="back">← All users</a></p>
   <div class="profile-head">${id?.photo ? `<img src="${esc(id.photo)}" alt="" width="64" height="64" referrerpolicy="no-referrer">` : `<span class="av big">${esc((u.email || uid)[0].toUpperCase())}</span>`}
     <div><h1>${esc(u.name || u.email || uid)}</h1><p>${esc(u.email || "No email")} ${u.verified ? badge("Verified", "good") : badge("Not verified", "warn")}
@@ -299,7 +399,15 @@ async function user(uid: string) {
             ["180", "180 days"], ["365", "1 year"], ["custom", "Custom days…"]].map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select>
           <input id="days-n" type="number" min="1" max="3650" step="1" placeholder="Days" aria-label="Number of days" hidden style="width:80px">
           <button class="btn sm" id="tier-set">Set subscription</button></span>` : ""}</p></div></div>
-  <h2 class="sec">Services and plan</h2>
+  <h2 class="sec">At a glance</h2>
+  <div class="tiles">
+    ${tile("Status", esc(status[0]), esc(status[1]))}
+    ${tile("Calls in 90 days", n(total90), `on ${n(activeDays)} of 90 days`)}
+    ${tile("Busiest day", busiest ? n(busiest.total) : "–", busiest ? `calls on ${day(busiest.day)}` : "no calls yet")}
+    ${tile("Last call", lastCallDay ? daysText(waitedDays(lastCallDay)) : "never", lastCallDay ? `${day(lastCallDay)}${waitedDays(lastCallDay) ? " ago" : ""}` : "no calls in 90 days")}
+    ${tile("Most used", topEp ? esc(epName(topEp.ep)) : "–", topEp ? `${n(topEp.calls)} calls in 30 days` : "nothing yet")}
+  </div>
+  <h2 class="sec">Services and plan</h2>${note("What they have now on the website, the API and the AI connector.")}
   <div class="tiles">
     ${tile("Subscription", esc(sv.subscription.name), `${tagBadge(sv.subscription.tag)} ${({ paid: "Paid", trial: "On the free day", assigned: "Assigned by our team" } as Record<string, string>)[sv.subscription.tag] || "No paid plan"}${sv.subscription.until ? ` · ends ${when(sv.subscription.until)}` : sv.subscription.tag === "assigned" || sv.subscription.setBy?.tier === sv.subscription.tier && sv.subscription.tier !== "free" ? " · no end date" : ""}${sv.subscription.setBy?.at ? ` · set in the console ${day(sv.subscription.setBy.at)}` : ""}`)}
     ${tile("Website (fan app)", esc(sv.website.plan), `${paidTag(sv.website.paid)} ${({ subscription: "Paid subscription", trial: "Free day", assigned: "Assigned by our team", default: "No subscription" } as Record<string, string>)[sv.website.source] || ""}${sv.website.billing?.status ? ` · ${esc(sv.website.billing.status)}${sv.website.billing.billing ? ` (${esc(sv.website.billing.billing)})` : ""}` : ""}`)}
@@ -307,17 +415,17 @@ async function user(uid: string) {
     ${tile("MCP connector", sv.mcp.used ? "In use" : "Not used", sv.mcp.used ? `${n(sv.mcp.days)} days in 90 · last ${day(sv.mcp.lastDay)} · today ${n(sv.mcp.today)} / ${n(sv.mcp.limit)}` : "No connector calls in 90 days")}
     ${tile("Usage", n(p.usage.today), `today · ${n(p.usage.calls7)} in 7 days · ${n(p.usage.calls30)} in 30`)}
   </div>
-  <section class="card">${bars(series, [{ key: "api", label: "API keys", color: S1 }, { key: "mcp", label: "MCP connector", color: S2 }], { x: "day", title: "Calls per day (90 days)" })}</section>
-  <section class="card"><h2>API keys</h2><div id="keys"></div></section>
-  <div class="grid2"><section class="card"><h2>What they call (30 days)</h2>${ranked((p.usage.endpoints as Row[]).slice(0, 15).map((e) => ({ name: epName(e.ep), value: e.calls })))}
+  <section class="card">${bars(series, [{ key: "api", label: "API keys", color: S1 }, { key: "mcp", label: "MCP connector", color: S2 }], { x: "day", title: "Calls per day (90 days)", sub: "API keys and the AI connector share one daily limit." })}</section>
+  <section class="card"><h2>API keys</h2>${note("Change a key's plan or revoke it here. Revoking stops it within a minute and can't be undone.")}<div id="keys"></div></section>
+  <div class="grid2"><section class="card"><h2>What they call (30 days)</h2>${note("Endpoints and AI tools, most used first.")}${ranked((p.usage.endpoints as Row[]).slice(0, 15).map((e) => ({ name: epName(e.ep), value: e.calls })))}
       ${Object.keys(p.usage.cats).length ? `<p class="muted">By category: ${Object.entries(p.usage.cats).map(([c, v]) => `${esc(c)} ${n(v)}`).join(" · ")}</p>` : ""}</section>
-    <section class="card"><h2>Days at the daily limit</h2><div id="limits"></div></section></div>
-  <div class="grid2"><section class="card"><h2>Upgrade requests</h2><div id="reqs"></div></section>
-    <section class="card"><h2>Profile and email preferences</h2>${p.profile ? `<dl class="dl">
+    <section class="card"><h2>Days at the daily limit</h2>${note("Days they ran out of calls. Two or more is a reason to offer Plus.")}<div id="limits"></div></section></div>
+  <div class="grid2"><section class="card"><h2>Upgrade requests</h2>${note("Filed from their dashboard. Approve once they've paid or agreed terms.")}<div id="reqs"></div></section>
+    <section class="card"><h2>Profile and email preferences</h2>${note("What they told us, and which emails they want.")}${p.profile ? `<dl class="dl">
       <dt>Company</dt><dd>${esc(p.profile.company || "–")}</dd><dt>Use case</dt><dd>${esc(p.profile.useCase || "–")}</dd>
       <dt>Product news</dt><dd>${yn(p.profile.notifyProduct)}</dd><dt>Usage alerts</dt><dd>${yn(p.profile.notifyUsage)}</dd>
       <dt>Billing emails</dt><dd>${yn(p.profile.notifyBilling)}</dd><dt>Updated</dt><dd>${when(p.profile.updated)}</dd></dl>` : `<p class="empty">No profile details saved.</p>`}</section></div>
-  <section class="card"><h2>Timeline</h2>${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
+  <section class="card"><h2>Timeline</h2>${note("Sign-up, keys, requests, plan changes and our actions, newest first.")}${p.timeline.length ? `<ol class="timeline">${p.timeline.map((t: Row) => `<li><time>${t.at.length === 10 ? day(t.at) : when(t.at)}</time>${esc(t.what)}</li>`).join("")}</ol>` : `<p class="empty">Nothing yet.</p>`}</section>`;
   $("#copy")!.addEventListener("click", () => navigator.clipboard.writeText(uid));
   $("#del-acct")?.addEventListener("click", () => {
     const typed = prompt(`Delete ${u.email || uid} for good?\n\nThis removes their profile, API keys, usage, requests and billing records, deletes the sign-in account and emails them a confirmation. It can't be undone.\n\nType DELETE to continue.`);
@@ -365,8 +473,26 @@ const epName = (ep: string) => (ep.startsWith("mcp_") ? `MCP · ${ep.slice(4)}` 
 
 // ── keys ──
 async function keys() {
-  const s = await snapshot();
-  main().innerHTML = head("API keys", s) + `<div class="filters"><input id="q" type="search" placeholder="Search owner, key name or prefix" aria-label="Search">
+  const s = await snapshot(), K = s.keys as Row[], live = K.filter((k) => !k.revoked);
+  const from7 = new Date(Date.now() - 7 * DAY).toISOString();
+  const owners = new Set(live.map((k) => k.uid)).size;
+  const used7 = live.filter((k) => String(k.lastUsed || "") >= from7).length;
+  const plans: Record<string, number> = {};
+  for (const k of live) plans[k.plan] = (plans[k.plan] || 0) + 1;
+  main().innerHTML = head("API keys", s) + `
+  <div class="tiles">
+    ${tile("Active keys", n(live.length), `${n(K.length - live.length)} revoked`)}
+    ${tile("Used this week", n(used7), `${pct(ratio(used7, live.length))} of active keys`)}
+    ${tile("Never used", n(live.filter((k) => !k.lastUsed).length), "created, no calls yet")}
+    ${tile("At the limit today", n(live.filter((k) => k.today >= k.limit).length), "candidates for Plus")}
+    ${tile("Owners", n(owners), owners ? `${(live.length / owners).toFixed(1)} keys each on average` : "")}
+  </div>
+  <div class="grid2">
+    <section class="card">${ch("Active keys by plan", "Free keys get 200 calls a day, Plus 20,000, Business 50,000.")}${ranked(Object.entries(plans).map(([name, value]) => ({ name: name === "pro" ? "Plus" : name[0].toUpperCase() + name.slice(1), value })).sort((a, b) => b.value - a.value))}</section>
+    <section class="card">${weekBars(perWeek(K.map((k) => k.created)), "Keys created per week", "Including keys revoked since, last 8 weeks.", "Keys")}</section>
+  </div>
+  <h2 class="sec">All keys</h2>${note("Busiest first. Click a row to open the owner's profile.")}
+  <div class="filters"><input id="q" type="search" placeholder="Search owner, key name or prefix" aria-label="Search">
     <select id="f" aria-label="Status"><option value="active">Active</option><option value="revoked">Revoked</option><option value="">All</option></select><span id="count" class="muted"></span></div><div id="tbl"></div>`;
   const cols: Col<Row>[] = [
     { key: "email", label: "Owner", render: (r) => userLink(r.uid, r.email) },
@@ -390,15 +516,31 @@ async function keys() {
 
 // ── usage ──
 async function usage() {
-  const s = await snapshot();
+  const s = await snapshot(), t = s.totals, ser = s.series as Row[], U = s.users as Row[];
+  const c7 = sumKey(ser.slice(-7), "calls"), cPrev = sumKey(ser.slice(-14, -7), "calls");
+  const peak = ser.reduce<Row | null>((b, d) => (d.calls > (b?.calls || 0) ? d : b), null);
+  const callers = U.filter((u) => u.calls30 > 0).sort((a, b) => b.calls30 - a.calls30);
+  const top5 = ratio(callers.slice(0, 5).reduce((x, u) => x + u.calls30, 0), callers.reduce((x, u) => x + u.calls30, 0));
+  const dow = DOW.map((d) => ({ dow: d, calls: 0 }));
+  for (const r of ser) dow[(new Date(r.day + "T00:00:00Z").getUTCDay() + 6) % 7].calls += Number(r.calls || 0);
   main().innerHTML = head("Usage", s) + `
-    <section class="card">${bars(s.series, [{ key: "api", label: "API", color: S1 }, { key: "mcp", label: "MCP", color: S2 }], { x: "day", title: "Calls per day (30 days)" })}</section>
-    <section class="card">${bars(s.series, [{ key: "active", label: "Accounts", color: S1 }], { x: "day", title: "Accounts making calls, per day", total: false })}</section>
-    <div class="grid2"><section class="card"><h2>Top endpoints and tools (30 days)</h2>${ranked((s.endpoints as Row[]).slice(0, 20).map((e) => ({ name: epName(e.ep), value: e.calls })))}
-      <p class="muted">Per-endpoint counts start from this release; earlier calls show by category only.</p></section>
-      <section class="card"><h2>By category (30 days)</h2>${ranked(Object.entries(s.cats as Row).map(([k, v]) => ({ name: k, value: Number(v) })).sort((a, b) => b.value - a.value))}
-      <h2>Top accounts (30 days)</h2>${ranked((s.users as Row[]).filter((u) => u.calls30).sort((a, b) => b.calls30 - a.calls30).slice(0, 10).map((u) => ({ name: u.email || u.uid, value: u.calls30, href: `#/user/${u.uid}` })))}</section></div>
-    <section class="card"><h2>Hit the daily limit</h2><p class="muted">Accounts that reached their plan's limit: likely upgrade leads.</p><div id="lim"></div></section>`;
+    <div class="tiles">
+      ${tile("Calls today", n(t.calls.today), "API and AI connector")}
+      ${tile("Calls (7 days)", `${n(c7)} ${delta(c7, cPrev)}`, `${n(cPrev)} the week before`)}
+      ${tile("Calls (30 days)", n(t.calls.d30), `${n(Math.round(t.calls.d30 / 30))} a day on average`)}
+      ${tile("Busiest day", peak ? n(peak.calls) : "–", peak ? day(peak.day) : "no calls yet")}
+      ${tile("AI connector share", pct(ratio(t.calls.mcp30, t.calls.d30)), `${n(t.calls.mcp30)} connector calls in 30 days`)}
+      ${tile("Accounts calling", n(callers.length), top5 != null ? `the top 5 make ${pct(top5)} of calls` : "in the last 30 days")}
+    </div>
+    <section class="card">${bars(ser, [{ key: "api", label: "API", color: S1 }, { key: "mcp", label: "MCP", color: S2 }], { x: "day", title: "Calls per day (30 days)", sub: "API keys and the AI connector, all accounts." })}</section>
+    <div class="grid2">
+      <section class="card">${bars(ser, [{ key: "active", label: "Accounts", color: S1 }], { x: "day", title: "Accounts making calls, per day", sub: "How many different accounts called each day.", total: false })}</section>
+      <section class="card">${bars(dow, [{ key: "calls", label: "Calls", color: S1 }], { x: "dow", xLabel: (v) => v, kind: "bars", title: "Calls by weekday", sub: "Last 30 days added up by day of the week. Match days drive the peaks." })}</section>
+    </div>
+    <div class="grid2"><section class="card"><h2>Top endpoints and tools (30 days)</h2>${note("Older calls were counted by category only, so totals here can be lower than the category list.")}${ranked((s.endpoints as Row[]).slice(0, 20).map((e) => ({ name: epName(e.ep), value: e.calls })))}</section>
+      <section class="card"><h2>By category (30 days)</h2>${note("Analytics, simulation and modelling, graphics and the AI connector.")}${ranked(Object.entries(s.cats as Row).map(([k, v]) => ({ name: k, value: Number(v) })).sort((a, b) => b.value - a.value))}
+      <h2 style="margin-top:20px">Top accounts (30 days)</h2>${note("Who makes the most calls.")}${ranked((s.users as Row[]).filter((u) => u.calls30).sort((a, b) => b.calls30 - a.calls30).slice(0, 10).map((u) => ({ name: u.email || u.uid, value: u.calls30, href: `#/user/${u.uid}` })))}</section></div>
+    <section class="card"><h2>Hit the daily limit</h2>${note("Accounts that ran out of calls in the last 30 days. Good leads for Plus.")}<div id="lim"></div></section>`;
   table($("#lim")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) }, { key: "day", label: "Day", render: (r) => day(r.day) },
     { key: "slot", label: "Key", render: (r) => slotName(r.slot) }, { key: "calls", label: "Calls", num: true, render: (r) => `${n(r.calls)} / ${n(r.limit)}` }], s.limitHits,
     { rowHref: (r) => `/user/${r.uid}`, initial: { key: "day", desc: true }, empty: "Nobody hit a limit in the last 30 days.", limit: 15 });
@@ -407,14 +549,29 @@ async function usage() {
 
 // ── requests ──
 async function requests() {
-  const s = await snapshot();
-  main().innerHTML = head("Upgrade requests", s) + `<p class="muted">Approving moves all of the account's live keys to the plan (the API picks it up within a minute). Payments aren't automated yet: approve once the customer has paid or agreed terms.</p><div id="tbl"></div>`;
+  const s = await snapshot(), Q = s.requests as Row[];
+  const st = (x: string) => Q.filter((r) => r.status === x);
+  const oldest = st("pending").reduce<string | null>((o, r) => (!o || (r.created && r.created < o) ? r.created : o), null);
+  main().innerHTML = head("Upgrade requests", s) + `
+    <div class="tiles">
+      ${tile("Waiting", n(st("pending").length), oldest ? `oldest filed ${daysText(waitedDays(oldest))}${waitedDays(oldest) ? " ago" : ""}` : "nothing waiting")}
+      ${tile("Approved", n(st("approved").length), "all time")}
+      ${tile("Declined", n(st("declined").length), "all time")}
+      ${tile("API Plus asked", n(Q.filter((r) => r.plan === "api-pro").length), `${n(Q.filter((r) => r.plan === "api-business").length)} asked for Business`)}
+    </div>
+    ${note("Approving moves all of the account's live keys to the plan within a minute. Payment isn't automatic: approve once they've paid or agreed terms.")}
+    <div class="filters"><select id="f" aria-label="Status"><option value="">All requests</option><option value="pending">Waiting</option><option value="approved">Approved</option><option value="declined">Declined</option><option value="cancelled">Cancelled</option></select><span id="count" class="muted"></span></div>
+    <div id="tbl"></div>`;
+  const draw = () => { const f = $<HTMLSelectElement>("#f")!.value, rows = Q.filter((r) => !f || r.status === f);
+  $("#count")!.textContent = `${n(rows.length)} requests`;
   table($("#tbl")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) }, { key: "plan", label: "Plan" },
     { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status), sort: (r) => (r.status === "pending" ? "0" : r.status) },
     { key: "created", label: "Filed", render: (r) => when(r.created) }, { key: "note", label: "Note", render: (r) => esc(r.note) },
     { key: "act", label: "", sort: () => null, render: (r) => reqActs(r.uid, r.plan, r.status, r.email) }],
-    s.requests, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "status", desc: false }, empty: "No upgrade requests yet." });
-  wireActions(main(), () => route());
+    rows, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "status", desc: false }, empty: "No requests match." });
+  wireActions($("#tbl")!, () => route()); };
+  draw();
+  $("#f")!.addEventListener("input", draw);
   wireRefresh();
 }
 
@@ -436,7 +593,20 @@ async function messages(filter = "") {
     `<button class="btn ghost xs" data-read='${esc(JSON.stringify({ type: "contact.read", id: m.id, read: !m.read }))}'>${m.read ? "Mark unread" : "Mark read"}</button>`,
     actBtn("Delete", { type: "contact.delete", id: m.id }, `Delete the message from ${m.email} for good? It can't be recovered.`, "danger"),
   ].join(" ");
-  main().innerHTML = head("Messages") + `<p class="muted">Sent through the contact form on cricsynthesis.in/contact. Each sender got a "thanks, we'll get back to you" email. Reply from your own inbox, then mark it replied.</p>
+  const oldestNew = all.filter((m) => m.status === "new").reduce<string | null>((o, m) => (!o || m.at < o ? m.at : o), null);
+  const topics: Record<string, number> = {};
+  for (const m of all) topics[m.topic || "Other"] = (topics[m.topic || "Other"] || 0) + 1;
+  const topTopic = Object.entries(topics).sort((a, b) => b[1] - a[1])[0];
+  const last30 = all.filter((m) => Date.now() - Date.parse(m.at) < 30 * DAY).length;
+  main().innerHTML = head("Messages") + `
+    <div class="tiles">
+      ${tile("Waiting for a reply", n(count("new")), oldestNew ? `oldest sent ${daysText(waitedDays(oldestNew))}${waitedDays(oldestNew) ? " ago" : ""}` : "inbox clear")}
+      ${tile("Replied", n(count("replied")), `${n(count("closed"))} closed without a reply`)}
+      ${tile("Unread", n(unread), "not opened by anyone yet")}
+      ${tile("Last 30 days", n(last30), `${n(all.length)} in total`)}
+      ${tile("Most common topic", topTopic ? esc(topTopic[0]) : "–", topTopic ? `${n(topTopic[1])} messages` : "")}
+    </div>
+    ${note("From the contact form at cricsynthesis.in/contact. Each sender got an automatic thank-you email. Reply from your own inbox, then mark it replied.")}
     <p class="msg-tabs">${tab("new", `New (${count("new")})`)} ${tab("replied", `Replied (${count("replied")})`)} ${tab("closed", `Closed (${count("closed")})`)} ${tab("unread", `Unread (${unread})`)} ${tab("all", `All (${all.length})`)}</p>
     ${show.length ? show.map((m) => `<article class="card msg${m.read ? "" : " unread"}">
       <div class="msg-head"><div><b>${esc(m.name)}</b> · <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>${m.company ? ` · ${esc(m.company)}` : ""}
@@ -477,7 +647,18 @@ async function applications(filter = "") {
     a.status === "shortlisted" ? actBtn("Hired", { type: "application.status", id: a.id, status: "hired" }, `Mark ${a.name} as hired (no email)?`) : "",
     actBtn("Delete", { type: "application.delete", id: a.id }, `Delete ${a.name}'s application and resume for good? It can't be recovered.`, "danger"),
   ].join(" ");
-  main().innerHTML = head("Applications") + `<p class="muted">Sent through the careers page. Each applicant got a confirmation email, and the team inbox got the details with the resume attached. Shortlist or decline here to send the outcome email.</p>
+  const oldestOpen = all.filter((a) => ["new", "reviewing"].includes(a.status)).reduce<string | null>((o, a) => (!o || a.at < o ? a.at : o), null);
+  const roles: Record<string, number> = {};
+  for (const a of all) roles[a.jobTitle || "Other"] = (roles[a.jobTitle || "Other"] || 0) + 1;
+  const topRole = Object.entries(roles).sort((a, b) => b[1] - a[1])[0];
+  main().innerHTML = head("Applications") + `
+    <div class="tiles">
+      ${tile("To review", n(count("new") + count("reviewing")), oldestOpen ? `oldest sent ${daysText(waitedDays(oldestOpen))}${waitedDays(oldestOpen) ? " ago" : ""}` : "nothing waiting")}
+      ${tile("Shortlisted", n(count("shortlisted")), `${n(count("hired"))} hired`)}
+      ${tile("Declined", n(count("declined")), "told by email")}
+      ${tile("Most applied for", topRole ? esc(topRole[0]) : "–", topRole ? `${n(topRole[1])} applications` : "")}
+    </div>
+    ${note("From the careers page. Each applicant got a confirmation, and the team inbox got the details with the resume. Shortlist or decline here to send the outcome email.")}
     <p class="msg-tabs">${tab("open", `Open (${count("new") + count("reviewing")})`)} ${tab("shortlisted", `Shortlisted (${count("shortlisted")})`)} ${tab("declined", `Declined (${count("declined")})`)} ${tab("hired", `Hired (${count("hired")})`)} ${tab("all", `All (${all.length})`)}</p>
     ${show.length ? show.map((a) => `<article class="card msg${a.status === "new" ? " unread" : ""}">
       <div class="msg-head"><div><b>${esc(a.name)}</b> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a> · ${esc(a.phone || "")}</div>
@@ -507,7 +688,8 @@ async function product() {
   const top = (g.funnel?.[0]?.users as number) || 0;
   const nvr = Object.fromEntries((g.newVsReturning || []).map((r: Row) => [r.name, r.value]));
   const returning = (nvr.returning || 0) / Math.max(1, (nvr.returning || 0) + (nvr.new || 0));
-  main().innerHTML = head("Product (Google Analytics)") + `<p class="muted">Website visitors who accepted analytics cookies. Property ${esc(g.property || "–")} ·
+  const pv = (g.events as Row[] | undefined)?.find((e) => e.name === "page_view");
+  main().innerHTML = head("Product (Google Analytics)") + `<p class="muted">Only visitors who accepted analytics cookies. Property ${esc(g.property || "–")} ·
       updated ${ago(g.built)} · <a href="https://analytics.google.com/analytics/web/#/p${esc(g.property || "")}/reports/intelligenthome" target="_blank" rel="noopener">Open GA4</a></p>`
     + (g.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${g.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
     <div class="tiles">
@@ -515,15 +697,16 @@ async function product() {
       ${tile("Users (7 days)", n(users7), `${n(sum(g.daily, "users"))} in 30 days`)}
       ${tile("Returning users", pct(returning), "of users in 30 days came back")}
       ${tile("Consent rate (est.)", pct(rate), visits7 ? `GA users ÷ ${n(visits7)} Cloudflare visits, 7 days` : "needs Web Analytics data")}
+      ${tile("Pages per user", pv && sum(g.daily, "users") ? (pv.count / sum(g.daily, "users")).toFixed(1) : "–", "page views ÷ users, 30 days")}
     </div>
-    ${g.daily ? `<section class="card">${bars(g.daily, [{ key: "users", label: "Users", color: S1 }], { x: "day", title: "Users per day (30 days)", total: false })}</section>` : ""}
-    <section class="card"><h2>Funnel (30 days)</h2>${g.funnel ? `<ol class="funnel">${(g.funnel as Row[]).map((f, i) => `<li>
+    ${g.daily ? `<section class="card">${bars(g.daily, [{ key: "users", label: "Users", color: S1 }], { x: "day", title: "Users per day (30 days)", sub: "Only those who accepted cookies. Cloudflare's counts on Traffic include everyone.", total: false })}</section>` : ""}
+    <section class="card"><h2>Funnel (30 days)</h2>${note("Users who did each step at least once. The second figure is the share of the step before: the lowest one is the biggest drop. People who rejected cookies show up only on Users and API keys.")}
+      ${g.funnel ? `<ol class="funnel">${(g.funnel as Row[]).map((f, i, all) => `<li>
         <span class="fl">${esc(f.label)}</span><span class="rb"><i style="width:${top ? (100 * f.users / top).toFixed(1) : 0}%"></i></span>
-        <span class="rv">${n(f.users)}</span><span class="muted">${i ? pct(top ? f.users / top : null, 1) : ""}</span></li>`).join("")}</ol>
-      <p class="muted">Users who did each step at least once. Sign-ups and keys from people who rejected cookies appear only in Users / API keys.</p>` : ""}</section>
-    <div class="grid2"><section class="card"><h2>Events (30 days)</h2><div id="ev"></div></section>
-      <section class="card"><h2>Top pages (7 days)</h2>${ranked((g.pages || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>
-    <div class="grid2"><section class="card"><h2>Where visitors come from (7 days)</h2>${ranked((g.sources || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section>
+        <span class="rv">${n(f.users)}</span><span class="muted">${i ? `${pct(top ? f.users / top : null, 1)} · ${pct(all[i - 1].users ? f.users / all[i - 1].users : null)} of previous` : ""}</span></li>`).join("")}</ol>` : ""}</section>
+    <div class="grid2"><section class="card"><h2>Events (30 days)</h2>${note("Everything we track, with how many people did it.")}<div id="ev"></div></section>
+      <section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages by visitors who accepted cookies.")}${ranked((g.pages || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>
+    <div class="grid2"><section class="card"><h2>Where visitors come from (7 days)</h2>${note("Search, social, other sites or typed in directly.")}${ranked((g.sources || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section>
       <section class="card"><h2>Countries (7 days)</h2>${ranked((g.countries || []).map((r: Row) => ({ name: r.name, value: r.value })))}
       <h2>Devices</h2>${ranked((g.devices || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>`;
   table($("#ev")!, [{ key: "name", label: "Event", render: (r) => `${esc(EVENT_NAMES[r.name] || r.name)} <small class="muted">${esc(r.name)}</small>` },
@@ -549,27 +732,46 @@ async function ux() {
       ${tile("Quick backs", share("QuickbackClick"), "sessions leaving a page straight away")}
       ${tile("Script errors", share("ScriptErrorCount"), "sessions with a JavaScript error")}
     </div>
-    <div class="grid2"><section class="card"><h2>Rage clicks by page</h2>${list(c.rage)}</section>
-      <section class="card"><h2>Dead clicks by page</h2>${list(c.dead)}</section></div>
-    <div class="grid2"><section class="card"><h2>Quick backs by page</h2>${list(c.quickback)}</section>
-      <section class="card"><h2>Script errors by page</h2>${list(c.scriptErrors)}</section></div>
-    <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${list(c.scroll, (v) => `${n(v)}%`)}</section>
-      <section class="card"><h2>Most visited pages</h2>${list(c.traffic)}</section></div>`;
+    ${note("Worry when rage or dead clicks pass about 5% of sessions, or script errors appear on more than a few pages.")}
+    <div class="grid2"><section class="card"><h2>Rage clicks by page</h2>${note("Clicking the same spot again and again, usually because something is slow or broken.")}${list(c.rage)}</section>
+      <section class="card"><h2>Dead clicks by page</h2>${note("Clicks on things that don't respond. Often text or an image that looks clickable.")}${list(c.dead)}</section></div>
+    <div class="grid2"><section class="card"><h2>Quick backs by page</h2>${note("Opened a page and went straight back. The page wasn't what they expected.")}${list(c.quickback)}</section>
+      <section class="card"><h2>Script errors by page</h2>${note("A JavaScript error during the visit. Watch a replay in Clarity to see what broke.")}${list(c.scriptErrors)}</section></div>
+    <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${note("How far down people read. Below 40% means most never see the bottom half.")}${list(c.scroll, (v) => `${n(v)}%`)}</section>
+      <section class="card"><h2>Most visited pages</h2>${note("Pages with the most recorded sessions.")}${list(c.traffic)}</section></div>`;
 }
 
 // ── audit log ──
 const ACT_NAMES: Record<string, string> = { signin: "Signed in", "request.approve": "Approved request", "request.decline": "Declined request",
   "key.revoke": "Revoked key", "key.plan": "Changed key plan", "user.disable": "Disabled account", "user.enable": "Enabled account",
   "user.website-plan": "Changed website plan", "user.tier": "Set subscription", "user.delete": "Deleted account",
-  "contact.status": "Updated message", "contact.read": "Marked message read / unread", "contact.delete": "Deleted message" };
+  "contact.status": "Updated message", "contact.read": "Marked message read / unread", "contact.delete": "Deleted message",
+  "application.status": "Updated application", "application.delete": "Deleted application" };
 async function log() {
-  const l = await api("/api/log");
-  main().innerHTML = head("Audit log") + `<p class="muted">Every admin sign-in and action, newest first (last 200).</p><div id="tbl"></div>`;
+  const l = await api("/api/log"), E = (l.entries || []) as Row[];
+  const admins = [...new Set(E.map((e) => e.email).filter(Boolean))].sort();
+  const kinds: Record<string, number> = {};
+  for (const e of E) kinds[e.what] = (kinds[e.what] || 0) + 1;
+  main().innerHTML = head("Audit log") + `
+    <div class="tiles">
+      ${tile("Entries", n(E.length), "the last 200 are kept here")}
+      ${tile("Admins", n(admins.length), admins.map(esc).join(", ") || "–")}
+      ${tile("Actions (not sign-ins)", n(E.filter((e) => e.what !== "signin").length), `${n(kinds.signin || 0)} sign-ins`)}
+    </div>
+    <section class="card"><h2>By action</h2>${note("Every sign-in and change made from this console. Entries can't be edited or removed.")}${ranked(Object.entries(kinds).map(([k, v]) => ({ name: ACT_NAMES[k] || k, value: v })).sort((a, b) => b.value - a.value))}</section>
+    <div class="filters"><select id="fa" aria-label="Admin"><option value="">All admins</option>${admins.map((a) => `<option>${esc(a)}</option>`).join("")}</select>
+      <select id="fw" aria-label="Action"><option value="">All actions</option>${Object.keys(kinds).map((k) => `<option value="${esc(k)}">${esc(ACT_NAMES[k] || k)}</option>`).join("")}</select><span id="count" class="muted"></span></div>
+    <div id="tbl"></div>`;
+  const draw = () => { const fa = $<HTMLSelectElement>("#fa")!.value, fw = $<HTMLSelectElement>("#fw")!.value;
+  const rows = E.filter((e) => (!fa || e.email === fa) && (!fw || e.what === fw));
+  $("#count")!.textContent = `${n(rows.length)} entries`;
   table($("#tbl")!, [{ key: "at", label: "When", render: (r) => `<span title="${esc(r.at)}">${when(r.at)}</span>` },
     { key: "email", label: "Admin" }, { key: "what", label: "Action", render: (r) => esc(ACT_NAMES[r.what] || r.what) },
     { key: "uid", label: "Account", render: (r) => (r.uid ? `<a href="#/user/${encodeURIComponent(r.uid)}">${esc(r.uid)}</a>` : "–") },
     { key: "done", label: "Details", render: (r) => esc(r.done || [r.ip, r.country].filter(Boolean).join(" · ")) }],
-    l.entries || [], { initial: { key: "at", desc: true }, empty: "Nothing logged yet." });
+    rows, { initial: { key: "at", desc: true }, empty: "Nothing matches." }); };
+  draw();
+  ["#fa", "#fw"].forEach((id) => $(id)!.addEventListener("input", draw));
 }
 
 // ── search (Google Search Console) ──
@@ -596,10 +798,11 @@ async function search() {
     </div>
     ${s.daily?.length ? `<section class="card">${bars(s.daily, [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Clicks per day" })}</section>
       <section class="card">${bars(s.daily, [{ key: "impressions", label: "Impressions", color: S1 }], { x: "day", title: "Impressions per day" })}</section>` : ""}
-    <section class="card"><h2>Top search queries</h2><div id="q"></div></section>
-    <section class="card"><h2>Top pages</h2><div id="p"></div></section>
+    <section class="card"><h2>Quick wins</h2>${note("Pages Google shows often (50+ impressions, top 20) but few click (under 2%). A clearer title and description can lift clicks without new content.")}<div id="wins"></div></section>
+    <section class="card"><h2>Top search queries</h2>${note("What people typed before they saw us. CTR is clicks ÷ impressions.")}<div id="q"></div></section>
+    <section class="card"><h2>Top pages</h2>${note("Pages that appear in Google results.")}<div id="p"></div></section>
     <div class="grid2"><section class="card"><h2>Countries</h2><div id="c"></div></section>
-      <section class="card"><h2>Devices</h2><div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2><div id="sm"></div></section></div>`;
+      <section class="card"><h2>Devices</h2><div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2>${note("When Google last read each sitemap and how many URLs it found.")}<div id="sm"></div></section></div>`;
   main().insertAdjacentHTML("beforeend", `<h2 class="sec">Bing</h2>${b.errors?.length ? `<div class="warn"><ul>${b.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
     ${b.daily ? `<div class="tiles">${tile("Bing clicks (7 days)", n(b.last7?.clicks), `${n(b.total?.clicks)} in the period`)}${tile("Bing impressions (7 days)", n(b.last7?.impressions), `${n(b.total?.impressions)} in the period`)}</div>
       ${b.daily.length ? `<section class="card">${bars(b.daily.slice(-30), [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Bing clicks per day" })}</section>` : ""}
@@ -608,6 +811,8 @@ async function search() {
     table($("#bq")!, cols, b.queries || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing queries yet." });
     table($("#bp")!, cols, b.pages || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing pages yet." });
   }
+  table($("#wins")!, cols, ((s.pages || []) as Row[]).filter((r) => r.impressions >= 50 && r.ctr < 0.02 && r.position <= 20),
+    { initial: { key: "impressions", desc: true }, limit: 10, empty: "None right now." });
   table($("#q")!, cols, s.queries || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No search queries yet." });
   table($("#p")!, cols, s.pages || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No pages with impressions yet." });
   table($("#c")!, cols, s.countries || [], { initial: { key: "clicks", desc: true } });
@@ -639,15 +844,17 @@ async function traffic() {
       ${tile("Page views (30 days)", rum ? n(sum(rum.days, "views")) : "–", rum ? `${n(sum(rum.days, "visits"))} visits` : "")}
       ${tile("Unique visitors (yesterday)", n(zone?.at(-2)?.uniques), "all requests to the domain")}
       ${tile("Worker requests today", n(Object.values(scripts).reduce((s, x) => s + x.today, 0)), "of 100,000 a day on the free plan")}
+      ${tile("Pages per visit", rum && sum(rum.days, "visits", -7) ? (sum(rum.days, "views", -7) / sum(rum.days, "visits", -7)).toFixed(1) : "–", "page views ÷ visits, 7 days")}
     </div>
-    ${rum ? `<section class="card">${bars(rum.days, [{ key: "views", label: "Page views", color: S1 }], { x: "day", title: "Page views per day (Web Analytics, 30 days)" })}</section>
-    <div class="grid2"><section class="card"><h2>Top pages (7 days)</h2>${ranked(rum.pages.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
+    ${note("Counted by Cloudflare for every visitor, with no cookies, so these numbers are higher than Google Analytics.")}
+    ${rum ? `<section class="card">${bars(rum.days, [{ key: "views", label: "Page views", color: S1 }], { x: "day", title: "Page views per day (Web Analytics, 30 days)", sub: "Every visitor, cookies or not." })}</section>
+    <div class="grid2"><section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages.")}${ranked(rum.pages.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
       <section class="card"><h2>Countries (7 days)</h2>${ranked(rum.countries.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>
-    <div class="grid2"><section class="card"><h2>Referrers (7 days)</h2>${ranked(rum.referrers.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
+    <div class="grid2"><section class="card"><h2>Referrers (7 days)</h2>${note("Sites that sent visitors. Direct visits aren't listed.")}${ranked(rum.referrers.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
       <section class="card"><h2>Devices (7 days)</h2>${ranked(rum.devices.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>` : ""}
     ${t.vitals ? vitalsHtml(t.vitals) : ""}
-    ${zone ? `<section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day (all requests to the domain)", total: false })}</section>` : ""}
-    ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }], { x: "day", title: "Worker requests per day (all scripts)" })}
+    ${zone ? `<section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day (all requests to the domain)", sub: "Includes bots and the app's data requests, so it runs higher than page views.", total: false })}</section>` : ""}
+    ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }], { x: "day", title: "Worker requests per day (all scripts)", sub: "The API, the AI connector and this console. The free plan allows 100,000 a day." })}
       <div id="scripts"></div></section>` : ""}`;
   if (t.vitals) {
     const vcols: Col<Row>[] = [{ key: "name", label: "" }, { key: "samples", label: "Samples", num: true, render: (r) => n(r.samples) },
@@ -673,6 +880,7 @@ function vitalsHtml(v: Row) {
   const o = v.overall, s = o?.sum || {};
   const share = (m: string) => { const tot = (s[`${m}Good`] || 0) + (s[`${m}NeedsImprovement`] || 0) + (s[`${m}Poor`] || 0); return tot ? `${pct(s[`${m}Good`] / tot)} of visits good` : ""; };
   return `<h2 class="sec">Core Web Vitals (real visitors, 7 days, 75th percentile)</h2>
+    ${note("How fast and steady pages feel to real visitors. Google uses these in ranking. Fix anything marked Poor first.")}
     <div class="tiles">
       ${tile("Largest Contentful Paint", o ? vital("lcp", o.lcp) : "–", `loading · good ≤ 2.5 s · ${share("lcp")}`)}
       ${tile("Interaction to Next Paint", o ? vital("inp", o.inp) : "–", `responsiveness · good ≤ 200 ms · ${share("inp")}`)}
@@ -687,23 +895,36 @@ function vitalsHtml(v: Row) {
 async function health() {
   const [h, up, m] = await Promise.all([api("/api/health"), api("/api/uptime").catch((e): Row => ({ error: String(e.message) })), api("/api/meters").catch((e): Row => ({ errors: [String(e.message)] }))]);
   const files = h.build?.files as number | undefined;
-  const runBadge = (r: Row) => !r.last ? badge(r.error ? "Unknown" : "No runs", "plain")
+  const WF_DESC: Record<string, string> = {
+  "publish-site.yml": "Rebuilds forecasts and deploys the website, nightly and on demand.",
+  "live.yml": "Every 30 minutes, follows live matches for the live projection.",
+  "auto.yml": "Every 3 hours: new fixtures, playing XIs, the toss and scorecards.",
+  "edge-data.yml": "Prepares the API's answers for each upcoming match, then redeploys the API.",
+  "deploy-worker.yml": "Deploys the API and AI connector.",
+  "deploy-master.yml": "Deploys this console.",
+  "android.yml": "Builds the Android app. Releases only when started by hand.",
+  "data-freshness.yml": "Checks how up to date the ball-by-ball archive is.",
+  "site-check.yml": "Checks the live site: pages, data, redirects and headers.",
+};
+const runBadge = (r: Row) => !r.last ? badge(r.error ? "Unknown" : "No runs", "plain")
     : r.last.status !== "completed" ? badge("Running", "info") : r.last.conclusion === "success" ? badge("Passed", "good")
     : r.last.conclusion === "failure" ? badge("Failed", "bad") : badge(r.last.conclusion || "–", "plain");
+  const failing = ((h.runs || []) as Row[]).filter((r) => r.last?.status === "completed" && r.last?.conclusion === "failure");
   main().innerHTML = head("Pipeline health") + (h.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${h.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
     <div class="tiles">
       ${tile("Forecasts published", h.data ? ago(h.data.generated) : "–", h.data ? `${n(h.data.upcoming)} upcoming · ${n(h.data.live)} live` : "")}
       ${tile("Upcoming without XIs", h.data ? n(h.data.missingXi.length) : "–", "simulated on probable XIs")}
       ${tile("Site files", files != null ? n(files) : "–", files != null ? `${pct(files / h.limits.pagesFiles)} of the 20,000 Pages limit` : "build.json appears after the next publish")}
       ${tile("Android app", esc(h.app?.version || "–"), h.app ? `build ${esc(h.app.build ?? h.app.versionCode ?? "–")}` : "")}
+      ${tile("Failing workflows", n(failing.length), failing.length ? failing.map((r) => esc(r.label)).join(", ") : "every last run passed")}
     </div>
     ${files != null ? `<div class="meter" role="meter" aria-valuemin="0" aria-valuemax="20000" aria-valuenow="${files}"><i style="width:${Math.min(100, 100 * files / 20000).toFixed(1)}%" class="${files > 18000 ? "bad" : files > 15000 ? "warn" : ""}"></i></div>` : ""}
     ${uptimeHtml(up)}
     ${metersHtml(m, files, h.limits?.pagesFiles)}
-    <section class="card"><h2>Workflows</h2><div id="runs"></div></section>
-    <div class="grid2"><section class="card"><h2>Upcoming matches without XIs</h2><div id="xi"></div></section>
-      <section class="card"><h2>App releases</h2><div id="rel"></div></section></div>`;
-  table($("#runs")!, [{ key: "label", label: "Workflow", render: (r) => `${esc(r.label)} <small class="muted">${esc(r.file)}</small>` },
+    <section class="card"><h2>Workflows</h2>${note("The jobs that keep the site, API and app running. A failure here usually means stale data on the site.")}<div id="runs"></div></section>
+    <div class="grid2"><section class="card"><h2>Upcoming matches without XIs</h2>${note("Forecast on the XIs we expect. They update once the teams are named.")}<div id="xi"></div></section>
+      <section class="card"><h2>App releases</h2>${note("Android builds on GitHub, with APK downloads.")}<div id="rel"></div></section></div>`;
+  table($("#runs")!, [{ key: "label", label: "Workflow", render: (r) => `${esc(r.label)} <small class="muted">${esc(WF_DESC[r.file] || r.file)}</small>` },
     { key: "status", label: "Last run", render: (r) => `${runBadge(r)} ${r.last ? `<a href="${esc(r.last.url)}" target="_blank" rel="noopener">${ago(r.last.at)}</a>` : esc(r.error || "")}`, sort: (r) => r.last?.at || "" },
     { key: "lastSuccess", label: "Last success", render: (r) => ago(r.lastSuccess) },
     { key: "failures", label: "Failed (last 10)", num: true, render: (r) => `${n(r.failures)} / ${n(r.of)}` }], h.runs || [], { empty: "GitHub isn't connected." });
@@ -717,6 +938,7 @@ function uptimeHtml(u: Row) {
   if (u.error) return `<div class="warn">Uptime: ${esc(u.error)}</div>`;
   if (!u.checks) return `<section class="card"><h2>Uptime</h2><p class="empty">The first checks run within 5 minutes of this deploy.</p></section>`;
   return `<section class="card"><h2>Uptime <small class="muted" style="display:inline">checked every 5 minutes · last ${ago(u.last)}</small></h2>
+    ${note("Each bar is one check in the last 24 hours. Red means the page didn't answer or showed the wrong content.")}
     <div class="uptime">${(u.targets as Row[]).map((t) => `<div class="ut">
       <div class="ut-h"><b>${esc(t.label)}</b> ${t.now ? (t.now.up ? badge("Up", "good") : badge(t.now.code ? `Down (${t.now.code === 299 ? "wrong content" : t.now.code})` : "Down (no answer)", "bad")) : badge("–", "plain")}
         <span class="muted">${pct(t.uptime24, 2)} 24 h · ${pct(t.uptime7, 2)} 7 d · ${t.p50 == null ? "–" : `${t.p50} ms`} median, ${t.p95 == null ? "–" : `${t.p95} ms`} p95</span></div>
@@ -728,6 +950,7 @@ function uptimeHtml(u: Row) {
 function metersHtml(m: Row, files: number | undefined, pagesLimit = 20000) {
   const rows: Row[] = [...(m.meters || []), ...(files != null ? [{ label: "Pages files per deployment", today: files, limit: pagesLimit, share: files / pagesLimit, note: "move /data to R2 or retire old pages before 20,000" }] : [])];
   return `<section class="card"><h2>Free-tier meters (today)</h2>
+    ${note("Our zero-spend limits. Amber at half, red at 80%: act before red, because past the limit things stop or start costing money.")}
     ${m.errors?.length ? `<div class="warn"><ul>${m.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
     <div class="meters">${rows.map((r) => `<div class="mt"><div class="mt-h"><b>${esc(r.label)}</b>
       <span>${r.today == null ? "–" : n(r.today)} / ${n(r.limit)} ${r.share == null ? "" : badge(pct(r.share), r.share >= 0.8 ? "bad" : r.share >= 0.5 ? "warn" : "good")}</span></div>
@@ -738,19 +961,26 @@ function metersHtml(m: Row, files: number | undefined, pagesLimit = 20000) {
 // ── accuracy ──
 async function accuracy() {
   const a = await api("/api/accuracy"), o = a.overall;
-  main().innerHTML = head("Model accuracy") + `<p class="muted">From the published results (scored after each match). Updated ${ago(a.generated)}.</p>
+  const solid = ((a.competitions || []) as Row[]).filter((c) => c.matches >= 3 && c.accuracy != null).sort((x, y) => y.accuracy - x.accuracy);
+  const best = solid[0], worst = solid.length > 1 ? solid[solid.length - 1] : null;
+  const months = ((a.months || []) as Row[]).filter((m) => m.accuracy != null), thisM = months.at(-1), lastM = months.at(-2);
+  main().innerHTML = head("Model accuracy") + `<p class="muted">From the published results, scored after each match. Updated ${ago(a.generated)}.</p>
     <div class="tiles">
       ${tile("Projections that came true", pct(o.accuracy), `${n(o.hits)} of ${n(o.checks)} checks · ${n(o.matches)} matches`)}
       ${tile("Favourite won", pct(o.favourite), `${n(o.favouriteOf)} matches`)}
-      ${tile("Result Brier score", o.brier == null ? "–" : o.brier.toFixed(3), "lower is better; 0.25 = coin flip")}
+      ${tile("Result Brier score", o.brier == null ? "–" : o.brier.toFixed(3), "0 is perfect, 0.25 is a coin flip")}
       ${tile("Fantasy XI", pct(o.fantasy), "of the ultimate team's points")}
+      ${tile("This month", thisM ? pct(thisM.accuracy) : "–", thisM && lastM ? `${pct(lastM.accuracy)} last month ${delta(thisM.accuracy, lastM.accuracy)}` : "came true")}
+      ${tile("Strongest competition", best ? pct(best.accuracy) : "–", best ? `${esc(best.key)} · ${n(best.matches)} matches` : "needs 3+ matches")}
+      ${tile("Weakest competition", worst ? pct(worst.accuracy) : "–", worst ? `${esc(worst.key)} · ${n(worst.matches)} matches` : "needs 3+ matches")}
     </div>
+    ${note("Came true: the share of pre-match calls the scorecard proved right. Favourite won: how often the side we made favourite won. Brier: how close our win chances were to what happened.")}
     <section class="card">${bars(a.months.map((m: Row) => ({ month: m.key, acc: m.accuracy == null ? 0 : Math.round(m.accuracy * 1000) / 10 })),
-      [{ key: "acc", label: "Projections that came true (%)", color: S1 }], { x: "month", xLabel: (v) => v, fmt: (v) => `${v}%`, title: "By month" })}</section>
-    <section class="card"><h2>By format</h2><div id="fmt"></div></section>
-    <section class="card"><h2>By competition</h2><div id="comp"></div></section>
-    <div class="grid2"><section class="card"><h2>By match-centre tab</h2><div id="tabs"></div></section>
-      <section class="card"><h2>Latest matches</h2><div id="recent"></div></section></div>`;
+      [{ key: "acc", label: "Projections that came true (%)", color: S1 }], { x: "month", xLabel: (v) => v, fmt: (v) => `${v}%`, title: "By month", sub: "Share of calls that came true, per month.", total: false })}</section>
+    <section class="card"><h2>By format</h2>${note("T20, ODI, The Hundred and the rest.")}<div id="fmt"></div></section>
+    <section class="card"><h2>By competition</h2>${note("Small samples swing a lot. Trust rows with 10 or more matches.")}<div id="comp"></div></section>
+    <div class="grid2"><section class="card"><h2>By match-centre tab</h2>${note("Which parts of the match page are most often right.")}<div id="tabs"></div></section>
+      <section class="card"><h2>Latest matches</h2>${note("The most recent finished matches.")}<div id="recent"></div></section></div>`;
   const cols: Col<Row>[] = [{ key: "key", label: "" }, { key: "matches", label: "Matches", num: true },
     { key: "accuracy", label: "Came true", num: true, render: (r) => pct(r.accuracy) }, { key: "favourite", label: "Favourite won", num: true, render: (r) => pct(r.favourite) },
     { key: "brier", label: "Brier", num: true, render: (r) => (r.brier == null ? "–" : r.brier.toFixed(3)) }, { key: "fantasy", label: "Fantasy", num: true, render: (r) => pct(r.fantasy) }];

@@ -297,3 +297,18 @@ main > [id] > .empty { background: var(--surface); border: 1px dashed var(--line
 .app-dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 18px;margin:12px 0}
 .app-dl div{min-width:0}.app-dl dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
 .app-dl dd{margin:2px 0 0;overflow-wrap:anywhere}
+
+/* section notes and the overview's attention list, revenue and funnel (ui/main.ts) */
+.note { margin: -6px 0 14px; max-width: 72ch; color: var(--ink-3); font-size: 13px; line-height: 1.5; }
+.card-h + .note { margin-top: -6px; }
+h2.sec + .note { margin-top: -6px; }
+.todo { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.todo a { display: flex; align-items: center; gap: 14px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; }
+.todo a:hover { border-color: var(--steel); text-decoration: none; }
+.todo b { min-width: 34px; font: 600 22px/1 var(--head); color: var(--ink-3); text-align: center; }
+.todo li.on b { color: var(--warn, #b7791f); }
+.todo span { font-weight: 600; font-size: 14px; }
+.todo small { font-weight: 400; margin-top: 2px; }
+.big { font: 600 40px/1 var(--head); color: var(--ink); margin: 4px 0 16px; }
+.big span { margin-left: 8px; font: 500 14px var(--body); color: var(--ink-3); }
+.dl.rev dd { font-variant-numeric: tabular-nums; }
