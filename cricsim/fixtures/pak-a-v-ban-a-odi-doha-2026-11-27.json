@@ -1,0 +1,112 @@
+{
+  "id": "pak-a-v-ban-a-odi-doha-2026-11-27",
+  "title": "Pakistan A v Bangladesh A",
+  "date": "2026-11-27",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 2nd Semi-Final",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Pakistan A",
+      "short": "PAK-A",
+      "players": [
+        "Shamyl Hussain",
+        "Maaz Sadaqat",
+        "Rohail Nazir",
+        "Haider Ali",
+        "Abdul Samad",
+        "Hasan Nawaz",
+        "Farhan Yousaf",
+        "Mohammad Imran Randhawa",
+        "Ahmed Daniyal",
+        "Sufyan Moqim",
+        "Mohammad Hasnain"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Abdul Samad",
+      "squad": [
+        "Shamyl Hussain",
+        "Maaz Sadaqat",
+        "Rohail Nazir",
+        "Haider Ali",
+        "Abdul Samad",
+        "Hasan Nawaz",
+        "Farhan Yousaf",
+        "Mohammad Imran Randhawa",
+        "Ahmed Daniyal",
+        "Sufyan Moqim",
+        "Mohammad Hasnain"
+      ]
+    },
+    {
+      "name": "Bangladesh A",
+      "short": "BAN-A",
+      "players": [
+        "Saif Hassan",
+        "Parvez Hossain Emon",
+        "Shahadat Hossain Dipu",
+        "Sabbir Rahman",
+        "Rakibul Hasan",
+        "Iftakhar Hossain Ifti",
+        "Samiun Basir Ratul",
+        "Rizwan Chowdhury",
+        "Md Rubel",
+        "Ripon Mondol",
+        "Afif Hossain"
+      ],
+      "roles": [
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Saif Hassan",
+      "squad": [
+        "Saif Hassan",
+        "Parvez Hossain Emon",
+        "Shahadat Hossain Dipu",
+        "Sabbir Rahman",
+        "Rakibul Hasan",
+        "Iftakhar Hossain Ifti",
+        "Samiun Basir Ratul",
+        "Rizwan Chowdhury",
+        "Md Rubel",
+        "Ripon Mondol",
+        "Afif Hossain"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41835,
+    "url": "https://khelnow.com/live-cricket-score/pakistan-a-vs-bangladesh-a-acc-men's-asia-cup-rising-stars-27th-november-2026-41835",
+    "auto": true,
+    "xis": false
+  }
+}
