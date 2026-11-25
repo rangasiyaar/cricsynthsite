@@ -1,0 +1,112 @@
+{
+  "id": "sw-v-dc-t20-sharjah-2026-11-27",
+  "title": "Sharjah Warriorz v Dubai Capitals",
+  "date": "2026-11-27",
+  "start_time": "18:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 8th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Sharjah Cricket Stadium, Sharjah",
+  "venue_search": "sharjah cricket stadium",
+  "city": "Sharjah",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sharjah Warriorz",
+      "short": "SW",
+      "players": [
+        "Tim Seifert",
+        "James Vince",
+        "Paul Walter",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Junaid Siddique",
+        "Waqar Salamkheil"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sikandar Raza",
+      "squad": [
+        "Tim Seifert",
+        "James Vince",
+        "Paul Walter",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Junaid Siddique",
+        "Waqar Salamkheil"
+      ]
+    },
+    {
+      "name": "Dubai Capitals",
+      "short": "DC",
+      "players": [
+        "Faf du Plessis",
+        "Masood Gurbaz",
+        "Marcus Stoinis",
+        "Sam Billings",
+        "Tom Moores",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Mustafizur Rahman",
+        "Dushmantha Chameera",
+        "Haider Ali"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sam Billings",
+      "squad": [
+        "Faf du Plessis",
+        "Masood Gurbaz",
+        "Marcus Stoinis",
+        "Sam Billings",
+        "Tom Moores",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Mustafizur Rahman",
+        "Dushmantha Chameera",
+        "Haider Ali"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41726,
+    "url": "https://khelnow.com/live-cricket-score/sharjah-warriorz-vs-dubai-capitals-international-league-t20-27th-november-2026-41726",
+    "auto": true,
+    "xis": false
+  }
+}
