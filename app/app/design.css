@@ -411,25 +411,52 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @keyframes info-fade { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── Docs home (components/DocsTabs.tsx) and the Guide (rules in app/DESIGN.md) ── */
-.docs-tabs { margin: 32px 0 0; width: fit-content; max-width: 100%; }
-.docs-panel { margin-top: 28px; max-width: 760px; }
-.docs-panel-lede { margin: 0 0 20px; font-size: 18px; color: var(--cs-ink-2); }
-.docs-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--cs-line); }
-.docs-steps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--cs-line); }
-.docs-step-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--cs-line);
-  font: 600 17px var(--cs-head); color: var(--cs-ink); }
-.docs-steps h3 { margin: 4px 0 6px; font-size: 21px; }
-.docs-step-text { color: var(--cs-ink-2); line-height: 1.6; max-width: 62ch; }
-.docs-step-text code { font-family: var(--cs-mono); font-size: 13px; padding: 1px 6px; border-radius: 6px; background: var(--cs-surface); }
+.docs-tabs { margin: 28px 0 0; width: fit-content; max-width: 100%; }
 .docs-code { margin: 12px 0 0; padding: 12px 16px; overflow-x: auto; border: 1px solid var(--cs-line); border-radius: 10px; background: var(--cs-surface);
   font: 13px/1.6 var(--cs-mono); color: var(--cs-ink); }
-.docs-step-link { display: inline-block; margin-top: 10px; font-weight: 600; }
-.docs-more-row { display: grid; gap: 6px; margin-top: 28px; color: var(--cs-ink-2); }
-.docs-more-row p { margin: 0; }
+.dh-search { position: relative; max-width: 640px; margin-top: 28px; }
+.dh-search > svg { position: absolute; left: 14px; top: 15px; width: 16px; height: 16px; color: var(--cs-ink-3); pointer-events: none; }
+.dh-search input { width: 100%; box-sizing: border-box; padding: 13px 14px 13px 40px; font: inherit; font-size: 16px; color: var(--cs-ink);
+  background: var(--cs-bg); border: 1px solid var(--cs-line); border-radius: var(--r-btn, 8px); }
+.dh-search input:focus { outline: none; border-color: var(--cs-steel); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cs-steel) 22%, transparent); }
+.dh-results { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 6px); display: grid; padding: 6px; background: var(--cs-bg);
+  border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px); box-shadow: 0 10px 28px rgba(0,0,0,.14); }
+.dh-results a { display: grid; gap: 2px; padding: 9px 12px; border-radius: var(--r-btn, 8px); color: var(--cs-ink); text-decoration: none; }
+.dh-results a:hover, .dh-results a:focus { background: var(--cs-surface); }
+.dh-results a span { font-size: 12px; color: var(--cs-ink-3); }
+.dh-results p { margin: 0; padding: 10px 12px; color: var(--cs-ink-2); }
+.dh-panel { margin-top: 32px; }
+.dh-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.dh-card .cs-k { margin: 0 0 2px; }
+.dh-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dh-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px);
+  background: var(--cs-bg); color: var(--cs-ink); text-decoration: none; transition: border-color .15s, background .15s; }
+a.dh-card:hover, a.dh-card:focus-visible { border-color: var(--cs-steel); }
+a.dh-card:hover .dh-arrow { transform: translateX(3px); color: var(--cs-steel); }
+.dh-card-big { padding: 22px 24px; background: var(--cs-surface); }
+.dh-card-title { display: flex; align-items: center; gap: 8px; font: 600 18px/1.2 var(--cs-head); letter-spacing: .02em; text-transform: uppercase;
+  color: var(--cs-ink); text-decoration: none; }
+.dh-card-big .dh-card-title { font-size: 21px; }
+.dh-card-title .tag { font-family: var(--cs-body, inherit); }
+.dh-arrow { width: 14px; height: 14px; margin-left: auto; flex: none; color: var(--cs-ink-3); transition: transform .15s, color .15s; }
+.dh-card-text { font-size: 14px; line-height: 1.5; color: var(--cs-ink-2); }
+.dh-group { margin-top: 44px; }
+.dh-group-title { margin: 0 0 14px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cs-ink-3); font-weight: 600; }
+.dh-count { font: 500 12px var(--cs-mono); color: var(--cs-ink-3); border: 1px solid var(--cs-line); border-radius: 999px; padding: 1px 8px; letter-spacing: 0; }
+.dh-cat .dh-card-title:hover { color: var(--cs-steel); }
+.dh-eps { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid var(--cs-line); display: grid; gap: 2px; }
+.dh-eps a { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 14px; color: var(--cs-ink-2); text-decoration: none; }
+.dh-eps a:hover { color: var(--cs-steel); }
+.dh-eps .method-badge { flex: none; }
+.dh-all { margin-top: 4px; font-size: 14px; font-weight: 600; }
+.dh-code { max-width: 640px; }
+.dh-note { margin: 18px 0 0; color: var(--cs-ink-2); }
+@media (max-width: 1000px) { .dh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dh-grid-3 { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) {
   .docs-tabs { width: 100%; }
   .docs-tabs button { flex: 1 1 50%; padding: 10px 8px; font-size: 13px; white-space: normal; line-height: 1.2; }
-  .docs-steps li { grid-template-columns: 36px minmax(0, 1fr); gap: 12px; }
+  .dh-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .dh-group { margin-top: 32px; }
 }
 .guide-layout { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 56px; align-items: start; }
 .guide-nav { position: sticky; top: 88px; max-height: calc(100vh - 110px); overflow-y: auto; display: grid; gap: 4px; padding-right: 8px; font-size: 14px; }
