@@ -1,6 +1,6 @@
 // MatchSynth Lab: the levers, ready-made scenarios (presets), share links and the "what moved it" breakdown.
-// Presets are built for each match from its own data (teams, batting orders, bowlers, the published forecast), so a
-// preset like "Openers fire" names the real players. A preset only sets its own levers, on top of whatever is set
+// Presets are built for each match from its own data (teams, batting orders, bowling types, the published par). They
+// talk about the match (conditions, parts of the order, types of bowler, the state of the game), never one player. A preset only sets its own levers, on top of whatever is set
 // already, so they stack: "Heavy dew" + "Openers fire" + "Chase in trouble". Reset clears everything.
 import type { Pack } from "@/lib/engine/sim";
 import type { Summary } from "@/lib/types";
@@ -23,7 +23,6 @@ const PACE = new Set(["pace_right", "pace_left"]);
 /** Every preset for this match. Player presets use the published forecast to find each side's main batter and bowler. */
 export function buildPresets(pack: Pack, base: Summary | null): Preset[] {
   const teams = pack.teams.map((t) => t.name);
-  const name = (id: string) => pack.players[id]?.name ?? id;
   const orderOf = (k: number) => pack.batting.find((b) => b.team === k)?.order ?? [];
   // team k's bowlers sit in the innings where the other side bats
   const attack = (k: number) => {
@@ -39,86 +38,87 @@ export function buildPresets(pack: Pack, base: Summary | null): Preset[] {
   const at = (share: number) => Math.max(1, Math.min(O - 1, Math.round(O * share)));
   const star = (k: number) => {
     const rows = base?.teams[k]?.players ?? [];
-    const bat = [...rows].sort((a, b) => (b.batting?.runs.mean ?? 0) - (a.batting?.runs.mean ?? 0))[0];
     const bowl = [...rows].filter((p) => (p.bowling?.p_bowls ?? 0) > 0.25).sort((a, b) => (b.bowling?.wickets.mean ?? 0) - (a.bowling?.wickets.mean ?? 0))[0];
-    return { bat: bat?.id, bowl: bowl?.id };
+    return { bowl: bowl?.id };
+  };
+
+  const ov = (o: number) => `${o} ${o === 1 ? "over" : "overs"}`;
+  const ballsLeft = (o: number) => (O - o) * pack.rules.bpo;
+  const chase = (t: number, r: number, w: number, o: number) => {
+    const need = t + 1 - r, b2 = ballsLeft(o);
+    return `Chasing ${t + 1}: ${r}/${w} after ${ov(o)}. Needs ${need} off ${b2} balls (${(need / (b2 / pack.rules.bpo)).toFixed(1)} an over).`;
   };
 
   const out: Preset[] = [
     // ── the pitch and the ground
-    { id: "flat", group: "Pitch", title: "Flat road", blurb: "True bounce and a quick outfield. Batters can hit through the line, and bowlers have nowhere to hide.", set: { boundary: 1.25, wickets: 0.85 } },
-    { id: "small", group: "Pitch", title: "Small ground", blurb: "Short boundaries. Mis-hits clear the rope and the spinners get taken down.", set: { boundary: 1.3 } },
-    { id: "big", group: "Pitch", title: "Big ground", blurb: "Long boundaries. More twos and threes, fewer sixes, and catches in the deep.", set: { boundary: 0.85 } },
-    { id: "slow", group: "Pitch", title: "Slow, low pitch", blurb: "The ball stops on the batter. Hard to time, so totals stay low and dot balls pile up.", set: { boundary: 0.82, wickets: 1.05 } },
-    { id: "twopaced", group: "Pitch", title: "Two-paced pitch", blurb: "Some balls grip, some skid on. Good balls take wickets and new batters struggle.", set: { boundary: 0.9, wickets: 1.15 } },
-    { id: "green", group: "Pitch", title: "Green top", blurb: "Grass left on the pitch. Seamers get movement off the surface all day.", set: { pace: 1.45, wickets: 1.15, boundary: 0.92 } },
-    { id: "turner", group: "Pitch", title: "Raging turner", blurb: "Dry and cracked. Spinners turn it square and run through the middle order.", set: { spin: 1.55, wickets: 1.1, boundary: 0.88 } },
-    { id: "grip", group: "Pitch", title: "Slow turner", blurb: "The ball grips and turns slowly. Spinners are hard to hit rather than hard to play.", set: { spin: 1.25, boundary: 0.9 } },
-    { id: "sporting", group: "Pitch", title: "Sporting pitch", blurb: "Something for everyone: bounce for the seamers early, a bit of turn later.", set: { pace: 1.15, spin: 1.15 } },
-    { id: "highveld", group: "Pitch", title: "Bouncy and quick", blurb: "Pace and carry. Shots in front of square pay off, and fast bowlers find the edge.", set: { pace: 1.25, boundary: 1.1 } },
+    { id: "flat", group: "Pitch", title: "Flat deck", blurb: "Boundary rate up 25%, wicket chance down 15%. Par rises and few totals are safe.", set: { boundary: 1.25, wickets: 0.85 } },
+    { id: "small", group: "Pitch", title: "Short boundaries", blurb: "Boundary rate up 30%. Mistimed shots still clear the rope, and spin gets expensive.", set: { boundary: 1.3 } },
+    { id: "big", group: "Pitch", title: "Long boundaries", blurb: "Boundary rate down 15%. More twos and threes, fewer sixes, and a lower par.", set: { boundary: 0.85 } },
+    { id: "slow", group: "Pitch", title: "Slow and low", blurb: "Boundary rate down 18%, wicket chance up 5%. Hard to time the ball: more dots, a below-par total.", set: { boundary: 0.82, wickets: 1.05 } },
+    { id: "twopaced", group: "Pitch", title: "Two-paced pitch", blurb: "Boundary rate down 10%, wicket chance up 15%. New batters take time to settle.", set: { boundary: 0.9, wickets: 1.15 } },
+    { id: "green", group: "Pitch", title: "Green tinge", blurb: "Seam wickets up 45%, all wickets up 15%, boundaries down 8%. The new ball decides it.", set: { pace: 1.45, wickets: 1.15, boundary: 0.92 } },
+    { id: "turner", group: "Pitch", title: "Rank turner", blurb: "Spin wickets up 55%, wickets up 10%, boundaries down 12%. The middle overs decide it.", set: { spin: 1.55, wickets: 1.1, boundary: 0.88 } },
+    { id: "grip", group: "Pitch", title: "Gripping surface", blurb: "Spin wickets up 25%, boundaries down 10%. Spin is hard to score off rather than hard to survive.", set: { spin: 1.25, boundary: 0.9 } },
+    { id: "sporting", group: "Pitch", title: "Balanced pitch", blurb: "Seam and spin wickets both up 15%. Bowlers stay in the game in both innings.", set: { pace: 1.15, spin: 1.15 } },
+    { id: "bounce", group: "Pitch", title: "Pace and bounce", blurb: "Seam wickets up 25%, boundaries up 10%. True bounce pays the batters and the quicks alike.", set: { pace: 1.25, boundary: 1.1 } },
     // ── weather and the time of day
-    { id: "overcast", group: "Weather", title: "Overcast, ball swinging", blurb: "Cloud cover keeps the new ball moving. Top orders are under pressure early.", set: { pace: 1.35, wickets: 1.1 } },
-    { id: "hot", group: "Weather", title: "Hot, dry day", blurb: "Flat to start, then the pitch wears and the spinners come into it.", set: { boundary: 1.1, spin: 1.15 } },
-    { id: "humid", group: "Weather", title: "Humid evening", blurb: "Heavy air helps swing under lights, then dew settles later on.", set: { pace: 1.2, dew: 0.5 } },
-    { id: "dew", group: "Weather", title: "Heavy dew", blurb: "A wet ball in the second innings. Spinners can't grip it and the side batting second has it easier.", set: { dew: 1 } },
-    { id: "dewlight", group: "Weather", title: "Some dew", blurb: "A bit of moisture late on. Helps the chasing side without taking the game away.", set: { dew: 0.5 } },
-    { id: "nodew", group: "Weather", title: "Day game, no dew", blurb: "No dew at all, so the side batting first loses nothing by the toss.", set: { dew: 0 } },
-    { id: "runfest", group: "Weather", title: "Night run-fest", blurb: "A flat pitch, a fast outfield and dew under lights. Big totals both ways.", set: { boundary: 1.2, wickets: 0.9, dew: 0.8 } },
+    { id: "overcast", group: "Weather", title: "Overcast", blurb: "Seam wickets up 35%, all wickets up 10%. Early wickets are likely, so the powerplay carries more weight.", set: { pace: 1.35, wickets: 1.1 } },
+    { id: "hot", group: "Weather", title: "Hot and dry", blurb: "Boundary rate up 10%, spin wickets up 15%. Runs come early, spin later.", set: { boundary: 1.1, spin: 1.15 } },
+    { id: "humid", group: "Weather", title: "Humid night", blurb: "Seam wickets up 20%, moderate dew in the second innings. Swing early, easier batting late.", set: { pace: 1.2, dew: 0.5 } },
+    { id: "dew", group: "Weather", title: "Heavy dew", blurb: "Wet ball in the second innings: spin wickets fall, boundaries come easier. The chasing side gains.", set: { dew: 1 } },
+    { id: "dewlight", group: "Weather", title: "Light dew", blurb: "Some moisture late on. A smaller lift for the chasing side.", set: { dew: 0.5 } },
+    { id: "nodew", group: "Weather", title: "Day game", blurb: "No dew. Neither innings gets help from conditions, so the toss counts for less.", set: { dew: 0 } },
+    { id: "runfest", group: "Weather", title: "High-scoring night", blurb: "Boundary rate up 20%, wicket chance down 10%, heavy dew. Totals rise on both sides.", set: { boundary: 1.2, wickets: 0.9, dew: 0.8 } },
   ];
 
   // ── the toss
+  teams.forEach((t, k) => out.push({ id: `bat${k}`, group: "Toss", title: `${t} bat first`, blurb: `${t} set the target. Compare it with the toss left open to see what the toss is worth.`, set: { battingFirst: String(k) as "0" | "1" } }));
+  teams.forEach((t, k) => out.push({ id: `chasedew${k}`, group: "Toss", title: `${t} chase with dew`, blurb: `${teams[1 - k]} bat first, ${t} chase with heavy dew. The usual reason to bowl first at night.`, set: { battingFirst: String(1 - k) as "0" | "1", dew: 0.8 } }));
+  teams.forEach((t, k) => out.push({ id: `defturn${k}`, group: "Toss", title: `${t} bat first, pitch wears`, blurb: `${t} bat first and spin wickets rise 30% as the surface breaks up.`, set: { battingFirst: String(k) as "0" | "1", spin: 1.3 } }));
+
+  // ── batting, by part of the order (no names: these are about the match, not one player)
   teams.forEach((t, k) => {
-    out.push({ id: `bat${k}`, group: "Toss", title: `${t} bat first`, blurb: `${t} win the toss and set a target, or are put in.`, set: { battingFirst: String(k) as "0" | "1" } });
-  });
-  teams.forEach((t, k) => {
-    out.push({ id: `chasedew${k}`, group: "Toss", title: `${t} chase under lights`, blurb: `${teams[1 - k]} bat first, then dew helps ${t} with the bat.`, set: { battingFirst: String(1 - k) as "0" | "1", dew: 0.8 } });
-  });
-  teams.forEach((t, k) => {
-    out.push({ id: `defturn${k}`, group: "Toss", title: `${t} bat first on a wearing pitch`, blurb: `${t} get first use before the pitch breaks up for their spinners.`, set: { battingFirst: String(k) as "0" | "1", spin: 1.3 } });
+    const o = orderOf(k);
+    if (o.length >= 2) out.push({ id: `open${k}`, group: "Batting", title: `${t}: openers fire`, blurb: "Both openers in form (+35%). Fewer early wickets and a faster powerplay.", set: { form: pick(o.slice(0, 2), 1.35) } });
+    if (o.length >= 3) out.push({ id: `collapse${k}`, group: "Batting", title: `${t}: top order fails`, blurb: "Nos. 1 to 3 out of form (−35%). Early wickets, and the middle order comes in sooner.", set: { form: pick(o.slice(0, 3), 0.65) } });
+    if (o.length >= 6) out.push({ id: `middle${k}`, group: "Batting", title: `${t}: middle order wobbles`, blurb: "Nos. 4 to 6 out of form (−30%). The innings stalls after the powerplay.", set: { form: pick(o.slice(3, 6), 0.7) } });
+    if (o.length >= 7) out.push({ id: `finish${k}`, group: "Batting", title: `${t}: finishers fire`, blurb: "Nos. 5 to 7 in form (+35%). The death overs go big.", set: { form: pick(o.slice(4, 7), 1.35) } });
+    if (o.length >= 11) out.push({ id: `tail${k}`, group: "Batting", title: `${t}: tail wags`, blurb: "Nos. 8 to 11 in form (+45%). The lower order adds runs at the end.", set: { form: pick(o.slice(7, 11), 1.45) } });
+    if (o.length >= 11) out.push({ id: `deep${k}`, group: "Batting", title: `${t}: whole line-up in form`, blurb: "All 11 batters at +20%. A strong batting day from top to bottom.", set: { form: pick(o.slice(0, 11), 1.2) } });
   });
 
-  // ── batting, for each side
-  teams.forEach((t, k) => {
-    const o = orderOf(k), s = star(k);
-    if (o.length >= 2) out.push({ id: `open${k}`, group: "Batting", title: `${t}: openers fire`, blurb: `${name(o[0])} and ${name(o[1])} both in form. A fast start, and the powerplay belongs to ${t}.`, set: { form: pick(o.slice(0, 2), 1.35) } });
-    if (o.length >= 3) out.push({ id: `collapse${k}`, group: "Batting", title: `${t}: top order fails`, blurb: `${o.slice(0, 3).map(name).join(", ")} all out of touch. ${t} lose early wickets and have to rebuild.`, set: { form: pick(o.slice(0, 3), 0.65) } });
-    if (s.bat) out.push({ id: `star${k}`, group: "Batting", title: `${name(s.bat)} in red-hot form`, blurb: `${t}'s main batter at their best: harder to get out, and finds the rope more often.`, set: { form: pick([s.bat], 1.45) } });
-    if (s.bat) out.push({ id: `staroff${k}`, group: "Batting", title: `${name(s.bat)} has an off day`, blurb: `${t}'s main batter scratches around and goes early. Someone else has to step up.`, set: { form: pick([s.bat], 0.6) } });
-    if (o.length >= 7) out.push({ id: `finish${k}`, group: "Batting", title: `${t}: finishers fire`, blurb: `${o.slice(4, 7).map(name).join(", ")} in form. The last overs go big.`, set: { form: pick(o.slice(4, 7), 1.35) } });
-    if (o.length >= 11) out.push({ id: `tail${k}`, group: "Batting", title: `${t}: the tail wags`, blurb: `The lower order hangs around and adds runs nobody expected.`, set: { form: pick(o.slice(7, 11), 1.45) } });
-    if (o.length >= 6) out.push({ id: `middle${k}`, group: "Batting", title: `${t}: middle order wobbles`, blurb: `${o.slice(3, 6).map(name).join(", ")} struggle against the change bowlers.`, set: { form: pick(o.slice(3, 6), 0.7) } });
-  });
-
-  // ── bowling, for each side
+  // ── bowling, by type of bowler
   teams.forEach((t, k) => {
     const a = attack(k), s = star(k);
     const spinners = a.filter((x) => SPIN.has(x.kind)).map((x) => x.id), seamers = a.filter((x) => PACE.has(x.kind)).map((x) => x.id);
-    if (seamers.length) out.push({ id: `pacefire${k}`, group: "Bowling", title: `${t}: seamers on fire`, blurb: `${seamers.map(name).join(", ")} hit their lengths and take early wickets.`, set: { form: pick(seamers, 1.3) } });
-    if (spinners.length) out.push({ id: `spinfire${k}`, group: "Bowling", title: `${t}: spinners on top`, blurb: `${spinners.map(name).join(", ")} control the middle overs and squeeze the runs.`, set: { form: pick(spinners, 1.3) } });
-    if (a.length) out.push({ id: `hit${k}`, group: "Bowling", title: `${t}: bowlers get hit`, blurb: `An off day for the whole attack. Lengths go missing and the runs flow.`, set: { form: pick(a.map((x) => x.id), 0.75) } });
-    if (s.bowl) out.push({ id: `injured${k}`, group: "Bowling", title: `${name(s.bowl)} can't bowl`, blurb: `${t}'s main wicket-taker is out of the attack. The others share the overs.`, set: { exclude: [s.bowl] } });
-    if (spinners.length && spinners.length < a.length) out.push({ id: `nospin${k}`, group: "Bowling", title: `${t} go in without spin`, blurb: `${spinners.map(name).join(", ")} don't bowl. ${t} rely on pace.`, set: { exclude: spinners } });
-    if (s.bowl) out.push({ id: `starbowl${k}`, group: "Bowling", title: `${name(s.bowl)} at their best`, blurb: `${t}'s main bowler in rhythm: wickets with the new ball and at the death.`, set: { form: pick([s.bowl], 1.4) } });
+    if (seamers.length) out.push({ id: `pacefire${k}`, group: "Bowling", title: `${t}: seamers on song`, blurb: "Every seamer at +30%. More wickets, fewer boundaries off pace.", set: { form: pick(seamers, 1.3) } });
+    if (spinners.length) out.push({ id: `spinfire${k}`, group: "Bowling", title: `${t}: spin controls the middle`, blurb: "Every spinner at +30%. Runs dry up between the powerplay and the death.", set: { form: pick(spinners, 1.3) } });
+    if (a.length) out.push({ id: `hit${k}`, group: "Bowling", title: `${t}: attack off its lengths`, blurb: "Every bowler at −25%. Boundaries flow and wickets dry up.", set: { form: pick(a.map((x) => x.id), 0.75) } });
+    if (s.bowl) out.push({ id: `injured${k}`, group: "Bowling", title: `${t} without their lead bowler`, blurb: "The leading wicket-taker in our forecast doesn't bowl. The rest share the overs.", set: { exclude: [s.bowl] } });
+    if (spinners.length && spinners.length < a.length) out.push({ id: `nospin${k}`, group: "Bowling", title: `${t} go all pace`, blurb: "No spin bowled. The seamers cover every over.", set: { exclude: spinners } });
   });
 
-  // ── match situations (the first-innings side is the one already chosen, else the first team)
-  const sit = (s: Partial<Levers>): Partial<Levers> => ({ useSituation: true, ...s });
-  const need = (rate: number, overs: number) => par + 1 - Math.round(rate * (O - overs));
+  // ── match situations (the side batting first is the one already chosen, else the first team)
+  const sit = (x: Partial<Levers>): Partial<Levers> => ({ useSituation: true, ...x });
+  const r = (share: number) => Math.round(par * share);
+  const rr = (runs: number, o: number) => (o ? (runs / o).toFixed(1) : "0");
+  const reqRate = O >= 40 ? 9 : 12;
+  const o70 = at(0.7), need70 = Math.max(0, par + 1 - Math.round(reqRate * (O - o70)));
   out.push(
-    { id: "flyer", group: "Situations", title: "Flying start", blurb: `${Math.round(par * 0.42)} without loss after the powerplay (${PP} overs).`, set: sit({ innings: 1, runs: Math.round(par * 0.42), wkts: 0, overs: PP }) },
-    { id: "ppcollapse", group: "Situations", title: "Powerplay collapse", blurb: `${Math.round(par * 0.18)} for 3 after ${PP} overs. Can the middle order rebuild?`, set: sit({ innings: 1, runs: Math.round(par * 0.18), wkts: 3, overs: PP }) },
-    { id: "fivedown", group: "Situations", title: "Five down early", blurb: `${Math.round(par * 0.26)} for 5 after ${at(0.35)} overs. A rescue job for the lower order.`, set: sit({ innings: 1, runs: Math.round(par * 0.26), wkts: 5, overs: at(0.35) }) },
-    { id: "squeeze", group: "Situations", title: "Middle-overs squeeze", blurb: `${Math.round(par * 0.45)} for 3 after ${at(0.6)} overs. Wickets in hand but the rate has dropped.`, set: sit({ innings: 1, runs: Math.round(par * 0.45), wkts: 3, overs: at(0.6) }) },
-    { id: "launch", group: "Situations", title: "Set for a big finish", blurb: `${Math.round(par * 0.64)} for 2 after ${at(0.75)} overs. Plenty of wickets for the last push.`, set: sit({ innings: 1, runs: Math.round(par * 0.64), wkts: 2, overs: at(0.75) }) },
-    { id: "rescue", group: "Situations", title: "Tail-end rescue", blurb: `${Math.round(par * 0.5)} for 7 after ${at(0.65)} overs. How many can the last three add?`, set: sit({ innings: 1, runs: Math.round(par * 0.5), wkts: 7, overs: at(0.65) }) },
-    { id: "bigtarget", group: "Situations", title: "Chasing a big total", blurb: `The side batting first made ${Math.round(par * 1.2)}. The chase starts now.`, set: sit({ innings: 2, firstTotal: Math.round(par * 1.2), runs: 0, wkts: 0, overs: 0 }) },
-    { id: "lowtotal", group: "Situations", title: "Defending a low total", blurb: `Only ${Math.round(par * 0.78)} on the board. Can the bowlers defend it?`, set: sit({ innings: 2, firstTotal: Math.round(par * 0.78), runs: 0, wkts: 0, overs: 0 }) },
-    { id: "ontrack", group: "Situations", title: "Chase on track", blurb: `Chasing ${par + 1}: ${Math.round(par * 0.6)} for 2 after ${at(0.6)} overs.`, set: sit({ innings: 2, firstTotal: par, runs: Math.round(par * 0.6), wkts: 2, overs: at(0.6) }) },
-    { id: "trouble", group: "Situations", title: "Chase in trouble", blurb: `Chasing ${par + 1}: ${Math.round(par * 0.38)} for 5 at halfway.`, set: sit({ innings: 2, firstTotal: par, runs: Math.round(par * 0.38), wkts: 5, overs: at(0.5) }) },
-    { id: "rate12", group: "Situations", title: O >= 50 ? "Need 9 an over" : "Need 12 an over", blurb: `Chasing ${par + 1} with ${O - at(0.7)} overs left and the rate climbing. Wickets in hand: 6.`, set: sit({ innings: 2, firstTotal: par, runs: Math.max(0, need(O >= 50 ? 9 : 12, at(0.7))), wkts: 4, overs: at(0.7) }) },
-    { id: "wobble", group: "Situations", title: "Cruising, then a wobble", blurb: `Chasing ${par + 1}: ${Math.round(par * 0.78)} for 6 after ${at(0.75)} overs. Three quick wickets have changed it.`, set: sit({ innings: 2, firstTotal: par, runs: Math.round(par * 0.78), wkts: 6, overs: at(0.75) }) },
-    { id: "lastover", group: "Situations", title: "Last-over finish", blurb: `${O >= 50 ? 10 : 12} needed off the final over, 7 wickets down.`, set: sit({ innings: 2, firstTotal: par, runs: par + 1 - (O >= 50 ? 10 : 12), wkts: 7, overs: O - 1 }) },
-    { id: "lastpair", group: "Situations", title: "Last pair at the crease", blurb: `Chasing ${par + 1}: ${par - 15} for 9 with ${Math.max(1, O - at(0.85))} overs left. One wicket to win it.`, set: sit({ innings: 2, firstTotal: par, runs: par - 15, wkts: 9, overs: at(0.85) }) },
+    { id: "flyer", group: "Situations", title: "Fast powerplay", blurb: `${r(0.42)}/0 after ${ov(PP)} (${rr(r(0.42), PP)} an over). No wickets lost, so the platform is there.`, set: sit({ innings: 1, runs: r(0.42), wkts: 0, overs: PP }) },
+    { id: "ppcollapse", group: "Situations", title: "Powerplay collapse", blurb: `${r(0.18)}/3 after ${ov(PP)}. Three down inside the fielding restrictions.`, set: sit({ innings: 1, runs: r(0.18), wkts: 3, overs: PP }) },
+    { id: "fivedown", group: "Situations", title: "Five down early", blurb: `${r(0.26)}/5 after ${ov(at(0.35))}. The lower order has most of the innings to bat.`, set: sit({ innings: 1, runs: r(0.26), wkts: 5, overs: at(0.35) }) },
+    { id: "squeeze", group: "Situations", title: "Middle-overs squeeze", blurb: `${r(0.45)}/3 after ${ov(at(0.6))} (${rr(r(0.45), at(0.6))} an over). Wickets in hand, but the rate has dropped.`, set: sit({ innings: 1, runs: r(0.45), wkts: 3, overs: at(0.6) }) },
+    { id: "launch", group: "Situations", title: "Platform for the death", blurb: `${r(0.64)}/2 after ${ov(at(0.75))}. Eight wickets in hand for the last ${ov(O - at(0.75))}.`, set: sit({ innings: 1, runs: r(0.64), wkts: 2, overs: at(0.75) }) },
+    { id: "rescue", group: "Situations", title: "Tail-end recovery", blurb: `${r(0.5)}/7 after ${ov(at(0.65))}. Three wickets left to bat out ${ov(O - at(0.65))}.`, set: sit({ innings: 1, runs: r(0.5), wkts: 7, overs: at(0.65) }) },
+    { id: "bigtarget", group: "Situations", title: "Big chase", blurb: `Target ${r(1.2) + 1}, about 20% above par. ${(((r(1.2) + 1) / O)).toFixed(1)} an over from the first ball.`, set: sit({ innings: 2, firstTotal: r(1.2), runs: 0, wkts: 0, overs: 0 }) },
+    { id: "lowtotal", group: "Situations", title: "Small total to defend", blurb: `Target ${r(0.78) + 1}, about 20% below par. The bowling side needs early wickets.`, set: sit({ innings: 2, firstTotal: r(0.78), runs: 0, wkts: 0, overs: 0 }) },
+    { id: "ontrack", group: "Situations", title: "Chase ahead of the rate", blurb: chase(par, r(0.65), 2, at(0.6)), set: sit({ innings: 2, firstTotal: par, runs: r(0.65), wkts: 2, overs: at(0.6) }) },
+    { id: "trouble", group: "Situations", title: "Chase in trouble", blurb: chase(par, r(0.38), 5, at(0.5)), set: sit({ innings: 2, firstTotal: par, runs: r(0.38), wkts: 5, overs: at(0.5) }) },
+    { id: "rate12", group: "Situations", title: `Required rate ${reqRate}+`, blurb: chase(par, need70, 4, o70), set: sit({ innings: 2, firstTotal: par, runs: need70, wkts: 4, overs: o70 }) },
+    { id: "wobble", group: "Situations", title: "Late wobble in the chase", blurb: chase(par, r(0.78), 6, at(0.75)), set: sit({ innings: 2, firstTotal: par, runs: r(0.78), wkts: 6, overs: at(0.75) }) },
+    { id: "lastover", group: "Situations", title: "Final over", blurb: chase(par, par + 1 - (O >= 40 ? 10 : 12), 7, O - 1), set: sit({ innings: 2, firstTotal: par, runs: par + 1 - (O >= 40 ? 10 : 12), wkts: 7, overs: O - 1 }) },
+    { id: "lastpair", group: "Situations", title: "Last wicket standing", blurb: chase(par, par - 15, 9, at(0.85)), set: sit({ innings: 2, firstTotal: par, runs: par - 15, wkts: 9, overs: at(0.85) }) },
   );
   return out;
 }
@@ -179,9 +179,18 @@ export function partsOf(l: Levers, pack: Pack): Part[] {
   const simple: [keyof Levers, string][] = [["boundary", "Pitch: runs"], ["wickets", "Pitch: wickets"], ["spin", "Help for spinners"], ["pace", "Help for seamers"], ["dew", "Dew in the 2nd innings"]];
   if (l.battingFirst !== "" && !l.useSituation) parts.push({ key: "bf", label: `${teams[Number(l.battingFirst)]} bat first`, without: (x) => ({ ...x, battingFirst: "" }) });
   for (const [k, label] of simple) if (l[k] !== DEFAULT[k]) parts.push({ key: k, label, without: (x) => ({ ...x, [k]: DEFAULT[k] }) });
-  for (const [id, f] of Object.entries(l.form)) parts.push({ key: `f:${id}`, label: `${name(id)} ${f > 1 ? "in form" : "out of form"}`,
-    without: (x) => { const { [id]: _, ...rest } = x.form; return { ...x, form: rest }; } });
-  for (const id of l.exclude) parts.push({ key: `x:${id}`, label: `${name(id)} can't bowl`, without: (x) => ({ ...x, exclude: x.exclude.filter((e) => e !== id) }) });
+  // form and rule-outs, grouped by team (presets change several players at once); one player alone is named
+  const teamOf = (id: string) => pack.teams.findIndex((t) => t.players.includes(id));
+  const groups = new Map<string, string[]>();
+  for (const [id, f] of Object.entries(l.form)) { const g = `f:${teamOf(id)}:${f > 1 ? "up" : "down"}`; groups.set(g, [...(groups.get(g) ?? []), id]); }
+  for (const id of l.exclude) { const g = `x:${teamOf(id)}`; groups.set(g, [...(groups.get(g) ?? []), id]); }
+  for (const [g, ids] of groups) {
+    const [kind, k, dir] = g.split(":"), team = teams[Number(k)] ?? "";
+    const label = kind === "x" ? (ids.length === 1 ? `${name(ids[0])} can't bowl` : `${team}: ${ids.length} bowlers left out`)
+      : ids.length === 1 ? `${name(ids[0])} ${dir === "up" ? "in form" : "out of form"}` : `${team}: ${ids.length} players ${dir === "up" ? "in form" : "out of form"}`;
+    parts.push({ key: g, label, without: (x) => kind === "x" ? { ...x, exclude: x.exclude.filter((e) => !ids.includes(e)) }
+      : { ...x, form: Object.fromEntries(Object.entries(x.form).filter(([id]) => !ids.includes(id))) } });
+  }
   if (l.useSituation) parts.push({ key: "sit", label: "The match situation", without: (x) => ({ ...x, useSituation: false }) });
   return parts;
 }
