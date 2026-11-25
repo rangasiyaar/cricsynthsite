@@ -1,0 +1,112 @@
+{
+  "id": "ps-w-v-hh-w-t20-perth-2026-11-27",
+  "title": "Perth Scorchers Women v Hobart Hurricanes Women",
+  "date": "2026-11-27",
+  "start_time": "15:40",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 36th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "W.A.C.A. Ground, Perth",
+  "venue_search": "w.a.c.a. ground",
+  "city": "Perth",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PS-W",
+      "players": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Ruby Strange",
+        "Lilly Mills",
+        "Amy Edgar"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Beth Mooney",
+      "squad": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Ruby Strange",
+        "Lilly Mills",
+        "Amy Edgar"
+      ]
+    },
+    {
+      "name": "Hobart Hurricanes Women",
+      "short": "HH-W",
+      "players": [
+        "Lizelle Lee",
+        "Kate Pelle",
+        "Rachel Trenaman",
+        "Nicola Carey",
+        "Heather Graham",
+        "Maddy Green",
+        "Chinelle Henry",
+        "Hayley Silver holmes",
+        "Molly Strano",
+        "Lauren Smith",
+        "Linsey Smith"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Nicola Carey",
+      "squad": [
+        "Lizelle Lee",
+        "Kate Pelle",
+        "Rachel Trenaman",
+        "Nicola Carey",
+        "Heather Graham",
+        "Maddy Green",
+        "Chinelle Henry",
+        "Hayley Silver holmes",
+        "Molly Strano",
+        "Lauren Smith",
+        "Linsey Smith"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40336,
+    "url": "https://khelnow.com/live-cricket-score/perth-scorchers-women-vs-hobart-hurricanes-women-women's-big-bash-league-27th-november-2026-40336",
+    "auto": true,
+    "xis": false
+  }
+}
