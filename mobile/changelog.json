@@ -1,5 +1,14 @@
 [
  {
+  "version": "0.3.31",
+  "date": "2026-11-25",
+  "notes": [
+   "MatchSynth Lab presets: pitch, weather, toss, batting, bowling and match situations, to combine in one tap",
+   "Match parameters now has two parts, Presets and Custom scenario. Select a preset again to remove it",
+   "See what moved the result, and save scenarios on your phone"
+  ]
+ },
+ {
   "version": "0.3.30",
   "date": "2026-11-25",
   "notes": [
