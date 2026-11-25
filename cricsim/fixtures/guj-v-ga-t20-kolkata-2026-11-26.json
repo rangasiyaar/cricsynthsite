@@ -1,0 +1,112 @@
+{
+  "id": "guj-v-ga-t20-kolkata-2026-11-26",
+  "title": "Gujarat v Goa",
+  "date": "2026-11-26",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 109th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Eden Gardens, Kolkata",
+  "venue_search": "eden gardens",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Gujarat",
+      "short": "GUJ",
+      "players": [
+        "Urvil Patel",
+        "Priyesh Patel",
+        "Aarya Desai",
+        "Umang Kumar",
+        "Ashutosh Sharma",
+        "Amit Desai",
+        "Harshal Patel",
+        "Arzan Nagwaswalla",
+        "Ravi Bishnoi",
+        "Japgyana Bhatt",
+        "Khilan Patel"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Urvil Patel",
+      "squad": [
+        "Urvil Patel",
+        "Priyesh Patel",
+        "Aarya Desai",
+        "Umang Kumar",
+        "Ashutosh Sharma",
+        "Amit Desai",
+        "Harshal Patel",
+        "Arzan Nagwaswalla",
+        "Ravi Bishnoi",
+        "Japgyana Bhatt",
+        "Khilan Patel"
+      ]
+    },
+    {
+      "name": "Goa",
+      "short": "GA",
+      "players": [
+        "Abhinav Tejrana",
+        "Azaan Thota",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Deepraj Gaonkar",
+        "Darshan Misal",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Abhinav Tejrana",
+      "squad": [
+        "Abhinav Tejrana",
+        "Azaan Thota",
+        "Shivendra Bhujbal",
+        "Suyash Prabhudessai",
+        "Lalit Yadav",
+        "Deepraj Gaonkar",
+        "Darshan Misal",
+        "Vikash Singh",
+        "Felix Alemao",
+        "V Koushik",
+        "Shubham Tari"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41961,
+    "url": "https://khelnow.com/live-cricket-score/gujarat-vs-goa-syed-mushtaq-ali-trophy-elite-26th-november-2026-41961",
+    "auto": true,
+    "xis": false
+  }
+}

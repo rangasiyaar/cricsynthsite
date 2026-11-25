@@ -1,0 +1,112 @@
+{
+  "id": "pun-v-bir-t20-indore-2026-11-26",
+  "title": "Punjab v Bihar",
+  "date": "2026-11-26",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 108th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Daly College Ground, Indore",
+  "venue_search": "daly college ground",
+  "city": "Indore",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Vihaan Malhotra",
+        "Naman Dhir",
+        "Uday Saharan",
+        "Salil Arora",
+        "Ramandeep Singh",
+        "Harpreet Brar",
+        "Sukhdeep Singh Bajwa",
+        "Emanjot Singh Chahal",
+        "Krish Bhagat",
+        "Umesh Yadav",
+        "Anmolpreet Singh"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Vihaan Malhotra",
+        "Naman Dhir",
+        "Uday Saharan",
+        "Salil Arora",
+        "Ramandeep Singh",
+        "Harpreet Brar",
+        "Sukhdeep Singh Bajwa",
+        "Emanjot Singh Chahal",
+        "Krish Bhagat",
+        "Umesh Yadav",
+        "Anmolpreet Singh"
+      ]
+    },
+    {
+      "name": "Bihar",
+      "short": "BIR",
+      "players": [
+        "Suraj Kashyap",
+        "Ayush Loharuka",
+        "Bipin Saurav",
+        "Prashant Singh",
+        "Altamish Ashraf",
+        "Ashish Kumar",
+        "Nawaz Khan",
+        "Tarun Kumar",
+        "Mayank Kumar",
+        "Abhijeet Saket",
+        "Piyush Singh"
+      ],
+      "roles": [
+        "BOWL",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Suraj Kashyap",
+      "squad": [
+        "Suraj Kashyap",
+        "Ayush Loharuka",
+        "Bipin Saurav",
+        "Prashant Singh",
+        "Altamish Ashraf",
+        "Ashish Kumar",
+        "Nawaz Khan",
+        "Tarun Kumar",
+        "Mayank Kumar",
+        "Abhijeet Saket",
+        "Piyush Singh"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41960,
+    "url": "https://khelnow.com/live-cricket-score/punjab-vs-bihar-syed-mushtaq-ali-trophy-elite-26th-november-2026-41960",
+    "auto": true,
+    "xis": false
+  }
+}

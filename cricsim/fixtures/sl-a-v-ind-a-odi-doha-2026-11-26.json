@@ -1,0 +1,112 @@
+{
+  "id": "sl-a-v-ind-a-odi-doha-2026-11-26",
+  "title": "Sri Lanka A v India A",
+  "date": "2026-11-26",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · 1st Semi-Final ",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka A",
+      "short": "SL-A",
+      "players": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Wanuja Sahan",
+        "Lahiru Samarakoon",
+        "Ravindu Fernando",
+        "Dulaj Samuditha",
+        "Vijayakanth Viyaskanth"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Pavan Rathnayake",
+      "squad": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Wanuja Sahan",
+        "Lahiru Samarakoon",
+        "Ravindu Fernando",
+        "Dulaj Samuditha",
+        "Vijayakanth Viyaskanth"
+      ]
+    },
+    {
+      "name": "India A",
+      "short": "IND-A",
+      "players": [
+        "Abhishek Sharma",
+        "Vaibhav Sooryavanshi",
+        "Prabhsimran Singh",
+        "N. Tilak Varma",
+        "Kumar Kushagra",
+        "Rinku Singh",
+        "Suryansh Shedge",
+        "Shahbaz Ahamad",
+        "Arshad Khan",
+        "Harsh Dubey",
+        "Harshit Rana"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "N. Tilak Varma",
+      "squad": [
+        "Abhishek Sharma",
+        "Vaibhav Sooryavanshi",
+        "Prabhsimran Singh",
+        "N. Tilak Varma",
+        "Kumar Kushagra",
+        "Rinku Singh",
+        "Suryansh Shedge",
+        "Shahbaz Ahamad",
+        "Arshad Khan",
+        "Harsh Dubey",
+        "Harshit Rana"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41834,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-asia-cup-rising-stars-26th-november-2026-41834",
+    "auto": true,
+    "xis": false
+  }
+}

@@ -12,35 +12,35 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Chhattisgarh won the toss and bowl first.",
   "teams": [
     {
       "name": "Chhattisgarh",
       "short": "CHA",
       "players": [
         "Vikalp Tiwari",
-        "Aayush Pandey",
-        "Dharmendrasinh Jadeja",
         "Amandeep Khare",
         "Shashank Chandrakar",
-        "Prateek Yadav",
-        "Ajay Mandal",
-        "Dev Aditya Singh",
+        "Aayush Pandey",
+        "Rahul Pradhan",
         "Vijay Yadav",
+        "Ajay Mandal",
+        "Dharmendrasinh Jadeja",
         "Jayant Yadav",
-        "Sourabh Majumdar"
+        "Sourabh Majumdar",
+        "Dev Aditya Singh"
       ],
       "roles": [
         "AR",
         "BAT",
-        "BOWL",
-        "BAT",
         "WK",
         "BAT",
+        "BAT",
+        "AR",
         "AR",
         "BOWL",
-        "AR",
         "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Vikalp Tiwari",
@@ -75,13 +75,13 @@
         "Shubham Tari"
       ],
       "roles": [
-        "BAT",
+        "AR",
         "AR",
         "WK",
+        "AR",
+        "AR",
         "BAT",
-        "AR",
-        "AR",
-        "AR",
+        "BAT",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41934,
     "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-goa-syed-mushtaq-ali-trophy-elite-24th-november-2026-41934",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

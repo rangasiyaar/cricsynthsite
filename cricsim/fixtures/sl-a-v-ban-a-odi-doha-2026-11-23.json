@@ -12,7 +12,7 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bangladesh A won the toss and bat first.",
   "teams": [
     {
       "name": "Sri Lanka A",
@@ -24,10 +24,10 @@
         "Pavan Rathnayake",
         "Nipun Dananjaya",
         "Janith Liyanage",
-        "Chamika Heenatigala",
-        "Dulaj Samuditha",
         "Wanuja Sahan",
-        "Duvindu Ranatunga",
+        "Lahiru Samarakoon",
+        "Ravindu Fernando",
+        "Dulaj Samuditha",
         "Vijayakanth Viyaskanth"
       ],
       "roles": [
@@ -63,29 +63,29 @@
       "short": "BAN-A",
       "players": [
         "Saif Hassan",
-        "Shahadat Hossain Dipu",
-        "Yasir Ali Chowdhury",
-        "Sabbir Rahman",
         "Parvez Hossain Emon",
-        "Irfan Shukkur",
-        "Mohammad Saifuddin",
-        "Samiun Basir Ratul",
+        "Shahadat Hossain Dipu",
+        "Sabbir Rahman",
         "Rakibul Hasan",
+        "Iftakhar Hossain Ifti",
+        "Samiun Basir Ratul",
+        "Rizwan Chowdhury",
         "Md Rubel",
-        "Iqbal Hasan Emon"
+        "Ripon Mondol",
+        "Afif Hossain"
       ],
       "roles": [
         "AR",
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
         "AR",
         "AR",
         "BOWL",
         "BOWL",
-        "BOWL"
+        "AR"
       ],
       "captain": "Saif Hassan",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41831,
     "url": "https://khelnow.com/live-cricket-score/sri-lanka-a-vs-bangladesh-a-acc-men's-asia-cup-rising-stars-23rd-november-2026-41831",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

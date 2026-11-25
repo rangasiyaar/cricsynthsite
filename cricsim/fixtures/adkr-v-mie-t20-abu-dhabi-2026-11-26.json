@@ -1,0 +1,112 @@
+{
+  "id": "adkr-v-mie-t20-abu-dhabi-2026-11-26",
+  "title": "Abu Dhabi Knight Riders v MI Emirates",
+  "date": "2026-11-26",
+  "start_time": "20:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 7th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Abu Dhabi Knight Riders",
+      "short": "ADKR",
+      "players": [
+        "Andre Fletcher",
+        "Finn Allen",
+        "Matthew Tromp",
+        "Andre Russell",
+        "Jason Holder",
+        "Moeen Ali",
+        "Gulbadin Naib",
+        "Alishan Sharafu",
+        "Sunil Narine",
+        "Arab Gul",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "Andre Fletcher",
+        "Finn Allen",
+        "Matthew Tromp",
+        "Andre Russell",
+        "Jason Holder",
+        "Moeen Ali",
+        "Gulbadin Naib",
+        "Alishan Sharafu",
+        "Sunil Narine",
+        "Arab Gul",
+        "Muhammad Rohid Khan"
+      ]
+    },
+    {
+      "name": "MI Emirates",
+      "short": "MIE",
+      "players": [
+        "Kusal Perera",
+        "Muhammad Waseem",
+        "Sanjay Krishnamurthy",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Rashid Khan",
+        "Chris Jordan",
+        "Fazalhaq Farooqi",
+        "Zahoor Khan"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Kieron Pollard",
+      "squad": [
+        "Kusal Perera",
+        "Muhammad Waseem",
+        "Sanjay Krishnamurthy",
+        "Nicholas Pooran",
+        "Sherfane Rutherford",
+        "Kieron Pollard",
+        "Romario Shepherd",
+        "Rashid Khan",
+        "Chris Jordan",
+        "Fazalhaq Farooqi",
+        "Zahoor Khan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41725,
+    "url": "https://khelnow.com/live-cricket-score/abu-dhabi-knight-riders-vs-mi-emirates-international-league-t20-26th-november-2026-41725",
+    "auto": true,
+    "xis": false
+  }
+}

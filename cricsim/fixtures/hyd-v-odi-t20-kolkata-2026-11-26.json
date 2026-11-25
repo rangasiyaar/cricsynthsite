@@ -1,0 +1,111 @@
+{
+  "id": "hyd-v-odi-t20-kolkata-2026-11-26",
+  "title": "Hyderabad (India) v Odisha",
+  "date": "2026-11-26",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 106th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Jadavpur University Campus 2nd Ground, Kolkata",
+  "venue_search": "jadavpur university campus 2nd ground",
+  "city": "Kolkata",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Hyderabad (India)",
+      "short": "HYD",
+      "players": [
+        "Pragnay Reddy",
+        "Aman Rao Perala",
+        "Rahul Buddhi",
+        "Chinntla Rakshann Readdi",
+        "Kodimela Himateja",
+        "Abhirath Reddy",
+        "Ved Reddy Amisthapuram",
+        "Chama Milind",
+        "Pranav Varma",
+        "Gadugu Ganesh",
+        "Ajay Dev Goud"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "squad": [
+        "Pragnay Reddy",
+        "Aman Rao Perala",
+        "Rahul Buddhi",
+        "Chinntla Rakshann Readdi",
+        "Kodimela Himateja",
+        "Abhirath Reddy",
+        "Ved Reddy Amisthapuram",
+        "Chama Milind",
+        "Pranav Varma",
+        "Gadugu Ganesh",
+        "Ajay Dev Goud"
+      ]
+    },
+    {
+      "name": "Odisha",
+      "short": "ODI",
+      "players": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Sourav Gouda",
+        "Vageesh Sharma",
+        "Lalit Yadav",
+        "Badal Biswal"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Swastik Samal",
+      "squad": [
+        "Swastik Samal",
+        "Gourav Choudhury",
+        "Aditya Rout",
+        "Subhranshu Senapati",
+        "Kartik Biswal",
+        "Ninad Rathva",
+        "Soumya Lenka",
+        "Sourav Gouda",
+        "Vageesh Sharma",
+        "Lalit Yadav",
+        "Badal Biswal"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41958,
+    "url": "https://khelnow.com/live-cricket-score/hyderabad-(india)-vs-odisha-syed-mushtaq-ali-trophy-elite-26th-november-2026-41958",
+    "auto": true,
+    "xis": false
+  }
+}

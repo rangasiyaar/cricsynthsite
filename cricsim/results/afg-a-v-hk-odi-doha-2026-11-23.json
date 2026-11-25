@@ -1,0 +1,324 @@
+{
+ "id": "afg-a-v-hk-odi-doha-2026-11-23",
+ "innings": [
+  {
+   "team": "Hong Kong",
+   "runs": 66,
+   "wickets": 10,
+   "overs": "21.3",
+   "batting": [
+    {
+     "name": "Anshuman Rath",
+     "dismissal": "c D Rasooli b B Ahmad",
+     "runs": 15,
+     "balls": 23,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Reyansh Sharma",
+     "dismissal": "b AM Ghazanfar",
+     "runs": 6,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Babar Hayat",
+     "dismissal": "c I Mir b AM Ghazanfar",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abdul Samad",
+     "dismissal": "b AM Ghazanfar",
+     "runs": 2,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Shahid Wasif",
+     "dismissal": "lbw b AM Ghazanfar",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aizaz Khan",
+     "dismissal": "runout (I Mir)",
+     "runs": 11,
+     "balls": 31,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yasim Murtaza",
+     "dismissal": "c H Eisakhil b N Zadran",
+     "runs": 19,
+     "balls": 36,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Ehsan Khan",
+     "dismissal": "lbw b NK Maroofkhil",
+     "runs": 3,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Hassan Khan Mohammad",
+     "dismissal": "lbw b NK Maroofkhil",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ayush Shukla",
+     "dismissal": "not out",
+     "runs": 0,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mohammad Ghazanfar",
+     "dismissal": "b NK Maroofkhil",
+     "runs": 0,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Naveed Zadran",
+     "overs": "6",
+     "maidens": 1,
+     "runs": 33,
+     "wickets": 1,
+     "no_balls": 2,
+     "wides": 2
+    },
+    {
+     "name": "Allah Mohammad Ghazanfar",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Bashir Ahmad",
+     "overs": "5",
+     "maidens": 1,
+     "runs": 12,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Naseer Khan Maroofkhil",
+     "overs": "3.3",
+     "maidens": 2,
+     "runs": 4,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Reyansh Sharma",
+     "score": 12,
+     "over": "1.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Babar Hayat",
+     "score": 22,
+     "over": "3.1"
+    },
+    {
+     "wicket": 3,
+     "batter": "Abdul Samad",
+     "score": 26,
+     "over": "5.4"
+    },
+    {
+     "wicket": 4,
+     "batter": "Shahid Wasif",
+     "score": 26,
+     "over": "5.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Anshuman Rath",
+     "score": 29,
+     "over": "8.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aizaz Khan",
+     "score": 49,
+     "over": "14.6"
+    },
+    {
+     "wicket": 7,
+     "batter": "Ehsan Khan",
+     "score": 57,
+     "over": "17.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Hassan Khan Mohammad",
+     "score": 57,
+     "over": "17.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Yasim Murtaza",
+     "score": 65,
+     "over": "20.3"
+    },
+    {
+     "wicket": 10,
+     "batter": "Mohammad Ghazanfar",
+     "score": 66,
+     "over": "21.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 3,
+    "w": 4,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 31
+  },
+  {
+   "team": "Afghanistan A",
+   "runs": 72,
+   "wickets": 3,
+   "overs": "10.2",
+   "batting": [
+    {
+     "name": "Imran Mir",
+     "dismissal": "c M Ghazanfar b Ehsan Khan",
+     "runs": 15,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Hassan Eisakhil",
+     "dismissal": "c Shahid Wasif b A Shukla",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Bahir Shah",
+     "dismissal": "c M Ghazanfar b A Shukla",
+     "runs": 1,
+     "balls": 12,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Darwish Rasooli",
+     "dismissal": "not out",
+     "runs": 50,
+     "balls": 30,
+     "fours": 7,
+     "sixes": 2
+    },
+    {
+     "name": "Mohammad Ishaq",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ayush Shukla",
+     "overs": "5",
+     "maidens": 1,
+     "runs": 20,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Ehsan Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Hassan Khan Mohammad",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Mohammad Ghazanfar",
+     "overs": "0.2",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Hassan Eisakhil",
+     "score": 3,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Imran Mir",
+     "score": 17,
+     "over": "3.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Bahir Shah",
+     "score": 28,
+     "over": "6.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Afghanistan A won by 7 wickets",
+ "winner": "Afghanistan A"
+}

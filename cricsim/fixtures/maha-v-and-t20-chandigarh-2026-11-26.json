@@ -1,0 +1,112 @@
+{
+  "id": "maha-v-and-t20-chandigarh-2026-11-26",
+  "title": "Maharashtra v Andhra",
+  "date": "2026-11-26",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 107th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Punjab Cricket Association IS Bindra Stadium, Mohali, Chandigarh",
+  "venue_search": "punjab cricket association is bindra stadium, mohali",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Maharashtra",
+      "short": "MAHA",
+      "players": [
+        "Prithvi Shaw",
+        "Sahil Parakh",
+        "Ruturaj Gaikwad",
+        "Arshin Kulkarni",
+        "Rushikesh Sonavne",
+        "Siddhesh Veer",
+        "Vicky Ostwal",
+        "Prashant Solanki",
+        "Pradeep Dadhe",
+        "Mukesh Choudhary",
+        "Vivek Shelar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BAT"
+      ],
+      "captain": "Ruturaj Gaikwad",
+      "squad": [
+        "Prithvi Shaw",
+        "Sahil Parakh",
+        "Ruturaj Gaikwad",
+        "Arshin Kulkarni",
+        "Rushikesh Sonavne",
+        "Siddhesh Veer",
+        "Vicky Ostwal",
+        "Prashant Solanki",
+        "Pradeep Dadhe",
+        "Mukesh Choudhary",
+        "Vivek Shelar"
+      ]
+    },
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "KP Sai Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Satyanarayana Raju",
+        "Saurabh Kumar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "KP Sai Rahul",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Bailapudi Yeswanth",
+        "Satyanarayana Raju",
+        "Saurabh Kumar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41959,
+    "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-andhra-syed-mushtaq-ali-trophy-elite-26th-november-2026-41959",
+    "auto": true,
+    "xis": false
+  }
+}

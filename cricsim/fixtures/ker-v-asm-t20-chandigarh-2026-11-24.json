@@ -12,32 +12,32 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Assam won the toss and bat first.",
   "teams": [
     {
       "name": "Kerala",
       "short": "KER",
       "players": [
         "Rohan  Kunnummal",
-        "Sanju Samson",
-        "Govind  Pai",
+        "Mohammed Azharuddeen",
         "Vishnu Vinod",
+        "Sanju Samson",
+        "Abdul Basith",
         "Salman Nizar",
         "Karthik B Nair",
-        "Biju Narayanan",
-        "Abdul Basith",
+        "Vaisakh Chandran",
         "Sharafuddeen",
         "MD Nidheesh",
         "KM Asif"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "AR",
         "WK",
         "BAT",
         "BAT",
-        "BOWL",
+        "AR",
+        "BAT",
+        "BAT",
         "AR",
         "AR",
         "BOWL",
@@ -62,30 +62,30 @@
       "name": "Assam",
       "short": "ASM",
       "players": [
-        "Ayush Agarwal",
-        "Bishal Saha",
         "Denish Das",
+        "Pradyun Saikia",
         "Rohit Mihir Sen",
         "Roshan Alam",
-        "Sibsankar Roy",
+        "Jitu Ali",
         "Saahil Jain",
         "Akash Sengupta",
-        "Mukhtar Hussain",
+        "Ayush Agarwal",
         "Jitumoni Kalita",
-        "Mrinmoy Dutta"
+        "Mrinmoy Dutta",
+        "Ayushman Malakar"
       ],
       "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "BAT",
+        "AR",
         "BOWL",
-        "BAT",
-        "BOWL",
-        "AR",
-        "AR",
-        "AR",
-        "BOWL"
+        "AR"
       ],
       "captain": "Denish Das",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41936,
     "url": "https://khelnow.com/live-cricket-score/kerala-vs-assam-syed-mushtaq-ali-trophy-elite-24th-november-2026-41936",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

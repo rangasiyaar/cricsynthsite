@@ -12,7 +12,7 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Pakistan A won the toss and bat first.",
   "teams": [
     {
       "name": "Pakistan A",
@@ -21,14 +21,14 @@
         "Shamyl Hussain",
         "Maaz Sadaqat",
         "Rohail Nazir",
-        "Hasan Nawaz",
+        "Haider Ali",
         "Abdul Samad",
+        "Hasan Nawaz",
         "Farhan Yousaf",
-        "Saad Masood",
         "Mohammad Imran Randhawa",
         "Ahmed Daniyal",
         "Sufyan Moqim",
-        "Ali Raza"
+        "Mohammad Hasnain"
       ],
       "roles": [
         "BAT",
@@ -37,7 +37,7 @@
         "BAT",
         "BAT",
         "BAT",
-        "AR",
+        "BAT",
         "AR",
         "BOWL",
         "BOWL",
@@ -62,29 +62,29 @@
       "name": "Nepal",
       "short": "NEP",
       "players": [
-        "Arjun Kumal",
-        "Kushal Bhurtel",
-        "Basir Ahamad",
         "Dev Khanal",
-        "Pawan Sarraf",
+        "Ishan Pandey",
+        "Kushal Bhurtel",
         "Mayan Yadav",
-        "Rashid Khan",
+        "Basir Ahamad",
         "Lokesh Bam",
+        "Pawan Sarraf",
+        "Abhishesh Gautam",
+        "Rashid Khan",
         "Nandan Yadav",
-        "Sandeep Lamichhane",
-        "Lalit Rajbanshi"
+        "Sandeep Lamichhane"
       ],
       "roles": [
         "BAT",
         "BAT",
+        "BAT",
+        "AR",
         "BOWL",
-        "BAT",
-        "AR",
-        "AR",
-        "BAT",
         "WK",
         "AR",
         "BOWL",
+        "BAT",
+        "AR",
         "BOWL"
       ],
       "captain": "Sandeep Lamichhane",
@@ -107,6 +107,7 @@
     "kn": 41833,
     "url": "https://khelnow.com/live-cricket-score/pakistan-a-vs-nepal-acc-men's-asia-cup-rising-stars-24th-november-2026-41833",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

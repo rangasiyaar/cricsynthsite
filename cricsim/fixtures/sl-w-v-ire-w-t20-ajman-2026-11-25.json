@@ -1,0 +1,112 @@
+{
+  "id": "sl-w-v-ire-w-t20-ajman-2026-11-25",
+  "title": "Sri Lanka Women v Ireland Women",
+  "date": "2026-11-25",
+  "start_time": "10:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "ICC Women's Emerging Nations Trophy · Final",
+  "comp_key": "icc-women-s-emerging-nations-trophy",
+  "venue": "Karwan Cricket Ground, Ajman",
+  "venue_search": "karwan cricket ground",
+  "city": "Ajman",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka Women",
+      "short": "SL-W",
+      "players": [
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Imesha Dulani",
+        "Sanjana Kavindi",
+        "Hasini Perera",
+        "Nilakshi de Silva",
+        "Vishmi Rajapaksha Gunaratne",
+        "Sugandika Kumari",
+        "Malki Madara",
+        "Rashmika Sewwandi",
+        "Sathya Sandeepani"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Harshitha Samarawickrama",
+      "squad": [
+        "Harshitha Samarawickrama",
+        "Kavisha Dilhari",
+        "Imesha Dulani",
+        "Sanjana Kavindi",
+        "Hasini Perera",
+        "Nilakshi de Silva",
+        "Vishmi Rajapaksha Gunaratne",
+        "Sugandika Kumari",
+        "Malki Madara",
+        "Rashmika Sewwandi",
+        "Sathya Sandeepani"
+      ]
+    },
+    {
+      "name": "Ireland Women",
+      "short": "IRE-W",
+      "players": [
+        "Abbi Harrison",
+        "Aimee Maguire",
+        "Alana Dalzell",
+        "Amy Hunter",
+        "Cara Murray",
+        "Gaby Lewis",
+        "Georgina Dempsey",
+        "Kia Mccartney",
+        "Lara Maritz",
+        "Louise Little",
+        "Zara Craig"
+      ],
+      "roles": [
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "WK",
+        "BOWL",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Gaby Lewis",
+      "squad": [
+        "Abbi Harrison",
+        "Aimee Maguire",
+        "Alana Dalzell",
+        "Amy Hunter",
+        "Cara Murray",
+        "Gaby Lewis",
+        "Georgina Dempsey",
+        "Kia Mccartney",
+        "Lara Maritz",
+        "Louise Little",
+        "Zara Craig"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41980,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-icc-women's-emerging-nations-trophy-25th-november-2026-41980",
+    "auto": true,
+    "xis": false
+  }
+}

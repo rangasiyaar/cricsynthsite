@@ -1,0 +1,112 @@
+{
+  "id": "tri-v-asm-t20-chandigarh-2026-11-26",
+  "title": "Tripura v Assam",
+  "date": "2026-11-26",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 112th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Chandigarh",
+  "venue_search": "maharaja yadavindra singh international cricket stadium",
+  "city": "Chandigarh",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Tripura",
+      "short": "TRI",
+      "players": [
+        "Mandeep Singh",
+        "Arkaprabha Sinha",
+        "Sridam Paul",
+        "Lakshay Thareja",
+        "Anandh Bhowmik",
+        "Manisankar  Murasingh",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Chiranjit Paul",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR"
+      ],
+      "captain": "Mandeep Singh",
+      "squad": [
+        "Mandeep Singh",
+        "Arkaprabha Sinha",
+        "Sridam Paul",
+        "Lakshay Thareja",
+        "Anandh Bhowmik",
+        "Manisankar  Murasingh",
+        "Arindam Barman",
+        "Saurabh Das",
+        "Chiranjit Paul",
+        "Viki Saha",
+        "Abhijit Sarkar"
+      ]
+    },
+    {
+      "name": "Assam",
+      "short": "ASM",
+      "players": [
+        "Denish Das",
+        "Pradyun Saikia",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Jitu Ali",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Ayush Agarwal",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta",
+        "Ayushman Malakar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "WK",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Denish Das",
+      "squad": [
+        "Denish Das",
+        "Pradyun Saikia",
+        "Rohit Mihir Sen",
+        "Roshan Alam",
+        "Jitu Ali",
+        "Saahil Jain",
+        "Akash Sengupta",
+        "Ayush Agarwal",
+        "Jitumoni Kalita",
+        "Mrinmoy Dutta",
+        "Ayushman Malakar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41964,
+    "url": "https://khelnow.com/live-cricket-score/tripura-vs-assam-syed-mushtaq-ali-trophy-elite-26th-november-2026-41964",
+    "auto": true,
+    "xis": false
+  }
+}
