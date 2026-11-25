@@ -12,17 +12,17 @@
   "city": "Melbourne",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Brisbane Heat Women won the toss and bat first.",
   "teams": [
     {
       "name": "Melbourne Renegades Women",
       "short": "MR-W",
       "players": [
-        "Olivia Porter",
+        "Tess Flintoff",
         "Hayley Matthews",
         "Courtney Webb",
         "Sophie Molineux",
-        "Tess Flintoff",
+        "Annie Wikman",
         "Georgia Wareham",
         "Nicole Faltum",
         "Chloe Tryon",
@@ -31,11 +31,11 @@
         "Tayla Vlaeminck"
       ],
       "roles": [
+        "AR",
+        "AR",
         "BAT",
         "AR",
         "BAT",
-        "AR",
-        "AR",
         "AR",
         "WK",
         "AR",
@@ -68,9 +68,9 @@
         "Yastika Bhatia",
         "Orla Prendergast",
         "Lucy Hamilton",
-        "Annie O'Neil",
         "Sianna Ginger",
         "Lucinda Bourke",
+        "Mikayla Wrigley",
         "Sarah Glenn",
         "Lily Bassingthwaighte"
       ],
@@ -81,8 +81,8 @@
         "BAT",
         "AR",
         "BOWL",
-        "BAT",
         "AR",
+        "BAT",
         "BAT",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 40333,
     "url": "https://khelnow.com/live-cricket-score/melbourne-renegades-women-vs-brisbane-heat-women-women's-big-bash-league-25th-november-2026-40333",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
