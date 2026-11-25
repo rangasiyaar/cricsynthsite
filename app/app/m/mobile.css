@@ -584,5 +584,4 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .a-guide .guide-article h2 { font-size: 22px; }
 .a-guide .guide-lede { font-size: 16px; }
 .a-guide .guide-groups { margin-top: 20px; }
-.a-guide .guide-cards { grid-template-columns: 1fr; }
 .a-guide .guide-example-body .card { padding: 14px; }

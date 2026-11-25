@@ -39,7 +39,7 @@ export function GuideCards({ app = false }: { app?: boolean }) {
       {GROUPS.map((g) => (
         <section key={g} className="guide-group">
           <h2>{g}</h2>
-          <div className="grid g3 guide-cards">
+          <div className="guide-cards">
             {GUIDE.filter((p) => p.group === g).map((p) => (
               <Link key={p.slug} href={href(p.slug)} className="card guide-card">
                 <span className="guide-card-head"><b>{p.title}</b><AccessTag access={p.access} /></span>
