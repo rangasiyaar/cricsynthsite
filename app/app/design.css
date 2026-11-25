@@ -410,11 +410,10 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @keyframes info-up { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes info-fade { from { opacity: 0; } to { opacity: 1; } }
 
-/* ── Docs home (components/DocsTabs.tsx) and the Guide (rules in app/DESIGN.md) ── */
-.docs-tabs { margin: 28px 0 0; width: fit-content; max-width: 100%; }
+/* ── Docs home (app/docs/page.tsx, components/DocsSearch.tsx) and the Guide (rules in app/DESIGN.md) ── */
 .docs-code { margin: 12px 0 0; padding: 12px 16px; overflow-x: auto; border: 1px solid var(--cs-line); border-radius: 10px; background: var(--cs-surface);
   font: 13px/1.6 var(--cs-mono); color: var(--cs-ink); }
-.dh-search { position: relative; max-width: 640px; margin-top: 28px; }
+.dh-search { position: relative; max-width: 620px; margin-top: 28px; }
 .dh-search > svg { position: absolute; left: 14px; top: 15px; width: 16px; height: 16px; color: var(--cs-ink-3); pointer-events: none; }
 .dh-search input { width: 100%; box-sizing: border-box; padding: 13px 14px 13px 40px; font: inherit; font-size: 16px; color: var(--cs-ink);
   background: var(--cs-bg); border: 1px solid var(--cs-line); border-radius: var(--r-btn, 8px); }
@@ -425,38 +424,36 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .dh-results a:hover, .dh-results a:focus { background: var(--cs-surface); }
 .dh-results a span { font-size: 12px; color: var(--cs-ink-3); }
 .dh-results p { margin: 0; padding: 10px 12px; color: var(--cs-ink-2); }
-.dh-panel { margin-top: 32px; }
-.dh-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.dh-card .cs-k { margin: 0 0 2px; }
-.dh-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.dh-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px);
-  background: var(--cs-bg); color: var(--cs-ink); text-decoration: none; transition: border-color .15s, background .15s; }
-a.dh-card:hover, a.dh-card:focus-visible { border-color: var(--cs-steel); }
-a.dh-card:hover .dh-arrow { transform: translateX(3px); color: var(--cs-steel); }
-.dh-card-big { padding: 22px 24px; background: var(--cs-surface); }
-.dh-card-title { display: flex; align-items: center; gap: 8px; font: 600 18px/1.2 var(--cs-head); letter-spacing: .02em; text-transform: uppercase;
-  color: var(--cs-ink); text-decoration: none; }
-.dh-card-big .dh-card-title { font-size: 21px; }
-.dh-card-title .tag { font-family: var(--cs-body, inherit); }
-.dh-arrow { width: 14px; height: 14px; margin-left: auto; flex: none; color: var(--cs-ink-3); transition: transform .15s, color .15s; }
-.dh-card-text { font-size: 14px; line-height: 1.5; color: var(--cs-ink-2); }
-.dh-group { margin-top: 44px; }
-.dh-group-title { margin: 0 0 14px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cs-ink-3); font-weight: 600; }
-.dh-count { font: 500 12px var(--cs-mono); color: var(--cs-ink-3); border: 1px solid var(--cs-line); border-radius: 999px; padding: 1px 8px; letter-spacing: 0; }
-.dh-cat .dh-card-title:hover { color: var(--cs-steel); }
-.dh-eps { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid var(--cs-line); display: grid; gap: 2px; }
-.dh-eps a { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 14px; color: var(--cs-ink-2); text-decoration: none; }
-.dh-eps a:hover { color: var(--cs-steel); }
-.dh-eps .method-badge { flex: none; }
-.dh-all { margin-top: 4px; font-size: 14px; font-weight: 600; }
-.dh-code { max-width: 640px; }
-.dh-note { margin: 18px 0 0; color: var(--cs-ink-2); }
-@media (max-width: 1000px) { .dh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dh-grid-3 { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 640px) {
-  .docs-tabs { width: 100%; }
-  .docs-tabs button { flex: 1 1 50%; padding: 10px 8px; font-size: 13px; white-space: normal; line-height: 1.2; }
-  .dh-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-  .dh-group { margin-top: 32px; }
+.dh-jump { display: none; }
+.dh-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: 48px; border-top: 1px solid var(--cs-line); }
+.dh-col { padding: 36px 48px 0 0; scroll-margin-top: 80px; }
+.dh-col + .dh-col { padding: 36px 0 0 48px; border-left: 1px solid var(--cs-line); }
+.dh-col h2 { margin: 6px 0 8px; font-size: 34px; }
+.dh-intro { margin: 0; color: var(--cs-ink-2); max-width: 46ch; }
+.dh-start { display: inline-block; margin-top: 14px; font-weight: 600; }
+.dh-group { margin-top: 32px; }
+.dh-group h3 { margin: 0 0 4px; }
+.dh-group ul { list-style: none; margin: 0; padding: 0; }
+.dh-group > ul { border-top: 1px solid var(--cs-line); }
+.dh-group > ul > li { border-bottom: 1px solid var(--cs-line); }
+.dh-row { display: grid; grid-template-columns: minmax(0, 15em) minmax(0, 1fr); gap: 16px; padding: 11px 0; color: var(--cs-ink); text-decoration: none; }
+.dh-row:hover .dh-t { color: var(--cs-steel); }
+.dh-t { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.dh-d { color: var(--cs-ink-2); font-size: 14px; line-height: 1.5; }
+.dh-n { font: 500 12px var(--cs-mono); color: var(--cs-ink-3); }
+.dh-sub { display: grid; gap: 2px; margin: -4px 0 0 !important; padding: 0 0 12px calc(15em + 16px) !important; }
+.dh-sub a { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 14px; color: var(--cs-ink-2); text-decoration: none; }
+.dh-sub a:hover { color: var(--cs-steel); }
+.dh-sub .method-badge { flex: none; }
+.dh-sub a.dh-all { font-weight: 600; color: var(--cs-steel); }
+.dh-foot { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--cs-line); color: var(--cs-ink-2); }
+@media (max-width: 900px) {
+  .dh-split { grid-template-columns: minmax(0, 1fr); margin-top: 32px; }
+  .dh-col, .dh-col + .dh-col { padding: 32px 0 0; border-left: 0; }
+  .dh-col + .dh-col { margin-top: 40px; border-top: 1px solid var(--cs-line); }
+  .dh-jump { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 20px 0 0; font-weight: 600; }
+  .dh-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .dh-sub { padding-left: 0 !important; }
 }
 .guide-layout { display: grid; grid-template-columns: 236px minmax(0, 1fr); gap: 56px; align-items: start; }
 .guide-nav { position: sticky; top: 88px; max-height: calc(100vh - 110px); overflow-y: auto; display: grid; gap: 4px; padding-right: 8px; font-size: 14px; }
