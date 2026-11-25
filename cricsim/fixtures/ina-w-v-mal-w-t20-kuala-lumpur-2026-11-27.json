@@ -1,0 +1,112 @@
+{
+  "id": "ina-w-v-mal-w-t20-kuala-lumpur-2026-11-27",
+  "title": "Indonesia Women v Malaysia Women",
+  "date": "2026-11-27",
+  "start_time": "07:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Malaysia Women's T20I Tri-Series · 7th Match",
+  "comp_key": "malaysia-women-s-t20i-tri-series",
+  "venue": "Bayuemas Oval, Kuala Lumpur",
+  "venue_search": "bayuemas oval",
+  "city": "Kuala Lumpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Indonesia Women",
+      "short": "INA-W",
+      "players": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Kisi Salisa Kasse",
+        "Lie Qiao",
+        "Maria Corazon",
+        "Ni Ariani",
+        "Ni Luh Dewi",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "WK",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ni Putu Ayu Nanda Sakarini",
+      "squad": [
+        "Anace Elna Elizabeth Yaung",
+        "Desi Wulandari",
+        "Kisi Salisa Kasse",
+        "Lie Qiao",
+        "Maria Corazon",
+        "Ni Ariani",
+        "Ni Luh Dewi",
+        "Ni Made Putri Suwandewi",
+        "Ni Putu Ayu Nanda Sakarini",
+        "Rahmawati Pangestuti",
+        "Sang Maypriani"
+      ]
+    },
+    {
+      "name": "Malaysia Women",
+      "short": "MAL-W",
+      "players": [
+        "Ainna Hamizah Hashim",
+        "Winifred Duraisingam",
+        "Aina Najwa",
+        "Nur Arianna Natsya",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Musfirah Nur Ainaa Azmi",
+        "Nazatul Hidayah Husna",
+        "Nur Dania Syuhada",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Mas Elysa",
+      "squad": [
+        "Ainna Hamizah Hashim",
+        "Winifred Duraisingam",
+        "Aina Najwa",
+        "Nur Arianna Natsya",
+        "Mahirah Izzati Ismail",
+        "Mas Elysa",
+        "Musfirah Nur Ainaa Azmi",
+        "Nazatul Hidayah Husna",
+        "Nur Dania Syuhada",
+        "Nurin Imanina",
+        "Suabika Manivannan"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41987,
+    "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-malaysia-women's-t20i-tri-series-27th-november-2026-41987",
+    "auto": true,
+    "xis": false
+  }
+}
