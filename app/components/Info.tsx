@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { GLOSSARY, type GlossaryKey } from "@/lib/glossary";
-import { GUIDE_FOR, appGuidePath, guidePath } from "@/lib/guide";
+import { GUIDE_FOR, guideAnchor } from "@/lib/guide";
 import { track } from "@/lib/analytics";
 
 const OPEN_EVENT = "cs-info-open";
@@ -86,8 +86,7 @@ export default function Info({ k, label }: { k: GlossaryKey; label?: string }) {
         {"read" in g && g.read && <><span className="info-label">How to read it</span><p className="info-p">{g.read}</p></>}
         {"example" in g && g.example && <p className="info-eg"><b>Example: </b>{g.example}</p>}
         {GUIDE_FOR[k] && (
-          <a className="info-more" href={typeof window !== "undefined" && window.location.pathname.startsWith("/m/")
-            ? appGuidePath(GUIDE_FOR[k]) : guidePath(GUIDE_FOR[k])}>Learn more in the guide</a>
+          <a className="info-more" href={guideAnchor(GUIDE_FOR[k]!, typeof window !== "undefined" && window.location.pathname.startsWith("/m/"))}>Learn more in the guide</a>
         )}
       </div>
     </>

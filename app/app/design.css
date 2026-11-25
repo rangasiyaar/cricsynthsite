@@ -499,3 +499,52 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   background: var(--cs-surface); font: 600 24px var(--cs-head); color: var(--cs-steel-700); }
 .about-nums { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 860px) { .about-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ── the continuous guide (components/Guide.tsx GuideDoc + GuideShell) ── */
+.guide-doc { display: grid; grid-template-columns: 220px minmax(0, 1fr) 200px; gap: 48px; align-items: start; }
+.guide-doc-side { position: sticky; top: 88px; max-height: calc(100vh - 108px); overflow-y: auto; overscroll-behavior: contain; }
+.guide-doc-main { min-width: 0; max-width: 740px; }
+.guide-onpage { position: sticky; top: 88px; display: grid; gap: 2px; font-size: 13px; border-left: 1px solid var(--cs-line); padding-left: 14px; }
+.guide-onpage .cs-k { margin: 0 0 6px; }
+.guide-onpage a { padding: 4px 0; color: var(--cs-ink-3); text-decoration: none; line-height: 1.35; }
+.guide-onpage a.sub { padding-left: 10px; }
+.guide-onpage a:hover { color: var(--cs-ink); }
+.guide-onpage a.on { color: var(--cs-steel-700); font-weight: 600; }
+.guide-nav a { transition: background-color .15s, color .15s; }
+.guide-nav-pro { margin-left: 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .04em; color: var(--cs-steel-600); text-transform: uppercase; }
+.guide-doc-head h1 { margin: 6px 0 0; }
+.guide-doc-group-label { margin: 64px 0 0; }
+.guide-topic { scroll-margin-top: 90px; padding-top: 18px; margin-top: 12px; border-top: 1px solid var(--cs-line); }
+.guide-doc-group-label + .guide-topic { border-top: 0; padding-top: 4px; }
+.guide-topic + .guide-topic { margin-top: 56px; }
+.guide-topic h2 { font-size: 32px; margin: 0; }
+.guide-topic .guide-title .tag { top: 2px; }
+.guide-part { scroll-margin-top: 90px; margin-top: 28px; }
+.guide-part > h3 { font-size: 20px; margin: 0 0 8px; }
+.guide-topic .guide-steps li { scroll-margin-top: 90px; }
+.guide-steps h4 { margin: 4px 0; font: 600 18px/1.25 var(--cs-head); text-transform: uppercase; letter-spacing: .02em; color: var(--cs-ink); }
+.guide-part p, .guide-topic > p { max-width: 68ch; line-height: 1.6; }
+.guide-full { margin-top: 32px; }
+.guide-contents-bar { display: none; }
+.guide-contents-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 0; border: 0; background: none; color: var(--cs-ink); font: inherit; cursor: pointer; text-align: left; }
+.guide-contents-cur { flex: 1; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guide-contents-btn svg { width: 16px; height: 16px; flex: none; }
+.guide-contents-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.guide-contents-list { max-height: 60vh; overflow-y: auto; padding: 4px 0 10px; display: grid; gap: 2px; }
+.guide-contents-list a { display: block; padding: 7px 10px; border-radius: var(--r-btn, 8px); color: var(--cs-ink-2); text-decoration: none; }
+.guide-contents-list a.on { background: var(--cs-surface); color: var(--cs-ink); font-weight: 600; }
+.guide-contents-list .cs-k { margin: 12px 10px 4px; }
+@media (max-width: 1180px) { .guide-doc { grid-template-columns: 220px minmax(0, 1fr); } .guide-onpage { display: none; } }
+@media (max-width: 900px) {
+  .guide-doc { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .guide-doc-side { display: none; }
+  .guide-contents-bar { display: block; position: sticky; top: var(--guide-bar-top, 64px); z-index: 30; margin: 0 -16px 8px; padding: 8px 16px;
+    background: var(--cs-bg); border-bottom: 1px solid var(--cs-line); }
+  .guide-topic h2 { font-size: 26px; }
+}
+.guide-doc-app .guide-contents-bar { display: block; position: sticky; top: var(--guide-bar-top, 64px); z-index: 30; margin: 0 -16px 8px; padding: 8px 16px;
+  background: var(--cs-bg); border-bottom: 1px solid var(--cs-line); }
+.guide-example-toggle { margin-top: 16px; border: 1px solid var(--cs-line); border-radius: var(--r-card, 12px); padding: 0 16px; }
+.guide-example-toggle > summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--cs-steel-700); }
+.guide-example-toggle[open] { padding-bottom: 16px; }
+.guide-example-toggle .guide-example { margin-top: 4px; }

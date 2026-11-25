@@ -1,21 +1,12 @@
-// Guide home: every page of the guide by group (content in lib/guide.ts).
+// The guide as one continuous document (content in lib/guide.ts): sticky sidebar and "On this page" follow the reader.
+// Each topic also has its own page (/docs/guide/<slug>/) for search and sharing.
 import type { Metadata } from "next";
-import { GuideCards, GuideNav } from "@/components/Guide";
+import { GuideDoc } from "@/components/Guide";
 import { seo } from "@/lib/seo";
 
 export const metadata: Metadata = seo("/docs/guide/", "Guide: how to read cricket forecasts | CricSynthesis",
   "How to read every CricSynthesis forecast, from win chance and projected scores to players, grounds, fantasy teams and MatchSynth Lab.");
 
 export default function GuideHome() {
-  return (
-    <div className="page-head" style={{ paddingBottom: 80 }}><div className="guide-layout">
-      <GuideNav />
-      <div className="guide-main">
-        <p className="small muted guide-crumbs"><a href="/docs/">Docs</a> / Guide</p>
-        <h1>Guide</h1>
-        <p className="guide-lede">What every number on a match page means, and how to use it.</p>
-        <GuideCards />
-      </div>
-    </div></div>
-  );
+  return <div className="page-head guide-page" style={{ paddingBottom: 80 }}><GuideDoc /></div>;
 }

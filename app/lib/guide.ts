@@ -483,6 +483,8 @@ export const GUIDE: GuidePage[] = [
 export const guidePage = (slug: string) => GUIDE.find((p) => p.slug === slug);
 export const guidePath = (slug?: string) => (slug ? `/docs/guide/${slug}/` : "/docs/guide/");
 export const appGuidePath = (slug?: string) => (slug ? `/m/guide/?p=${encodeURIComponent(slug)}` : "/m/guide/");
+/** A topic inside the continuous guide (where the ⓘ panels send you). */
+export const guideAnchor = (slug: string, app = false) => `${app ? "/m/guide/" : guidePath()}#${slug}`;
 
 /** The guide page each ⓘ explanation links to ("Learn more in the Guide"). */
 export const GUIDE_FOR: Partial<Record<GlossaryKey, string>> = {

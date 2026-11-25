@@ -579,7 +579,9 @@ body:has(.a-tabbar) .a-toast { bottom: calc(96px + env(safe-area-inset-bottom));
 .a-link { border: 0; background: none; padding: 0; color: var(--cs-steel-700); font-weight: 600; cursor: pointer; }
 
 /* ── guide (app/m/guide, components/Guide.tsx): the website's guide styles in app spacing ── */
-.a-guide { padding: 4px 16px 120px; }
+.a-guide { padding: 4px 16px 120px; --guide-bar-top: 60px; }
+.a-guide .guide-topic { scroll-margin-top: 130px; }
+.a-guide .guide-part, .a-guide .guide-steps li { scroll-margin-top: 130px; }
 .a-guide .guide-article h1 { font-size: 30px; line-height: 1.1; }
 .a-guide .guide-article h2 { font-size: 22px; }
 .a-guide .guide-lede { font-size: 16px; }

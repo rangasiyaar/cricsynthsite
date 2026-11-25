@@ -1,5 +1,13 @@
 [
  {
+  "version": "0.3.30",
+  "date": "2026-11-25",
+  "notes": [
+   "The Guide reads as one document: scroll through it, or jump to a topic from Contents",
+   "About CricSynthesis, in Help"
+  ]
+ },
+ {
   "version": "0.3.29",
   "date": "2026-11-23",
   "notes": [
