@@ -101,6 +101,7 @@ function List({ id, label, title, text, start, more, groups }: { id: string; lab
 export default function Docs() {
   return (
     <div className="page-head docs-home" style={{ paddingBottom: 96 }}>
+      <p className="cs-eyebrow">Documentation</p>
       <h1><span>How to use CricSynthesis</span></h1>
       <p className="cs-lede">Guides for following a match, and the reference for building with our data.</p>
       <DocsSearch items={SEARCH} />
