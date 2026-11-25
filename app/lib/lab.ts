@@ -67,7 +67,6 @@ export function buildPresets(pack: Pack, base: Summary | null): Preset[] {
     { id: "humid", group: "Weather", title: "Humid night", blurb: "Seam wickets up 20%, moderate dew in the second innings. Swing early, easier batting late.", set: { pace: 1.2, dew: 0.5 } },
     { id: "dew", group: "Weather", title: "Heavy dew", blurb: "Wet ball in the second innings: spin wickets fall, boundaries come easier. The chasing side gains.", set: { dew: 1 } },
     { id: "dewlight", group: "Weather", title: "Light dew", blurb: "Some moisture late on. A smaller lift for the chasing side.", set: { dew: 0.5 } },
-    { id: "nodew", group: "Weather", title: "Day game", blurb: "No dew. Neither innings gets help from conditions, so the toss counts for less.", set: { dew: 0 } },
     { id: "runfest", group: "Weather", title: "High-scoring night", blurb: "Boundary rate up 20%, wicket chance down 10%, heavy dew. Totals rise on both sides.", set: { boundary: 1.2, wickets: 0.9, dew: 0.8 } },
   ];
 
@@ -131,8 +130,23 @@ export function applyPreset(l: Levers, p: Preset): Levers {
   return next;
 }
 
+/** Takes a preset back off: its own levers return to normal, everything else set stays. */
+export function removePreset(l: Levers, p: Preset): Levers {
+  const next: Levers = { ...l };
+  for (const k of Object.keys(p.set) as (keyof Levers)[]) {
+    if (k === "form") next.form = Object.fromEntries(Object.entries(l.form).filter(([id]) => !(id in p.set.form!)));
+    else if (k === "exclude") next.exclude = l.exclude.filter((id) => !p.set.exclude!.includes(id));
+    else if (k === "useSituation") next.useSituation = false;
+    else if (p.set.useSituation && k !== "battingFirst") continue;          // a situation's score fields go with it
+    else (next as Record<string, unknown>)[k] = DEFAULT[k];
+  }
+  return next;
+}
+
 /** Whether the current levers already include everything a preset sets. */
 export function presetOn(l: Levers, p: Preset): boolean {
+  const keys = Object.keys(p.set) as (keyof Levers)[];
+  if (keys.every((k) => k !== "form" && k !== "exclude" && JSON.stringify(p.set[k]) === JSON.stringify(DEFAULT[k]))) return false;   // changes nothing
   return (Object.keys(p.set) as (keyof Levers)[]).every((k) => {
     if (k === "form") return Object.entries(p.set.form!).every(([id, f]) => l.form[id] === f);
     if (k === "exclude") return p.set.exclude!.every((id) => l.exclude.includes(id));

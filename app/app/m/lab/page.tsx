@@ -1,5 +1,5 @@
 "use client";
-// App MatchSynth Lab (Pro): your scenario at a glance and a menu — "Set the scene" (the levers) and every match-centre
+// App MatchSynth Lab (Pro): your scenario at a glance and a menu — "Match parameters" (presets and the custom levers) and every match-centre
 // section rebuilt from your simulations. Each opens on a screen of its own (?s=…); the scenario stays in memory
 // across them, and the levers are saved per match on the phone.
 import { useSearchParams } from "next/navigation";
@@ -29,7 +29,7 @@ function LabMenu({ lab, id }: { lab: Lab; id: string }) {
         <LabResult lab={lab} movers={false} />
       </div>
       <MenuGroup label="Your scenario">
-        <MenuRow icon={Icon.scene} tone="accent" title="Set the scene" href={`${q}&s=scene`}
+        <MenuRow icon={Icon.scene} tone="accent" title="Match parameters" href={`${q}&s=scene`}
                  sub={lab.changes ? `${lab.changes} change${lab.changes === 1 ? "" : "s"}` : "As published"} />
       </MenuGroup>
       <MenuGroup label="Results of your scenario">
@@ -46,7 +46,7 @@ function Scene({ lab, id }: { lab: Lab; id: string }) {
     <>
       <div className="a-section-head">
         <span className="a-row-icon accent">{Icon.scene}</span>
-        <div><h1>Set the scene</h1></div>
+        <div><h1>Match parameters</h1></div>
       </div>
       <div className="a-lab-card"><LabResult lab={lab} movers /></div>
       <div className="a-levers"><LabPresets lab={lab} /><LabLevers lab={lab} /><LabShare lab={lab} reset={false} /></div>

@@ -9,8 +9,7 @@ import { track } from "@/lib/analytics";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
 import { num, signed } from "@/lib/format";
-import { DEFAULT, PRESET_GROUPS, applyPreset, buildPresets, decodeLevers, encodeLevers, partsOf, presetOn, type Levers, type PresetGroup } from "@/lib/lab";
-import { SITE } from "@/lib/seo";
+import { DEFAULT, PRESET_GROUPS, applyPreset, removePreset, buildPresets, decodeLevers, partsOf, presetOn, type Levers, type PresetGroup } from "@/lib/lab";
 import type { FantasyPicks, MatchDoc, PlayerRow, Summary } from "@/lib/types";
 
 const N = 5000;
@@ -174,14 +173,13 @@ export function useLab(doc: MatchDoc) {
   const set = <K extends keyof Levers>(k: K, v: Levers[K]) => setLevers((l) => ({ ...l, [k]: v }));
   const ready = !!(pack && base && cur && labDoc);
   const presets = useMemo(() => (pack ? buildPresets(pack, base) : []), [pack, base]);
-  const shareUrl = () => `${SITE}/lab/?id=${encodeURIComponent(doc.match.id)}#s=${encodeLevers(levers)}`;
   const save = (name: string) => {
     const list = [{ name, levers }, ...savedList.filter((x) => x.name !== name)].slice(0, 12);
     setSavedList(list); storeSaved(doc.match.id, list);
   };
   const unsave = (name: string) => { const list = savedList.filter((x) => x.name !== name); setSavedList(list); storeSaved(doc.match.id, list); };
   return { err, ready, pack, base, cur, labDoc, busy, levers, set, setLevers, reset: () => setLevers(DEFAULT), changed: changed(levers),
-           changes: countChanges(levers), teams: pack ? pack.teams.map((t) => t.name) : [], presets, why, shareUrl,
+           changes: countChanges(levers), teams: pack ? pack.teams.map((t) => t.name) : [], presets, why,
            saved: savedList, save, unsave, matchId: doc.match.id };
 }
 export type Lab = ReturnType<typeof useLab>;
@@ -203,6 +201,10 @@ export function LabLevers({ lab }: { lab: Lab }) {
     .filter((p) => (pack.batting.find((b) => b.team === 1 - p.team)!.bowlWeights[pack.batting.find((b) => b.team === 1 - p.team)!.bowlers.indexOf(p.id)] ?? []).reduce((x, y) => x + y, 0) > 0.5);
   return (
     <>
+      <div className="lever">
+        <h4 className="lab-sec">Custom scenario</h4>
+        <p className="small muted" style={{ margin: 0 }}>Set conditions, player form and the match state yourself.</p>
+      </div>
       <div className="lever">
         <label>Who bats first</label>
         <select value={levers.battingFirst} onChange={(e) => set("battingFirst", e.target.value as Levers["battingFirst"])}>
@@ -252,7 +254,7 @@ export function LabResult({ lab, movers = true }: { lab: Lab; movers?: boolean }
   );
 }
 
-/** Ready-made scenarios, grouped. Each adds its levers to what's set; tap again to see it's on. */
+/** Ready-made scenarios, grouped. Selecting one adds its parameters to what's set; selecting it again removes them. */
 export function LabPresets({ lab }: { lab: Lab }) {
   const [group, setGroup] = useState<PresetGroup>("Pitch");
   const [last, setLast] = useState<string | null>(null);
@@ -260,8 +262,8 @@ export function LabPresets({ lab }: { lab: Lab }) {
   const onNow = lab.presets.filter((p) => presetOn(lab.levers, p) && lab.changed);
   return (
     <div className="lever lab-presets">
-      <label>Quick scenarios</label>
-      <p className="small muted" style={{ margin: 0 }}>Tap to add. They stack, so mix a pitch, a player and a situation. Fine-tune with the sliders below.</p>
+      <h4 className="lab-sec">Presets</h4>
+      <p className="small muted" style={{ margin: 0 }}>Combine presets from different groups. Select one again to remove it.</p>
       <div className="lab-preset-groups" role="tablist" aria-label="Scenario groups">
         {PRESET_GROUPS.map((g) => (
           <button key={g} type="button" role="tab" aria-selected={g === group} className={g === group ? "on" : undefined} onClick={() => setGroup(g)}>{g}</button>
@@ -272,29 +274,24 @@ export function LabPresets({ lab }: { lab: Lab }) {
           const on = presetOn(lab.levers, p) && lab.changed;
           return (
             <button key={p.id} type="button" className={`lab-preset${on ? " on" : ""}`} aria-pressed={on}
-                    onClick={() => { lab.setLevers((l) => applyPreset(l, p)); setLast(p.id); track("lab_preset", { preset: p.id.replace(/\d+$/, "") }); }}>
+                    onClick={() => {
+                      if (on) { lab.setLevers((l) => removePreset(l, p)); setLast(null); return; }
+                      lab.setLevers((l) => applyPreset(l, p)); setLast(p.id); track("lab_preset", { preset: p.id.replace(/\d+$/, "") });
+                    }}>
               <b>{p.title}</b>{(on || last === p.id) && <span>{p.blurb}</span>}
             </button>
           );
         })}
       </div>
-      {onNow.length > 0 && <p className="small" style={{ margin: 0 }}><span className="muted">On now:</span> {onNow.map((p) => p.title).join(" · ")}</p>}
+      {onNow.length > 0 && <p className="small" style={{ margin: 0 }}><span className="muted">Selected:</span> {onNow.map((p) => p.title).join(" · ")}</p>}
     </div>
   );
 }
 
-/** Share the scenario as a link, and keep named scenarios on this device. */
+/** Save named scenarios on this device, and reset. */
 export function LabShare({ lab, reset = true }: { lab: Lab; reset?: boolean }) {
   const [msg, setMsg] = useState("");
   const flash = (m: string) => { setMsg(m); setTimeout(() => setMsg(""), 2500); };
-  const share = async () => {
-    const url = lab.shareUrl(), text = `My MatchSynth Lab scenario: ${lab.teams.join(" v ")}`;
-    track("lab_share", { match_id: lab.matchId });
-    try {
-      if (navigator.share) { await navigator.share({ title: "MatchSynth Lab", text, url }); return; }
-      await navigator.clipboard.writeText(url); flash("Link copied");
-    } catch { /* closed the share sheet */ }
-  };
   const save = () => {
     const name = window.prompt("Name this scenario", `Scenario ${lab.saved.length + 1}`)?.trim();
     if (name) { lab.save(name.slice(0, 40)); flash("Saved on this device"); }
@@ -302,8 +299,7 @@ export function LabShare({ lab, reset = true }: { lab: Lab; reset?: boolean }) {
   return (
     <div className="lever lab-share">
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <button type="button" className="btn" onClick={share} disabled={!lab.changed}>Share scenario</button>
-        <button type="button" className="btn ghost" onClick={save} disabled={!lab.changed}>Save</button>
+        <button type="button" className="btn" onClick={save} disabled={!lab.changed}>Save scenario</button>
         {reset && <button type="button" className="btn ghost" onClick={lab.reset} disabled={!lab.changed}>Reset</button>}
       </div>
       {msg && <span className="small" role="status">{msg}</span>}
@@ -360,7 +356,7 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
       <div className="lab-layout">
         <aside className="card grid lab-levers" style={{ gap: 18 }}>
           <div>
-            <h3>Set the scene</h3>
+            <h3>Match parameters</h3>
           </div>
           <LabPresets lab={lab} />
           <LabLevers lab={lab} />

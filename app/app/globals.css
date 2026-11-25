@@ -812,3 +812,5 @@ body:has(.cs-consent) .app-promo { display: none; }
 .lab-why > div { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(60px, 1fr) auto; gap: 10px; align-items: center; }
 .lab-why-bar { height: 6px; border-radius: 3px; background: var(--cs-surface); overflow: hidden; }
 .lab-why-bar i { display: block; height: 100%; border-radius: 3px; }
+.lab-sec { margin: 0; font: 600 15px var(--cs-head); letter-spacing: .04em; text-transform: uppercase; color: var(--cs-ink); }
+.lab-presets + .lever { padding-top: 16px; border-top: 1px solid var(--cs-line); }
