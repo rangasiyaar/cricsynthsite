@@ -79,7 +79,7 @@ jobs:
         run: |
           if uv run cricdata download --kind all --dest data/raw \
              && { uv run python -m cricsim.khelnow bridge --cricsheet data/raw/all_json.zip --cache data/khelnow \
-                    --out data/raw/extra_json.zip --days 21 || echo "::warning::Recent-match bridge failed; Cricsheet only"; } \
+                    --out data/raw/extra_json.zip --days 35 || echo "::warning::Recent-match bridge failed; Cricsheet only"; } \
              && uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv \
                   --names data/raw/names.csv --extra data/raw/extra_json.zip --out data/parquet.new \
              && uv run cricdata attributes --out data/parquet.new; then

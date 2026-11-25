@@ -543,6 +543,73 @@ def link_players(d: dict, roster: dict[str, dict[str, str]], known: dict[str, st
     return out
 
 
+# ── why an innings doesn't add up (read-only diagnosis for the bridge check) ──────────────────────────────────────
+
+_NOT_OUT = ("", "not out", "batting", "retired hurt", "retired not out", "retired")
+
+
+def reconcile(x: dict, bpo: int = 6) -> dict:
+    """Compare one innings' commentary with its scorecard and name the most likely reason they differ."""
+    c, balls = x["card"], x["balls"]
+    eq, ex = c.get("equations") or {}, c.get("extra_runs") or {}
+    comp = lambda b: sum(_int(b.get(k)) for k in ("bat_run", "wide_run", "noball_run", "bye_run", "legbye_run"))
+    total = sum(_int(b.get("run")) for b in balls)
+    pen = _int(ex.get("penalty"))
+    wkts = sum(1 for b in balls if b.get("event") == "wicket")
+    legal = sum(1 for b in balls if not b.get("wideball") and not b.get("noball"))
+    card_legal = overs_to_balls(eq.get("overs"), bpo)
+    per_over: dict[int, int] = {}
+    for b in balls:
+        if not b.get("wideball") and not b.get("noball"):
+            per_over[_int(b.get("over"))] = per_over.get(_int(b.get("over")), 0) + 1
+    last = max(per_over) if per_over else -1
+    short = [o for o, n in per_over.items() if n < bpo and o != last]
+    long_ = [o for o, n in per_over.items() if n > bpo]
+    gaps = [o for o in range(0, last) if o not in per_over]
+    keys = [(b.get("over"), b.get("ball"), str(b.get("batsman_id")), str(b.get("bowler_id")), b.get("run"), b.get("event"), b.get("wideball"), b.get("noball")) for b in balls]
+    dupes = sum(1 for i in range(1, len(keys)) if keys[i] == keys[i - 1] and keys[i][1] not in (None, ""))
+    run_field = sum(1 for b in balls if _int(b.get("run")) != comp(b))
+    extras = {k: sum(_int(b.get(f)) for b in balls) - _int(ex.get(k)) for k, f in
+              (("wides", "wide_run"), ("noballs", "noball_run"), ("byes", "bye_run"), ("legbyes", "legbye_run"))}
+    faced: dict[str, list[int]] = {}
+    for b in balls:
+        f = faced.setdefault(str(b.get("batsman_id")), [0, 0])
+        f[0] += _int(b.get("bat_run"))
+        f[1] += 0 if b.get("wideball") else 1
+    bat_off = [(str(r.get("batsman_id")), _int(r.get("runs")) - faced.get(str(r.get("batsman_id")), [0, 0])[0],
+                _int(r.get("balls_faced")) - faced.get(str(r.get("batsman_id")), [0, 0])[1]) for r in c.get("batsmen") or []]
+    bat_off = [b for b in bat_off if b[1] or b[2]]
+    out_ids = {str(b.get("wicket_batsman_id") or b.get("batsman_id")) for b in balls if b.get("event") == "wicket"}
+    no_wicket_ball = [str(r.get("batsman_id")) for r in c.get("batsmen") or []
+                      if (r.get("how_out") or "").strip().lower() not in _NOT_OUT and str(r.get("batsman_id")) not in out_ids]
+    d_runs, d_wkts = _int(eq.get("runs")) - (total + pen), _int(eq.get("wickets")) - wkts
+    if not balls:
+        cause = "no commentary"
+    elif d_runs == 0 and d_wkts == 0:
+        cause = "ok"
+    elif card_legal > legal or short or gaps:
+        cause = "balls missing"
+    elif card_legal < legal or long_:
+        cause = "extra balls"
+    elif dupes:
+        cause = "duplicate balls"
+    elif run_field:
+        cause = "run field differs from its parts"
+    elif any(extras.values()) and not bat_off:
+        cause = "extras recorded differently"
+    elif bat_off and d_wkts == 0:
+        cause = "batter runs corrected on the scorecard"
+    elif d_wkts > 0 or no_wicket_ball:
+        cause = "wicket not in commentary"
+    elif d_wkts < 0:
+        cause = "extra wicket in commentary"
+    else:
+        cause = "other"
+    return {"cause": cause, "runs": d_runs, "wkts": d_wkts, "legal": card_legal - legal, "short_overs": short, "long_overs": long_,
+            "missing_overs": gaps, "dupes": dupes, "run_field": run_field, "extras": {k: v for k, v in extras.items() if v},
+            "batters_off": len(bat_off), "no_wicket_ball": len(no_wicket_ball)}
+
+
 def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page=get, now: datetime | None = None,
            max_requests: int = 400) -> dict[str, int]:
     """Finished limited-overs matches of the last `days` days that Cricsheet doesn't have yet, in its format, written
@@ -556,6 +623,9 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
     have, roster = _cricsheet_index(cricsheet_zip, since)
     entries = [e for e in sitemap(safe(page, SITEMAP)) if e["date"] and since <= e["date"] < now.date()]
     stats = {"pages": len(entries), "fetched": 0, "not_covered": 0, "in_cricsheet": 0, "written": 0, "skipped": 0}
+    causes: dict[str, int] = {}
+    events: dict[str, int] = {}
+    skips: list[dict] = []
     exclude = json.loads((Path(__file__).with_name("auto.json")).read_text()).get("exclude", [])
     written: dict[str, dict] = {}
     for e in sorted(entries, key=lambda e: e["date"], reverse=True):
@@ -586,6 +656,14 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
             written[f"kn{i['id']}.json"] = cs
         else:
             stats["skipped"] += 1
+            for x in innings(d):                                  # why: one line per innings that doesn't add up
+                r = reconcile(x)
+                if r["cause"] != "ok":
+                    causes[r["cause"]] = causes.get(r["cause"], 0) + 1
+                    skips.append({"match": i["id"], "competition": i["competition"], "innings": x["number"], **r})
+        for x in (d.get("matchInsights") or []):                  # every commentary event type, to spot deliveries we ignore
+            for e in x.get("commentary") or []:
+                events[str(e.get("event"))] = events.get(str(e.get("event")), 0) + 1
     links_path.write_text(json.dumps(known, indent=0, sort_keys=True))
     out_zip.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -595,6 +673,9 @@ def bridge(cricsheet_zip: Path, cache: Path, out_zip: Path, days: int = 21, page
     linked = sum(1 for cs in written.values() for rid in cs["info"]["registry"]["people"].values() if not rid.startswith("kn:"))
     total = sum(len(cs["info"]["registry"]["people"]) for cs in written.values())
     stats["players_linked_pct"] = round(100 * linked / max(1, total))
+    stats["skip_causes"] = dict(sorted(causes.items(), key=lambda kv: -kv[1]))
+    stats["commentary_events"] = dict(sorted(events.items(), key=lambda kv: -kv[1]))
+    (cache / "skips.json").write_text(json.dumps(skips, indent=1))     # one row per innings that didn't add up
     return stats
 
 

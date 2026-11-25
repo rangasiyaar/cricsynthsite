@@ -143,3 +143,39 @@ def test_bridge(tmp_path):
     assert stats["written"] == 0 and stats["not_covered"] == 1
     assert kn.team_key("India Under-19s", "male") != kn.team_key("India", "male")
     assert kn.team_key("Sydney Sixers Women", "female") == kn.team_key("Sydney Sixers", "female")
+
+
+def test_reconcile_names_the_cause():
+    def first(mutate=None):
+        d = kn.data_of(page(status=2, inns=_inns(), winner=IND_ID, margin="9 wickets"))
+        if mutate:
+            mutate(d)
+        return kn.reconcile(kn.innings(d)[0])
+
+    comm = lambda d: d["matchInsights"][0]["commentary"]
+    card = lambda d: d["matchInsights"][-1]["score_card"]["innings"][0]
+    assert first()["cause"] == "ok"
+    # a legal ball lost from the feed
+    def drop(d):
+        c = comm(d)
+        k = next(i for i, b in enumerate(c) if b["event"] == "ball" and not b["wideball"] and not b["noball"])
+        del c[k]
+    assert first(drop)["cause"] == "balls missing"
+    # the same ball published twice
+    def dup(d):
+        c = comm(d)
+        c.insert(0, dict(c[0]))
+    assert first(dup)["cause"] in ("extra balls", "duplicate balls")
+    # the scorecard corrected after the match: one batter's runs changed, total with it
+    def corrected(d):
+        k = card(d)
+        k["batsmen"][0]["runs"] = str(int(k["batsmen"][0]["runs"]) + 2)
+        k["equations"]["runs"] = int(k["equations"]["runs"]) + 2
+    r = first(corrected)
+    assert r["cause"] == "batter runs corrected on the scorecard" and r["runs"] == 2 and r["batters_off"] == 1
+    # a dismissal on the scorecard with no wicket ball
+    def lost_wicket(d):
+        c = comm(d)
+        w = next(b for b in c if b["event"] == "wicket")
+        w["event"] = "ball"
+    assert first(lost_wicket)["cause"] == "wicket not in commentary"

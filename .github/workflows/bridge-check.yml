@@ -5,7 +5,7 @@ name: Bridge check
 on:
   workflow_dispatch:
     inputs:
-      days: { description: "Days back", default: "7" }
+      days: { description: "Days back", default: "35" }
 
 permissions:
   contents: read
@@ -31,6 +31,14 @@ jobs:
           print(len(ms), "matches:", Counter(m["info"]["event"]["name"] for m in ms).most_common(30))
           ids = [r for m in ms for r in m["info"]["registry"]["people"].values()]
           print(f"players linked to the register: {sum(not r.startswith('kn:') for r in ids)}/{len(ids)}")
+          # why innings were skipped: one row each, and the pattern behind each cause
+          sk = json.load(open("data/khelnow/skips.json"))
+          print(f"\n{len(sk)} innings didn't add up:")
+          for cause, n in Counter(r["cause"] for r in sk).most_common():
+              rows = [r for r in sk if r["cause"] == cause]
+              print(f"  {n:3d}  {cause}   runs off {Counter(r['runs'] for r in rows).most_common(5)}  wickets off {Counter(r['wkts'] for r in rows).most_common(3)}")
+          for r in sk:
+              print("   ", {k: v for k, v in r.items() if v not in (0, [], {}, None) or k in ("runs", "wkts")})
           PY
           uv run cricdata build --zip data/raw/all_json.zip --people data/raw/people.csv --names data/raw/names.csv \
             --extra data/raw/extra_json.zip --out data/parquet
