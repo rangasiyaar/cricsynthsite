@@ -578,3 +578,10 @@ html body .lab-main .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .guide-example-toggle > summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--cs-steel-700); }
 .guide-example-toggle[open] { padding-bottom: 16px; }
 .guide-example-toggle .guide-example { margin-top: 4px; }
+
+/* MCP page: the "How it works" facts (app/mcp/page.tsx) */
+.mcp-facts { margin: 0; display: grid; border-top: 1px solid var(--cs-line); max-width: 860px; }
+.mcp-facts > div { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--cs-line); }
+.mcp-facts dt { font-weight: 600; color: var(--cs-ink); }
+.mcp-facts dd { margin: 0; color: var(--cs-ink-2); line-height: 1.6; }
+@media (max-width: 640px) { .mcp-facts > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
