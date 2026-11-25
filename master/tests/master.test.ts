@@ -172,6 +172,19 @@ test("GA4 report shaping and the product route is gated", async () => {
   assert.equal((await call("/api/product")).status, 401);
 });
 
+test("GA4 week totals and breakdowns", async () => {
+  const { gaMore } = await import("../src/external.ts");
+  const r = (rows: [string[], number[]][]) => ({ rows: rows.map(([d, m]) => ({ dimensionValues: d.map((value) => ({ value })), metricValues: m.map((v) => ({ value: String(v) })) })) });
+  const m = gaMore(r([[["cur"], [50, 30, 80, 40, 0.5, 65, 300, 900]], [["prev"], [40, 20, 60, 30, 0.5, 60, 250, 700]]]),
+    r([[["/"], [40, 0.6]]]), r([[["Organic Search"], [30]]]), null, null, r([[["/matches/"], [100, 20, 600]]]));
+  assert.equal(m.week!.cur!.users, 50);
+  assert.equal(m.week!.prev!.sessions, 60);
+  assert.equal(m.landing[0].engagement, 0.6);
+  assert.equal(m.channels[0].name, "Organic Search");
+  assert.equal(m.pageTime[0].secs, 30);
+  assert.deepEqual(m.cities, []);
+});
+
 test("Clarity export shaping and the UX route is gated", async () => {
   const { clarityShape } = await import("../src/external.ts");
   const s = clarityShape(

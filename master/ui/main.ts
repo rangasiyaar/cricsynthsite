@@ -675,70 +675,137 @@ async function applications(filter = "") {
   wireActions(main(), () => route());
 }
 
+// ── growth helpers ──
+const dur = (secs: number | null | undefined) => (secs == null ? "–" : secs < 60 ? `${Math.round(secs)} s` : `${Math.floor(secs / 60)} m ${String(Math.round(secs % 60)).padStart(2, "0")} s`);
+const bytes = (b: number | null | undefined) => (b == null ? "–" : b >= 1e9 ? `${(b / 1e9).toFixed(1)} GB` : b >= 1e6 ? `${(b / 1e6).toFixed(0)} MB` : `${Math.round(b / 1e3)} KB`);
+const warnBox = (errs?: string[]) => (errs?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${errs.map((e) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "");
+const sumOf = (rows: Row[] | undefined, k: string, from = 0, to?: number) => (rows || []).slice(from, to).reduce((s, r) => s + Number(r[k] || 0), 0);
+const path0 = (u: string) => u.replace(/^https?:\/\/[^/]+/, "") || "/";
+
 // ── product (Google Analytics 4: visitors who accepted analytics cookies) ──
 const EVENT_NAMES: Record<string, string> = { page_view: "Page views", match_view: "Match opened", match_tab: "Match tab opened",
   lab_run: "Lab scenario run", sign_up: "Sign-up", login: "Sign-in", api_key_created: "API key created",
   upgrade_request: "Upgrade request", app_download: "App download", session_start: "Session started", first_visit: "First visit",
-  user_engagement: "Engaged", scroll: "Scrolled to bottom", click: "Outbound click", file_download: "File download" };
+  user_engagement: "Engaged", scroll: "Scrolled to bottom", click: "Outbound click", file_download: "File download", info_open: "ⓘ explanation opened" };
 async function product() {
   const [g, t] = await Promise.all([api("/api/product"), api("/api/traffic").catch(() => null)]);
-  const sum = (rows: Row[] | undefined, k: string, from = 0) => (rows || []).slice(from).reduce((s, r) => s + Number(r[k] || 0), 0);
-  const users7 = sum(g.daily, "users", -7), visits7 = t?.rum ? sum(t.rum.days, "visits", -7) : null;
-  const rate = visits7 ? Math.min(1, users7 / visits7) : null;
+  const D = (g.daily || []) as Row[];
+  const cur = g.week?.cur as Row | null, prev = g.week?.prev as Row | null;
+  const visits7 = t?.rum ? sumOf(t.rum.days, "visits", -7) : null;
+  const rate = visits7 && cur?.users ? Math.min(1, cur.users / visits7) : null;
   const top = (g.funnel?.[0]?.users as number) || 0;
   const nvr = Object.fromEntries((g.newVsReturning || []).map((r: Row) => [r.name, r.value]));
   const returning = (nvr.returning || 0) / Math.max(1, (nvr.returning || 0) + (nvr.new || 0));
-  const pv = (g.events as Row[] | undefined)?.find((e) => e.name === "page_view");
+  const wk = (label: string, k: string, fmt: (v: number) => string, sub: string, lowerBetter = false) =>
+    tile(label, cur?.[k] != null ? `${fmt(cur[k])} ${prev?.[k] != null ? delta(cur[k], prev[k], lowerBetter) : ""}` : "–", prev?.[k] != null ? `${fmt(prev[k])} the week before · ${sub}` : sub);
+  const perSess = (r: Row | null) => (r?.sessions ? r.views / r.sessions : null);
   main().innerHTML = head("Product (Google Analytics)") + `<p class="muted">Only visitors who accepted analytics cookies. Property ${esc(g.property || "–")} ·
       updated ${ago(g.built)} · <a href="https://analytics.google.com/analytics/web/#/p${esc(g.property || "")}/reports/intelligenthome" target="_blank" rel="noopener">Open GA4</a></p>`
-    + (g.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${g.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    + warnBox(g.errors) + `
+    <h2 class="sec">This week</h2>${note("Last 7 days, each against the 7 days before.")}
     <div class="tiles">
+      ${wk("Users", "users", n, "people who visited")}
+      ${wk("New users", "newUsers", n, "first visit ever")}
+      ${wk("Sessions", "sessions", n, "visits, one person can make several")}
+      ${wk("Engagement rate", "engagementRate", (v) => pct(v), "sessions over 10 s, 2+ pages or a key action")}
+      ${wk("Time per session", "avgSession", dur, "average, all sessions")}
+      ${tile("Pages per session", perSess(cur) != null ? `${perSess(cur)!.toFixed(1)} ${perSess(prev) != null ? delta(perSess(cur)!, perSess(prev)!) : ""}` : "–", "page views ÷ sessions")}
       ${tile("Active right now", n(g.realtime), "last 30 minutes")}
-      ${tile("Users (7 days)", n(users7), `${n(sum(g.daily, "users"))} in 30 days`)}
       ${tile("Returning users", pct(returning), "of users in 30 days came back")}
-      ${tile("Consent rate (est.)", pct(rate), visits7 ? `GA users ÷ ${n(visits7)} Cloudflare visits, 7 days` : "needs Web Analytics data")}
-      ${tile("Pages per user", pv && sum(g.daily, "users") ? (pv.count / sum(g.daily, "users")).toFixed(1) : "–", "page views ÷ users, 30 days")}
+      ${tile("Consent rate (est.)", pct(rate), visits7 ? `GA users ÷ ${n(visits7)} Cloudflare visits` : "needs Web Analytics data")}
     </div>
-    ${g.daily ? `<section class="card">${bars(g.daily, [{ key: "users", label: "Users", color: S1 }], { x: "day", title: "Users per day (30 days)", sub: "Only those who accepted cookies. Cloudflare's counts on Traffic include everyone.", total: false })}</section>` : ""}
-    <section class="card"><h2>Funnel (30 days)</h2>${note("Users who did each step at least once. The second figure is the share of the step before: the lowest one is the biggest drop. People who rejected cookies show up only on Users and API keys.")}
+    ${D.length ? `<div class="grid2">
+      <section class="card">${bars(D.map((r) => ({ day: r.day, fresh: r.newUsers, back: Math.max(0, r.users - r.newUsers) })),
+        [{ key: "back", label: "Returning", color: S1 }, { key: "fresh", label: "New", color: S2 }], { x: "day", title: "Users per day", sub: "New against returning, last 30 days. Returning users are the ones who found it useful." })}</section>
+      <section class="card">${bars(D.map((r) => ({ day: r.day, eng: r.engaged, not: Math.max(0, r.sessions - r.engaged) })),
+        [{ key: "eng", label: "Engaged", color: S1 }, { key: "not", label: "Left quickly", color: S3 }], { x: "day", title: "Sessions per day", sub: "Engaged sessions against ones that left within 10 seconds on one page." })}</section>
+    </div>` : ""}
+    <section class="card"><h2>Funnel (30 days)</h2>${note("Users who did each step at least once, and the share of the step before: the lowest is the biggest drop. Hover for the share of all visitors. People who rejected cookies show up only on Users and API keys.")}
       ${g.funnel ? `<ol class="funnel">${(g.funnel as Row[]).map((f, i, all) => `<li>
         <span class="fl">${esc(f.label)}</span><span class="rb"><i style="width:${top ? (100 * f.users / top).toFixed(1) : 0}%"></i></span>
-        <span class="rv">${n(f.users)}</span><span class="muted">${i ? `${pct(top ? f.users / top : null, 1)} · ${pct(all[i - 1].users ? f.users / all[i - 1].users : null)} of previous` : ""}</span></li>`).join("")}</ol>` : ""}</section>
-    <div class="grid2"><section class="card"><h2>Events (30 days)</h2>${note("Everything we track, with how many people did it.")}<div id="ev"></div></section>
-      <section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages by visitors who accepted cookies.")}${ranked((g.pages || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>
-    <div class="grid2"><section class="card"><h2>Where visitors come from (7 days)</h2>${note("Search, social, other sites or typed in directly.")}${ranked((g.sources || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section>
-      <section class="card"><h2>Countries (7 days)</h2>${ranked((g.countries || []).map((r: Row) => ({ name: r.name, value: r.value })))}
-      <h2>Devices</h2>${ranked((g.devices || []).map((r: Row) => ({ name: r.name, value: r.value })))}</section></div>`;
+        <span class="rv">${n(f.users)}</span><span class="muted" title="${pct(top ? f.users / top : null, 1)} of all visitors">${i ? `${pct(all[i - 1].users ? f.users / all[i - 1].users : null)} of previous` : ""}</span></li>`).join("")}</ol>` : `<p class="empty">No funnel data.</p>`}</section>
+    <div class="grid2">
+      <section class="card"><h2>Landing pages (7 days)</h2>${note("The first page of each visit. A low engagement rate means the page doesn't lead people on.")}<div id="land"></div></section>
+      <section class="card"><h2>Time on page (7 days)</h2>${note("Average engaged time per user on each page. Short times on long pages mean people skim or leave.")}<div id="time"></div></section>
+    </div>
+    <div class="grid2">
+      <section class="card"><h2>Channels (7 days)</h2>${note("How visits arrive: search, social, other sites, or typed in.")}${ranked(((g.channels || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}</section>
+      <section class="card"><h2>Sources (7 days)</h2>${note("The exact site or campaign behind each visit.")}${ranked(((g.sources || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}</section>
+    </div>
+    <div class="grid2">
+      <section class="card"><h2>Countries (7 days)</h2>${note("Users by country.")}${ranked(((g.countries || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}
+        <h2 style="margin-top:20px">Cities (7 days)</h2>${ranked(((g.cities || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}</section>
+      <section class="card"><h2>Devices (7 days)</h2>${note("Phone, desktop or tablet.")}${ranked(((g.devices || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}
+        <h2 style="margin-top:20px">Operating systems (7 days)</h2>${ranked(((g.os || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}</section>
+    </div>
+    <div class="grid2">
+      <section class="card"><h2>Events (30 days)</h2>${note("Everything we track, with how many people did it.")}<div id="ev"></div></section>
+      <section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages.")}${ranked(((g.pages || []) as Row[]).map((r) => ({ name: r.name, value: r.value })))}</section>
+    </div>`;
+  table($("#land")!, [{ key: "name", label: "Page", render: (r) => esc(r.name) }, { key: "sessions", label: "Sessions", num: true, render: (r) => n(r.sessions) },
+    { key: "engagement", label: "Engaged", num: true, render: (r) => `${pct(r.engagement)} ${r.engagement < 0.4 ? badge("Low", "warn") : ""}` }],
+    g.landing || [], { initial: { key: "sessions", desc: true }, empty: "No landing pages yet." });
+  table($("#time")!, [{ key: "name", label: "Page", render: (r) => esc(r.name) }, { key: "views", label: "Views", num: true, render: (r) => n(r.views) },
+    { key: "users", label: "Users", num: true, render: (r) => n(r.users) }, { key: "secs", label: "Time per user", num: true, render: (r) => dur(r.secs) }],
+    g.pageTime || [], { initial: { key: "views", desc: true }, empty: "No pages yet." });
   table($("#ev")!, [{ key: "name", label: "Event", render: (r) => `${esc(EVENT_NAMES[r.name] || r.name)} <small class="muted">${esc(r.name)}</small>` },
-    { key: "count", label: "Count", num: true, render: (r) => n(r.count) }, { key: "users", label: "Users", num: true, render: (r) => n(r.users) }],
+    { key: "count", label: "Count", num: true, render: (r) => n(r.count) }, { key: "users", label: "Users", num: true, render: (r) => n(r.users) },
+    { key: "per", label: "Per user", num: true, sort: (r) => (r.users ? r.count / r.users : 0), render: (r) => (r.users ? (r.count / r.users).toFixed(1) : "–") }],
     g.events || [], { initial: { key: "count", desc: true }, empty: "No events yet." });
 }
 
 // ── UX (Microsoft Clarity: visitors who allowed session recordings) ──
+const CLARITY_NAMES: Record<string, [string, string]> = {
+  RageClickCount: ["Rage clicks", "Clicking the same spot again and again"], DeadClickCount: ["Dead clicks", "Clicks on things that don't respond"],
+  QuickbackClick: ["Quick backs", "Opened a page and went straight back"], ScriptErrorCount: ["Script errors", "A JavaScript error during the visit"],
+  ExcessiveScroll: ["Excessive scrolling", "Scrolling up and down looking for something"], ErrorClickCount: ["Error clicks", "A click that caused an error"],
+  ScrollDepth: ["Scroll depth", "How far down pages people read"], EngagementTime: ["Engagement time", "Time actively using the page"],
+  Traffic: ["Traffic", "Sessions, users and pages"], Browser: ["Browser", ""], Device: ["Device", ""], OS: ["Operating system", ""], Country: ["Country", ""], PageTitle: ["Page title", ""],
+  ReferrerUrl: ["Referrer", ""], PopularPages: ["Popular pages", ""],
+};
 async function ux() {
   const c = await api("/api/ux");
   const link = `https://clarity.microsoft.com/projects/view/${esc(c.project || "zeyhpmwp0b")}/dashboard`;
-  const list = (rows: Row[] | undefined, fmt = (v: number) => n(v)) => ranked((rows || []).map((r) => ({ name: r.url.replace(/^https?:\/\/[^/]+/, "") || "/", value: Number(r.value) })), fmt);
+  const list = (rows: Row[] | undefined, fmt = (v: number) => n(v)) => ranked((rows || []).map((r) => ({ name: path0(r.url), value: Number(r.value) })), fmt);
   const s = c.summary || {};
-  const share = (m: string) => { const r = s[m] || {}; const v = r.sessionsWithMetricPercentage ?? r.subTotal; return v == null ? "–" : `${n(v)}${r.sessionsWithMetricPercentage != null ? "%" : ""}`; };
+  const shareOf = (m: string) => { const r = s[m] || {}; return r.sessionsWithMetricPercentage != null ? Number(r.sessionsWithMetricPercentage) : null; };
+  const share = (m: string) => { const v = shareOf(m), r = s[m] || {}; return v != null ? `${n(v)}%` : r.subTotal != null ? n(r.subTotal) : "–"; };
+  const flag = (m: string, warnAt: number) => { const v = shareOf(m); return v == null ? "" : v >= warnAt ? ` ${badge("High", "bad")}` : ` ${badge("OK", "good")}`; };
+  // one table of the pages with the most problems, all issues side by side
+  const issues: [string, string][] = [["rage", "Rage"], ["dead", "Dead"], ["quickback", "Quick backs"], ["scriptErrors", "Errors"]];
+  const byPage: Record<string, Row> = {};
+  for (const [k] of issues) for (const r of (c[k] || []) as Row[]) { const p = path0(r.url); (byPage[p] ||= { page: p, total: 0 })[k] = r.value; byPage[p].total += Number(r.value || 0); }
+  const scrollOf = Object.fromEntries(((c.scroll || []) as Row[]).map((r) => [path0(r.url), r.value]));
   main().innerHTML = head("UX (Microsoft Clarity)") + `<p class="muted">Last 3 days, visitors who allowed session recordings · updated ${ago(c.built)} · refreshed at most every 6 hours (Clarity allows 10 exports a day) ·
-      <a href="${link}" target="_blank" rel="noopener">Open Clarity (heatmaps and recordings)</a></p>`
-    + (c.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${c.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+      <a href="${link}" target="_blank" rel="noopener">Open Clarity (heatmaps and recordings)</a></p>` + warnBox(c.errors) + `
     <div class="tiles">
       ${tile("Sessions (3 days)", n(c.sessions), c.bots != null ? `${n(c.bots)} bot sessions filtered` : "")}
-      ${tile("Users (3 days)", n(c.users), c.pagesPerSession != null ? `${n(c.pagesPerSession)} pages per session` : "")}
-      ${tile("Rage clicks", share("RageClickCount"), "sessions with repeated angry clicks")}
-      ${tile("Dead clicks", share("DeadClickCount"), "sessions clicking things that do nothing")}
-      ${tile("Quick backs", share("QuickbackClick"), "sessions leaving a page straight away")}
-      ${tile("Script errors", share("ScriptErrorCount"), "sessions with a JavaScript error")}
+      ${tile("Users (3 days)", n(c.users), c.sessions && c.users ? `${(c.sessions / c.users).toFixed(1)} sessions each` : "")}
+      ${tile("Pages per session", c.pagesPerSession != null ? n(c.pagesPerSession) : "–", "how far people go")}
+      ${tile("Rage clicks", share("RageClickCount") + flag("RageClickCount", 5), "of sessions · worry above 5%")}
+      ${tile("Dead clicks", share("DeadClickCount") + flag("DeadClickCount", 10), "of sessions · worry above 10%")}
+      ${tile("Quick backs", share("QuickbackClick") + flag("QuickbackClick", 15), "of sessions · worry above 15%")}
+      ${tile("Script errors", share("ScriptErrorCount") + flag("ScriptErrorCount", 3), "of sessions · worry above 3%")}
+      ${tile("Excessive scrolling", share("ExcessiveScroll") + flag("ExcessiveScroll", 10), "of sessions · people hunting for something")}
     </div>
-    ${note("Worry when rage or dead clicks pass about 5% of sessions, or script errors appear on more than a few pages.")}
+    <section class="card"><h2>Pages with the most problems</h2>${note("Every issue for each page, side by side, worst first. Open the page in Clarity and watch a few replays before changing anything.")}<div id="worst"></div></section>
     <div class="grid2"><section class="card"><h2>Rage clicks by page</h2>${note("Clicking the same spot again and again, usually because something is slow or broken.")}${list(c.rage)}</section>
       <section class="card"><h2>Dead clicks by page</h2>${note("Clicks on things that don't respond. Often text or an image that looks clickable.")}${list(c.dead)}</section></div>
     <div class="grid2"><section class="card"><h2>Quick backs by page</h2>${note("Opened a page and went straight back. The page wasn't what they expected.")}${list(c.quickback)}</section>
       <section class="card"><h2>Script errors by page</h2>${note("A JavaScript error during the visit. Watch a replay in Clarity to see what broke.")}${list(c.scriptErrors)}</section></div>
     <div class="grid2"><section class="card"><h2>Average scroll depth by page</h2>${note("How far down people read. Below 40% means most never see the bottom half.")}${list(c.scroll, (v) => `${n(v)}%`)}</section>
-      <section class="card"><h2>Most visited pages</h2>${note("Pages with the most recorded sessions.")}${list(c.traffic)}</section></div>`;
+      <section class="card"><h2>Most visited pages</h2>${note("Pages with the most recorded sessions.")}${list(c.traffic)}</section></div>
+    <section class="card"><h2>Everything Clarity reports</h2>${note("The full summary for the last 3 days, for anything not shown above.")}<div id="all"></div></section>`;
+  table($("#worst")!, [{ key: "page", label: "Page", render: (r) => esc(r.page) },
+    ...issues.map(([k, label]) => ({ key: k, label, num: true, render: (r: Row) => (r[k] ? n(r[k]) : "–") })),
+    { key: "scroll", label: "Scroll", num: true, sort: (r: Row) => scrollOf[r.page] ?? -1, render: (r: Row) => (scrollOf[r.page] != null ? `${n(scrollOf[r.page])}%` : "–") },
+    { key: "total", label: "Total", num: true, render: (r) => n(r.total) }],
+    Object.values(byPage), { initial: { key: "total", desc: true }, limit: 12, empty: "No problems recorded." });
+  table($("#all")!, [{ key: "name", label: "Metric", render: (r) => `${esc(CLARITY_NAMES[r.name]?.[0] || r.name)}${CLARITY_NAMES[r.name]?.[1] ? `<small>${esc(CLARITY_NAMES[r.name][1])}</small>` : ""}` },
+    { key: "share", label: "Sessions affected", num: true, render: (r) => (r.share != null ? `${n(r.share)}%` : "–") },
+    { key: "count", label: "Count", num: true, render: (r) => n(r.count) }],
+    Object.entries(s).map(([name, r]: [string, any]) => ({ name, share: r.sessionsWithMetricPercentage ?? null, count: r.subTotal ?? r.sessionsCount ?? r.totalSessionCount ?? null })),
+    { initial: { key: "share", desc: true }, empty: "No summary yet." });
 }
 
 // ── audit log ──
@@ -774,36 +841,65 @@ async function log() {
   ["#fa", "#fw"].forEach((id) => $(id)!.addEventListener("input", draw));
 }
 
-// ── search (Google Search Console) ──
+// ── search (Google Search Console and Bing) ──
+const A3: Record<string, string> = { ind: "India", usa: "United States", gbr: "United Kingdom", aus: "Australia", pak: "Pakistan", bgd: "Bangladesh",
+  lka: "Sri Lanka", nzl: "New Zealand", zaf: "South Africa", are: "UAE", can: "Canada", sgp: "Singapore", npl: "Nepal", afg: "Afghanistan",
+  irl: "Ireland", nld: "Netherlands", deu: "Germany", sau: "Saudi Arabia", qat: "Qatar", omn: "Oman", kwt: "Kuwait", mys: "Malaysia", zwe: "Zimbabwe" };
 async function search() {
   const [s, b] = await Promise.all([api("/api/search"), api("/api/bing").catch((e): Row => ({ errors: [String(e.message)] }))]);
-  const delta = (a: number | null, b: number | null, lowerBetter = false) => {
-    if (a == null || b == null || !b) return "";
-    const d = (a - b) / b, good = lowerBetter ? d < 0 : d > 0;
-    return ` ${badge(`${d > 0 ? "+" : ""}${(d * 100).toFixed(0)}%`, Math.abs(d) < 0.02 ? "plain" : good ? "good" : "bad")}`;
-  };
-  const pos = (v: number | null) => (v == null ? "–" : v.toFixed(1));
+  const pos = (v: number | null | undefined) => (v == null ? "–" : v.toFixed(1));
   const l7 = s.last7 || {}, p7 = s.prev7 || {};
-  const cols: Col<Row>[] = [{ key: "key", label: "", render: (r) => esc(r.key.replace(/^https?:\/\/[^/]+/, "") || r.key) },
+  const Q = (s.queries || []) as Row[], P = (s.pages || []) as Row[];
+  const prevQ = new Map(((s.queriesPrev || []) as Row[]).map((r) => [r.key, r])), prevP = new Map(((s.pagesPrev || []) as Row[]).map((r) => [r.key, r]));
+  const hasPrev = prevQ.size > 0 || prevP.size > 0;
+  const withChange = (rows: Row[], prev: Map<string, Row>): Row[] => rows.map((r) => ({ ...r, was: prev.get(r.key) ?? null,
+    dClicks: r.clicks - (prev.get(r.key)?.clicks ?? 0), dPos: prev.get(r.key) ? prev.get(r.key)!.position - r.position : null }));
+  const QC = withChange(Q, prevQ), PC = withChange(P, prevP);
+  const fresh = QC.filter((r) => !r.was && r.impressions >= 5);
+  const pageOne = QC.filter((r) => r.position > 7.5 && r.position <= 15 && r.impressions >= 20);
+  const change = (v: number | null, digits = 0) => (v == null ? "–" : Math.abs(v) < (digits ? 0.05 : 0.5) ? `<span class="dl0">same</span>`
+    : `<span class="dlt ${v > 0 ? "up" : "down"}">${v > 0 ? "▲" : "▼"} ${digits ? Math.abs(v).toFixed(digits) : n(Math.abs(v))}</span>`);
+  const cols: Col<Row>[] = [{ key: "key", label: "", render: (r) => esc(path0(r.key)) },
     { key: "clicks", label: "Clicks", num: true, render: (r) => n(r.clicks) }, { key: "impressions", label: "Impressions", num: true, render: (r) => n(r.impressions) },
     { key: "ctr", label: "CTR", num: true, render: (r) => pct(r.ctr, 1) }, { key: "position", label: "Position", num: true, render: (r) => pos(r.position) }];
+  const colsChange: Col<Row>[] = [...cols,
+    { key: "dClicks", label: "Clicks vs before", num: true, render: (r) => (r.was ? change(r.dClicks) : badge("New", "info")) },
+    { key: "dPos", label: "Position vs before", num: true, sort: (r) => r.dPos ?? -99, render: (r) => change(r.dPos, 1) }];
+  const colsMove: Col<Row>[] = [cols[0], { key: "clicks", label: "Clicks", num: true, render: (r) => n(r.clicks) }, colsChange[5], colsChange[6]];
+  const sdelta = (a: number | null, b2: number | null, lowerBetter = false) => (a == null || b2 == null ? "" : ` ${delta(a, b2, lowerBetter)}`);
   main().innerHTML = head("Search (Google and Bing)") + `<p class="muted">${esc(s.site || "")} · last 28 days · Google's data lags 2–3 days · updated ${ago(s.built)} ·
       <a href="https://search.google.com/search-console/performance/search-analytics?resource_id=${encodeURIComponent(s.site || "")}" target="_blank" rel="noopener">Open Search Console</a></p>`
-    + (s.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${s.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+    + warnBox(s.errors) + `
     <div class="tiles">
-      ${tile("Clicks (7 days)", n(l7.clicks) + delta(l7.clicks, p7.clicks), `${n(s.total?.clicks)} in 28 days`)}
-      ${tile("Impressions (7 days)", n(l7.impressions) + delta(l7.impressions, p7.impressions), `${n(s.total?.impressions)} in 28 days`)}
-      ${tile("Click-through rate", pct(l7.ctr, 1), "last 7 days")}
-      ${tile("Average position", pos(l7.position) + delta(l7.position, p7.position, true), "last 7 days · lower is better")}
+      ${tile("Clicks (7 days)", n(l7.clicks) + sdelta(l7.clicks, p7.clicks), `${n(p7.clicks)} the week before · ${n(s.total?.clicks)} in 28 days`)}
+      ${tile("Impressions (7 days)", n(l7.impressions) + sdelta(l7.impressions, p7.impressions), `times we appeared in results · ${n(s.total?.impressions)} in 28 days`)}
+      ${tile("Click-through rate", pct(l7.ctr, 1) + sdelta(l7.ctr, p7.ctr), "clicks ÷ impressions, last 7 days")}
+      ${tile("Average position", pos(l7.position) + sdelta(l7.position, p7.position, true), "last 7 days · 1 is the top result, 10 is the end of page one")}
+      ${tile("Queries with clicks", n(Q.filter((r) => r.clicks > 0).length), `of ${n(Q.length)} queries we show for`)}
+      ${tile("Pages in results", n(P.length), `${n(P.filter((r) => r.position <= 10).length)} on page one`)}
+      ${tile("New queries", hasPrev ? n(fresh.length) : "–", hasPrev ? "not seen in the 28 days before" : "needs the previous period")}
     </div>
-    ${s.daily?.length ? `<section class="card">${bars(s.daily, [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Clicks per day" })}</section>
-      <section class="card">${bars(s.daily, [{ key: "impressions", label: "Impressions", color: S1 }], { x: "day", title: "Impressions per day" })}</section>` : ""}
-    <section class="card"><h2>Quick wins</h2>${note("Pages Google shows often (50+ impressions, top 20) but few click (under 2%). A clearer title and description can lift clicks without new content.")}<div id="wins"></div></section>
-    <section class="card"><h2>Top search queries</h2>${note("What people typed before they saw us. CTR is clicks ÷ impressions.")}<div id="q"></div></section>
+    ${s.daily?.length ? `<div class="grid2">
+      <section class="card">${bars(s.daily, [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Clicks per day", sub: "Visits from Google search." })}</section>
+      <section class="card">${bars(s.daily, [{ key: "impressions", label: "Impressions", color: S1 }], { x: "day", title: "Impressions per day", sub: "How often we appeared. Rising impressions come before rising clicks." })}</section>
+    </div>
+    <div class="grid2">
+      <section class="card">${bars(s.daily.map((d: Row) => ({ day: d.day, p: Math.round(d.position * 10) / 10 })), [{ key: "p", label: "Position", color: S2 }],
+        { x: "day", title: "Average position per day", sub: "Lower is better. A drop in the line is good news.", fmt: (v) => v.toFixed(1), total: false })}</section>
+      <section class="card">${bars(s.daily.map((d: Row) => ({ day: d.day, c: Math.round(d.ctr * 1000) / 10 })), [{ key: "c", label: "CTR", color: S2 }],
+        { x: "day", title: "Click-through rate per day", sub: "Share of impressions that became clicks.", fmt: (v) => `${v}%`, total: false })}</section>
+    </div>` : ""}
+    <div class="grid2">
+      <section class="card"><h2>Quick wins</h2>${note("Pages Google shows often (50+ impressions, top 20) but few click (under 2%). A clearer title and description can lift clicks without new content.")}<div id="wins"></div></section>
+      <section class="card"><h2>Close to page one</h2>${note("Queries where we sit just past the top results (position 8 to 15). A little more content or a few links can move them up.")}<div id="near"></div></section>
+    </div>
+    <section class="card"><h2>Top search queries</h2>${note(hasPrev ? "What people typed before they saw us, against the 28 days before." : "What people typed before they saw us.")}<div id="q"></div></section>
+    ${hasPrev ? `<div class="grid2"><section class="card"><h2>Rising queries</h2>${note("Most extra clicks against the 28 days before.")}<div id="up"></div></section>
+      <section class="card"><h2>Falling queries</h2>${note("Most clicks lost. Check the page still answers the search.")}<div id="down"></div></section></div>` : ""}
     <section class="card"><h2>Top pages</h2>${note("Pages that appear in Google results.")}<div id="p"></div></section>
-    <div class="grid2"><section class="card"><h2>Countries</h2><div id="c"></div></section>
-      <section class="card"><h2>Devices</h2><div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2>${note("When Google last read each sitemap and how many URLs it found.")}<div id="sm"></div></section></div>`;
-  main().insertAdjacentHTML("beforeend", `<h2 class="sec">Bing</h2>${b.errors?.length ? `<div class="warn"><ul>${b.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
+    <div class="grid2"><section class="card"><h2>Countries</h2>${note("Where searchers are.")}<div id="c"></div></section>
+      <section class="card"><h2>Devices</h2>${note("Phone, desktop or tablet.")}<div id="d"></div><h2 style="margin-top:16px">Sitemaps</h2>${note("When Google last read each sitemap and how many URLs it found.")}<div id="sm"></div></section></div>`;
+  main().insertAdjacentHTML("beforeend", `<h2 class="sec">Bing</h2>${note("Bing results also power DuckDuckGo and Yahoo.")}${b.errors?.length ? `<div class="warn"><ul>${b.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : ""}
     ${b.daily ? `<div class="tiles">${tile("Bing clicks (7 days)", n(b.last7?.clicks), `${n(b.total?.clicks)} in the period`)}${tile("Bing impressions (7 days)", n(b.last7?.impressions), `${n(b.total?.impressions)} in the period`)}</div>
       ${b.daily.length ? `<section class="card">${bars(b.daily.slice(-30), [{ key: "clicks", label: "Clicks", color: S1 }], { x: "day", title: "Bing clicks per day" })}</section>` : ""}
       <div class="grid2"><section class="card"><h2>Bing queries</h2><div id="bq"></div></section><section class="card"><h2>Bing pages</h2><div id="bp"></div></section></div>` : ""}`);
@@ -811,50 +907,71 @@ async function search() {
     table($("#bq")!, cols, b.queries || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing queries yet." });
     table($("#bp")!, cols, b.pages || [], { initial: { key: "clicks", desc: true }, limit: 15, empty: "No Bing pages yet." });
   }
-  table($("#wins")!, cols, ((s.pages || []) as Row[]).filter((r) => r.impressions >= 50 && r.ctr < 0.02 && r.position <= 20),
-    { initial: { key: "impressions", desc: true }, limit: 10, empty: "None right now." });
-  table($("#q")!, cols, s.queries || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No search queries yet." });
-  table($("#p")!, cols, s.pages || [], { initial: { key: "clicks", desc: true }, limit: 25, empty: "No pages with impressions yet." });
-  table($("#c")!, cols, s.countries || [], { initial: { key: "clicks", desc: true } });
-  table($("#d")!, cols, s.devices || [], { initial: { key: "clicks", desc: true } });
-  table($("#sm")!, [{ key: "path", label: "Sitemap", render: (r) => esc(r.path.replace(/^https?:\/\/[^/]+/, "")) },
+  table($("#wins")!, cols, P.filter((r) => r.impressions >= 50 && r.ctr < 0.02 && r.position <= 20), { initial: { key: "impressions", desc: true }, limit: 10, empty: "None right now." });
+  table($("#near")!, cols, pageOne, { initial: { key: "impressions", desc: true }, limit: 10, empty: "None right now." });
+  table($("#q")!, hasPrev ? colsChange : cols, QC, { initial: { key: "clicks", desc: true }, limit: 25, empty: "No search queries yet." });
+  if (hasPrev) {
+    table($("#up")!, colsMove, QC.filter((r) => r.dClicks > 0), { initial: { key: "dClicks", desc: true }, limit: 10, empty: "Nothing rising yet." });
+    table($("#down")!, colsMove, QC.filter((r) => r.dClicks < 0), { initial: { key: "dClicks", desc: false }, limit: 10, empty: "Nothing falling." });
+  }
+  table($("#p")!, hasPrev ? colsChange : cols, PC, { initial: { key: "clicks", desc: true }, limit: 25, empty: "No pages with impressions yet." });
+  table($("#c")!, [{ ...cols[0], render: (r) => esc(A3[r.key] || r.key.toUpperCase()) }, ...cols.slice(1)], s.countries || [], { initial: { key: "clicks", desc: true } });
+  table($("#d")!, [{ ...cols[0], render: (r) => esc(r.key[0] + r.key.slice(1).toLowerCase()) }, ...cols.slice(1)], s.devices || [], { initial: { key: "clicks", desc: true } });
+  table($("#sm")!, [{ key: "path", label: "Sitemap", render: (r) => esc(path0(r.path)) },
     { key: "lastDownloaded", label: "Last read", render: (r) => ago(r.lastDownloaded) },
     { key: "submitted", label: "URLs", num: true, render: (r) => n(r.submitted) },
     { key: "errors", label: "Issues", render: (r) => (r.errors ? badge(`${r.errors} errors`, "bad") : r.warnings ? badge(`${r.warnings} warnings`, "warn") : r.pending ? badge("Pending", "info") : badge("OK", "good")) }],
     s.sitemaps || [], { empty: "No sitemaps submitted." });
 }
 
-// ── traffic ──
+// ── traffic (Cloudflare: every visitor, no cookies) ──
 async function traffic() {
   const t = await api("/api/traffic");
-  const rum = t.rum, zone = t.zone as Row[] | null, wk = t.workers as Row[] | null;
-  const scripts: Record<string, { today: number; d30: number; errors: number }> = {};
-  const today = new Date().toISOString().slice(0, 10);
+  const rum = t.rum, zone = t.zone as Row[] | null, wk = t.workers as Row[] | null, ag = t.agents;
+  const scripts: Record<string, { today: number; d7: number; d30: number; errors: number }> = {};
+  const today = new Date().toISOString().slice(0, 10), from7 = new Date(Date.now() - 7 * DAY).toISOString().slice(0, 10);
   const perDay: Record<string, number> = {};
   for (const r of wk || []) {
-    const s = (scripts[r.script] ||= { today: 0, d30: 0, errors: 0 });
+    const s = (scripts[r.script] ||= { today: 0, d7: 0, d30: 0, errors: 0 });
     s.d30 += r.requests; s.errors += r.errors;
     if (r.day === today) s.today += r.requests;
+    if (r.day >= from7) s.d7 += r.requests;
     perDay[r.day] = (perDay[r.day] || 0) + r.requests;
   }
-  const sum = (rows: Row[] | undefined, k: string, from = 0) => (rows || []).slice(from).reduce((s, r) => s + Number(r[k] || 0), 0);
-  main().innerHTML = head("Traffic") + (t.errors?.length ? `<div class="warn"><b>Some data is missing:</b><ul>${t.errors.map((e: string) => `<li>${esc(e)}</li>`).join("")}</ul></div>` : "") + `
+  const R = (rum?.days || []) as Row[];
+  const v7 = sumOf(R, "views", -7), vP = sumOf(R, "views", -14, -7), s7 = sumOf(R, "visits", -7), sP = sumOf(R, "visits", -14, -7);
+  const req30 = sumOf(zone || [], "requests"), cached30 = sumOf(zone || [], "cached"), threats30 = sumOf(zone || [], "threats"), bytes30 = sumOf(zone || [], "bytes");
+  const wToday = Object.values(scripts).reduce((s, x) => s + x.today, 0);
+  const top = (rows: Row[] | undefined) => ranked((rows || []).map((r) => ({ name: r.name, value: r.views })));
+  main().innerHTML = head("Traffic") + warnBox(t.errors) + `<p class="muted">Counted by Cloudflare for every visitor, with no cookies, so these numbers run higher than Google Analytics.</p>
     <div class="tiles">
-      ${tile("Page views (7 days)", rum ? n(sum(rum.days, "views", -7)) : "–", rum ? `${n(sum(rum.days, "visits", -7))} visits · Web Analytics` : "Web Analytics not connected")}
-      ${tile("Page views (30 days)", rum ? n(sum(rum.days, "views")) : "–", rum ? `${n(sum(rum.days, "visits"))} visits` : "")}
-      ${tile("Unique visitors (yesterday)", n(zone?.at(-2)?.uniques), "all requests to the domain")}
-      ${tile("Worker requests today", n(Object.values(scripts).reduce((s, x) => s + x.today, 0)), "of 100,000 a day on the free plan")}
-      ${tile("Pages per visit", rum && sum(rum.days, "visits", -7) ? (sum(rum.days, "views", -7) / sum(rum.days, "visits", -7)).toFixed(1) : "–", "page views ÷ visits, 7 days")}
+      ${tile("Page views (7 days)", rum ? `${n(v7)} ${delta(v7, vP)}` : "–", rum ? `${n(vP)} the week before · ${n(sumOf(R, "views"))} in 30 days` : "Web Analytics not connected")}
+      ${tile("Visits (7 days)", rum ? `${n(s7)} ${delta(s7, sP)}` : "–", rum ? `${n(sP)} the week before` : "")}
+      ${tile("Pages per visit", s7 ? (v7 / s7).toFixed(1) : "–", "page views ÷ visits, 7 days")}
+      ${tile("Unique visitors (yesterday)", n(zone?.at(-2)?.uniques), "all requests to the domain, bots included")}
+      ${tile("Requests (30 days)", zone ? n(req30) : "–", zone ? `${pct(ratio(cached30, req30))} served from cache` : "")}
+      ${tile("Data served (30 days)", zone ? bytes(bytes30) : "–", "everything sent to browsers and the app")}
+      ${tile("Threats blocked (30 days)", zone ? n(threats30) : "–", "bad bots and attacks Cloudflare stopped")}
+      ${tile("Worker requests today", n(wToday), `${pct(wToday / 100000)} of 100,000 a day on the free plan`)}
     </div>
-    ${note("Counted by Cloudflare for every visitor, with no cookies, so these numbers are higher than Google Analytics.")}
-    ${rum ? `<section class="card">${bars(rum.days, [{ key: "views", label: "Page views", color: S1 }], { x: "day", title: "Page views per day (Web Analytics, 30 days)", sub: "Every visitor, cookies or not." })}</section>
-    <div class="grid2"><section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages.")}${ranked(rum.pages.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
-      <section class="card"><h2>Countries (7 days)</h2>${ranked(rum.countries.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>
-    <div class="grid2"><section class="card"><h2>Referrers (7 days)</h2>${note("Sites that sent visitors. Direct visits aren't listed.")}${ranked(rum.referrers.map((r: Row) => ({ name: r.name, value: r.views })))}</section>
-      <section class="card"><h2>Devices (7 days)</h2>${ranked(rum.devices.map((r: Row) => ({ name: r.name, value: r.views })))}</section></div>` : ""}
+    ${rum ? `<div class="grid2">
+      <section class="card">${bars(R, [{ key: "views", label: "Page views", color: S1 }], { x: "day", title: "Page views per day", sub: "Every visitor, last 30 days." })}</section>
+      <section class="card">${bars(R, [{ key: "visits", label: "Visits", color: S1 }], { x: "day", title: "Visits per day", sub: "A visit is one arrival from outside the site." })}</section>
+    </div>
+    <div class="grid2"><section class="card"><h2>Top pages (7 days)</h2>${note("Most viewed pages.")}${top(rum.pages)}</section>
+      <section class="card"><h2>Referrers (7 days)</h2>${note("Sites that sent visitors. Direct visits aren't listed.")}${top(rum.referrers)}</section></div>
+    <div class="grid2"><section class="card"><h2>Countries (7 days)</h2>${note("Page views by country.")}${top(rum.countries)}</section>
+      <section class="card"><h2>Devices (7 days)</h2>${note("Phone, desktop or tablet.")}${top(rum.devices)}</section></div>` : ""}
+    ${ag ? `<div class="grid2"><section class="card"><h2>Browsers (7 days)</h2>${note("Test new pages in the top two.")}${top(ag.browsers)}</section>
+      <section class="card"><h2>Operating systems (7 days)</h2>${note("Android against iPhone tells us where the app matters most.")}${top(ag.os)}</section></div>` : ""}
     ${t.vitals ? vitalsHtml(t.vitals) : ""}
-    ${zone ? `<section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day (all requests to the domain)", sub: "Includes bots and the app's data requests, so it runs higher than page views.", total: false })}</section>` : ""}
-    ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }], { x: "day", title: "Worker requests per day (all scripts)", sub: "The API, the AI connector and this console. The free plan allows 100,000 a day." })}
+    ${zone ? `<div class="grid2">
+      <section class="card">${bars(zone.map((r) => ({ day: r.day, c: r.cached, o: Math.max(0, r.requests - r.cached) })), [{ key: "c", label: "From cache", color: S1 }, { key: "o", label: "From the server", color: S2 }],
+        { x: "day", title: "Requests per day", sub: "Pages, data files and the app. Cached requests cost nothing and load fastest." })}</section>
+      <section class="card">${bars(zone, [{ key: "uniques", label: "Unique visitors", color: S1 }], { x: "day", title: "Unique visitors per day", sub: "Includes bots and the app's data requests, so it runs higher than visits.", total: false })}</section>
+    </div>` : ""}
+    ${wk ? `<section class="card">${bars(Object.entries(perDay).sort().map(([d, v]) => ({ day: d, requests: v })), [{ key: "requests", label: "Requests", color: S1 }],
+        { x: "day", title: "Worker requests per day (all scripts)", sub: "The API, the AI connector and this console. The free plan allows 100,000 a day across all of them." })}
       <div id="scripts"></div></section>` : ""}`;
   if (t.vitals) {
     const vcols: Col<Row>[] = [{ key: "name", label: "" }, { key: "samples", label: "Samples", num: true, render: (r) => n(r.samples) },
@@ -864,7 +981,8 @@ async function traffic() {
     table($("#cwv-dev")!, vcols, t.vitals.devices || [], { initial: { key: "samples", desc: true }, empty: "No samples yet." });
   }
   if (wk) table($("#scripts")!, [{ key: "script", label: "Worker" }, { key: "today", label: "Today", num: true, render: (r) => n(r.today) },
-    { key: "d30", label: "30 days", num: true, render: (r) => n(r.d30) }, { key: "errors", label: "Errors (30d)", num: true, render: (r) => n(r.errors) }],
+    { key: "d7", label: "7 days", num: true, render: (r) => n(r.d7) }, { key: "d30", label: "30 days", num: true, render: (r) => n(r.d30) },
+    { key: "errors", label: "Errors (30d)", num: true, render: (r) => `${n(r.errors)}${r.d30 ? ` <small class="muted">${pct(r.errors / r.d30, 2)}</small>` : ""}` }],
     Object.entries(scripts).map(([script, v]) => ({ script, ...v })), { initial: { key: "d30", desc: true } });
 }
 

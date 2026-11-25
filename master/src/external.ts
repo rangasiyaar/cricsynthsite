@@ -50,6 +50,20 @@ export async function traffic(env: Env, now = new Date()) {
              referrers: pick(a.referrers, "refererHost"), devices: pick(a.devices, "deviceType") };
   });
 
+  // browsers and operating systems (7 days), separate so an unsupported field can't break the main query
+  const agents = await part(errors, "Browsers", async () => {
+    const sites = (await cf(env, `/accounts/${acct}/rum/site_info/list?per_page=50`)).result || [];
+    const s = sites.find((x: Row) => x.host === host || x.ruleset?.zone_name === host) || sites[0];
+    if (!s) throw new Error("Web Analytics not turned on");
+    const f7 = { siteTag: s.site_tag, datetime_geq: since7, datetime_leq: until };
+    const top = (dim: string) => `rumPageloadEventsAdaptiveGroups(limit: 8, filter: $f7, orderBy: [count_DESC]) { count dimensions { ${dim} } }`;
+    const d = await gql(env, `query($acct: String!, $f7: AccountRumPageloadEventsAdaptiveGroupsFilter_InputObject) {
+      viewer { accounts(filter: { accountTag: $acct }) { browsers: ${top("userAgentBrowser")} os: ${top("userAgentOS")} } } }`, { acct, f7 });
+    const a = d?.viewer?.accounts?.[0] || {};
+    const pick = (rows: Row[] = [], dim: string) => rows.map((r) => ({ name: r.dimensions?.[dim] || "(none)", views: r.count }));
+    return { browsers: pick(a.browsers, "userAgentBrowser"), os: pick(a.os, "userAgentOS") };
+  });
+
   // Core Web Vitals from the same beacon (p75 per page and device; Google's thresholds in the UI)
   const vitals = await part(errors, "Core Web Vitals", async () => {
     const sites = (await cf(env, `/accounts/${acct}/rum/site_info/list?per_page=50`)).result || [];
@@ -93,7 +107,7 @@ export async function traffic(env: Env, now = new Date()) {
       script: r.dimensions.scriptName, requests: r.sum.requests, errors: r.sum.errors }));
   });
 
-  return { built: now.toISOString(), host, rum, vitals, zone, workers, errors };
+  return { built: now.toISOString(), host, rum, agents, vitals, zone, workers, errors };
 }
 
 // ── GitHub ──
@@ -188,6 +202,24 @@ type GaRow = { dims: string[]; mets: number[] };
 const rows = (r: any): GaRow[] => (r?.rows || []).map((x: any) => ({
   dims: (x.dimensionValues || []).map((d: any) => d.value), mets: (x.metricValues || []).map((m: any) => Number(m.value)) }));
 
+/** Week totals (this week and the one before) and the extra breakdowns on the Product page. */
+export const GA_TOTALS = ["activeUsers", "newUsers", "sessions", "engagedSessions", "engagementRate", "averageSessionDuration", "screenPageViews", "eventCount"];
+export function gaMore(totals: any, landing: any, channels: any, cities: any, os: any, pageTime: any) {
+  const keys = ["users", "newUsers", "sessions", "engaged", "engagementRate", "avgSession", "views", "events"];
+  const week = (name: string) => {
+    const r = rows(totals).find((x) => x.dims[0] === name) || (name === "cur" && rows(totals).length === 1 ? rows(totals)[0] : null);
+    return r ? Object.fromEntries(keys.map((k, i) => [k, r.mets[i] ?? null])) : null;
+  };
+  const pair = (r: any) => rows(r).map((x) => ({ name: x.dims[0] || "(none)", value: x.mets[0] }));
+  return {
+    week: totals ? { cur: week("cur"), prev: week("prev") } : null,
+    landing: rows(landing).map((x) => ({ name: x.dims[0] || "(none)", sessions: x.mets[0], engagement: x.mets[1] })),
+    channels: pair(channels), cities: pair(cities), os: pair(os),
+    pageTime: rows(pageTime).map((x) => ({ name: x.dims[0] || "(none)", views: x.mets[0], users: x.mets[1],
+      secs: x.mets[1] ? x.mets[2] / x.mets[1] : null })),
+  };
+}
+
 export function gaShape(daily: any, events: any, pages: any, sources: any, countries: any, devices: any, nvr: any, live: any) {
   const ev = rows(events).map((r) => ({ name: r.dims[0], count: r.mets[0], users: r.mets[1] }));
   const users = (n: string) => ev.find((e) => e.name === n)?.users ?? 0;
@@ -221,7 +253,17 @@ export async function analytics(env: Env, google: { ga: (p: string, m: "runRepor
     get("New vs returning", () => report(["newVsReturning"], ["activeUsers"], d30, 5)),
     get("Realtime", () => google.ga(p, "runRealtimeReport", { metrics: [{ name: "activeUsers" }] })),
   ]);
-  return { built: new Date().toISOString(), property: p, ...gaShape(daily, events, pages, sources, countries, devices, nvr, live), errors };
+  const wk = [{ startDate: "6daysAgo", endDate: "today", name: "cur" }, { startDate: "13daysAgo", endDate: "7daysAgo", name: "prev" }];
+  const [totals, landing, channels, cities, os, pageTime] = await Promise.all([
+    get("Totals", () => google.ga(p, "runReport", { dateRanges: wk, metrics: GA_TOTALS.map((name) => ({ name })) })),
+    get("Landing pages", () => report(["landingPage"], ["sessions", "engagementRate"], d7, 12)),
+    get("Channels", () => report(["sessionDefaultChannelGroup"], ["sessions"], d7, 10)),
+    get("Cities", () => report(["city"], ["activeUsers"], d7, 12)),
+    get("Operating systems", () => report(["operatingSystem"], ["activeUsers"], d7, 8)),
+    get("Time on page", () => report(["pagePath"], ["screenPageViews", "activeUsers", "userEngagementDuration"], d7, 15)),
+  ]);
+  return { built: new Date().toISOString(), property: p, ...gaShape(daily, events, pages, sources, countries, devices, nvr, live),
+           ...gaMore(totals, landing, channels, cities, os, pageTime), errors };
 }
 
 // ── Microsoft Clarity (data export: last 1–3 days, 10 calls a day per project) ──
@@ -273,14 +315,17 @@ export function scShape(daily: any, queries: any, pages: any, countries: any, de
 export async function search(env: Env, google: { sc: (site: string, path: string, body?: Row) => Promise<any> }, now = new Date()) {
   const site = env.SC_SITE || "sc-domain:cricsynthesis.in";
   const day = (n: number) => new Date(now.getTime() - n * 86400_000).toISOString().slice(0, 10);
-  const q = (dimensions: string[], rowLimit: number, from = 27) =>
-    google.sc(site, "/searchAnalytics/query", { startDate: day(from), endDate: day(0), dimensions, rowLimit, dataState: "all" });
+  const q = (dimensions: string[], rowLimit: number, from = 27, to = 0) =>
+    google.sc(site, "/searchAnalytics/query", { startDate: day(from), endDate: day(to), dimensions, rowLimit, dataState: "all" });
   const errors: string[] = [];
   const get = (name: string, f: () => Promise<any>) => f().catch((e) => { errors.push(`${name}: ${String(e.message || e).slice(0, 200)}`); return null; });
   const [daily, queries, pages, countries, devices, sitemaps] = await Promise.all([
     get("Daily", () => q(["date"], 60, 34)), get("Queries", () => q(["query"], 50)), get("Pages", () => q(["page"], 50)),
     get("Countries", () => q(["country"], 12)), get("Devices", () => q(["device"], 5)), get("Sitemaps", () => google.sc(site, "/sitemaps"))]);
-  return { built: now.toISOString(), site, ...scShape(daily, queries, pages, countries, devices, sitemaps), errors };
+  // the 28 days before, to show what moved
+  const [qPrev, pPrev] = await Promise.all([get("Queries before", () => q(["query"], 100, 55, 28)), get("Pages before", () => q(["page"], 100, 55, 28))]);
+  const prev = (x: any) => (x?.rows || []).map((r: ScRow) => ({ key: r.keys?.[0] ?? "", clicks: r.clicks, impressions: r.impressions, ctr: r.ctr, position: r.position }));
+  return { built: now.toISOString(), site, ...scShape(daily, queries, pages, countries, devices, sitemaps), queriesPrev: prev(qPrev), pagesPrev: prev(pPrev), errors };
 }
 
 // ── free-tier meters: today's use against each free limit (Firestore via Cloud Monitoring; Workers via Cloudflare) ──

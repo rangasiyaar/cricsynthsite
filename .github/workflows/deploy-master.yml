@@ -14,7 +14,7 @@ on:
         required: false
   push:
     branches: [claude/cricsynthesis-platform]
-    paths: ["master/**", "edge/src/google.ts", "edge/src/oauth.ts", "edge/src/keys.ts", "infra/cf_analytics.py", ".github/workflows/deploy-master.yml"]
+    paths: ["master/**", "app/lib/pro.ts", "app/lib/plans.ts", "edge/src/google.ts", "edge/src/oauth.ts", "edge/src/keys.ts", "infra/cf_analytics.py", ".github/workflows/deploy-master.yml"]
 
 permissions:
   contents: read
