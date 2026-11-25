@@ -1,0 +1,356 @@
+{
+ "id": "sl-w-v-ire-w-t20-ajman-2026-11-25",
+ "innings": [
+  {
+   "team": "Ireland Women",
+   "runs": 96,
+   "wickets": 10,
+   "overs": "19.3",
+   "batting": [
+    {
+     "name": "Amy Hunter",
+     "dismissal": "lbw b SMS Kumari",
+     "runs": 10,
+     "balls": 15,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Gaby Lewis",
+     "dismissal": "b SP Sandeepani",
+     "runs": 4,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Lara Maritz",
+     "dismissal": "c ID Witharana b SP Sandeepani",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Louise Little",
+     "dismissal": "b K Dilhari",
+     "runs": 15,
+     "balls": 17,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Delany",
+     "dismissal": "runout (K Nuthyangana / ID Witharana)",
+     "runs": 7,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Alana Dalzell",
+     "dismissal": "st K Nuthyangana b SP Sandeepani",
+     "runs": 24,
+     "balls": 25,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Abbi Harrison",
+     "dismissal": "st K Nuthyangana b NM Meepage",
+     "runs": 5,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Georgina Dempsey",
+     "dismissal": "runout (K Nuthyangana / VR Gunaratne)",
+     "runs": 13,
+     "balls": 13,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Cara Murray",
+     "dismissal": "c ID Witharana b SP Sandeepani",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Aimee Maguire",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kia Mccartney",
+     "dismissal": "b C Vimukthi",
+     "runs": 1,
+     "balls": 4,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Sathya Sandeepani",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 4,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Chethana Vimukthi",
+     "overs": "3.3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Sugandika Kumari",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 19,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nimasha Madushani Meepage",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 21,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kavisha Dilhari",
+     "overs": "4",
+     "maidens": 1,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Gaby Lewis",
+     "score": 5,
+     "over": "0.4"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lara Maritz",
+     "score": 10,
+     "over": "2.2"
+    },
+    {
+     "wicket": 3,
+     "batter": "Louise Little",
+     "score": 34,
+     "over": "6.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Amy Hunter",
+     "score": 40,
+     "over": "7.6"
+    },
+    {
+     "wicket": 5,
+     "batter": "Laura Delany",
+     "score": 44,
+     "over": "9.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Abbi Harrison",
+     "score": 54,
+     "over": "11.4"
+    },
+    {
+     "wicket": 7,
+     "batter": "Georgina Dempsey",
+     "score": 82,
+     "over": "15.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Cara Murray",
+     "score": 88,
+     "over": "17.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Alana Dalzell",
+     "score": 89,
+     "over": "17.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Kia Mccartney",
+     "score": 96,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 2,
+    "lb": 1,
+    "w": 4,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 34
+  },
+  {
+   "team": "Sri Lanka Women",
+   "runs": 99,
+   "wickets": 4,
+   "overs": "12.4",
+   "batting": [
+    {
+     "name": "Vishmi Rajapaksha Gunaratne",
+     "dismissal": "lbw b C Murray",
+     "runs": 10,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Sanjana Kavindi",
+     "dismissal": "c G Dempsey b K Mccartney",
+     "runs": 25,
+     "balls": 22,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Harshitha Samarawickrama",
+     "dismissal": "lbw b K Mccartney",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Imesha Dulani",
+     "dismissal": "not out",
+     "runs": 44,
+     "balls": 25,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Kaushani Nuthyangana",
+     "dismissal": "b C Murray",
+     "runs": 3,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Kavisha Dilhari",
+     "dismissal": "not out",
+     "runs": 16,
+     "balls": 10,
+     "fours": 2,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Georgina Dempsey",
+     "overs": "2.4",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Aimee Maguire",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kia Mccartney",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Cara Murray",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 38,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Louise Little",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 6,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sanjana Kavindi",
+     "score": 35,
+     "over": "5.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Harshitha Samarawickrama",
+     "score": 35,
+     "over": "5.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Vishmi Rajapaksha Gunaratne",
+     "score": 49,
+     "over": "6.5"
+    },
+    {
+     "wicket": 4,
+     "batter": "Kaushani Nuthyangana",
+     "score": 69,
+     "over": "8.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 0,
+    "nb": 1,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Sri Lanka Women won by 6 wickets",
+ "winner": "Sri Lanka Women"
+}
