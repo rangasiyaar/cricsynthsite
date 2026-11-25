@@ -793,3 +793,22 @@ body:has(.cs-consent) .app-promo { display: none; }
 .co-done-icon svg { width: 32px; height: 32px; }
 .co-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
 @media (max-width: 800px) { .co-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* MatchSynth Lab: quick scenarios, share and save, what moved it (components/ScenarioLab.tsx) */
+.lab-preset-groups { display: flex; flex-wrap: wrap; gap: 6px; }
+.lab-preset-groups button { font: 600 12px var(--cs-body, inherit); padding: 5px 10px; border-radius: 999px; border: 1px solid var(--cs-line); background: none; color: var(--cs-ink-2); cursor: pointer; }
+.lab-preset-groups button.on { background: var(--cs-steel); border-color: var(--cs-steel); color: var(--cs-paper); }
+.lab-preset-list { display: grid; gap: 6px; }
+.lab-preset { display: grid; gap: 3px; text-align: left; padding: 9px 12px; border-radius: var(--r-btn, 8px); border: 1px solid var(--cs-line); background: var(--cs-bg); color: var(--cs-ink); cursor: pointer; font: inherit; }
+.lab-preset b { font-size: 14px; font-weight: 600; }
+.lab-preset span { font-size: 12.5px; line-height: 1.45; color: var(--cs-ink-2); }
+.lab-preset:hover { border-color: var(--cs-steel); }
+.lab-preset.on { border-color: var(--cs-steel); box-shadow: inset 3px 0 0 var(--cs-steel); }
+.lab-saved { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.lab-saved-item { display: inline-flex; align-items: center; gap: 4px; }
+.lab-saved-item .iconbtn { width: 24px; height: 24px; font-size: 11px; border-radius: 6px; }
+.linkish { background: none; border: 0; padding: 0; color: var(--cs-steel); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.lab-why { display: grid; gap: 6px; margin-top: 8px; }
+.lab-why > div { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(60px, 1fr) auto; gap: 10px; align-items: center; }
+.lab-why-bar { height: 6px; border-radius: 3px; background: var(--cs-surface); overflow: hidden; }
+.lab-why-bar i { display: block; height: 100%; border-radius: 3px; }

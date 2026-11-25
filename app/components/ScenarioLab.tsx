@@ -9,18 +9,14 @@ import { track } from "@/lib/analytics";
 import { loadPack } from "@/lib/data";
 import type { Pack, Scenario } from "@/lib/engine/sim";
 import { num, signed } from "@/lib/format";
+import { DEFAULT, PRESET_GROUPS, applyPreset, buildPresets, decodeLevers, encodeLevers, partsOf, presetOn, type Levers, type PresetGroup } from "@/lib/lab";
+import { SITE } from "@/lib/seo";
 import type { FantasyPicks, MatchDoc, PlayerRow, Summary } from "@/lib/types";
 
 const N = 5000;
 const COLORS = ["var(--team-a)", "var(--team-b)"];
 
-type Levers = {
-  battingFirst: "" | "0" | "1"; boundary: number; wickets: number; spin: number; pace: number; dew: number;
-  form: Record<string, number>; exclude: string[];
-  useSituation: boolean; innings: 1 | 2; runs: number; wkts: number; overs: number; firstTotal: number;
-};
-const DEFAULT: Levers = { battingFirst: "", boundary: 1, wickets: 1, spin: 1, pace: 1, dew: 0, form: {}, exclude: [],
-                          useSituation: false, innings: 1, runs: 50, wkts: 2, overs: 8, firstTotal: 170 };
+const N_PART = 1500;          // simulations per run for "what moved it" (one run per change)
 
 function toScenario(l: Levers, pack: Pack): Scenario {
   const sc: Scenario = { boundaryMult: l.boundary, wicketMult: l.wickets, spinWicketMult: l.spin, paceWicketMult: l.pace,
@@ -67,6 +63,13 @@ function saveLevers(id: string, l: Levers) {
     else localStorage.removeItem(storeKey(id));
   } catch { /* private mode: settings just aren't kept */ }
 }
+// Named scenarios the user saved for this match, on this device only.
+type Saved = { name: string; levers: Levers };
+const savedKey = (id: string) => `cs-lab-saved:${id}`;
+function loadSaved(id: string): Saved[] {
+  try { const v = JSON.parse(localStorage.getItem(savedKey(id)) || "[]"); return Array.isArray(v) ? v.slice(0, 12) : []; } catch { return []; }
+}
+function storeSaved(id: string, list: Saved[]) { try { localStorage.setItem(savedKey(id), JSON.stringify(list)); } catch { /* not kept */ } }
 
 /** The Lab's state for one match: the published baseline, the user's levers and the scenario re-simulated from them.
  *  The website lays it out on one page (ScenarioLab); the app spreads it over screens. */
@@ -79,9 +82,12 @@ export function useLab(doc: MatchDoc) {
   const [levers, setLevers] = useState<Levers>(DEFAULT);
   const [restored, setRestored] = useState(false);
   const worker = useRef<Worker | null>(null);
-  const reqId = useRef(0);
-  const pending = useRef(new Map<number, (s: Summary) => void>());
+  const reqId = useRef(0);            // id of every request to the worker
+  const mainId = useRef(0);           // the latest full scenario run
+  const pending = useRef(new Map<number, (s: any) => void>()); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [fantasy, setFantasy] = useState<FantasyPicks | null>(null);
+  const [savedList, setSavedList] = useState<Saved[]>([]);
+  const [why, setWhy] = useState<{ label: string; d: number }[] | null>(null);
 
   useEffect(() => {
     loadPack(doc.match.id).then(setPack).catch(() => setErr("Simulation data for this match isn't available."));
@@ -91,8 +97,8 @@ export function useLab(doc: MatchDoc) {
       pending.current.delete(e.data.id);
       if (e.data.error) setErr(e.data.error);
       else {
-        if (e.data.id === reqId.current) setFantasy(e.data.fantasy ?? null);      // only the latest scenario's picks
-        cb?.(e.data.full);
+        if (e.data.full && e.data.id === mainId.current) setFantasy(e.data.fantasy ?? null);      // only the latest scenario's picks
+        cb?.(e.data.full ?? e.data.summary);
       }
     };
     worker.current = w;
@@ -101,15 +107,27 @@ export function useLab(doc: MatchDoc) {
 
   const run = (scenario: Scenario) => new Promise<Summary>((resolve) => {
     const id = ++reqId.current;
+    mainId.current = id;
     pending.current.set(id, resolve);
     worker.current!.postMessage({ id, pack, scenario, n: N, seed: 11, full: true });
+  });
+  /** A quick run for the breakdown: win chances only. */
+  const quick = (scenario: Scenario) => new Promise<[number, number]>((resolve) => {
+    const id = ++reqId.current;
+    pending.current.set(id, (s: { win: [number, number] }) => resolve(s.win));
+    worker.current!.postMessage({ id, pack, scenario, n: N_PART, seed: 11 });
   });
 
   useEffect(() => { if (pack) run({}).then((s) => setBase(enrich(s, doc))); }, [pack]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!pack || restored) return;
-    const saved = loadLevers(doc.match.id, pack);
+    // a shared link (#s=…) wins over what this browser had saved
+    const shared = typeof window !== "undefined" ? new URLSearchParams(window.location.hash.slice(1)).get("s") : null;
+    const fromLink = shared ? decodeLevers(shared, pack) : null;
+    const saved = fromLink ?? loadLevers(doc.match.id, pack);
     if (saved) setLevers(saved);
+    if (fromLink) track("lab_shared_open", { match_id: doc.match.id });
+    setSavedList(loadSaved(doc.match.id));
     setRestored(true);
   }, [pack, restored, doc.match.id]);
   useEffect(() => { if (restored) saveLevers(doc.match.id, levers); }, [levers, restored, doc.match.id]);
@@ -122,10 +140,32 @@ export function useLab(doc: MatchDoc) {
     const t = setTimeout(() => {
       const mine = reqId.current + 1;
       if (Date.now() - lastTrack.current > 30_000) { lastTrack.current = Date.now(); track("lab_run", { match_id: doc.match.id }); }
-      run(scenario).then((s) => { if (reqId.current === mine) { setRes(enrich(s, doc)); setBusy(false); } });
+      run(scenario).then((s) => { if (mainId.current === mine) { setRes(enrich(s, doc)); setBusy(false); } });
     }, 250);
     return () => clearTimeout(t);
   }, [scenario, restored]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // what moved it: once the result settles, switch each change off on its own and see how far team 1's chance moves
+  const whyFor = useRef("");
+  useEffect(() => {
+    if (!pack || !restored || busy) return;
+    const parts = partsOf(levers, pack).slice(0, 8);
+    const key = JSON.stringify(levers);
+    if (!parts.length) { setWhy(null); return; }
+    whyFor.current = key;
+    setWhy(null);
+    const t = setTimeout(async () => {
+      const all = await quick(toScenario(levers, pack));
+      const out: { label: string; d: number }[] = [];
+      for (const p of parts) {
+        if (whyFor.current !== key) return;
+        const w = await quick(toScenario(p.without(levers), pack));
+        out.push({ label: p.label, d: all[0] - w[0] });
+      }
+      if (whyFor.current === key) setWhy(out.sort((a, b) => Math.abs(b.d) - Math.abs(a.d)));
+    }, 600);
+    return () => clearTimeout(t);
+  }, [busy, levers, pack, restored]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = res ?? base;
   const labDoc = useMemo<MatchDoc | null>(() => (cur ? { ...doc, summary: cur, insights: [], fantasy: fantasy ? { ...fantasy, scenario: true } : undefined,
@@ -133,8 +173,16 @@ export function useLab(doc: MatchDoc) {
                                             [cur, doc, fantasy]);
   const set = <K extends keyof Levers>(k: K, v: Levers[K]) => setLevers((l) => ({ ...l, [k]: v }));
   const ready = !!(pack && base && cur && labDoc);
-  return { err, ready, pack, base, cur, labDoc, busy, levers, set, reset: () => setLevers(DEFAULT), changed: changed(levers),
-           changes: countChanges(levers), teams: pack ? pack.teams.map((t) => t.name) : [] };
+  const presets = useMemo(() => (pack ? buildPresets(pack, base) : []), [pack, base]);
+  const shareUrl = () => `${SITE}/lab/?id=${encodeURIComponent(doc.match.id)}#s=${encodeLevers(levers)}`;
+  const save = (name: string) => {
+    const list = [{ name, levers }, ...savedList.filter((x) => x.name !== name)].slice(0, 12);
+    setSavedList(list); storeSaved(doc.match.id, list);
+  };
+  const unsave = (name: string) => { const list = savedList.filter((x) => x.name !== name); setSavedList(list); storeSaved(doc.match.id, list); };
+  return { err, ready, pack, base, cur, labDoc, busy, levers, set, setLevers, reset: () => setLevers(DEFAULT), changed: changed(levers),
+           changes: countChanges(levers), teams: pack ? pack.teams.map((t) => t.name) : [], presets, why, shareUrl,
+           saved: savedList, save, unsave, matchId: doc.match.id };
 }
 export type Lab = ReturnType<typeof useLab>;
 
@@ -198,8 +246,107 @@ export function LabResult({ lab, movers = true }: { lab: Lab; movers?: boolean }
         ))}
       </div>
       <WinBar a={teams[0]} b={teams[1]} pa={winOf(lab, cur, 0)} pb={winOf(lab, cur, 1)} big />
+      {movers && <Why lab={lab} />}
       {movers && <Movers now={cur} was={base} />}
     </>
+  );
+}
+
+/** Ready-made scenarios, grouped. Each adds its levers to what's set; tap again to see it's on. */
+export function LabPresets({ lab }: { lab: Lab }) {
+  const [group, setGroup] = useState<PresetGroup>("Pitch");
+  const [last, setLast] = useState<string | null>(null);
+  const list = lab.presets.filter((p) => p.group === group);
+  const onNow = lab.presets.filter((p) => presetOn(lab.levers, p) && lab.changed);
+  return (
+    <div className="lever lab-presets">
+      <label>Quick scenarios</label>
+      <p className="small muted" style={{ margin: 0 }}>Tap to add. They stack, so mix a pitch, a player and a situation. Fine-tune with the sliders below.</p>
+      <div className="lab-preset-groups" role="tablist" aria-label="Scenario groups">
+        {PRESET_GROUPS.map((g) => (
+          <button key={g} type="button" role="tab" aria-selected={g === group} className={g === group ? "on" : undefined} onClick={() => setGroup(g)}>{g}</button>
+        ))}
+      </div>
+      <div className="lab-preset-list">
+        {list.map((p) => {
+          const on = presetOn(lab.levers, p) && lab.changed;
+          return (
+            <button key={p.id} type="button" className={`lab-preset${on ? " on" : ""}`} aria-pressed={on}
+                    onClick={() => { lab.setLevers((l) => applyPreset(l, p)); setLast(p.id); track("lab_preset", { preset: p.id.replace(/\d+$/, "") }); }}>
+              <b>{p.title}</b>{(on || last === p.id) && <span>{p.blurb}</span>}
+            </button>
+          );
+        })}
+      </div>
+      {onNow.length > 0 && <p className="small" style={{ margin: 0 }}><span className="muted">On now:</span> {onNow.map((p) => p.title).join(" · ")}</p>}
+    </div>
+  );
+}
+
+/** Share the scenario as a link, and keep named scenarios on this device. */
+export function LabShare({ lab, reset = true }: { lab: Lab; reset?: boolean }) {
+  const [msg, setMsg] = useState("");
+  const flash = (m: string) => { setMsg(m); setTimeout(() => setMsg(""), 2500); };
+  const share = async () => {
+    const url = lab.shareUrl(), text = `My MatchSynth Lab scenario: ${lab.teams.join(" v ")}`;
+    track("lab_share", { match_id: lab.matchId });
+    try {
+      if (navigator.share) { await navigator.share({ title: "MatchSynth Lab", text, url }); return; }
+      await navigator.clipboard.writeText(url); flash("Link copied");
+    } catch { /* closed the share sheet */ }
+  };
+  const save = () => {
+    const name = window.prompt("Name this scenario", `Scenario ${lab.saved.length + 1}`)?.trim();
+    if (name) { lab.save(name.slice(0, 40)); flash("Saved on this device"); }
+  };
+  return (
+    <div className="lever lab-share">
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <button type="button" className="btn" onClick={share} disabled={!lab.changed}>Share scenario</button>
+        <button type="button" className="btn ghost" onClick={save} disabled={!lab.changed}>Save</button>
+        {reset && <button type="button" className="btn ghost" onClick={lab.reset} disabled={!lab.changed}>Reset</button>}
+      </div>
+      {msg && <span className="small" role="status">{msg}</span>}
+      {lab.saved.length > 0 && (
+        <div className="lab-saved">
+          <span className="small muted">Saved scenarios</span>
+          {lab.saved.map((x) => (
+            <span key={x.name} className="lab-saved-item">
+              <button type="button" className="linkish" onClick={() => lab.setLevers(x.levers)}>{x.name}</button>
+              <button type="button" className="iconbtn" aria-label={`Delete ${x.name}`} onClick={() => lab.unsave(x.name)}>✕</button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** How much each change moved the result, each switched off on its own. */
+function Why({ lab }: { lab: Lab }) {
+  const { why, teams, changed } = lab;
+  if (!changed) return null;
+  return (
+    <div style={{ marginTop: 16 }}>
+      <div className="cs-k">What moved it</div>
+      {!why ? <p className="small muted" style={{ margin: "6px 0 0" }}>Working it out…</p> : (
+        <>
+          <div className="lab-why">
+            {why.map((w) => {
+              const k = w.d >= 0 ? 0 : 1, v = Math.abs(w.d) * 100;
+              return (
+                <div key={w.label} className="small">
+                  <span>{w.label}</span>
+                  <span className="lab-why-bar"><i style={{ width: `${Math.min(100, v * 4)}%`, background: COLORS[k] }} /></span>
+                  <span>{v < 0.5 ? <span className="muted">no real change</span> : <><b>+{num(v)} pts</b> {teams[k]}</>}</span>
+                </div>
+              );
+            })}
+          </div>
+          <p className="small muted" style={{ margin: "6px 0 0" }}>Each change switched off on its own, so they don&apos;t add up exactly.</p>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -215,8 +362,9 @@ export default function ScenarioLab({ doc }: { doc: MatchDoc }) {
           <div>
             <h3>Set the scene</h3>
           </div>
+          <LabPresets lab={lab} />
           <LabLevers lab={lab} />
-          <button className="btn ghost" onClick={lab.reset} disabled={!lab.changed}>Reset</button>
+          <LabShare lab={lab} />
         </aside>
 
         <div className="grid lab-main" style={{ opacity: lab.busy ? 0.6 : 1, transition: "opacity .2s" }}>

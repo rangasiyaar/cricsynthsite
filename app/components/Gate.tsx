@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { usePlan } from "@/lib/firebase";
 
 function here() {
-  return typeof window === "undefined" ? "/" : window.location.pathname + window.location.search;
+  return typeof window === "undefined" ? "/" : window.location.pathname + window.location.search + window.location.hash;   // keeps a shared Lab scenario (#s=…)
 }
 
 export function loginHref(next?: string) {

@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, SLUG, Title, TopBar, fromSlug, preview, snapScreen, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, sectionName, sectionsFor } from "@/components/MatchCentre";
-import { LabLevers, LabResult, useLab, type Lab } from "@/components/ScenarioLab";
+import { LabLevers, LabPresets, LabResult, LabShare, useLab, type Lab } from "@/components/ScenarioLab";
 import { loadIndex, loadMatch, peekIndex, peekMatch } from "@/lib/data";
 import { status } from "@/lib/schedule";
 import type { MatchDoc } from "@/lib/types";
@@ -49,7 +49,7 @@ function Scene({ lab, id }: { lab: Lab; id: string }) {
         <div><h1>Set the scene</h1></div>
       </div>
       <div className="a-lab-card"><LabResult lab={lab} movers /></div>
-      <div className="a-levers"><LabLevers lab={lab} /></div>
+      <div className="a-levers"><LabPresets lab={lab} /><LabLevers lab={lab} /><LabShare lab={lab} reset={false} /></div>
       <div className="a-sticky-cta">
         <button type="button" className="a-btn soft" onClick={lab.reset} disabled={!lab.changed}>Reset</button>
         <a className="a-btn" href={`/m/lab/?id=${encodeURIComponent(id)}`} onClick={(e) => { e.preventDefault(); snapScreen(true); window.history.back(); }}>See results</a>
