@@ -25,6 +25,7 @@ const ICON: Record<string, string> = {
   keys: ic('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>'),
   usage: ic('<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
   requests: ic('<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>'),
+  app: ic('<rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>'),
   payments: ic('<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6.5 15h4"/>'),
   messages: ic('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9.5h8M8 12.5h5"/>'),
   applications: ic('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'),
@@ -139,7 +140,7 @@ function renderLogin(msg = "") {
 const NAV: [string, [string, string][]][] = [
   ["", [["", "Overview"]]],
   ["Customers", [["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"], ["payments", "Payments"], ["messages", "Messages"], ["applications", "Applications"]]],
-  ["Growth", [["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"]]],
+  ["Growth", [["product", "Product (GA4)"], ["app", "App"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"]]],
   ["Operations", [["health", "Pipeline health"], ["accuracy", "Model accuracy"], ["log", "Audit log"]]],
 ];
 const GROUP_OF: Record<string, string> = Object.fromEntries(NAV.flatMap(([g, items]) => items.map(([k]) => [k, g || "Dashboard"])));
@@ -171,7 +172,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, payments, messages, applications, product, ux, search, traffic, health, accuracy, log };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, payments, messages, app: appPage, applications, product, ux, search, traffic, health, accuracy, log };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -310,6 +311,15 @@ async function overview() {
 }
 
 // ── users ──
+// where an account is active (users/{uid}/activity/recent): website, app, device, city
+const REGION = (() => { try { return new Intl.DisplayNames(["en"], { type: "region" }); } catch { return null; } })();
+const countryName = (c: string | null | undefined) => (c ? (c === "T1" ? "Tor network" : REGION?.of(c) || c) : "");
+const placeText = (p: Row | null | undefined, full = false) => !p ? "–" : [p.city, full ? p.region : null, countryName(p.country)].filter(Boolean).join(", ") || "–";
+const ON: Record<string, [string, "info" | "good" | "plain"]> = { web: ["Website", "plain"], app: ["App", "info"], both: ["Website + app", "good"] };
+const onBadge = (k: string | null) => (k ? badge(ON[k][0], ON[k][1]) : `<span class="muted">–</span>`);
+const DEVICE: Record<string, string> = { android: "Android phone", ios: "iPhone", tablet: "Tablet", desktop: "Computer", unknown: "Unknown device" };
+const agentText = (a: Row | null | undefined) => !a ? "–" : [a.os || DEVICE[a.device] || "", a.where === "app" || a.browser === "App" ? "" : a.browser].filter(Boolean).join(" · ") || "–";
+
 async function users() {
   const s = await snapshot(), t = s.totals, U = s.users as Row[];
   const by = (f: (u: Row) => boolean) => U.filter(f).length;
@@ -323,6 +333,12 @@ async function users() {
     ${tile("With API keys", n(by((u) => u.activeKeys > 0)), `${n(by((u) => u.calls30 > 0))} made calls in 30 days`)}
     ${tile("Paying", n(t.plans.paid), `${n(t.plans.tags?.trial || 0)} on the free day · ${n(t.plans.tags?.assigned || 0)} assigned`)}
     ${tile("Disabled", n(t.disabled), t.disabled ? "can't sign in" : "none")}
+    ${tile("Active on the app", n(by((u) => u.activeOn === "app" || u.activeOn === "both")), `${n(by((u) => u.activeOn === "both"))} also on the website · 30 days`)}
+    ${tile("Active on the website", n(by((u) => u.activeOn === "web" || u.activeOn === "both")), `${n(by((u) => u.activeOn === "web"))} on the website only · 30 days`)}
+  </div>
+  <div class="grid2">
+    <section class="card">${ch("Where accounts are active", "Signed-in opens in the last 30 days. Recorded from 26 Nov 2026, so accounts not seen since show as –.")}${ranked([["web", "Website only"], ["app", "App only"], ["both", "Website and app"]].map(([k, name]) => ({ name, value: by((u) => u.activeOn === k) })).concat([{ name: "Not seen yet", value: by((u) => !u.activeOn) }]))}</section>
+    <section class="card">${ch("Cities", "Each account's latest city, from the network it last opened from. Approximate.")}${ranked(Object.entries(U.reduce((m: Record<string, number>, u) => { if (u.place) { const k = placeText(u.place); m[k] = (m[k] || 0) + 1; } return m; }, {})).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10))}</section>
   </div>
   <div class="grid2">
     <section class="card">${ch("Subscriptions", "Every account by plan and how they got it.")}${ranked(Object.entries(subs).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value))}</section>
@@ -332,7 +348,7 @@ async function users() {
   <div class="filters">
     <input id="q" type="search" placeholder="Search email, name, company or account ID" aria-label="Search">
     <select id="f-plan" aria-label="Subscription"><option value="">All subscriptions</option>${Object.entries(TIER_NAMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}<option value="tag:paid">Paid</option><option value="tag:trial">Trial</option><option value="tag:assigned">Assigned</option></select>
-    <select id="f-use" aria-label="Activity"><option value="">Any activity</option><option value="keys">Has API keys</option><option value="calls">Made calls (30d)</option><option value="mcp">Used MCP (30d)</option><option value="active7">Seen in 7 days</option><option value="req">Open request</option><option value="noauth">Not in Firebase Auth</option></select>
+    <select id="f-use" aria-label="Activity"><option value="">Any activity</option><option value="keys">Has API keys</option><option value="calls">Made calls (30d)</option><option value="mcp">Used MCP (30d)</option><option value="active7">Seen in 7 days</option><option value="on:app">Active on the app</option><option value="on:web">Website only</option><option value="on:both">Website and app</option><option value="req">Open request</option><option value="noauth">Not in Firebase Auth</option></select>
     <span id="count" class="muted"></span><button id="csv" class="btn ghost sm">Export CSV</button></div><div id="tbl"></div>`;
   const cols: Col<Row>[] = [
     { key: "email", label: "Account", render: (r) => `<span class="who-cell">${r.photo ? `<img src="${esc(r.photo)}" alt="" width="24" height="24" referrerpolicy="no-referrer">` : `<span class="av">${esc((r.email || r.uid)[0].toUpperCase())}</span>`}
@@ -340,12 +356,13 @@ async function users() {
     { key: "providers", label: "Sign-in", render: (r) => esc(provider(r.providers)), sort: (r) => r.providers.join() },
     { key: "created", label: "Joined", render: (r) => `<span title="${esc(when(r.created))}">${day(r.created)}</span>` },
     { key: "lastSeen", label: "Last seen", render: (r) => `<span title="${esc(when(r.lastSeen))}">${ago(r.lastSeen)}</span>` },
+    { key: "activeOn", label: "Active on", render: (r) => onBadge(r.activeOn), sort: (r) => ({ both: 3, app: 2, web: 1 } as Row)[r.activeOn] || 0 },
+    { key: "place", label: "Location", render: (r) => esc(placeText(r.place)), sort: (r) => placeText(r.place) },
+    { key: "agent", label: "Device", render: (r) => `${esc(agentText(r.agent))}${r.appVersion ? ` <small class="muted">app ${esc(r.appVersion)}</small>` : ""}`, sort: (r) => agentText(r.agent) },
     { key: "tier", label: "Subscription", render: (r) => tierCell(r.tier || "free", r.tag, r.until), sort: (r) => ({ free: 0, pro: 1, "api-plus": 2, business: 3 } as Row)[r.tier || "free"] * 10 + (r.tag === "paid" ? 2 : r.tag ? 1 : 0) },
     { key: "activeKeys", label: "Keys", num: true, render: (r) => n(r.activeKeys) },
     { key: "mcpDays", label: "MCP", num: true, render: (r) => (r.mcpDays ? `${r.mcpDays} d` : "–") },
-    { key: "calls7", label: "Calls 7d", num: true, render: (r) => n(r.calls7) },
     { key: "calls30", label: "Calls 30d", num: true, render: (r) => n(r.calls30) },
-    { key: "open", label: "", render: (r) => `<a class="btn ghost sm" href="#/user/${encodeURIComponent(r.uid)}">Open profile</a>`, sort: () => null },
   ];
   const since7 = new Date(Date.now() - 7 * 86400_000).toISOString();
   const draw = () => {
@@ -355,6 +372,7 @@ async function users() {
       (!q || [u.email, u.name, u.company, u.uid].some((x) => String(x || "").toLowerCase().includes(q)))
       && (!plan || (plan.startsWith("tag:") ? u.tag === plan.slice(4) : (u.tier || "free") === plan))
       && (!use || (use === "keys" ? u.activeKeys > 0 : use === "calls" ? u.calls30 > 0 : use === "mcp" ? u.mcpDays > 0
+                  : use.startsWith("on:") ? (use === "on:app" ? u.activeOn === "app" || u.activeOn === "both" : u.activeOn === use.slice(3))
                   : use === "active7" ? String(u.lastSeen || "") >= since7 : use === "req" ? u.requestsOpen > 0 : !u.inAuth)));
     $("#count")!.textContent = `${n(rows.length)} of ${n(s.users.length)}`;
     table($("#tbl")!, cols, rows, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "created", desc: true }, empty: "No accounts match." });
@@ -363,7 +381,7 @@ async function users() {
   let rows = draw();
   ["#q", "#f-plan", "#f-use"].forEach((id) => $(id)!.addEventListener("input", () => { rows = draw(); }));
   $("#csv")!.addEventListener("click", () => download(`cricsynthesis-users-${new Date().toISOString().slice(0, 10)}.csv`,
-    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "tierName", "tag", "until", "websitePlan", "apiPlan", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
+    csv(rows, ["uid", "email", "name", "company", "providers", "created", "lastSeen", "tierName", "tag", "until", "activeOn", "lastWeb", "lastApp", "appVersion", "websitePlan", "apiPlan", "activeKeys", "mcpDays", "calls7", "calls30", "requestsOpen", "disabled"])));
   wireRefresh();
 }
 
@@ -408,6 +426,15 @@ async function user(uid: string) {
     ${tile("Last call", lastCallDay ? daysText(waitedDays(lastCallDay)) : "never", lastCallDay ? `${day(lastCallDay)}${waitedDays(lastCallDay) ? " ago" : ""}` : "no calls in 90 days")}
     ${tile("Most used", topEp ? esc(epName(topEp.ep)) : "–", topEp ? `${n(topEp.calls)} calls in 30 days` : "nothing yet")}
   </div>
+  <h2 class="sec">Activity, last 3 days</h2>${note("Each time they opened the website or the app while signed in. Opens within 30 minutes on the same device count as one visit. Location is the city of the network they used, so it's approximate (mobile data often shows a nearby big city). We don't store IP addresses.")}
+  <div class="tiles">
+    ${tile("Active on", u.activeOn ? esc(ON[u.activeOn][0]) : "Not seen yet", u.activeOn ? "in the last 30 days" : "nothing recorded since 26 Nov 2026")}
+    ${tile("Last on the website", p.activity.lastWeb ? ago(p.activity.lastWeb) : "–", p.activity.lastWeb ? when(p.activity.lastWeb) : "not recorded")}
+    ${tile("Last in the app", p.activity.lastApp ? ago(p.activity.lastApp) : "–", p.activity.lastApp ? `version ${esc(p.activity.appVersion || "?")} · ${esc(p.activity.appOs || "")}` : "not recorded")}
+    ${tile("Latest location", esc(placeText(p.activity.place)), p.activity.place?.region ? esc(p.activity.place.region) : "")}
+    ${tile("Visits in 3 days", n(p.activity.visits.length), `${n(new Set((p.activity.visits as Row[]).map((v) => `${v.device}|${v.os}|${v.browser}`)).size)} devices · ${n(new Set((p.activity.visits as Row[]).map((v) => v.city).filter(Boolean)).size)} cities`)}
+  </div>
+  <section class="card"><div id="visits"></div></section>
   <h2 class="sec">Services and plan</h2>${note("What they have now on the website, the API and the AI connector.")}
   <div class="tiles">
     ${tile("Subscription", esc(sv.subscription.name), `${tagBadge(sv.subscription.tag)} ${({ paid: "Paid", trial: "On the free day", assigned: "Assigned by our team" } as Record<string, string>)[sv.subscription.tag] || "No paid plan"}${sv.subscription.until ? ` · ends ${when(sv.subscription.until)}` : sv.subscription.tag === "assigned" || sv.subscription.setBy?.tier === sv.subscription.tier && sv.subscription.tier !== "free" ? " · no end date" : ""}${sv.subscription.setBy?.at ? ` · set in the console ${day(sv.subscription.setBy.at)}` : ""}`)}
@@ -457,6 +484,15 @@ async function user(uid: string) {
         ${["free", "pro", "business"].map((pl) => `<option${pl === r.plan ? " selected" : ""}>${pl}</option>`).join("")}</select>
         ${actBtn("Revoke", { type: "key.revoke", uid, slot: r.slot }, `Revoke "${r.name}" (${r.prefix}…)? Requests with it stop within a minute. This can't be undone.`, "danger")}` },
   ], p.keys, { empty: "No API keys created." });
+  table($("#visits")!, [
+    { key: "at", label: "When", render: (r) => `<span title="${esc(when(r.at))}">${when(r.at)}</span>${r.last && r.last !== r.at ? ` <small class="muted">to ${esc(new Date(r.last).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }))}</small>` : ""}` },
+    { key: "where", label: "Where", render: (r) => onBadge(r.where) },
+    { key: "device", label: "Device", render: (r) => esc(DEVICE[r.device] || r.device || "–") },
+    { key: "os", label: "System", render: (r) => esc(r.os || "–") },
+    { key: "browser", label: "Browser / app", render: (r) => esc(r.where === "app" ? `App ${r.version || ""}` : r.browser || "–") },
+    { key: "city", label: "Location", render: (r) => esc(placeText(r, true)), sort: (r) => placeText(r, true) },
+    { key: "pings", label: "Opens", num: true, render: (r) => n(r.pings || 1) }],
+    p.activity.visits, { initial: { key: "at", desc: true }, limit: 50, empty: "No visits recorded in the last 3 days." });
   table($("#limits")!, [{ key: "day", label: "Day", render: (r) => day(r.day) }, { key: "slot", label: "Key", render: (r) => slotName(r.slot) },
     { key: "calls", label: "Calls", num: true, render: (r) => `${n(r.calls)} / ${n(r.limit)}` }], p.usage.limitDays, { initial: { key: "day", desc: true }, limit: 10, empty: "Never hit a limit." });
   table($("#reqs")!, [{ key: "plan", label: "Plan" }, { key: "volume", label: "Volume" }, { key: "status", label: "Status", render: (r) => reqBadge(r.status) },
@@ -573,6 +609,79 @@ async function requests() {
   wireActions($("#tbl")!, () => route()); };
   draw();
   $("#f")!.addEventListener("input", draw);
+  wireRefresh();
+}
+
+// ── the Android app: downloads, installs, active users, versions, and the accounts using it ──
+async function appPage() {
+  const [d, s] = await Promise.all([api("/api/app"), snapshot()]);
+  const R = (d.releases || []) as Row[], ga = d.ga as Row | null, U = s.users as Row[];
+  const latest = d.app?.version ? String(d.app.version) : R[0]?.version;
+  const total = sumOf(R, "downloads"), latestRel = R.find((r) => r.version === latest) || R[0];
+  const sinceIso = (days: number) => new Date(Date.now() - days * DAY).toISOString();
+  const onApp = (days: number) => U.filter((u) => u.lastApp && String(u.lastApp) >= sinceIso(days));
+  const app30 = onApp(30), app7 = onApp(7), app1 = onApp(1);
+  const onLatest = app30.filter((u) => u.appVersion === latest).length;
+  const daily = (ga?.daily || []) as Row[];
+  const installs30 = sumOf(daily, "installs"), removes30 = sumOf(daily, "removes"), updates30 = sumOf(daily, "updates");
+  const count = (rows: Row[], f: (u: Row) => string | null | undefined) => {
+    const m: Record<string, number> = {};
+    for (const u of rows) { const k = f(u); if (k) m[k] = (m[k] || 0) + 1; }
+    return Object.entries(m).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
+  };
+  const recentRel = R.slice(0, 12).reverse();
+  main().innerHTML = head("App") + `
+    <div class="tiles">
+      ${tile("APK downloads", n(total), `all ${n(R.length)} releases · updates included`)}
+      ${tile("Latest version", esc(latest || "–"), latestRel ? `${n(latestRel.downloads)} downloads since ${day(latestRel.at)}` : "")}
+      ${tile("Active installs (28 days)", ga ? n(ga.d28) : "–", ga ? `${n(ga.d7)} in 7 days · ${n(ga.today)} today` : "Google Analytics not connected")}
+      ${tile("Installs, 30 days", ga ? n(installs30) : "–", ga ? `${n(removes30)} uninstalled · net ${installs30 - removes30 >= 0 ? "+" : ""}${n(installs30 - removes30)}` : "")}
+      ${tile("Signed-in accounts on the app", n(app30.length), `${n(app7.length)} in 7 days · ${n(app1.length)} today`)}
+      ${tile("On the latest version", pct(ratio(onLatest, app30.length)), `${n(onLatest)} of ${n(app30.length)} accounts on ${esc(latest || "–")}`)}
+    </div>
+    ${note("Three sources, each counting differently. Downloads: every APK fetched from our releases, including updates and repeat downloads, so it's higher than the number of phones. Active installs, installs and uninstalls: Google Analytics, only from phones that allowed usage analytics in the app, so it's a lower bound. Signed-in accounts: every account that opened the app while signed in, recorded by our API from 26 Nov 2026 (the app needs sign-in, so this is close to the real number of active app users once 0.3.32 is out).")}
+    <div class="grid2">
+      <section class="card">${bars(recentRel.map((r) => ({ v: r.version, downloads: r.downloads })), [{ key: "downloads", label: "Downloads", color: S1 }],
+        { x: "v", title: "Downloads by release", sub: "Last 12 releases, oldest first. Older releases stop growing once phones update." })}</section>
+      <section class="card">${bars(daily.map((r) => ({ day: r.day, users: r.users })), [{ key: "users", label: "Active users", color: S2 }],
+        { x: "day", title: "Daily active app users", sub: "Google Analytics, app only, last 30 days." })}</section>
+    </div>
+    <section class="card">${bars(daily.map((r) => ({ day: r.day, installs: r.installs, removes: r.removes, updates: r.updates })),
+      [{ key: "installs", label: "Installed and opened", color: S1 }, { key: "removes", label: "Uninstalled", color: S3 }, { key: "updates", label: "Updated", color: S2 }],
+      { x: "day", title: "Installs, uninstalls and updates per day", sub: `Google Analytics, last 30 days: ${n(installs30)} installs, ${n(removes30)} uninstalls, ${n(updates30)} updates.` })}</section>
+    <div class="grid2">
+      <section class="card">${ch("App versions", "Signed-in accounts active in 30 days, by the version they last opened.")}${ranked(count(app30, (u) => u.appVersion ? `${u.appVersion}${u.appVersion === latest ? " (latest)" : ""}` : "Unknown"))}</section>
+      <section class="card">${ch("Android versions", "Signed-in accounts active in 30 days.")}${ranked(count(app30, (u) => u.appOs || "Unknown"))}</section>
+    </div>
+    <div class="grid2">
+      <section class="card">${ch("Cities", "Where app accounts last opened it, from their network. Approximate.")}${ranked(count(app30, (u) => (u.place ? placeText(u.place) : null)).slice(0, 12))}</section>
+      <section class="card">${ch("Website, app or both", "Accounts active in 30 days and where they use CricSynthesis.")}${ranked([["app", "App only"], ["both", "Website and app"], ["web", "Website only"]].map(([k, name]) => ({ name, value: U.filter((u) => u.activeOn === k).length })))}</section>
+    </div>
+    ${ga ? `<div class="grid2">
+      <section class="card">${ch("Phones", "Google Analytics, active users in 28 days.")}${ranked(ga.models)}</section>
+      <section class="card">${ch("Engagement", "Google Analytics, app only, 28 days.")}<dl class="dl">
+        <dt>Sessions</dt><dd>${n(ga.sessions28)} (${n(ga.sessions7)} in 7 days)</dd>
+        <dt>Sessions per user</dt><dd>${ga.d28 ? (ga.sessions28 / ga.d28).toFixed(1) : "–"}</dd>
+        <dt>Average session</dt><dd>${dur(ga.avgSession)}</dd>
+        <dt>Screens per user</dt><dd>${Number(ga.screensPerUser || 0).toFixed(1)}</dd>
+        <dt>Stickiness (today ÷ 28 days)</dt><dd>${pct(ratio(ga.today, ga.d28))}</dd></dl>
+        ${ga.countries?.length ? `<p class="muted">Countries: ${(ga.countries as Row[]).slice(0, 6).map((c) => `${esc(c.name)} ${n(c.value)}`).join(" · ")}</p>` : ""}</section>
+    </div>` : ""}
+    <h2 class="sec">Accounts using the app</h2>${note("Signed-in accounts that opened the app in the last 30 days, most recent first. Click a row for their 3-day history.")}
+    <div id="appusers"></div>
+    <section class="card" style="margin-top:16px"><h2>Releases</h2>${note("Every Android release and its APK downloads.")}<div id="rels"></div></section>`;
+  table($("#appusers")!, [{ key: "email", label: "Account", render: (r) => userLink(r.uid, r.email) },
+    { key: "lastApp", label: "Last opened", render: (r) => `<span title="${esc(when(r.lastApp))}">${ago(r.lastApp)}</span>` },
+    { key: "appVersion", label: "Version", render: (r) => `${esc(r.appVersion || "–")}${r.appVersion && r.appVersion !== latest ? ` ${badge("Old", "warn")}` : ""}` },
+    { key: "appOs", label: "Android", render: (r) => esc(r.appOs || "–") },
+    { key: "place", label: "Location", render: (r) => esc(placeText(r.place)), sort: (r) => placeText(r.place) },
+    { key: "activeOn", label: "Also on", render: (r) => (r.activeOn === "both" ? "Website" : "–") },
+    { key: "firstApp", label: "First opened", render: (r) => day(r.firstApp) },
+    { key: "tier", label: "Subscription", render: (r) => tierCell(r.tier || "free", r.tag, r.until), sort: (r) => r.tier || "free" }],
+    app30, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "lastApp", desc: true }, limit: 100, empty: "No signed-in app opens recorded yet. They appear once app 0.3.32 is installed." });
+  table($("#rels")!, [{ key: "version", label: "Version", render: (r) => `${esc(r.version)}${r.version === latest ? ` ${badge("Latest", "good")}` : ""}` },
+    { key: "at", label: "Released", render: (r) => day(r.at) }, { key: "downloads", label: "Downloads", num: true, render: (r) => n(r.downloads) },
+    { key: "tag", label: "Tag", render: (r) => `<code>${esc(r.tag)}</code>` }], R, { initial: { key: "at", desc: true }, limit: 30, empty: "No releases found." });
   wireRefresh();
 }
 

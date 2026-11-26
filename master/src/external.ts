@@ -389,3 +389,62 @@ export async function bing(env: Env) {
   const [t, q, p] = await Promise.all([get("GetRankAndTrafficStats"), get("GetQueryStats"), get("GetPageStats")]);
   return { built: new Date().toISOString(), ...bingShape(t, q, p), errors };
 }
+
+// ── the Android app: downloads (GitHub release assets) and installs / active users (GA4, app stream only) ──
+// Downloads count every fetch of an APK, updates included. GA4 counts only phones that allowed usage analytics:
+// first_open = a new install opened, app_remove = uninstalled (Android sends it on its own).
+export async function appStats(env: Env, google: { ga: (p: string, m: "runReport" | "runRealtimeReport", b: Row) => Promise<any> }) {
+  const errors: string[] = [];
+  const pages = await part(errors, "App releases", async () => {
+    const out: Row[] = [];
+    for (let page = 1; page <= 3; page++) {
+      const rs = (await gh(env, `/releases?per_page=100&page=${page}`)) as Row[];
+      out.push(...rs);
+      if (rs.length < 100) break;
+    }
+    return out;
+  });
+  const releases = (pages || []).filter((r: Row) => !r.draft && String(r.tag_name).startsWith("android-")).map((r: Row) => {
+    const apks = (r.assets || []).filter((x: Row) => String(x.name).endsWith(".apk"));
+    return { tag: r.tag_name, version: String(r.tag_name).replace(/^android-v?/, "").replace(/-build\d+$/, ""), at: r.published_at,
+             latestName: apks.filter((x: Row) => x.name === "CricSynthesis.apk").reduce((s: number, x: Row) => s + (x.download_count || 0), 0),
+             downloads: apks.reduce((s: number, x: Row) => s + (x.download_count || 0), 0) };
+  });
+  let ga: Row | null = null;
+  if (!env.GA_PROPERTY) errors.push("Google Analytics isn't connected yet (GA_PROPERTY)");
+  else {
+    const p = env.GA_PROPERTY;
+    const android = { filter: { fieldName: "platform", stringFilter: { value: "Android" } } };
+    const range = (start: string) => [{ startDate: start, endDate: "today" }];
+    const rep = (dims: string[], mets: string[], start: string, limit = 15, extra: Row = {}) => google.ga(p, "runReport", {
+      dateRanges: range(start), dimensions: dims.map((name) => ({ name })), metrics: mets.map((name) => ({ name })), limit,
+      dimensionFilter: android, ...(dims[0] === "date" ? {} : { orderBys: [{ metric: { metricName: mets[0] }, desc: true }] }), ...extra });
+    const get = (name: string, f: () => Promise<any>) => f().catch((e) => { errors.push(`${name}: ${String(e.message || e).slice(0, 200)}`); return null; });
+    const num = (r: any, i = 0) => Number(r?.rows?.[0]?.metricValues?.[i]?.value || 0);
+    const pairs = (r: any) => (r?.rows || []).map((x: any) => ({ name: x.dimensionValues.map((d: any) => d.value).join(" / ") || "(none)", value: Number(x.metricValues[0].value) }));
+    const [d1, d7, d28, daily, versions, models, os, countries, events] = await Promise.all([
+      get("Active today", () => rep([], ["activeUsers"], "today")),
+      get("Active 7 days", () => rep([], ["activeUsers", "sessions"], "6daysAgo")),
+      get("Active 28 days", () => rep([], ["activeUsers", "sessions", "averageSessionDuration", "screenPageViewsPerUser"], "27daysAgo")),
+      get("Daily", () => rep(["date"], ["activeUsers", "newUsers"], "29daysAgo", 40)),
+      get("Versions", () => rep(["appVersion"], ["activeUsers"], "27daysAgo", 12)),
+      get("Phones", () => rep(["mobileDeviceModel"], ["activeUsers"], "27daysAgo", 12)),
+      get("Android versions", () => rep(["operatingSystemVersion"], ["activeUsers"], "27daysAgo", 10)),
+      get("Countries", () => rep(["country"], ["activeUsers"], "27daysAgo", 10)),
+      get("Installs", () => rep(["date", "eventName"], ["eventCount"], "29daysAgo", 200, {
+        dimensionFilter: { andGroup: { expressions: [android, { filter: { fieldName: "eventName", inListFilter: { values: ["first_open", "app_remove", "app_update"] } } }] } } })),
+    ]);
+    const byDay: Record<string, Row> = {};
+    for (const x of daily?.rows || []) { const d = x.dimensionValues[0].value; byDay[d] = { day: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, users: Number(x.metricValues[0].value), newUsers: Number(x.metricValues[1].value), installs: 0, removes: 0, updates: 0 }; }
+    for (const x of events?.rows || []) {
+      const d = x.dimensionValues[0].value, e = x.dimensionValues[1].value, n = Number(x.metricValues[0].value);
+      const r = (byDay[d] ||= { day: `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}`, users: 0, newUsers: 0, installs: 0, removes: 0, updates: 0 });
+      if (e === "first_open") r.installs += n; else if (e === "app_remove") r.removes += n; else r.updates += n;
+    }
+    ga = { today: num(d1), d7: num(d7), sessions7: num(d7, 1), d28: num(d28), sessions28: num(d28, 1), avgSession: num(d28, 2), screensPerUser: num(d28, 3),
+           daily: Object.values(byDay).sort((a, b) => String(a.day).localeCompare(String(b.day))),
+           versions: pairs(versions), models: pairs(models), os: pairs(os), countries: pairs(countries) };
+  }
+  const app = await part(errors, "App version", async () => { const r = await fetch(`${site(env)}/download/app.json`); if (!r.ok) throw new Error(`app.json ${r.status}`); return r.json(); });
+  return { built: new Date().toISOString(), releases, ga, app, errors };
+}

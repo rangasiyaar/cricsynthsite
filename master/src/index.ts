@@ -4,7 +4,7 @@
 // read; a user's profile is read live. Never writes anything about users.
 import { daysAgo, profile, snapshot, type Snapshot } from "./data.ts";
 import { type Env, project } from "./env.ts";
-import { accuracy, analytics, bing, CLARITY_TTL_MS, clarityFetch, clarityShape, health, meters, search, traffic } from "./external.ts";
+import { accuracy, analytics, appStats, bing, CLARITY_TTL_MS, clarityFetch, clarityShape, health, meters, search, traffic } from "./external.ts";
 import { type AuthUser, Google } from "./gcp.ts";
 import { current, seal, setCookie, signIn } from "./session.ts";
 import { check, summarize } from "./uptime.ts";
@@ -44,8 +44,8 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
   try { auth = await g.users(); } catch (e) {
     errors.push(`Firebase Auth: ${(e as Error).message} — grant the service account the Firebase Authentication Viewer role`);
   }
-  let [profiles, keys, requests, billing] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests"),
-                                                                g.group("billing").catch(() => [])]);
+  let [profiles, keys, requests, billing, activity] = await Promise.all([g.list("users", true), g.group("keys"), g.group("requests"),
+                                                                g.group("billing").catch(() => []), g.group("activity").catch(() => [])]);
   // console assignments past their end date go back to Free, then the tables are read again
   const ended = await expire(g, billing, now).catch(() => [] as string[]);
   if (ended.length) [keys, billing] = await Promise.all([g.group("keys"), g.group("billing").catch(() => [])]);
@@ -61,7 +61,7 @@ export async function build(env: Env, now = new Date()): Promise<Snapshot> {
       if (d._path.startsWith("users/") && uid && d._id >= from) (usage[uid] ||= []).push(d);
     }
   } catch (e) { errors.push(`usage: ${(e as Error).message}`); }
-  return { ...snapshot({ now, auth, profiles, keys, requests, usage, billing }), errors };
+  return { ...snapshot({ now, auth, profiles, keys, requests, usage, billing, activity }), errors };
 }
 
 async function refresh(env: Env): Promise<Snapshot> {
@@ -149,15 +149,17 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
       const uid = url.searchParams.get("uid") || "";
       if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid)) return fail(422, "Bad uid");
       const g = google(env), now = new Date();
-      const [a, prof, keys, requests, usage, billing, admin] = await Promise.all([
+      const [a, prof, keys, requests, usage, billing, admin, act] = await Promise.all([
         g.user(uid).catch(() => null), g.get(`users/${uid}`), g.list(`users/${uid}/keys`), g.list(`users/${uid}/requests`), g.usage(uid, daysAgo(89, now)),
-        g.get(`users/${uid}/billing/pro`).catch(() => null), g.get(`users/${uid}/billing/admin`).catch(() => null)]);
+        g.get(`users/${uid}/billing/pro`).catch(() => null), g.get(`users/${uid}/billing/admin`).catch(() => null),
+        g.get(`users/${uid}/activity/recent`).catch(() => null)]);
       if (!a && !prof && !keys.length && !usage.length) return fail(404, "No such account");
-      return json(profile(uid, a, prof, keys, requests, usage, now, billing, admin));
+      return json(profile(uid, a, prof, keys, requests, usage, now, billing, admin, act));
     }
     case "/api/traffic": return json(await cached("traffic", 600, () => traffic(env)));
     case "/api/health": return json(await cached("health", 300, () => health(env)));
     case "/api/product": return json(await cached("product", 900, () => analytics(env, google(env))));
+    case "/api/app": return json(await cached("app", 900, () => appStats(env, google(env))));
     case "/api/log": {
       const rows = await google(env).latest("adminLog", 200);
       return json({ entries: rows.map((r) => ({ id: r._id, at: r.at, email: r.email, what: r.what, uid: r.uid || null, done: r.done || null,

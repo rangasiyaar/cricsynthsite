@@ -6,7 +6,7 @@ export const metadata: Metadata = seo("/privacy/", "Privacy policy | CricSynthes
 
 export default function Privacy() {
   return (
-    <Legal title="Privacy Policy" subtitle="Effective 17 November 2026">
+    <Legal title="Privacy Policy" subtitle="Effective 26 November 2026">
       <h2>1. Who we are</h2>
       <p>CricSynthesis runs a cricket match centre and Android app for fans, and an analytics, simulation and graphics API for
         businesses. CricSynthesis is currently operated by an individual based in India, who is the data fiduciary for the
@@ -29,7 +29,14 @@ export default function Privacy() {
           file from your dashboard.</li>
         <li><b>CricSynthesis Pro payments.</b> When you subscribe, Razorpay collects your payment details; we never see your card,
           UPI or bank details. We keep your plan, its status, the subscription reference Razorpay gives us and the dates your free
-          day, paid period or renewal start and end, to turn Pro on and show your plan. Razorpay sends receipts to your email.</li>
+          day, paid period or renewal start and end, to turn Pro on and show your plan. Razorpay sends receipts to your email.
+          If a payment doesn&apos;t go through, we record the result, the reason Razorpay gives (for example, declined by the bank),
+          whether it was on the website or the app, and the device type, so we can fix problems with checkout.</li>
+        <li><b>Account activity.</b> While you&apos;re signed in, each time you open the website or the app we record when, whether it
+          was the website or the app, your device type, operating system, browser or app version, and an approximate location
+          (city, region and country) worked out from your network address. We don&apos;t store the network address itself. We keep the
+          detailed record for 3 days, and only the latest of these details after that, to understand how CricSynthesis is used
+          and to keep accounts secure. It is deleted with your account.</li>
         <li><b>Contact and access requests.</b> Name, email, organisation, topic, interest and the message you enter in our forms. Messages sent through the contact form are kept for up to 24 months so we can follow up, then deleted; we store only a one-way code of your network address, to limit spam. The contact, API access and job application forms also run Cloudflare Turnstile, a privacy-friendly check that you're a person: it looks at basic browser signals, sets no tracking cookies and isn't used for advertising.</li>
         <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such
           as gender. We use them only to assess your application and contact you about it, and delete them within 12 months

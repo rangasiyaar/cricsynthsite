@@ -4,6 +4,7 @@ import { Analytics, BadRequest, NotFound } from "./analytics.ts";
 import { catalog, HttpError, match, Query } from "./api.ts";
 import { type Account, accountPlan, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
+import * as A from "./activity.ts";
 import * as B from "./billing.ts";
 import * as E from "./emails.ts";
 import { mail } from "./notify.ts";
@@ -150,6 +151,20 @@ export async function deleteAccount(req: Request, env: Env, fs?: Firestore): Pro
   const emailed = await mail(env, user.uid, (name) => E.accountDeleted({ name }), { email: who?.email || user.email, name: who?.name ?? null });
   const signIn = await fs.deleteAuthUser(user.uid).catch(() => false);
   return json(req, env, { deleted: true, documents, emailed, signIn });
+}
+
+/** The website or app opened by a signed-in account (activity.ts): when, where, device and city, for the console. */
+async function accountSeen(req: Request, env: Env): Promise<Response> {
+  if (!env.GOOGLE_SA) return json(req, env, { ok: false });
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+  if (!user) return fail(req, env, 401, "Sign in first");
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const body = await req.json().catch(() => null);
+  try {
+    return json(req, env, await A.seen({ get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) }, user.uid, body,
+      { ua: req.headers.get("User-Agent"), cf: (req as any).cf ?? null, now: Date.now() }));
+  } catch (e) { console.error("seen", (e as Error).message); return json(req, env, { ok: false }); }
 }
 
 /** The website's contact form (contact.ts): stored for the admin console, acknowledged by email. */
@@ -315,6 +330,7 @@ export default {
     if (path.startsWith("/billing/")) return billing(req, env, path);
     if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
     if (path === "/account/delete" && req.method === "POST") return deleteAccount(req, env);
+    if (path === "/account/seen" && req.method === "POST") return accountSeen(req, env);
     if (path === "/contact" && req.method === "POST") return contact(req, env);
     if (["/welcome", "/api-access", "/apply", "/account/upgrade-requested"].includes(path) && req.method === "POST") return form(req, env, path);
     const o = await oauth(req, env, url, path);

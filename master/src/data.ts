@@ -19,6 +19,7 @@ export type Inputs = {
   requests: Doc[];                            // every users/{uid}/requests/{plan}
   usage: Record<string, Doc[]>;               // uid → users/{uid}/usage/{day} docs (recent days)
   billing?: Doc[];                            // every users/{uid}/billing/pro (CricSynthesis Pro, written by the API Worker)
+  activity?: Doc[];                           // every users/{uid}/activity/recent (where and how the account opens the site / app)
 };
 
 export function limitFor(slot: string, plan: string): number {
@@ -89,7 +90,7 @@ export function keyRow(k: Doc, usage: Doc[], today: string, from30: string) {
 
 /** The per-user summary row (users table) for one account. */
 export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefined, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
-                        billing?: Doc | null, admin?: Doc | null) {
+                        billing?: Doc | null, admin?: Doc | null, act?: Doc | null) {
   const today = dayKey(now), from7 = daysAgo(6, now), from30 = daysAgo(29, now);
   const live = keys.filter((k) => !k.revoked);
   const apiPlan = live.reduce((p, k) => ((RANK[k.plan] ?? 0) > (RANK[p] ?? 0) ? k.plan : p), "free");
@@ -102,7 +103,9 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     if (n && (!lastCall || u._id > lastCall.slice(0, 10))) lastCall = ts(u.updated) || u._id;
   }
   const web = websitePlan(a, billing, now);
-  const lastSeen = [a?.lastActive, a?.lastLogin, lastCall].filter(Boolean).sort().pop() || null;
+  const lastSeen = [a?.lastActive, a?.lastLogin, lastCall, act?.updated].filter(Boolean).map(String).sort().pop() || null;
+  const recent = (t: unknown) => !!t && String(t) >= new Date(now.getTime() - 30 * 86400_000).toISOString();
+  const onWeb = recent(act?.lastWeb), onApp = recent(act?.lastApp);
   return {
     uid, email: a?.email ?? null, name: a?.name ?? null, photo: a?.photo ?? null, verified: a?.verified ?? false,
     providers: a?.providers ?? [], created: a?.created ?? null, lastLogin: a?.lastLogin ?? null, lastSeen,
@@ -114,6 +117,12 @@ export function userRow(uid: string, a: AuthUser | null, profile: Doc | undefine
     keys: keys.length, activeKeys: live.length, mcpDays, mcp30,
     today: callsToday, calls7, calls30, lastCall,
     requestsOpen: requests.filter((r) => r.status === "pending").length,
+    // where the account is active (users/{uid}/activity/recent, edge/src/activity.ts): website, app or both in 30 days
+    activeOn: onWeb && onApp ? "both" : onApp ? "app" : onWeb ? "web" : null,
+    lastWeb: act?.lastWeb ?? null, lastApp: act?.lastApp ?? null, firstApp: act?.firstApp ?? null,
+    appVersion: act?.appVersion ?? null, appOs: act?.appOs ?? null,
+    place: act?.place ?? null, agent: act?.agent ?? null,
+    visits3d: Array.isArray(act?.visits) ? act!.visits.length : 0,
   };
 }
 
@@ -133,8 +142,9 @@ export function snapshot(inp: Inputs) {
   const uids = new Set<string>([...authBy.keys(), ...profBy.keys(), ...keysBy.keys(), ...reqBy.keys(), ...Object.keys(inp.usage)]);
   const billBy = new Map((inp.billing || []).filter((b) => b._id !== "admin").map((b) => [uidOf(b._path), b]));
   const adminBy = new Map((inp.billing || []).filter((b) => b._id === "admin").map((b) => [uidOf(b._path), b]));
+  const actBy = new Map((inp.activity || []).filter((d) => d._id === "recent").map((d) => [uidOf(d._path), d]));
   const users = [...uids].map((uid) => userRow(uid, authBy.get(uid) || null, profBy.get(uid), keysBy.get(uid) || [],
-                                               reqBy.get(uid) || [], inp.usage[uid] || [], now, billBy.get(uid), adminBy.get(uid)));
+                                               reqBy.get(uid) || [], inp.usage[uid] || [], now, billBy.get(uid), adminBy.get(uid), actBy.get(uid)));
   const emailOf = new Map(users.map((u) => [u.uid, u.email]));
 
   const keys = inp.keys.map((k) => ({ ...keyRow(k, inp.usage[uidOf(k._path)] || [], today, from30), email: emailOf.get(uidOf(k._path)) ?? null }));
@@ -199,9 +209,9 @@ export type Snapshot = ReturnType<typeof snapshot> & { errors?: string[] };
 
 /** One account in full: identity, plans and services, keys, usage by day / key / endpoint, requests, timeline. */
 export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys: Doc[], requests: Doc[], usage: Doc[], now: Date,
-                        billing?: Doc | null, admin?: Doc | null) {
+                        billing?: Doc | null, admin?: Doc | null, act?: Doc | null) {
   const today = dayKey(now), from30 = daysAgo(29, now);
-  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now, billing, admin);
+  const row = userRow(uid, a, prof || undefined, keys, requests, usage, now, billing, admin, act);
   const series: Row[] = [];
   const byDay = new Map(usage.map((u) => [u._id, u]));
   for (let i = 89; i >= 0; i--) {
@@ -233,10 +243,15 @@ export function profile(uid: string, a: AuthUser | null, prof: Doc | null, keys:
   if (mcpRows.length) timeline.push({ at: mcpRows[0], what: "First MCP connector use (in the last 90 days)" });
   for (const r of reqs) if (r.created) timeline.push({ at: r.created, what: `Requested ${r.plan} (${r.status})` });
   if (a?.lastLogin) timeline.push({ at: a.lastLogin, what: "Last sign-in" });
+
+  if (act?.firstApp) timeline.push({ at: String(act.firstApp), what: "First opened the app" });
   timeline.sort((x, y) => y.at.localeCompare(x.at));
+  const visits = (Array.isArray(act?.visits) ? act!.visits : []).slice().sort((x: Row, y: Row) => String(y.at).localeCompare(String(x.at)));
 
   return {
     user: row,
+    activity: { visits, lastWeb: act?.lastWeb ?? null, lastApp: act?.lastApp ?? null, firstApp: act?.firstApp ?? null,
+                appVersion: act?.appVersion ?? null, appOs: act?.appOs ?? null, place: act?.place ?? null },
     identity: a ? { ...a } : null,
     profile: prof ? { company: prof.company || null, useCase: prof.useCase || null, notifyProduct: prof.notifyProduct ?? null,
                       notifyUsage: prof.notifyUsage ?? null, notifyBilling: prof.notifyBilling ?? null, updated: ts(prof.updated) } : null,
