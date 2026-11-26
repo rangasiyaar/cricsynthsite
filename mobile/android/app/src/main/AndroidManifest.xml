@@ -38,6 +38,14 @@
         </provider>
     </application>
 
+    <!-- UPI apps the payment window can open (Android 11+ needs these declared to see them) -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="upi" />
+        </intent>
+    </queries>
+
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />

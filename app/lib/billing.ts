@@ -86,6 +86,8 @@ export async function startCheckout(billing: Billing, where: Where = "web"): Pro
       key: c.key, subscription_id: c.subscription_id, name: "CricSynthesis", image: "https://cricsynthesis.in/brand-logo.png",
       description: `CricSynthesis Pro (${billing})${c.trial ? " · 1 day free" : ""}`,
       prefill: { email: c.email || "" }, theme: { color: "#416180" }, notes: { product: "pro" },
+      // in the app's web view, show UPI apps too (the Android shell opens the UPI link in GPay, PhonePe, Paytm...)
+      ...(where === "app" ? { webview_intent: true } : {}),
       handler: (resp: RazorpayResponse) => {
         call("verify", resp).then(() => resolve("done"), (e) => { report("error", where, billing, { description: `verify: ${e instanceof Error ? e.message : e}` }); reject(e); });
       },
