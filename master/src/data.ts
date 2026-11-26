@@ -39,7 +39,9 @@ export function accountLimit(keys: Doc[]): number {
 export function websitePlan(u: AuthUser | null, billing?: Doc | null, now = new Date()): { plan: string; source: string; status?: string } {
   const until = billing?.proUntil ? Date.parse(billing.proUntil) : NaN;
   if (Number.isFinite(until) && until > now.getTime()) {
-    return { plan: "Pro", source: billing!.status === "trial" ? "trial" : "subscription", status: billing!.status };
+    // Paid only once a charge has gone through; before that (free day, or paused / failed before the first charge) it's the trial
+    const paid = Number(billing!.paidCount || 0) > 0 || billing!.everPaid === true;
+    return { plan: "Pro", source: billing!.status === "trial" || !paid ? "trial" : "subscription", status: billing!.status };
   }
   const claim = u?.claims?.plan;
   if (claim && claim !== "free") return { plan: claim === "pro" ? "Pro" : String(claim), source: "assigned" };

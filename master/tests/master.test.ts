@@ -115,7 +115,11 @@ test("profile: services, keys, usage by endpoint, timeline", () => {
   assert.equal(p.services.api.paid, false);
   assert.equal(p.services.website.plan, "Free");                              // no subscription, no assigned plan
   assert.equal(p.services.website.source, "default");
-  const paid = profile("u1", auth[0], null, [], [], [], now, { status: "active", billing: "monthly", proUntil: new Date(now.getTime() + 86400_000).toISOString() } as any);
+  const paid = profile("u1", auth[0], null, [], [], [], now, { status: "active", paidCount: 1, billing: "monthly", proUntil: new Date(now.getTime() + 86400_000).toISOString() } as any);
+  // paused (or anything else) before the first charge is the free day, not a paying customer
+  const unpaid = profile("u1", auth[0], null, [], [], [], now, { status: "paused", paidCount: 0, proUntil: new Date(now.getTime() + 3600_000).toISOString() } as any);
+  assert.equal(unpaid.services.website.source, "trial");
+  assert.equal(unpaid.user.tag, "trial");
   assert.equal(paid.services.website.plan, "Pro");
   assert.equal(paid.services.website.source, "subscription");
   assert.equal(paid.services.website.paid, true);
