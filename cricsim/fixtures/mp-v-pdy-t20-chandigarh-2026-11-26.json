@@ -12,7 +12,7 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Puducherry won the toss and bowl first.",
   "teams": [
     {
       "name": "Madhya Pradesh",
@@ -20,28 +20,28 @@
       "players": [
         "Harsh Gawli",
         "Rajat Patidar",
-        "Akshat Raghuwanshi",
-        "Aniket Verma",
-        "Ritik Tada",
+        "Ankush Singh",
         "Shivam Shukla",
+        "Ritik Tada",
         "Shivang Kumar",
         "Rahul Batham",
-        "Tripuresh Singh",
         "Avesh Khan",
-        "Kumar Kartikeya"
+        "Saransh Jain",
+        "Kumar Kartikeya",
+        "Mangesh Yadav"
       ],
       "roles": [
         "WK",
         "BAT",
-        "BAT",
-        "BAT",
         "AR",
         "BOWL",
         "AR",
         "AR",
         "AR",
         "BOWL",
-        "BOWL"
+        "AR",
+        "BOWL",
+        "AR"
       ],
       "captain": "Rajat Patidar",
       "squad": [
@@ -62,28 +62,28 @@
       "name": "Puducherry",
       "short": "PDY",
       "players": [
-        "Ankit Sharma",
-        "Sagar Trivedi",
-        "Prasad Pawar",
-        "Shashank Singh",
-        "Aman Hakim Khan",
-        "Bhanu Anand",
-        "Adil Ayub Tunda",
-        "S Parameeswaran",
         "Badal Rawat",
-        "Sagar Udeshi",
-        "Pougajendy Akash"
+        "Vedant Bhardwaj",
+        "Sagar Trivedi",
+        "Aman Hakim Khan",
+        "Vijai Raja",
+        "Gautam Dileep Shastry",
+        "Pranay Singh",
+        "Raghav Goyal",
+        "S Parameeswaran",
+        "Pougajendy Akash",
+        "Ramamoorthy Ragavan"
       ],
       "roles": [
-        "BOWL",
         "AR",
         "BAT",
         "AR",
         "AR",
+        "BOWL",
         "WK",
         "BOWL",
+        "BOWL",
         "BAT",
-        "AR",
         "BAT",
         "BAT"
       ],
@@ -107,6 +107,7 @@
     "kn": 41951,
     "url": "https://khelnow.com/live-cricket-score/madhya-pradesh-vs-puducherry-syed-mushtaq-ali-trophy-elite-26th-november-2026-41951",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
