@@ -12,7 +12,7 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Uttarakhand won the toss and bowl first.",
   "teams": [
     {
       "name": "Uttarakhand",
@@ -20,27 +20,27 @@
       "players": [
         "Kunal Chandela",
         "Yuvraj Chaudhary",
-        "Avneesh Sudha",
-        "Tejasvi Jaiswal",
+        "Shashwat Dangwal",
         "Aarav Mahajan",
         "Sanskar Rawat",
-        "Mayank Mishra",
-        "Agnivesh Ayachi",
+        "Jagadeesha Suchith",
+        "Anmol Shah",
+        "Ravinder Negi",
         "Janmejay Joshi",
-        "Jagmohan Nagarkoti",
-        "Surya Chauhan"
+        "Agnivesh Ayachi",
+        "Rahul Raj Namala"
       ],
       "roles": [
         "BAT",
         "AR",
-        "AR",
-        "BOWL",
+        "BAT",
         "BAT",
         "WK",
+        "BOWL",
         "AR",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BAT"
       ],
       "captain": "Kunal Chandela",
@@ -65,8 +65,8 @@
         "Surya Kumar Yadav",
         "Shardul Thakur",
         "Sarfaraz Khan",
-        "Tushar Deshpande",
         "Shivam Dube",
+        "Tushar Deshpande",
         "Maxwell Swaminathan",
         "Atharva Ankolekar",
         "Angkrish Raghuvanshi",
@@ -78,8 +78,8 @@
         "BAT",
         "AR",
         "BAT",
-        "BOWL",
         "AR",
+        "BOWL",
         "AR",
         "AR",
         "BAT",
@@ -107,6 +107,7 @@
     "kn": 41952,
     "url": "https://khelnow.com/live-cricket-score/uttarakhand-vs-mumbai-syed-mushtaq-ali-trophy-elite-26th-november-2026-41952",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
