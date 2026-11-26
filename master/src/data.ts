@@ -40,7 +40,9 @@ export function websitePlan(u: AuthUser | null, billing?: Doc | null, now = new 
   const until = billing?.proUntil ? Date.parse(billing.proUntil) : NaN;
   if (Number.isFinite(until) && until > now.getTime()) {
     // Paid only once a charge has gone through; before that (free day, or paused / failed before the first charge) it's the trial
-    const paid = Number(billing!.paidCount || 0) > 0 || billing!.everPaid === true;
+    // (only for Razorpay subscriptions: Pro given by our team, status "comp", has no charges and stays Assigned)
+    const razorpay = !!billing!.subscriptionId && billing!.status !== "comp";
+    const paid = !razorpay || Number(billing!.paidCount || 0) > 0 || billing!.everPaid === true;
     return { plan: "Pro", source: billing!.status === "trial" || !paid ? "trial" : "subscription", status: billing!.status };
   }
   const claim = u?.claims?.plan;

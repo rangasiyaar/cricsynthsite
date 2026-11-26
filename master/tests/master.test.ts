@@ -117,9 +117,13 @@ test("profile: services, keys, usage by endpoint, timeline", () => {
   assert.equal(p.services.website.source, "default");
   const paid = profile("u1", auth[0], null, [], [], [], now, { status: "active", paidCount: 1, billing: "monthly", proUntil: new Date(now.getTime() + 86400_000).toISOString() } as any);
   // paused (or anything else) before the first charge is the free day, not a paying customer
-  const unpaid = profile("u1", auth[0], null, [], [], [], now, { status: "paused", paidCount: 0, proUntil: new Date(now.getTime() + 3600_000).toISOString() } as any);
+  const unpaid = profile("u1", auth[0], null, [], [], [], now, { status: "paused", paidCount: 0, subscriptionId: "sub_x", proUntil: new Date(now.getTime() + 3600_000).toISOString() } as any);
   assert.equal(unpaid.services.website.source, "trial");
   assert.equal(unpaid.user.tag, "trial");
+  // Pro given by our team (no Razorpay subscription, nothing charged) stays Assigned
+  const comp = profile("u1", auth[0], null, [], [], [], now, { status: "comp", proUntil: "2099-01-01T00:00:00Z" } as any);
+  assert.equal(comp.user.tag, "assigned");
+  assert.equal(comp.services.website.source, "assigned");
   assert.equal(paid.services.website.plan, "Pro");
   assert.equal(paid.services.website.source, "subscription");
   assert.equal(paid.services.website.paid, true);
