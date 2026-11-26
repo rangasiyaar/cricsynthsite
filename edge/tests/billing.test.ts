@@ -182,3 +182,52 @@ test("account emails: Pro started once per subscription, cancelled, and a failed
   assert.equal((sent.at(-1) as any).until.getTime(), (S0 + 30 * 86400) * 1000);
   assert.equal((sent.at(-1) as any).trial, false);
 });
+
+test("checkout records where it started (website or app) on the account and at Razorpay", async () => {
+  const w = world();
+  const r = await B.checkout(w.deps, user, { billing: "monthly", where: "app" });
+  assert.equal(w.docs.get(doc)!.source, "app");
+  assert.equal(w.subs.get(r.subscription_id).notes.where, "app");
+  await B.checkout(w.deps, user, { billing: "monthly" });                    // an older page that doesn't say
+  assert.equal(w.docs.get(doc)!.source, "unknown");
+  await B.checkout(w.deps, user, { billing: "monthly", where: "evil" });
+  assert.equal(w.docs.get(doc)!.source, "unknown");
+});
+
+test("failed payments are logged with website or app and the device, capped per account per day", async () => {
+  const w = world();
+  await B.checkout(w.deps, user, { billing: "yearly", where: "app" });
+  const ua = "Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36";
+  await B.attempt(w.deps, "u1", { kind: "failed", where: "app", billing: "yearly", code: "BAD_REQUEST_ERROR",
+    reason: "payment_failed", description: "Your payment was declined by the bank.", step: "payment_authorization",
+    source: "bank", paymentId: "pay_1" }, ua);
+  await B.attempt(w.deps, "u1", { kind: "closed", where: "web" }, "Mozilla/5.0 (Windows NT 10.0)");
+  const day = w.docs.get("paymentEvents/u1_2026-11-18")!;
+  const ev = day.events as B.Rec[];
+  assert.equal(day.uid, "u1");
+  assert.equal(ev.length, 2);
+  assert.deepEqual([ev[0].kind, ev[0].where, ev[0].device, ev[0].billing, ev[0].reason, ev[0].source],
+                   ["failed", "app", "android", "yearly", "payment_failed", "bank"]);
+  assert.equal(ev[0].subscriptionId, w.docs.get(doc)!.subscriptionId);
+  assert.deepEqual([ev[1].kind, ev[1].where, ev[1].device], ["closed", "web", "desktop"]);
+  await assert.rejects(B.attempt(w.deps, "u1", { kind: "hacked" }, null), /kind must be/);
+  const long = "x".repeat(5000);
+  for (let k = 0; k < 40; k++) await B.attempt(w.deps, "u1", { kind: "error", where: "web", description: long }, null);
+  const after = w.docs.get("paymentEvents/u1_2026-11-18")!.events as B.Rec[];
+  assert.equal(after.length, 30);                                          // capped
+  assert.equal((after[2].description as string).length, 160);              // text kept short
+});
+
+test("a failed renewal is logged once, with where the subscription started", async () => {
+  const w = world();
+  const r = await B.checkout(w.deps, user, { billing: "monthly", where: "web" });
+  const ev = (sub: any) => JSON.stringify({ event: "subscription.pending", payload: { subscription: { entity: sub } } });
+  const sub = { id: r.subscription_id, status: "pending", paid_count: 1, current_end: S0 + 30 * 86400, notes: { uid: "u1", product: "pro", billing: "monthly", where: "web" } };
+  const raw = ev(sub);
+  await B.webhook(w.deps, raw, await B.hmacHex("whs", raw));
+  await B.webhook(w.deps, raw, await B.hmacHex("whs", raw));                // the same event again: not logged twice
+  const halted = ev({ ...sub, status: "halted" });
+  await B.webhook(w.deps, halted, await B.hmacHex("whs", halted));
+  const events = w.docs.get("paymentEvents/u1_2026-11-18")!.events as B.Rec[];
+  assert.deepEqual(events.map((e) => [e.kind, e.where]), [["renewal failed", "web"], ["halted", "web"]]);
+});

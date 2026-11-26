@@ -25,6 +25,7 @@ const ICON: Record<string, string> = {
   keys: ic('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>'),
   usage: ic('<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'),
   requests: ic('<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>'),
+  payments: ic('<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6.5 15h4"/>'),
   messages: ic('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9.5h8M8 12.5h5"/>'),
   applications: ic('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'),
   product: ic('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
@@ -137,7 +138,7 @@ function renderLogin(msg = "") {
 // ── shell ──
 const NAV: [string, [string, string][]][] = [
   ["", [["", "Overview"]]],
-  ["Customers", [["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"], ["messages", "Messages"], ["applications", "Applications"]]],
+  ["Customers", [["users", "Users"], ["keys", "API keys"], ["usage", "Usage"], ["requests", "Upgrade requests"], ["payments", "Payments"], ["messages", "Messages"], ["applications", "Applications"]]],
   ["Growth", [["product", "Product (GA4)"], ["ux", "UX (Clarity)"], ["search", "Search"], ["traffic", "Traffic"]]],
   ["Operations", [["health", "Pipeline health"], ["accuracy", "Model accuracy"], ["log", "Audit log"]]],
 ];
@@ -170,7 +171,7 @@ async function route() {
   main().innerHTML = `<p class="loading">Loading…</p>`;
   window.scrollTo(0, 0);
   try {
-    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, messages, applications, product, ux, search, traffic, health, accuracy, log };
+    const views: Record<string, (a: string) => Promise<void>> = { "": overview, users, user, keys, usage, requests, payments, messages, applications, product, ux, search, traffic, health, accuracy, log };
     await (views[view] || overview)(decodeURIComponent(arg));
     wireTips(main());
   } catch (e) {
@@ -572,6 +573,89 @@ async function requests() {
   wireActions($("#tbl")!, () => route()); };
   draw();
   $("#f")!.addEventListener("input", draw);
+  wireRefresh();
+}
+
+// ── payments (CricSynthesis Pro: what didn't go through, and where: website or app) ──
+const WHERE: Record<string, string> = { web: "Website", app: "App", unknown: "Not recorded" };
+const KIND: Record<string, [string, "bad" | "warn" | "plain" | "info"]> = {
+  failed: ["Payment failed", "bad"], error: ["Checkout error", "warn"], closed: ["Closed without paying", "plain"],
+  "renewal failed": ["Renewal failed", "bad"], halted: ["Renewals stopped", "bad"] };
+const STATUS_NAME: Record<string, string> = { created: "Checkout started", trial: "On the free day", active: "Paying", past_due: "Payment overdue",
+  halted: "Halted", cancelled: "Cancelled", paused: "Paused", ended: "Ended" };
+async function payments(filter = "") {
+  const [p, s] = await Promise.all([api("/api/payments"), snapshot()]);
+  const email = new Map((s.users as Row[]).map((u) => [u.uid, u.email]));
+  const from30 = new Date(Date.now() - 30 * DAY).toISOString();
+  const E = ((p.events || []) as Row[]).filter((e) => String(e.at || "") >= from30).sort((a, b) => String(b.at).localeCompare(String(a.at)));
+  const S = (p.subs || []) as Row[];
+  const srcs = ["web", "app", "unknown"];
+  const count = (f: (e: Row) => boolean) => E.filter(f).length;
+  const bad = (e: Row) => e.kind === "failed" || e.kind === "renewal failed" || e.kind === "halted";
+  const failedBy = (w: string) => count((e) => bad(e) && (e.where || "unknown") === w);
+  const failTotal = count(bad);
+  // per day, failures split by where
+  const days: Row[] = [];
+  for (let i = 29; i >= 0; i--) days.push({ day: new Date(Date.now() - i * DAY).toISOString().slice(0, 10), web: 0, app: 0, unknown: 0 });
+  for (const e of E) if (bad(e) || e.kind === "error") { const d = days.find((x) => x.day === String(e.at).slice(0, 10)); if (d) d[(e.where as string) in d ? (e.where as string) : "unknown"]++; }
+  const by = (f: (e: Row) => string, rows = E.filter((e) => bad(e) || e.kind === "error")) => {
+    const m: Record<string, number> = {};
+    for (const e of rows) { const k = f(e) || "Not given"; m[k] = (m[k] || 0) + 1; }
+    return ranked(Object.entries(m).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value).slice(0, 10));
+  };
+  const show = filter ? E.filter((e) => (filter === "failures" ? bad(e) : (e.where || "unknown") === filter)) : E;
+  const tab = (k: string, label: string) => `<a class="btn ${k === filter ? "" : "ghost"} sm" href="#/payments/${k}">${label}</a>`;
+  main().innerHTML = head("Payments") + `
+    <div class="tiles">
+      ${tile("Failed payments (30 days)", n(failTotal), `${n(count((e) => e.kind === "failed"))} at checkout · ${n(count((e) => e.kind === "renewal failed" || e.kind === "halted"))} renewals`)}
+      ${tile("Failures on the website", n(failedBy("web")), pct(ratio(failedBy("web"), failTotal)) + " of failures")}
+      ${tile("Failures in the app", n(failedBy("app")), pct(ratio(failedBy("app"), failTotal)) + " of failures")}
+      ${tile("Checkout errors", n(count((e) => e.kind === "error")), "the payment window didn't open, or confirming the payment failed")}
+      ${tile("Closed without paying", n(count((e) => e.kind === "closed")), `${n(count((e) => e.kind === "closed" && e.where === "web"))} website · ${n(count((e) => e.kind === "closed" && e.where === "app"))} app`)}
+      ${tile("Paying now", n(S.filter((x) => x.status === "active").length), `${n(S.filter((x) => x.status === "trial").length)} on the free day · ${n(S.filter((x) => x.status === "past_due").length)} overdue`)}
+    </div>
+    ${note("Website or app is recorded from 26 Nov 2026. Earlier subscriptions show as Not recorded. Razorpay never sends card or UPI details, only the reason a payment failed.")}
+    <section class="card"><h2>Website against app</h2>${note("Every outcome by where the customer was. A high failure count on one side points to a problem with that checkout.")}<div id="src"></div></section>
+    <section class="card">${bars(days, [{ key: "web", label: "Website", color: S1 }, { key: "app", label: "App", color: S2 }, { key: "unknown", label: "Not recorded", color: S3 }],
+      { x: "day", title: "Failures and errors per day", sub: "Failed payments, failed renewals and checkout errors, split by website or app." })}</section>
+    <div class="grid2">
+      <section class="card"><h2>Why payments failed</h2>${note("Razorpay's reason, most common first. Bank declines and cancelled UPI requests are usually on the customer's side.")}${by((e) => (e.description as string) || (e.reason as string))}</section>
+      <section class="card"><h2>Where in the payment it failed</h2>${note("The step, and who Razorpay says caused it (customer, bank or gateway).")}${by((e) => [e.step, e.source].filter(Boolean).join(" · "))}</section>
+    </div>
+    <div class="grid2">
+      <section class="card"><h2>By device</h2>${note("Android, iPhone or desktop browser, from the device that reported it.")}${by((e) => ({ android: "Android", ios: "iPhone or iPad", desktop: "Desktop", unknown: "Unknown" } as Row)[(e.device as string) || "unknown"])}</section>
+      <section class="card"><h2>By plan</h2>${note("Monthly or yearly, at the time of the attempt.")}${by((e) => (e.billing === "yearly" ? "Yearly" : e.billing === "monthly" ? "Monthly" : ""))}</section>
+    </div>
+    <h2 class="sec">Every attempt (30 days)</h2>${note("Newest first. Click a row to open the account.")}
+    <p class="msg-tabs">${tab("", `All (${E.length})`)} ${tab("failures", `Failures (${failTotal})`)} ${tab("web", "Website")} ${tab("app", "App")}</p>
+    <div id="ev"></div>
+    <section class="card" style="margin-top:16px"><h2>Subscriptions</h2>${note("Every Pro subscription by status, with where it started.")}<div id="subs"></div></section>`;
+  table($("#src")!, [{ key: "w", label: "", render: (r) => esc(WHERE[r.w]) },
+    { key: "paying", label: "Paying", num: true }, { key: "trial", label: "Free day", num: true }, { key: "overdue", label: "Overdue", num: true },
+    { key: "failed", label: "Failed payments", num: true }, { key: "renewal", label: "Failed renewals", num: true },
+    { key: "errors", label: "Checkout errors", num: true }, { key: "closed", label: "Closed", num: true }],
+    srcs.map((w) => {
+      const mine = (e: Row) => (e.where || "unknown") === w;
+      return { w, paying: S.filter((x) => x.source === w && x.status === "active").length, trial: S.filter((x) => x.source === w && x.status === "trial").length,
+        overdue: S.filter((x) => x.source === w && x.status === "past_due").length, failed: count((e) => mine(e) && e.kind === "failed"),
+        renewal: count((e) => mine(e) && (e.kind === "renewal failed" || e.kind === "halted")), errors: count((e) => mine(e) && e.kind === "error"),
+        closed: count((e) => mine(e) && e.kind === "closed") };
+    }));
+  table($("#ev")!, [{ key: "at", label: "When", render: (r) => `<span title="${esc(r.at)}">${when(r.at)}</span>` },
+    { key: "uid", label: "Account", render: (r) => userLink(r.uid, email.get(r.uid) || null) },
+    { key: "kind", label: "What happened", render: (r) => badge(KIND[r.kind]?.[0] || r.kind, KIND[r.kind]?.[1] || "plain") },
+    { key: "where", label: "Where", render: (r) => `${esc(WHERE[r.where || "unknown"])}${r.device && r.device !== "unknown" ? ` <small class="muted">${esc(r.device)}</small>` : ""}` },
+    { key: "billing", label: "Plan", render: (r) => esc(r.billing || "–") },
+    { key: "reason", label: "Reason", render: (r) => `${esc(r.description || r.reason || "–")}${r.code ? ` <small class="muted">${esc(r.code)}</small>` : ""}` },
+    { key: "paymentId", label: "Payment", render: (r) => (r.paymentId ? `<code>${esc(r.paymentId)}</code>` : "–") }],
+    show, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "at", desc: true }, limit: 100, empty: "Nothing recorded in the last 30 days." });
+  table($("#subs")!, [{ key: "uid", label: "Account", render: (r) => userLink(r.uid, email.get(r.uid) || null) },
+    { key: "status", label: "Status", render: (r) => esc(STATUS_NAME[r.status] || r.status || "–") },
+    { key: "source", label: "Started on", render: (r) => esc(WHERE[r.source || "unknown"]) },
+    { key: "billing", label: "Plan", render: (r) => esc(r.billing || "–") },
+    { key: "proUntil", label: "Pro until", render: (r) => day(r.proUntil) },
+    { key: "updated", label: "Last change", render: (r) => ago(r.updated) }],
+    S, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "updated", desc: true }, empty: "No subscriptions yet." });
   wireRefresh();
 }
 

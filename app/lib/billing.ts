@@ -63,18 +63,36 @@ function loadCheckout(): Promise<void> {
   });
 }
 
+type Where = "web" | "app";
+type RazorpayFailure = { error?: { code?: string; description?: string; source?: string; step?: string; reason?: string;
+                                   metadata?: { payment_id?: string } } };
+
+/** Tells our API a payment didn't go through, and where (website or app), for the team's console. Razorpay's error only:
+ *  it never includes card or UPI details. Best effort: a failure to report never gets in the customer's way. */
+function report(kind: "failed" | "error" | "closed", where: Where, billing: Billing, e: RazorpayFailure["error"] | { description: string } = {}) {
+  const x = e as NonNullable<RazorpayFailure["error"]>;
+  call("attempt", { kind, where, billing, code: x.code, description: x.description, source: x.source, step: x.step,
+                    reason: x.reason, paymentId: x.metadata?.payment_id }).catch(() => {});
+}
+
 /** Opens Razorpay's checkout for CricSynthesis Pro. Resolves "done" once the payment is verified, "closed" if they closed it. */
-export async function startCheckout(billing: Billing): Promise<"done" | "closed"> {
-  const [c] = await Promise.all([call("checkout", { billing }), loadCheckout()]);
+export async function startCheckout(billing: Billing, where: Where = "web"): Promise<"done" | "closed"> {
+  let c: { key: string; subscription_id: string; trial: boolean; email: string | null };
+  try { [c] = await Promise.all([call("checkout", { billing, where }), loadCheckout()]); }
+  catch (e) { report("error", where, billing, { description: e instanceof Error ? e.message : "checkout failed" }); throw e; }
+  let failed = false;
   return new Promise((resolve, reject) => {
     const rz = new window.Razorpay!({
       key: c.key, subscription_id: c.subscription_id, name: "CricSynthesis", image: "https://cricsynthesis.in/brand-logo.png",
       description: `CricSynthesis Pro (${billing})${c.trial ? " · 1 day free" : ""}`,
       prefill: { email: c.email || "" }, theme: { color: "#416180" }, notes: { product: "pro" },
-      handler: (resp: RazorpayResponse) => { call("verify", resp).then(() => resolve("done"), reject); },
-      modal: { ondismiss: () => resolve("closed"), confirm_close: true },
+      handler: (resp: RazorpayResponse) => {
+        call("verify", resp).then(() => resolve("done"), (e) => { report("error", where, billing, { description: `verify: ${e instanceof Error ? e.message : e}` }); reject(e); });
+      },
+      modal: { ondismiss: () => { if (!failed) report("closed", where, billing); resolve("closed"); }, confirm_close: true },
     });
-    rz.on("payment.failed", () => { /* Razorpay shows the error and lets them retry */ });
+    // Razorpay shows the error and lets them retry; we record each failure with where it happened
+    rz.on("payment.failed", (r) => { failed = true; report("failed", where, billing, (r as RazorpayFailure).error); });
     rz.open();
   });
 }
@@ -95,7 +113,7 @@ export function useCheckout(billing: Billing, where: "web" | "app") {
     setBusy(true); setErr(null);
     void import("./analytics").then((a) => a.track("pro_checkout", { billing, trial, where }));
     try {
-      if ((await startCheckout(billing)) === "done") {
+      if ((await startCheckout(billing, where)) === "done") {
         setDone(true);
         void import("./analytics").then((a) => a.track("pro_subscribed", { billing, trial, where }));
       }

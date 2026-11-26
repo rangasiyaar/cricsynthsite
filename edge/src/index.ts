@@ -249,6 +249,7 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
     }
     if (path === "/billing/verify" && req.method === "POST") return json(req, env, await B.verify(deps, user.uid, body));
     if (path === "/billing/cancel" && req.method === "POST") return json(req, env, await B.cancel(deps, user.uid));
+    if (path === "/billing/attempt" && req.method === "POST") return json(req, env, await B.attempt(deps, user.uid, body, req.headers.get("User-Agent")));
     return fail(req, env, 404, "Not found");
   } catch (e) {
     if (e instanceof B.BillingError) return fail(req, env, e.status, e.message);

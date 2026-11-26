@@ -6,6 +6,8 @@
 //   POST /billing/cancel                                 → cancels at the end of the paid period (a free day: at once,
 //                                                          keeping Pro until it ends)
 //   GET  /billing/status                                 → the account's Pro billing (refreshed from Razorpay when stale)
+//   POST /billing/attempt  {kind, where, …}              → the checkout page reports a failed payment, an error before
+//                                                          the payment window or a closed window (for the console)
 //   POST /billing/webhook                                → Razorpay events (signed with RAZORPAY_WEBHOOK_SECRET)
 //
 // The result lives in Firestore users/{uid}/billing/pro, written only here; the website and app read it (rules allow
@@ -145,6 +147,9 @@ async function customer(deps: Deps, user: { uid: string; email: string | null },
 }
 
 /** Start a subscription for the website's checkout. */
+export type Where = "web" | "app" | "unknown";
+const whereOf = (v: unknown): Where => (v === "web" || v === "app" ? v : "unknown");
+
 export async function checkout(deps: Deps, user: { uid: string; email: string | null }, body: any) {
   const billing: Billing = body?.billing === "monthly" ? "monthly" : body?.billing === "yearly" ? "yearly" : (() => {
     throw new BillingError(422, "billing must be monthly or yearly"); })();
@@ -158,10 +163,10 @@ export async function checkout(deps: Deps, user: { uid: string; email: string | 
     plan_id: await planId(deps, billing), total_count: CYCLES[billing], quantity: 1, customer_notify: 1,
     ...(customerId ? { customer_id: customerId } : {}),
     ...(trial ? { start_at: Math.floor(now / 1000) + TRIAL_S } : {}),
-    notes: { uid: user.uid, product: "pro", billing },
+    notes: { uid: user.uid, product: "pro", billing, where: whereOf(body?.where) },
   });
   // keep any access still running (e.g. a cancelled plan's last days) until the new subscription is confirmed
-  await deps.store.set(docPath(user.uid), { product: "pro", subscriptionId: sub.id, rzStatus: sub.status, billing,
+  await deps.store.set(docPath(user.uid), { product: "pro", subscriptionId: sub.id, rzStatus: sub.status, billing, source: whereOf(body?.where),
                                             ...(customerId ? { customerId } : {}),
                                             ...(view.pro ? {} : { status: "created" }), updated: new Date(now) });
   return { key: deps.keyId, subscription_id: sub.id, trial, billing, amount: PRICE[billing], email: user.email };
@@ -221,6 +226,37 @@ export async function status(deps: Deps, uid: string) {
   return publicView(d, now);
 }
 
+// ── payment attempts that didn't go through, for the console (paymentEvents/{uid}_{day}: at most 30 a day per account)
+const ATTEMPT_KINDS = ["failed", "error", "closed", "renewal failed", "halted"] as const;
+export type AttemptKind = typeof ATTEMPT_KINDS[number];
+const clip = (v: unknown, n = 160) => (typeof v === "string" ? v.slice(0, n) : v == null ? null : String(v).slice(0, n));
+/** The device family from a browser's User-Agent: enough to tell Android, iPhone and desktop apart. */
+export const deviceOf = (ua: string | null) => !ua ? "unknown" : /android/i.test(ua) ? "android" : /iphone|ipad|ios/i.test(ua) ? "ios" : "desktop";
+
+export async function logAttempt(deps: Deps, uid: string, e: Rec) {
+  const now = new Date(deps.now()), day = now.toISOString().slice(0, 10);
+  const path = `paymentEvents/${uid}_${day}`;
+  const doc = await deps.store.get(path);
+  const events = Array.isArray(doc?.events) ? (doc!.events as Rec[]) : [];
+  if (events.length >= 30) return { ok: true, capped: true };
+  await deps.store.set(path, { uid, day, updated: now, events: [...events, { ...e, at: now.toISOString() }] });
+  return { ok: true };
+}
+
+/** What the checkout page reports: Razorpay's error (code, reason, step, source) with where it happened. No card or
+ *  UPI details are ever sent: Razorpay doesn't give them to the page. */
+export async function attempt(deps: Deps, uid: string, body: any, ua: string | null) {
+  const kind = String(body?.kind || "");
+  if (!["failed", "error", "closed"].includes(kind)) throw new BillingError(422, "kind must be failed, error or closed");
+  const d = await deps.store.get(docPath(uid));
+  return logAttempt(deps, uid, {
+    kind, where: whereOf(body?.where), device: deviceOf(ua), billing: body?.billing === "yearly" ? "yearly" : "monthly",
+    code: clip(body?.code, 60), reason: clip(body?.reason, 80), description: clip(body?.description), step: clip(body?.step, 60),
+    source: clip(body?.source, 40), paymentId: clip(body?.paymentId, 40), subscriptionId: clip(d?.subscriptionId, 40),
+    trial: !d?.trialUsed,
+  });
+}
+
 /** Razorpay webhook: subscription events update the account they belong to (notes.uid). */
 export async function webhook(deps: Deps, raw: string, signature: string | null) {
   if (!deps.webhookSecret) throw new BillingError(503, "Webhook not configured");
@@ -237,6 +273,12 @@ export async function webhook(deps: Deps, raw: string, signature: string | null)
   if (!prev?.subscriptionId || prev.subscriptionId !== sub.id) return { ok: true, ignored: true };
   const d = await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null });
   await startedMail(deps, uid, d);
+  // a renewal that failed, or retries that ran out: logged once per change, with where the subscription started
+  if ((d.status === "past_due" || d.status === "halted") && prev.status !== d.status) {
+    await logAttempt(deps, uid, { kind: d.status === "past_due" ? "renewal failed" : "halted", where: whereOf(prev.source ?? sub.notes?.where),
+                                  device: "unknown", billing: d.billing ?? null, subscriptionId: sub.id, code: null, reason: null,
+                                  description: null, step: "renewal", source: null, paymentId: null, trial: false });
+  }
   // a renewal that didn't go through: once per billing period
   const period = d.currentEnd instanceof Date ? d.currentEnd.toISOString() : String(d.currentEnd ?? "");
   if (deps.notify && d.status === "past_due" && prev.mailFailed !== period) {

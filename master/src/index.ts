@@ -163,6 +163,17 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
       return json({ entries: rows.map((r) => ({ id: r._id, at: r.at, email: r.email, what: r.what, uid: r.uid || null, done: r.done || null,
         detail: (() => { try { return JSON.parse(r.detail || "{}"); } catch { return {}; } })(), ip: r.ip || null, country: r.country || null })) });
     }
+    case "/api/payments": {                                  // Pro payments: failures and attempts by website or app
+      const g = google(env);
+      const [days, billing] = await Promise.all([g.list("paymentEvents").catch(() => []), g.group("billing").catch(() => [])]);
+      const since = new Date(Date.now() - 60 * 86400_000).toISOString().slice(0, 10);
+      const events = days.filter((d) => String(d.day || "") >= since)
+        .flatMap((d) => (Array.isArray(d.events) ? d.events : []).map((e: Record<string, unknown>) => ({ uid: d.uid, ...e })));
+      const subs = billing.filter((b) => b._id === "pro").map((b) => ({ uid: String(b._path).split("/")[1], status: b.status || null,
+        source: b.source || "unknown", billing: b.billing || null, proUntil: b.proUntil || null, updated: b.updated || null,
+        trialUsed: b.trialUsed === true, cancelAtEnd: b.cancelAtEnd === true }));
+      return json({ events, subs });
+    }
     case "/api/messages": {
       const rows = await google(env).latest("contactMessages", 300);
       return json({ messages: rows.map((r) => ({ id: r._id, at: r.at, name: r.name, email: r.email, topic: r.topic, company: r.company || null,
