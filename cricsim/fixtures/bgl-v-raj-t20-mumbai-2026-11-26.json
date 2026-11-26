@@ -12,23 +12,23 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Bengal won the toss and bat first.",
   "teams": [
     {
       "name": "Bengal",
       "short": "BGL",
       "players": [
         "Abishek Porel",
-        "Sudip Kumar Gharami",
-        "Abhimanyu Easwaran",
-        "Karan Lal",
         "Shakir Habib Gandhi",
+        "Abhimanyu Easwaran",
+        "Aditya Purohit",
+        "Shashank Singh",
+        "Karan Lal",
         "Rishabh Chaudhary",
-        "Pradipta Pramanik",
+        "Sayan Ghosh",
         "Mohammad Shami",
         "Mukesh Kumar",
-        "Sayan Ghosh",
-        "Akhilesh Yadav"
+        "Pradipta Pramanik"
       ],
       "roles": [
         "WK",
@@ -36,8 +36,8 @@
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
         "AR",
-        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL",
@@ -62,30 +62,30 @@
       "name": "Rajasthan",
       "short": "RAJ",
       "players": [
-        "Abhijeet Tomar",
-        "Rohan Rajbar",
-        "Mahipal Lomror",
-        "Kartik Sharma",
         "Kunal Singh Rathore",
         "Mukul Choudhary",
-        "Deepak Chahar",
+        "Kartik Sharma",
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
         "Manav Suthar",
-        "Himanshu Nehra",
+        "Mahipal Lomror",
         "Rahul Chahar",
-        "Himanshu Rana"
+        "Deepak Chahar",
+        "Arafat Khan",
+        "Nilesh Tank"
       ],
       "roles": [
-        "BAT",
-        "AR",
-        "AR",
-        "BAT",
         "WK",
         "BAT",
-        "BOWL",
-        "AR",
         "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
         "BOWL",
-        "BOWL"
+        "BOWL",
+        "BOWL",
+        "AR"
       ],
       "captain": "Deepak Chahar",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41953,
     "url": "https://khelnow.com/live-cricket-score/bengal-vs-rajasthan-syed-mushtaq-ali-trophy-elite-26th-november-2026-41953",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
