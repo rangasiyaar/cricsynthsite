@@ -12,7 +12,7 @@
   "city": "Indore",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Saurashtra won the toss and bowl first.",
   "teams": [
     {
       "name": "Saurashtra",
@@ -28,7 +28,7 @@
         "Siddhant Rana",
         "Krains Fuletra",
         "Harvansh Singh Pangalia",
-        "Parth Bhut"
+        "Mohit Ulva"
       ],
       "roles": [
         "BOWL",
@@ -41,7 +41,7 @@
         "BAT",
         "BOWL",
         "BAT",
-        "AR"
+        "BAT"
       ],
       "captain": "Jaydev Unadkat",
       "squad": [
@@ -68,11 +68,11 @@
         "Balasubramaniam Sachin",
         "Andre Siddarth",
         "Rithik Easwaran",
-        "Shahrukh Khan",
         "Ravi Rajkumar",
-        "Ragupathy Silambarasan",
+        "Sunny Sandhu",
         "Gurjapneet Singh",
-        "M. Siddharth"
+        "Kishoor G",
+        "Jhatavedh Subramanyan"
       ],
       "roles": [
         "BOWL",
@@ -81,10 +81,10 @@
         "BAT",
         "BAT",
         "BAT",
-        "BAT",
+        "AR",
         "AR",
         "BOWL",
-        "BOWL",
+        "AR",
         "BOWL"
       ],
       "captain": "Sai Kishore",
@@ -107,6 +107,7 @@
     "kn": 41963,
     "url": "https://khelnow.com/live-cricket-score/saurashtra-vs-tamil-nadu-syed-mushtaq-ali-trophy-elite-26th-november-2026-41963",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
