@@ -1,0 +1,388 @@
+{
+ "id": "ind-wu19-v-eng-wu19-t20-vadodara-2026-11-26",
+ "innings": [
+  {
+   "team": "India Women Under-19s",
+   "runs": 197,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Deeya Yadav",
+     "dismissal": "c S Thomas b C Thaker",
+     "runs": 29,
+     "balls": 18,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Ishawari Awasare",
+     "dismissal": "c S Thomas b C Thaker",
+     "runs": 2,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ira Jadhav",
+     "dismissal": "runout (P Brett)",
+     "runs": 20,
+     "balls": 16,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Bhavika Ahire",
+     "dismissal": "not out",
+     "runs": 63,
+     "balls": 33,
+     "fours": 9,
+     "sixes": 2
+    },
+    {
+     "name": "Nidhi Mahto",
+     "dismissal": "c P Brett b B Gillgrass",
+     "runs": 10,
+     "balls": 8,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Achsah S Parmar",
+     "dismissal": "runout (B Gillgrass)",
+     "runs": 52,
+     "balls": 35,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Uma Kashvi",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Clara Thaker",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 45,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 4
+    },
+    {
+     "name": "Phoebe Brett",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Holly Garton",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Genevieve Jeer",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 39,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Amelie Bishop",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Bryony Gillgrass",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Ishawari Awasare",
+     "score": 12,
+     "over": "2.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Ira Jadhav",
+     "score": 49,
+     "over": "5.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Deeya Yadav",
+     "score": 55,
+     "over": "7.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Nidhi Mahto",
+     "score": 78,
+     "over": "9.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Achsah S Parmar",
+     "score": 188,
+     "over": "19.3"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 3,
+    "w": 10,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 43
+  },
+  {
+   "team": "England Women Under-19s",
+   "runs": 161,
+   "wickets": 10,
+   "overs": "19",
+   "batting": [
+    {
+     "name": "Bryony Gillgrass",
+     "dismissal": "c B Ahire b AD Tagde",
+     "runs": 4,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Faith Teekasingh",
+     "dismissal": "c N Mahto b P singh",
+     "runs": 5,
+     "balls": 5,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Shristi Patil",
+     "dismissal": "runout (K Palak)",
+     "runs": 40,
+     "balls": 29,
+     "fours": 7,
+     "sixes": 0
+    },
+    {
+     "name": "Amelia Oliver",
+     "dismissal": "runout (I Awasare)",
+     "runs": 1,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Flora Davies",
+     "dismissal": "st B Ahire b M Maniar",
+     "runs": 6,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Skye Thomas",
+     "dismissal": "st B Ahire b U Kashvi",
+     "runs": 30,
+     "balls": 23,
+     "fours": 5,
+     "sixes": 0
+    },
+    {
+     "name": "Genevieve Jeer",
+     "dismissal": "not out",
+     "runs": 43,
+     "balls": 23,
+     "fours": 6,
+     "sixes": 1
+    },
+    {
+     "name": "Amelie Bishop",
+     "dismissal": "c I Awasare b U Kashvi",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Clara Thaker",
+     "dismissal": "c I Jadhav b N Mahto",
+     "runs": 14,
+     "balls": 8,
+     "fours": 3,
+     "sixes": 0
+    },
+    {
+     "name": "Phoebe Brett",
+     "dismissal": "st B Ahire b U Kashvi",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Holly Garton",
+     "dismissal": "c K Palak b M Maniar",
+     "runs": 8,
+     "balls": 6,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Anaadi Tagde",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Palak Singh",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 5
+    },
+    {
+     "name": "Maitri Maniar",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Uma Kashvi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 24,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nidhi Mahto",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Achsah S Parmar",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Bryony Gillgrass",
+     "score": 4,
+     "over": "0.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Faith Teekasingh",
+     "score": 17,
+     "over": "1.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Amelia Oliver",
+     "score": 20,
+     "over": "2.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Flora Davies",
+     "score": 28,
+     "over": "4.2"
+    },
+    {
+     "wicket": 5,
+     "batter": "Shristi Patil",
+     "score": 92,
+     "over": "11.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Skye Thomas",
+     "score": 97,
+     "over": "12.1"
+    },
+    {
+     "wicket": 7,
+     "batter": "Amelie Bishop",
+     "score": 97,
+     "over": "12.2"
+    },
+    {
+     "wicket": 8,
+     "batter": "Clara Thaker",
+     "score": 119,
+     "over": "14.3"
+    },
+    {
+     "wicket": 9,
+     "batter": "Phoebe Brett",
+     "score": 139,
+     "over": "16.5"
+    },
+    {
+     "wicket": 10,
+     "batter": "Holly Garton",
+     "score": 161,
+     "over": "18.6"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 6,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "England Women Under-19s won",
+ "winner": "England Women Under-19s"
+}
