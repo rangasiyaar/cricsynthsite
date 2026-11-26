@@ -1,0 +1,24 @@
+name: Resync Pro subscriptions
+
+# Re-reads every live CricSynthesis Pro subscription from Razorpay and re-saves the account's access with the current
+# rules (master/scripts/resync-billing.ts). Writes only users/{uid}/billing/pro; charges, creates and cancels nothing.
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  resync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Resync
+        working-directory: master
+        env:
+          GOOGLE_SA: ${{ secrets.FIRESTORE_SA_KEY }}
+          RZP_ID: ${{ secrets.RAZORPAY_KEY_ID }}
+          RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
+        run: node --experimental-strip-types --no-warnings scripts/resync-billing.ts | tee -a "$GITHUB_STEP_SUMMARY"

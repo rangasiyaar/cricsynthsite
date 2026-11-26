@@ -84,6 +84,13 @@ export function accessFrom(sub: any): { status: string; proUntil: Date | null; t
   const trialEnd = paid === 0 && sub.start_at ? at(sub.start_at) : null;
   const end = sub.current_end || null;
   const base = { trialEnd, currentEnd: at(end), trialUsed: s !== "created" };
+  // Nothing paid yet (still on the free day, or its first charge didn't go through): Razorpay already shows the first
+  // billing cycle (current_end a month away), but Pro lasts only as long as the free day, never the unpaid month.
+  const freeDayEnd = sub.start_at ? sub.start_at + TRIAL_BUFFER_S : null;
+  if (paid === 0 && ["active", "pending", "halted", "paused"].includes(s)) {
+    const status = s === "active" ? "trial" : s === "pending" ? "past_due" : s;
+    return { ...base, status, proUntil: at(end && freeDayEnd ? Math.min(freeDayEnd, end) : freeDayEnd) };
+  }
   switch (s) {
     case "authenticated": return { ...base, status: "trial", proUntil: at((sub.start_at || 0) + TRIAL_BUFFER_S) };
     case "active": return { ...base, status: "active", proUntil: at(end ? end + GRACE_S : null) };
@@ -204,12 +211,21 @@ export async function cancel(deps: Deps, uid: string) {
   if (!subId) throw new BillingError(404, "No subscription to cancel");
   const cur = await deps.rzp("GET", `/subscriptions/${encodeURIComponent(subId)}`);
   if (["cancelled", "completed", "expired"].includes(cur.status)) return publicView(await save(deps, uid, cur), deps.now());
-  const atEnd = cur.status === "active";
+  const atEnd = cur.status === "active" && Number(cur.paid_count || 0) > 0;     // nothing paid yet: cancel now, so the first charge never happens
   const sub = await deps.rzp("POST", `/subscriptions/${encodeURIComponent(subId)}/cancel`, { cancel_at_cycle_end: atEnd ? 1 : 0 });
   const d = await save(deps, uid, sub, atEnd ? { cancelAtEnd: true } : {});
   const until = ms(atEnd ? d.currentEnd : d.proUntil);
-  if (deps.notify && Number.isFinite(until)) await deps.notify(uid, { kind: "cancelled", until: new Date(until), trial: cur.status === "authenticated" });
+  if (deps.notify && Number.isFinite(until)) await deps.notify(uid, { kind: "cancelled", until: new Date(until), trial: !atEnd && Number(cur.paid_count || 0) === 0 });
   return publicView(d, deps.now());
+}
+
+/** Read the subscription from Razorpay again and re-save the account's access (scripts/resync-billing.ts). */
+export async function resync(deps: Deps, uid: string) {
+  const d = await deps.store.get(docPath(uid));
+  if (!d?.subscriptionId) return null;
+  const before = { status: d.status, proUntil: d.proUntil };
+  const after = await save(deps, uid, await deps.rzp("GET", `/subscriptions/${encodeURIComponent(String(d.subscriptionId))}`));
+  return { before, after: { status: after.status, proUntil: after.proUntil } };
 }
 
 /** The account's Pro billing; refreshed from Razorpay when it's older than 30 minutes or Pro is about to lapse. */

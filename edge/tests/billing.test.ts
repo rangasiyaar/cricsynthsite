@@ -108,6 +108,18 @@ test("no second free day, and no second subscription while Pro is on", async () 
   assert.equal(w.subs.get(again.subscription_id).start_at, null);
 });
 
+test("nothing paid yet: Pro lasts only the free day, whatever Razorpay's first cycle says", () => {
+  const start = S0 + 86400, end = S0 + 31 * 86400, six = 6 * 3600;
+  for (const [rz, ours] of [["active", "trial"], ["pending", "past_due"], ["halted", "halted"], ["paused", "paused"]]) {
+    const a = B.accessFrom({ status: rz, paid_count: 0, start_at: start, current_end: end });
+    assert.equal(a.status, ours, rz);
+    assert.equal(a.proUntil!.getTime(), (start + six) * 1000, rz);
+  }
+  // once the first charge is in, the paid month counts as before
+  assert.equal(B.accessFrom({ status: "paused", paid_count: 1, start_at: start, current_end: end }).proUntil!.getTime(), end * 1000);
+  assert.equal(B.accessFrom({ status: "active", paid_count: 1, start_at: start, current_end: end }).status, "active");
+});
+
 test("cancelling a paid plan waits for the end of the period", async () => {
   const w = world();
   const r = await B.checkout(w.deps, user, { billing: "monthly" });
