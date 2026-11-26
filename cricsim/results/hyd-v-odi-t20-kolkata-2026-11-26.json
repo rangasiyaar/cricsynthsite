@@ -1,0 +1,348 @@
+{
+ "id": "hyd-v-odi-t20-kolkata-2026-11-26",
+ "innings": [
+  {
+   "team": "Odisha",
+   "runs": 206,
+   "wickets": 8,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Aditya Rout",
+     "dismissal": "b P Varma",
+     "runs": 91,
+     "balls": 47,
+     "fours": 6,
+     "sixes": 8
+    },
+    {
+     "name": "Gourav Choudhury",
+     "dismissal": "b T Thyagarajan",
+     "runs": 40,
+     "balls": 29,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Swastik Samal",
+     "dismissal": "c CR Readdi b A Dev Goud",
+     "runs": 38,
+     "balls": 24,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Subhranshu Senapati",
+     "dismissal": "c A Reddy b A Dev Goud",
+     "runs": 13,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Kartik Biswal",
+     "dismissal": "b A Dev Goud",
+     "runs": 1,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Soumya Biswal",
+     "dismissal": "runout (P Varma)",
+     "runs": 5,
+     "balls": 2,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Aasirwad Swain",
+     "dismissal": "c T Thyagarajan b CR Readdi",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Lalit Yadav",
+     "dismissal": "c T Thyagarajan b CR Readdi",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pradeep Pradhan",
+     "dismissal": "not out",
+     "runs": 4,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Badal Biswal",
+     "dismissal": "not out",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Chinntla Rakshann Readdi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 35,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Saranu Nishanth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 0,
+     "no_balls": 2,
+     "wides": 0
+    },
+    {
+     "name": "Pranav Varma",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Tanay Thyagarajan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Ajay Dev Goud",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 42,
+     "wickets": 3,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Gourav Choudhury",
+     "score": 123,
+     "over": "10.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Aditya Rout",
+     "score": 158,
+     "over": "14.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Swastik Samal",
+     "score": 190,
+     "over": "17.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Subhranshu Senapati",
+     "score": 191,
+     "over": "17.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Soumya Biswal",
+     "score": 197,
+     "over": "18.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Aasirwad Swain",
+     "score": 197,
+     "over": "18.3"
+    },
+    {
+     "wicket": 7,
+     "batter": "Lalit Yadav",
+     "score": 197,
+     "over": "18.5"
+    },
+    {
+     "wicket": 8,
+     "batter": "Kartik Biswal",
+     "score": 199,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 6,
+    "nb": 2,
+    "p": 0
+   },
+   "powerplay_runs": 64
+  },
+  {
+   "team": "Hyderabad (India)",
+   "runs": 207,
+   "wickets": 5,
+   "overs": "19.1",
+   "batting": [
+    {
+     "name": "Abhirath Reddy",
+     "dismissal": "c Lalit Yadav b B Biswal",
+     "runs": 28,
+     "balls": 19,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Aman Rao Perala",
+     "dismissal": "c G Choudhury b V Kumar",
+     "runs": 31,
+     "balls": 17,
+     "fours": 3,
+     "sixes": 2
+    },
+    {
+     "name": "Kodimela Himateja",
+     "dismissal": "not out",
+     "runs": 83,
+     "balls": 45,
+     "fours": 8,
+     "sixes": 3
+    },
+    {
+     "name": "Pragnay Reddy",
+     "dismissal": "c SP Senapati b K Biswal",
+     "runs": 21,
+     "balls": 15,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Gadugu Ganesh",
+     "dismissal": "c K Biswal b V Kumar",
+     "runs": 25,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 2
+    },
+    {
+     "name": "Rahul Buddhi",
+     "dismissal": "runout (V Kumar)",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Pranav Varma",
+     "dismissal": "not out",
+     "runs": 17,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 1
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Lalit Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Pradeep Pradhan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 33,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Badal Biswal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Vimal Kumar",
+     "overs": "3.1",
+     "maidens": 0,
+     "runs": 52,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Kartik Biswal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Aman Rao Perala",
+     "score": 52,
+     "over": "5.2"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abhirath Reddy",
+     "score": 70,
+     "over": "6.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Pragnay Reddy",
+     "score": 135,
+     "over": "13.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Gadugu Ganesh",
+     "score": 172,
+     "over": "16.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rahul Buddhi",
+     "score": 172,
+     "over": "16.5"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
