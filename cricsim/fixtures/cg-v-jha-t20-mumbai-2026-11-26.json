@@ -12,25 +12,26 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Jharkhand won the toss and bowl first.",
   "teams": [
     {
       "name": "Chandigarh",
       "short": "CG",
       "players": [
-        "Manan Vohra",
+        "Nehal Pajni",
         "Arjun Azad",
         "Shivam Bhambri",
+        "Manan Vohra",
         "Sanyam Saini",
         "Nikhil Thakur",
         "Bhagmender Lather",
         "Chiragvir Dhindsa",
         "Hardik Choudhary",
         "Rohit Dhanda",
-        "Jagjit Singh Sandhu",
-        "Devinder Singh"
+        "Karthik Sandil"
       ],
       "roles": [
+        "BAT",
         "BAT",
         "BAT",
         "BAT",
@@ -39,7 +40,6 @@
         "AR",
         "AR",
         "AR",
-        "BOWL",
         "BOWL",
         "BAT"
       ],
@@ -64,26 +64,26 @@
       "players": [
         "Anukul Roy",
         "Shikhar Mohan",
-        "Utkarsh Singh",
         "Virat Singh",
+        "Utkarsh Singh",
         "Md Kounain Quraishi",
+        "Shubh Sharma",
         "Pankaj Kumar ll",
-        "Rajandeep Singh",
-        "Sushant Mishra",
-        "Harsh Raj",
-        "Pratyush Kumar",
-        "Kumar Deobrat"
+        "Saurabh Shekhar",
+        "Amit Kumar",
+        "Pratik Ranjan",
+        "Nazim Siddiqui"
       ],
       "roles": [
         "AR",
         "AR",
-        "AR",
         "BAT",
         "AR",
-        "WK",
-        "BAT",
+        "AR",
         "BOWL",
-        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
         "BOWL",
         "BAT"
       ],
@@ -107,6 +107,7 @@
     "kn": 41957,
     "url": "https://khelnow.com/live-cricket-score/chandigarh-vs-jharkhand-syed-mushtaq-ali-trophy-elite-26th-november-2026-41957",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
