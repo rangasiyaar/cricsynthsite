@@ -1,0 +1,351 @@
+{
+ "id": "sl-a-v-ind-a-odi-doha-2026-11-26",
+ "innings": [
+  {
+   "team": "India A",
+   "runs": 317,
+   "wickets": 8,
+   "overs": "50",
+   "batting": [
+    {
+     "name": "Vaibhav Sooryavanshi",
+     "dismissal": "c L Croospulle b J Liyanage",
+     "runs": 40,
+     "balls": 27,
+     "fours": 4,
+     "sixes": 3
+    },
+    {
+     "name": "Abhishek Sharma",
+     "dismissal": "c J Liyanage b SMLD Samarakoon",
+     "runs": 78,
+     "balls": 63,
+     "fours": 11,
+     "sixes": 1
+    },
+    {
+     "name": "N. Tilak Varma",
+     "dismissal": "lbw b R Fernando",
+     "runs": 53,
+     "balls": 66,
+     "fours": 3,
+     "sixes": 1
+    },
+    {
+     "name": "Kumar Kushagra",
+     "dismissal": "c P Rathnayake b N Dananjaya",
+     "runs": 21,
+     "balls": 27,
+     "fours": 1,
+     "sixes": 1
+    },
+    {
+     "name": "Rinku Singh",
+     "dismissal": "lbw b R Fernando",
+     "runs": 12,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "dismissal": "not out",
+     "runs": 54,
+     "balls": 48,
+     "fours": 0,
+     "sixes": 4
+    },
+    {
+     "name": "Suryansh Shedge",
+     "dismissal": "c R Fernando b N Dananjaya",
+     "runs": 10,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Tanush Kotian",
+     "dismissal": "c R Fernando b J Liyanage",
+     "runs": 28,
+     "balls": 30,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Harshit Rana",
+     "dismissal": "b G Sanketh",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Harsh Dubey",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 4,
+     "fours": 1,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ravindu Fernando",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Garuka Sanketh",
+     "overs": "8",
+     "maidens": 0,
+     "runs": 64,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 7
+    },
+    {
+     "name": "Lahiru Samarakoon",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Janith Liyanage",
+     "overs": "5",
+     "maidens": 0,
+     "runs": 37,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Wanuja Sahan",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nipun Dananjaya",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 41,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Vijayakanth Viyaskanth",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 22,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Vaibhav Sooryavanshi",
+     "score": 80,
+     "over": "7.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Abhishek Sharma",
+     "score": 159,
+     "over": "21.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Kumar Kushagra",
+     "score": 197,
+     "over": "29.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "N. Tilak Varma",
+     "score": 203,
+     "over": "32.1"
+    },
+    {
+     "wicket": 5,
+     "batter": "Rinku Singh",
+     "score": 220,
+     "over": "36.1"
+    },
+    {
+     "wicket": 6,
+     "batter": "Suryansh Shedge",
+     "score": 235,
+     "over": "39.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Tanush Kotian",
+     "score": 308,
+     "over": "48.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Harshit Rana",
+     "score": 309,
+     "over": "49.2"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 13,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 95
+  },
+  {
+   "team": "Sri Lanka A",
+   "runs": 318,
+   "wickets": 2,
+   "overs": "41.3",
+   "batting": [
+    {
+     "name": "Lasith Croospulle",
+     "dismissal": "c R Singh b H Rana",
+     "runs": 116,
+     "balls": 107,
+     "fours": 12,
+     "sixes": 3
+    },
+    {
+     "name": "Sineth Jayawardena",
+     "dismissal": "c TK Kotian b S Ahamad",
+     "runs": 105,
+     "balls": 70,
+     "fours": 10,
+     "sixes": 6
+    },
+    {
+     "name": "Nishan Madushka",
+     "dismissal": "not out",
+     "runs": 58,
+     "balls": 56,
+     "fours": 5,
+     "sixes": 1
+    },
+    {
+     "name": "Pavan Rathnayake",
+     "dismissal": "not out",
+     "runs": 31,
+     "balls": 16,
+     "fours": 1,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Harshit Rana",
+     "overs": "7",
+     "maidens": 0,
+     "runs": 61,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Arshad Khan",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 46,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 3
+    },
+    {
+     "name": "Tanush Kotian",
+     "overs": "6",
+     "maidens": 0,
+     "runs": 48,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Suryansh Shedge",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Harsh Dubey",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 56,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Rinku Singh",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 17,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Shahbaz Ahamad",
+     "overs": "10",
+     "maidens": 0,
+     "runs": 60,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Abhishek Sharma",
+     "overs": "0.3",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Sineth Jayawardena",
+     "score": 174,
+     "over": "21.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lasith Croospulle",
+     "score": 265,
+     "over": "35.2"
+    }
+   ],
+   "extras": {
+    "b": 1,
+    "lb": 2,
+    "w": 5,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}

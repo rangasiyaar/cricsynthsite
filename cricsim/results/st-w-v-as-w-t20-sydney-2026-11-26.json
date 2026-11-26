@@ -1,0 +1,282 @@
+{
+ "id": "st-w-v-as-w-t20-sydney-2026-11-26",
+ "innings": [
+  {
+   "team": "Sydney Thunder Women",
+   "runs": 240,
+   "wickets": 4,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Phoebe Litchfield",
+     "dismissal": "not out",
+     "runs": 121,
+     "balls": 67,
+     "fours": 15,
+     "sixes": 5
+    },
+    {
+     "name": "Tahlia Wilson",
+     "dismissal": "c AC Mushangwe b T McGrath",
+     "runs": 38,
+     "balls": 24,
+     "fours": 7,
+     "sixes": 1
+    },
+    {
+     "name": "Anika Learoyd",
+     "dismissal": "b M Schutt",
+     "runs": 5,
+     "balls": 3,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Heather Knight",
+     "dismissal": "c T McGrath b E Wilson",
+     "runs": 47,
+     "balls": 18,
+     "fours": 5,
+     "sixes": 3
+    },
+    {
+     "name": "Laura Harris",
+     "dismissal": "c M Penna b AC Mushangwe",
+     "runs": 20,
+     "balls": 7,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Nadine de Klerk",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Eleanor Larosa",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Megan Schutt",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ella Wilson",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Amanda Wellington",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 47,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Tahlia McGrath",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Anesu Mushangwe",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 28,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Tahlia Wilson",
+     "score": 89,
+     "over": "8.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Anika Learoyd",
+     "score": 108,
+     "over": "9.6"
+    },
+    {
+     "wicket": 3,
+     "batter": "Heather Knight",
+     "score": 191,
+     "over": "16.6"
+    },
+    {
+     "wicket": 4,
+     "batter": "Laura Harris",
+     "score": 229,
+     "over": "19.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 6,
+    "nb": 1,
+    "p": 0
+   },
+   "powerplay_runs": 60
+  },
+  {
+   "team": "Adelaide Strikers Women",
+   "runs": 233,
+   "wickets": 3,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Maia Bouchier",
+     "dismissal": "c S Bates b NM Hancock",
+     "runs": 16,
+     "balls": 9,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Emma de Broughe",
+     "dismissal": "lbw b H Gill",
+     "runs": 28,
+     "balls": 20,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Laura Wolvaardt",
+     "dismissal": "c P Litchfield b S Bates",
+     "runs": 60,
+     "balls": 34,
+     "fours": 9,
+     "sixes": 1
+    },
+    {
+     "name": "Madeline Penna",
+     "dismissal": "not out",
+     "runs": 75,
+     "balls": 34,
+     "fours": 7,
+     "sixes": 6
+    },
+    {
+     "name": "Tahlia McGrath",
+     "dismissal": "not out",
+     "runs": 46,
+     "balls": 25,
+     "fours": 4,
+     "sixes": 3
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Samantha Bates",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Nicola Hancock",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 50,
+     "wickets": 1,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Lauren Bell",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 65,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Nadine de Klerk",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 49,
+     "wickets": 0,
+     "no_balls": 1,
+     "wides": 0
+    },
+    {
+     "name": "Hasrat Gill",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 25,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Jemma Barsby",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 9,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Maia Bouchier",
+     "score": 18,
+     "over": "1.3"
+    },
+    {
+     "wicket": 2,
+     "batter": "Emma de Broughe",
+     "score": 95,
+     "over": "9.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Laura Wolvaardt",
+     "score": 111,
+     "over": "11.3"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 5,
+    "nb": 2,
+    "p": 0
+   }
+  }
+ ]
+}

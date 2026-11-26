@@ -1,0 +1,391 @@
+{
+ "id": "guj-v-ga-t20-kolkata-2026-11-26",
+ "innings": [
+  {
+   "team": "Gujarat",
+   "runs": 194,
+   "wickets": 5,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Urvil Patel",
+     "dismissal": "c DW Misal b S Tari",
+     "runs": 38,
+     "balls": 18,
+     "fours": 4,
+     "sixes": 2
+    },
+    {
+     "name": "Aarya Desai",
+     "dismissal": "c D Gaonkar b DW Misal",
+     "runs": 47,
+     "balls": 37,
+     "fours": 4,
+     "sixes": 1
+    },
+    {
+     "name": "Umang Kumar",
+     "dismissal": "c Az Thota b L Yadav",
+     "runs": 29,
+     "balls": 20,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Priyesh Patel",
+     "dismissal": "c D Gaonkar b V Koushik",
+     "runs": 23,
+     "balls": 19,
+     "fours": 0,
+     "sixes": 2
+    },
+    {
+     "name": "Saurav Chauhan",
+     "dismissal": "c SS Prabhudessai b L Yadav",
+     "runs": 3,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ashutosh Sharma",
+     "dismissal": "not out",
+     "runs": 48,
+     "balls": 18,
+     "fours": 3,
+     "sixes": 4
+    },
+    {
+     "name": "Amit Desai",
+     "dismissal": "not out",
+     "runs": 3,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Felix Alemao",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 32,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "V Koushik",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 36,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Shubham Tari",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 44,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Darshan Misal",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 26,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yash Kasvankar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Lalit Yadav",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 34,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Deepraj Gaonkar",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Urvil Patel",
+     "score": 59,
+     "over": "5.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Umang Kumar",
+     "score": 113,
+     "over": "11.5"
+    },
+    {
+     "wicket": 3,
+     "batter": "Aarya Desai",
+     "score": 133,
+     "over": "14.1"
+    },
+    {
+     "wicket": 4,
+     "batter": "Saurav Chauhan",
+     "score": 138,
+     "over": "15.3"
+    },
+    {
+     "wicket": 5,
+     "batter": "Priyesh Patel",
+     "score": 168,
+     "over": "18.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 2,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 60
+  },
+  {
+   "team": "Goa",
+   "runs": 162,
+   "wickets": 9,
+   "overs": "20",
+   "batting": [
+    {
+     "name": "Azaan Thota",
+     "dismissal": "c U Patel b A Nagwaswalla",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Abhinav Tejrana",
+     "dismissal": "c R Bishnoi b Amit Desai",
+     "runs": 58,
+     "balls": 32,
+     "fours": 6,
+     "sixes": 3
+    },
+    {
+     "name": "Lalit Yadav",
+     "dismissal": "c U Kumar b Amit Desai",
+     "runs": 6,
+     "balls": 10,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Suyash Prabhudessai",
+     "dismissal": "b Yash Doshi",
+     "runs": 4,
+     "balls": 8,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Yash Kasvankar",
+     "dismissal": "b R Bishnoi",
+     "runs": 31,
+     "balls": 31,
+     "fours": 2,
+     "sixes": 1
+    },
+    {
+     "name": "Deepraj Gaonkar",
+     "dismissal": "b Yash Doshi",
+     "runs": 2,
+     "balls": 3,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Darshan Misal",
+     "dismissal": "c R Bishnoi b Japgyana Bhatt",
+     "runs": 20,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 2
+    },
+    {
+     "name": "Rajashekhar Harikant",
+     "dismissal": "c AR Sharma b A Nagwaswalla",
+     "runs": 15,
+     "balls": 14,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Shubham Tari",
+     "dismissal": "c A Desai b Japgyana Bhatt",
+     "runs": 0,
+     "balls": 1,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Felix Alemao",
+     "dismissal": "not out",
+     "runs": 9,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 1
+    },
+    {
+     "name": "V Koushik",
+     "dismissal": "not out",
+     "runs": 6,
+     "balls": 5,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Arzan Nagwaswalla",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 2
+    },
+    {
+     "name": "Japgyana Bhatt",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 31,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Yash Doshi",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 30,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Amit Desai",
+     "overs": "4",
+     "maidens": 0,
+     "runs": 27,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ravi Bishnoi",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 23,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ashutosh Sharma",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 12,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Azaan Thota",
+     "score": 1,
+     "over": "0.1"
+    },
+    {
+     "wicket": 2,
+     "batter": "Lalit Yadav",
+     "score": 24,
+     "over": "3.3"
+    },
+    {
+     "wicket": 3,
+     "batter": "Suyash Prabhudessai",
+     "score": 51,
+     "over": "6.3"
+    },
+    {
+     "wicket": 4,
+     "batter": "Abhinav Tejrana",
+     "score": 82,
+     "over": "9.4"
+    },
+    {
+     "wicket": 5,
+     "batter": "Deepraj Gaonkar",
+     "score": 87,
+     "over": "10.4"
+    },
+    {
+     "wicket": 6,
+     "batter": "Darshan Misal",
+     "score": 112,
+     "over": "13.5"
+    },
+    {
+     "wicket": 7,
+     "batter": "Yash Kasvankar",
+     "score": 136,
+     "over": "16.6"
+    },
+    {
+     "wicket": 8,
+     "batter": "Shubham Tari",
+     "score": 137,
+     "over": "17.2"
+    },
+    {
+     "wicket": 9,
+     "batter": "Rajashekhar Harikant",
+     "score": 147,
+     "over": "18.4"
+    }
+   ],
+   "extras": {
+    "b": 4,
+    "lb": 4,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ],
+ "result": "Gujarat won by 32 runs",
+ "winner": "Gujarat"
+}

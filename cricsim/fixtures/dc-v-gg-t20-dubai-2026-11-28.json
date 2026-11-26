@@ -1,0 +1,112 @@
+{
+  "id": "dc-v-gg-t20-dubai-2026-11-28",
+  "title": "Dubai Capitals v Gulf Giants",
+  "date": "2026-11-28",
+  "start_time": "20:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 10th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Dubai International Cricket Stadium, Dubai",
+  "venue_search": "dubai international cricket stadium",
+  "city": "Dubai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Dubai Capitals",
+      "short": "DC",
+      "players": [
+        "Masood Gurbaz",
+        "Faf du Plessis",
+        "Max Holden",
+        "Marcus Stoinis",
+        "Rovman Powell",
+        "Sam Billings",
+        "Aayan Afzal Khan",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Dushmantha Chameera"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "WK",
+        "BOWL",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sam Billings",
+      "squad": [
+        "Masood Gurbaz",
+        "Faf du Plessis",
+        "Max Holden",
+        "Marcus Stoinis",
+        "Rovman Powell",
+        "Sam Billings",
+        "Aayan Afzal Khan",
+        "Hassan Khan",
+        "Karim Janat",
+        "Noor Ahmad",
+        "Dushmantha Chameera"
+      ]
+    },
+    {
+      "name": "Gulf Giants",
+      "short": "GG",
+      "players": [
+        "Rahmanullah Gurbaz",
+        "Liam Livingstone",
+        "Azmatullah Omarzai",
+        "Heinrich Klaasen",
+        "David Miller",
+        "David Wiese",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Dhruv Parashar",
+        "Haider Razzaq",
+        "Shamar Joseph"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Heinrich Klaasen",
+      "squad": [
+        "Rahmanullah Gurbaz",
+        "Liam Livingstone",
+        "Azmatullah Omarzai",
+        "Heinrich Klaasen",
+        "David Miller",
+        "David Wiese",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Dhruv Parashar",
+        "Haider Razzaq",
+        "Shamar Joseph"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41728,
+    "url": "https://khelnow.com/live-cricket-score/dubai-capitals-vs-gulf-giants-international-league-t20-28th-november-2026-41728",
+    "auto": true,
+    "xis": false
+  }
+}

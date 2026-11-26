@@ -12,7 +12,7 @@
   "city": "Kolkata",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Vidarbha won the toss and bat first.",
   "teams": [
     {
       "name": "Chhattisgarh",
@@ -20,28 +20,28 @@
       "players": [
         "Vikalp Tiwari",
         "Amandeep Khare",
-        "Shashank Chandrakar",
-        "Aayush Pandey",
         "Rahul Pradhan",
-        "Vijay Yadav",
+        "Sangeet Santoshprasad Soni",
         "Ajay Mandal",
+        "Shashank Chandrakar",
         "Dharmendrasinh Jadeja",
         "Jayant Yadav",
-        "Sourabh Majumdar",
-        "Dev Aditya Singh"
+        "Dev Aditya Singh",
+        "Vijay Yadav",
+        "Sourabh Majumdar"
       ],
       "roles": [
         "AR",
         "BAT",
+        "BAT",
+        "BAT",
+        "AR",
         "WK",
-        "BAT",
-        "BAT",
-        "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "BAT",
-        "BOWL"
+        "BOWL",
+        "AR",
+        "BAT"
       ],
       "captain": "Vikalp Tiwari",
       "squad": [
@@ -64,28 +64,28 @@
       "players": [
         "Atharva Taide",
         "Danish Malewar",
+        "Aman Mokhade",
+        "Yash Rathod",
         "Varun Bisht",
-        "Shubham Dubey",
         "Yash Kadam",
         "Vedant Jajoo",
+        "Darshan Nalkande",
         "Parth Rekhade",
         "Nachiket Bhute",
-        "Saurabh Dubey",
-        "Yash Thakur",
-        "Ravikumar Samarth"
+        "Praful Hinge"
       ],
       "roles": [
-        "BAT",
-        "BAT",
         "AR",
+        "BAT",
+        "BAT",
+        "BAT",
         "BAT",
         "AR",
         "WK",
-        "BOWL",
         "AR",
-        "BOWL",
         "AR",
-        "BAT"
+        "AR",
+        "BOWL"
       ],
       "captain": "Atharva Taide",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41954,
     "url": "https://khelnow.com/live-cricket-score/chhattisgarh-vs-vidarbha-syed-mushtaq-ali-trophy-elite-26th-november-2026-41954",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

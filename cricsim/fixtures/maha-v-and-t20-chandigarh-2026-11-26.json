@@ -12,7 +12,7 @@
   "city": "Chandigarh",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Maharashtra won the toss and bat first.",
   "teams": [
     {
       "name": "Maharashtra",
@@ -20,7 +20,7 @@
       "players": [
         "Prithvi Shaw",
         "Sahil Parakh",
-        "Ruturaj Gaikwad",
+        "Ranjeet Nikam",
         "Arshin Kulkarni",
         "Rushikesh Sonavne",
         "Siddhesh Veer",
@@ -43,7 +43,7 @@
         "BOWL",
         "BAT"
       ],
-      "captain": "Ruturaj Gaikwad",
+      "captain": "Prithvi Shaw",
       "squad": [
         "Prithvi Shaw",
         "Sahil Parakh",
@@ -64,20 +64,19 @@
       "players": [
         "Maramreddy Hemanth Reddy",
         "Shaik Rasheed",
-        "KP Sai Rahul",
         "Ricky Bhui",
         "Ashwin Hebbar",
         "SDNV Prasad",
         "KV Sasikanth",
         "KS Narasimha Raju",
-        "Bailapudi Yeswanth",
         "Satyanarayana Raju",
-        "Saurabh Kumar"
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar",
+        "Seeram Rahul"
       ],
       "roles": [
         "AR",
         "BAT",
-        "AR",
         "BAT",
         "BAT",
         "WK",
@@ -85,6 +84,7 @@
         "BAT",
         "BOWL",
         "BOWL",
+        "AR",
         "AR"
       ],
       "captain": "Ricky Bhui",
@@ -107,6 +107,7 @@
     "kn": 41959,
     "url": "https://khelnow.com/live-cricket-score/maharashtra-vs-andhra-syed-mushtaq-ali-trophy-elite-26th-november-2026-41959",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
