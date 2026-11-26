@@ -12,7 +12,7 @@
   "city": "Doha",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. India A won the toss and bat first.",
   "teams": [
     {
       "name": "Sri Lanka A",
@@ -24,11 +24,11 @@
         "Pavan Rathnayake",
         "Nipun Dananjaya",
         "Janith Liyanage",
-        "Wanuja Sahan",
-        "Lahiru Samarakoon",
         "Ravindu Fernando",
-        "Dulaj Samuditha",
-        "Vijayakanth Viyaskanth"
+        "Wanuja Sahan",
+        "Vijayakanth Viyaskanth",
+        "Lahiru Samarakoon",
+        "Garuka Sanketh"
       ],
       "roles": [
         "BAT",
@@ -38,8 +38,8 @@
         "BAT",
         "AR",
         "AR",
-        "BOWL",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL"
       ],
@@ -62,20 +62,19 @@
       "name": "India A",
       "short": "IND-A",
       "players": [
-        "Abhishek Sharma",
         "Vaibhav Sooryavanshi",
-        "Prabhsimran Singh",
+        "Abhishek Sharma",
         "N. Tilak Varma",
         "Kumar Kushagra",
         "Rinku Singh",
         "Suryansh Shedge",
         "Shahbaz Ahamad",
-        "Arshad Khan",
+        "Tanush Kotian",
         "Harsh Dubey",
-        "Harshit Rana"
+        "Harshit Rana",
+        "Arshad Khan"
       ],
       "roles": [
-        "BAT",
         "BAT",
         "BAT",
         "BAT",
@@ -85,7 +84,8 @@
         "AR",
         "AR",
         "AR",
-        "BOWL"
+        "BOWL",
+        "AR"
       ],
       "captain": "N. Tilak Varma",
       "squad": [
@@ -107,6 +107,7 @@
     "kn": 41834,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-acc-men's-asia-cup-rising-stars-26th-november-2026-41834",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
