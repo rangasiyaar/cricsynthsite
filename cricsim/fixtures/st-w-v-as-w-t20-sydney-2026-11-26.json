@@ -12,34 +12,34 @@
   "city": "Sydney",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Adelaide Strikers Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Sydney Thunder Women",
       "short": "ST-W",
       "players": [
         "Phoebe Litchfield",
-        "Georgia Voll",
+        "Tahlia Wilson",
         "Anika Learoyd",
         "Heather Knight",
         "Nadine de Klerk",
-        "Tahlia Wilson",
         "Laura Harris",
-        "Nicola Hancock",
         "Jemma Barsby",
+        "Hasrat Gill",
+        "Nicola Hancock",
         "Lauren Bell",
         "Samantha Bates"
       ],
       "roles": [
         "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
-        "AR",
         "WK",
         "BAT",
+        "BAT",
         "AR",
+        "BAT",
         "BOWL",
+        "AR",
+        "AR",
         "BOWL",
         "BOWL"
       ],
@@ -64,12 +64,12 @@
       "players": [
         "Emma de Broughe",
         "Maia Bouchier",
-        "Tahlia McGrath",
         "Laura Wolvaardt",
+        "Tahlia McGrath",
         "Madeline Penna",
         "Bridget Patterson",
-        "Eleanor Larosa",
         "Amanda Wellington",
+        "Eleanor Larosa",
         "Ella Wilson",
         "Megan Schutt",
         "Anesu Mushangwe"
@@ -77,12 +77,12 @@
       "roles": [
         "BAT",
         "BAT",
-        "AR",
         "BAT",
+        "AR",
         "BAT",
         "WK",
-        "AR",
         "BOWL",
+        "AR",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 40334,
     "url": "https://khelnow.com/live-cricket-score/sydney-thunder-women-vs-adelaide-strikers-women-women's-big-bash-league-26th-november-2026-40334",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }
