@@ -71,6 +71,15 @@ async function refresh(env: Env): Promise<Snapshot> {
   return s;
 }
 
+/** Payment problems (paymentEvents/{uid}_{day}) are kept 12 months (privacy policy, Retention): up to 20 older docs a run. */
+export async function prunePayments(env: Env, now = new Date()) {
+  const g = google(env), cutoff = new Date(now.getTime() - 365 * 86400_000).toISOString().slice(0, 10);
+  const old = await g.query("", { from: [{ collectionId: "paymentEvents" }], limit: 20,
+    where: { fieldFilter: { field: { fieldPath: "day" }, op: "LESS_THAN", value: { stringValue: cutoff } } } }).catch(() => []);
+  for (const d of old) await g.remove(`paymentEvents/${d._id}`).catch(() => {});
+  return old.length;
+}
+
 let snapStale = false;                  // an action changed data: the next snapshot read rebuilds it
 async function latest(env: Env): Promise<Snapshot> {
   if (snapStale) { snapStale = false; return refresh(env); }
@@ -255,6 +264,6 @@ export default {
       ctx.waitUntil(check(now).then((line) => google(env).append(`adminUptime/${now.toISOString().slice(0, 10)}`, "checks", [line])));
       return;
     }
-    ctx.waitUntil(refresh(env).then(() => undefined));
+    ctx.waitUntil(refresh(env).then(() => prunePayments(env, new Date(c.scheduledTime))).then(() => undefined));
   },
 } satisfies ExportedHandler<Env>;

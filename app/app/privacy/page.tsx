@@ -16,28 +16,32 @@ export default function Privacy() {
       <h2>2. Information we collect</h2>
       <ul>
         <li><b>Account details.</b> When you sign in with Google or with email and password we receive your name, email address,
-          profile picture (Google only) and a user ID. Passwords are handled by our sign-in provider; we never see them.</li>
+          profile picture (Google only) and a user ID. Passwords are handled by our sign-in system; we never see them.</li>
         <li id="age"><b>Age confirmation.</b> Accounts are for people aged 18 and over. When you first sign in we ask for your
           date of birth and check it on your device: we keep only a record that you confirmed you are 18 or over, and when.
           Your date of birth itself is not stored or sent to us. If the date shows you are under 18, the sign-in is deleted
           straight away and we keep nothing about you; your device remembers, on the device only, not to allow a new sign-up
           until your 18th birthday.</li>
         <li><b>Profile and preferences.</b> Details you add to your profile and your email preferences.</li>
-        <li><b>Account activity.</b> When your account was created and last signed in, daily counts of how much you use your
+        <li><b>Account usage.</b> When your account was created and last signed in, daily counts of how much you use your
           account's features (API and AI-assistant connector calls, per key and per endpoint or tool), the API keys you create
           (name, a short prefix and when it was created, last used or revoked; never the full key), and plan or upgrade requests you
           file from your dashboard.</li>
-        <li><b>CricSynthesis Pro payments.</b> When you subscribe, Razorpay collects your payment details; we never see your card,
-          UPI or bank details. We keep your plan, its status, the subscription reference Razorpay gives us and the dates your free
-          day, paid period or renewal start and end, to turn Pro on and show your plan. Razorpay sends receipts to your email.
-          If a payment doesn&apos;t go through, we record the result, the reason Razorpay gives (for example, declined by the bank),
-          whether it was on the website or the app, and the device type, so we can fix problems with checkout.</li>
-        <li><b>Account activity.</b> While you&apos;re signed in, each time you open the website or the app we record when, whether it
-          was the website or the app, your device type, operating system, browser or app version, and an approximate location
-          (city, region and country) worked out from your network address. We don&apos;t store the network address itself. We keep the
-          detailed record for 3 days, and only the latest of these details after that, to understand how CricSynthesis is used
-          and to keep accounts secure. It is deleted with your account.</li>
-        <li><b>Contact and access requests.</b> Name, email, organisation, topic, interest and the message you enter in our forms. Messages sent through the contact form are kept for up to 24 months so we can follow up, then deleted; we store only a one-way code of your network address, to limit spam. The contact, API access and job application forms also run Cloudflare Turnstile, a privacy-friendly check that you're a person: it looks at basic browser signals, sets no tracking cookies and isn't used for advertising.</li>
+        <li><b>CricSynthesis Pro payments.</b> When you subscribe, our payment partner collects your payment details; we never see
+          your card, UPI or bank details. We keep your plan, its status, the subscription reference our payment partner gives us and
+          the dates your free day, paid period or renewal start and end, to turn Pro on and show your plan. Receipts are sent to
+          your email.</li>
+        <li id="payment-problems"><b>Payment problems.</b> If a payment or renewal doesn&apos;t go through, the checkout runs into an
+          error, or you close the payment window before paying, we record what happened and when, the reason our payment partner
+          gives (for example, declined by the bank or UPI request expired), the step where it stopped, whether it was on the website
+          or the app, your plan and your device type (Android, iPhone or computer). Never your card, UPI or bank details. We use
+          this to find and fix problems with checkout.</li>
+        <li id="sign-in-activity"><b>Where and how you sign in.</b> While you&apos;re signed in, each time you open the website or the
+          app we record when, whether it was the website or the app, your device type, operating system, browser or app version,
+          and an approximate location (city, region and country) worked out from your network address. We don&apos;t store the
+          network address itself. This is part of running and securing your account, so it applies to every signed-in account and
+          isn&apos;t covered by the cookie choice or the app&apos;s analytics switch. Guests are not recorded.</li>
+        <li><b>Contact and access requests.</b> Name, email, organisation, topic, interest and the message you enter in our forms. Messages sent through the contact form are kept for up to 24 months so we can follow up, then deleted; we store only a one-way code of your network address, to limit spam. The contact, API access and job application forms also run a privacy-friendly check that you&apos;re a person: it looks at basic browser signals, sets no tracking cookies and isn&apos;t used for advertising.</li>
         <li><b>Job applications.</b> The details and resume you submit when you apply for a role, including optional details such
           as gender. We use them only to assess your application and contact you about it, and delete them within 12 months
           unless you ask us to keep them longer.</li>
@@ -60,13 +64,13 @@ export default function Privacy() {
         <li><b>Google Analytics (optional, only with your consent).</b> Pages viewed and the features used (for example opening a
           match, running a MatchSynth Lab scenario, creating an API key), the website that sent you, approximate location
           (city/country), device and browser. Google Analytics does not log or store IP addresses. We don&apos;t send your name,
-          email or account ID to it. Provided by Google LLC.</li>
+          email or account ID to it.</li>
         <li><b>Microsoft Clarity session recordings (optional, only with your consent).</b> Heatmaps and replays of how pages are
           used (clicks, taps, scrolling, mouse movement) so we can find confusing or broken parts of the site. Everything you
-          type is hidden, and the account, sign-in and connect pages are fully masked. Provided by Microsoft Corporation.</li>
-        <li><b>Visit statistics (always on, no cookies).</b> Cloudflare Web Analytics counts page views and page speed without
+          type is hidden, and the account, sign-in and connect pages are fully masked.</li>
+        <li><b>Visit statistics (always on, no cookies).</b> Our hosting provider counts page views and page speed without
           cookies or any identifier and without tracking you across sites; we see totals only.</li>
-        <li><b>Sign-in storage (necessary).</b> When you sign in, Firebase Authentication keeps your session in your browser&apos;s
+        <li><b>Sign-in storage (necessary).</b> When you sign in, our sign-in system keeps your session in your browser&apos;s
           storage so you stay signed in. Signing out removes it.</li>
         <li><b>Your choices (necessary).</b> Your theme and your cookie choice are remembered in your browser.</li>
         <li><b>Admin console (necessary).</b> Our internal admin console uses one session cookie for staff sign-in, only on that
@@ -79,16 +83,16 @@ export default function Privacy() {
           <tr><td data-label="Name">_clck, _clsk, CLID, MUID</td><td data-label="Set by">Microsoft Clarity</td><td data-label="Purpose">Links pages of one visit for recordings and heatmaps</td><td data-label="Kept for">_clsk 1 day; others up to 1 year</td><td data-label="Optional?">Yes (Session recordings)</td></tr>
           <tr><td data-label="Name">cs-consent (browser storage)</td><td data-label="Set by">CricSynthesis</td><td data-label="Purpose">Remembers your cookie choice</td><td data-label="Kept for">12 months</td><td data-label="Optional?">No</td></tr>
           <tr><td data-label="Name">cs-theme (browser storage)</td><td data-label="Set by">CricSynthesis</td><td data-label="Purpose">Light or dark theme</td><td data-label="Kept for">Until cleared</td><td data-label="Optional?">No</td></tr>
-          <tr><td data-label="Name">Firebase sign-in (browser storage)</td><td data-label="Set by">Firebase Authentication</td><td data-label="Purpose">Keeps you signed in</td><td data-label="Kept for">Until you sign out</td><td data-label="Optional?">No</td></tr>
+          <tr><td data-label="Name">Sign-in session (browser storage)</td><td data-label="Set by">CricSynthesis sign-in</td><td data-label="Purpose">Keeps you signed in</td><td data-label="Kept for">Until you sign out</td><td data-label="Optional?">No</td></tr>
           <tr><td data-label="Name">__Host-cs_admin</td><td data-label="Set by">CricSynthesis (admin console only)</td><td data-label="Purpose">Staff sign-in session</td><td data-label="Kept for">8 hours</td><td data-label="Optional?">No</td></tr>
         </tbody>
       </table></div>
       <p>The Android app does not use these cookies.</p>
       <h3 id="app-analytics">Android app analytics</h3>
       <p>The app asks you to accept this privacy policy when you first open it (and again when the policy changes). Once you
-        accept, the app uses Google Analytics for Firebase (Google LLC) to count how it is used: which screens are opened,
-        features such as running MatchSynth Lab, turning on alerts or signing in, plus the app version, device model, operating
-        system, language and approximate country. It uses a random app-instance ID, not your name or email, and it never uses the
+        accept, the app uses Google Analytics for Firebase to count how it is used: which screens are opened,
+        features such as running MatchSynth Lab, turning on alerts or signing in, when the app is installed, updated or
+        uninstalled, plus the app version, device model, operating system, language and approximate country. It uses a random app-instance ID, not your name or email, and it never uses the
         advertising ID; ad personalisation is off. Nothing is collected before you accept. You can switch it off at any time in
         the app under Settings → Privacy → &quot;Share anonymous usage analytics&quot;. The data is reported in aggregate in the same
         Google Analytics property as the website and kept for up to 14 months.</p>
@@ -100,28 +104,34 @@ export default function Privacy() {
         <li>To send account emails such as a welcome message and important service notices, and, if your email preferences allow,
           product updates. You can change email preferences in your account at any time.</li>
         <li>To enforce rate limits and these terms, and to protect the service against abuse.</li>
-        <li>To run the service: authorised CricSynthesis staff can view account records (the account details, activity, keys and
-          requests described above) in an internal, access-controlled admin console, to support you, review plans and upgrade
-          requests, and spot problems or misuse. Every staff sign-in is logged.</li>
-        <li>To fix crashes and understand aggregate usage so we can improve the product.</li>
+        <li>To run the service: authorised CricSynthesis staff can view account records (the account details, usage, keys,
+          requests, payment problems and the last 3 days of sign-in activity, including device and approximate location, described
+          above) in an internal, access-controlled admin console, to support you, review plans and upgrade requests, and spot
+          problems or misuse. Every staff sign-in is logged.</li>
+        <li>To find and fix problems with checkout and payments, on the website and in the app.</li>
+        <li>To keep accounts secure, for example by spotting unusual sign-ins such as the same account used in far-apart places
+          within a short time.</li>
+        <li>To fix crashes and understand how the website and the app are used, in aggregate, so we can improve them.</li>
       </ul>
       <p>We process your data on the basis of the consent you give when you create an account, submit a form or turn on a
         feature, and where it is needed to provide the service you asked for or to meet a legal obligation. We don't sell,
         rent or trade personal information, and we don't use it for advertising.</p>
 
       <h2>4. Service providers and transfers</h2>
-      <p>The website, API and visit statistics run on Cloudflare (Cloudflare, Inc.); sign-in, storage, app notifications, data
-        processing and, if you agree, website analytics (Google Analytics) run on Google Cloud, Firebase and Google Analytics
-        (Google LLC); if you agree, session recordings run on Microsoft Clarity (Microsoft Corporation); subscription payments are processed by
-        Razorpay (Razorpay Software Private Limited, India); and contact forms and email
-        are handled by our email and workspace providers. These providers process data on our behalf under their own security
-        and privacy commitments. Data is stored on servers in the United States. We may also disclose information where the
-        law requires it.</p>
+      <p>We use trusted service providers to run CricSynthesis: hosting and content delivery (which also works out the
+        approximate location described above from your network address), sign-in, data storage and processing, app
+        notifications, payments (our payment partner tells us the reason when a payment doesn&apos;t go through), email, and, only
+        if you agree, Google Analytics and Microsoft Clarity. They process data only on our behalf and under their own security and
+        privacy commitments; none of them may use it for their own advertising. Data is stored on servers in the United States.
+        We may also disclose information where the law requires it.</p>
 
       <h2>5. Retention</h2>
       <p>Account data is kept while your account is active and deleted within 30 days of a deletion request, except where the
         law requires us to keep a record. Daily usage counts are kept for up to 13 months; other API usage logs and crash
-        reports are kept only as long as needed for security, billing and fixing problems. Job applications are kept as described above.</p>
+        reports are kept only as long as needed for security, billing and fixing problems. Sign-in activity is kept in detail
+        for 3 days; after that we keep only the latest device, app version and approximate location while your account is open.
+        Records of payment problems are kept for 12 months. Both are deleted with your account. Job applications are kept as
+        described above.</p>
 
       <h2>6. Your rights</h2>
       <p>You can ask us to:</p>
