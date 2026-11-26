@@ -21,3 +21,20 @@ if (env.GOOGLE_SA) {
   const want = mode === "LIVE" ? "_live" : "_test";
   console.log(`Stored plan ids (${want.slice(1)}): ${stored.filter(([k]) => k.endsWith(want)).map(([k, v]) => `${k}=${v}`).join(", ") || "none yet (created at the first checkout)"}`);
 }
+
+// Recent subscriptions (read-only): status, plan, dates and payment method, to explain an odd status on the console.
+// Prints no names, emails or phone numbers: the account id is cut to 6 characters.
+try {
+  const subs = await rzp("GET", "/subscriptions?count=15");
+  const t = (s: number | null | undefined) => (s ? new Date(s * 1000).toISOString().replace("T", " ").slice(0, 16) + " UTC" : "–");
+  console.log(`\nRecent subscriptions (${(subs.items || []).length}):`);
+  for (const s of subs.items || []) {
+    console.log(`- ${s.id}: ${s.status} · plan ${s.plan_id} · created ${t(s.created_at)} · starts ${t(s.start_at)} · paid ${s.paid_count}/${s.total_count}`
+      + ` · method ${s.payment_method || "–"} · auth attempts ${s.auth_attempts ?? "–"} · current end ${t(s.current_end)} · ended ${t(s.ended_at)}`
+      + ` · where ${s.notes?.where || "–"} · account ${String(s.notes?.uid || "–").slice(0, 6)}…`);
+    if (s.status === "paused" || s.status === "halted" || s.status === "pending") {
+      const inv = await rzp("GET", `/invoices?subscription_id=${s.id}`).catch(() => null);
+      for (const i of inv?.items || []) console.log(`    invoice ${i.id}: ${i.status} · ₹${(i.amount ?? 0) / 100} · ${t(i.created_at)} · payment ${i.payment_id || "–"}`);
+    }
+  }
+} catch (e) { console.log(`Couldn't list subscriptions: ${(e as Error).message}`); }
