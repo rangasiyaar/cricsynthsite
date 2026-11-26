@@ -12,35 +12,35 @@
   "city": "Mumbai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Karnataka won the toss and bowl first.",
   "teams": [
     {
       "name": "Karnataka",
       "short": "KAR",
       "players": [
-        "Karun Nair",
         "Smaran-R",
+        "Shikhar shetty",
         "Manvanth Kumar",
         "Manish Pandey",
+        "Karun Nair",
+        "Rithesh Bhatkal",
         "Aneeshwar Gautam",
-        "Luvnith Sisodia",
-        "Praveen Dubey",
-        "Abhilash Shetty",
-        "Yash Punja",
-        "Shreesha Achar",
-        "L R Kumar"
+        "Shrijith Krishnan",
+        "Vidhwath Kaverappa",
+        "Rohan Patil",
+        "Shreesha Achar"
       ],
       "roles": [
         "BAT",
-        "BAT",
+        "BOWL",
         "AR",
         "BAT",
+        "BAT",
+        "BOWL",
         "AR",
         "WK",
-        "AR",
         "BOWL",
-        "BOWL",
-        "BOWL",
+        "BAT",
         "BOWL"
       ],
       "captain": "Smaran-R",
@@ -62,32 +62,32 @@
       "name": "Baroda",
       "short": "BAR",
       "players": [
-        "Krunal Pandya",
-        "Atit Sheth",
         "Jitesh Sharma",
-        "Shashwat Rawat",
-        "Shivalik Sharma",
         "Deepak Hooda",
+        "Shivalik Sharma",
+        "Shashwat Rawat",
+        "Parikshit Patidar",
         "Amit Passi",
         "Bhanu Pania",
         "Safvan Patel",
         "Raj Limbani",
-        "Rasikh Salam Dar"
+        "Dhruv Patel",
+        "Chintal Gandhi"
       ],
       "roles": [
-        "AR",
-        "AR",
         "WK",
         "BAT",
         "AR",
         "BAT",
         "BAT",
         "BAT",
+        "BAT",
         "BOWL",
         "BOWL",
+        "AR",
         "BOWL"
       ],
-      "captain": "Krunal Pandya",
+      "captain": "Jitesh Sharma",
       "squad": [
         "Krunal Pandya",
         "Atit Sheth",
@@ -107,6 +107,7 @@
     "kn": 41950,
     "url": "https://khelnow.com/live-cricket-score/karnataka-vs-baroda-syed-mushtaq-ali-trophy-elite-26th-november-2026-41950",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
