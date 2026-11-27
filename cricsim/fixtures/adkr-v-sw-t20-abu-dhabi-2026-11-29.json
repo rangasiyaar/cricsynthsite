@@ -1,0 +1,112 @@
+{
+  "id": "adkr-v-sw-t20-abu-dhabi-2026-11-29",
+  "title": "Abu Dhabi Knight Riders v Sharjah Warriorz",
+  "date": "2026-11-29",
+  "start_time": "14:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 11th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Sheikh Zayed Stadium, Abu Dhabi",
+  "venue_search": "sheikh zayed stadium",
+  "city": "Abu Dhabi",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Abu Dhabi Knight Riders",
+      "short": "ADKR",
+      "players": [
+        "Andre Fletcher",
+        "Moeen Ali",
+        "Jason Holder",
+        "Matthew Tromp",
+        "Sunil Narine",
+        "Gulbadin Naib",
+        "Abdullah Tarakhail",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Usman Tariq",
+        "Muhammad Rohid Khan"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Jason Holder",
+      "squad": [
+        "Andre Fletcher",
+        "Moeen Ali",
+        "Jason Holder",
+        "Matthew Tromp",
+        "Sunil Narine",
+        "Gulbadin Naib",
+        "Abdullah Tarakhail",
+        "Andre Russell",
+        "Alishan Sharafu",
+        "Usman Tariq",
+        "Muhammad Rohid Khan"
+      ]
+    },
+    {
+      "name": "Sharjah Warriorz",
+      "short": "SW",
+      "players": [
+        "Tim Seifert",
+        "James Vince",
+        "Paul Walter",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Junaid Siddique",
+        "Waqar Salamkheil"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Sikandar Raza",
+      "squad": [
+        "Tim Seifert",
+        "James Vince",
+        "Paul Walter",
+        "Brandon McMullen",
+        "Sikandar Raza",
+        "Mohammad Nabi",
+        "Craig Overton",
+        "Ali Naseer",
+        "Adam Milne",
+        "Junaid Siddique",
+        "Waqar Salamkheil"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41729,
+    "url": "https://khelnow.com/live-cricket-score/abu-dhabi-knight-riders-vs-sharjah-warriorz-international-league-t20-29th-november-2026-41729",
+    "auto": true,
+    "xis": false
+  }
+}
