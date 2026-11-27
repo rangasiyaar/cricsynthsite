@@ -6,8 +6,8 @@ from cricsim.notify import MAX_ALERTS, fcm_message, plan
 NOW = datetime(2026, 10, 23, 6, 0, tzinfo=timezone.utc)       # 11:30 IST
 
 
-def card(i, date="2026-10-24", gen="g1", time="14:00"):
-    return {"id": i, "date": date, "start_time": time, "published": True, "generated_at": gen,
+def card(i, date="2026-10-24", gen="g1", time="14:00", xis=True):
+    return {"id": i, "date": date, "start_time": time, "published": True, "generated_at": gen, "xis": xis,
             "teams": [{"name": "India Women", "short": "INDW"}, {"name": "Zimbabwe Women", "short": "ZIMW"}],
             "win": {"India Women": 0.78, "Zimbabwe Women": 0.22}}
 
@@ -31,6 +31,19 @@ def test_refit_without_new_xis_is_silent_and_named_xis_are_announced():
     news = {"a": doc(["p1", "p2"]), "b": doc(["p1", "p3"])}
     alerts = plan(new, old, news.get, olds.get, NOW)
     assert [(a["topic"], a["match"]) for a in alerts] == [("xis", "b")]
+
+
+def test_probable_xis_changing_is_not_announced():
+    # a side's previous match finishes, its probable XI for the next match changes: the teams aren't named yet
+    old = {"matches": [card("a", gen="g1", xis=False)]}
+    new = {"matches": [card("a", gen="g2", xis=False)]}
+    assert plan(new, old, {"a": doc(["p1", "p3"])}.get, {"a": doc(["p1", "p2"])}.get, NOW) == []
+    # once confirmed, it is
+    new = {"matches": [card("a", gen="g3", xis=True)]}
+    assert [a["topic"] for a in plan(new, old, {"a": doc(["p1", "p4"])}.get, {"a": doc(["p1", "p3"])}.get, NOW)] == ["xis"]
+    # confirmed with exactly the players we expected: still announced, once
+    assert [a["topic"] for a in plan(new, old, {"a": doc(["p1", "p3"])}.get, {"a": doc(["p1", "p3"])}.get, NOW)] == ["xis"]
+    assert plan(new, {"matches": [card("a", gen="g2", xis=True)]}, {"a": doc(["p1", "p3"])}.get, {"a": doc(["p1", "p3"])}.get, NOW) == []
 
 
 def test_started_matches_unchanged_ones_and_first_publish_are_skipped():

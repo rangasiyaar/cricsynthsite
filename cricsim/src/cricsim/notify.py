@@ -5,7 +5,8 @@
 
 Topics, matching the app's switches (app/lib/native.ts). From the site update (`plan`, comparing with the live site):
 - "forecasts" (Fixture added): a match is published for the first time;
-- "xis" (Playing XI announced): a published match's playing XIs changed (the forecast was re-run with the named teams);
+- "xis" (Playing XI announced): a published match's confirmed playing XIs changed (the forecast was re-run with the named
+  teams); probable XIs changing (say after a side's previous match) is never announced;
 - "results": a finished match was scored ("Renegades won by 4 wickets · we had them 57%").
 From the auto loop every few minutes (`timed`, remembering what it sent in cricsim/alerts/sent.json):
 - "soon" (Match about to start): a published match starts in about 30 minutes, with a nudge to make a fantasy team;
@@ -82,10 +83,13 @@ def plan(new_index: dict, old_index: dict | None, new_doc, old_doc, now: datetim
             when = _when(c)
             alerts.append({**msg, "topic": "forecasts", "title": f"New match added: {short}",
                            "body": f"{names}{f', {when}' if when else ''}. See who's favourite and the likely scores."})
-        elif c.get("generated_at") != old[c["id"]].get("generated_at"):
+        elif c.get("xis") and c.get("generated_at") != old[c["id"]].get("generated_at"):
+            # only confirmed XIs (the card's "xis" flag): probable XIs also change, e.g. after a side's last match,
+            # and must not be announced as "Playing XIs are out"
             nd = new_doc(c["id"])
             before, after = _xis(old_doc(c["id"])), _xis(nd)
-            if before is not None and after is not None and before != after:
+            newly = not old[c["id"]].get("xis")          # just confirmed, even if our probable XIs were right
+            if before is not None and after is not None and (before != after or newly):
                 cap = _captain(nd)
                 alerts.append({**msg, "topic": "xis", "title": f"Playing XIs are out: {short}",
                                "body": "See both line-ups and our updated forecast." + (f" Our captain pick: {cap}." if cap else "")})
