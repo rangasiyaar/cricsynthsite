@@ -1,10 +1,10 @@
 "use client";
-// A Pro tab opened without Pro, shown in place on the match (website and app): the tab's real layout drawn from the
-// masked teaser (lib/unlock.ts teaserDoc: about 15% real, the rest hidden names and shuffled numbers, so nothing in
-// the page is true about anyone hidden), the top of it clear and the rest blurred, with the offer on top and an easy
-// way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
+// A Pro tab opened without Pro, shown in place on the match (website and app): the tab drawn from the masked teaser
+// (lib/unlock.ts teaserDoc: about 15% real). Its first card stays (hidden players as soft bars, their figures removed),
+// the other cards show only their titles over a skeleton, the offer sits just below the first card, and there's an
+// easy way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { loginHref } from "@/components/Gate";
 import { track } from "@/lib/analytics";
 import { hasPaidPro, trialAvailable, useProBilling } from "@/lib/billing";
@@ -35,12 +35,44 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
   const go = user ? checkout : app ? `/m/login/?next=${encodeURIComponent(checkout)}` : loginHref(checkout);
   const btn = app ? "a-btn" : "btn";
   const title = `${label} · ${doc.match.teams.map((t) => t.short).join(" v ")}`;
+  const box = useRef<HTMLDivElement>(null);
+  // The tab's first card stays as it is (its hidden players become soft bars); every other card shows only its
+  // title over a skeleton, so no shuffled number is ever on screen. The offer sits just below the first card.
+  useLayoutEffect(() => {
+    const root = box.current?.querySelector<HTMLElement>(".tl-content");
+    if (!root) return;
+    const shape = () => {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const hits: Text[] = [];
+      while (walker.nextNode()) if ((walker.currentNode.nodeValue || "").includes("█")) hits.push(walker.currentNode as Text);
+      for (const t of hits) {
+        const pill = document.createElement("span");
+        pill.className = "tl-pill";
+        t.replaceWith(pill);
+        // a table or list row: its figures go too; anywhere else (a pitch, a card): only the text next to the name
+        const onPitch = !!pill.closest("[class*='Pitch'], [class*='pitch']");
+        const row = onPitch ? null : pill.closest("tr, li, [class*='row']") as HTMLElement | null;
+        if (row) row.classList.add("tl-hide");
+        else pill.parentElement?.parentElement?.classList.add("tl-soft");
+      }
+      const cards = [...root.querySelectorAll<HTMLElement>(".card")].filter((c) => !c.parentElement?.closest(".card"));
+      cards.forEach((c, i) => c.classList.toggle("tl-stub", i > 0));
+      const first = cards[0];
+      if (first && box.current) {
+        const cut = first.getBoundingClientRect().bottom - box.current.getBoundingClientRect().top;
+        box.current.style.setProperty("--tl-cut", `${Math.round(Math.min(cut, app ? 460 : 540))}px`);   // a tall first card: cut it
+      }
+    };
+    shape();
+    const mo = new MutationObserver(() => { mo.disconnect(); shape(); mo.observe(root, { childList: true, subtree: true }); });
+    mo.observe(root, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }, [children, app]);
   return (
-    <div className={`tl${app ? " tl-app" : ""}`}>
+    <div className={`tl${app ? " tl-app" : ""}`} ref={box}>
       <div className="tl-content" aria-hidden="true" inert>
         {children ?? <div className="tl-ghost"><div className="skeleton card" /><div className="skeleton card" /><div className="skeleton card" /></div>}
       </div>
-      <div className="tl-veil" />
       <div className="tl-over">
         <div className="tl-card" role="region" aria-label={`${label} is part of CricSynthesis Pro`}>
           <span className="tl-tag">CricSynthesis Pro</span>

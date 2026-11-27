@@ -198,7 +198,9 @@ def teaser(doc: dict, seed: str) -> dict:
             p["name"] = MASK                 # profile kept: its numbers are shuffled with the rest below
         _shuffle_numbers(masked, rng)
         b = t["batting"]
-        for k in ("score", "wickets", "balls", "by_innings", "fan", "extras", "fall_of_wickets"):
+        # team totals stay real (the Scores tab's first card; the Overview shows the same ranges). The rest of a team's
+        # figures are only ever drawn under the teaser's skeleton cards, so shuffling them shows nothing on screen
+        for k in ("wickets", "balls", "by_innings", "fan", "extras", "fall_of_wickets"):
             if k in b:
                 b[k] = _scramble_tail(b[k], rng)
     s["matchups"] = _scramble_tail(s.get("matchups") or [], rng)
