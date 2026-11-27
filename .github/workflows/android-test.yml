@@ -1,0 +1,33 @@
+name: Android test build
+
+# Publishes the signed APK from an earlier "Android app" run as a GitHub pre-release, for testing on a phone with a
+# plain download link (build artifacts need a GitHub sign-in). A pre-release is never the "latest" release, so the
+# website's /download/ and the app's update check keep offering the real latest version.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id: { description: "Run ID of the Android app build", required: true }
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { run-id: "${{ inputs.run_id }}", github-token: "${{ github.token }}", path: out }
+      - name: Pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN: ${{ inputs.run_id }}
+        run: |
+          apk=$(ls out/*/apk/release/*.apk | head -1)
+          cp "$apk" CricSynthesis-test.apk
+          tag="test-build-$RUN"
+          gh release delete "$tag" -R "$GITHUB_REPOSITORY" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$tag" CricSynthesis-test.apk -R "$GITHUB_REPOSITORY" --prerelease --latest=false \
+            --title "Test build (run $RUN)" --notes "For testing only. Not the current app release."
+          echo "https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/CricSynthesis-test.apk" | tee -a "$GITHUB_STEP_SUMMARY"
