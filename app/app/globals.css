@@ -830,12 +830,10 @@ body:has(.cs-consent) .app-promo { display: none; }
 .tl-content .card { position: relative; }
 /* each section on screen: its top 20% clear and real, then blurring harder and fading from full to no visibility at the bottom */
 .tl-sec { max-height: var(--tl-h); overflow: hidden; --tl-clear: max(20%, 104px); }   /* short sections keep their title and first line */
-/* inside each section's frame (the border stays whole): clear at the top, then lightly blurred and fading into the
-   page colour by the bottom */
-.tl-blur { position: absolute; left: 0; right: 0; bottom: 0; top: var(--tl-clear, 20%); pointer-events: none; z-index: 2; }
-.tl-b1 { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 25%); mask-image: linear-gradient(to bottom, transparent 0, #000 25%); }
-.tl-b2 { -webkit-mask-image: linear-gradient(to bottom, transparent 15%, #000 45%); mask-image: linear-gradient(to bottom, transparent 15%, #000 45%); }
-.tl-fade { z-index: 3; background: linear-gradient(to bottom, color-mix(in srgb, var(--cs-bg) 0%, transparent) 0, color-mix(in srgb, var(--cs-bg) 70%, transparent) 55%, var(--cs-bg) 92%); }
+/* inside each section's frame (the border stays whole): clear at the top, then fading into the page colour */
+.tl-fade { position: absolute; left: 0; right: 0; bottom: 0; top: var(--tl-clear, 20%); pointer-events: none; z-index: 3;
+  background: linear-gradient(to bottom, transparent 0, color-mix(in srgb, var(--cs-bg) 85%, transparent) 45%, var(--cs-bg) 80%); }
+.tl-fig { height: 11px; max-height: 11px; align-self: center; flex: none; }   /* the same size whatever the figure's font size */
 .tl-pill { display: inline-block; width: 7.5em; max-width: 100%; height: .8em; border-radius: 999px; background: rgba(128, 128, 128, .38); vertical-align: middle; }
 .tl-hide, .tl-hide * { color: transparent !important; }
 .tl-hide svg, .tl-hide [style*="background"], .tl-hide rect, .tl-hide line, .tl-hide circle, .tl-hide path { opacity: 0 !important; }

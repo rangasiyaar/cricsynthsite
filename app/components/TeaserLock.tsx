@@ -1,7 +1,7 @@
 "use client";
 // A Pro tab opened without Pro, shown in place on the match (website and app): the tab drawn from the masked teaser
 // (lib/unlock.ts teaserDoc: the players that open each section real, the rest masked). Each section on screen shows its
-// top 20% clear, then blurs and fades out; the offer sits over the middle, and there's an easy way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
+// top 20% clear (some figures turned into soft bars at random), then fades out; the offer sits over the middle, and there's an easy way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { loginHref } from "@/components/Gate";
@@ -45,6 +45,15 @@ const COPY: Record<string, (d: MatchDoc) => Copy> = {
 const FALLBACK = (d: MatchDoc): Copy => ({ head: `Unlock the full match centre for ${vs(d)}`,
   line: "Every tab for every match we cover, plus MatchSynth Lab.", points: PRO_HIGHLIGHTS.slice(0, 3) });
 
+// Headings, column titles, tabs and chart axes keep their numbers ("by over 10", "50+").
+const FIXED = "h2, h3, h4, th, thead, button, [role=tab], svg, .cs-k, .card-head";
+/** A number in [0, 1) from a string: the same string gives the same number. */
+function pick(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ((h >>> 0) % 10000) / 10000;
+}
+
 export default function TeaserLock({ doc, section, label, children, onBack, backHref, app = false }: {
   doc: MatchDoc; section: string; label: string; children: React.ReactNode | null;
   onBack?: () => void; backHref?: string; app?: boolean;
@@ -59,14 +68,21 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
   const copy = (COPY[section] ?? FALLBACK)(doc);
   const box = useRef<HTMLDivElement>(null);
   // Only what fits on the screen when the tab opens. Every section shows its top 20% clear (real figures: the teaser
-  // keeps the players that open each section real), then blurs lightly and fades into the page colour inside its frame. Hidden players become soft bars (their figures removed). The offer covers the middle 60%.
+  // keeps the players that open each section real), with some of its figures picked at random and turned into soft
+  // bars, then fades into the page colour inside its frame. Hidden players become soft bars (their figures removed).
+  // The offer covers the middle 60%.
   useLayoutEffect(() => {
     const root = box.current?.querySelector<HTMLElement>(".tl-content");
     if (!root) return;
+    const seed = `${doc.match.id}:${section}`;
     const shape = () => {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      const hits: Text[] = [];
-      while (walker.nextNode()) if ((walker.currentNode.nodeValue || "").includes("█")) hits.push(walker.currentNode as Text);
+      const hits: Text[] = [], figures: Text[] = [];
+      while (walker.nextNode()) {
+        const t = walker.currentNode as Text, v = t.nodeValue || "";
+        if (v.includes("█")) hits.push(t);
+        else if (/\d/.test(v) && !t.parentElement?.closest(FIXED)) figures.push(t);
+      }
       for (const t of hits) {
         const pill = document.createElement("span");
         pill.className = "tl-pill";
@@ -77,24 +93,27 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
         if (row) row.classList.add("tl-hide");
         else pill.parentElement?.parentElement?.classList.add("tl-soft");
       }
+      // about a third of the figures that are still readable, picked from the match, tab and figure (the same ones
+      // each time the tab opens)
+      figures.forEach((t, i) => {
+        const v = (t.nodeValue || "").trim();
+        if (!v || /^\d{1,2}$/.test(v) || pick(`${seed}:${i}:${v}`) >= 0.35) return;   // ranks and counts stay
+        const bar = document.createElement("span");
+        bar.className = "tl-pill tl-fig";
+        bar.style.width = `${Math.min(84, Math.max(26, v.length * 9))}px`;
+        t.replaceWith(bar);
+      });
       const cards = [...root.querySelectorAll<HTMLElement>(".card")].filter((c) => !c.parentElement?.closest(".card"));
-      // React can reuse a box (a loading placeholder that becomes the tab's layout): drop layers and marks left on
-      // anything that is no longer a top-level section, or they blur the whole tab
-      for (const b of root.querySelectorAll<HTMLElement>(".tl-blur")) if (!cards.includes(b.parentElement as HTMLElement)) b.remove();
+      // React can reuse a box (a loading placeholder that becomes the tab's layout): drop the fade and marks left on
+      // anything that is no longer a top-level section
+      for (const f of root.querySelectorAll<HTMLElement>(".tl-fade")) if (!cards.includes(f.parentElement as HTMLElement)) f.remove();
       for (const e of root.querySelectorAll<HTMLElement>(".tl-sec")) if (!cards.includes(e)) e.classList.remove("tl-sec");
       cards.forEach((c) => {
         c.classList.add("tl-sec");
-        if (!c.querySelector(":scope > .tl-blur")) {
-          // the blur is set here, not in globals.css: the CSS build drops backdrop-filter from those rules
-          for (const [k, px] of [["tl-b1", 1.5], ["tl-b2", 3.5], ["tl-fade", 0]] as const) {
-            const d = document.createElement("div");
-            d.className = `tl-blur ${k}`;
-            if (px) {
-              d.style.setProperty("backdrop-filter", `blur(${px}px)`);
-              d.style.setProperty("-webkit-backdrop-filter", `blur(${px}px)`);
-            }
-            c.appendChild(d);
-          }
+        if (!c.querySelector(":scope > .tl-fade")) {
+          const f = document.createElement("div");
+          f.className = "tl-fade";
+          c.appendChild(f);
         }
       });
     };
@@ -109,7 +128,7 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
     const mo = new MutationObserver(() => { mo.disconnect(); shape(); mo.observe(root, watch); });
     mo.observe(root, watch);
     return () => mo.disconnect();
-  }, [children, app]);
+  }, [children, app, doc.match.id, section]);
   return (
     <div className={`tl${app ? " tl-app" : ""}`} ref={box}>
       <div className="tl-content" aria-hidden="true" inert>
