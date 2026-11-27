@@ -1,0 +1,112 @@
+{
+  "id": "bh-w-v-ps-w-t20-adelaide-2026-11-29",
+  "title": "Brisbane Heat Women v Perth Scorchers Women",
+  "date": "2026-11-29",
+  "start_time": "06:30",
+  "format": "T20",
+  "gender": "female",
+  "competition": "Women's Big Bash League · 39th Match",
+  "comp_key": "women-s-big-bash-league",
+  "venue": "Karen Rolton Oval, Adelaide",
+  "venue_search": "karen rolton oval",
+  "city": "Adelaide",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Brisbane Heat Women",
+      "short": "BH-W",
+      "players": [
+        "Grace Harris",
+        "Charli Knott",
+        "Georgia Redmayne",
+        "Yastika Bhatia",
+        "Orla Prendergast",
+        "Lucy Hamilton",
+        "Sianna Ginger",
+        "Lucinda Bourke",
+        "Mikayla Wrigley",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte"
+      ],
+      "roles": [
+        "AR",
+        "AR",
+        "WK",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Georgia Redmayne",
+      "squad": [
+        "Grace Harris",
+        "Charli Knott",
+        "Georgia Redmayne",
+        "Yastika Bhatia",
+        "Orla Prendergast",
+        "Lucy Hamilton",
+        "Sianna Ginger",
+        "Lucinda Bourke",
+        "Mikayla Wrigley",
+        "Sarah Glenn",
+        "Lily Bassingthwaighte"
+      ]
+    },
+    {
+      "name": "Perth Scorchers Women",
+      "short": "PS-W",
+      "players": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Ruby Strange",
+        "Lilly Mills",
+        "Amy Edgar"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Beth Mooney",
+      "squad": [
+        "Beth Mooney",
+        "Katie Mack",
+        "Sophie Devine",
+        "Freya Kemp",
+        "Mikayla Hinkley",
+        "Chloe Piparo",
+        "Chloe Ainsworth",
+        "Alana King",
+        "Ruby Strange",
+        "Lilly Mills",
+        "Amy Edgar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 40339,
+    "url": "https://khelnow.com/live-cricket-score/brisbane-heat-women-vs-perth-scorchers-women-women's-big-bash-league-29th-november-2026-40339",
+    "auto": true,
+    "xis": false
+  }
+}
