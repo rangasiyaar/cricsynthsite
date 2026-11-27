@@ -217,9 +217,8 @@ jobs:
           rm -rf app/public/data && cp -r data/publish app/public/data
           rm -rf app/public/data/analytics      # the analytics kit stays private (the Worker ships its own copy)
           cd app && npm ci && npm test && npx next build
-      - name: Lock Pro data (cricsim/lock.py; on with the PRO_DATA_KEY secret and the PRO_LOCK variable)
-        if: ${{ vars.PRO_LOCK == 'true' }}
-        env: { PRO_DATA_KEY: "${{ secrets.PRO_DATA_KEY }}" }
+      - name: Pro data (cricsim/lock.py) — the Pro tabs' teaser; locked with the PRO_DATA_KEY secret and PRO_LOCK=true
+        env: { PRO_DATA_KEY: "${{ secrets.PRO_DATA_KEY }}", PRO_LOCK: "${{ vars.PRO_LOCK }}" }
         run: uv run python -m cricsim.lock --data app/out/data | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Android app version (the latest signed release; /download/cricsynthesis.apk redirects to its file)
         env:

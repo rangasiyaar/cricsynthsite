@@ -107,3 +107,13 @@ def test_nothing_locked_without_the_secret(tmp_path):
     assert L.lock_dir(tmp_path, SECRET) == (1, 0)
     assert json.loads(f.read_text())["masked"] is True
     assert L.lock_dir(tmp_path, SECRET) == (0, 0)                 # already locked: left alone
+
+
+def test_teaser_only_before_locking_is_switched_on(tmp_path):
+    (tmp_path / "matches").mkdir()
+    d = doc(); d["match"]["date"] = "2026-11-27"
+    f = tmp_path / "matches" / "x.json"; f.write_text(json.dumps(d))
+    assert L.lock_dir(tmp_path, None, today="2026-11-27") == (1, 0)
+    out = json.loads(f.read_text())
+    assert "teaser" in out and "locked" not in out and not out.get("masked")
+    assert out["summary"] == d["summary"]                       # nothing else changes until locking is on

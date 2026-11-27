@@ -295,7 +295,9 @@ def lock_venue(v: dict, match_id: str, secret: str) -> dict:
 OPEN_AFTER_DAYS = 2      # a match is locked until two days after its date; then its forecast is open (results are public)
 
 
-def lock_dir(data: Path, secret: str, today: str | None = None) -> tuple[int, int]:
+def lock_dir(data: Path, secret: str | None, today: str | None = None) -> tuple[int, int]:
+    """Lock upcoming matches (and their venue files). Without a secret (locking not switched on yet), only add the
+    teaser to each upcoming match, so the Pro tabs already show it; the files stay otherwise as they are."""
     from datetime import date, timedelta
     cutoff = (date.fromisoformat(today) if today else date.today()) - timedelta(days=OPEN_AFTER_DAYS)
     nm = nv = 0
@@ -309,9 +311,10 @@ def lock_dir(data: Path, secret: str, today: str | None = None) -> tuple[int, in
             continue                                          # finished a while ago: stays open
         locked_ids.add(f.stem)
         if d.get("summary") and not d.get("locked"):
-            f.write_text(json.dumps(lock_match(d, secret), separators=(",", ":")))
+            out = lock_match(d, secret) if secret else {**d, "teaser": teaser(d, f"{f.stem}:{d.get('generated_at')}")}
+            f.write_text(json.dumps(out, separators=(",", ":")))
             nm += 1
-    for f in sorted((data / "venue").glob("*.json")) if (data / "venue").exists() else []:
+    for f in sorted((data / "venue").glob("*.json")) if secret and (data / "venue").exists() else []:
         if f.stem not in locked_ids:
             continue
         d = json.loads(f.read_text())
@@ -324,12 +327,10 @@ def lock_dir(data: Path, secret: str, today: str | None = None) -> tuple[int, in
 @click.command()
 @click.option("--data", type=click.Path(exists=True, path_type=Path), required=True, help="the built site's data folder")
 def main(data: Path) -> None:
-    secret = os.environ.get("PRO_DATA_KEY", "")
-    if not secret:
-        click.echo("::notice::PRO_DATA_KEY is not set: Pro data stays unlocked")
-        return
-    nm, nv = lock_dir(data, secret)
-    click.echo(f"Locked {nm} match file(s) and {nv} venue file(s)")
+    secret = os.environ.get("PRO_DATA_KEY", "") if os.environ.get("PRO_LOCK") == "true" else ""
+    nm, nv = lock_dir(data, secret or None)
+    click.echo(f"Locked {nm} match file(s) and {nv} venue file(s)" if secret
+               else f"Locking is off (PRO_LOCK and PRO_DATA_KEY): added the teaser to {nm} match file(s)")
 
 
 if __name__ == "__main__":
