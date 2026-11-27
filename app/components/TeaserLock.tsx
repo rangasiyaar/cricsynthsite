@@ -9,7 +9,7 @@ import { loginHref } from "@/components/Gate";
 import { track } from "@/lib/analytics";
 import { hasPaidPro, trialAvailable, useProBilling } from "@/lib/billing";
 import { usePlan } from "@/lib/firebase";
-import { PRO, ctaLabel, rupees } from "@/lib/pro";
+import { PRO, PRO_HIGHLIGHTS, ctaLabel, rupees } from "@/lib/pro";
 import type { MatchDoc } from "@/lib/types";
 
 const LINE: Record<string, (d: MatchDoc) => string> = {
@@ -36,8 +36,9 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
   const btn = app ? "a-btn" : "btn";
   const title = `${label} · ${doc.match.teams.map((t) => t.short).join(" v ")}`;
   const box = useRef<HTMLDivElement>(null);
-  // The tab's first card stays as it is (its hidden players become soft bars); every other card shows only its
-  // title over a skeleton, so no shuffled number is ever on screen. The offer sits just below the first card.
+  // Only what fits on the screen when the tab opens. Hidden players become soft bars (their figures removed); cards
+  // after the first show only their title over a skeleton, so no shuffled number is on screen; every card gets a blur
+  // that is light at the top and full by halfway down. The offer covers the middle 60%.
   useLayoutEffect(() => {
     const root = box.current?.querySelector<HTMLElement>(".tl-content");
     if (!root) return;
@@ -56,12 +57,25 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
         else pill.parentElement?.parentElement?.classList.add("tl-soft");
       }
       const cards = [...root.querySelectorAll<HTMLElement>(".card")].filter((c) => !c.parentElement?.closest(".card"));
-      cards.forEach((c, i) => c.classList.toggle("tl-stub", i > 0));
-      const first = cards[0];
-      if (first && box.current) {
-        const cut = first.getBoundingClientRect().bottom - box.current.getBoundingClientRect().top;
-        box.current.style.setProperty("--tl-cut", `${Math.round(Math.min(cut, app ? 460 : 540))}px`);   // a tall first card: cut it
-      }
+      cards.forEach((c, i) => {
+        c.classList.toggle("tl-stub", i > 0);
+        if (!c.querySelector(":scope > .tl-blur")) {
+          // the blur is set here, not in globals.css: the CSS build drops backdrop-filter from those rules
+          for (const [k, px] of [["tl-b1", 1.5], ["tl-b2", 4], ["tl-b3", 10]] as const) {
+            const d = document.createElement("div");
+            d.className = `tl-blur ${k}`;
+            d.style.setProperty("backdrop-filter", `blur(${px}px)`);
+            d.style.setProperty("-webkit-backdrop-filter", `blur(${px}px)`);
+            c.appendChild(d);
+          }
+        }
+      });
+    };
+    // the height on screen below the tab bar when the tab opened (a sensible height when it opens further down)
+    if (box.current) {
+      const top = box.current.getBoundingClientRect().top;
+      const h = top > 0 && top < window.innerHeight - 320 ? window.innerHeight - top - 12 : app ? 560 : 640;
+      box.current.style.setProperty("--tl-h", `${Math.round(Math.max(380, Math.min(h, 900)))}px`);
     };
     shape();
     const mo = new MutationObserver(() => { mo.disconnect(); shape(); mo.observe(root, { childList: true, subtree: true }); });
@@ -78,11 +92,12 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
           <span className="tl-tag">CricSynthesis Pro</span>
           <h3>{title}</h3>
           <p>{(LINE[section] ?? (() => "Every tab for every match we cover, plus MatchSynth Lab."))(doc)}</p>
+          <ul className="tl-list">{PRO_HIGHLIGHTS.slice(0, 4).map((l) => <li key={l}>{l}</li>)}</ul>
           {!paid && <Link className={`${btn} tl-go`} href={go} onClick={() => track("pro_cta", { source: "paywall", section, billing: "monthly", trial, where: app ? "app" : "web" })}>
             {user === null ? (trial ? "Try free for a day" : "Sign in to subscribe") : trial ? "Try free for a day" : ctaLabel(false)}</Link>}
           <p className="tl-fine">{trial ? `Then ${rupees(PRO.monthly)} a month. Cancel any time.` : `${rupees(PRO.monthly)} a month. Cancel any time.`}</p>
           <div className="tl-links">
-            <Link href={app ? "/m/pro/" : "/pro/"}>See everything in Pro</Link>
+            <Link href={app ? "/m/pro/" : "/pricing/"}>Compare plans</Link>
             {onBack ? <button type="button" className="linkish" onClick={onBack}>Back to Overview</button>
               : backHref ? <Link href={backHref}>Back to Overview</Link> : null}
           </div>
