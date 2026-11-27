@@ -1,5 +1,14 @@
 [
  {
+  "version": "0.3.33",
+  "date": "2026-11-27",
+  "notes": [
+   "Pro tabs now open in place with a preview of the match, and one tap to unlock",
+   "Pause CricSynthesis Pro for a month from Account, instead of cancelling",
+   "Clearer messages when a Pro payment is paused or doesn't go through"
+  ]
+ },
+ {
   "version": "0.3.32",
   "date": "2026-11-27",
   "notes": [
