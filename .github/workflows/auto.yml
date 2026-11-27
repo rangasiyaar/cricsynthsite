@@ -104,6 +104,7 @@ jobs:
           IG_USER_ID: "${{ secrets.IG_USER_ID }}"
           IG_GRAPH: "${{ vars.IG_GRAPH }}"
           RESEND_API_KEY: "${{ secrets.RESEND_API_KEY }}"
+          PRO_DATA_KEY: "${{ secrets.PRO_DATA_KEY }}"            # the Instagram slides read locked match files (cricsim/lock.py)
           SOCIAL_EMAIL_TO: "${{ secrets.SOCIAL_EMAIL_TO }}"
           SOCIAL_FROM: "${{ vars.SOCIAL_FROM }}"
         run: |

@@ -290,10 +290,14 @@ def main() -> None:
 
 
 def _match(mid: str) -> tuple[dict, dict | None]:
+    from cricsim.lock import unlock_match, unlock_venue
+    secret = os.environ.get("PRO_DATA_KEY")
     doc = _fetch(f"matches/{mid}.json")
     if not doc:
         raise click.ClickException(f"no published match {mid}")
-    return doc, _fetch(f"venue/{mid}.json")
+    if doc.get("locked") and not secret:
+        raise click.ClickException(f"{mid} is locked and PRO_DATA_KEY isn't set")
+    return unlock_match(doc, secret), unlock_venue(_fetch(f"venue/{mid}.json"), mid, secret)
 
 
 @main.command()

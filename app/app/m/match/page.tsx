@@ -4,9 +4,11 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { AppGate, Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, SwipeNav, TopBar, XiTag, fromSlug, preview, useFresh } from "@/components/App";
+import { Empty, Icon, Loading, MatchHero, MenuGroup, MenuRow, OfflineBar, SLUG, SwipeNav, TopBar, XiTag, fromSlug, preview, useFresh } from "@/components/App";
 import { SectionView, TAB_ICONS, isProSection, sectionName, sectionsFor, type Section } from "@/components/MatchCentre";
+import TeaserLock from "@/components/TeaserLock";
 import { loadMatch, peekMatch } from "@/lib/data";
+import { teaserDoc, useUnlocked } from "@/lib/unlock";
 import { usePlan } from "@/lib/firebase";
 import { FORMAT } from "@/lib/format";
 import { countdown, kickoffMs, startLabel } from "@/lib/schedule";
@@ -41,9 +43,27 @@ function Menu({ doc, xiNew }: { doc: MatchDoc; xiNew?: boolean }) {
   );
 }
 
-function SectionScreen({ doc, section }: { doc: MatchDoc; section: Section }) {
-  if (isProSection(section)) return <AppGate pro section={section}><SectionBody doc={doc} section={section} /></AppGate>;
-  return <SectionBody doc={doc} section={section} />;
+/** A section: Pro sections for Pro once the match is unlocked; without Pro, the masked teaser in place with the offer
+ *  (components/TeaserLock.tsx) and the way back to the match. */
+function SectionScreen({ doc: shown, section }: { doc: MatchDoc; section: Section }) {
+  const { plan } = usePlan();
+  const { doc, pending } = useUnlocked(shown, plan === "pro");
+  if (!isProSection(section)) return <SectionBody doc={doc} section={section} />;
+  if (plan === undefined || (plan === "pro" && pending)) return <Loading rows={2} />;
+  if (plan === "pro") return doc.masked ? <Empty title="Couldn&apos;t open this section">Check your connection and try again.</Empty>
+    : <SectionBody doc={doc} section={section} />;
+  const t = teaserDoc(doc);
+  return (
+    <>
+      <div className="a-section-head">
+        <span className="a-row-icon">{TAB_ICONS[section]}</span>
+        <div><h1>{sectionName(section)}</h1></div>
+      </div>
+      <TeaserLock app doc={doc} section={section} label={sectionName(section)} backHref={`/m/match/?id=${encodeURIComponent(doc.match.id)}`}>
+        {t ? <SectionView doc={t} section={section} live={false} /> : null}
+      </TeaserLock>
+    </>
+  );
 }
 
 function SectionBody({ doc, section }: { doc: MatchDoc; section: Section }) {

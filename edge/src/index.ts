@@ -5,6 +5,7 @@ import { catalog, HttpError, match, Query } from "./api.ts";
 import { type Account, accountPlan, endpointSlug, type Env, hit, keyFrom, lookup, MCP_DAILY, PLANS, sha256, toolSlug, Usage } from "./keys.ts";
 import { handle, toolCategory } from "./mcp.ts";
 import * as A from "./activity.ts";
+import * as PK from "./prokey.ts";
 import * as B from "./billing.ts";
 import * as E from "./emails.ts";
 import { mail } from "./notify.ts";
@@ -32,7 +33,7 @@ let analytics: Analytics | null = null;
 const getAnalytics = (env: Env) => {
   if (analytics) return analytics;
   const assets = env.ASSETS ? new AssetSource(env.ASSETS) : null;   // prepared answers and the analytics kit, both private
-  return (analytics = new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data"), assets, assets));
+  return (analytics = new Analytics(new EdgeSource(env.DATA, env.DATA_URL || "https://cricsynthesis.in/data", env.PRO_DATA_KEY), assets, assets));
 };
 
 function headers(req: Request, env: Env, extra: Record<string, string> = {}): Headers {
@@ -151,6 +152,23 @@ export async function deleteAccount(req: Request, env: Env, fs?: Firestore): Pro
   const emailed = await mail(env, user.uid, (name) => E.accountDeleted({ name }), { email: who?.email || user.email, name: who?.name ?? null });
   const signIn = await fs.deleteAuthUser(user.uid).catch(() => false);
   return json(req, env, { deleted: true, documents, emailed, signIn });
+}
+
+/** The key that unlocks one match's Pro data on the website and in the app (prokey.ts): signed-in Pro accounts only. */
+async function proKey(req: Request, env: Env, url: URL): Promise<Response> {
+  if (!env.PRO_DATA_KEY || !env.GOOGLE_SA) return fail(req, env, 503, "Not available");
+  const id = url.searchParams.get("match") || "";
+  if (!PK.MATCH_ID.test(id)) return fail(req, env, 422, "Bad match id");
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  const user = token ? await OA.firebaseUser(env, token).catch(() => null) : null;
+  if (!user) return fail(req, env, 401, "Sign in first");
+  let pro = PK.isPro(user.plan, null);
+  if (!pro) {
+    const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+    pro = PK.isPro(null, await fs.getDoc(`users/${user.uid}/billing/pro`).catch(() => null));
+  }
+  if (!pro) return fail(req, env, 403, "CricSynthesis Pro needed");
+  return json(req, env, await PK.keyResponse(env.PRO_DATA_KEY, id));
 }
 
 /** The website or app opened by a signed-in account (activity.ts): when, where, device and city, for the console. */
@@ -362,6 +380,7 @@ export default {
     if (path === "/account/key-created" && req.method === "POST") return keyCreated(req, env);
     if (path === "/account/delete" && req.method === "POST") return deleteAccount(req, env);
     if (path === "/account/seen" && req.method === "POST") return accountSeen(req, env);
+    if (path === "/pro/key" && req.method === "GET") return proKey(req, env, url);
     if (path === "/contact" && req.method === "POST") return contact(req, env);
     if (["/welcome", "/api-access", "/apply", "/account/upgrade-requested"].includes(path) && req.method === "POST") return form(req, env, path);
     const o = await oauth(req, env, url, path);

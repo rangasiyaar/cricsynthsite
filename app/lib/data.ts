@@ -5,6 +5,7 @@
 // screens open straight away from the last copy (`peek…`) while the network copy loads, and still open offline.
 import type { Pack } from "./engine/sim.ts";
 import type { MatchDoc, MatchIndex, ResultDoc, ResultIndex, VenueIntel } from "./types.ts";
+import { unlockMatch, unlockVenue } from "./unlock.ts";
 
 const BASE = process.env.NEXT_PUBLIC_DATA_URL || "/data";
 const CACHE = "cs-data-v1";
@@ -44,12 +45,13 @@ async function get<T>(path: string, offline = false): Promise<T> {
 const matchPath = (id: string) => `matches/${encodeURIComponent(id)}.json`;
 
 export const loadIndex = () => get<MatchIndex>("index.json");
-export const loadMatch = (id: string) => get<MatchDoc>(matchPath(id));
+// Pro accounts get the full forecast (the files' Pro part is encrypted: lib/unlock.ts)
+export const loadMatch = (id: string) => get<MatchDoc>(matchPath(id)).then(unlockMatch);
 export const loadPack = (id: string) => get<Pack>(`matches/${encodeURIComponent(id)}.pack.json`, true);
-export const loadVenue = (id: string) => get<VenueIntel>(`venue/${encodeURIComponent(id)}.json`, true);
+export const loadVenue = (id: string) => get<VenueIntel>(`venue/${encodeURIComponent(id)}.json`, true).then((v) => unlockVenue(v, id));
 export const loadResults = () => get<ResultIndex>("results/index.json");
 export const loadResult = (id: string) => get<ResultDoc>(`results/${encodeURIComponent(id)}.json`);
 
 export const peekIndex = () => peek<MatchIndex>("index.json");
-export const peekMatch = (id: string) => peek<MatchDoc>(matchPath(id));
+export const peekMatch = (id: string) => peek<MatchDoc>(matchPath(id)).then((d) => (d ? unlockMatch(d) : d));
 export const peekResults = () => peek<ResultIndex>("results/index.json");

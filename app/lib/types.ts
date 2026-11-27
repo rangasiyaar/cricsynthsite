@@ -83,6 +83,9 @@ export type MatchDoc = {
            venue?: string; venue_id?: string; gender?: string; xis?: boolean; teams: { name: string; short: string; players: string[] }[] };
   summary: Summary; insights: { kind: string; text: string }[]; generated_at: string; model: string;
   fantasy?: FantasyPicks;
+  // Pro data locked (cricsim/lock.py, lib/unlock.ts): summary/fantasy hold only what the Overview shows; teaser is the
+  // Pro tabs' masked shape; locked is the full forecast, encrypted
+  masked?: boolean; teaser?: { summary: Summary; fantasy?: FantasyPicks | null }; locked?: unknown;
 };
 
 // Results (cricsim/results.py): how the published forecast compared with the match.
@@ -110,6 +113,7 @@ export type ResultIndex = { matches: ResultSummary[]; hits: number; checks: numb
 export type VenueStat = { economy?: number | null; balls_per_wicket?: number | null; share_of_balls?: number | null;
                           share_of_wickets?: number | null; runs_per_over?: number; boundary_pct?: number | null; balls: number };
 export type VenueIntel = {
+  masked?: boolean; locked?: unknown;
   venue: { id: string; name?: string }; format: string; gender: string; since: string;
   model: { character: string; scoring_index: number; wicket_index: number } | null;
   history: {

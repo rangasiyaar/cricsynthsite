@@ -68,6 +68,7 @@ jobs:
           RZP_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
           RZP_WEBHOOK: ${{ secrets.RAZORPAY_WEBHOOK_SECRET }}
           RESEND: ${{ secrets.RESEND_API_KEY }}
+          PRO_KEY: ${{ secrets.PRO_DATA_KEY }}
           TS_SECRET: ${{ secrets.TURNSTILE_SECRET }}
           TS_SITE: ${{ vars.TURNSTILE_SITE_KEY }}
         run: |
@@ -76,6 +77,8 @@ jobs:
           else npx wrangler secret delete TURNSTILE_SECRET --force >/dev/null 2>&1 || true; echo "::notice::No TURNSTILE_SECRET / TURNSTILE_SITE_KEY: the form bot check is off."; fi
           # account emails (emails.ts): set whenever the secret exists, independent of the payment keys
           if [ -n "$RESEND" ]; then node -e 'process.stdout.write(JSON.stringify({RESEND_API_KEY: process.env.RESEND}))' > /tmp/rs.json && npx wrangler secret bulk /tmp/rs.json; rm -f /tmp/rs.json; echo "Account emails: on" >> "$GITHUB_STEP_SUMMARY"; else echo "::notice::No RESEND_API_KEY: account emails are off."; fi
+          # Pro data key (prokey.ts): unlocks the Pro part of the site's match files for Pro accounts, the API and MCP
+          if [ -n "$PRO_KEY" ]; then node -e 'process.stdout.write(JSON.stringify({PRO_DATA_KEY: process.env.PRO_KEY}))' > /tmp/pk.json && npx wrangler secret bulk /tmp/pk.json; rm -f /tmp/pk.json; echo "Pro data key: on" >> "$GITHUB_STEP_SUMMARY"; else echo "::notice::No PRO_DATA_KEY: Pro data isn't locked."; fi
           [ -n "$RZP_ID" ] && [ -n "$RZP_SECRET" ] || { echo "::notice::No Razorpay keys yet: checkout stays off."; exit 0; }
           node -e 'const e=process.env, o={RAZORPAY_KEY_ID:e.RZP_ID, RAZORPAY_KEY_SECRET:e.RZP_SECRET}; if (e.RZP_WEBHOOK) o.RAZORPAY_WEBHOOK_SECRET=e.RZP_WEBHOOK; process.stdout.write(JSON.stringify(o))' > /tmp/rzp.json
           npx wrangler secret bulk /tmp/rzp.json

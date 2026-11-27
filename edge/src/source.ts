@@ -2,6 +2,7 @@
 // website's /data (the same files, public). Parsed files are kept in the isolate for a few minutes so a burst of
 // requests parses each file once (parsing is what costs CPU time; waiting on the fetch doesn't).
 import { NotFound, type Source } from "./analytics.ts";
+import { unlockMatch } from "./prokey.ts";
 
 const TTL_MS = 10 * 60_000;
 const MAX_ENTRIES = 400;
@@ -15,9 +16,11 @@ export class EdgeSource implements Source {
   base: string;
   private cache = new Map<string, { t: number; v: Promise<any> }>();
 
-  constructor(bucket: R2Bucket | undefined, base: string) {
+  secret: string | undefined;
+  constructor(bucket: R2Bucket | undefined, base: string, secret?: string) {
     this.bucket = bucket;
     this.base = base.replace(/\/$/, "");
+    this.secret = secret;            // PRO_DATA_KEY: match files are read whole (unlocked), as the API and MCP need them
   }
 
   get(path: string): Promise<any> {
@@ -34,6 +37,11 @@ export class EdgeSource implements Source {
   }
 
   private async load(path: string): Promise<any> {
+    const doc = await this.raw(path);
+    return /^matches\/[^/]+\.json$/.test(path) && !path.endsWith(".pack.json") ? unlockMatch(doc, this.secret) : doc;
+  }
+
+  private async raw(path: string): Promise<any> {
     if (this.bucket) {
       const obj = await this.bucket.get(path);
       if (!obj) throw new NotFound(`404 loading ${path}`);

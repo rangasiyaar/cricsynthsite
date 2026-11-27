@@ -22,6 +22,7 @@ async function pick(section: GuideSection): Promise<MatchDoc | null> {
     try {
       if (!matchP.has(r.id)) matchP.set(r.id, loadMatch(r.id));
       const d = await matchP.get(r.id)!;
+      if (d.masked) continue;                            // a match still locked (Pro data): only open ones are examples
       if (sectionsFor(d).includes(section)) return d;
     } catch { /* try the next one */ }
   }

@@ -8,6 +8,7 @@ dependencies = [
     "pyarrow>=16",
     "duckdb>=1.1",          # pattern lab: window-function features straight off Parquet
     "click>=8.1",
+    "cryptography>=42",     # lock.py: the Pro part of the published match files (AES-GCM)
 ]
 
 [project.optional-dependencies]

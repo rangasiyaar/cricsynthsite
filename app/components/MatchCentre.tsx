@@ -1,10 +1,11 @@
 "use client";
+import TeaserLock from "@/components/TeaserLock";
+import { teaserDoc, useUnlocked } from "@/lib/unlock";
 import { useEffect, useState } from "react";
 import { ChaseCurve, Checkpoints, PlayerLadder, RunFan, WinCurve } from "@/components/Analysis";
 import LiveProjection from "@/components/LiveProjection";
 import Snapshot from "@/components/Snapshot";
 import Link from "next/link";
-import { proHref } from "@/components/Gate";
 import { track } from "@/lib/analytics";
 import { usePlan } from "@/lib/firebase";
 import Scoreboard from "@/components/Scoreboard";
@@ -71,28 +72,26 @@ export function SectionView({ doc, section, live = true, onOpen, hrefFor, scoreb
 /** Every section but the Overview is part of CricSynthesis Pro (like MatchSynth Lab). */
 export const isProSection = (s: Section) => s !== "Overview";
 
-/** A Pro section opened without Pro (e.g. a shared ?tab= link): off to sign-in, coming back to this tab. */
-function ProSection({ section, children }: { section: Section; children: React.ReactNode }) {
-  const { user, plan } = usePlan();
-  const blocked = isProSection(section) && plan !== undefined && plan !== "pro";
-  useEffect(() => { if (blocked) window.location.assign(proHref(!!user, tabUrl(section))); }, [blocked, user, section]);
-  if (isProSection(section) && plan !== "pro") return <div className="skeleton card" style={{ minHeight: 280, marginTop: 24 }} aria-busy="true" />;
-  return <>{children}</>;
-}
-
-/** This page with ?tab=<section>, so sign-in returns to the tab that was clicked. */
-function tabUrl(section: Section) {
-  const u = new URL(window.location.href);
-  u.searchParams.set("tab", section.toLowerCase());
-  return u.pathname + u.search;
+/** A Pro section: for Pro, the section (once the match is unlocked); without Pro, the masked teaser in place with the
+ *  offer and a way back to the Overview (components/TeaserLock.tsx). */
+function ProSection({ section, doc, pending, children, onBack, render }: { section: Section; doc: MatchDoc; pending: boolean;
+  children: React.ReactNode; onBack: () => void; render: (d: MatchDoc) => React.ReactNode }) {
+  const { plan } = usePlan();
+  if (!isProSection(section)) return <>{children}</>;
+  if (plan === undefined || (plan === "pro" && pending)) return <div className="skeleton card" style={{ minHeight: 280, marginTop: 24 }} aria-busy="true" />;
+  if (plan === "pro" && !doc.masked) return <>{children}</>;
+  if (plan === "pro") return <div className="notice" style={{ marginTop: 24 }}>Couldn&apos;t open this tab right now. Check your connection and reload the page.</div>;
+  const t = teaserDoc(doc);
+  return <TeaserLock doc={doc} section={section} label={sectionName(section)} onBack={onBack}>{t ? render(t) : null}</TeaserLock>;
 }
 
 /** The match-centre tabs for any summary: the published forecast, or a MatchSynth Lab scenario (live = false hides the
  *  live engine, which always runs the published match). */
-export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean;
+export function ForecastTabs({ doc: shown, extra, live = true, initial }: { doc: MatchDoc; extra?: React.ReactNode; live?: boolean;
                                                                        initial?: string | null }) {
+  const { plan } = usePlan();
+  const { doc, pending } = useUnlocked(shown, plan === "pro");
   const tabs = sectionsFor(doc);
-  const { user, plan } = usePlan();
   const [tab, setTab] = useState<Tab>(() => tabs.find((t) => t.toLowerCase() === (initial ?? "").toLowerCase()) ?? "Overview");
   return (
     <>
@@ -100,7 +99,6 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
         {tabs.map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} onClick={() => {
             track("match_tab", { tab: t, match_id: doc.match.id });
-            if (isProSection(t) && plan !== undefined && plan !== "pro") { window.location.assign(proHref(!!user, tabUrl(t))); return; }
             setTab(t);
           }}>
             <span className="mc-ico" aria-hidden="true">{TAB_ICONS[t]}</span><span className="mc-label">{SHORT[t] ? <><span className="mc-full">{FULL[t] ?? t}</span><span className="mc-short">{SHORT[t]}</span></> : t}</span>
@@ -108,7 +106,8 @@ export function ForecastTabs({ doc, extra, live = true, initial }: { doc: MatchD
         ))}
         {extra}
       </div>
-      <div key={tab} className="anim-fade"><ProSection section={tab}><SectionView doc={doc} section={tab} live={live} scoreboard={live}
+      <div key={tab} className="anim-fade"><ProSection section={tab} doc={doc} pending={pending} onBack={() => setTab("Overview")}
+        render={(d) => <SectionView doc={d} section={tab} live={false} />}><SectionView doc={doc} section={tab} live={live} scoreboard={live}
         onOpen={(t) => { if (tabs.includes(t)) { setTab(t); window.scrollTo({ top: 0, behavior: "smooth" }); } }} /></ProSection></div>
     </>
   );

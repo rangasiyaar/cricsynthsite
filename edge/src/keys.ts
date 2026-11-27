@@ -29,6 +29,7 @@ export interface Env {
   RAZORPAY_KEY_SECRET?: string;
   RAZORPAY_WEBHOOK_SECRET?: string;
   RESEND_API_KEY?: string;
+  PRO_DATA_KEY?: string;              // secret: unlocks the Pro part of the public match files (prokey.ts, cricsim/lock.py)
   TEAM_EMAIL?: string;
   TURNSTILE_SECRET?: string;            // secret: the public forms' bot check (turnstile.ts); off without it                  // optional: where form notices go (default hello@cricsynthesis.in)              // account emails (emails.ts, notify.ts); without it nothing is sent
 }

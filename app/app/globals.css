@@ -821,3 +821,24 @@ body:has(.cs-consent) .app-promo { display: none; }
 .pro-why legend { font-weight: 600; margin-bottom: 4px; color: var(--cs-ink); }
 .pro-why label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
 .pro-why textarea { width: 100%; margin-top: 6px; font: inherit; padding: 8px 10px; border: 1px solid var(--cs-line); border-radius: 8px; background: transparent; color: inherit; resize: vertical; }
+
+/* A Pro tab without Pro (components/TeaserLock.tsx): the masked teaser, the top 15% clear, the rest blurred, the offer on top */
+.tl { position: relative; margin-top: 8px; }
+.tl-content { max-height: 900px; overflow: hidden; pointer-events: none; user-select: none; position: relative; z-index: 0; isolation: isolate;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 15%, rgba(0, 0, 0, .4) calc(15% + 48px));
+  mask-image: linear-gradient(to bottom, #000 0, #000 15%, rgba(0, 0, 0, .4) calc(15% + 48px)); }
+.tl-veil { position: absolute; left: 0; right: 0; top: 15%; bottom: 0; z-index: 1; pointer-events: none;
+  backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); background: color-mix(in srgb, var(--cs-bg) 30%, transparent); }
+.tl-over { position: absolute; left: 0; right: 0; top: calc(15% + 28px); z-index: 5; display: flex; justify-content: center; padding: 0 16px; }
+.tl-card { max-width: 440px; width: 100%; background: var(--cs-card, var(--cs-bg)); border: 1px solid var(--cs-line); border-radius: 14px;
+  padding: 22px 22px 18px; box-shadow: 0 18px 50px rgba(20, 34, 49, .18); text-align: center; }
+.tl-card h3 { margin: 8px 0 6px; font-size: 1.15rem; }
+.tl-card p { margin: 0 0 14px; color: var(--cs-ink-2); }
+.tl-tag { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--cs-accent, #416180); }
+.tl-go { width: 100%; justify-content: center; display: inline-flex; }
+.tl-fine { font-size: .82rem; margin: 8px 0 12px !important; }
+.tl-links { display: flex; justify-content: space-between; gap: 12px; font-size: .9rem; flex-wrap: wrap; }
+.tl-ghost { display: grid; gap: 16px; }
+.tl-ghost .card { min-height: 220px; }
+.tl-app .tl-content { max-height: 760px; }
+.tl-app .tl-over { top: calc(15% + 12px); padding: 0 4px; }

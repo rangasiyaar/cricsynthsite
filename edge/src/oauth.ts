@@ -75,7 +75,7 @@ async function firebaseKeys(): Promise<Row[]> {
   return jwks.keys;
 }
 
-export async function firebaseUser(env: OAuthEnv, idToken: string): Promise<{ uid: string; email: string | null; emailVerified: boolean; authTime: number }> {
+export async function firebaseUser(env: OAuthEnv, idToken: string): Promise<{ uid: string; email: string | null; emailVerified: boolean; authTime: number; plan?: string | null }> {
   const project = env.FIRESTORE_PROJECT || (env.GOOGLE_SA ? JSON.parse(env.GOOGLE_SA).project_id : "") || "cricsynthesis";
   const [h, p, s] = idToken.split(".");
   if (!h || !p || !s) throw new OAuthError("access_denied", "Sign in again");
@@ -90,7 +90,8 @@ export async function firebaseUser(env: OAuthEnv, idToken: string): Promise<{ ui
       || claims.exp < t || claims.iat > t + 300) {
     throw new OAuthError("access_denied", "Sign in again");
   }
-  return { uid: claims.sub, email: claims.email ?? null, emailVerified: claims.email_verified === true, authTime: Number(claims.auth_time) || 0 };
+  return { uid: claims.sub, email: claims.email ?? null, emailVerified: claims.email_verified === true, authTime: Number(claims.auth_time) || 0,
+           plan: typeof claims.plan === "string" ? claims.plan : null };
 }
 
 // ── metadata ──
