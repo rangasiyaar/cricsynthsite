@@ -1,0 +1,112 @@
+{
+  "id": "sl-a-v-pak-a-odi-doha-2026-11-29",
+  "title": "Sri Lanka A v Pakistan A",
+  "date": "2026-11-29",
+  "start_time": "15:30",
+  "format": "OD",
+  "gender": "male",
+  "competition": "ACC Men's Asia Cup Rising Stars · Final",
+  "comp_key": "intl-international-OD",
+  "venue": "West End Park International Cricket Stadium, Doha",
+  "venue_search": "west end park international cricket stadium",
+  "city": "Doha",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Sri Lanka A",
+      "short": "SL-A",
+      "players": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Ravindu Fernando",
+        "Wanuja Sahan",
+        "Vijayakanth Viyaskanth",
+        "Lahiru Samarakoon",
+        "Garuka Sanketh"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Pavan Rathnayake",
+      "squad": [
+        "Lasith Croospulle",
+        "Sineth Jayawardena",
+        "Nishan Madushka",
+        "Pavan Rathnayake",
+        "Nipun Dananjaya",
+        "Janith Liyanage",
+        "Ravindu Fernando",
+        "Wanuja Sahan",
+        "Vijayakanth Viyaskanth",
+        "Lahiru Samarakoon",
+        "Garuka Sanketh"
+      ]
+    },
+    {
+      "name": "Pakistan A",
+      "short": "PAK-A",
+      "players": [
+        "Shamyl Hussain",
+        "Maaz Sadaqat",
+        "Rohail Nazir",
+        "Hasan Nawaz",
+        "Abdul Samad",
+        "Farhan Yousaf",
+        "Mohammad Imran Randhawa",
+        "Shahzaib Khan",
+        "Ahmed Daniyal",
+        "Sufyan Moqim",
+        "Ali Raza"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Abdul Samad",
+      "squad": [
+        "Shamyl Hussain",
+        "Maaz Sadaqat",
+        "Rohail Nazir",
+        "Hasan Nawaz",
+        "Abdul Samad",
+        "Farhan Yousaf",
+        "Mohammad Imran Randhawa",
+        "Shahzaib Khan",
+        "Ahmed Daniyal",
+        "Sufyan Moqim",
+        "Ali Raza"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41836,
+    "url": "https://khelnow.com/live-cricket-score/sri-lanka-a-vs-tba-acc-men's-asia-cup-rising-stars-29th-november-2026-41836",
+    "auto": true,
+    "xis": false
+  }
+}
