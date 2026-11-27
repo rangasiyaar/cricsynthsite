@@ -1,0 +1,112 @@
+{
+  "id": "dv-v-gg-t20-dubai-2026-11-29",
+  "title": "Desert Vipers v Gulf Giants",
+  "date": "2026-11-29",
+  "start_time": "18:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "International League T20 · 12th Match",
+  "comp_key": "international-league-t20",
+  "venue": "Dubai International Cricket Stadium, Dubai",
+  "venue_search": "dubai international cricket stadium",
+  "city": "Dubai",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Desert Vipers",
+      "short": "DV",
+      "players": [
+        "Babar Azam",
+        "Andries Gous",
+        "Joe Clarke",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Nangeyalia kharote",
+        "Khuzaima Bin Tanvir",
+        "Mujeeb Ur Rahman",
+        "Sanjay Pahal",
+        "Hunain Shah"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Shadab Khan",
+      "squad": [
+        "Babar Azam",
+        "Andries Gous",
+        "Joe Clarke",
+        "Shimron Hetmyer",
+        "Shadab Khan",
+        "Tom Curran",
+        "Nangeyalia kharote",
+        "Khuzaima Bin Tanvir",
+        "Mujeeb Ur Rahman",
+        "Sanjay Pahal",
+        "Hunain Shah"
+      ]
+    },
+    {
+      "name": "Gulf Giants",
+      "short": "GG",
+      "players": [
+        "Rahmanullah Gurbaz",
+        "Liam Livingstone",
+        "Azmatullah Omarzai",
+        "Heinrich Klaasen",
+        "David Miller",
+        "David Wiese",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Dhruv Parashar",
+        "Haider Razzaq",
+        "Shamar Joseph"
+      ],
+      "roles": [
+        "WK",
+        "AR",
+        "AR",
+        "BAT",
+        "BAT",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Heinrich Klaasen",
+      "squad": [
+        "Rahmanullah Gurbaz",
+        "Liam Livingstone",
+        "Azmatullah Omarzai",
+        "Heinrich Klaasen",
+        "David Miller",
+        "David Wiese",
+        "Akeal Hosein",
+        "Alzarri Joseph",
+        "Dhruv Parashar",
+        "Haider Razzaq",
+        "Shamar Joseph"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41730,
+    "url": "https://khelnow.com/live-cricket-score/desert-vipers-vs-gulf-giants-international-league-t20-29th-november-2026-41730",
+    "auto": true,
+    "xis": false
+  }
+}
