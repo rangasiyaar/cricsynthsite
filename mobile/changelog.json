@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.34",
+  "date": "2026-11-27",
+  "notes": [
+   "Cleaner Pro tab previews: the top of every section stays clear, then fades out inside its card"
+  ]
+ },
+ {
   "version": "0.3.33",
   "date": "2026-11-27",
   "notes": [
