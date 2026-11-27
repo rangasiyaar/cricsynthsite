@@ -12,7 +12,7 @@
   "city": "Brisbane",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. England won the toss and bowl first.",
   "teams": [
     {
       "name": "Australia",
@@ -23,12 +23,12 @@
         "Sam Harper",
         "Nikhil Chaudhary",
         "Tim David",
-        "Jack Edwards",
-        "Lachlan Shaw",
         "Joel Davies",
+        "Mitchell Owen",
+        "Ben Dwarshuis",
         "Adam Zampa",
         "Riley Meredith",
-        "Ben Dwarshuis"
+        "Billy Stanlake"
       ],
       "roles": [
         "BAT",
@@ -37,8 +37,8 @@
         "AR",
         "BAT",
         "AR",
-        "BAT",
         "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -66,22 +66,22 @@
         "Aneurin Donald",
         "Harry Brook",
         "Tom Banton",
-        "Jordan Cox",
-        "Sam Curran",
         "James Coles",
+        "Sam Curran",
+        "Jordan Cox",
         "Liam Dawson",
         "Jamie Overton",
-        "Henry Thomas Crocombe",
-        "Adil Rashid"
+        "Adil Rashid",
+        "Henry Thomas Crocombe"
       ],
       "roles": [
         "BAT",
         "BAT",
         "BAT",
         "BAT",
+        "AR",
+        "AR",
         "WK",
-        "AR",
-        "AR",
         "AR",
         "AR",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 38650,
     "url": "https://khelnow.com/live-cricket-score/australia-vs-england-england-tour-of-australia-27th-november-2026-38650",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 0
 }

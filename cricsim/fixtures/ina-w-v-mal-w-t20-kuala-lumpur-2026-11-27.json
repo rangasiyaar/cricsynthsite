@@ -12,7 +12,7 @@
   "city": "Kuala Lumpur",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Indonesia Women won the toss and bowl first.",
   "teams": [
     {
       "name": "Indonesia Women",
@@ -20,10 +20,10 @@
       "players": [
         "Anace Elna Elizabeth Yaung",
         "Desi Wulandari",
-        "Kisi Salisa Kasse",
-        "Lie Qiao",
+        "Dara Ahung Laksmi Paramitha",
         "Maria Corazon",
         "Ni Ariani",
+        "Ni Kadek Fitria Rada Rani",
         "Ni Luh Dewi",
         "Ni Made Putri Suwandewi",
         "Ni Putu Ayu Nanda Sakarini",
@@ -33,10 +33,10 @@
       "roles": [
         "BAT",
         "AR",
-        "AR",
         "BOWL",
         "BAT",
         "AR",
+        "BAT",
         "BAT",
         "BOWL",
         "WK",
@@ -64,12 +64,12 @@
       "players": [
         "Ainna Hamizah Hashim",
         "Winifred Duraisingam",
-        "Aina Najwa",
-        "Nur Arianna Natsya",
         "Mahirah Izzati Ismail",
+        "Aina Najwa",
+        "Aina Umaira Binti Amin",
+        "Aisya Eleesa",
+        "Nur Arianna Natsya",
         "Mas Elysa",
-        "Musfirah Nur Ainaa Azmi",
-        "Nazatul Hidayah Husna",
         "Nur Dania Syuhada",
         "Nurin Imanina",
         "Suabika Manivannan"
@@ -77,10 +77,10 @@
       "roles": [
         "AR",
         "BAT",
+        "AR",
         "WK",
         "BOWL",
-        "AR",
-        "BAT",
+        "BOWL",
         "BOWL",
         "BAT",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41987,
     "url": "https://khelnow.com/live-cricket-score/tba-vs-tba-malaysia-women's-t20i-tri-series-27th-november-2026-41987",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

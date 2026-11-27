@@ -12,21 +12,21 @@
   "city": "Harare",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Zimbabwe A won the toss and bowl first.",
   "teams": [
     {
       "name": "Zimbabwe A",
       "short": "ZIM-A",
       "players": [
-        "Kudzai Maunze",
+        "Matthew Campbell",
         "Brandon Senzere",
         "Panashe Taruvinga",
-        "Takudzwanashe Kaitano",
         "Roy Kaia",
         "Milton Shumba",
         "Clive Madande",
         "Faraz Akram",
-        "Tinotenda Maposa",
+        "Tony Munyonga",
+        "Michael Frost",
         "Victor Chirwa",
         "Shelton Mazvitorera"
       ],
@@ -35,15 +35,15 @@
         "AR",
         "BOWL",
         "AR",
+        "BAT",
         "WK",
-        "BAT",
-        "BAT",
         "AR",
+        "BAT",
         "AR",
         "BOWL",
         "AR"
       ],
-      "captain": "Panashe Taruvinga",
+      "captain": "Roy Kaia",
       "squad": [
         "Kudzai Maunze",
         "Brandon Senzere",
@@ -69,17 +69,17 @@
         "Benjamin Calitz",
         "Gareth Delany",
         "Jordan Neill",
-        "Gavin Hoey",
-        "Liam McCarthy",
         "Matthew Humphreys",
-        "Jai Moondra"
+        "Josh Little",
+        "Matt Hollard",
+        "Byron Mcdonough"
       ],
       "roles": [
-        "BAT",
-        "BAT",
-        "BAT",
-        "BAT",
         "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
         "AR",
         "AR",
         "BOWL",
@@ -107,6 +107,7 @@
     "kn": 41800,
     "url": "https://khelnow.com/live-cricket-score/zimbabwe-a-vs-ireland-a-ireland-a-tour-of-zimbabwe-27th-november-2026-41800",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }

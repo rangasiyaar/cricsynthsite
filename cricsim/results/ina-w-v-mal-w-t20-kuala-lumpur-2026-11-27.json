@@ -1,0 +1,287 @@
+{
+ "id": "ina-w-v-mal-w-t20-kuala-lumpur-2026-11-27",
+ "innings": [
+  {
+   "team": "Malaysia Women",
+   "runs": 67,
+   "wickets": 6,
+   "overs": "13",
+   "batting": [
+    {
+     "name": "Ainna Hamizah Hashim",
+     "dismissal": "lbw b Ni Ariani",
+     "runs": 5,
+     "balls": 9,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Winifred Duraisingam",
+     "dismissal": "b A Yaung",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mahirah Izzati Ismail",
+     "dismissal": "lbw b D A L Paramitha",
+     "runs": 0,
+     "balls": 2,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Mas Elysa",
+     "dismissal": "runout (Desi Wulandari)",
+     "runs": 17,
+     "balls": 11,
+     "fours": 2,
+     "sixes": 0
+    },
+    {
+     "name": "Nurin Imanina",
+     "dismissal": "b Ni Ariani",
+     "runs": 18,
+     "balls": 28,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Nur Arianna Natsya",
+     "dismissal": "b NL Dewi",
+     "runs": 8,
+     "balls": 13,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Nur Dania Syuhada",
+     "dismissal": "not out",
+     "runs": 7,
+     "balls": 7,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Suabika Manivannan",
+     "dismissal": "not out",
+     "runs": 8,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Anace Elna Elizabeth Yaung",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 10,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Dara Ahung Laksmi Paramitha",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ni Ariani",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 2,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Sang Maypriani",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 16,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Ni Luh Dewi",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 14,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 1
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Winifred Duraisingam",
+     "score": 2,
+     "over": "0.5"
+    },
+    {
+     "wicket": 2,
+     "batter": "Mahirah Izzati Ismail",
+     "score": 5,
+     "over": "1.4"
+    },
+    {
+     "wicket": 3,
+     "batter": "Ainna Hamizah Hashim",
+     "score": 7,
+     "over": "2.2"
+    },
+    {
+     "wicket": 4,
+     "batter": "Mas Elysa",
+     "score": 37,
+     "over": "6.5"
+    },
+    {
+     "wicket": 5,
+     "batter": "Nurin Imanina",
+     "score": 50,
+     "over": "10.2"
+    },
+    {
+     "wicket": 6,
+     "batter": "Nur Arianna Natsya",
+     "score": 52,
+     "over": "11.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 1,
+    "w": 3,
+    "nb": 0,
+    "p": 0
+   },
+   "powerplay_runs": 31
+  },
+  {
+   "team": "Indonesia Women",
+   "runs": 68,
+   "wickets": 2,
+   "overs": "10.3",
+   "batting": [
+    {
+     "name": "Maria Corazon",
+     "dismissal": "b S Manivannan",
+     "runs": 9,
+     "balls": 10,
+     "fours": 1,
+     "sixes": 0
+    },
+    {
+     "name": "Rahmawati Pangestuti",
+     "dismissal": "c M Elysa b A Eleesa",
+     "runs": 16,
+     "balls": 21,
+     "fours": 0,
+     "sixes": 0
+    },
+    {
+     "name": "Ni Luh Dewi",
+     "dismissal": "not out",
+     "runs": 40,
+     "balls": 26,
+     "fours": 4,
+     "sixes": 0
+    },
+    {
+     "name": "Ni Putu Ayu Nanda Sakarini",
+     "dismissal": "not out",
+     "runs": 2,
+     "balls": 6,
+     "fours": 0,
+     "sixes": 0
+    }
+   ],
+   "bowling": [
+    {
+     "name": "Ainna Hamizah Hashim",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 5,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nur Dania Syuhada",
+     "overs": "3",
+     "maidens": 0,
+     "runs": 15,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Suabika Manivannan",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 20,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Nurin Imanina",
+     "overs": "2",
+     "maidens": 0,
+     "runs": 11,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 1
+    },
+    {
+     "name": "Aina Umaira Binti Amin",
+     "overs": "1",
+     "maidens": 0,
+     "runs": 4,
+     "wickets": 0,
+     "no_balls": 0,
+     "wides": 0
+    },
+    {
+     "name": "Aisya Eleesa",
+     "overs": "1.3",
+     "maidens": 0,
+     "runs": 13,
+     "wickets": 1,
+     "no_balls": 0,
+     "wides": 0
+    }
+   ],
+   "fall_of_wickets": [
+    {
+     "wicket": 1,
+     "batter": "Maria Corazon",
+     "score": 16,
+     "over": "2.6"
+    },
+    {
+     "wicket": 2,
+     "batter": "Rahmawati Pangestuti",
+     "score": 52,
+     "over": "8.1"
+    }
+   ],
+   "extras": {
+    "b": 0,
+    "lb": 0,
+    "w": 1,
+    "nb": 0,
+    "p": 0
+   }
+  }
+ ]
+}
