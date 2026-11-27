@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.35",
+  "date": "2026-11-27",
+  "notes": [
+   "Pro tab previews without blur: the top of each section stays clear, then fades out"
+  ]
+ },
+ {
   "version": "0.3.34",
   "date": "2026-11-27",
   "notes": [
