@@ -59,8 +59,7 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
   const copy = (COPY[section] ?? FALLBACK)(doc);
   const box = useRef<HTMLDivElement>(null);
   // Only what fits on the screen when the tab opens. Every section shows its top 20% clear (real figures: the teaser
-  // keeps the players that open each section real), then blurs harder and fades from full to no visibility at its
-  // bottom. Hidden players become soft bars (their figures removed). The offer covers the middle 60%.
+  // keeps the players that open each section real), then blurs lightly and fades into the page colour inside its frame. Hidden players become soft bars (their figures removed). The offer covers the middle 60%.
   useLayoutEffect(() => {
     const root = box.current?.querySelector<HTMLElement>(".tl-content");
     if (!root) return;
@@ -87,11 +86,13 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
         c.classList.add("tl-sec");
         if (!c.querySelector(":scope > .tl-blur")) {
           // the blur is set here, not in globals.css: the CSS build drops backdrop-filter from those rules
-          for (const [k, px] of [["tl-b1", 1.5], ["tl-b2", 4], ["tl-b3", 10]] as const) {
+          for (const [k, px] of [["tl-b1", 1.5], ["tl-b2", 3.5], ["tl-fade", 0]] as const) {
             const d = document.createElement("div");
             d.className = `tl-blur ${k}`;
-            d.style.setProperty("backdrop-filter", `blur(${px}px)`);
-            d.style.setProperty("-webkit-backdrop-filter", `blur(${px}px)`);
+            if (px) {
+              d.style.setProperty("backdrop-filter", `blur(${px}px)`);
+              d.style.setProperty("-webkit-backdrop-filter", `blur(${px}px)`);
+            }
             c.appendChild(d);
           }
         }
