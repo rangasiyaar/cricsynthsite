@@ -45,6 +45,8 @@ const COPY: Record<string, (d: MatchDoc) => Copy> = {
 const FALLBACK = (d: MatchDoc): Copy => ({ head: `Unlock the full match centre for ${vs(d)}`,
   line: "Every tab for every match we cover, plus MatchSynth Lab.", points: PRO_HIGHLIGHTS.slice(0, 3) });
 
+/** Phones: the length of the preview before the offer (the offer starts 120px above its end). */
+const PHONE_H = 600;
 // Headings, column titles, tabs and chart axes keep their numbers ("by over 10", "50+").
 const FIXED = "h2, h3, h4, th, thead, button, [role=tab], svg, .cs-k, .card-head";
 /** A number in [0, 1) from a string: the same string gives the same number. */
@@ -120,8 +122,11 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
     // the height on screen below the tab bar when the tab opened (a sensible height when it opens further down)
     if (box.current) {
       const top = box.current.getBoundingClientRect().top;
-      const h = top > 0 && top < window.innerHeight - 320 ? window.innerHeight - top - 12 : app ? 560 : 640;
-      box.current.style.setProperty("--tl-h", `${Math.round(Math.max(380, Math.min(h, 900)))}px`);
+      // phones: one fixed length on every tab, whatever the scroll, so the offer always starts at the same place
+      // below the tab bar, after the clear tops (PHONE_H; the offer overlaps only the faded bottom)
+      const phone = window.matchMedia("(max-width: 640px)").matches;
+      const h = phone ? PHONE_H : top > 0 && top < window.innerHeight - 320 ? window.innerHeight - top - 12 : 640;
+      box.current.style.setProperty("--tl-h", `${Math.round(phone ? h : Math.max(380, Math.min(h, 900)))}px`);
     };
     shape();
     const watch = { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] };

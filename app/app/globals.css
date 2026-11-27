@@ -861,5 +861,8 @@ body:has(.cs-consent) .app-promo { display: none; }
   .tl-card { width: 100%; min-width: 0; padding: 22px 18px 18px; min-height: 0; }
   .tl-card h3 { font-size: 1.15rem; }
   .tl-list { display: none; }
-  .tl-over { align-items: flex-end; padding-bottom: 12px; }   /* keep the clear top of the section in view */
+  /* phones: a fixed length of preview (--tl-h from TeaserLock), then the offer, overlapping only its faded end */
+  .tl { height: auto; }
+  .tl-over { position: relative; inset: auto; margin-top: -120px; padding: 0; }
+  .tl-sec { max-height: 400px; }
 }
