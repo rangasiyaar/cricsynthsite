@@ -1,5 +1,12 @@
 [
  {
+  "version": "0.3.32",
+  "date": "2026-11-27",
+  "notes": [
+   "Pay for CricSynthesis Pro with UPI: GPay, PhonePe, Paytm and other UPI apps now show in the payment window"
+  ]
+ },
+ {
   "version": "0.3.31",
   "date": "2026-11-25",
   "notes": [
