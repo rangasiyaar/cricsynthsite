@@ -79,6 +79,10 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
         else pill.parentElement?.parentElement?.classList.add("tl-soft");
       }
       const cards = [...root.querySelectorAll<HTMLElement>(".card")].filter((c) => !c.parentElement?.closest(".card"));
+      // React can reuse a box (a loading placeholder that becomes the tab's layout): drop layers and marks left on
+      // anything that is no longer a top-level section, or they blur the whole tab
+      for (const b of root.querySelectorAll<HTMLElement>(".tl-blur")) if (!cards.includes(b.parentElement as HTMLElement)) b.remove();
+      for (const e of root.querySelectorAll<HTMLElement>(".tl-sec")) if (!cards.includes(e)) e.classList.remove("tl-sec");
       cards.forEach((c) => {
         c.classList.add("tl-sec");
         if (!c.querySelector(":scope > .tl-blur")) {
@@ -100,8 +104,9 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
       box.current.style.setProperty("--tl-h", `${Math.round(Math.max(380, Math.min(h, 900)))}px`);
     };
     shape();
-    const mo = new MutationObserver(() => { mo.disconnect(); shape(); mo.observe(root, { childList: true, subtree: true }); });
-    mo.observe(root, { childList: true, subtree: true });
+    const watch = { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] };
+    const mo = new MutationObserver(() => { mo.disconnect(); shape(); mo.observe(root, watch); });
+    mo.observe(root, watch);
     return () => mo.disconnect();
   }, [children, app]);
   return (

@@ -831,13 +831,14 @@ body:has(.cs-consent) .app-promo { display: none; }
 /* each section on screen: its top 20% clear and real, then blurring harder and fading from full to no visibility at the bottom */
 .tl-sec { max-height: var(--tl-h); overflow: hidden;
   -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 20%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 20%, transparent 100%); }
-.tl-blur { position: absolute; inset: 0; pointer-events: none; z-index: 2; border-radius: inherit; }
-.tl-b1 {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 34%); mask-image: linear-gradient(to bottom, transparent 20%, #000 34%); }
-.tl-b2 {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 50%); mask-image: linear-gradient(to bottom, transparent 30%, #000 50%); }
-.tl-b3 {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 45%, #000 65%); mask-image: linear-gradient(to bottom, transparent 45%, #000 65%); }
+.tl-blur { position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 2; border-radius: 0 0 inherit inherit; }
+/* the blur layers start below each section's clear top 20% */
+.tl-b1 { top: 20%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%); mask-image: linear-gradient(to bottom, transparent 0, #000 18%); }
+.tl-b2 { top: 30%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%); mask-image: linear-gradient(to bottom, transparent 0, #000 28%); }
+.tl-b3 { top: 45%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 36%); mask-image: linear-gradient(to bottom, transparent 0, #000 36%); }
 .tl-pill { display: inline-block; width: 7.5em; max-width: 100%; height: .8em; border-radius: 999px; background: rgba(128, 128, 128, .38); vertical-align: middle; }
 .tl-hide, .tl-hide * { color: transparent !important; }
 .tl-hide svg, .tl-hide [style*="background"], .tl-hide rect, .tl-hide line, .tl-hide circle, .tl-hide path { opacity: 0 !important; }
