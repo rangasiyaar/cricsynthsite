@@ -823,18 +823,21 @@ body:has(.cs-consent) .app-promo { display: none; }
 .pro-why textarea { width: 100%; margin-top: 6px; font: inherit; padding: 8px 10px; border: 1px solid var(--cs-line); border-radius: 8px; background: transparent; color: inherit; resize: vertical; }
 
 /* A Pro tab without Pro (components/TeaserLock.tsx): what fits on screen when the tab opens; hidden players as soft
-   bars, later cards as titled skeletons; each card blurred lightly at the top and fully from halfway down; the offer
-   over the middle 60% */
+   bars; every section on screen clear for its top 20%, then blurred and faded out to the bottom; the offer over the
+   middle 60% */
 .tl { position: relative; margin-top: 8px; --tl-h: 640px; height: var(--tl-h); }
 .tl-content { height: var(--tl-h); overflow: hidden; pointer-events: none; user-select: none; position: relative; }
 .tl-content .card { position: relative; }
+/* each section on screen: its top 20% clear and real, then blurring harder and fading from full to no visibility at the bottom */
+.tl-sec { max-height: var(--tl-h); overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 20%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0, #000 20%, transparent 100%); }
 .tl-blur { position: absolute; inset: 0; pointer-events: none; z-index: 2; border-radius: inherit; }
 .tl-b1 {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%); mask-image: linear-gradient(to bottom, transparent 0, #000 18%); }
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 34%); mask-image: linear-gradient(to bottom, transparent 20%, #000 34%); }
 .tl-b2 {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 15%, #000 35%); mask-image: linear-gradient(to bottom, transparent 15%, #000 35%); }
-.tl-b3 { background: color-mix(in srgb, var(--cs-bg) 18%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 52%); mask-image: linear-gradient(to bottom, transparent 30%, #000 52%); }
+  -webkit-mask-image: linear-gradient(to bottom, transparent 30%, #000 50%); mask-image: linear-gradient(to bottom, transparent 30%, #000 50%); }
+.tl-b3 {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 45%, #000 65%); mask-image: linear-gradient(to bottom, transparent 45%, #000 65%); }
 .tl-pill { display: inline-block; width: 7.5em; max-width: 100%; height: .8em; border-radius: 999px; background: rgba(128, 128, 128, .38); vertical-align: middle; }
 .tl-hide, .tl-hide * { color: transparent !important; }
 .tl-hide svg, .tl-hide [style*="background"], .tl-hide rect, .tl-hide line, .tl-hide circle, .tl-hide path { opacity: 0 !important; }
@@ -842,10 +845,6 @@ body:has(.cs-consent) .app-promo { display: none; }
   background-size: 3.2em .7em; background-repeat: no-repeat; background-position: right center; }
 .tl-soft { color: transparent !important; }
 .tl-soft :not(svg):not(svg *):not(.tl-pill) { color: transparent !important; }
-.tl-stub > :not(.card-head):not(h2):not(h3):not(.tl-blur) { visibility: hidden; }
-.tl-stub .card-head > :not(h3):not(h2) { visibility: hidden; }
-.tl-stub { max-height: 320px; overflow: hidden; background-image: repeating-linear-gradient(to bottom, rgba(128, 128, 128, .22) 0 12px, transparent 12px 30px);
-  background-repeat: no-repeat; background-size: calc(100% - 48px) 200px; background-position: 24px 80px; }
 .tl-over { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; padding: 0 16px; pointer-events: none; }
 .tl-card { pointer-events: auto; width: 60%; min-width: 320px; max-width: 760px; min-height: 60%; display: flex; flex-direction: column; justify-content: center;
   background: var(--cs-card, var(--cs-bg)); border: 1px solid var(--cs-line); border-radius: 16px; padding: 28px 32px 22px;
@@ -865,5 +864,6 @@ body:has(.cs-consent) .app-promo { display: none; }
 @media (max-width: 640px) {
   .tl-card { width: 100%; min-width: 0; padding: 22px 18px 18px; min-height: 0; }
   .tl-card h3 { font-size: 1.15rem; }
-  .tl-list { gap: 6px; margin-bottom: 14px; font-size: .95rem; }
+  .tl-list { display: none; }
+  .tl-over { align-items: flex-end; padding-bottom: 12px; }   /* keep the clear top of the section in view */
 }

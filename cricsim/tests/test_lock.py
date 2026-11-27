@@ -72,17 +72,18 @@ def test_teaser_shows_a_share_and_hides_the_rest():
     d = doc()
     pub = L.lock_match(d, SECRET)
     text = json.dumps(pub["teaser"])
-    # 2 of 11 players per side stay real (15%, rounded up); the other names and ids appear nowhere
-    for side in "AB":
-        assert f"{side} Player 0" in text and f"{side} Player 1" in text
-        for i in range(2, 11):
-            assert f'"{side}{i}"' not in text, f"{side}{i}"
-    for i in range(2, 11):
-        assert f'"B Player {i}"' not in text
+    real = L._real_players(d["summary"], d["fantasy"])
+    everyone = [p for t in d["summary"]["teams"] for p in t["players"]]
+    assert 0 < len(real) < len(everyone)                              # the players that open each section, not all
+    for p in everyone:
+        if p["id"] in real:
+            assert p["name"] in text
+        else:
+            assert f'"{p["id"]}"' not in text and f'"{p["name"]}"' not in text, p["id"]
     tt = pub["teaser"]["summary"]["teams"][0]
-    assert [p["name"] for p in tt["players"][2:]] == [L.MASK] * 9
-    assert sorted(p["batting"]["runs"]["mean"] for p in tt["players"][2:]) == sorted(50 - i * 3 for i in range(2, 11))  # real spread, shuffled
-    assert len(tt["batting"]["fan"]) == 20 and tt["batting"]["fan"][:3] == d["summary"]["teams"][0]["batting"]["fan"][:3]
+    hidden = [p for p in tt["players"] if p["name"] == L.MASK]
+    assert hidden and all(p["id"].startswith("x") for p in hidden)
+    assert tt["batting"] == d["summary"]["teams"][0]["batting"]        # team figures stay real
 
 
 def test_finished_matches_stay_open(tmp_path):

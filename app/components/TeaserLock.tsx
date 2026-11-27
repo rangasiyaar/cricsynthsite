@@ -1,8 +1,7 @@
 "use client";
 // A Pro tab opened without Pro, shown in place on the match (website and app): the tab drawn from the masked teaser
-// (lib/unlock.ts teaserDoc: about 15% real). Its first card stays (hidden players as soft bars, their figures removed),
-// the other cards show only their titles over a skeleton, the offer sits just below the first card, and there's an
-// easy way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
+// (lib/unlock.ts teaserDoc: the players that open each section real, the rest masked). Each section on screen shows its
+// top 20% clear, then blurs and fades out; the offer sits over the middle, and there's an easy way back to the Overview. Counts each view (paywall_view) and each tap on the offer (pro_cta, source paywall).
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { loginHref } from "@/components/Gate";
@@ -36,9 +35,9 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
   const btn = app ? "a-btn" : "btn";
   const title = `${label} · ${doc.match.teams.map((t) => t.short).join(" v ")}`;
   const box = useRef<HTMLDivElement>(null);
-  // Only what fits on the screen when the tab opens. Hidden players become soft bars (their figures removed); cards
-  // after the first show only their title over a skeleton, so no shuffled number is on screen; every card gets a blur
-  // that is light at the top and full by halfway down. The offer covers the middle 60%.
+  // Only what fits on the screen when the tab opens. Every section shows its top 20% clear (real figures: the teaser
+  // keeps the players that open each section real), then blurs harder and fades from full to no visibility at its
+  // bottom. Hidden players become soft bars (their figures removed). The offer covers the middle 60%.
   useLayoutEffect(() => {
     const root = box.current?.querySelector<HTMLElement>(".tl-content");
     if (!root) return;
@@ -57,8 +56,8 @@ export default function TeaserLock({ doc, section, label, children, onBack, back
         else pill.parentElement?.parentElement?.classList.add("tl-soft");
       }
       const cards = [...root.querySelectorAll<HTMLElement>(".card")].filter((c) => !c.parentElement?.closest(".card"));
-      cards.forEach((c, i) => {
-        c.classList.toggle("tl-stub", i > 0);
+      cards.forEach((c) => {
+        c.classList.add("tl-sec");
         if (!c.querySelector(":scope > .tl-blur")) {
           // the blur is set here, not in globals.css: the CSS build drops backdrop-filter from those rules
           for (const [k, px] of [["tl-b1", 1.5], ["tl-b2", 4], ["tl-b3", 10]] as const) {

@@ -29,7 +29,7 @@ from pathlib import Path
 
 import click
 
-TEASER_SHARE = 0.15
+TEASER_SHARE = 0.20
 MASK = "████████"
 NAME_KEYS = ("name",)
 
@@ -179,17 +179,46 @@ def _rename(o, ids: dict, names: set):
     return o
 
 
+def _real_players(s: dict, f: dict | None) -> set:
+    """The players whose figures the teaser keeps real: those that open the top of each Pro section (the top 20% of
+    each card is shown clear). Batting order's first, the leading run-scorers and wicket-takers (the Top players
+    and MVP rankings), the batters and bowlers in the leading match-ups, and the fantasy captain, vice-captain,
+    keeper and leading batters (the top of the pitch)."""
+    real: set = set()
+    everyone = [p for t in s["teams"] for p in t["players"]]
+    n = max(1, math.ceil(len(everyone) * TEASER_SHARE))                # about 20% of the players in each ranking
+    runs = lambda p: ((p.get("batting") or {}).get("runs") or {}).get("mean") or 0           # noqa: E731
+    wkts = lambda p: ((p.get("bowling") or {}).get("wickets") or {}).get("mean") or 0        # noqa: E731
+    for t in s["teams"]:
+        real |= {p["id"] for p in t["players"][:_n_real(len(t["players"]))]}                  # batting order's first
+    real |= {p["id"] for p in sorted(everyone, key=runs, reverse=True)[:n]}
+    real |= {p["id"] for p in sorted([p for p in everyone if ((p.get("bowling") or {}).get("p_bowls") or 0) > 0.5], key=wkts, reverse=True)[:n]}
+    real |= {p["id"] for p in sorted(everyone, key=lambda p: runs(p) + 20 * wkts(p), reverse=True)[:n]}
+    for m in (s.get("matchups") or [])[:_n_real(len(s.get("matchups") or []))]:
+        real |= {m.get("batter"), m.get("bowler")}
+    if f:
+        single = f.get("single") or {}
+        fp = f.get("players") or {}
+        real |= {single.get("captain"), single.get("vice_captain")}
+        real |= {i for i in single.get("players", []) if (fp.get(i) or {}).get("role") == "WK"}
+        bats = [i for i in single.get("players", []) if (fp.get(i) or {}).get("role") == "BAT"]
+        real |= set(sorted(bats, key=lambda i: (fp.get(i) or {}).get("expected") or 0, reverse=True)[:3])
+    real.discard(None)
+    return real
+
+
 def teaser(doc: dict, seed: str) -> dict:
-    """{summary, fantasy} with TEASER_SHARE of players (per team) and of every list real, the rest masked."""
+    """{summary, fantasy}: the players that open each Pro section real (_real_players), everyone else with a hidden
+    name and id and shuffled numbers; team-level figures real (the Overview shows most of them already)."""
     rng = random.Random(seed)
     s = copy.deepcopy(doc["summary"])
     f = copy.deepcopy(doc.get("fantasy"))
+    real = _real_players(s, f)
     ids: dict = {}
     names: set = set()
     n = 0
     for t in s["teams"]:
-        keep = _n_real(len(t["players"]))
-        masked = t["players"][keep:]
+        masked = [p for p in t["players"] if p["id"] not in real]
         for p in masked:
             n += 1
             ids[p["id"]] = f"x{n:02d}"
@@ -197,36 +226,28 @@ def teaser(doc: dict, seed: str) -> dict:
                 names.add(p["name"])
             p["name"] = MASK                 # profile kept: its numbers are shuffled with the rest below
         _shuffle_numbers(masked, rng)
-        b = t["batting"]
-        # team totals stay real (the Scores tab's first card; the Overview shows the same ranges). The rest of a team's
-        # figures are only ever drawn under the teaser's skeleton cards, so shuffling them shows nothing on screen
-        for k in ("wickets", "balls", "by_innings", "fan", "extras", "fall_of_wickets"):
-            if k in b:
-                b[k] = _scramble_tail(b[k], rng)
-    s["matchups"] = _scramble_tail(s.get("matchups") or [], rng)
+    m_list = s.get("matchups") or []
+    k = _n_real(len(m_list))
+    tail = m_list[k:]
+    _shuffle_numbers(tail, rng)
+    s["matchups"] = m_list[:k] + tail
     if f:
-        single_ids = list(f.get("players") or {})
-        keep = set(single_ids[:_n_real(len(single_ids))])
-        others = [i for i in single_ids if i not in keep]
+        fp = f.get("players") or {}
+        others = [i for i in fp if i not in real]
         for i in others:
             if i not in ids:
                 n += 1
                 ids[i] = f"x{n:02d}"
-            nm = f["players"][i].get("name")
+            nm = fp[i].get("name")
             if nm:
                 names.add(nm)
-            f["players"][i]["name"] = MASK
-        _shuffle_numbers([f["players"][i] for i in others], rng)
-        pool = list(f["players"])
+            fp[i]["name"] = MASK
+        _shuffle_numbers([fp[i] for i in others], rng)
+        pool = list(fp)
         for team in (f.get("teams") or [])[_n_real(len(f.get("teams") or [])):]:
             if isinstance(team, dict) and team.get("players"):
                 team["players"] = rng.sample(pool, min(len(team["players"]), len(pool)))
                 team["captain"], team["vice_captain"] = team["players"][0], team["players"][1]
-        single = f.get("single") or {}
-        if single.get("players"):
-            real = [i for i in single["players"] if i in keep]
-            single["players"] = real + rng.sample([i for i in pool if i not in real], len(single["players"]) - len(real))
-            single["captain"], single["vice_captain"] = single["players"][0], single["players"][1]
     # names and ids of masked players disappear everywhere (dismissed_by, fall of wickets, matchups, fantasy lists)
     real_names = {p["name"] for t in s["teams"] for p in t["players"] if p.get("name") and p["name"] != MASK}
     names -= real_names
