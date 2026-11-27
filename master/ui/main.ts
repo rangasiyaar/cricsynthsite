@@ -690,8 +690,11 @@ const WHERE: Record<string, string> = { web: "Website", app: "App", unknown: "No
 const KIND: Record<string, [string, "bad" | "warn" | "plain" | "info"]> = {
   failed: ["Payment failed", "bad"], error: ["Checkout error", "warn"], closed: ["Closed without paying", "plain"],
   "renewal failed": ["Renewal failed", "bad"], halted: ["Renewals stopped", "bad"] };
+const WHY: Record<string, string> = { price: "It costs too much", "not-using": "Don't use it enough", "season-over": "Their cricket is over for now",
+  "not-useful": "Forecasts weren't useful", technical: "Something didn't work", other: "Something else" };
 const STATUS_NAME: Record<string, string> = { created: "Checkout started", trial: "On the free day", active: "Paying", past_due: "Payment overdue",
   halted: "Halted", cancelled: "Cancelled", paused: "Paused", ended: "Ended" };
+const statusName = (r: Row) => (r.status === "paused" ? (r.pausedByUs ? "Paused for a month" : "Autopay paused") : STATUS_NAME[r.status] || r.status || "–");
 async function payments(filter = "") {
   const [p, s] = await Promise.all([api("/api/payments"), snapshot()]);
   const email = new Map((s.users as Row[]).map((u) => [u.uid, u.email]));
@@ -738,6 +741,14 @@ async function payments(filter = "") {
     <h2 class="sec">Every attempt (30 days)</h2>${note("Newest first. Click a row to open the account.")}
     <p class="msg-tabs">${tab("", `All (${E.length})`)} ${tab("failures", `Failures (${failTotal})`)} ${tab("web", "Website")} ${tab("app", "App")}</p>
     <div id="ev"></div>
+    <div class="grid2">
+      <section class="card"><h2>Why people cancel</h2>${note("The exit survey's answer when cancelling (optional for the customer).")}${ranked(Object.entries(S.filter((x) => x.cancelReason)
+        .reduce((m: Record<string, number>, x) => { const k = WHY[x.cancelReason] || x.cancelReason; m[k] = (m[k] || 0) + 1; return m; }, {}))
+        .map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value))}
+        ${S.filter((x) => x.cancelNote).slice(0, 8).map((x) => `<p class="muted">“${esc(x.cancelNote)}” <small>${userLink(x.uid, email.get(x.uid) || null)}</small></p>`).join("")}</section>
+      <section class="card"><h2>Paused for a month</h2>${note("Paying customers who chose to pause instead of cancelling, and when they restart.")}
+        <div id="paused"></div></section>
+    </div>
     <section class="card" style="margin-top:16px"><h2>Subscriptions</h2>${note("Every Pro subscription by status, with where it started.")}<div id="subs"></div></section>`;
   table($("#src")!, [{ key: "w", label: "", render: (r) => esc(WHERE[r.w]) },
     { key: "paying", label: "Paying", num: true }, { key: "trial", label: "Free day", num: true }, { key: "overdue", label: "Overdue", num: true },
@@ -759,12 +770,16 @@ async function payments(filter = "") {
     { key: "paymentId", label: "Payment", render: (r) => (r.paymentId ? `<code>${esc(r.paymentId)}</code>` : "–") }],
     show, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "at", desc: true }, limit: 100, empty: "Nothing recorded in the last 30 days." });
   table($("#subs")!, [{ key: "uid", label: "Account", render: (r) => userLink(r.uid, email.get(r.uid) || null) },
-    { key: "status", label: "Status", render: (r) => esc(STATUS_NAME[r.status] || r.status || "–") },
+    { key: "status", label: "Status", render: (r) => esc(statusName(r)) },
     { key: "source", label: "Started on", render: (r) => esc(WHERE[r.source || "unknown"]) },
     { key: "billing", label: "Plan", render: (r) => esc(r.billing || "–") },
     { key: "proUntil", label: "Pro until", render: (r) => day(r.proUntil) },
+    { key: "cancelReason", label: "Why cancelled", render: (r) => esc(r.cancelReason ? WHY[r.cancelReason] || r.cancelReason : "–") },
     { key: "updated", label: "Last change", render: (r) => ago(r.updated) }],
     S, { rowHref: (r) => `/user/${r.uid}`, initial: { key: "updated", desc: true }, empty: "No subscriptions yet." });
+  table($("#paused")!, [{ key: "uid", label: "Account", render: (r) => userLink(r.uid, email.get(r.uid) || null) },
+    { key: "proUntil", label: "Pro until", render: (r) => day(r.proUntil) }, { key: "resumeOn", label: "Restarts", render: (r) => day(r.resumeOn) }],
+    S.filter((x) => x.status === "paused" && x.pausedByUs), { empty: "Nobody has paused." });
   wireRefresh();
 }
 

@@ -31,8 +31,10 @@ function world() {
         subs.set(s.id, s);
         return s;
       }
-      const m = path.match(/^\/subscriptions\/([^/]+)(\/cancel)?$/);
+      const m = path.match(/^\/subscriptions\/([^/]+)(\/cancel|\/pause|\/resume)?$/);
       if (m && method === "GET") return subs.get(m[1]);
+      if (m && m[2] === "/pause") { const s = subs.get(m[1]); if (s.noPause) throw new Error("400 pause not supported"); s.status = "paused"; return s; }
+      if (m && m[2] === "/resume") { const s = subs.get(m[1]); s.status = "active"; return s; }
       if (m && m[2]) {
         const s = subs.get(m[1]);
         if (!body.cancel_at_cycle_end) s.status = "cancelled";
@@ -242,4 +244,104 @@ test("a failed renewal is logged once, with where the subscription started", asy
   await B.webhook(w.deps, halted, await B.hmacHex("whs", halted));
   const events = w.docs.get("paymentEvents/u1_2026-11-18")!.events as B.Rec[];
   assert.deepEqual(events.map((e) => [e.kind, e.where]), [["renewal failed", "web"], ["halted", "web"]]);
+});
+
+// ── keeping customers: paused autopay, first-charge failures, reminders, unfinished checkouts, exit survey, pause ──
+const hook = async (w: ReturnType<typeof world>, sub: any) => {
+  const raw = JSON.stringify({ event: "subscription.updated", payload: { subscription: { entity: { ...sub } } } });
+  return B.webhook(w.deps, raw, await B.hmacHex("whs", raw));
+};
+async function paying(w: ReturnType<typeof world>, paid = 1) {
+  const r = await B.checkout(w.deps, user, { billing: "monthly" });
+  const s = w.subs.get(r.subscription_id);
+  Object.assign(s, { status: "active", paid_count: paid, start_at: S0 + 86400, current_end: S0 + 31 * 86400 });
+  await hook(w, s);
+  return s;
+}
+
+test("autopay paused in the UPI app: one email; our own pause doesn't send it", async () => {
+  const w = world(), sent: B.Notice[] = [];
+  w.deps.notify = async (_u, n) => { sent.push(n); };
+  const s = await paying(w);
+  sent.length = 0;
+  s.status = "paused";
+  await hook(w, s);
+  await hook(w, s);                                   // a repeated event: no second email
+  assert.deepEqual(sent.map((n) => n.kind), ["paused"]);
+  // resumed in the UPI app, then paused with our own "pause for a month": the pause confirmation only
+  s.status = "active"; await hook(w, s);
+  sent.length = 0;
+  const v = await B.pause(w.deps, "u1");
+  assert.equal(v.status, "paused");
+  await hook(w, s);                                   // Razorpay's webhook for that pause
+  assert.deepEqual(sent.map((n) => n.kind), ["pausedByYou"]);
+  const d = w.docs.get(doc)!;
+  assert.equal(d.pausedByUs, true);
+  assert.equal(Date.parse(String(d.resumeOn)), (S0 + 31 * 86400) * 1000 + B.PAUSE_DAYS * 86400_000);
+  assert.equal(Date.parse(String(d.proUntil)), (S0 + 31 * 86400) * 1000);   // keeps the month already paid for
+});
+
+test("pause: only a paid, renewing plan; a refusal from Razorpay undoes the mark", async () => {
+  const w = world();
+  const s = await paying(w, 0);                       // free day (nothing paid yet)
+  await assert.rejects(B.pause(w.deps, "u1"), /paid plan/);
+  s.paid_count = 1; s.noPause = true; await hook(w, s);
+  await assert.rejects(B.pause(w.deps, "u1"), /isn't available/);
+  assert.equal(w.docs.get(doc)!.pausedByUs, false);
+  assert.equal(w.docs.get(doc)!.status, "active");
+});
+
+test("first charge failed: the first-payment email, logged as a first charge", async () => {
+  const w = world(), sent: B.Notice[] = [];
+  w.deps.notify = async (_u, n) => { sent.push(n); };
+  const s = await paying(w, 0);
+  sent.length = 0;
+  s.status = "pending"; await hook(w, s);
+  assert.equal(sent[0].kind, "failed");
+  assert.equal((sent[0] as any).first, true);
+  const day = w.docs.get(`paymentEvents/u1_${new Date(T0).toISOString().slice(0, 10)}`)!;
+  assert.equal((day.events as B.Rec[]).at(-1)!.step, "first charge");
+});
+
+test("cron: free-day reminder once, unfinished-checkout email once, a month's pause restarts", async () => {
+  const w = world(), sent: [string, B.Notice][] = [];
+  w.deps.notify = async (u, n) => { sent.push([u, n]); };
+  const docs = () => [...w.docs.entries()].filter(([p]) => p.endsWith("/billing/pro")).map(([p, d]) => ({ ...d, uid: p.split("/")[1] }));
+  // a free day ending in 5 hours
+  const r = await B.checkout(w.deps, user, { billing: "monthly" });
+  const s = w.subs.get(r.subscription_id);
+  Object.assign(s, { status: "authenticated", start_at: S0 + 5 * 3600 }); await hook(w, s);
+  sent.length = 0;
+  assert.deepEqual(await B.billingCron(w.deps, docs()), ["u1: free day ending"]);
+  assert.deepEqual(await B.billingCron(w.deps, docs()), []);
+  assert.equal(sent[0][1].kind, "trialEnding");
+  assert.equal((sent[0][1] as any).chargeAt.getTime(), (S0 + 5 * 3600) * 1000);
+  // someone else started a checkout and left: nothing for 2 hours, then one email
+  await B.checkout(w.deps, { uid: "u2", email: "b@example.com" }, { billing: "yearly" });
+  w.tick(3600);
+  assert.ok(!(await B.billingCron(w.deps, docs())).includes("u2: checkout help"));
+  w.tick(2 * 3600);
+  assert.ok((await B.billingCron(w.deps, docs())).includes("u2: checkout help"));
+  assert.ok(!(await B.billingCron(w.deps, docs())).includes("u2: checkout help"));
+  assert.equal(sent.find(([u]) => u === "u2")![1].kind, "checkoutHelp");
+  // a paused plan restarts when its month is up
+  Object.assign(s, { status: "active", paid_count: 1, current_end: S0 + 31 * 86400 }); await hook(w, s);
+  await B.pause(w.deps, "u1");
+  assert.ok(!(await B.billingCron(w.deps, docs())).includes("u1: resumed"));
+  w.tick(62 * 86400);
+  assert.ok((await B.billingCron(w.deps, docs())).includes("u1: resumed"));
+  assert.equal(w.docs.get(doc)!.status, "active");
+  assert.equal(w.docs.get(doc)!.pausedByUs, false);
+});
+
+test("cancel records the exit survey answer", async () => {
+  const w = world();
+  await paying(w);
+  await B.cancel(w.deps, "u1", { reason: "season-over", note: "x".repeat(400) });
+  const d = w.docs.get(doc)!;
+  assert.equal(d.cancelReason, "season-over");
+  assert.equal(String(d.cancelNote).length, 300);
+  assert.equal(d.cancelAtEnd, true);
+  await B.cancel(w.deps, "u1", { reason: "bogus" });
+  assert.equal(w.docs.get(doc)!.cancelReason, "season-over");      // an unknown reason doesn't overwrite
 });

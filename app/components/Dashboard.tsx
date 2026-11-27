@@ -6,10 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 import { ChartFrame, type Column } from "@/components/charts";
 import { proLine } from "@/components/ProOffer";
 import { track } from "@/lib/analytics";
-import { cancelPro, hasPaidPro, useProBilling } from "@/lib/billing";
+import { canPause, cancelPro, hasPaidPro, needsAttention, pausePro, resumePro, useProBilling } from "@/lib/billing";
 import { auth, usePlan } from "@/lib/firebase";
 import { API_TIERS as PLAN_TIERS } from "@/lib/plans";
-import { PRO, rupees } from "@/lib/pro";
+import { CANCEL_REASONS, PRO, rupees } from "@/lib/pro";
 import {
   API_PLANS, cancelRequest, CATEGORIES, createKey, dayKey, deleteAccount, deleteKey, emptyUsage, getProfile, listKeys, listRequests, listUsage,
   renameKey, requestUpgrade, revokeKey, upgradeRequested, saveNotify, saveProfile, SLOTS, VOLUMES,
@@ -315,20 +315,27 @@ function ProPlanCard({ pro, source, setErr }: { pro: boolean; source: string | n
   const paid = hasPaidPro(b);
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const canCancel = paid && !!b && !b.cancelAtEnd && ["trial", "active", "past_due"].includes(b.status);
-  const doCancel = async () => {
+  const [reason, setReason] = useState<string | null>(null);
+  const [note, setNote] = useState("");
+  const attention = needsAttention(b);
+  const canCancel = !!b && !b.cancelAtEnd && (paid || b.status === "paused") && ["trial", "active", "past_due", "paused"].includes(b.status);
+  const run = async (f: () => Promise<unknown>, event: string) => {
     setBusy(true); setErr(null);
-    try { await cancelPro(); track("pro_cancelled", { status: b?.status ?? "" }); setConfirm(false); }
+    try { await f(); track(event, { status: b?.status ?? "", reason: reason ?? "" }); setConfirm(false); }
     catch (x) { setErr(friendly(x)); } finally { setBusy(false); }
   };
-  const label = paid ? (b!.status === "trial" ? "Free day" : b!.cancelAtEnd || b!.status === "cancelled" ? "Ending" : "Active")
+  const doCancel = () => run(() => cancelPro(reason, note), "pro_cancelled");
+  const fmt = (d: Date | null) => d?.toLocaleDateString("en-IN", { day: "numeric", month: "long" }) ?? "";
+  const restartOn = b?.currentEnd ? new Date(b.currentEnd.getTime() + 30 * 86400_000) : null;
+  const label = b?.status === "paused" ? "Paused" : b?.status === "past_due" ? "Payment due" : b?.status === "halted" ? "Stopped"
+    : paid ? (b!.status === "trial" ? "Free day" : b!.cancelAtEnd || b!.status === "cancelled" ? "Ending" : "Active")
     : pro ? "Active" : "Free";
   const price = b?.billing === "yearly" ? `${rupees(PRO.yearly)} a year` : b?.billing === "monthly" ? `${rupees(PRO.monthly)} a month` : null;
   return (
     <div className="card">
       <div className="card-head"><h3>CricSynthesis Pro</h3><span className="tag pro">{label}</span></div>
       <div className="stat dash-stat">{paid || pro ? "Pro" : "Free"}</div>
-      <p className="small">{paid ? proLine(b!)
+      <p className="small">{paid || attention ? proLine(b!)
         : pro ? "Pro is on for your account."
         : "You're on the free plan: the Overview for every match."}</p>
       <dl className="dash-dl">
@@ -340,15 +347,31 @@ function ProPlanCard({ pro, source, setErr }: { pro: boolean; source: string | n
       </dl>
       <div className="card-foot" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
         {paid || pro ? <Link className="btn" href="/matches/">Open a match</Link> : <Link className="btn" href="/pro/">Get CricSynthesis Pro</Link>}
+        {b?.status === "paused" && b.pausedByUs && <button type="button" className="btn ghost" disabled={busy}
+          onClick={() => run(resumePro, "pro_resumed")}>{busy ? "Restarting…" : "Restart now"}</button>}
         {canCancel && !confirm && <button type="button" className="btn ghost" onClick={() => setConfirm(true)}>Cancel plan</button>}
       </div>
       {confirm && (
-        <div className="notice" style={{ marginTop: 14 }}>
-          <p style={{ margin: "0 0 10px" }}>{b!.status === "trial"
+        <div className="notice pro-cancel" style={{ marginTop: 14 }}>
+          {canPause(b) && (
+            <div className="pro-pause">
+              <p style={{ margin: "0 0 8px" }}><b>Taking a break?</b> Pause for a month instead. Pro stays on until {fmt(b!.currentEnd)},
+                nothing is charged while it&apos;s paused, and it restarts on {fmt(restartOn)}.</p>
+              <button type="button" className="btn" onClick={() => run(pausePro, "pro_paused")} disabled={busy}>{busy ? "Pausing…" : "Pause for a month"}</button>
+            </div>
+          )}
+          <p style={{ margin: "14px 0 8px" }}>{b!.status === "trial"
             ? "Cancel your free day? You won't be charged, and Pro stays on until the free day ends."
             : "Cancel CricSynthesis Pro? You keep Pro until the end of the period you've paid for, and it won't renew."}</p>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <button type="button" className="btn" onClick={doCancel} disabled={busy}>{busy ? "Cancelling…" : "Yes, cancel"}</button>
+          <fieldset className="pro-why">
+            <legend>Why are you leaving? (optional)</legend>
+            {CANCEL_REASONS.map(([id, label]) => (
+              <label key={id}><input type="radio" name="cancel-reason" value={id} checked={reason === id} onChange={() => setReason(id)} /> {label}</label>
+            ))}
+            <textarea rows={2} maxLength={300} placeholder="Anything we could do better? (optional)" value={note} onChange={(e) => setNote(e.target.value)} aria-label="Anything we could do better" />
+          </fieldset>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 }}>
+            <button type="button" className="btn ghost" onClick={doCancel} disabled={busy}>{busy ? "Cancelling…" : "Cancel plan"}</button>
             <button type="button" className="btn ghost" onClick={() => setConfirm(false)} disabled={busy}>Keep Pro</button>
           </div>
         </div>

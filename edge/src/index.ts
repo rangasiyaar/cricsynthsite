@@ -231,6 +231,36 @@ async function form(req: Request, env: Env, path: string): Promise<Response> {
 }
 
 /** CricSynthesis Pro billing (billing.ts): the website's checkout with a Firebase ID token, and Razorpay's webhook. */
+/** The billing flow's emails. The unfinished-checkout email follows the account's "Plan reminders" switch (notifyBilling). */
+function billingNotify(env: Env) {
+  return (uid: string, n: B.Notice) => mail(env, uid, (name) => {
+    switch (n.kind) {
+      case "started": return E.proStarted({ name, ...n });
+      case "cancelled": return E.proCancelled({ name, ...n });
+      case "failed": return E.paymentFailed({ name, ...n });
+      case "paused": return E.autopayPaused({ name, ...n });
+      case "pausedByYou": return E.proPaused({ name, ...n });
+      case "trialEnding": return E.trialEnding({ name, ...n });
+      case "checkoutHelp": return E.checkoutHelp({ name, ...n });
+    }
+  }, undefined, n.kind === "checkoutHelp" ? "notifyBilling" : undefined);
+}
+
+/** The scheduled billing jobs (wrangler.toml [triggers]): reminders, unfinished checkouts, restarting paused plans. */
+export async function billingScheduled(env: Env) {
+  if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return [];
+  const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
+  const docs = (await fs.groupDocs("billing")).filter((d) => d._id === "pro").map((d) => ({ ...d, uid: String(d._path).split("/")[1] }));
+  const deps: B.Deps = {
+    keyId: env.RAZORPAY_KEY_ID, keySecret: env.RAZORPAY_KEY_SECRET,
+    store: { get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) },
+    rzp: B.razorpay(env.RAZORPAY_KEY_ID, env.RAZORPAY_KEY_SECRET), now: () => Date.now(), notify: billingNotify(env),
+  };
+  const done = await B.billingCron(deps, docs);
+  if (done.length) console.log("billing cron", JSON.stringify(done));
+  return done;
+}
+
 async function billing(req: Request, env: Env, path: string): Promise<Response> {
   if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET || !env.GOOGLE_SA) return fail(req, env, 503, "Payments aren't available yet");
   const fs = new Firestore(env.GOOGLE_SA, env.FIRESTORE_PROJECT);
@@ -238,8 +268,7 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
     keyId: env.RAZORPAY_KEY_ID, keySecret: env.RAZORPAY_KEY_SECRET, webhookSecret: env.RAZORPAY_WEBHOOK_SECRET,
     store: { get: (p) => fs.getDoc(p), set: (p, f) => fs.setFields(p, f) },
     rzp: B.razorpay(env.RAZORPAY_KEY_ID, env.RAZORPAY_KEY_SECRET), now: () => Date.now(),
-    notify: (uid, n) => mail(env, uid, (name) => n.kind === "started" ? E.proStarted({ name, ...n })
-      : n.kind === "cancelled" ? E.proCancelled({ name, ...n }) : E.paymentFailed({ name, ...n })),
+    notify: billingNotify(env),
   };
   try {
     if (path === "/billing/webhook" && req.method === "POST") {
@@ -263,7 +292,9 @@ async function billing(req: Request, env: Env, path: string): Promise<Response> 
       return json(req, env, await B.checkout(deps, user, body));
     }
     if (path === "/billing/verify" && req.method === "POST") return json(req, env, await B.verify(deps, user.uid, body));
-    if (path === "/billing/cancel" && req.method === "POST") return json(req, env, await B.cancel(deps, user.uid));
+    if (path === "/billing/cancel" && req.method === "POST") return json(req, env, await B.cancel(deps, user.uid, body));
+    if (path === "/billing/pause" && req.method === "POST") return json(req, env, await B.pause(deps, user.uid));
+    if (path === "/billing/resume" && req.method === "POST") return json(req, env, await B.resume(deps, user.uid));
     if (path === "/billing/attempt" && req.method === "POST") return json(req, env, await B.attempt(deps, user.uid, body, req.headers.get("User-Agent")));
     return fail(req, env, 404, "Not found");
   } catch (e) {
@@ -381,5 +412,8 @@ export default {
       console.error(e);
       return fail(req, env, 500, "Something went wrong");
     }
+  },
+  async scheduled(_c: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
+    ctx.waitUntil(billingScheduled(env).then(() => undefined, (e) => console.error("billing cron", (e as Error).message)));
   },
 } satisfies ExportedHandler<Env>;

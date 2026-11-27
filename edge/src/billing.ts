@@ -3,12 +3,17 @@
 //
 //   POST /billing/checkout {billing}   (signed in, 18+)  → a Razorpay subscription for the website's checkout
 //   POST /billing/verify   {razorpay_*}                  → checks the checkout's signature, turns Pro on straight away
-//   POST /billing/cancel                                 → cancels at the end of the paid period (a free day: at once,
-//                                                          keeping Pro until it ends)
+//   POST /billing/cancel   {reason?, note?}              → cancels at the end of the paid period (a free day: at once,
+//                                                          keeping Pro until it ends), with the exit survey's answer
+//   POST /billing/pause                                  → a paying plan skips a month: Pro runs to the end of the paid
+//                                                          period, then restarts 30 days later (billingCron resumes it)
+//   POST /billing/resume                                 → restart a paused plan now
 //   GET  /billing/status                                 → the account's Pro billing (refreshed from Razorpay when stale)
 //   POST /billing/attempt  {kind, where, …}              → the checkout page reports a failed payment, an error before
 //                                                          the payment window or a closed window (for the console)
 //   POST /billing/webhook                                → Razorpay events (signed with RAZORPAY_WEBHOOK_SECRET)
+// billingCron (the Worker's scheduled run, every 3 hours): the free-day-ending reminder, the "having trouble paying?"
+// email after an unfinished checkout, and restarting plans paused for a month.
 //
 // The result lives in Firestore users/{uid}/billing/pro, written only here; the website and app read it (rules allow
 // the owner to read) and treat Pro as on while proUntil is in the future. Missed renewals get 3 days' grace.
@@ -37,7 +42,11 @@ export interface Store {
 export type Notice =
   | { kind: "started"; billing: Billing; amount: number; trial: boolean; firstCharge: Date }
   | { kind: "cancelled"; until: Date; trial: boolean }
-  | { kind: "failed"; billing: Billing; amount: number; graceUntil: Date };
+  | { kind: "failed"; billing: Billing; amount: number; graceUntil: Date; first?: boolean }
+  | { kind: "paused"; until: Date | null }                                  // autopay paused in the UPI app or bank
+  | { kind: "pausedByYou"; until: Date | null; resumeOn: Date }             // the account's own "pause for a month"
+  | { kind: "trialEnding"; billing: Billing; amount: number; chargeAt: Date }
+  | { kind: "checkoutHelp"; billing: Billing };
 
 export interface Deps {
   notify?: (uid: string, n: Notice) => Promise<unknown>;
@@ -205,18 +214,97 @@ async function startedMail(deps: Deps, uid: string, d: Rec) {
 }
 
 /** Cancel: a paid plan at the end of its period; a free day at once (Pro stays on until the free day ends). */
-export async function cancel(deps: Deps, uid: string) {
+export const CANCEL_REASONS = ["price", "not-using", "season-over", "not-useful", "technical", "other"] as const;
+export async function cancel(deps: Deps, uid: string, body: any = {}) {
   const prev = await deps.store.get(docPath(uid));
+  const reason = (CANCEL_REASONS as readonly string[]).includes(body?.reason) ? String(body.reason) : null;
+  const survey: Rec = reason || body?.note ? { cancelReason: reason, cancelNote: clip(body?.note, 300), cancelledAt: new Date(deps.now()) } : {};
   const subId = prev?.subscriptionId as string | undefined;
   if (!subId) throw new BillingError(404, "No subscription to cancel");
   const cur = await deps.rzp("GET", `/subscriptions/${encodeURIComponent(subId)}`);
-  if (["cancelled", "completed", "expired"].includes(cur.status)) return publicView(await save(deps, uid, cur), deps.now());
+  if (["cancelled", "completed", "expired"].includes(cur.status)) return publicView(await save(deps, uid, cur, survey), deps.now());
   const atEnd = cur.status === "active" && Number(cur.paid_count || 0) > 0;     // nothing paid yet: cancel now, so the first charge never happens
   const sub = await deps.rzp("POST", `/subscriptions/${encodeURIComponent(subId)}/cancel`, { cancel_at_cycle_end: atEnd ? 1 : 0 });
-  const d = await save(deps, uid, sub, atEnd ? { cancelAtEnd: true } : {});
+  const d = await save(deps, uid, sub, { ...(atEnd ? { cancelAtEnd: true } : {}), ...survey, pausedByUs: false, resumeOn: null });
   const until = ms(atEnd ? d.currentEnd : d.proUntil);
   if (deps.notify && Number.isFinite(until)) await deps.notify(uid, { kind: "cancelled", until: new Date(until), trial: !atEnd && Number(cur.paid_count || 0) === 0 });
   return publicView(d, deps.now());
+}
+
+export const PAUSE_DAYS = 30;
+/** "Pause for a month": only a plan that has been paid for. Pro runs to the end of the paid period, nothing is charged
+ *  while paused, and billingCron restarts it PAUSE_DAYS after that (the account can restart it sooner). */
+export async function pause(deps: Deps, uid: string) {
+  const prev = await deps.store.get(docPath(uid));
+  const subId = prev?.subscriptionId as string | undefined;
+  if (!subId) throw new BillingError(404, "No subscription to pause");
+  if (prev?.status !== "active" || !(Number(prev?.paidCount || 0) > 0) || prev?.cancelAtEnd === true) {
+    throw new BillingError(409, "Only a paid plan that's renewing can be paused");
+  }
+  const end = ms(prev.currentEnd);
+  const resumeOn = new Date((Number.isFinite(end) ? end : deps.now()) + PAUSE_DAYS * 86400_000);
+  // marked first, so the webhook for this pause doesn't send the "autopay paused in your UPI app" email
+  await deps.store.set(docPath(uid), { pausedByUs: true, resumeOn });
+  let sub: any;
+  try { sub = await deps.rzp("POST", `/subscriptions/${encodeURIComponent(subId)}/pause`, { pause_at: "now" }); }
+  catch (e) {
+    await deps.store.set(docPath(uid), { pausedByUs: false, resumeOn: null });
+    console.error("pause", (e as Error).message);
+    throw new BillingError(409, "Pausing isn't available for your payment method. You can cancel instead, and subscribe again any time.");
+  }
+  const d = await save(deps, uid, sub, { pausedByUs: true, resumeOn, pausedAt: new Date(deps.now()) });
+  if (deps.notify) {
+    const until = ms(d.proUntil);
+    await deps.notify(uid, { kind: "pausedByYou", until: Number.isFinite(until) ? new Date(until) : null, resumeOn });
+  }
+  return publicView(d, deps.now());
+}
+
+/** Restart a plan paused with "pause for a month" (the account, or billingCron when the month is up). */
+export async function resume(deps: Deps, uid: string) {
+  const prev = await deps.store.get(docPath(uid));
+  const subId = prev?.subscriptionId as string | undefined;
+  if (!subId || prev?.status !== "paused") throw new BillingError(409, "Your plan isn't paused");
+  const sub = await deps.rzp("POST", `/subscriptions/${encodeURIComponent(subId)}/resume`, { resume_at: "now" });
+  return publicView(await save(deps, uid, sub, { pausedByUs: false, resumeOn: null }), deps.now());
+}
+
+export const REMIND_BEFORE_MS = 8 * 3600_000;        // free day ending: sent in the last 8 hours (the cron runs every 3)
+const HELP_AFTER_MS = 2 * 3600_000, HELP_UNTIL_MS = 48 * 3600_000;
+const CRON_MAX = 15;                                   // emails or Razorpay calls per run (the free plan allows 50 subrequests)
+/** The scheduled jobs over every account's billing doc (users/{uid}/billing/pro, with `uid`). Each email goes once
+ *  (recorded on the doc). Returns what it did, for the log. */
+export async function billingCron(deps: Deps, docs: (Rec & { uid: string })[]) {
+  const now = deps.now(), done: string[] = [];
+  for (const d of docs) {
+    if (done.length >= CRON_MAX) break;
+    const uid = d.uid, subId = String(d.subscriptionId || "");
+    if (!subId) continue;
+    const billing: Billing = d.billing === "yearly" ? "yearly" : "monthly";
+    try {
+      // a month's pause is up: restart it
+      if (d.status === "paused" && d.pausedByUs === true && ms(d.resumeOn) <= now) {
+        await resume(deps, uid); done.push(`${uid}: resumed`); continue;
+      }
+      // the free day ends within 8 hours and the plan is still on
+      const trialEnd = ms(d.trialEnd);
+      if (d.status === "trial" && d.cancelAtEnd !== true && Number.isFinite(trialEnd) && trialEnd > now
+          && trialEnd - now <= REMIND_BEFORE_MS && d.mailTrialEnding !== subId) {
+        await deps.store.set(docPath(uid), { mailTrialEnding: subId });
+        if (deps.notify) await deps.notify(uid, { kind: "trialEnding", billing, amount: PRICE[billing] / 100, chargeAt: new Date(trialEnd) });
+        done.push(`${uid}: free day ending`); continue;
+      }
+      // started a checkout 2 to 48 hours ago and never finished it
+      const started = ms(d.updated);
+      if (d.status === "created" && Number.isFinite(started) && now - started >= HELP_AFTER_MS && now - started <= HELP_UNTIL_MS
+          && d.mailCheckoutHelp !== subId) {
+        await deps.store.set(docPath(uid), { mailCheckoutHelp: subId });
+        if (deps.notify) await deps.notify(uid, { kind: "checkoutHelp", billing });
+        done.push(`${uid}: checkout help`);
+      }
+    } catch (e) { console.error("billing cron", uid, (e as Error).message); }
+  }
+  return done;
 }
 
 /** Read the subscription from Razorpay again and re-save the account's access (scripts/resync-billing.ts). */
@@ -287,20 +375,27 @@ export async function webhook(deps: Deps, raw: string, signature: string | null)
   // only the account's current checkout counts: no record (never checked out here, or reset by our team) or an older
   // subscription id means the event is ignored, so a late event can't bring back a plan that was removed
   if (!prev?.subscriptionId || prev.subscriptionId !== sub.id) return { ok: true, ignored: true };
-  const d = await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null });
+  const resumed = sub.status === "active" && prev.pausedByUs === true;
+  const d = await save(deps, uid, sub, { billing: sub.notes?.billing ?? prev?.billing ?? null, ...(resumed ? { pausedByUs: false, resumeOn: null } : {}) });
   await startedMail(deps, uid, d);
+  const first = Number(d.paidCount || 0) === 0;
+  // autopay paused from the customer's UPI app or bank (not our own "pause for a month"): once per pause
+  if (deps.notify && d.status === "paused" && prev.status !== "paused" && prev.pausedByUs !== true) {
+    const until = ms(d.proUntil);
+    await deps.notify(uid, { kind: "paused", until: Number.isFinite(until) ? new Date(until) : null });
+  }
   // a renewal that failed, or retries that ran out: logged once per change, with where the subscription started
   if ((d.status === "past_due" || d.status === "halted") && prev.status !== d.status) {
     await logAttempt(deps, uid, { kind: d.status === "past_due" ? "renewal failed" : "halted", where: whereOf(prev.source ?? sub.notes?.where),
                                   device: "unknown", billing: d.billing ?? null, subscriptionId: sub.id, code: null, reason: null,
-                                  description: null, step: "renewal", source: null, paymentId: null, trial: false });
+                                  description: null, step: first ? "first charge" : "renewal", source: null, paymentId: null, trial: first });
   }
   // a renewal that didn't go through: once per billing period
   const period = d.currentEnd instanceof Date ? d.currentEnd.toISOString() : String(d.currentEnd ?? "");
   if (deps.notify && d.status === "past_due" && prev.mailFailed !== period) {
     const billing: Billing = d.billing === "yearly" ? "yearly" : "monthly", grace = ms(d.proUntil);
     await deps.store.set(docPath(uid), { mailFailed: period });
-    await deps.notify(uid, { kind: "failed", billing, amount: PRICE[billing] / 100,
+    await deps.notify(uid, { kind: "failed", billing, amount: PRICE[billing] / 100, first,
                              graceUntil: new Date(Number.isFinite(grace) ? grace : deps.now() + GRACE_S * 1000) });
   }
   return { ok: true };

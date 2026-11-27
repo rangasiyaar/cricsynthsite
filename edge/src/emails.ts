@@ -131,7 +131,8 @@ export function proStarted(d: { name?: string | null; billing: "monthly" | "year
   };
 }
 
-export function paymentFailed(d: { name?: string | null; billing: "monthly" | "yearly"; amount: number; graceUntil: Date }): Email {
+export function paymentFailed(d: { name?: string | null; billing: "monthly" | "yearly"; amount: number; graceUntil: Date; first?: boolean }): Email {
+  if (d.first) return firstPaymentFailed(d);
   const intro = `We couldn't take your ${d.billing} CricSynthesis Pro payment of ${rupees(d.amount)}. This usually happens when a UPI Autopay ` +
     `mandate was paused, a card expired or there wasn't enough balance.`;
   const what = `We'll try the payment again automatically. You keep Pro until ${day(d.graceUntil)}; if the payment still hasn't gone through by ` +
@@ -143,6 +144,84 @@ export function paymentFailed(d: { name?: string | null; billing: "monthly" | "y
       { eyebrow: "Payment", heading: "Your payment didn't go through.", title: "CricSynthesis Pro payment", reason: PRO_REASON,
         cta: "Open your account", ctaUrl: `${SITE}/account/#subscription` }),
     text: `Hi ${firstName(d.name)},\n\n${intro}\n\n${what}\n\nTo fix it, check your UPI app or card, or subscribe again with another payment method: ${SITE}/account/#subscription${sign}`,
+  };
+}
+
+/** The first charge after the free day didn't go through: Pro is off until it does. */
+function firstPaymentFailed(d: { name?: string | null; billing: "monthly" | "yearly"; amount: number }): Email {
+  const intro = `Your free day of CricSynthesis Pro has ended, but the first payment of ${rupees(d.amount)} didn't go through. ` +
+    `This usually happens when the UPI Autopay request wasn't approved, the mandate was paused, or there wasn't enough balance.`;
+  const what = `We'll try again automatically over the next few days. Pro is off until a payment goes through, and every match's Overview stays free.`;
+  const fix = `To fix it, open your UPI app and approve or resume the CricSynthesis autopay, or subscribe again with another payment method.`;
+  return {
+    subject: "Your first CricSynthesis Pro payment didn't go through",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) + p(intro) + p(what) + p(fix),
+      { eyebrow: "Payment", heading: "Your first payment didn't go through.", title: "CricSynthesis Pro payment", reason: PRO_REASON,
+        cta: "Open your account", ctaUrl: `${SITE}/account/#subscription` }),
+    text: `Hi ${firstName(d.name)},\n\n${intro}\n\n${what}\n\n${fix}\n\nYour account: ${SITE}/account/#subscription${sign}`,
+  };
+}
+
+/** Autopay paused from the customer's UPI app or bank. */
+export function autopayPaused(d: { name?: string | null; until: Date | null }): Email {
+  const intro = `The autopay for your CricSynthesis Pro plan has been paused, usually from your UPI app or bank, so we can't take the next payment.`;
+  const keep = d.until && d.until.getTime() > Date.now()
+    ? `You keep Pro until ${dayTime(d.until)}. Resume the autopay before then and nothing changes.`
+    : `Pro is off for now. Resume the autopay and Pro comes back as soon as the next payment goes through.`;
+  const how = `To resume it, open your UPI app (Google Pay, PhonePe, Paytm or your bank's app), find CricSynthesis under autopay or mandates, and tap Resume.`;
+  return {
+    subject: "Your CricSynthesis Pro autopay is paused",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) + p(intro) + p(keep) + p(how) +
+      p(`Paused it on purpose? Nothing else to do. You can also cancel from your account at any time.`),
+      { eyebrow: "CricSynthesis Pro", heading: "Your autopay is paused.", title: "CricSynthesis Pro autopay", reason: PRO_REASON,
+        cta: "Open your account", ctaUrl: `${SITE}/account/#subscription` }),
+    text: `Hi ${firstName(d.name)},\n\n${intro}\n\n${keep}\n\n${how}\n\nPaused it on purpose? Nothing else to do. You can also cancel from your account: ${SITE}/account/#subscription${sign}`,
+  };
+}
+
+/** The account paused its own plan for a month. */
+export function proPaused(d: { name?: string | null; until: Date | null; resumeOn: Date }): Email {
+  const rows: [string, string][] = [["Pro stays on until", d.until ? day(d.until) : "today"], ["Restarts on", day(d.resumeOn)],
+    ["Charged while paused", "Nothing"]];
+  const after = `Your plan restarts on ${day(d.resumeOn)} at the same price. Want it back sooner, or don't want it back? You can restart or cancel from your account at any time.`;
+  return {
+    subject: "Your CricSynthesis Pro is paused for a month",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) + p(`Your CricSynthesis Pro plan is paused.`) + facts(rows) + p(after),
+      { eyebrow: "CricSynthesis Pro", heading: "Your plan is paused.", title: "CricSynthesis Pro paused", reason: PRO_REASON,
+        cta: "Manage your plan", ctaUrl: `${SITE}/account/#subscription` }),
+    text: `Hi ${firstName(d.name)},\n\nYour CricSynthesis Pro plan is paused.\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${after}\n\n${SITE}/account/#subscription${sign}`,
+  };
+}
+
+/** A few hours before the free day ends and the first charge is taken. */
+export function trialEnding(d: { name?: string | null; billing: "monthly" | "yearly"; amount: number; chargeAt: Date }): Email {
+  const per = d.billing === "monthly" ? "month" : "year";
+  const rows: [string, string][] = [["Free day ends", dayTime(d.chargeAt)], ["First charge", `${rupees(d.amount)}, then every ${per}`],
+    ["Cancel", "Any time before then, in one tap, and you won't be charged"]];
+  return {
+    subject: `Your free day of CricSynthesis Pro ends ${d.chargeAt.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}`,
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) + p(`A quick reminder that your free day of CricSynthesis Pro ends soon.`) + facts(rows) +
+      p(`Keeping Pro? Nothing to do. Your UPI app or bank may also send a notice before the payment.`),
+      { eyebrow: "CricSynthesis Pro", heading: "Your free day ends soon.", title: "CricSynthesis Pro free day", reason: PRO_REASON,
+        cta: "Manage your plan", ctaUrl: `${SITE}/account/#subscription` }),
+    text: `Hi ${firstName(d.name)},\n\nA quick reminder that your free day of CricSynthesis Pro ends soon.\n\n${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n` +
+      `Keeping Pro? Nothing to do. Manage or cancel: ${SITE}/account/#subscription${sign}`,
+  };
+}
+
+/** Started a checkout and didn't finish it. */
+export function checkoutHelp(d: { name?: string | null; billing: "monthly" | "yearly" }): Email {
+  const url = `${SITE}/checkout/?plan=${d.billing}`;
+  const tips = `If the payment didn't go through, these usually fix it: approve the autopay request in your UPI app within a few minutes, ` +
+    `check your UPI app has autopay turned on, or try a card instead.`;
+  return {
+    subject: "Did something go wrong with your CricSynthesis Pro checkout?",
+    html: layout(p(`Hi ${esc(firstName(d.name))},`) + p(`You started subscribing to CricSynthesis Pro but didn't finish. If that was on purpose, ignore this email.`) +
+      p(tips) + p(`Still stuck? Reply to this email and tell us what you saw. We'll help.`),
+      { eyebrow: "CricSynthesis Pro", heading: "Having trouble paying?", title: "CricSynthesis Pro checkout", reason: "you started a CricSynthesis Pro checkout",
+        cta: "Try again", ctaUrl: url }),
+    text: `Hi ${firstName(d.name)},\n\nYou started subscribing to CricSynthesis Pro but didn't finish. If that was on purpose, ignore this email.\n\n${tips}\n\n` +
+      `Try again: ${url}\n\nStill stuck? Reply to this email and tell us what you saw.${sign}`,
   };
 }
 

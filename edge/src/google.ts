@@ -139,6 +139,17 @@ export class Firestore {
     return rows.filter((x) => x.document).length;
   }
 
+  /** Every document of a collection id anywhere (e.g. every account's billing docs), with `_id` and `_path` (from
+   *  "users/…"). No filter, so no index is needed. */
+  async groupDocs(collectionId: string): Promise<(Record<string, unknown> & { _id: string; _path: string })[]> {
+    const rows: any[] = await this.call(":runQuery", { structuredQuery: { from: [{ collectionId, allDescendants: true }] } });
+    return rows.filter((x) => x.document).map((x) => {
+      const name = String(x.document.name);
+      return { ...Object.fromEntries(Object.entries(x.document.fields || {}).map(([k, v]) => [k, fromValue(v)])),
+               _id: name.split("/").pop() || "", _path: name.replace(/^.*?\/documents\//, "") };
+    });
+  }
+
   async isAdult(uid: string): Promise<boolean> {
     const r = await fetch(`${this.root}/users/${encodeURIComponent(uid)}?mask.fieldPaths=adult`,
                           { headers: { Authorization: `Bearer ${await accessToken(this.sa)}` } });

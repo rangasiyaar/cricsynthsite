@@ -36,7 +36,15 @@ const day = (d: Date | null) => (d ? d.toLocaleDateString("en-IN", { day: "numer
 export function proLine(b: ProBilling): string {
   if (b.status === "trial") return `Your free day ends on ${day(b.trialEnd)}. ${b.billing === "yearly" ? "The yearly" : "The monthly"} plan starts then.`;
   if (b.cancelAtEnd || b.status === "cancelled") return `Pro stays on until ${day(b.status === "cancelled" ? b.proUntil : b.currentEnd)}. It won't renew.`;
-  if (b.status === "past_due") return "We couldn't take your last payment. Razorpay will retry; you keep Pro for now.";
+  if (b.status === "paused") {
+    const until = b.proUntil && b.proUntil.getTime() > Date.now() ? b.proUntil : null;
+    if (b.pausedByUs) return `Your plan is paused. ${until ? `Pro stays on until ${day(until)}, and` : "It"} restarts on ${day(b.resumeOn)}. Nothing is charged while it's paused.`;
+    return until ? `Your UPI autopay is paused. Resume it in your UPI app to keep Pro after ${day(until)}.`
+      : "Your UPI autopay is paused, so Pro is off. Resume it in your UPI app, or subscribe again.";
+  }
+  if (b.status === "halted") return "Your payments stopped after several tries, so the plan has ended. Subscribe again to turn Pro back on.";
+  if (b.status === "past_due" && b.paidCount === 0) return "Your first payment didn't go through. Approve or resume the autopay in your UPI app; we'll try again over the next few days.";
+  if (b.status === "past_due") return "We couldn't take your last payment. We'll try again; you keep Pro for now.";
   if (b.status === "active") return `Renews on ${day(b.currentEnd)}.`;
   return "";
 }

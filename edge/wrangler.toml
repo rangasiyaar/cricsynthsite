@@ -10,6 +10,11 @@ routes = [
   { pattern = "mcp.cricsynthesis.in", custom_domain = true },
 ]
 
+# Billing jobs every 3 hours (src/billing.ts billingCron): free-day-ending reminders, unfinished-checkout emails,
+# restarting plans paused for a month. The account allows 5 cron triggers; the admin console uses 2.
+[triggers]
+crons = ["41 */3 * * *"]
+
 [vars]
 DATA_URL = "https://cricsynthesis.in/data"     # the published files (forecasts, packs, analytics kit)
 CORS = "https://cricsynthesis.in,https://www.cricsynthesis.in,https://cricsynthesis.web.app,https://localhost"   # https://localhost = the Android app (Capacitor)

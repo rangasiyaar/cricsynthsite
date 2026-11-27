@@ -11,6 +11,7 @@ export type ProBilling = {
   status: "created" | "trial" | "active" | "past_due" | "halted" | "cancelled" | "paused" | "ended" | string;
   billing: Billing | null; proUntil: Date | null; trialEnd: Date | null; currentEnd: Date | null;
   cancelAtEnd: boolean; trialUsed: boolean;
+  paidCount: number; pausedByUs: boolean; resumeOn: Date | null;     // pausedByUs: the account's own "pause for a month"
 };
 
 const toDate = (v: unknown) => (v && typeof (v as Timestamp).toDate === "function" ? (v as Timestamp).toDate() : null);
@@ -23,7 +24,8 @@ export function useProBilling(uid: string | null | undefined): ProBilling | null
     return onSnapshot(doc(db(), "users", uid, "billing", "pro"), (s) => {
       const d = s.data();
       setB(d ? { status: d.status, billing: d.billing ?? null, proUntil: toDate(d.proUntil), trialEnd: toDate(d.trialEnd),
-                 currentEnd: toDate(d.currentEnd), cancelAtEnd: d.cancelAtEnd === true, trialUsed: d.trialUsed === true } : null);
+                 currentEnd: toDate(d.currentEnd), cancelAtEnd: d.cancelAtEnd === true, trialUsed: d.trialUsed === true,
+                 paidCount: Number(d.paidCount || 0), pausedByUs: d.pausedByUs === true, resumeOn: toDate(d.resumeOn) } : null);
     }, () => setB(null));
   }, [uid]);
   return b;
@@ -46,7 +48,15 @@ async function call(path: string, body?: unknown) {
 }
 
 export const refreshBilling = () => call("status");
-export const cancelPro = () => call("cancel", {});
+/** Cancel, with the exit survey's answer (both optional). */
+export const cancelPro = (reason?: string | null, note?: string) => call("cancel", { reason: reason || null, note: note?.trim() || null });
+/** "Pause for a month" (a paid plan) and restarting it early. */
+export const pausePro = () => call("pause", {});
+export const resumePro = () => call("resume", {});
+/** A plan that can be paused instead of cancelled: paid for, renewing. */
+export const canPause = (b: ProBilling | null | undefined) => !!b && b.status === "active" && b.paidCount > 0 && !b.cancelAtEnd;
+/** Statuses the account page always explains, even after Pro has lapsed (so the customer can fix it). */
+export const needsAttention = (b: ProBilling | null | undefined) => !!b && ["paused", "halted", "past_due"].includes(b.status);
 
 type RazorpayResponse = { razorpay_payment_id: string; razorpay_subscription_id: string; razorpay_signature: string };
 declare global { interface Window { Razorpay?: new (o: Record<string, unknown>) => { open(): void; on(e: string, f: (r: unknown) => void): void } } }

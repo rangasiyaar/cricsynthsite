@@ -103,3 +103,13 @@ export const ctaLabel = (trial: boolean) => (trial ? "Start your free day" : "Su
 export const afterTrial = (b: Billing) => b === "monthly"
   ? `Free for 1 day, then ${rupees(PRO.monthly)} a month. Cancel any time.`
   : `Free for 1 day, then ${rupees(PRO.yearly)} a year. Cancel any time.`;
+
+/** The one-question exit survey when cancelling (ids match edge/src/billing.ts CANCEL_REASONS). */
+export const CANCEL_REASONS: [string, string][] = [
+  ["price", "It costs too much"],
+  ["not-using", "I don't use it enough"],
+  ["season-over", "The cricket I follow is over for now"],
+  ["not-useful", "The forecasts weren't useful to me"],
+  ["technical", "Something didn't work"],
+  ["other", "Something else"],
+];

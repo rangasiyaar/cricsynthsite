@@ -814,3 +814,10 @@ body:has(.cs-consent) .app-promo { display: none; }
 .lab-why-bar i { display: block; height: 100%; border-radius: 3px; }
 .lab-sec { margin: 0; font: 600 15px var(--cs-head); letter-spacing: .04em; text-transform: uppercase; color: var(--cs-ink); }
 .lab-presets + .lever { padding-top: 16px; border-top: 1px solid var(--cs-line); }
+
+/* Cancel flow: pause offer and the one-question exit survey (account page, website and app) */
+.pro-pause { padding: 12px 14px; border: 1px solid var(--cs-line); border-radius: var(--r-card, 10px); background: var(--cs-paper, transparent); }
+.pro-why { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
+.pro-why legend { font-weight: 600; margin-bottom: 4px; color: var(--cs-ink); }
+.pro-why label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.pro-why textarea { width: 100%; margin-top: 6px; font: inherit; padding: 8px 10px; border: 1px solid var(--cs-line); border-radius: 8px; background: transparent; color: inherit; resize: vertical; }

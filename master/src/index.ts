@@ -182,7 +182,9 @@ async function api(req: Request, env: Env, path: string, url: URL): Promise<Resp
         .flatMap((d) => (Array.isArray(d.events) ? d.events : []).map((e: Record<string, unknown>) => ({ uid: d.uid, ...e })));
       const subs = billing.filter((b) => b._id === "pro").map((b) => ({ uid: String(b._path).split("/")[1], status: b.status || null,
         source: b.source || "unknown", billing: b.billing || null, proUntil: b.proUntil || null, updated: b.updated || null,
-        trialUsed: b.trialUsed === true, cancelAtEnd: b.cancelAtEnd === true }));
+        trialUsed: b.trialUsed === true, cancelAtEnd: b.cancelAtEnd === true, paidCount: Number(b.paidCount || 0),
+        cancelReason: b.cancelReason || null, cancelNote: b.cancelNote || null, cancelledAt: b.cancelledAt || null,
+        pausedByUs: b.pausedByUs === true, resumeOn: b.resumeOn || null }));
       return json({ events, subs });
     }
     case "/api/messages": {

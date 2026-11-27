@@ -71,7 +71,8 @@ export default function Privacy() {
       <ul>
         <li><b>CricSynthesis Pro.</b> When you subscribe, our payment partner collects your payment details; we never see your
           card, UPI or bank details. We keep your plan, its status, the subscription reference our payment partner gives us and the
-          dates your free day, paid period or renewal start and end, to turn Pro on and show your plan. Receipts are sent to your email.</li>
+          dates your free day, paid period or renewal start and end, to turn Pro on and show your plan. Receipts are sent to your email.
+          If you pause or cancel, we keep when, and the reason and comment you choose to give in the cancel survey.</li>
         <li id="payment-problems"><b>Payment problems.</b> If a payment or renewal doesn&apos;t go through, the checkout runs into an
           error, or you close the payment window before paying, we record what happened and when, the reason our payment partner
           gives (for example, declined by the bank or UPI request expired), the step where it stopped, whether it was on the website
