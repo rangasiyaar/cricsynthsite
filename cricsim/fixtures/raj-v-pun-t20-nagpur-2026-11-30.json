@@ -1,0 +1,112 @@
+{
+  "id": "raj-v-pun-t20-nagpur-2026-11-30",
+  "title": "Rajasthan v Punjab",
+  "date": "2026-11-30",
+  "start_time": "09:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 113th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Vidarbha C.A. Ground, Nagpur",
+  "venue_search": "vidarbha c.a. ground",
+  "city": "Nagpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Rajasthan",
+      "short": "RAJ",
+      "players": [
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Kartik Sharma",
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Manav Suthar",
+        "Mahipal Lomror",
+        "Rahul Chahar",
+        "Deepak Chahar",
+        "Arafat Khan",
+        "Nilesh Tank"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Deepak Chahar",
+      "squad": [
+        "Kunal Singh Rathore",
+        "Mukul Choudhary",
+        "Kartik Sharma",
+        "Abhijeet Tomar",
+        "Rohan Rajbar",
+        "Manav Suthar",
+        "Mahipal Lomror",
+        "Rahul Chahar",
+        "Deepak Chahar",
+        "Arafat Khan",
+        "Nilesh Tank"
+      ]
+    },
+    {
+      "name": "Punjab",
+      "short": "PUN",
+      "players": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Naman Dhir",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Krish Bhagat",
+        "Sukhdeep Singh Bajwa",
+        "Emanjot Singh Chahal",
+        "Jasan Jindal",
+        "Harpreet Brar"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "BOWL",
+        "BAT",
+        "BOWL"
+      ],
+      "captain": "Ramandeep Singh",
+      "squad": [
+        "Vihaan Malhotra",
+        "Anmolpreet Singh",
+        "Naman Dhir",
+        "Uday Saharan",
+        "Ramandeep Singh",
+        "Salil Arora",
+        "Krish Bhagat",
+        "Sukhdeep Singh Bajwa",
+        "Emanjot Singh Chahal",
+        "Jasan Jindal",
+        "Harpreet Brar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41965,
+    "url": "https://khelnow.com/live-cricket-score/rajasthan-vs-punjab-syed-mushtaq-ali-trophy-elite-30th-november-2026-41965",
+    "auto": true,
+    "xis": false
+  }
+}
