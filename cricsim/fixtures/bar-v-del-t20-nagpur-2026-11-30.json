@@ -1,0 +1,112 @@
+{
+  "id": "bar-v-del-t20-nagpur-2026-11-30",
+  "title": "Baroda v Delhi",
+  "date": "2026-11-30",
+  "start_time": "16:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 116th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Vidarbha Cricket Association Stadium, Jamtha, Nagpur",
+  "venue_search": "vidarbha cricket association stadium, jamtha",
+  "city": "Nagpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Baroda",
+      "short": "BAR",
+      "players": [
+        "Jitesh Sharma",
+        "Deepak Hooda",
+        "Shivalik Sharma",
+        "Shashwat Rawat",
+        "Parikshit Patidar",
+        "Amit Passi",
+        "Bhanu Pania",
+        "Safvan Patel",
+        "Raj Limbani",
+        "Dhruv Patel",
+        "Chintal Gandhi"
+      ],
+      "roles": [
+        "WK",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Jitesh Sharma",
+      "squad": [
+        "Jitesh Sharma",
+        "Deepak Hooda",
+        "Shivalik Sharma",
+        "Shashwat Rawat",
+        "Parikshit Patidar",
+        "Amit Passi",
+        "Bhanu Pania",
+        "Safvan Patel",
+        "Raj Limbani",
+        "Dhruv Patel",
+        "Chintal Gandhi"
+      ]
+    },
+    {
+      "name": "Delhi",
+      "short": "DEL",
+      "players": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Anuj Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Simarjeet Singh",
+        "Mayank Yadav",
+        "Digvesh Singh Rathi",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ],
+      "roles": [
+        "BAT",
+        "BAT",
+        "AR",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL",
+        "BOWL"
+      ],
+      "captain": "Priyansh Arya",
+      "squad": [
+        "Priyansh Arya",
+        "Yash Dhull",
+        "Nitish Rana",
+        "Anuj Rawat",
+        "Himmat Singh",
+        "Tejasvi Dahiya",
+        "Simarjeet Singh",
+        "Mayank Yadav",
+        "Digvesh Singh Rathi",
+        "Suyash Sharma",
+        "Rajneesh Dadar"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41968,
+    "url": "https://khelnow.com/live-cricket-score/baroda-vs-delhi-syed-mushtaq-ali-trophy-elite-30th-november-2026-41968",
+    "auto": true,
+    "xis": false
+  }
+}
