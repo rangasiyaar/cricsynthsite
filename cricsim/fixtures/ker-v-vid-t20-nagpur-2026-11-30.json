@@ -1,0 +1,112 @@
+{
+  "id": "ker-v-vid-t20-nagpur-2026-11-30",
+  "title": "Kerala v Vidarbha",
+  "date": "2026-11-30",
+  "start_time": "11:00",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 114th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Vidarbha Cricket Association Stadium, Jamtha, Nagpur",
+  "venue_search": "vidarbha cricket association stadium, jamtha",
+  "city": "Nagpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Kerala",
+      "short": "KER",
+      "players": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Vishnu Vinod",
+        "Rohan  Kunnummal",
+        "Salman Nizar",
+        "Karthik B Nair",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "KM Asif",
+        "MD Nidheesh",
+        "Vaisakh Chandran"
+      ],
+      "roles": [
+        "BAT",
+        "WK",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "AR",
+        "BOWL",
+        "BOWL",
+        "AR"
+      ],
+      "captain": "Sanju Samson",
+      "squad": [
+        "Sanju Samson",
+        "Mohammed Azharuddeen",
+        "Vishnu Vinod",
+        "Rohan  Kunnummal",
+        "Salman Nizar",
+        "Karthik B Nair",
+        "Sharafuddeen",
+        "Abdul Basith",
+        "KM Asif",
+        "MD Nidheesh",
+        "Vaisakh Chandran"
+      ]
+    },
+    {
+      "name": "Vidarbha",
+      "short": "VID",
+      "players": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Aman Mokhade",
+        "Yash Rathod",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Darshan Nalkande",
+        "Parth Rekhade",
+        "Nachiket Bhute",
+        "Praful Hinge"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "BAT",
+        "AR",
+        "WK",
+        "AR",
+        "AR",
+        "AR",
+        "BOWL"
+      ],
+      "captain": "Atharva Taide",
+      "squad": [
+        "Atharva Taide",
+        "Danish Malewar",
+        "Aman Mokhade",
+        "Yash Rathod",
+        "Varun Bisht",
+        "Yash Kadam",
+        "Vedant Jajoo",
+        "Darshan Nalkande",
+        "Parth Rekhade",
+        "Nachiket Bhute",
+        "Praful Hinge"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41966,
+    "url": "https://khelnow.com/live-cricket-score/kerala-vs-vidarbha-syed-mushtaq-ali-trophy-elite-30th-november-2026-41966",
+    "auto": true,
+    "xis": false
+  }
+}
