@@ -12,33 +12,33 @@
   "city": "Dubai",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Dubai Capitals won the toss and bowl first.",
   "teams": [
     {
       "name": "Dubai Capitals",
       "short": "DC",
       "players": [
-        "Masood Gurbaz",
         "Faf du Plessis",
-        "Max Holden",
+        "Masood Gurbaz",
         "Marcus Stoinis",
         "Rovman Powell",
         "Sam Billings",
-        "Aayan Afzal Khan",
-        "Hassan Khan",
         "Karim Janat",
+        "Hassan Khan",
         "Noor Ahmad",
-        "Dushmantha Chameera"
+        "Muhammad Arfan",
+        "Dushmantha Chameera",
+        "Tymal Mills"
       ],
       "roles": [
-        "BAT",
         "BAT",
         "BAT",
         "AR",
         "BAT",
         "WK",
-        "BOWL",
         "AR",
+        "AR",
+        "BOWL",
         "AR",
         "BOWL",
         "BOWL"
@@ -62,6 +62,7 @@
       "name": "Gulf Giants",
       "short": "GG",
       "players": [
+        "Ibrahim Zadran",
         "Rahmanullah Gurbaz",
         "Liam Livingstone",
         "Azmatullah Omarzai",
@@ -69,12 +70,12 @@
         "David Miller",
         "David Wiese",
         "Akeal Hosein",
+        "Sagar Kalyan",
         "Alzarri Joseph",
-        "Dhruv Parashar",
-        "Haider Razzaq",
-        "Shamar Joseph"
+        "Haider Razzaq"
       ],
       "roles": [
+        "BAT",
         "WK",
         "AR",
         "AR",
@@ -82,8 +83,7 @@
         "BAT",
         "AR",
         "BOWL",
-        "BOWL",
-        "AR",
+        "BAT",
         "BOWL",
         "BOWL"
       ],
@@ -107,6 +107,7 @@
     "kn": 41728,
     "url": "https://khelnow.com/live-cricket-score/dubai-capitals-vs-gulf-giants-international-league-t20-28th-november-2026-41728",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
