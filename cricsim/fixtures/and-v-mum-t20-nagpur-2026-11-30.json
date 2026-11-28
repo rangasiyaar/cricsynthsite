@@ -1,0 +1,112 @@
+{
+  "id": "and-v-mum-t20-nagpur-2026-11-30",
+  "title": "Andhra v Mumbai",
+  "date": "2026-11-30",
+  "start_time": "13:30",
+  "format": "T20",
+  "gender": "male",
+  "competition": "Syed Mushtaq Ali Trophy Elite · 115th Match",
+  "comp_key": "syed-mushtaq-ali-trophy-elite",
+  "venue": "Vidarbha C.A. Ground, Nagpur",
+  "venue_search": "vidarbha c.a. ground",
+  "city": "Nagpur",
+  "status": "scheduled",
+  "published": true,
+  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "teams": [
+    {
+      "name": "Andhra",
+      "short": "AND",
+      "players": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar",
+        "Seeram Rahul"
+      ],
+      "roles": [
+        "AR",
+        "BAT",
+        "BAT",
+        "BAT",
+        "WK",
+        "BOWL",
+        "BAT",
+        "BOWL",
+        "BOWL",
+        "AR",
+        "AR"
+      ],
+      "captain": "Ricky Bhui",
+      "squad": [
+        "Maramreddy Hemanth Reddy",
+        "Shaik Rasheed",
+        "Ricky Bhui",
+        "Ashwin Hebbar",
+        "SDNV Prasad",
+        "KV Sasikanth",
+        "KS Narasimha Raju",
+        "Satyanarayana Raju",
+        "Bailapudi Yeswanth",
+        "Saurabh Kumar",
+        "Seeram Rahul"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "short": "MUM",
+      "players": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Tushar Deshpande",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ],
+      "roles": [
+        "BAT",
+        "AR",
+        "BAT",
+        "AR",
+        "BOWL",
+        "AR",
+        "AR",
+        "BAT",
+        "AR",
+        "AR",
+        "WK"
+      ],
+      "captain": "Surya Kumar Yadav",
+      "squad": [
+        "Surya Kumar Yadav",
+        "Shardul Thakur",
+        "Sarfaraz Khan",
+        "Shivam Dube",
+        "Tushar Deshpande",
+        "Maxwell Swaminathan",
+        "Atharva Ankolekar",
+        "Angkrish Raghuvanshi",
+        "Sairaj Patil",
+        "Musheer Khan",
+        "Hardik Tamore"
+      ]
+    }
+  ],
+  "live": {
+    "kn": 41967,
+    "url": "https://khelnow.com/live-cricket-score/andhra-vs-mumbai-syed-mushtaq-ali-trophy-elite-30th-november-2026-41967",
+    "auto": true,
+    "xis": false
+  }
+}
