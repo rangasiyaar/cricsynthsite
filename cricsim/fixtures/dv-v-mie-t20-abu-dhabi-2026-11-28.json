@@ -12,7 +12,7 @@
   "city": "Abu Dhabi",
   "status": "scheduled",
   "published": true,
-  "note": "Probable XIs from the last matches; updated when the teams are named.",
+  "note": "Playing XIs confirmed. Desert Vipers won the toss and bowl first.",
   "teams": [
     {
       "name": "Desert Vipers",
@@ -21,14 +21,14 @@
         "Babar Azam",
         "Andries Gous",
         "Joe Clarke",
-        "Shimron Hetmyer",
+        "Vritiya Aravind",
         "Shadab Khan",
         "Tom Curran",
-        "Nangeyalia kharote",
+        "Mohammad Saleem Safi",
         "Khuzaima Bin Tanvir",
+        "Shimron Hetmyer",
         "Mujeeb Ur Rahman",
-        "Sanjay Pahal",
-        "Hunain Shah"
+        "David Payne"
       ],
       "roles": [
         "BAT",
@@ -37,10 +37,10 @@
         "BAT",
         "AR",
         "AR",
-        "AR",
         "BOWL",
         "BOWL",
-        "AR",
+        "BAT",
+        "BOWL",
         "BOWL"
       ],
       "captain": "Shadab Khan",
@@ -64,25 +64,25 @@
       "players": [
         "Kusal Perera",
         "Muhammad Waseem",
-        "Sanjay Krishnamurthy",
         "Nicholas Pooran",
+        "Tajinder Singh",
         "Sherfane Rutherford",
         "Kieron Pollard",
-        "Romario Shepherd",
         "Rashid Khan",
         "Chris Jordan",
-        "Fazalhaq Farooqi",
-        "Zahoor Khan"
+        "Zahoor Khan",
+        "Allah Mohammad Ghazanfar",
+        "Fazalhaq Farooqi"
       ],
       "roles": [
         "BAT",
         "BAT",
-        "AR",
         "WK",
+        "AR",
         "BAT",
         "AR",
         "AR",
-        "AR",
+        "BOWL",
         "BOWL",
         "BOWL",
         "BOWL"
@@ -107,6 +107,7 @@
     "kn": 41727,
     "url": "https://khelnow.com/live-cricket-score/desert-vipers-vs-mi-emirates-international-league-t20-28th-november-2026-41727",
     "auto": true,
-    "xis": false
-  }
+    "xis": true
+  },
+  "batting_first": 1
 }
